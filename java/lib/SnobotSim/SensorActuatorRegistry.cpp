@@ -30,7 +30,7 @@ SensorActuatorRegistry::~SensorActuatorRegistry()
     {                                                                                                           \
         return GetItem(aPort, m##ItemType##Map, #ItemType);                                                     \
     }                                                                                                           \
-    const std::map<int, std::shared_ptr<ItemType>>& SensorActuatorRegistry::Get##ItemType()                     \
+    const std::map<int, std::shared_ptr<ItemType>>& SensorActuatorRegistry::Get##ItemType##Map()                \
     {                                                                                                           \
         return m##ItemType##Map;                                                                                \
     }                                                                                                           \

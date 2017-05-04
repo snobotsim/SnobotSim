@@ -32,7 +32,34 @@ JNIEXPORT jstring JNICALL Java_com_snobot_simulator_module_1wrapper_SpeedControl
  */
 JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_module_1wrapper_SpeedControllerWrapperJni_getVoltagePercentage(JNIEnv *, jclass, jint portHandle)
 {
-    return 0;
+    return SensorActuatorRegistry::Get().GetSpeedControllerWrapper(portHandle)->GetVoltagePercentage();
 }
+
+/*
+ * Class:     com_snobot_simulator_module_wrapper_SpeedControllerWrapperJni
+ * Method:    getPortList
+ * Signature: ()[I
+ */
+JNIEXPORT jintArray JNICALL Java_com_snobot_simulator_module_1wrapper_SpeedControllerWrapperJni_getPortList(JNIEnv * env, jclass)
+{
+    const std::map<int, std::shared_ptr<SpeedControllerWrapper>>& speedControllers = SensorActuatorRegistry::Get().GetSpeedControllerWrapperMap();
+
+    jintArray output = env->NewIntArray(speedControllers.size());
+
+    jint values[30];
+
+    std::map<int, std::shared_ptr<SpeedControllerWrapper>>::const_iterator iter = speedControllers.begin();
+
+    int ctr = 0;
+    for (; iter != speedControllers.end(); ++iter)
+    {
+        values[ctr++] = iter->first;
+    }
+
+    env->SetIntArrayRegion(output, 0, speedControllers.size(), values);
+
+    return output;
+}
+
 
 }

@@ -18,7 +18,7 @@
 #define ACTUATOR_GETTERS(ItemType)                                        \
     bool Register(int aPort, const std::shared_ptr<ItemType>& aActuator); \
     std::shared_ptr<ItemType> Get##ItemType(int aPort);                   \
-    const std::map<int, std::shared_ptr<ItemType>>& Get##ItemType();
+    const std::map<int, std::shared_ptr<ItemType>>& Get##ItemType##Map();
 
 class SensorActuatorRegistry
 {

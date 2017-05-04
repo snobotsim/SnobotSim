@@ -6,4 +6,6 @@ public class SpeedControllerWrapperJni {
     public static native String getName(int aPort);
     
     public static native double getVoltagePercentage(int aPort);
+    
+    public static native int[] getPortList();
 }
