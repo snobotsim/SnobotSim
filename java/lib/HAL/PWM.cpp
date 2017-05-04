@@ -10,14 +10,22 @@
 #include <cmath>
 
 #include "HAL/handles/HandlesInternal.h"
+#include "SnobotSim/SensorActuatorRegistry.h"
+
+#include <iostream>
 
 using namespace hal;
+
 
 
 extern "C" {
 
 HAL_DigitalHandle HAL_InitializePWMPort(HAL_PortHandle portHandle,
                                         int32_t* status) {
+
+    SensorActuatorRegistry::Get().Register(portHandle,
+            std::shared_ptr < SpeedControllerWrapper
+                    > (new SpeedControllerWrapper(portHandle)));
 
   return 0;
 }
@@ -83,6 +91,8 @@ void HAL_SetPWMRaw(HAL_DigitalHandle pwmPortHandle, int32_t value,
  */
 void HAL_SetPWMSpeed(HAL_DigitalHandle pwmPortHandle, double speed,
                      int32_t* status) {
+
+    SensorActuatorRegistry::Get().GetSpeedControllerWrapper(pwmPortHandle)->SetVoltagePercentage(speed);
 }
 
 /**
@@ -120,7 +130,7 @@ int32_t HAL_GetPWMRaw(HAL_DigitalHandle pwmPortHandle, int32_t* status) {
  * @return The scaled PWM value.
  */
 double HAL_GetPWMSpeed(HAL_DigitalHandle pwmPortHandle, int32_t* status) {
-  return 0;
+    return SensorActuatorRegistry::Get().GetSpeedControllerWrapper(pwmPortHandle)->GetVoltagePercentage();
 }
 
 /**

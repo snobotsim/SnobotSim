@@ -114,6 +114,11 @@ task jniHeadersNetworkTables {
             //args 'edu.wpi.first.wpilibj.hal.SerialPortJNI'
             //args 'edu.wpi.first.wpilibj.hal.OSSerialPortJNI'
             //args 'edu.wpi.first.wpilibj.hal.ThreadsJNI'
+            
+            
+            //////////////////////////////////////////////////////
+            args 'com.snobot.simulator.module_wrapper.SpeedControllerWrapperJni'
+            
         }
     }
 }

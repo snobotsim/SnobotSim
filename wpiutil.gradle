@@ -88,10 +88,6 @@ project(':native:wpiutil') {
 
     apply from: "${rootDir}/toolchains/native.gradle"
 
-    if (!project.hasProperty("withoutTests")) {
-        apply from: "${rootDir}/wpiutil/unittest/unittest.gradle"
-    }
-
     wpiutilSetupModel(project)
     wpiutilZipTask(project)
 }
