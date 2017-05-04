@@ -1,0 +1,164 @@
+def snobotSimHalSetupModel = { project ->
+    project.model {
+        components {
+            snobotSimHal(NativeLibrarySpec) {
+                if (project.isArm) {
+                    targetPlatform 'arm'
+                } else {
+                    targetPlatform 'x86'
+                    targetPlatform 'x64'
+                }
+                setupDefines(project, binaries)
+
+                if (includeJava) {
+                    project.setupJniIncludes(binaries)
+                    project.checkNativeSymbols(project.getNativeJNISymbols)
+                   // binaries.all {
+                   //     project.setupDef(linker, "${rootDir}/ntcore-jni.def")
+                   // }
+                } else {
+                    binaries.all {
+                        project.setupDef(linker, "${rootDir}/ntcore.def")
+                    }
+                }
+
+                sources {
+                    cpp {
+                        source {
+                            srcDirs = ["${rootDir}/src"]
+                            if (includeJava) {
+                                srcDirs "${rootDir}/java/lib"
+                            }
+                            includes = ['**/*.cpp']
+                        }
+                        exportedHeaders {
+                            srcDirs = ["${rootDir}/include", "${rootDir}/java/include/"]
+                            if (includeJava) {
+                                project.jniHeadersNetworkTables.outputs.files.each { file ->
+                                    srcDirs file.getPath()
+                                }
+                            }
+                            includes = ['**/*.h']
+                        }
+                        if (project.isArm && project.hasProperty('compilerPrefix')) {
+                            lib project: ':arm:wpiutil', library: 'wpiutil', linkage: 'static'
+                        } else if (project.isArm) {
+                            // If roboRIO, link shared
+                            lib project: ':arm:wpiutil', library: 'wpiutil', linkage: 'shared'
+                        } else {
+                            lib project: ':native:wpiutil', library: 'wpiutil', linkage: 'static'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+def snobotSimHalZipTask = { project ->
+    project.ext.snobotSimHalZip = project.tasks.create("snobotSimHalZip", Zip) {
+        description = 'Creates platform-specific zip of the desktop snobotSimHal libraries.'
+        group = 'WPILib'
+        destinationDir = project.buildDir
+        baseName = 'snobotSimHal'
+        classifier = "${project.buildPlatform}"
+        duplicatesStrategy = 'exclude'
+
+        from(file('include')) {
+            into 'include'
+        }
+
+        if (!project.hasProperty('skipJava')) {
+            project.jniHeadersNetworkTables.outputs.each {
+                from(it) {
+                    into 'include'
+                }
+            }
+        }
+
+        project.model {
+            binaries {
+                withType(StaticLibraryBinarySpec) { binary ->
+                    from(binary.staticLibraryFile) {
+                        into getPlatformPath(binary)
+                    }
+                }
+                withType(SharedLibraryBinarySpec) { binary ->
+                    from(binary.sharedLibraryFile) {
+                        into getPlatformPath(binary)
+                    }
+                    from(new File(binary.sharedLibraryFile.absolutePath + ".debug")) {
+                        into getPlatformPath(binary)
+                    }
+                }
+            }
+        }
+    }
+
+    project.build.dependsOn project.snobotSimHalZip
+
+    project.debugStripSetup()
+
+    project.tasks.whenTaskAdded { task ->
+        def name = task.name.toLowerCase()
+        if (name.contains("snobotSimHalsharedlibrary") || name.contains("snobotSimHalstaticlibrary") || name.contains("snobotSimHaltest")) {
+            project.snobotSimHalZip.dependsOn task
+        }
+    }
+}
+
+if (buildArm) {
+    project(':arm:snobotSimHal') {
+        apply plugin: 'cpp'
+
+        apply from: "${rootDir}/toolchains/arm.gradle"
+        if (includeJava) {
+            apply from: "${rootDir}/java/java.gradle"
+        }
+
+        snobotSimHalSetupModel(project)
+        snobotSimHalZipTask(project)
+    }
+}
+
+project(':native:snobotSimHal') {
+    apply plugin: 'cpp'
+
+    apply from: "${rootDir}/toolchains/native.gradle"
+
+    if (includeJava) {
+        apply from: "${rootDir}/java/java.gradle"
+    }
+
+    snobotSimHalSetupModel(project)
+    snobotSimHalZipTask(project)
+}
+
+task snobotSimHalSourceZip(type: Zip) {
+    description = 'Creates a sources-zip of the snobotSimHal source files'
+    group = 'WPILib'
+    destinationDir = project.buildDir
+    baseName = 'snobotSimHal'
+    classifier = "sources"
+    duplicatesStrategy = 'exclude'
+
+    from('src') {
+        into 'src'
+    }
+
+    from('include') {
+        into 'include'
+    }
+
+    if (includeJava) {
+        from('java/lib') {
+            into 'src'
+        }
+
+        project(':native:snobotSimHal').jniHeadersNetworkTables.outputs.each {
+            from(it) {
+                into 'include'
+            }
+        }
+    }
+}

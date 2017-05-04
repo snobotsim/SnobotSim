@@ -1,0 +1,8 @@
+include 'native:snobotSimHal'
+include 'native:wpiutil'
+include 'gmock'
+
+if (!hasProperty('skipArm')) {
+    include 'arm:snobotSimHal'
+    include 'arm:wpiutil'
+}
