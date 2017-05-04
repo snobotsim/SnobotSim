@@ -8,14 +8,22 @@
 #include "SnobotSim/ModuleWrapper/AnalogSourceWrapper.h"
 
 AnalogSourceWrapper::AnalogSourceWrapper(int aPort) :
-        AModuleWrapper("Analog Source" + std::to_string(aPort))
+        AModuleWrapper("Analog Source" + std::to_string(aPort)), mVoltage(0)
 {
-    // TODO Auto-generated constructor stub
 
 }
 
 AnalogSourceWrapper::~AnalogSourceWrapper()
 {
-    // TODO Auto-generated destructor stub
+
 }
 
+void AnalogSourceWrapper::SetVoltage(double aVoltage)
+{
+    mVoltage = aVoltage;
+}
+
+double AnalogSourceWrapper::GetVoltage()
+{
+    return mVoltage;
+}

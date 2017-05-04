@@ -8,7 +8,7 @@
 #include "SnobotSim/ModuleWrapper/DigitalSourceWrapper.h"
 
 DigitalSourceWrapper::DigitalSourceWrapper(int aPort) :
-        AModuleWrapper("Digital Source" + std::to_string(aPort))
+        AModuleWrapper("Digital Source" + std::to_string(aPort)), mState(false)
 {
 
 }
@@ -18,3 +18,13 @@ DigitalSourceWrapper::~DigitalSourceWrapper()
 
 }
 
+
+bool DigitalSourceWrapper::Get()
+{
+    return mState;
+}
+
+void DigitalSourceWrapper::Set(bool aState)
+{
+    mState = aState;
+}

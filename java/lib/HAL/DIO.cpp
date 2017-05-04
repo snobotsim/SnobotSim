@@ -11,6 +11,7 @@
 
 #include "HAL/handles/HandlesInternal.h"
 #include "HAL/handles/LimitedHandleResource.h"
+#include "SnobotSim/SensorActuatorRegistry.h"
 
 using namespace hal;
 
@@ -22,6 +23,8 @@ extern "C" {
  */
 HAL_DigitalHandle HAL_InitializeDIOPort(HAL_PortHandle portHandle,
                                         HAL_Bool input, int32_t* status) {
+
+    SensorActuatorRegistry::Get().Register(portHandle, std::shared_ptr < DigitalSourceWrapper > (new DigitalSourceWrapper(portHandle)));
 
   return 0;
 }
@@ -97,7 +100,7 @@ void HAL_SetDigitalPWMOutputChannel(HAL_DigitalPWMHandle pwmGenerator,
  */
 void HAL_SetDIO(HAL_DigitalHandle dioPortHandle, HAL_Bool value,
                 int32_t* status) {
-
+    SensorActuatorRegistry::Get().GetDigitalSourceWrapper(dioPortHandle)->Set(value);
 }
 
 /**
@@ -108,7 +111,7 @@ void HAL_SetDIO(HAL_DigitalHandle dioPortHandle, HAL_Bool value,
  * @return The state of the specified channel
  */
 HAL_Bool HAL_GetDIO(HAL_DigitalHandle dioPortHandle, int32_t* status) {
-  return 0;
+    return SensorActuatorRegistry::Get().GetDigitalSourceWrapper(dioPortHandle)->Get();
 }
 
 /**

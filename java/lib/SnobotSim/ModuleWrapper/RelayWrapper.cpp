@@ -8,14 +8,34 @@
 #include "SnobotSim/ModuleWrapper/RelayWrapper.h"
 
 RelayWrapper::RelayWrapper(int aPort) :
-        AModuleWrapper("Relay" + std::to_string(aPort))
+        AModuleWrapper("Relay" + std::to_string(aPort)), mForwards(false), mReverse(
+                false)
 {
-    // TODO Auto-generated constructor stub
 
 }
 
 RelayWrapper::~RelayWrapper()
 {
-    // TODO Auto-generated destructor stub
+
 }
 
+
+void RelayWrapper::SetRelayForwards(bool aOn)
+{
+    mForwards = aOn;
+}
+
+void RelayWrapper::SetRelayReverse(bool aOn)
+{
+    mReverse = aOn;
+}
+
+bool RelayWrapper::GetRelayForwards()
+{
+    return mForwards;
+}
+
+bool RelayWrapper::GetRelayReverse()
+{
+    return mReverse;
+}
