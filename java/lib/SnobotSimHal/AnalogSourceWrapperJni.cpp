@@ -27,6 +27,16 @@ JNIEXPORT jstring JNICALL Java_com_snobot_simulator_module_1wrapper_AnalogSource
 
 /*
  * Class:     com_snobot_simulator_module_wrapper_AnalogSourceWrapperJni
+ * Method:    getWantsHidden
+ * Signature: (I)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_module_1wrapper_AnalogSourceWrapperJni_getWantsHidden(JNIEnv *, jclass, jint portHandle)
+{
+    return SensorActuatorRegistry::Get().GetAnalogSourceWrapper(portHandle)->WantsHidden();
+}
+
+/*
+ * Class:     com_snobot_simulator_module_wrapper_AnalogSourceWrapperJni
  * Method:    getVoltage
  * Signature: ()D
  */

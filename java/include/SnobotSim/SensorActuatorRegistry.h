@@ -15,11 +15,13 @@
 #include "SnobotSim/ModuleWrapper/DigitalSourceWrapper.h"
 #include "SnobotSim/ModuleWrapper/AnalogSourceWrapper.h"
 #include "SnobotSim/ModuleWrapper/SolenoidWrapper.h"
+#include "SnobotSim/ModuleWrapper/EncoderWrapper.h"
 
-#define ACTUATOR_GETTERS(ItemType)                                        \
-    bool Register(int aPort, const std::shared_ptr<ItemType>& aActuator); \
-    std::shared_ptr<ItemType> Get##ItemType(int aPort);                   \
-    const std::map<int, std::shared_ptr<ItemType>>& Get##ItemType##Map();
+#define ACTUATOR_GETTERS(ItemType)                                              \
+    bool Register(int aPort, const std::shared_ptr<ItemType>& aActuator);       \
+    std::shared_ptr<ItemType> Get##ItemType(int aPort, bool aLogError = true);  \
+    const std::map<int, std::shared_ptr<ItemType>>& Get##ItemType##Map() const; \
+    std::map<int, std::shared_ptr<ItemType>>& Get##ItemType##Map();
 
 #define REGISTRATION_LOG(x) std::cout << x << std::endl;
 //#define REGISTRATION_LOG(x)
@@ -43,6 +45,7 @@ public:
     ACTUATOR_GETTERS(DigitalSourceWrapper)
     ACTUATOR_GETTERS(AnalogSourceWrapper)
     ACTUATOR_GETTERS(SolenoidWrapper)
+    ACTUATOR_GETTERS(EncoderWrapper)
 
 protected:
 
@@ -64,13 +67,16 @@ protected:
 
     template<typename ItemType>
     std::shared_ptr<ItemType> GetItem(int aPort,
-            const std::map<int, std::shared_ptr<ItemType>>& aMap, const std::string& aType)
+            const std::map<int, std::shared_ptr<ItemType>>& aMap, const std::string& aType, bool logError)
     {
         typename std::map<int, std::shared_ptr<ItemType>>::const_iterator iter =
                 aMap.find(aPort);
         if (iter == aMap.end())
         {
-            REGISTRATION_LOG("Unregistered " << aType << " on port " << aPort << ".  Map has " << aMap.size() << " elements." << std::endl)
+            if (logError)
+            {
+                REGISTRATION_LOG("Unregistered " << aType << " on port " << aPort << ".  Map has " << aMap.size() << " elements." << std::endl)
+            }
             return std::shared_ptr<ItemType>();
         }
 
@@ -82,8 +88,7 @@ protected:
     std::map<int, std::shared_ptr<DigitalSourceWrapper>> mDigitalSourceWrapperMap;
     std::map<int, std::shared_ptr<AnalogSourceWrapper>> mAnalogSourceWrapperMap;
     std::map<int, std::shared_ptr<SolenoidWrapper>> mSolenoidWrapperMap;
-
-
+    std::map<int, std::shared_ptr<EncoderWrapper>> mEncoderWrapperMap;
 
 };
 

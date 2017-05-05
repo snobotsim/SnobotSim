@@ -11,6 +11,7 @@
 #include "HAL/Ports.h"
 #include "HAL/handles/HandlesInternal.h"
 #include "HAL/handles/IndexedHandleResource.h"
+#include "SnobotSim/SensorActuatorRegistry.h"
 
 using namespace hal;
 
@@ -18,6 +19,16 @@ extern "C" {
 
 HAL_SolenoidHandle HAL_InitializeSolenoidPort(HAL_PortHandle portHandle,
                                               int32_t* status) {
+
+    if (SensorActuatorRegistry::Get().GetSolenoidWrapper(portHandle, false))
+    {
+        *status = RESOURCE_IS_ALLOCATED;
+    }
+    else
+    {
+        SensorActuatorRegistry::Get().Register(portHandle, std::shared_ptr < SolenoidWrapper > (new SolenoidWrapper(portHandle)));
+    }
+
     return portHandle;
 }
 

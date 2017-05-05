@@ -9,6 +9,7 @@
 
 #include <cmath>
 
+#include "HAL/Errors.h"
 #include "HAL/handles/HandlesInternal.h"
 #include "HAL/handles/LimitedHandleResource.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
@@ -24,7 +25,14 @@ extern "C" {
 HAL_DigitalHandle HAL_InitializeDIOPort(HAL_PortHandle portHandle,
                                         HAL_Bool input, int32_t* status) {
 
-    SensorActuatorRegistry::Get().Register(portHandle, std::shared_ptr < DigitalSourceWrapper > (new DigitalSourceWrapper(portHandle)));
+    if (SensorActuatorRegistry::Get().GetDigitalSourceWrapper(portHandle, false))
+    {
+        *status = RESOURCE_IS_ALLOCATED;
+    }
+    else
+    {
+        SensorActuatorRegistry::Get().Register(portHandle, std::shared_ptr < DigitalSourceWrapper > (new DigitalSourceWrapper(portHandle)));
+    }
 
     return portHandle;
 }

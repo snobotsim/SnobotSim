@@ -27,12 +27,39 @@ JNIEXPORT jstring JNICALL Java_com_snobot_simulator_module_1wrapper_SpeedControl
 
 /*
  * Class:     com_snobot_simulator_module_wrapper_SpeedControllerWrapperJni
+ * Method:    getWantsHidden
+ * Signature: (I)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_module_1wrapper_SpeedControllerWrapperJni_getWantsHidden(JNIEnv *, jclass, jint portHandle)
+{
+    return SensorActuatorRegistry::Get().GetSpeedControllerWrapper(portHandle)->WantsHidden();
+}
+
+/*
+ * Class:     com_snobot_simulator_module_wrapper_SpeedControllerWrapperJni
  * Method:    getVoltagePercentage
  * Signature: ()D
  */
 JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_module_1wrapper_SpeedControllerWrapperJni_getVoltagePercentage(JNIEnv *, jclass, jint portHandle)
 {
     return SensorActuatorRegistry::Get().GetSpeedControllerWrapper(portHandle)->GetVoltagePercentage();
+}
+
+/*
+ * Class:     com_snobot_simulator_module_wrapper_SpeedControllerWrapperJni
+ * Method:    updateAllSpeedControllers
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_module_1wrapper_SpeedControllerWrapperJni_updateAllSpeedControllers(JNIEnv *, jclass, jdouble aUpdatePeriod)
+{
+    std::map<int, std::shared_ptr<SpeedControllerWrapper>>& speedControllers = SensorActuatorRegistry::Get().GetSpeedControllerWrapperMap();
+
+    std::map<int, std::shared_ptr<SpeedControllerWrapper>>::iterator iter;
+
+    for (iter = speedControllers.begin(); iter != speedControllers.end(); ++iter)
+    {
+        iter->second->Update(aUpdatePeriod);
+    }
 }
 
 /*

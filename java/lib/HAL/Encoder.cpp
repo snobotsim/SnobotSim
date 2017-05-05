@@ -10,6 +10,8 @@
 #include "HAL/Counter.h"
 #include "HAL/Errors.h"
 #include "HAL/handles/LimitedClassedHandleResource.h"
+#include "SnobotSim/SensorActuatorRegistry.h"
+//#include "SnobotSim/MotorSim/SimpleMotorSimulator.h"
 
 extern "C" {
 HAL_EncoderHandle HAL_InitializeEncoder(
@@ -17,6 +19,29 @@ HAL_EncoderHandle HAL_InitializeEncoder(
     HAL_Handle digitalSourceHandleB, HAL_AnalogTriggerType analogTriggerTypeB,
     HAL_Bool reverseDirection, HAL_EncoderEncodingType encodingType,
     int32_t* status) {
+
+    int32_t handle = (digitalSourceHandleA << 8) + digitalSourceHandleB;
+
+    if (SensorActuatorRegistry::Get().GetEncoderWrapper(handle, false))
+    {
+        *status = RESOURCE_IS_ALLOCATED;
+    }
+    else
+    {
+        SensorActuatorRegistry::Get().Register(handle, std::shared_ptr < EncoderWrapper > (new EncoderWrapper(digitalSourceHandleA, digitalSourceHandleB)));
+
+        SensorActuatorRegistry::Get().GetDigitalSourceWrapper(digitalSourceHandleA)->SetWantsHidden(true);
+        SensorActuatorRegistry::Get().GetDigitalSourceWrapper(digitalSourceHandleB)->SetWantsHidden(true);
+
+//        std::shared_ptr<EncoderWrapper> tempEnc = SensorActuatorRegistry::Get().GetEncoderWrapper(handle);
+//        std::shared_ptr<SpeedControllerWrapper> tempSc = SensorActuatorRegistry::Get().GetSpeedControllerWrapper(1);
+//        std::shared_ptr < SimpleMotorSimulator > motorSim(new SimpleMotorSimulator(12));
+//        tempSc->SetMotorSimulator(motorSim);
+//
+//        tempEnc->SetSpeedController(tempSc);
+    }
+
+
 	return 0;
 }
 

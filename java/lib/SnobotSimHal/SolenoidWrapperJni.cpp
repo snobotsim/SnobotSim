@@ -27,6 +27,16 @@ JNIEXPORT jstring JNICALL Java_com_snobot_simulator_module_1wrapper_SolenoidWrap
 
 /*
  * Class:     com_snobot_simulator_module_wrapper_SolenoidWrapperJni
+ * Method:    getWantsHidden
+ * Signature: (I)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_module_1wrapper_SolenoidWrapperJni_getWantsHidden(JNIEnv *, jclass, jint portHandle)
+{
+    return SensorActuatorRegistry::Get().GetSolenoidWrapper(portHandle)->WantsHidden();
+}
+
+/*
+ * Class:     com_snobot_simulator_module_wrapper_SolenoidWrapperJni
  * Method:    get
  * Signature: (I)Z
  */

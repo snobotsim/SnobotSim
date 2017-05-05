@@ -5,6 +5,8 @@ public class RelayWrapperJni {
     
     public static native String getName(int aPort);
 
+    public static native boolean getWantsHidden(int aPort);
+
     public static native boolean getFowardValue(int aPort);
     
     public static native boolean getReverseValue(int aPort);

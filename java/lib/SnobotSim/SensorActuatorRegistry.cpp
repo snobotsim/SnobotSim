@@ -26,11 +26,15 @@ SensorActuatorRegistry::~SensorActuatorRegistry()
     {                                                                                                           \
         return RegisterItem(aPort, aActuator, m##ItemType##Map, #ItemType);                                     \
     }                                                                                                           \
-    std::shared_ptr<ItemType> SensorActuatorRegistry::Get##ItemType(int aPort)                                  \
+    std::shared_ptr<ItemType> SensorActuatorRegistry::Get##ItemType(int aPort, bool aLogError)                  \
     {                                                                                                           \
-        return GetItem(aPort, m##ItemType##Map, #ItemType);                                                     \
+        return GetItem(aPort, m##ItemType##Map, #ItemType, aLogError);                                          \
     }                                                                                                           \
-    const std::map<int, std::shared_ptr<ItemType>>& SensorActuatorRegistry::Get##ItemType##Map()                \
+    const std::map<int, std::shared_ptr<ItemType>>& SensorActuatorRegistry::Get##ItemType##Map() const          \
+    {                                                                                                           \
+        return m##ItemType##Map;                                                                                \
+    }                                                                                                           \
+    std::map<int, std::shared_ptr<ItemType>>& SensorActuatorRegistry::Get##ItemType##Map()                      \
     {                                                                                                           \
         return m##ItemType##Map;                                                                                \
     }                                                                                                           \
@@ -40,3 +44,4 @@ ACTUATOR_GETTERS(RelayWrapper)
 ACTUATOR_GETTERS(DigitalSourceWrapper)
 ACTUATOR_GETTERS(AnalogSourceWrapper)
 ACTUATOR_GETTERS(SolenoidWrapper)
+ACTUATOR_GETTERS(EncoderWrapper)

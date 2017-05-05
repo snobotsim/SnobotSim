@@ -14,7 +14,7 @@ class AModuleWrapper
 {
 public:
     AModuleWrapper(const std::string& aName) :
-            mName(aName), mVisible(true)
+            mName(aName), mWantsHidden(false)
     {
 
     }
@@ -28,20 +28,20 @@ public:
         return mName;
     }
 
-    bool isVisible()
+    bool WantsHidden()
     {
-        return mVisible;
+        return mWantsHidden;
     }
 
-    void setVisible(bool aVisible)
+    void SetWantsHidden(bool aVisible)
     {
-        mVisible = aVisible;
+        mWantsHidden = aVisible;
     }
 
 protected:
 
     std::string mName;
-    bool mVisible;
+    bool mWantsHidden;
 };
 
 #endif /* SRC_SNOBOTSIM_MODULEWRAPPER_AMODULEWRAPPER_H_ */

@@ -26,6 +26,16 @@ JNIEXPORT jstring JNICALL Java_com_snobot_simulator_module_1wrapper_RelayWrapper
 
 /*
  * Class:     com_snobot_simulator_module_wrapper_RelayWrapperJni
+ * Method:    getWantsHidden
+ * Signature: (I)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_module_1wrapper_RelayWrapperJni_getWantsHidden(JNIEnv *, jclass, jint portHandle)
+{
+    return SensorActuatorRegistry::Get().GetRelayWrapper(portHandle)->WantsHidden();
+}
+
+/*
+ * Class:     com_snobot_simulator_module_wrapper_RelayWrapperJni
  * Method:    getFowardValue
  * Signature: (I)Z
  */

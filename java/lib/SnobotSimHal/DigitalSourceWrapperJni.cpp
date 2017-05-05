@@ -26,6 +26,16 @@ JNIEXPORT jstring JNICALL Java_com_snobot_simulator_module_1wrapper_DigitalSourc
 
 /*
  * Class:     com_snobot_simulator_module_wrapper_DigitalSourceWrapperJni
+ * Method:    getWantsHidden
+ * Signature: (I)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_module_1wrapper_DigitalSourceWrapperJni_getWantsHidden(JNIEnv *, jclass, jint portHandle)
+{
+    return SensorActuatorRegistry::Get().GetDigitalSourceWrapper(portHandle)->WantsHidden();
+}
+
+/*
+ * Class:     com_snobot_simulator_module_wrapper_DigitalSourceWrapperJni
  * Method:    getState
  * Signature: (I)Z
  */
