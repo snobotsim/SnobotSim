@@ -10,6 +10,7 @@
 #include "HAL/Errors.h"
 #include "HAL/handles/HandlesInternal.h"
 #include "HAL/handles/IndexedHandleResource.h"
+#include "SnobotSim/SensorActuatorRegistry.h"
 
 using namespace hal;
 extern "C" {
@@ -19,6 +20,16 @@ extern "C" {
  */
 HAL_AnalogOutputHandle HAL_InitializeAnalogOutputPort(HAL_PortHandle portHandle,
                                                       int32_t* status) {
+
+    if (SensorActuatorRegistry::Get().GetAnalogSourceWrapper(portHandle, false))
+    {
+        *status = RESOURCE_IS_ALLOCATED;
+    }
+    else
+    {
+        SensorActuatorRegistry::Get().Register(portHandle, std::shared_ptr < AnalogSourceWrapper > (new AnalogSourceWrapper(portHandle)));
+    }
+
     return portHandle;
 }
 

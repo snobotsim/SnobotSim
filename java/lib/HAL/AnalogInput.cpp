@@ -13,6 +13,8 @@
 #include "HAL/HAL.h"
 #include "HAL/cpp/priority_mutex.h"
 #include "HAL/handles/HandlesInternal.h"
+#include "PortsInternal.h"
+#include "SnobotSim/SensorActuatorRegistry.h"
 
 using namespace hal;
 
@@ -24,6 +26,16 @@ extern "C" {
  */
 HAL_AnalogInputHandle HAL_InitializeAnalogInputPort(HAL_PortHandle portHandle,
                                                     int32_t* status) {
+
+    if (SensorActuatorRegistry::Get().GetAnalogSourceWrapper(portHandle, false))
+    {
+        *status = RESOURCE_IS_ALLOCATED;
+    }
+    else
+    {
+        SensorActuatorRegistry::Get().Register(portHandle, std::shared_ptr < AnalogSourceWrapper > (new AnalogSourceWrapper(portHandle)));
+    }
+
     return portHandle;
 }
 
@@ -51,7 +63,7 @@ HAL_Bool HAL_CheckAnalogModule(int32_t module) { return module == 1; }
  * @return Analog channel is valid
  */
 HAL_Bool HAL_CheckAnalogInputChannel(int32_t channel) {
-  return 0;
+    return channel < kNumAnalogInputs && channel >= 0;
 }
 
 /**

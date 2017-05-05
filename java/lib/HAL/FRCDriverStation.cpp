@@ -14,6 +14,7 @@
 #include "HAL/DriverStation.h"
 #include "HAL/cpp/priority_condition_variable.h"
 #include "HAL/cpp/priority_mutex.h"
+#include "SnobotSim/RobotStateSingleton.h"
 
 static_assert(sizeof(int32_t) >= sizeof(int),
               "FRC_NetworkComm status variable is larger than 32 bits");
@@ -40,7 +41,15 @@ int32_t HAL_SendError(HAL_Bool isError, int32_t errorCode, HAL_Bool isLVCode,
 }
 
 int32_t HAL_GetControlWord(HAL_ControlWord* controlWord) {
-	return 0;
+
+    controlWord->enabled = !RobotStateSingleton::Get().GetDisabled();
+    controlWord->autonomous = RobotStateSingleton::Get().GetAutonomous();
+    controlWord->test = RobotStateSingleton::Get().GetTest();
+    controlWord->eStop = false;
+    controlWord->fmsAttached = false;
+    controlWord->dsAttached = true;
+
+    return 0;
 }
 
 HAL_AllianceStationID HAL_GetAllianceStation(int32_t* status) {

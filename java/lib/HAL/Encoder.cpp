@@ -11,7 +11,6 @@
 #include "HAL/Errors.h"
 #include "HAL/handles/LimitedClassedHandleResource.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
-//#include "SnobotSim/MotorSim/SimpleMotorSimulator.h"
 
 extern "C" {
 HAL_EncoderHandle HAL_InitializeEncoder(
@@ -32,17 +31,10 @@ HAL_EncoderHandle HAL_InitializeEncoder(
 
         SensorActuatorRegistry::Get().GetDigitalSourceWrapper(digitalSourceHandleA)->SetWantsHidden(true);
         SensorActuatorRegistry::Get().GetDigitalSourceWrapper(digitalSourceHandleB)->SetWantsHidden(true);
-
-//        std::shared_ptr<EncoderWrapper> tempEnc = SensorActuatorRegistry::Get().GetEncoderWrapper(handle);
-//        std::shared_ptr<SpeedControllerWrapper> tempSc = SensorActuatorRegistry::Get().GetSpeedControllerWrapper(1);
-//        std::shared_ptr < SimpleMotorSimulator > motorSim(new SimpleMotorSimulator(12));
-//        tempSc->SetMotorSimulator(motorSim);
-//
-//        tempEnc->SetSpeedController(tempSc);
     }
 
 
-	return 0;
+	return handle;
 }
 
 void HAL_FreeEncoder(HAL_EncoderHandle encoderHandle, int32_t* status) {
@@ -54,7 +46,7 @@ int32_t HAL_GetEncoder(HAL_EncoderHandle encoderHandle, int32_t* status) {
 }
 
 int32_t HAL_GetEncoderRaw(HAL_EncoderHandle encoderHandle, int32_t* status) {
-	return 0;
+    return SensorActuatorRegistry::Get().GetEncoderWrapper(encoderHandle)->GetRaw();
 }
 
 int32_t HAL_GetEncoderEncodingScale(HAL_EncoderHandle encoderHandle,
@@ -86,7 +78,7 @@ HAL_Bool HAL_GetEncoderDirection(HAL_EncoderHandle encoderHandle,
 
 double HAL_GetEncoderDistance(HAL_EncoderHandle encoderHandle,
                               int32_t* status) {
-	return 0;
+    return SensorActuatorRegistry::Get().GetEncoderWrapper(encoderHandle)->GetDistance();
 }
 
 double HAL_GetEncoderRate(HAL_EncoderHandle encoderHandle, int32_t* status) {
