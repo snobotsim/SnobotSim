@@ -21,13 +21,13 @@ using namespace frc;
 using namespace wpi::java;
 
 // set the logging level
-static TLogLevel netCommLogLevel = logDEBUG4;
+static TLogLevel netCommLogLevel = logWARNING;
 
 #define NETCOMM_LOG(level)     \
   if (level > netCommLogLevel) \
     ;                          \
   else                         \
-  Log().Get(level) << __FILE__ << " [" << __LINE__ << "]: "
+  Log().Get(level)
 
 extern "C" {
 
@@ -124,7 +124,7 @@ Java_edu_wpi_first_wpilibj_hal_HAL_nativeGetControlWord(JNIEnv*, jclass) {
   std::memset(&controlWord, 0, sizeof(HAL_ControlWord));
   HAL_GetControlWord(&controlWord);
   
-  int32_t output = 0;
+  jint output = 0;
   std::memcpy(&output, &controlWord, sizeof(output));
   return output;
 }
@@ -137,10 +137,12 @@ Java_edu_wpi_first_wpilibj_hal_HAL_nativeGetControlWord(JNIEnv*, jclass) {
 JNIEXPORT jint JNICALL
 Java_edu_wpi_first_wpilibj_hal_HAL_nativeGetAllianceStation(JNIEnv*, jclass) {
   NETCOMM_LOG(logDEBUG) << "Calling HAL Alliance Station";
-//   int32_t status = 0;
-//   auto allianceStation = HAL_GetAllianceStation(&status);
-//   return *reinterpret_cast<jint*>(&allianceStation);
-return 0;
+  int32_t status = 0;
+  auto allianceStation = HAL_GetAllianceStation(&status);
+  
+  int32_t output = 0;
+  std::memcpy(&output, &allianceStation, sizeof(output));
+  return output;
 }
 
 /*
@@ -155,15 +157,15 @@ Java_edu_wpi_first_wpilibj_hal_HAL_getJoystickAxes(JNIEnv* env, jclass,
   NETCOMM_LOG(logDEBUG) << "Calling HALJoystickAxes";
   HAL_JoystickAxes axes;
   HAL_GetJoystickAxes(joystickNum, &axes);
-  
+
   jsize javaSize = env->GetArrayLength(axesArray);
   if (axes.count > javaSize)
   {
     ThrowIllegalArgumentException(env, "Native array size larger then passed in java array size");
   }
-  
+
   env->SetFloatArrayRegion(axesArray, 0, axes.count, axes.axes);
-  
+
   return axes.count;
 }
 
