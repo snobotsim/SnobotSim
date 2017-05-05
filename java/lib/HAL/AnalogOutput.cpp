@@ -19,7 +19,7 @@ extern "C" {
  */
 HAL_AnalogOutputHandle HAL_InitializeAnalogOutputPort(HAL_PortHandle portHandle,
                                                       int32_t* status) {
-  return 0;
+    return portHandle;
 }
 
 void HAL_FreeAnalogOutputPort(HAL_AnalogOutputHandle analogOutputHandle) {

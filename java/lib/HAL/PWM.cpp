@@ -27,7 +27,7 @@ HAL_DigitalHandle HAL_InitializePWMPort(HAL_PortHandle portHandle,
             std::shared_ptr < SpeedControllerWrapper
                     > (new SpeedControllerWrapper(portHandle)));
 
-  return 0;
+    return portHandle;
 }
 void HAL_FreePWMPort(HAL_DigitalHandle pwmPortHandle, int32_t* status) {
 

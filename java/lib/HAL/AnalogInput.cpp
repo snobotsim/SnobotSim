@@ -24,7 +24,7 @@ extern "C" {
  */
 HAL_AnalogInputHandle HAL_InitializeAnalogInputPort(HAL_PortHandle portHandle,
                                                     int32_t* status) {
-  return 0;
+    return portHandle;
 }
 
 /**

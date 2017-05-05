@@ -18,7 +18,7 @@ extern "C" {
 
 HAL_SolenoidHandle HAL_InitializeSolenoidPort(HAL_PortHandle portHandle,
                                               int32_t* status) {
-  return 0;
+    return portHandle;
 }
 
 void HAL_FreeSolenoidPort(HAL_SolenoidHandle solenoidPortHandle) {

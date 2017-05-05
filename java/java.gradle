@@ -105,7 +105,7 @@ task jniHeadersNetworkTables {
             //args 'edu.wpi.first.wpilibj.hal.NotifierJNI'
             args 'edu.wpi.first.wpilibj.hal.PortsJNI'
             args 'edu.wpi.first.wpilibj.hal.PWMJNI'
-            //args 'edu.wpi.first.wpilibj.hal.RelayJNI'
+            args 'edu.wpi.first.wpilibj.hal.RelayJNI'
             //args 'edu.wpi.first.wpilibj.hal.SPIJNI'
             args 'edu.wpi.first.wpilibj.hal.SolenoidJNI'
             //args 'edu.wpi.first.wpilibj.hal.CompressorJNI'

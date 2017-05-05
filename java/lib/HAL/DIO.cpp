@@ -26,7 +26,7 @@ HAL_DigitalHandle HAL_InitializeDIOPort(HAL_PortHandle portHandle,
 
     SensorActuatorRegistry::Get().Register(portHandle, std::shared_ptr < DigitalSourceWrapper > (new DigitalSourceWrapper(portHandle)));
 
-  return 0;
+    return portHandle;
 }
 
 HAL_Bool HAL_CheckDIOChannel(int32_t channel) {

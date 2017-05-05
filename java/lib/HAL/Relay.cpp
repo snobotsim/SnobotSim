@@ -19,16 +19,10 @@ static priority_recursive_mutex digitalRelayMutex;
 extern "C" {
 HAL_RelayHandle HAL_InitializeRelayPort(HAL_PortHandle portHandle, HAL_Bool fwd,
                                         int32_t* status) {
-
-  int16_t channel = getPortHandleChannel(portHandle);
-  if (channel == InvalidHandleIndex) {
-    *status = PARAMETER_OUT_OF_RANGE;
-    return HAL_kInvalidHandle;
-  }
-
+  
     SensorActuatorRegistry::Get().Register(portHandle, std::shared_ptr < RelayWrapper > (new RelayWrapper(portHandle)));
 
-    return 0;
+    return fwd ? portHandle : portHandle + kNumRelayHeaders;
 }
 
 void HAL_FreeRelayPort(HAL_RelayHandle relayPortHandle) {
@@ -49,13 +43,13 @@ HAL_Bool HAL_CheckRelayChannel(int32_t channel) {
 void HAL_SetRelay(HAL_RelayHandle relayPortHandle, HAL_Bool on,
                   int32_t* status) {
 
-    if (relayPortHandle > kNumRelayHeaders)
+    if (relayPortHandle < kNumRelayHeaders)
     {
         SensorActuatorRegistry::Get().GetRelayWrapper(relayPortHandle)->SetRelayForwards(on);
     }
     else
     {
-        SensorActuatorRegistry::Get().GetRelayWrapper(relayPortHandle)->SetRelayReverse(on);
+        SensorActuatorRegistry::Get().GetRelayWrapper(relayPortHandle - kNumRelayHeaders)->SetRelayReverse(on);
     }
 }
 

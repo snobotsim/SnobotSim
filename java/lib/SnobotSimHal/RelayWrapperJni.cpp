@@ -26,6 +26,26 @@ JNIEXPORT jstring JNICALL Java_com_snobot_simulator_module_1wrapper_RelayWrapper
 
 /*
  * Class:     com_snobot_simulator_module_wrapper_RelayWrapperJni
+ * Method:    getFowardValue
+ * Signature: (I)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_module_1wrapper_RelayWrapperJni_getFowardValue(JNIEnv *, jclass, jint portHandle)
+{
+    return SensorActuatorRegistry::Get().GetRelayWrapper(portHandle)->GetRelayForwards();
+}
+
+/*
+ * Class:     com_snobot_simulator_module_wrapper_RelayWrapperJni
+ * Method:    getReverseValue
+ * Signature: (I)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_module_1wrapper_RelayWrapperJni_getReverseValue(JNIEnv *, jclass, jint portHandle)
+{
+    return SensorActuatorRegistry::Get().GetRelayWrapper(portHandle)->GetRelayReverse();
+}
+
+/*
+ * Class:     com_snobot_simulator_module_wrapper_RelayWrapperJni
  * Method:    getPortList
  * Signature: ()[I
  */
