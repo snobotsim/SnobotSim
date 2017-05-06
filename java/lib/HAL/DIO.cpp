@@ -9,13 +9,17 @@
 
 #include <cmath>
 
-#include "HAL/Errors.h"
+#include "DigitalInternal.h"
 #include "HAL/handles/HandlesInternal.h"
 #include "HAL/handles/LimitedHandleResource.h"
+#include "PortsInternal.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 
 using namespace hal;
 
+constexpr int32_t kMXPDigitalPWMOffset = 6;
+
+constexpr int32_t kExpectedLoopTiming = 40;
 
 extern "C" {
 
@@ -38,7 +42,7 @@ HAL_DigitalHandle HAL_InitializeDIOPort(HAL_PortHandle portHandle,
 }
 
 HAL_Bool HAL_CheckDIOChannel(int32_t channel) {
-  return true;
+  return channel < kNumDigitalChannels && channel >= 0;
 }
 
 void HAL_FreeDIOPort(HAL_DigitalHandle dioPortHandle) {

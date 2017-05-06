@@ -9,6 +9,8 @@
 
 #include <cmath>
 
+#include "ConstantsInternal.h"
+#include "DigitalInternal.h"
 #include "HAL/handles/HandlesInternal.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 
@@ -34,7 +36,7 @@ void HAL_FreePWMPort(HAL_DigitalHandle pwmPortHandle, int32_t* status) {
 }
 
 HAL_Bool HAL_CheckPWMChannel(int32_t channel) {
-  return true;
+  return channel < kNumPWMChannels && channel >= 0;
 }
 
 void HAL_SetPWMConfig(HAL_DigitalHandle pwmPortHandle, double max,

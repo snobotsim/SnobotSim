@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <limits>
+#include <iostream>
 
 #include "HAL/DriverStation.h"
 #include "HAL/cpp/priority_condition_variable.h"
@@ -31,13 +32,65 @@ static priority_mutex newDSDataAvailableMutex;
 extern "C" {
 int32_t HAL_SetErrorData(const char* errors, int32_t errorsLength,
                          int32_t waitMs) {
-	return 0;
+ std::cout << "Set Error Data..." << errors << std::endl;
+ return 0;
 }
 
 int32_t HAL_SendError(HAL_Bool isError, int32_t errorCode, HAL_Bool isLVCode,
                       const char* details, const char* location,
                       const char* callStack, HAL_Bool printMsg) {
-	return 0;
+  // Avoid flooding console by keeping track of previous 5 error
+  // messages and only printing again if they're longer than 1 second old.
+  static constexpr int KEEP_MSGS = 5;
+  std::lock_guard<priority_mutex> lock(msgMutex);
+  static std::string prevMsg[KEEP_MSGS];
+  static std::chrono::time_point<std::chrono::steady_clock>
+      prevMsgTime[KEEP_MSGS];
+  static bool initialized = false;
+  if (!initialized) {
+    for (int i = 0; i < KEEP_MSGS; i++) {
+      prevMsgTime[i] =
+          std::chrono::steady_clock::now() - std::chrono::seconds(2);
+    }
+    initialized = true;
+  }
+
+  auto curTime = std::chrono::steady_clock::now();
+  int i;
+  for (i = 0; i < KEEP_MSGS; ++i) {
+    if (prevMsg[i] == details) break;
+  }
+  int retval = 0;
+  if (i == KEEP_MSGS || (curTime - prevMsgTime[i]) >= std::chrono::seconds(1)) {
+  	retval = 0;
+  	std::cout << "Sending error: " << isError << ", " << details << std::endl;
+//     retval = FRC_NetworkCommunication_sendError(isError, errorCode, isLVCode,
+//                                                 details, location, callStack);
+    if (printMsg) {
+      if (location && location[0] != '\0') {
+        std::fprintf(stderr, "%s at %s: ", isError ? "Error" : "Warning",
+                     location);
+      }
+      std::fprintf(stderr, "%s\n", details);
+      if (callStack && callStack[0] != '\0') {
+        std::fprintf(stderr, "%s\n", callStack);
+      }
+    }
+    if (i == KEEP_MSGS) {
+      // replace the oldest one
+      i = 0;
+      auto first = prevMsgTime[0];
+      for (int j = 1; j < KEEP_MSGS; ++j) {
+        if (prevMsgTime[j] < first) {
+          first = prevMsgTime[j];
+          i = j;
+        }
+      }
+      prevMsg[i] = details;
+    }
+    prevMsgTime[i] = curTime;
+  }
+  return retval;
 }
 
 int32_t HAL_GetControlWord(HAL_ControlWord* controlWord) {
@@ -127,7 +180,12 @@ char* HAL_GetJoystickName(int32_t joystickNum) {
 }
 
 int32_t HAL_GetJoystickAxisType(int32_t joystickNum, int32_t axis) {
-	return 0;
+  HAL_JoystickDescriptor joystickDesc;
+  if (HAL_GetJoystickDescriptor(joystickNum, &joystickDesc) < 0) {
+    return -1;
+  } else {
+    return joystickDesc.axisTypes[axis];
+  }
 }
 
 int32_t HAL_SetJoystickOutputs(int32_t joystickNum, int64_t outputs,

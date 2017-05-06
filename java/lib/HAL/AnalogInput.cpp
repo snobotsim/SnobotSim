@@ -63,7 +63,7 @@ HAL_Bool HAL_CheckAnalogModule(int32_t module) { return module == 1; }
  * @return Analog channel is valid
  */
 HAL_Bool HAL_CheckAnalogInputChannel(int32_t channel) {
-    return channel < kNumAnalogInputs && channel >= 0;
+  return channel < kNumAnalogInputs && channel >= 0;
 }
 
 /**

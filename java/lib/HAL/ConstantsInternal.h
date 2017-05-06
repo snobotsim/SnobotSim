@@ -5,14 +5,10 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "HAL/Constants.h"
+#pragma once
 
-#include "ConstantsInternal.h"
+#include <stdint.h>
 
-using namespace hal;
-
-extern "C" {
-int32_t HAL_GetSystemClockTicksPerMicrosecond(void) {
-  return kSystemClockTicksPerMicrosecond;
-}
+namespace hal {
+constexpr int32_t kSystemClockTicksPerMicrosecond = 40;
 }

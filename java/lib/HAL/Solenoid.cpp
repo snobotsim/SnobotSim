@@ -11,6 +11,8 @@
 #include "HAL/Ports.h"
 #include "HAL/handles/HandlesInternal.h"
 #include "HAL/handles/IndexedHandleResource.h"
+#include "PortsInternal.h"
+
 #include "SnobotSim/SensorActuatorRegistry.h"
 
 using namespace hal;
@@ -37,11 +39,11 @@ void HAL_FreeSolenoidPort(HAL_SolenoidHandle solenoidPortHandle) {
 }
 
 HAL_Bool HAL_CheckSolenoidModule(int32_t module) {
-  return true;
+  return module < kNumPCMModules && module >= 0;
 }
 
 HAL_Bool HAL_CheckSolenoidChannel(int32_t channel) {
-  return true;
+  return channel < kNumSolenoidChannels && channel >= 0;
 }
 
 HAL_Bool HAL_GetSolenoid(HAL_SolenoidHandle solenoidPortHandle,
