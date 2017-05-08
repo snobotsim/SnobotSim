@@ -71,8 +71,8 @@ Java_edu_wpi_first_wpilibj_can_CANJNI_FRCNetCommCANSessionMuxReceiveMessage(
     JNIEnv *env, jclass, jobject messageID, jint messageIDMask,
     jobject timeStamp) {
 
-	return 0;
-	
+    return 0;
+
 }
 
 }  // extern "C"

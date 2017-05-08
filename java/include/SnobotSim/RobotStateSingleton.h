@@ -22,6 +22,8 @@ public:
         return sINSTANCE;
     }
 
+    void UpdateLoop();
+
     double GetMatchTime();
 
     void SetDisabled(bool aDisabled);

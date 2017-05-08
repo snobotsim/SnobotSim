@@ -6,7 +6,7 @@
  */
 
 #include "SnobotSim/RobotStateSingleton.h"
-#include <iostream>
+#include "SnobotSim/SensorActuatorRegistry.h"
 
 RobotStateSingleton RobotStateSingleton::sINSTANCE = RobotStateSingleton();
 
@@ -21,7 +21,16 @@ RobotStateSingleton::~RobotStateSingleton()
 
 }
 
+void RobotStateSingleton::UpdateLoop()
+{
+    std::vector<std::shared_ptr<ISimulatorUpdater>>& comps =
+            SensorActuatorRegistry::Get().GetSimulatorComponents();
 
+    for(unsigned int i = 0; i < comps.size(); ++i)
+    {
+        comps[i]->Update();
+    }
+}
 
 double RobotStateSingleton::GetMatchTime()
 {

@@ -39,7 +39,7 @@ void HAL_CleanNotifier(HAL_NotifierHandle notifierHandle, int32_t* status) {
 }
 
 void* HAL_GetNotifierParam(HAL_NotifierHandle notifierHandle, int32_t* status) {
-	return NULL;
+    return NULL;
 }
 
 void HAL_UpdateNotifierAlarm(HAL_NotifierHandle notifierHandle,

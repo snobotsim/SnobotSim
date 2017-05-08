@@ -8,7 +8,10 @@
 #include "SnobotSim/MotorSim/SimpleMotorSimulator.h"
 
 SimpleMotorSimulator::SimpleMotorSimulator(double aMaxSpeed) :
-        mMaxSpeed(aMaxSpeed)
+        mMaxSpeed(aMaxSpeed),
+        mVoltagePercent(0),
+        mVelocity(0),
+        mPosition(0)
 {
 
 }

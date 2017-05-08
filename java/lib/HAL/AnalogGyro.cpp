@@ -13,11 +13,18 @@
 #include "HAL/AnalogAccumulator.h"
 #include "HAL/AnalogInput.h"
 #include "HAL/handles/IndexedHandleResource.h"
-
+#include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/SimulatorComponents/Gyro/AnalogGyroWrapper.h"
 
 extern "C" {
 HAL_GyroHandle HAL_InitializeAnalogGyro(HAL_AnalogInputHandle analogHandle,
                                         int32_t* status) {
+
+    std::shared_ptr<AnalogSourceWrapper> analogWrapper = SensorActuatorRegistry::Get().GetAnalogSourceWrapper(analogHandle);
+    analogWrapper->SetWantsHidden(true);
+    
+    std::shared_ptr<AnalogGyroWrapper> gyroWrapper(new AnalogGyroWrapper(analogWrapper));
+    SensorActuatorRegistry::Get().Register(analogHandle, gyroWrapper);
 
     return analogHandle;
 }
@@ -56,7 +63,7 @@ void HAL_SetAnalogGyroDeadband(HAL_GyroHandle handle, double volts,
 }
 
 double HAL_GetAnalogGyroAngle(HAL_GyroHandle handle, int32_t* status) {
-    return 0;
+    return SensorActuatorRegistry::Get().GetGyroWrapper(handle)->GetAngle();
 }
 
 double HAL_GetAnalogGyroRate(HAL_GyroHandle handle, int32_t* status) {

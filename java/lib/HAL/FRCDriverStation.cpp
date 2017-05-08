@@ -62,18 +62,17 @@ int32_t HAL_SendError(HAL_Bool isError, int32_t errorCode, HAL_Bool isLVCode,
   }
   int retval = 0;
   if (i == KEEP_MSGS || (curTime - prevMsgTime[i]) >= std::chrono::seconds(1)) {
-  	retval = 0;
-  	std::cout << "Sending error: " << isError << ", " << details << std::endl;
-//     retval = FRC_NetworkCommunication_sendError(isError, errorCode, isLVCode,
-//                                                 details, location, callStack);
+      retval = 0;
+      std::cout << "Sending error: " << isError << ", " << details << std::endl;
+
     if (printMsg) {
       if (location && location[0] != '\0') {
-        std::fprintf(stderr, "%s at %s: ", isError ? "Error" : "Warning",
-                     location);
+          std::cerr << "HAL!!!: " << (isError ? "Error" : "Warning") << " at " << location << std::endl;
       }
-      std::fprintf(stderr, "%s\n", details);
+      std::cerr << details << std::endl;
+
       if (callStack && callStack[0] != '\0') {
-        std::fprintf(stderr, "%s\n", callStack);
+          std::cerr << callStack << std::endl;
       }
     }
     if (i == KEEP_MSGS) {
@@ -118,7 +117,7 @@ int32_t HAL_GetJoystickAxes(int32_t joystickNum, HAL_JoystickAxes* axes) {
       axes->axes[i] = i * i;
   }
   
-	return 0;
+    return 0;
 }
 
 int32_t HAL_GetJoystickPOVs(int32_t joystickNum, HAL_JoystickPOVs* povs) {
@@ -130,7 +129,7 @@ int32_t HAL_GetJoystickPOVs(int32_t joystickNum, HAL_JoystickPOVs* povs) {
       povs->povs[i] = i * i;
   }
   
-	return 0;
+    return 0;
 }
 
 int32_t HAL_GetJoystickButtons(int32_t joystickNum,
@@ -138,7 +137,7 @@ int32_t HAL_GetJoystickButtons(int32_t joystickNum,
     buttons->buttons = 0xF;
     buttons->count = 4;
     
-	return 0;
+    return 0;
 }
 /**
  * Retrieve the Joystick Descriptor for particular slot
@@ -153,15 +152,15 @@ int32_t HAL_GetJoystickButtons(int32_t joystickNum,
  */
 int32_t HAL_GetJoystickDescriptor(int32_t joystickNum,
                                   HAL_JoystickDescriptor* desc) {
-	return 0;
+    return 0;
 }
 
 HAL_Bool HAL_GetJoystickIsXbox(int32_t joystickNum) {
-	return 0;
+    return 0;
 }
 
 int32_t HAL_GetJoystickType(int32_t joystickNum) {
-	return 0;
+    return 0;
 }
 
 char* HAL_GetJoystickName(int32_t joystickNum) {
@@ -190,11 +189,11 @@ int32_t HAL_GetJoystickAxisType(int32_t joystickNum, int32_t axis) {
 
 int32_t HAL_SetJoystickOutputs(int32_t joystickNum, int64_t outputs,
                                int32_t leftRumble, int32_t rightRumble) {
-	return 0;
+    return 0;
 }
 
 double HAL_GetMatchTime(int32_t* status) {
-	return 0;
+    return 0;
 }
 
 void HAL_ObserveUserProgramStarting(void) {

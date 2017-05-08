@@ -9,6 +9,7 @@
 
 #include <atomic>
 #include <cstdio>
+#include <cstring>
 
 #include "HAL/DIO.h"
 #include "HAL/HAL.h"
@@ -16,6 +17,9 @@
 #include "HAL/cpp/make_unique.h"
 #include "HAL/cpp/priority_mutex.h"
 #include "HAL/handles/HandlesInternal.h"
+
+#include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/SimulatorComponents/Gyro/SpiGyro.h"
 
 using namespace hal;
 
@@ -29,6 +33,11 @@ extern "C" {
  */
 void HAL_InitializeSPI(int32_t port, int32_t* status) {
 
+    std::shared_ptr<SpiGyro> spiGyro(new SpiGyro);
+    std::shared_ptr<ISpiWrapper> wrapper(spiGyro);
+
+    SensorActuatorRegistry::Get().SetSpiWrapper(wrapper);
+    SensorActuatorRegistry::Get().Register(100, spiGyro);
 }
 
 /**
@@ -76,7 +85,11 @@ int32_t HAL_WriteSPI(int32_t port, uint8_t* dataToSend, int32_t sendSize) {
  * @return Number of bytes read. -1 for error.
  */
 int32_t HAL_ReadSPI(int32_t port, uint8_t* buffer, int32_t count) {
-    return 0;
+    uint32_t numToPut = 0x00400AE0;
+
+    std::memcpy(&buffer[0], &numToPut, sizeof(numToPut));
+
+    return 0xe;
 }
 
 /**
@@ -225,7 +238,7 @@ int32_t HAL_GetSPIAccumulatorLastValue(int32_t port, int32_t* status) {
  * @return The 64-bit value accumulated since the last Reset().
  */
 int64_t HAL_GetSPIAccumulatorValue(int32_t port, int32_t* status) {
-    return 0;
+    return SensorActuatorRegistry::Get().GetSpiWrapper()->GetAccumulatorValue();
 }
 
 /**

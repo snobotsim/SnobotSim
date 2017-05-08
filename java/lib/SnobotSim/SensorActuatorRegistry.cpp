@@ -21,6 +21,28 @@ SensorActuatorRegistry::~SensorActuatorRegistry()
 }
 
 
+std::shared_ptr<ISpiWrapper> SensorActuatorRegistry::GetSpiWrapper()
+{
+    return mSpiWrapper;
+}
+
+void SensorActuatorRegistry::SetSpiWrapper(const std::shared_ptr<ISpiWrapper>& aSpiWrapper)
+{
+    mSpiWrapper = aSpiWrapper;
+}
+
+void SensorActuatorRegistry::AddSimulatorComponent(const std::shared_ptr<ISimulatorUpdater>& aSimulatorComponent)
+{
+    mSimulatorComponents.push_back(aSimulatorComponent);
+}
+
+
+std::vector<std::shared_ptr<ISimulatorUpdater>>& SensorActuatorRegistry::GetSimulatorComponents()
+{
+    return mSimulatorComponents;
+}
+
+
 #define ACTUATOR_GETTERS(ItemType)                                                                              \
     bool SensorActuatorRegistry::Register(int aPort,  const std::shared_ptr<ItemType>& aActuator)               \
     {                                                                                                           \
@@ -45,3 +67,5 @@ ACTUATOR_GETTERS(DigitalSourceWrapper)
 ACTUATOR_GETTERS(AnalogSourceWrapper)
 ACTUATOR_GETTERS(SolenoidWrapper)
 ACTUATOR_GETTERS(EncoderWrapper)
+ACTUATOR_GETTERS(AccelerometerWrapper)
+ACTUATOR_GETTERS(GyroWrapper)

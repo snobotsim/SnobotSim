@@ -34,7 +34,7 @@ HAL_EncoderHandle HAL_InitializeEncoder(
     }
 
 
-	return handle;
+    return handle;
 }
 
 void HAL_FreeEncoder(HAL_EncoderHandle encoderHandle, int32_t* status) {
@@ -42,7 +42,7 @@ void HAL_FreeEncoder(HAL_EncoderHandle encoderHandle, int32_t* status) {
 }
 
 int32_t HAL_GetEncoder(HAL_EncoderHandle encoderHandle, int32_t* status) {
-	return 0;
+    return 0;
 }
 
 int32_t HAL_GetEncoderRaw(HAL_EncoderHandle encoderHandle, int32_t* status) {
@@ -51,7 +51,7 @@ int32_t HAL_GetEncoderRaw(HAL_EncoderHandle encoderHandle, int32_t* status) {
 
 int32_t HAL_GetEncoderEncodingScale(HAL_EncoderHandle encoderHandle,
                                     int32_t* status) {
-	return 0;
+    return 0;
 }
 
 void HAL_ResetEncoder(HAL_EncoderHandle encoderHandle, int32_t* status) {
@@ -59,7 +59,7 @@ void HAL_ResetEncoder(HAL_EncoderHandle encoderHandle, int32_t* status) {
 }
 
 double HAL_GetEncoderPeriod(HAL_EncoderHandle encoderHandle, int32_t* status) {
-	return 0;
+    return 0;
 }
 
 void HAL_SetEncoderMaxPeriod(HAL_EncoderHandle encoderHandle, double maxPeriod,
@@ -68,12 +68,12 @@ void HAL_SetEncoderMaxPeriod(HAL_EncoderHandle encoderHandle, double maxPeriod,
 
 HAL_Bool HAL_GetEncoderStopped(HAL_EncoderHandle encoderHandle,
                                int32_t* status) {
-	return 0;
+    return 0;
 }
 
 HAL_Bool HAL_GetEncoderDirection(HAL_EncoderHandle encoderHandle,
                                  int32_t* status) {
-	return 0;
+    return 0;
 }
 
 double HAL_GetEncoderDistance(HAL_EncoderHandle encoderHandle,
@@ -82,7 +82,7 @@ double HAL_GetEncoderDistance(HAL_EncoderHandle encoderHandle,
 }
 
 double HAL_GetEncoderRate(HAL_EncoderHandle encoderHandle, int32_t* status) {
-	return 0;
+    return 0;
 }
 
 void HAL_SetEncoderMinRate(HAL_EncoderHandle encoderHandle, double minRate,
@@ -108,23 +108,23 @@ void HAL_SetEncoderSamplesToAverage(HAL_EncoderHandle encoderHandle,
 
 int32_t HAL_GetEncoderSamplesToAverage(HAL_EncoderHandle encoderHandle,
                                        int32_t* status) {
-	return 0;
+    return 0;
 }
 
 double HAL_GetEncoderDecodingScaleFactor(HAL_EncoderHandle encoderHandle,
                                          int32_t* status) {
-	return 0;
+    return 0;
 }
 
 double HAL_GetEncoderDistancePerPulse(HAL_EncoderHandle encoderHandle,
                                       int32_t* status) {
-	return 0;
+    return 0;
 }
 
 HAL_EncoderEncodingType HAL_GetEncoderEncodingType(
     HAL_EncoderHandle encoderHandle, int32_t* status) {
 
-	return HAL_Encoder_k4X;
+    return HAL_Encoder_k4X;
 }
 
 void HAL_SetEncoderIndexSource(HAL_EncoderHandle encoderHandle,
@@ -136,6 +136,6 @@ void HAL_SetEncoderIndexSource(HAL_EncoderHandle encoderHandle,
 
 int32_t HAL_GetEncoderFPGAIndex(HAL_EncoderHandle encoderHandle,
                                 int32_t* status) {
-	return 0;
+    return 0;
 }
 }
