@@ -14,6 +14,17 @@ extern "C"
 
 /*
  * Class:     com_snobot_simulator_module_wrapper_SpeedControllerWrapperJni
+ * Method:    setName
+ * Signature: (ILjava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_module_1wrapper_SpeedControllerWrapperJni_setName
+  (JNIEnv * env, jclass, jint aPortHandle, jstring aName)
+{
+  SensorActuatorRegistry::Get().GetSpeedControllerWrapper(aPortHandle)->SetName(env->GetStringUTFChars(aName, NULL));
+}
+
+/*
+ * Class:     com_snobot_simulator_module_wrapper_SpeedControllerWrapperJni
  * Method:    getName
  * Signature: ()Ljava/lang/String;
  */

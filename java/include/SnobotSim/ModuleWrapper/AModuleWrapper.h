@@ -28,6 +28,11 @@ public:
         return mName;
     }
 
+    void SetName(const std::string& aName)
+    {
+        mName = aName;
+    }
+
     bool WantsHidden()
     {
         return mWantsHidden;

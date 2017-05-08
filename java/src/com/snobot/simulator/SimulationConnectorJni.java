@@ -3,11 +3,6 @@ package com.snobot.simulator;
 
 public class SimulationConnectorJni {
     
-    class DcMotorModelConfig
-    {
-        
-    }
-
     public static native void updateLoop();
 
     public static native void setSpeedControllerSimpleModel(
@@ -17,7 +12,7 @@ public class SimulationConnectorJni {
     public static native void setSpeedControllerModel(
             int aSpeedControllerHandle, 
             String aModelType, 
-            DcMotorModelConfig aConfig);
+            DcMotorModelConfigJni aConfig);
 
     public static native int connectEncoderAndSpeedController(
             int aEncoderHandleA, 

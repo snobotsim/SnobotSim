@@ -13,6 +13,17 @@ extern "C"
 {
 
 /*
+ * Class:     Java_com_snobot_simulator_module_1wrapper_AnalogSourceWrapperJni_setName
+ * Method:    setName
+ * Signature: (ILjava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_module_1wrapper_AnalogSourceWrapperJni_setName
+  (JNIEnv * env, jclass, jint aPortHandle, jstring aName)
+{
+    SensorActuatorRegistry::Get().GetAnalogSourceWrapper(aPortHandle)->SetName(env->GetStringUTFChars(aName, NULL));
+}
+
+/*
  * Class:     com_snobot_simulator_module_wrapper_AnalogSourceWrapperJni
  * Method:    getName
  * Signature: (I)Ljava/lang/String;

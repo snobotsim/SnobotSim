@@ -6,6 +6,7 @@
  */
 
 #include "SnobotSim/SimulatorComponents/TankDriveSimulator.h"
+#include <iostream>
 
 
 TankDriveSimulator::TankDriveSimulator(
@@ -20,6 +21,11 @@ TankDriveSimulator::TankDriveSimulator(
     mTurnKp(aTurnKp)
 {
     mIsSetup = mLeftEncoder && mRightEncoder && mGyroWrapper;
+
+    if(!mIsSetup)
+    {
+        std::cerr << "Tank drive simulator is not set up! Will not update gyro!" << std::endl;
+    }
 }
 
 TankDriveSimulator::~TankDriveSimulator() {
