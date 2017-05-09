@@ -200,7 +200,7 @@ void HAL_FreeSPIAccumulator(int32_t port, int32_t* status) {
  * Resets the accumulator to zero.
  */
 void HAL_ResetSPIAccumulator(int32_t port, int32_t* status) {
-
+    return SensorActuatorRegistry::Get().GetSpiWrapper()->ResetAccumulatorValue();
 }
 
 /**

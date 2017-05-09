@@ -46,7 +46,7 @@ void SimulationConnector::ConnectTankDriveSimulator(int aLeftEncoderHandle, int 
     std::shared_ptr<EncoderWrapper> rightEncoder = SensorActuatorRegistry::Get().GetEncoderWrapper(aRightEncoderHandle);
     std::shared_ptr<GyroWrapper> gyro = SensorActuatorRegistry::Get().GetGyroWrapper(aGyroHandle);
 
-    std::shared_ptr<TankDriveSimulator> simulator(new TankDriveSimulator(leftEncoder, rightEncoder, gyro, 1.0));
+    std::shared_ptr<TankDriveSimulator> simulator(new TankDriveSimulator(leftEncoder, rightEncoder, gyro, aTurnKp));
 
     SensorActuatorRegistry::Get().AddSimulatorComponent(simulator);
 }

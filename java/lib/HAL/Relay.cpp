@@ -58,13 +58,13 @@ void HAL_SetRelay(HAL_RelayHandle relayPortHandle, HAL_Bool on,
  */
 HAL_Bool HAL_GetRelay(HAL_RelayHandle relayPortHandle, int32_t* status) {
 
-    if (relayPortHandle > kNumRelayHeaders)
+    if (relayPortHandle < kNumRelayHeaders)
     {
         return SensorActuatorRegistry::Get().GetRelayWrapper(relayPortHandle)->GetRelayForwards();
     }
     else
     {
-        return SensorActuatorRegistry::Get().GetRelayWrapper(relayPortHandle)->GetRelayReverse();
+        return SensorActuatorRegistry::Get().GetRelayWrapper(relayPortHandle - kNumRelayHeaders)->GetRelayReverse();
     }
 }
 }

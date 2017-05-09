@@ -55,7 +55,7 @@ int32_t HAL_GetEncoderEncodingScale(HAL_EncoderHandle encoderHandle,
 }
 
 void HAL_ResetEncoder(HAL_EncoderHandle encoderHandle, int32_t* status) {
-
+    SensorActuatorRegistry::Get().GetEncoderWrapper(encoderHandle)->Reset();
 }
 
 double HAL_GetEncoderPeriod(HAL_EncoderHandle encoderHandle, int32_t* status) {
