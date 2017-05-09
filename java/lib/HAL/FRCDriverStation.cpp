@@ -16,6 +16,7 @@
 #include "HAL/cpp/priority_condition_variable.h"
 #include "HAL/cpp/priority_mutex.h"
 #include "SnobotSim/RobotStateSingleton.h"
+#include "SnobotSim/JoystickManager.h"
 
 static_assert(sizeof(int32_t) >= sizeof(int),
               "FRC_NetworkComm status variable is larger than 32 bits");
@@ -110,33 +111,40 @@ HAL_AllianceStationID HAL_GetAllianceStation(int32_t* status) {
 
 int32_t HAL_GetJoystickAxes(int32_t joystickNum, HAL_JoystickAxes* axes) {
 
-  axes->count = HAL_kMaxJoystickAxes;
-  
-  for(int i = 0; i < HAL_kMaxJoystickAxes; ++i)
-  {
-      axes->axes[i] = i * i;
-  }
+    axes->count = HAL_kMaxJoystickAxes;
+
+    JoystickInformation& info = JoystickManager::Get().GetJoystick(joystickNum);
+
+    for (int i = 0; i < HAL_kMaxJoystickAxes; ++i)
+    {
+        axes->axes[i] = info.mAxes.axes[i];
+    }
   
     return 0;
 }
 
 int32_t HAL_GetJoystickPOVs(int32_t joystickNum, HAL_JoystickPOVs* povs) {
 
-  povs->count = HAL_kMaxJoystickPOVs;
-  
-  for(int i = 0; i < HAL_kMaxJoystickPOVs; ++i)
-  {
-      povs->povs[i] = i * i;
-  }
+    povs->count = HAL_kMaxJoystickPOVs;
+
+    JoystickInformation& info = JoystickManager::Get().GetJoystick(joystickNum);
+
+    for (int i = 0; i < HAL_kMaxJoystickPOVs; ++i)
+    {
+        povs->povs[i] = info.mPovs.povs[i];
+    }
   
     return 0;
 }
 
 int32_t HAL_GetJoystickButtons(int32_t joystickNum,
                                HAL_JoystickButtons* buttons) {
-    buttons->buttons = 0xF;
-    buttons->count = 4;
-    
+
+    JoystickInformation& info = JoystickManager::Get().GetJoystick(joystickNum);
+
+    buttons->count = info.mButtons.count;
+    buttons->buttons = info.mButtons.buttons;
+
     return 0;
 }
 /**
@@ -193,7 +201,7 @@ int32_t HAL_SetJoystickOutputs(int32_t joystickNum, int64_t outputs,
 }
 
 double HAL_GetMatchTime(int32_t* status) {
-    return 0;
+    return RobotStateSingleton::Get().GetMatchTime();
 }
 
 void HAL_ObserveUserProgramStarting(void) {

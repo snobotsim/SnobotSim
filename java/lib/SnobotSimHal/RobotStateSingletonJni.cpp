@@ -37,4 +37,14 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_RobotStateSingletonJni_setTest(
     RobotStateSingleton::Get().SetTest(aBool);
 }
 
+/*
+ * Class:     com_snobot_simulator_RobotStateSingletonJni
+ * Method:    getMatchTime
+ * Signature: ()D
+ */
+JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_RobotStateSingletonJni_getMatchTime(JNIEnv *, jclass)
+{
+    return RobotStateSingleton::Get().GetMatchTime();
+}
+
 }

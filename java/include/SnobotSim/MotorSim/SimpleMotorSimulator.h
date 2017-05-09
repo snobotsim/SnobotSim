@@ -8,7 +8,7 @@
 #ifndef INCLUDE_SIMPLEMOTORSIMULATOR_H_
 #define INCLUDE_SIMPLEMOTORSIMULATOR_H_
 
-#include "SnobotSim/MotorSim/IMotorSimulator.hpp"
+#include "SnobotSim/MotorSim/IMotorSimulator.h"
 
 class SimpleMotorSimulator: public IMotorSimulator
 {
@@ -16,21 +16,21 @@ public:
     SimpleMotorSimulator(double aMaxSpeed);
     virtual ~SimpleMotorSimulator();
 
-    void setVoltagePercentage(double aSpeed) override;
+    void SetVoltagePercentage(double aSpeed) override;
 
-    virtual double getVoltagePercentage() override;
+    virtual double GetVoltagePercentage() override;
 
-    virtual double getAcceleration() override;
+    virtual double GetAcceleration() override;
 
-    virtual double getVelocity() override;
+    virtual double GetVelocity() override;
 
-    virtual double getPosition() override;
+    virtual double GetPosition() override;
 
-    virtual void reset() override;
+    virtual void Reset() override;
 
-    virtual void reset(double aPosition, double aVelocity, double aCurrent) override;
+    virtual void Reset(double aPosition, double aVelocity, double aCurrent) override;
 
-    virtual void update(double aCycleTime) override;
+    virtual void Update(double aCycleTime) override;
 
 protected:
     double mMaxSpeed;

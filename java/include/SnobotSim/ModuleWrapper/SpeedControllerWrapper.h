@@ -9,7 +9,7 @@
 #define SPEEDCONTROLLERWRAPPER_H_
 
 #include <memory>
-#include "SnobotSim/MotorSim/IMotorSimulator.hpp"
+#include "SnobotSim/MotorSim/IMotorSimulator.h"
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 
 class SpeedControllerWrapper: public AModuleWrapper

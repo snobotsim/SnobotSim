@@ -21,43 +21,43 @@ SimpleMotorSimulator::~SimpleMotorSimulator()
 
 }
 
-void SimpleMotorSimulator::setVoltagePercentage(double aSpeed)
+void SimpleMotorSimulator::SetVoltagePercentage(double aSpeed)
 {
     mVoltagePercent = aSpeed;
 }
 
-double SimpleMotorSimulator::getVoltagePercentage()
+double SimpleMotorSimulator::GetVoltagePercentage()
 {
     return mVoltagePercent;
 }
 
-double SimpleMotorSimulator::getAcceleration()
+double SimpleMotorSimulator::GetAcceleration()
 {
     return 0;
 }
 
-double SimpleMotorSimulator::getVelocity()
+double SimpleMotorSimulator::GetVelocity()
 {
     return mVelocity;
 }
 
-double SimpleMotorSimulator::getPosition()
+double SimpleMotorSimulator::GetPosition()
 {
     return mPosition;
 }
 
-void SimpleMotorSimulator::reset()
+void SimpleMotorSimulator::Reset()
 {
-    reset(0, 0, 0);
+    Reset(0, 0, 0);
 }
 
-void SimpleMotorSimulator::reset(double aPosition, double aVelocity, double aCurrent)
+void SimpleMotorSimulator::Reset(double aPosition, double aVelocity, double aCurrent)
 {
     mPosition = aPosition;
     mVelocity = aVelocity;
 }
 
-void SimpleMotorSimulator::update(double aUpdateTime)
+void SimpleMotorSimulator::Update(double aUpdateTime)
 {
     mVelocity = mMaxSpeed * mVoltagePercent;
     mPosition += mVelocity * aUpdateTime;

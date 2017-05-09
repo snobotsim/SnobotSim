@@ -27,36 +27,36 @@ void SpeedControllerWrapper::SetMotorSimulator(
 
 double SpeedControllerWrapper::GetVoltagePercentage()
 {
-    return mMotorSimulator->getVoltagePercentage();
+    return mMotorSimulator->GetVoltagePercentage();
 }
 
 void SpeedControllerWrapper::SetVoltagePercentage(double aSpeed)
 {
-    mMotorSimulator->setVoltagePercentage(aSpeed);
+    mMotorSimulator->SetVoltagePercentage(aSpeed);
 }
 
 void SpeedControllerWrapper::Update(double aWaitTime)
 {
-    mMotorSimulator->update(aWaitTime);
+    mMotorSimulator->Update(aWaitTime);
 }
 
 double SpeedControllerWrapper::GetPosition()
 {
-    return mMotorSimulator->getPosition();
+    return mMotorSimulator->GetPosition();
 }
 
 double SpeedControllerWrapper::GetVelocity()
 {
-    return mMotorSimulator->getVelocity();
+    return mMotorSimulator->GetVelocity();
 }
 
 void SpeedControllerWrapper::Reset()
 {
-    mMotorSimulator->reset();
+    mMotorSimulator->Reset();
 }
 
 void SpeedControllerWrapper::Reset(double aPosition, double aVelocity,
         double aCurrent)
 {
-    mMotorSimulator->reset(aPosition, aVelocity, aCurrent);
+    mMotorSimulator->Reset(aPosition, aVelocity, aCurrent);
 }

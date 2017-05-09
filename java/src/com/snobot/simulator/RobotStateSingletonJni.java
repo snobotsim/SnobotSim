@@ -8,4 +8,6 @@ public class RobotStateSingletonJni {
     public static native void setAutonomous(boolean aAuto);
 
     public static native void setTest(boolean aTest);
+    
+    public static native double getMatchTime();
 }

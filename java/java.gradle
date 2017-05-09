@@ -126,6 +126,7 @@ task jniHeadersNetworkTables {
             args 'com.snobot.simulator.module_wrapper.SpeedControllerWrapperJni'
             args 'com.snobot.simulator.RobotStateSingletonJni'
             args 'com.snobot.simulator.SimulationConnectorJni'
+            args 'com.snobot.simulator.JoystickJni'
             
         }
     }

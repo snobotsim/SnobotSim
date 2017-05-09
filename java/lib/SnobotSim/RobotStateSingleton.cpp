@@ -34,12 +34,21 @@ void RobotStateSingleton::UpdateLoop()
 
 double RobotStateSingleton::GetMatchTime()
 {
+    if (mEnabled)
+    {
+        std::chrono::duration<double> diff = std::chrono::system_clock::now() - mTimeEnabled;
+        return diff.count();
+    }
     return 0;
 }
 
 void RobotStateSingleton::SetDisabled(bool aDisabled)
 {
     mEnabled = !aDisabled;
+    if (mEnabled)
+    {
+        mTimeEnabled = std::chrono::system_clock::now();
+    }
     std::cout << "Setting enabled: " << mEnabled << std::endl;
 }
 

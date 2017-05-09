@@ -8,6 +8,8 @@
 #ifndef ROBOTSTATESINGLETON_H_
 #define ROBOTSTATESINGLETON_H_
 
+#include <chrono>
+
 class RobotStateSingleton
 {
 private:
@@ -43,6 +45,8 @@ protected:
     bool mEnabled;
     bool mAutonomous;
     bool mTest;
+
+    std::chrono::time_point<std::chrono::system_clock> mTimeEnabled;
 };
 
 #endif /* ROBOTSTATESINGLETON_H_ */
