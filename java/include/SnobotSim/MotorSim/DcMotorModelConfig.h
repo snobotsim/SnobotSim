@@ -17,7 +17,23 @@ public:
             double aStallTorque, 
             double aStallCurrent,
             double aMotorInertia,
-            bool aHasBrake=false, bool aInverted=false);
+            bool aHasBrake=false,
+            bool aInverted=false);
+
+    DcMotorModelConfig(
+            double aNominalVoltage,
+            double aFreeSpeedRpm,
+            double aFreeCurrent,
+            double aStallTorque,
+            double aStallCurrent,
+            double aMotorInertia,
+
+            bool aHasBrake,
+            bool aInverted,
+
+            double aKT,
+            double aKV,
+            double aResistance);
             
     virtual ~DcMotorModelConfig();
 

@@ -16,39 +16,35 @@
 
 static DcMotorModel ConvertDcMotorModel(JNIEnv * env, jobject& aJavaModelConfig)
 {
-//    double aNominalVoltage,
-//    double aFreeSpeedRpm,
-//    double aFreeCurrent,
-//    double aStallTorque,
-//    double aStallCurrent,
-//    double aMotorInertia,
-//    bool aHasBrake=false, bool aInverted=false
-
-    DcMotorModelConfig config(env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "NOMINAL_VOLTAGE", "D")),
+    DcMotorModelConfig config(
+            env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "NOMINAL_VOLTAGE", "D")),
             env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "FREE_SPEED_RPM", "D")),
             env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "FREE_CURRENT", "D")),
             env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "STALL_TORQUE", "D")),
             env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "STALL_CURRENT", "D")),
             env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mMotorInertia", "D")),
+
             env->GetBooleanField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mHasBrake", "Z")),
-            env->GetBooleanField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mInverted", "Z")));
+            env->GetBooleanField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mInverted", "Z")),
 
-//    std::cout << a1 << ", " << a2 << ", " << a3 << ", " << a4 << ", " << a5 << ", " << a6 << std::endl;
+            env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mKT", "D")),
+            env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mKV", "D")),
+            env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mResistance", "D"))
+    );
 
-//    public final double NOMINAL_VOLTAGE;
-//    public final double FREE_SPEED_RPM;
-//    public final double FREE_CURRENT;
-//    public final double STALL_TORQUE;
-//    public final double STALL_CURRENT;
-//
-//    // Motor constants
-//    public double mKT;
-//    public double mKV;
-//    public double mResistance;
-//    public double mMotorInertia;
-////    public boolean mInverted;
-//
-//    std::cout << i << std::endl;
+    std::cout << "DcMotorModelConfig [" <<
+            "NOMINAL_VOLTAGE=" << config.NOMINAL_VOLTAGE << ", " <<
+            "FREE_SPEED_RPM=" << config.FREE_SPEED_RPM << ", " <<
+            "FREE_CURRENT=" << config.FREE_CURRENT << ", " <<
+            "STALL_TORQUE=" << config.STALL_TORQUE << ", " <<
+            "STALL_CURRENT=" << config.STALL_CURRENT << ", " <<
+            "mKT=" << config.mKT << ", " <<
+            "mKV=" << config.mKV << ", " <<
+            "mResistance=" << config.mResistance << ", " <<
+            "mMotorInertia=" << config.mMotorInertia << ", " <<
+            "mInverted=" << config.mInverted << ", " <<
+            "mHasBrake=" << config.mHasBrake << "]" <<
+            std::endl;
 
     return DcMotorModel(config);
 }

@@ -34,7 +34,7 @@ JoystickManager::JoystickManager()
 {
     for (int i = 0; i < 6; ++i)
     {
-        mJoystickInformation[0] = JoystickInformation();
+        mJoystickInformation[i] = JoystickInformation();
     }
 }
 

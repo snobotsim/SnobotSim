@@ -7,6 +7,11 @@
 
 #include "SnobotSim/MotorSim/DcMotorModel.h"
 
+// http://stackoverflow.com/questions/1903954/is-there-a-standard-sign-function-signum-sgn-in-c-c
+template <typename T> int sgn(T val) {
+    return (T(0) < val) - (val < T(0));
+}
+
 DcMotorModel::DcMotorModel(const DcMotorModelConfig& aModelConfig) :
         mModelConfig(aModelConfig), mPosition(0), mVelocity(0), mAcceleration(0), mCurrent(0)
 {
@@ -29,7 +34,34 @@ void DcMotorModel::Reset(double aPosition, double aVelocity, double aCurrent)
 
 void DcMotorModel::Step(double aAppliedVoltage, double aLoad, double aExternalTorque, double aTimestep)
 {
+    if (mModelConfig.mInverted)
+    {
+        aAppliedVoltage *= -1;
+    }
 
+    /*
+     * Using the 971-style first order system model. V = I * R + Kv * w
+     * torque = Kt * I
+     *
+     * V = torque / Kt * R + Kv * w torque = J * dw/dt + external_torque
+     *
+     * dw/dt = (V - Kv * w) * Kt / (R * J) - external_torque / J
+     */
+
+    if (mModelConfig.mHasBrake && aAppliedVoltage == 0)
+    {
+        mAcceleration = 0;
+        mVelocity = 0;
+        mCurrent = 0;
+    }
+    else
+    {
+        aLoad += mModelConfig.mMotorInertia;
+        mAcceleration = (aAppliedVoltage - mVelocity / mModelConfig.mKV) * mModelConfig.mKT / (mModelConfig.mResistance * aLoad) + aExternalTorque / aLoad;
+        mVelocity += mAcceleration * aTimestep;
+        mPosition += mVelocity * aTimestep + .5 * mAcceleration * aTimestep * aTimestep;
+        mCurrent = aLoad * mAcceleration * sgn(aAppliedVoltage) / mModelConfig.mKT;
+    }
 }
 
 double DcMotorModel::GetPosition()

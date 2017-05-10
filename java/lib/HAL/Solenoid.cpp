@@ -48,7 +48,7 @@ HAL_Bool HAL_CheckSolenoidChannel(int32_t channel) {
 
 HAL_Bool HAL_GetSolenoid(HAL_SolenoidHandle solenoidPortHandle,
                          int32_t* status) {
-  return 0;
+  return SensorActuatorRegistry::Get().GetSolenoidWrapper(solenoidPortHandle)->GetState();
 }
 
 int32_t HAL_GetAllSolenoids(int32_t module, int32_t* status) {
@@ -57,7 +57,7 @@ int32_t HAL_GetAllSolenoids(int32_t module, int32_t* status) {
 
 void HAL_SetSolenoid(HAL_SolenoidHandle solenoidPortHandle, HAL_Bool value,
                      int32_t* status) {
-
+    SensorActuatorRegistry::Get().GetSolenoidWrapper(solenoidPortHandle)->SetState(value);
 }
 
 void HAL_SetAllSolenoids(int32_t module, int32_t state, int32_t* status) {

@@ -8,25 +8,17 @@
 #ifndef GYROWRAPPER_HPP_
 #define GYROWRAPPER_HPP_
 
-class GyroWrapper
+#include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
+
+class GyroWrapper: public AModuleWrapper
 {
 public:
-    GyroWrapper():
-        mAngle(0)
-    {
-
-    }
-    ~GyroWrapper() {}
+    GyroWrapper(const std::string& aName);
+    ~GyroWrapper();
     
-    void SetAngle(double aAngle)
-    {
-        mAngle = aAngle;
-    }
+    void SetAngle(double aAngle);
     
-    double GetAngle()
-    {
-        return mAngle;
-    }
+    double GetAngle();
     
 protected:
     double mAngle;

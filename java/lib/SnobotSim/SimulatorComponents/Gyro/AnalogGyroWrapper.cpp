@@ -9,6 +9,7 @@
 #include <iostream>
 
 AnalogGyroWrapper::AnalogGyroWrapper(const std::shared_ptr<AnalogSourceWrapper>& aAnalogWrapper):
+    GyroWrapper("Analog Gyro"),
     mAnalogWrapper(aAnalogWrapper)
 {
 

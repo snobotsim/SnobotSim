@@ -7,11 +7,24 @@
 
 #include "SnobotSim/SimulatorComponents/Accelerometer/AccelerometerWrapper.h"
 
-AccelerometerWrapper::AccelerometerWrapper() {
-    // TODO Auto-generated constructor stub
+AccelerometerWrapper::AccelerometerWrapper(const std::string& aName):
+    AModuleWrapper(aName),
+    mAcceleration(0)
+{
 
 }
 
-AccelerometerWrapper::~AccelerometerWrapper() {
-    // TODO Auto-generated destructor stub
+AccelerometerWrapper::~AccelerometerWrapper()
+{
+
+}
+
+void AccelerometerWrapper::SetAcceleration(double aAcceleration)
+{
+    mAcceleration = aAcceleration;
+}
+
+double AccelerometerWrapper::GetAcceleration()
+{
+    return mAcceleration;
 }

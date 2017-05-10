@@ -8,22 +8,17 @@
 #ifndef ACCELEROMETERWRAPPER_H_
 #define ACCELEROMETERWRAPPER_H_
 
+#include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 
-class AccelerometerWrapper
+class AccelerometerWrapper: public AModuleWrapper
 {
 public:
-    AccelerometerWrapper();
+    AccelerometerWrapper(const std::string& aName);
     virtual ~AccelerometerWrapper();
     
-    void SetAcceleration(double aAcceleration)
-    {
-        mAcceleration = aAcceleration;
-    }
+    void SetAcceleration(double aAcceleration);
     
-    double GetAcceleration()
-    {
-        return mAcceleration;
-    }
+    double GetAcceleration();
     
 protected:
     double mAcceleration;

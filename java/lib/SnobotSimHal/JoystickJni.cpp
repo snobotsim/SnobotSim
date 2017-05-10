@@ -40,6 +40,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_JoystickJni_setJoystickInformat
 {
     if (!JoystickManager::Get().HasJoystick(aHandle))
     {
+        std::cerr << "Unregistered joystick " << aHandle << std::endl;
         return;
     }
 
@@ -65,6 +66,9 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_JoystickJni_setJoystickInformat
     }
     env->ReleaseShortArrayElements(aPovs, povs, 0);
 
-//    std::cout << "Setting info " << info << std::endl;
+//    if(aHandle < 2)
+//    {
+//        std::cout << "Setting info " << aHandle << ":\n" << info << std::endl;
+//    }
 }
 }

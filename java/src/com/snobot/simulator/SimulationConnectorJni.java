@@ -1,6 +1,8 @@
 
 package com.snobot.simulator;
 
+import com.snobot.DcMotorModelConfig;
+
 public class SimulationConnectorJni {
     
     public static native void updateLoop();
@@ -11,7 +13,7 @@ public class SimulationConnectorJni {
 
     public static void setSpeedControllerModel_Static(
             int aSpeedControllerHandle, 
-            DcMotorModelConfigJni aConfig,
+            DcMotorModelConfig aConfig,
             double aLoad)
     {
     	setSpeedControllerModel_Static(aSpeedControllerHandle, aConfig, aLoad, 1.0);
@@ -19,18 +21,18 @@ public class SimulationConnectorJni {
 
     public static native void setSpeedControllerModel_Static(
             int aSpeedControllerHandle, 
-            DcMotorModelConfigJni aConfig,
+            DcMotorModelConfig aConfig,
             double aLoad,
             double aConversionFactor);
 
     public static native void setSpeedControllerModel_Gravitational(
             int aSpeedControllerHandle, 
-            DcMotorModelConfigJni aConfig,
+            DcMotorModelConfig aConfig,
             double aLoad);
 
     public static void setSpeedControllerModel_Rotational(
             int aSpeedControllerHandle, 
-            DcMotorModelConfigJni aConfig,
+            DcMotorModelConfig aConfig,
             double aArmCenterOfMass,
             double aArmMass)
     {
@@ -39,7 +41,7 @@ public class SimulationConnectorJni {
 
     public static native void setSpeedControllerModel_Rotational(
             int aSpeedControllerHandle, 
-            DcMotorModelConfigJni aConfig,
+            DcMotorModelConfig aConfig,
             double aArmCenterOfMass,
             double aArmMass,
             double aConstantAssistTorque,
