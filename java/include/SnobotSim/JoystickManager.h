@@ -8,14 +8,31 @@
 #ifndef JOYSTICKMANAGER_H_
 #define JOYSTICKMANAGER_H_
 
-#include "HAL/DriverStation.h"
 #include <map>
 
 struct JoystickInformation
 {
-    HAL_JoystickAxes mAxes;
-    HAL_JoystickPOVs mPovs;
-    HAL_JoystickButtons mButtons;
+	static const int kMaxJoystickAxes = 12;
+	static const int kMaxJoystickPOVs = 12;
+
+	struct JoystickAxes {
+	  int16_t count;
+	  float axes[kMaxJoystickAxes];
+	};
+
+	struct JoystickPOVs {
+	  int16_t count;
+	  int16_t povs[kMaxJoystickPOVs];
+	};
+
+	struct JoystickButtons {
+	  uint32_t buttons;
+	  uint8_t count;
+	};
+
+    JoystickAxes mAxes;
+    JoystickPOVs mPovs;
+    JoystickButtons mButtons;
 
     JoystickInformation();
 };

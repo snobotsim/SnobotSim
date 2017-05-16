@@ -1,8 +1,10 @@
 include 'native:snobotSimHal'
+include 'native:HALAthena'
 include 'native:wpiutil'
 include 'gmock'
 
 if (!hasProperty('skipArm')) {
+    include 'arm:HALAthena'
     include 'arm:snobotSimHal'
     include 'arm:wpiutil'
 }

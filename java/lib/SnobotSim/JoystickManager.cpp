@@ -6,7 +6,6 @@
  */
 
 #include "SnobotSim/JoystickManager.h"
-#include "HAL/DriverStation.h"
 #include <iostream>
 
 JoystickManager JoystickManager::sINSTANCE = JoystickManager();
@@ -18,11 +17,11 @@ JoystickInformation::JoystickInformation()
     mPovs.count = 0;
     mButtons.count = 0;
 
-    for (int i = 0; i < HAL_kMaxJoystickAxes; ++i)
+    for (int i = 0; i < kMaxJoystickAxes; ++i)
     {
         mAxes.axes[i] = 0;
     }
-    for (int i = 0; i < HAL_kMaxJoystickPOVs; ++i)
+    for (int i = 0; i < kMaxJoystickPOVs; ++i)
     {
         mPovs.povs[i] = 0;
     }

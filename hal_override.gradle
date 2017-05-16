@@ -1,0 +1,121 @@
+def HALAthenaSetupModel = { project ->
+    project.model {
+        components {
+            HALAthena(NativeLibrarySpec) {
+                if (project.isArm) {
+                    targetPlatform 'arm'
+                } else {
+                    targetPlatform 'x86'
+                    targetPlatform 'x64'
+                }
+                setupDefines(project, binaries)
+
+                sources {
+                    cpp {
+                        source {
+                            srcDirs = ["${rootDir}/hal_override/lib"]
+                            includes = ['**/*.cpp']
+                        }
+                        exportedHeaders {
+                            srcDirs = ["${rootDir}/hal_override/include/"]
+                            includes = ['**/*.h']
+                        }
+                        if (project.isArm && project.hasProperty('compilerPrefix')) {
+                            lib project: ':arm:wpiutil', library: 'wpiutil', linkage: 'static'
+                            lib project: ':arm:snobotSimHal', library: 'snobotSimHal', linkage: 'static'
+                        } else if (project.isArm) {
+                            // If roboRIO, link shared
+                            lib project: ':arm:wpiutil', library: 'wpiutil', linkage: 'shared'
+                            lib project: ':arm:snobotSimHal', library: 'snobotSimHal', linkage: 'shared'
+                        } else {
+                            lib project: ':native:wpiutil', library: 'wpiutil', linkage: 'static'
+                            lib project: ':native:snobotSimHal', library: 'snobotSimHal', linkage: 'shared'
+                        }
+                        
+                    }
+                }
+            }
+        }
+    }
+}
+
+def HALAthenaZipTask = { project ->
+    project.ext.HALAthenaZip = project.tasks.create("HALAthenaZip", Zip) {
+        description = 'Creates platform-specific zip of the desktop HALAthena libraries.'
+        group = 'WPILib'
+        destinationDir = project.buildDir
+        baseName = 'HALAthena'
+        classifier = "${project.buildPlatform}"
+        duplicatesStrategy = 'exclude'
+
+        from(file('include')) {
+            into 'include'
+        }
+
+        project.model {
+            binaries {
+                withType(StaticLibraryBinarySpec) { binary ->
+                    from(binary.staticLibraryFile) {
+                        into getPlatformPath(binary)
+                    }
+                }
+                withType(SharedLibraryBinarySpec) { binary ->
+                    from(binary.sharedLibraryFile) {
+                        into getPlatformPath(binary)
+                    }
+                    from(new File(binary.sharedLibraryFile.absolutePath + ".debug")) {
+                        into getPlatformPath(binary)
+                    }
+                }
+            }
+        }
+    }
+
+    project.build.dependsOn project.HALAthenaZip
+
+    project.debugStripSetup()
+
+    project.tasks.whenTaskAdded { task ->
+        def name = task.name.toLowerCase()
+        if (name.contains("HALAthenasharedlibrary") || name.contains("HALAthenastaticlibrary") || name.contains("HALAthenatest")) {
+            project.HALAthenaZip.dependsOn task
+        }
+    }
+}
+
+if (buildArm) {
+    project(':arm:HALAthena') {
+        apply plugin: 'cpp'
+
+        apply from: "${rootDir}/toolchains/arm.gradle"
+
+        HALAthenaSetupModel(project)
+        HALAthenaZipTask(project)
+    }
+}
+
+project(':native:HALAthena') {
+    apply plugin: 'cpp'
+
+    apply from: "${rootDir}/toolchains/native.gradle"
+
+    HALAthenaSetupModel(project)
+    HALAthenaZipTask(project)
+}
+
+task HALAthenaSourceZip(type: Zip) {
+    description = 'Creates a sources-zip of the HALAthena source files'
+    group = 'WPILib'
+    destinationDir = project.buildDir
+    baseName = 'HALAthena'
+    classifier = "sources"
+    duplicatesStrategy = 'exclude'
+
+    from('src') {
+        into 'src'
+    }
+
+    from('include') {
+        into 'include'
+    }
+}

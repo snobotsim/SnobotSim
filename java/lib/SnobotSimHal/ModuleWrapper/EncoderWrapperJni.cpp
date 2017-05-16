@@ -1,7 +1,6 @@
 
 #include <assert.h>
 #include <jni.h>
-#include "HAL/cpp/Log.h"
 #include "support/jni_util.h"
 
 #include "com_snobot_simulator_module_wrapper_EncoderWrapperJni.h"
