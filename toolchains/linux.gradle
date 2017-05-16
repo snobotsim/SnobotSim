@@ -10,6 +10,7 @@ model {
                     // to be treated as a warning rather than an error).
                     args << '-Wno-error=deprecated-declarations' << '-pthread'
                     args << '-m32'
+                    args << '-DFRC_SIMULATOR'
                 }
                 linker.withArguments { args ->
                     args << '-rdynamic' << '-pthread'
