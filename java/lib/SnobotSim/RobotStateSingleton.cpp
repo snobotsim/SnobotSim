@@ -21,6 +21,11 @@ RobotStateSingleton::~RobotStateSingleton()
 
 }
 
+RobotStateSingleton& RobotStateSingleton::Get()
+{
+	return sINSTANCE;
+}
+
 void RobotStateSingleton::UpdateLoop()
 {
     std::vector<std::shared_ptr<ISimulatorUpdater>>& comps =

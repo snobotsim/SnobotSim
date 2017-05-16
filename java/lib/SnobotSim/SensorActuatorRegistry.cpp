@@ -10,6 +10,12 @@
 SensorActuatorRegistry SensorActuatorRegistry::sInstance =
         SensorActuatorRegistry();
 
+
+SensorActuatorRegistry& SensorActuatorRegistry::Get()
+{
+	return sInstance;
+}
+    
 SensorActuatorRegistry::SensorActuatorRegistry()
 {
 

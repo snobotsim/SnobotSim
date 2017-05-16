@@ -12,7 +12,7 @@
 #include "SnobotSim/MotorSim/IMotorSimulator.h"
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 
-class SpeedControllerWrapper: public AModuleWrapper
+class EXPORT_ SpeedControllerWrapper: public AModuleWrapper
 {
 public:
     SpeedControllerWrapper(int aPort);

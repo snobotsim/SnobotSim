@@ -11,6 +11,7 @@
 #include <map>
 #include <vector>
 #include <iostream>
+#include "SnobotSim/ExportHelper.h"
 #include "SnobotSim/ModuleWrapper/SpeedControllerWrapper.h"
 #include "SnobotSim/ModuleWrapper/RelayWrapper.h"
 #include "SnobotSim/ModuleWrapper/DigitalSourceWrapper.h"
@@ -31,7 +32,7 @@
 #define REGISTRATION_LOG(x) std::cout << x << std::endl;
 //#define REGISTRATION_LOG(x)
 
-class SensorActuatorRegistry
+class EXPORT_ SensorActuatorRegistry
 {
 private:
     SensorActuatorRegistry();
@@ -40,10 +41,7 @@ private:
 public:
     virtual ~SensorActuatorRegistry();
 
-    static SensorActuatorRegistry& Get()
-    {
-        return sInstance;
-    }
+    static SensorActuatorRegistry& Get();
 
     void AddSimulatorComponent(const std::shared_ptr<ISimulatorUpdater>& aSimulatorComponent);
 

@@ -10,7 +10,7 @@
 
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 
-class SolenoidWrapper: public AModuleWrapper
+class EXPORT_ SolenoidWrapper: public AModuleWrapper
 {
 public:
     SolenoidWrapper(int aPort);

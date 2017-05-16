@@ -10,7 +10,7 @@
 
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 
-class GyroWrapper: public AModuleWrapper
+class EXPORT_ GyroWrapper: public AModuleWrapper
 {
 public:
     GyroWrapper(const std::string& aName);

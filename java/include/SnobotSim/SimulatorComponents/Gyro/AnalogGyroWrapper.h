@@ -8,11 +8,12 @@
 #ifndef ANALOGGYROWRAPPER_H_
 #define ANALOGGYROWRAPPER_H_
 
+#include "SnobotSim/ExportHelper.h"
 #include "SnobotSim/SimulatorComponents/Gyro/GyroWrapper.h"
 #include "SnobotSim/ModuleWrapper/AnalogSourceWrapper.h"
 #include <memory>
 
-class AnalogGyroWrapper: public GyroWrapper
+class EXPORT_ AnalogGyroWrapper: public GyroWrapper
 {
 public:
     AnalogGyroWrapper(const std::shared_ptr<AnalogSourceWrapper>& aAnalogWrapper);

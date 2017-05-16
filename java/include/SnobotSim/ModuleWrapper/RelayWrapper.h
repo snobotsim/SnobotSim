@@ -10,7 +10,7 @@
 
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 
-class RelayWrapper: public AModuleWrapper
+class EXPORT_ RelayWrapper: public AModuleWrapper
 {
 public:
     RelayWrapper(int aPort);

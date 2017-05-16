@@ -8,11 +8,12 @@
 #ifndef SPIGYRO_H_
 #define SPIGYRO_H_
 
+#include "SnobotSim/ExportHelper.h"
 #include "SnobotSim/SimulatorComponents/Gyro/GyroWrapper.h"
 #include "SnobotSim/SimulatorComponents/ISpiWrapper.h"
 #include <memory>
 
-class SpiGyro: public GyroWrapper, public ISpiWrapper
+class EXPORT_ SpiGyro: public GyroWrapper, public ISpiWrapper
 {
 public:
     SpiGyro();

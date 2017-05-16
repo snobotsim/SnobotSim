@@ -9,8 +9,9 @@
 #define JOYSTICKMANAGER_H_
 
 #include <map>
+#include "SnobotSim/ExportHelper.h"
 
-struct JoystickInformation
+struct EXPORT_ JoystickInformation
 {
 	static const int kMaxJoystickAxes = 12;
 	static const int kMaxJoystickPOVs = 12;
@@ -37,7 +38,7 @@ struct JoystickInformation
     JoystickInformation();
 };
 
-class JoystickManager
+class EXPORT_ JoystickManager
 {
 private:
     JoystickManager();

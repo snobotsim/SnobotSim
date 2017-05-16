@@ -10,7 +10,7 @@
 
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 
-class AnalogSourceWrapper: public AModuleWrapper
+class EXPORT_ AnalogSourceWrapper: public AModuleWrapper
 {
 public:
     AnalogSourceWrapper(int aPort);

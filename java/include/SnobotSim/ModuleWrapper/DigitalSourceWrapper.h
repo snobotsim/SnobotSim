@@ -10,7 +10,7 @@
 
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 
-class DigitalSourceWrapper: public AModuleWrapper
+class EXPORT_ DigitalSourceWrapper: public AModuleWrapper
 {
 public:
     DigitalSourceWrapper(int aPort);

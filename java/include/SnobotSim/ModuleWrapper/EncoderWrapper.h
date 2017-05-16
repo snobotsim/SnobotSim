@@ -11,7 +11,7 @@
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 #include "SnobotSim/ModuleWrapper/SpeedControllerWrapper.h"
 
-class EncoderWrapper: public AModuleWrapper
+class EXPORT_ EncoderWrapper: public AModuleWrapper
 {
 public:
     EncoderWrapper(int aPortA, int aPortB);

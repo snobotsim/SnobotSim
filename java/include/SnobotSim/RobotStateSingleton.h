@@ -9,8 +9,9 @@
 #define ROBOTSTATESINGLETON_H_
 
 #include <chrono>
+#include "SnobotSim/ExportHelper.h"
 
-class RobotStateSingleton
+class EXPORT_ RobotStateSingleton
 {
 private:
     RobotStateSingleton();
@@ -19,10 +20,7 @@ private:
 public:
     virtual ~RobotStateSingleton();
 
-    static RobotStateSingleton& Get()
-    {
-        return sINSTANCE;
-    }
+    static RobotStateSingleton& Get();
 
     void UpdateLoop();
 

@@ -9,6 +9,7 @@
 #define SRC_SNOBOTSIM_MODULEWRAPPER_AMODULEWRAPPER_H_
 
 #include <string>
+#include "SnobotSim/ExportHelper.h"
 
 class AModuleWrapper
 {

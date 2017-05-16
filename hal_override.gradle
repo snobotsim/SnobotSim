@@ -10,6 +10,10 @@ def HALAthenaSetupModel = { project ->
                 }
                 setupDefines(project, binaries)
 
+                binaries.all {
+                    project.setupDef(linker, "${rootDir}/mockhal.def")
+                }
+                
                 sources {
                     cpp {
                         source {
