@@ -27,8 +27,8 @@
 
 .vs/
 *.def
-!ntcore.def
-!ntcore-jni.def
+!mockhal.def
+!snobotSim.def
 *.opensdf
 *.vcxproj
 *.vcxproj.user

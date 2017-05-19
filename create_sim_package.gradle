@@ -1,0 +1,29 @@
+
+
+task copyStuffx64(type: Copy) {
+	dependsOn build
+
+	from "native/HALAthena/build/libs/hALAthena/shared/x64/HALAthena.dll"
+	from "native/HALAthena/build/libs/hALAthena/shared/x64/HALAthena.lib"
+	from "native/snobotSimHal/build/libs/snobotSimHal/shared/x64/snobotSimHal.dll"
+	from "native/snobotSimHal/build/libs/snobotSimHal/shared/x64/snobotSimHal.lib"
+	into "build/native/x64"
+}
+
+task copyStuffx86(type: Copy) {
+	dependsOn build
+
+	from "native/HALAthena/build/libs/hALAthena/shared/x86/HALAthena.dll"
+	from "native/HALAthena/build/libs/hALAthena/shared/x86/HALAthena.lib"
+	from "native/snobotSimHal/build/libs/snobotSimHal/shared/x86/snobotSimHal.dll"
+	from "native/snobotSimHal/build/libs/snobotSimHal/shared/x86/snobotSimHal.lib"
+	into "build/native/x86"
+}
+
+task copyJar(type: Copy) {
+	dependsOn build
+
+	from "native/snobotSimHal/build/libs/ntcore-windows.jar"
+	into "build/java"
+}
+

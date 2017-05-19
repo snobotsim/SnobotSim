@@ -70,6 +70,16 @@ build.dependsOn wpiutilSourceZip
 
 apply from: 'publish.gradle'
 
+apply from: 'create_sim_package.gradle'
+
+task install(type: Copy) {
+
+	dependsOn copyStuffx64
+	dependsOn copyStuffx86
+	dependsOn copyJar
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = '3.0'
 }
+
