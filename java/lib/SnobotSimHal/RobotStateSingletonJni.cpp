@@ -47,4 +47,37 @@ JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_RobotStateSingletonJni_getMa
     return RobotStateSingleton::Get().GetMatchTime();
 }
 
+/*
+ * Class:     com_snobot_simulator_RobotStateSingletonJni
+ * Method:    waitForProgramToStart
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_RobotStateSingletonJni_waitForProgramToStart
+  (JNIEnv *, jclass)
+{
+	RobotStateSingleton::Get().WaitForProgramToStart();
+}
+
+/*
+ * Class:     com_snobot_simulator_RobotStateSingletonJni
+ * Method:    waitForNextUpdateLoop
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_RobotStateSingletonJni_waitForNextUpdateLoop
+  (JNIEnv *, jclass)
+{
+	RobotStateSingleton::Get().WaitForNextControlLoop();
+}
+
+/*
+ * Class:     com_snobot_simulator_RobotStateSingletonJni
+ * Method:    getCycleTime
+ * Signature: ()D
+ */
+JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_RobotStateSingletonJni_getCycleTime
+  (JNIEnv *, jclass)
+{
+	return .02;
+}
+
 }

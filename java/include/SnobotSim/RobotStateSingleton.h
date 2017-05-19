@@ -9,22 +9,24 @@
 #define ROBOTSTATESINGLETON_H_
 
 #include <chrono>
+#include <mutex>
+#include <condition_variable>
+#include <thread>
 #include "SnobotSim/ExportHelper.h"
 
 class EXPORT_ RobotStateSingleton
 {
 private:
     RobotStateSingleton();
+    RobotStateSingleton(const RobotStateSingleton& that) = delete;
+    virtual ~RobotStateSingleton();
     static RobotStateSingleton sINSTANCE;
 
 public:
-    virtual ~RobotStateSingleton();
 
     static RobotStateSingleton& Get();
 
     void UpdateLoop();
-
-    double GetMatchTime();
 
     void SetDisabled(bool aDisabled);
 
@@ -32,19 +34,39 @@ public:
 
     void SetTest(bool aTest);
 
+    double GetMatchTime() const;
+
     bool GetDisabled() const;
 
     bool GetAutonomous() const;
 
     bool GetTest() const;
+    
+    
+	void WaitForProgramToStart();
+	
+	void HandleRobotInitialized();
+	
+	void WaitForNextControlLoop();
 
 protected:
 
+	void RunUpdateLoopThread();
+
+	bool mRobotStarted;
     bool mEnabled;
     bool mAutonomous;
     bool mTest;
 
     std::chrono::time_point<std::chrono::system_clock> mTimeEnabled;
+    
+	std::condition_variable mProgramStartedCv;
+	std::mutex mProgramStartedMutex;
+    
+	std::condition_variable mControlLoopCv;
+	std::mutex mControlLoopMutex;
+	
+	std::thread mUpdateThread;
 };
 
 #endif /* ROBOTSTATESINGLETON_H_ */

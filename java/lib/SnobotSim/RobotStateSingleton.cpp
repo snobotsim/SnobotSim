@@ -8,22 +8,65 @@
 #include "SnobotSim/RobotStateSingleton.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 
-RobotStateSingleton RobotStateSingleton::sINSTANCE = RobotStateSingleton();
+#include <chrono>
+#include <iostream>
+#include <future>
+
+RobotStateSingleton RobotStateSingleton::sINSTANCE;
 
 RobotStateSingleton::RobotStateSingleton() :
-        mEnabled(false), mAutonomous(false), mTest(false)
+        mRobotStarted(false), mEnabled(false), mAutonomous(false), mTest(false)
 {
 
 }
 
 RobotStateSingleton::~RobotStateSingleton()
 {
-
+	std::cout << "Destroy..." << std::endl;
 }
 
 RobotStateSingleton& RobotStateSingleton::Get()
 {
 	return sINSTANCE;
+}
+
+void RobotStateSingleton::WaitForProgramToStart()
+{
+    if (!mRobotStarted)
+    {
+    	std::cout << "Waiting for robot to initialize..." << std::endl;
+        std::unique_lock<std::mutex> lk(mProgramStartedMutex);
+     	mProgramStartedCv.wait(lk);
+    }
+    else
+    {
+        std::cerr << "Robot already initialized!" << std::endl;
+    }
+}
+
+void RobotStateSingleton::HandleRobotInitialized()
+{
+ 	std::cout << "Robot initialized\n\n" << std::endl;
+ 	mRobotStarted = true;
+ 	mProgramStartedCv.notify_all();
+ 	
+ 	mUpdateThread = std::thread(&RobotStateSingleton::RunUpdateLoopThread, this);
+}
+	
+void RobotStateSingleton::WaitForNextControlLoop()
+{
+    std::unique_lock<std::mutex> lk(mControlLoopMutex);
+ 	mControlLoopCv.wait(lk);
+	
+}
+
+void RobotStateSingleton::RunUpdateLoopThread()
+{
+    while (true)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+        mControlLoopCv.notify_all();
+    }
 }
 
 void RobotStateSingleton::UpdateLoop()
@@ -37,7 +80,7 @@ void RobotStateSingleton::UpdateLoop()
     }
 }
 
-double RobotStateSingleton::GetMatchTime()
+double RobotStateSingleton::GetMatchTime() const
 {
     if (mEnabled)
     {
@@ -54,13 +97,11 @@ void RobotStateSingleton::SetDisabled(bool aDisabled)
     {
         mTimeEnabled = std::chrono::system_clock::now();
     }
-    std::cout << "Setting enabled: " << mEnabled << std::endl;
 }
 
 void RobotStateSingleton::SetAutonomous(bool aAutonomous)
 {
     mAutonomous = aAutonomous;
-    std::cout << "Setting Auto: " << mAutonomous << std::endl;
 }
 
 void RobotStateSingleton::SetTest(bool aTest)

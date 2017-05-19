@@ -205,7 +205,7 @@ double HAL_GetMatchTime(int32_t* status) {
 }
 
 void HAL_ObserveUserProgramStarting(void) {
-
+	RobotStateSingleton::Get().HandleRobotInitialized();
 }
 
 void HAL_ObserveUserProgramDisabled(void) {
@@ -232,7 +232,7 @@ bool HAL_IsNewControlData(void) {
  * Waits for the newest DS packet to arrive. Note that this is a blocking call.
  */
 void HAL_WaitForDSData(void) {
-
+	HAL_WaitForDSDataTimeout(0);
 }
 
 /**
@@ -241,6 +241,8 @@ void HAL_WaitForDSData(void) {
  * time has passed. Returns true on new data, false on timeout.
  */
 HAL_Bool HAL_WaitForDSDataTimeout(double timeout) {
+
+  RobotStateSingleton::Get().WaitForNextControlLoop();
   return true;
 }
 
