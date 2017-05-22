@@ -5,6 +5,7 @@
 
 #include "com_snobot_simulator_module_wrapper_GyroWrapperJni.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/GetSensorActuatorHelper.h"
 
 using namespace wpi::java;
 
@@ -31,7 +32,11 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_module_1wrapper_GyroWrapperJni_
 JNIEXPORT void JNICALL Java_com_snobot_simulator_module_1wrapper_GyroWrapperJni_setName
   (JNIEnv * env, jclass, jint aPortHandle, jstring aName)
 {
-    SensorActuatorRegistry::Get().GetGyroWrapper(aPortHandle)->SetName(env->GetStringUTFChars(aName, NULL));
+    std::shared_ptr<GyroWrapper> wrapper = GetSensorActuatorHelper::GetGyroWrapper(aPortHandle);
+    if(wrapper)
+    {
+        wrapper->SetName(env->GetStringUTFChars(aName, NULL));
+    }
 }
 
 /*

@@ -65,10 +65,5 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_JoystickJni_setJoystickInformat
         info.mPovs.povs[i] = povs[i];
     }
     env->ReleaseShortArrayElements(aPovs, povs, 0);
-
-//    if(aHandle < 2)
-//    {
-//        std::cout << "Setting info " << aHandle << ":\n" << info << std::endl;
-//    }
 }
 }

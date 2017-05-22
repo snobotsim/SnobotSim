@@ -14,6 +14,12 @@
 #include <vector>
 #include <memory>
 
+
+#include "SnobotSim/GetSensorActuatorHelper.h"
+
+using namespace GetSensorActuatorHelper;
+
+
 static DcMotorModel ConvertDcMotorModel(JNIEnv * env, jobject& aJavaModelConfig)
 {
     DcMotorModelConfig config(
@@ -31,20 +37,6 @@ static DcMotorModel ConvertDcMotorModel(JNIEnv * env, jobject& aJavaModelConfig)
             env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mKV", "D")),
             env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mResistance", "D"))
     );
-
-    std::cout << "DcMotorModelConfig [" <<
-            "NOMINAL_VOLTAGE=" << config.NOMINAL_VOLTAGE << ", " <<
-            "FREE_SPEED_RPM=" << config.FREE_SPEED_RPM << ", " <<
-            "FREE_CURRENT=" << config.FREE_CURRENT << ", " <<
-            "STALL_TORQUE=" << config.STALL_TORQUE << ", " <<
-            "STALL_CURRENT=" << config.STALL_CURRENT << ", " <<
-            "mKT=" << config.mKT << ", " <<
-            "mKV=" << config.mKV << ", " <<
-            "mResistance=" << config.mResistance << ", " <<
-            "mMotorInertia=" << config.mMotorInertia << ", " <<
-            "mInverted=" << config.mInverted << ", " <<
-            "mHasBrake=" << config.mHasBrake << "]" <<
-            std::endl;
 
     return DcMotorModel(config);
 }
@@ -70,8 +62,11 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_SimulationConnectorJni_updateLo
 JNIEXPORT void JNICALL Java_com_snobot_simulator_SimulationConnectorJni_setSpeedControllerModel_1Simple
   (JNIEnv *, jclass, jint aHandle, jdouble aMaxSpeed)
 {
-    std::shared_ptr<SpeedControllerWrapper> speedController = SensorActuatorRegistry::Get().GetSpeedControllerWrapper(aHandle);
-    speedController->SetMotorSimulator(std::shared_ptr < IMotorSimulator > (new SimpleMotorSimulator(aMaxSpeed)));
+	std::shared_ptr<SpeedControllerWrapper> speedController = GetSpeedControllerWrapper(aHandle);
+	if(speedController)
+	{
+    	speedController->SetMotorSimulator(std::shared_ptr < IMotorSimulator > (new SimpleMotorSimulator(aMaxSpeed)));
+	}
 }
 
 /*
@@ -84,8 +79,12 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_SimulationConnectorJni_setSpeed
         jobject aConfig, jdouble aLoad, jdouble aConversionFactor)
 {
     DcMotorModel motorModel = ConvertDcMotorModel(env, aConfig);
-    std::shared_ptr<SpeedControllerWrapper> speedController = SensorActuatorRegistry::Get().GetSpeedControllerWrapper(aSpeedControllerHandle);
-    speedController->SetMotorSimulator(std::shared_ptr < IMotorSimulator > (new StaticLoadDcMotorSim(motorModel, aLoad, aConversionFactor)));
+
+	std::shared_ptr<SpeedControllerWrapper> speedController = GetSpeedControllerWrapper(aSpeedControllerHandle);
+	if(speedController)
+	{
+	    speedController->SetMotorSimulator(std::shared_ptr < IMotorSimulator > (new StaticLoadDcMotorSim(motorModel, aLoad, aConversionFactor)));
+	}
 }
 
 /*
@@ -98,8 +97,12 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_SimulationConnectorJni_setSpeed
         jint aSpeedControllerHandle, jobject aConfig, jdouble aLoad)
 {
     DcMotorModel motorModel = ConvertDcMotorModel(env, aConfig);
-    std::shared_ptr<SpeedControllerWrapper> speedController = SensorActuatorRegistry::Get().GetSpeedControllerWrapper(aSpeedControllerHandle);
-    speedController->SetMotorSimulator(std::shared_ptr < IMotorSimulator > (new GravityLoadDcMotorSim(motorModel, aLoad)));
+
+	std::shared_ptr<SpeedControllerWrapper> speedController = GetSpeedControllerWrapper(aSpeedControllerHandle);
+	if(speedController)
+	{
+	    speedController->SetMotorSimulator(std::shared_ptr < IMotorSimulator > (new GravityLoadDcMotorSim(motorModel, aLoad)));
+	}
 }
 
 /*
@@ -125,10 +128,13 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_SimulationConnectorJni_setSpeed
 JNIEXPORT void JNICALL Java_com_snobot_simulator_SimulationConnectorJni_connectEncoderAndSpeedController
   (JNIEnv *, jclass, jint aEncoderhandle, jint aScHandle)
 {
-    std::shared_ptr<EncoderWrapper> encoder = SensorActuatorRegistry::Get().GetEncoderWrapper(aEncoderhandle);
-    std::shared_ptr<SpeedControllerWrapper> speedController = SensorActuatorRegistry::Get().GetSpeedControllerWrapper(aScHandle);
+	std::shared_ptr<EncoderWrapper> encoder = SensorActuatorRegistry::Get().GetEncoderWrapper(aEncoderhandle);
+	std::shared_ptr<SpeedControllerWrapper> speedController = GetSpeedControllerWrapper(aScHandle);
 
-    encoder->SetSpeedController(speedController);
+	if(encoder)
+	{
+	    encoder->SetSpeedController(speedController);
+	}
 }
 
 /*
@@ -144,7 +150,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_SimulationConnectorJni_connectT
 {    
     std::shared_ptr<EncoderWrapper> leftEncoder = SensorActuatorRegistry::Get().GetEncoderWrapper(aLeftEncHandle);
     std::shared_ptr<EncoderWrapper> rightEncoder = SensorActuatorRegistry::Get().GetEncoderWrapper(aRightEncHandle);
-    std::shared_ptr<GyroWrapper> gyro = SensorActuatorRegistry::Get().GetGyroWrapper(aGyroHandle);
+    std::shared_ptr<GyroWrapper> gyro = GetGyroWrapper(aGyroHandle);
 
     std::shared_ptr<TankDriveSimulator> simulator(new TankDriveSimulator(leftEncoder, rightEncoder, gyro, aTurnKp));
 

@@ -5,6 +5,7 @@
 
 #include "com_snobot_simulator_module_wrapper_SolenoidWrapperJni.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/GetSensorActuatorHelper.h"
 
 using namespace wpi::java;
 
@@ -19,7 +20,11 @@ extern "C"
 JNIEXPORT void JNICALL Java_com_snobot_simulator_module_1wrapper_SolenoidWrapperJni_setName
   (JNIEnv * env, jclass, jint aPortHandle, jstring aName)
 {
-  SensorActuatorRegistry::Get().GetSolenoidWrapper(aPortHandle)->SetName(env->GetStringUTFChars(aName, NULL));
+    std::shared_ptr<SolenoidWrapper> wrapper = GetSensorActuatorHelper::GetSolenoidWrapper(aPortHandle);
+    if(wrapper)
+    {
+        wrapper->SetName(env->GetStringUTFChars(aName, NULL));
+    }
 }
 
 /*
