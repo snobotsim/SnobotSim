@@ -57,6 +57,7 @@ protected:
     bool mEnabled;
     bool mAutonomous;
     bool mTest;
+    bool mRunning;
 
     std::chrono::time_point<std::chrono::system_clock> mTimeEnabled;
     

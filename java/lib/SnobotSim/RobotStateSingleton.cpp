@@ -15,14 +15,17 @@
 RobotStateSingleton RobotStateSingleton::sINSTANCE;
 
 RobotStateSingleton::RobotStateSingleton() :
-        mRobotStarted(false), mEnabled(false), mAutonomous(false), mTest(false)
+        mRobotStarted(false), mEnabled(false), mAutonomous(false), mTest(false), mRunning(false)
 {
 
 }
 
 RobotStateSingleton::~RobotStateSingleton()
 {
-
+	std::cout << "Destroying singleton" << std::endl;
+	mRunning = false;
+	mUpdateThread.join();
+	std::cout << "Destroyed" << std::endl;
 }
 
 RobotStateSingleton& RobotStateSingleton::Get()
@@ -48,6 +51,7 @@ void RobotStateSingleton::HandleRobotInitialized()
 {
  	std::cout << "Robot initialized\n\n" << std::endl;
  	mRobotStarted = true;
+ 	mRunning = true;
  	mProgramStartedCv.notify_all();
  	
  	mUpdateThread = std::thread(&RobotStateSingleton::RunUpdateLoopThread, this);
@@ -62,7 +66,7 @@ void RobotStateSingleton::WaitForNextControlLoop()
 
 void RobotStateSingleton::RunUpdateLoopThread()
 {
-    while (true)
+    while (mRunning)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(20));
         mControlLoopCv.notify_all();
