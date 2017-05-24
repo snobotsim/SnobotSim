@@ -6,9 +6,10 @@
  */
 
 #include "SnobotSim/ModuleWrapper/SolenoidWrapper.h"
+#include "SnobotSim/PortUnwrapper.h"
 
 SolenoidWrapper::SolenoidWrapper(int aPort) :
-        AModuleWrapper("Solenoid " + std::to_string(aPort)), mState(false)
+        AModuleWrapper("Solenoid " + std::to_string(UnwrapPort(aPort))), mState(false)
 {
 
 }

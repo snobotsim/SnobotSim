@@ -29,7 +29,7 @@
     const std::map<int, std::shared_ptr<ItemType>>& Get##ItemType##Map() const; \
     std::map<int, std::shared_ptr<ItemType>>& Get##ItemType##Map();
 
-#define REGISTRATION_LOG(x) std::cout << x << std::endl;
+#define REGISTRATION_LOG(x) x;
 //#define REGISTRATION_LOG(x)
 
 class EXPORT_ SensorActuatorRegistry
@@ -72,7 +72,7 @@ protected:
 
         aMap[aPort] = aItem;
 
-        REGISTRATION_LOG("Registered " << aType << " on port " << aPort << ".  The map has " << aMap.size() << " elements.")
+        REGISTRATION_LOG(std::cout << "Registered " << aType << " on port " << aPort << ".  The map has " << aMap.size() << " elements." << std::endl)
 
         return true;
     }
@@ -87,7 +87,7 @@ protected:
         {
             if (logError)
             {
-                REGISTRATION_LOG("Unregistered " << aType << " on port " << aPort << ".  Map has " << aMap.size() << " elements." << std::endl)
+                REGISTRATION_LOG(std::cerr << "Unregistered " << aType << " on port " << aPort << ".  Map has " << aMap.size() << " elements." << std::endl)
             }
             return std::shared_ptr<ItemType>();
         }

@@ -6,9 +6,10 @@
  */
 
 #include "SnobotSim/ModuleWrapper/EncoderWrapper.h"
+#include "SnobotSim/PortUnwrapper.h"
 
 EncoderWrapper::EncoderWrapper(int aPortA, int aPortB) :
-        AModuleWrapper("Encoder (" + std::to_string(aPortA) + ", " + std::to_string(aPortB) + ")"),
+        AModuleWrapper("Encoder (" + std::to_string(UnwrapPort(aPortA)) + ", " + std::to_string(UnwrapPort(aPortB)) + ")"),
         mEncodingFactor(4),
         mDistancePerTick(1)
 {

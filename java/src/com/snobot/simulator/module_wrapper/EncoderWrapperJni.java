@@ -2,6 +2,8 @@
 package com.snobot.simulator.module_wrapper;
 
 public class EncoderWrapperJni {
+	
+    public static native int getHandle(int aPortA, int aPortB);
     
     public static native void setName(int aPort, String aName);
     

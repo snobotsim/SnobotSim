@@ -5,11 +5,40 @@
 
 #include "com_snobot_simulator_module_wrapper_EncoderWrapperJni.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/PortUnwrapper.h"
+#include <sstream>
 
 using namespace wpi::java;
 
 extern "C"
 {
+/*
+ * Class:     com_snobot_simulator_module_wrapper_EncoderWrapperJni
+ * Method:    getHandle
+ * Signature: (II)I
+ */
+JNIEXPORT jint JNICALL Java_com_snobot_simulator_module_1wrapper_EncoderWrapperJni_getHandle
+  (JNIEnv *, jclass, jint handleA, jint handleB)
+{
+    int basicHandle = (handleA << 8) + handleB;
+    std::shared_ptr<EncoderWrapper> wrapper = SensorActuatorRegistry::Get().GetEncoderWrapper(basicHandle, false);
+    if(wrapper)
+    {
+        return basicHandle;
+    }
+
+    int packedHandle = (WrapPort(handleA) << 8) + WrapPort(handleB);
+    wrapper = SensorActuatorRegistry::Get().GetEncoderWrapper(packedHandle, false);
+    if(wrapper)
+    {
+        return packedHandle;
+    }
+
+    std::cerr << "Could not find encoder with ports (" << handleA << ", " << handleB << "), tried " << basicHandle << " and " << packedHandle << std::endl;
+
+    return -1;
+
+}
 
 /*
  * Class:     com_snobot_simulator_module_wrapper_EncoderWrapperJni
@@ -19,7 +48,11 @@ extern "C"
 JNIEXPORT void JNICALL Java_com_snobot_simulator_module_1wrapper_EncoderWrapperJni_setName
   (JNIEnv * env, jclass, jint aPortHandle, jstring aName)
 {
-  SensorActuatorRegistry::Get().GetEncoderWrapper(aPortHandle)->SetName(env->GetStringUTFChars(aName, NULL));
+    std::shared_ptr<EncoderWrapper> wrapper = SensorActuatorRegistry::Get().GetEncoderWrapper(aPortHandle);
+    if(wrapper)
+    {
+        wrapper->SetName(env->GetStringUTFChars(aName, NULL));
+    }
 }
 
 /*

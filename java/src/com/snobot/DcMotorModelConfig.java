@@ -109,8 +109,6 @@ public class DcMotorModelConfig
         mKV = aKV;
         mResistance = aResistance;
         mMotorInertia = aMotorInertia;
-
-        System.out.println(aStallTorque + ", " + aStallCurrent + ", " + mKT);
     }
 
     public void setInverted(boolean aInverted)

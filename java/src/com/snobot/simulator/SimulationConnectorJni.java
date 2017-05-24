@@ -46,34 +46,10 @@ public class SimulationConnectorJni {
             double aArmMass,
             double aConstantAssistTorque,
             double aOverCenterAssistTorque);
-
-    public static int connectEncoderAndSpeedController(
-            int aEncoderHandleA, 
-            int aEncoderHandleB, 
-            int aSpeedControllerHandle)
-    {
-    	int handle = (aEncoderHandleA << 8) + aEncoderHandleB;
-    	
-    	connectEncoderAndSpeedController(handle, aSpeedControllerHandle);
-    	
-    	return handle;
-    }
     
     public static native void connectEncoderAndSpeedController(
             int aEncoderHandle, 
             int aSpeedControllerHandle);
-
-    public static void connectTankDriveSimulator(
-            int aLeftEncoderHandleA, int aLeftEncoderHandleB, 
-            int aRightEncoderHandleA, int aRightEncoderHandleB, 
-            int aGyroHandle, 
-            double aTurnKp)
-    {
-    	int leftHandle = (aLeftEncoderHandleA << 8) + aLeftEncoderHandleB;
-    	int rightHandle = (aRightEncoderHandleA << 8) + aRightEncoderHandleB;
-    	
-    	connectTankDriveSimulator(leftHandle, rightHandle, aGyroHandle, aTurnKp);
-    }
 
     public static native void connectTankDriveSimulator(
             int aLeftEncoderHandle, 

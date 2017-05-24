@@ -22,7 +22,7 @@ RobotStateSingleton::RobotStateSingleton() :
 
 RobotStateSingleton::~RobotStateSingleton()
 {
-	std::cout << "Destroy..." << std::endl;
+
 }
 
 RobotStateSingleton& RobotStateSingleton::Get()

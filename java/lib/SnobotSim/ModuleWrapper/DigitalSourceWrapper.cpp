@@ -6,9 +6,10 @@
  */
 
 #include "SnobotSim/ModuleWrapper/DigitalSourceWrapper.h"
+#include "SnobotSim/PortUnwrapper.h"
 
 DigitalSourceWrapper::DigitalSourceWrapper(int aPort) :
-        AModuleWrapper("Digital Source" + std::to_string(aPort)), mState(false)
+        AModuleWrapper("Digital Source" + std::to_string(UnwrapPort(aPort))), mState(false)
 {
 
 }
