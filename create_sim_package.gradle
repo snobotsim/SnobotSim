@@ -1,29 +1,30 @@
 
 
-task copyStuffx64(type: Copy) {
+task copyNativeSharedLibs(type: Copy) {
 	dependsOn build
 
-	from "native/HALAthena/build/libs/hALAthena/shared/x64/HALAthena.dll"
-	from "native/HALAthena/build/libs/hALAthena/shared/x64/HALAthena.lib"
-	from "native/snobotSimHal/build/libs/snobotSimHal/shared/x64/snobotSimHal.dll"
-	from "native/snobotSimHal/build/libs/snobotSimHal/shared/x64/snobotSimHal.lib"
-	into "build/native/x64"
+	from "native/HALAthena/build/libs/hALAthena/shared/"
+	from "native/snobotSimHal/build/libs/snobotSimHal/shared/"
+	into "build/native/" 
+	include "**/*.dll" // Windows
+	include "**/*.so"  // Linux
 }
 
-task copyStuffx86(type: Copy) {
+task copyNativeStaticLibs(type: Copy) {
 	dependsOn build
 
-	from "native/HALAthena/build/libs/hALAthena/shared/x86/HALAthena.dll"
-	from "native/HALAthena/build/libs/hALAthena/shared/x86/HALAthena.lib"
-	from "native/snobotSimHal/build/libs/snobotSimHal/shared/x86/snobotSimHal.dll"
-	from "native/snobotSimHal/build/libs/snobotSimHal/shared/x86/snobotSimHal.lib"
-	into "build/native/x86"
+	from "native/HALAthena/build/libs/hALAthena/shared/"
+	from "native/snobotSimHal/build/libs/snobotSimHal/shared/"
+	into "build/native"
+	include "**/*.lib" // Windows
+	include "**/*.a"   // Linux
 }
 
 task copyJar(type: Copy) {
 	dependsOn build
 
-	from "native/snobotSimHal/build/libs/ntcore-windows.jar"
+	from "native/snobotSimHal/build/libs/"
 	into "build/java"
+	include "ntcore*.jar"
 }
 

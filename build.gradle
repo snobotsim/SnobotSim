@@ -74,12 +74,12 @@ apply from: 'create_sim_package.gradle'
 
 task install(type: Copy) {
 
-	dependsOn copyStuffx64
-	dependsOn copyStuffx86
+	dependsOn copyNativeSharedLibs
+	dependsOn copyNativeStaticLibs
 	dependsOn copyJar
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.0'
+    gradleVersion = '3.3'
 }
 
