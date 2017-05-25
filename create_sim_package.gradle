@@ -3,8 +3,8 @@
 task copyNativeSharedLibs(type: Copy) {
 	dependsOn build
 
-	from "native/HALAthena/build/libs/hALAthena/shared/"
-	from "native/snobotSimHal/build/libs/snobotSimHal/shared/"
+	from "native/HALAthena/build/libs/hALAthena"
+	from "native/snobotSimHal/build/libs/snobotSimHal"
 	into "build/native/" 
 	include "**/*.dll" // Windows
 	include "**/*.so"  // Linux
@@ -13,8 +13,8 @@ task copyNativeSharedLibs(type: Copy) {
 task copyNativeStaticLibs(type: Copy) {
 	dependsOn build
 
-	from "native/HALAthena/build/libs/hALAthena/shared/"
-	from "native/snobotSimHal/build/libs/snobotSimHal/shared/"
+	from "native/HALAthena/build/libs/hALAthena"
+	from "native/snobotSimHal/build/libs/snobotSimHal"
 	into "build/native"
 	include "**/*.lib" // Windows
 	include "**/*.a"   // Linux
