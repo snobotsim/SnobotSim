@@ -1,3 +1,16 @@
+
+
+ext.wpilibBuildPath = '/home/pj/GitHub/FIRST/2017/TempAllWpi/build'
+
+ext.wpilibc_path    = wpilibBuildPath + "/cpp/wpilibc/include"
+ext.hal_path        = wpilibBuildPath + "/cpp/hal/include"
+ext.network_tables  = wpilibBuildPath + "/cpp/networktables/include"
+
+ext.wpilibcLibraryPath       = wpilibBuildPath    + '/native_linux/shared/x64/libwpilibc.so'
+ext.networkTablesLibraryPath = wpilibBuildPath    + '/native_linux/shared/amd64/libntcore.so'
+ext.wpilibLibraryPath        = wpilibBuildPath    + '/native_linux/shared/amd64/libwpiutil.so'
+    
+
 def ctreOverrideSetupModel = { project ->
     project.model {
         components {
@@ -5,7 +18,7 @@ def ctreOverrideSetupModel = { project ->
                 if (project.isArm) {
                     targetPlatform 'arm'
                 } else {
-                    targetPlatform 'x86'
+                    //targetPlatform 'x86'
                     targetPlatform 'x64'
                 }
                 setupDefines(project, binaries)
@@ -13,6 +26,15 @@ def ctreOverrideSetupModel = { project ->
                 project.setupJniIncludes(binaries)
                 project.checkNativeSymbols(project.getNativeJNISymbols)
 
+                binaries.all 
+                {
+                    tasks.withType(CppCompile) 
+                    {
+                        linker.args  wpilibcLibraryPath
+                        linker.args  networkTablesLibraryPath
+                        linker.args  wpilibLibraryPath
+                    }
+                }
                 sources {
                     cpp {
                         source {
@@ -28,6 +50,21 @@ def ctreOverrideSetupModel = { project ->
                                     srcDirs file.getPath()
                                 }
                             }
+                            srcDirs ext.wpilibc_path
+                            srcDirs ext.hal_path
+                            srcDirs ext.network_tables
+                            
+                            //srcDirs.each {
+                        	//    def dir = new File("${it}")
+                        	//    if(!dir.exists())
+                        	//    {
+                        	//    	throw new GradleException("Could not find include directory ${it}")
+                        	//    }
+                        	//    
+                        	//    println "XXX: " + dir
+                            //}
+                            
+                            
                             includes = ['**/*.h']
                         }
                         if (project.isArm && project.hasProperty('compilerPrefix')) {
@@ -37,7 +74,7 @@ def ctreOverrideSetupModel = { project ->
                             lib project: ':arm:snobotSimHal', library: 'snobotSimHal', linkage: 'shared'
                         } else {
                             lib project: ':native:snobotSimHal', library: 'snobotSimHal', linkage: 'shared'
-                            lib project: ':native:wpiutil', library: 'wpiutil', linkage: 'static'
+                            //lib project: ':native:wpiutil', library: 'wpiutil', linkage: 'shared'
                         }
                     }
                 }

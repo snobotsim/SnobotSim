@@ -79,7 +79,7 @@ task jniHeadersCtreOverride {
 ext.getNativeJNISymbols = {
     def symbolsList = []
 
-    jniHeadersNetworkTables.outputs.files.each {
+    jniHeadersCtreOverride.outputs.files.each {
         FileTree tree = fileTree(dir: it)
         tree.each { File file ->
             file.eachLine { line ->

@@ -1,244 +1,7 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2014-2016. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
-#pragma once
-
-#ifndef CTR_EXCLUDE_WPILIB_CLASSES
-#include <memory>
-
-#include "CANSpeedController.h"
-#include "CanTalonSRX.h"
-#include "LiveWindow/LiveWindowSendable.h"
-#include "MotorSafetyHelper.h"
-#include "PIDInterface.h"
-#include "PIDOutput.h"
-#include "PIDSource.h"
-#include "SafePWM.h"
-#include "tables/ITableListener.h"
-#include "GadgeteerUartClient.h"
-
-/**
- * CTRE Talon SRX Speed Controller with CAN Control
- */
-class CANTalon : public frc::MotorSafety,
-                 public frc::CANSpeedController,
-                 //public frc::ErrorBase,
-                 public frc::LiveWindowSendable,
-                 public ITableListener,
-                 public frc::PIDSource,
-                 public frc::PIDInterface,
-				 public IGadgeteerUartClient{
- public:
-  enum FeedbackDevice {
-    QuadEncoder = 0,
-    AnalogPot = 2,
-    AnalogEncoder = 3,
-    EncRising = 4,
-    EncFalling = 5,
-    CtreMagEncoder_Relative = 6,  //!< Cross The Road Electronics Magnetic
-                                  //! Encoder in Absolute/PulseWidth Mode
-    CtreMagEncoder_Absolute = 7,  //!< Cross The Road Electronics Magnetic
-                                  //! Encoder in Relative/Quadrature Mode
-    PulseWidth = 8,
-  };
-  /**
-   * Depending on the sensor type, Talon can determine if sensor is plugged in
-   * ot not.
-   */
-  enum FeedbackDeviceStatus {
-    FeedbackStatusUnknown = 0,  //!< Sensor status could not be determined.  Not
-                                //! all sensors can do this.
-    FeedbackStatusPresent = 1,  //!< Sensor is present and working okay.
-    FeedbackStatusNotPresent =
-        2,  //!< Sensor is not present, not plugged in, not powered, etc...
-  };
-  enum StatusFrameRate {
-    StatusFrameRateGeneral = 0,
-    StatusFrameRateFeedback = 1,
-    StatusFrameRateQuadEncoder = 2,
-    StatusFrameRateAnalogTempVbat = 3,
-    StatusFrameRatePulseWidthMeas = 4,
-  };
-  /**
-   * Enumerated types for Motion Control Set Values.
-   * When in Motion Profile control mode, these constants are paseed
-   * into set() to manipulate the motion profile executer.
-   * When changing modes, be sure to read the value back using
-   * getMotionProfileStatus() to ensure changes in output take effect before
-   * performing buffering actions.
-   * Disable will signal Talon to put motor output into neutral drive.
-   *   Talon will stop processing motion profile points.  This means the buffer
-   *   is effectively disconnected from the executer, allowing the robot to
-   *   gracefully clear and push new traj points.  isUnderrun will get cleared.
-   *   The active trajectory is also cleared.
-   * Enable will signal Talon to pop a trajectory point from it's buffer and
-   *   process it. If the active trajectory is empty, Talon will shift in the
-   *   next point. If the active traj is empty, and so is the buffer, the motor
-   *   drive is neutral and isUnderrun is set.  When active traj times out, and
-   *   buffer has at least one point, Talon shifts in next one, and isUnderrun
-   *   is cleared.  When active traj times out, and buffer is empty, Talon
-   *   keeps processing active traj and sets IsUnderrun.
-   * Hold will signal Talon keep processing the active trajectory indefinitely.
-   *   If the active traj is cleared, Talon will neutral motor drive.  Otherwise
-   *   Talon will keep processing the active traj but it will not shift in
-   *   points from the buffer.  This means the buffer is effectively
-   *   disconnected from the executer, allowing the robot to gracefully clear
-   *   and push new traj points. isUnderrun is set if active traj is empty,
-   *   otherwise it is cleared. isLast signal is also cleared.
-   *
-   * Typical workflow:
-   *   set(Disable),
-   *   Confirm Disable takes effect,
-   *   clear buffer and push buffer points,
-   *   set(Enable) when enough points have been pushed to ensure no underruns,
-   *   wait for MP to finish or decide abort,
-   *   If MP finished gracefully set(Hold) to hold position servo and disconnect
-   *   buffer,
-   *   If MP is being aborted set(Disable) to neutral the motor and disconnect
-   *   buffer,
-   *   Confirm mode takes effect,
-   *   clear buffer and push buffer points, and rinse-repeat.
-   */
-  enum SetValueMotionProfile {
-    SetValueMotionProfileDisable = 0,
-    SetValueMotionProfileEnable = 1,
-    SetValueMotionProfileHold = 2,
-  };
-  /**
-   * Motion Profile Trajectory Point
-   * This is simply a data transer object.
-   */
-  struct TrajectoryPoint {
-    double position;  //!< The position to servo to.
-    double velocity;  //!< The velocity to feed-forward.
-
-    /**
-     * Time in milliseconds to process this point.
-     * Value should be between 1ms and 255ms.  If value is zero
-     * then Talon will default to 1ms.  If value exceeds 255ms API will cap it.
-     */
-    unsigned int timeDurMs;
-    /**
-     * Which slot to get PIDF gains.
-     * PID is used for position servo.
-     * F is used as the Kv constant for velocity feed-forward.
-     * Typically this is hardcoded to the a particular slot, but you are free
-     * gain schedule if need be.
-     */
-    unsigned int profileSlotSelect;
-    /**
-     * Set to true to only perform the velocity feed-forward and not perform
-     * position servo.  This is useful when learning how the position servo
-     * changes the motor response.  The same could be accomplish by clearing the
-     * PID gains, however this is synchronous the streaming, and doesn't require
-     * restoing
-     * gains when finished.
-     *
-     * Additionaly setting this basically gives you direct control of the motor
-     * output
-     * since motor output = targetVelocity X Kv, where Kv is our Fgain.
-     * This means you can also scheduling straight-throttle curves without
-     * relying on
-     * a sensor.
-     */
-    bool velocityOnly;
-    /**
-     * Set to true to signal Talon that this is the final point, so do not
-     * attempt to pop another trajectory point from out of the Talon buffer.
-     * Instead continue processing this way point.  Typically the velocity
-     * member variable should be zero so that the motor doesn't spin
-     * indefinitely.
-     */
-    bool isLastPoint;
-    /**
-     * Set to true to signal Talon to zero the selected sensor.
-     * When generating MPs, one simple method is to make the first target
-     * position zero,
-     * and the final target position the target distance from the current
-     * position.
-     * Then when you fire the MP, the current position gets set to zero.
-     * If this is the intent, you can set zeroPos on the first trajectory
-     * point.
-     *
-     * Otherwise you can leave this false for all points, and offset the
-     * positions
-     * of all trajectory points so they are correct.
-     */
-    bool zeroPos;
-  };
-  /**
-   * Motion Profile Status
-   * This is simply a data transer object.
-   */
-  struct MotionProfileStatus {
-    /**
-     * The available empty slots in the trajectory buffer.
-     *
-     * The robot API holds a "top buffer" of trajectory points, so your
-     * applicaion can dump several points at once.  The API will then stream
-     * them into the Talon's low-level buffer, allowing the Talon to act on
-     * them.
-     */
-    unsigned int topBufferRem;
-    /**
-     * The number of points in the top trajectory buffer.
-     */
-    unsigned int topBufferCnt;
-    /**
-     * The number of points in the low level Talon buffer.
-     */
-    unsigned int btmBufferCnt;
-    /**
-     * Set if isUnderrun ever gets set.
-     * Only is cleared by clearMotionProfileHasUnderrun() to ensure
-     * robot logic can react or instrument it.
-     * @see clearMotionProfileHasUnderrun()
-     */
-    bool hasUnderrun;
-    /**
-     * This is set if Talon needs to shift a point from its buffer into
-     * the active trajectory point however the buffer is empty. This gets
-     * cleared automatically when is resolved.
-     */
-    bool isUnderrun;
-    /**
-     * True if the active trajectory point has not empty, false otherwise.
-     * The members in activePoint are only valid if this signal is set.
-     */
-    bool activePointValid;
-    /**
-     * The number of points in the low level Talon buffer.
-     */
-    TrajectoryPoint activePoint;
-    /**
-     * The current output mode of the motion profile executer (disabled,
-     * enabled, or hold).
-     * When changing the set() value in MP mode, it's important to check this
-     * signal to confirm the change takes effect before interacting with the
-     * top buffer.
-     */
-    SetValueMotionProfile outputEnable;
-  };
-
-  // CAN Talon's native control modes
-  enum TalonControlMode {
-    kThrottleMode = 0,
-    kFollowerMode = 5,
-    kVoltageMode = 4,
-    kPositionMode = 1,
-    kSpeedMode = 2,
-    kCurrentMode = 3,
-    kMotionProfileMode = 6,
-    kMotionMagicMode = 7,
-    kDisabled = 15
-  };
 
   explicit CANTalon(int deviceNumber);
   explicit CANTalon(int deviceNumber, int controlPeriodMs);
+  DEFAULT_MOVE_CONSTRUCTOR(CANTalon);
   virtual ~CANTalon();
 
   int GetDeviceID();
@@ -384,7 +147,7 @@ class CANTalon : public frc::MotorSafety,
    */
   void SetTalonControlMode(TalonControlMode talonControlMode);
   TalonControlMode GetTalonControlMode()  const;
-	
+
   void SetFeedbackDevice(FeedbackDevice device);
   void SetStatusFrameRateMs(StatusFrameRate stateFrame, int periodMs);
   virtual ControlMode GetControlMode() const;
@@ -518,34 +281,40 @@ class CANTalon : public frc::MotorSafety,
   // SpeedController overrides
   void SetInverted(bool isInverted) override;
   bool GetInverted() const override;
-  
+
+/**
+ * @return low level object for advanced control.
+ */
+ CanTalonSRX & GetLowLevelObject() { return *m_impl; }
+
  private:
 
   enum UsageFlags{
-	
-	Default = 0x00000000, 
-	PercentVbus = 0x00000001, 
-	Position = 0x00000002, 
-	Speed = 0x00000004, 
-	Current = 0x00000008, 
-	Voltage = 0x00000010, 
-	Follower = 0x00000020, 
-	MotionProfile = 0x00000040, 
-	MotionMagic = 0x00000080, 
-	
-	VRampRate = 0x00400000, 
-	CurrentLimit = 0x00800000, 
-	ZeroSensorI = 0x01000000, 
-	ZeroSensorF = 0x02000000, 
-	ZeroSensorR = 0x04000000, 
-	ForwardLimitSwitch = 0x08000000, 
-	ReverseLimitSwitch = 0x10000000, 
-	ForwardSoftLimit = 0x20000000, 
-	ReverseSoftLimit = 0x40000000, 
+
+	Default = 0x00000000,
+	PercentVbus = 0x00000001,
+	Position = 0x00000002,
+	Speed = 0x00000004,
+	Current = 0x00000008,
+	Voltage = 0x00000010,
+	Follower = 0x00000020,
+	MotionProfile = 0x00000040,
+	MotionMagic = 0x00000080,
+
+	VRampRate = 0x00400000,
+	CurrentLimit = 0x00800000,
+	ZeroSensorI = 0x01000000,
+	ZeroSensorF = 0x02000000,
+	ZeroSensorR = 0x04000000,
+	ForwardLimitSwitch = 0x08000000,
+	ReverseLimitSwitch = 0x10000000,
+	ForwardSoftLimit = 0x20000000,
+	ReverseSoftLimit = 0x40000000,
 	MultiProfile = 0x80000000,
 };
 
   int m_deviceNumber;
+  std::unique_ptr<CanTalonSRX> m_impl;
   std::unique_ptr<frc::MotorSafetyHelper> m_safetyHelper;
   int m_profile = 0;  // Profile from CANTalon to use. Set to zero until we can
                       // actually test this.
@@ -554,7 +323,7 @@ class CANTalon : public frc::MotorSafety,
   bool m_stopped = false;
 
   unsigned int m_usageHist=0;
-  
+
   CANSpeedController::ControlMode m_controlMode = kPercentVbus;
   TalonControlMode m_sendMode = kThrottleMode;
 
@@ -658,11 +427,11 @@ class CANTalon : public frc::MotorSafety,
   double ScaleNativeUnitsToRpm(FeedbackDevice devToLookup,
                                int32_t nativeVel) const;
 
-							   
+
   CANSpeedController::ControlMode AdaptCm(TalonControlMode talonControlMode);
 
   TalonControlMode AdaptCm(CANSpeedController::ControlMode controlMode);
-	
+
   // LiveWindow stuff.
   std::shared_ptr<ITable> m_table;
   /**

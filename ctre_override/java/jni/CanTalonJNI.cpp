@@ -1,15 +1,21 @@
 //JNIEXPORT (.*) JNICALL Java_com_ctre_CanTalonJNI_(.*)\R  \(JNIEnv \*, jclass(.*)\);
 //JNIEXPORT \1 JNICALL Java_com_ctre_CanTalonJNI_\2\R  \(JNIEnv \*, jclass\3\)\R{\R    c_TalonSRX_\2(\3);\R}\R
 
+#include <assert.h>
 #include <jni.h>
 #include "support/jni_util.h"
 
 #include "CanTalonSRX.h"
 
+#include "com_ctre_CanTalonJNI.h"
+
 #include <iostream>
 
 #define LOG_UNSUPPORTED()    std::cerr << "Unsupported function " << __LINE__ << std::endl
 #define LOG_UNSUPPORTED222() std::cerr << "Unsupported function 2 " << __LINE__ << std::endl
+
+
+extern "C" {
 
 JNIEXPORT jlong JNICALL Java_com_ctre_CanTalonJNI_new_1CanTalonSRX__III
   (JNIEnv *, jclass, jint, jint, jint)
@@ -30,6 +36,13 @@ JNIEXPORT jlong JNICALL Java_com_ctre_CanTalonJNI_new_1CanTalonSRX__I
 {
     LOG_UNSUPPORTED();
     return 0;
+}
+
+JNIEXPORT jlong JNICALL Java_com_ctre_CanTalonJNI_new_1CanTalonSRX__
+  (JNIEnv *, jclass)
+{
+    LOG_UNSUPPORTED();
+	return 0;
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_delete_1CanTalonSRX
@@ -793,4 +806,6 @@ JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetCurrentLimEnable
     LOG_UNSUPPORTED();
 }
 
+
+}
 

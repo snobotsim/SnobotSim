@@ -5,6 +5,7 @@ task copyNativeSharedLibs(type: Copy) {
 
 	from "native/HALAthena/build/libs/hALAthena"
 	from "native/snobotSimHal/build/libs/snobotSimHal"
+	from "native/ctre_override/build/libs/ctreOverride"
 	into "build/native/" 
 	include "**/*.dll" // Windows
 	include "**/*.so"  // Linux
@@ -15,16 +16,21 @@ task copyNativeStaticLibs(type: Copy) {
 
 	from "native/HALAthena/build/libs/hALAthena"
 	from "native/snobotSimHal/build/libs/snobotSimHal"
+	from "native/ctre_override/build/libs/ctreOverride"
 	into "build/native"
 	include "**/*.lib" // Windows
 	include "**/*.a"   // Linux
 }
-
 task copyJar(type: Copy) {
 	dependsOn build
 
 	from "native/snobotSimHal/build/libs/"
 	into "build/java"
 	include "ntcore*.jar"
+}
+clean {
+    delete "build"
+    delete "native"
+    delete "arm"
 }
 
