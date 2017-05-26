@@ -1,4 +1,5 @@
 
+import org.gradle.internal.os.OperatingSystem
 
 ext.wpilibBuildPath = '/home/pj/GitHub/FIRST/2017/TempAllWpi/build'
 
@@ -6,9 +7,39 @@ ext.wpilibc_path    = wpilibBuildPath + "/cpp/wpilibc/include"
 ext.hal_path        = wpilibBuildPath + "/cpp/hal/include"
 ext.network_tables  = wpilibBuildPath + "/cpp/networktables/include"
 
-ext.wpilibcLibraryPath       = wpilibBuildPath    + '/native_linux/shared/x64/libwpilibc.so'
-ext.networkTablesLibraryPath = wpilibBuildPath    + '/native_linux/shared/amd64/libntcore.so'
-ext.wpilibLibraryPath        = wpilibBuildPath    + '/native_linux/shared/amd64/libwpiutil.so'
+def defineLibraryPaths(targetPlatform)
+{
+    String architecture = targetPlatform.architecture
+
+    if (OperatingSystem.current().isLinux()) {
+ 		     
+        if (architecture.contains('64')) {  
+	        ext.wpilibcLibraryPath       = wpilibBuildPath    + '/native_linux/shared/x64/libwpilibc.so'
+	        ext.networkTablesLibraryPath = wpilibBuildPath    + '/native_linux/shared/amd64/libntcore.so'
+	        ext.wpilibLibraryPath        = wpilibBuildPath    + '/native_linux/shared/amd64/libwpiutil.so'
+        } else {
+	        ext.wpilibcLibraryPath       = wpilibBuildPath    + '/native_linux/shared/x86/libwpilibc.so'
+	        ext.networkTablesLibraryPath = wpilibBuildPath    + '/native_linux/shared/x86/libntcore.so'
+	        ext.wpilibLibraryPath        = wpilibBuildPath    + '/native_linux/shared/x86/libwpiutil.so'
+        }
+        
+    } else if (OperatingSystem.current().isWindows()) {
+        if (architecture.contains('64')) {  
+	        ext.wpilibcLibraryPath       = wpilibBuildPath    + '/native_windows/shared/x64/wpilibc.lib'
+	        ext.networkTablesLibraryPath = wpilibBuildPath    + '/native_windows/shared/x64/ntcore.lib'
+	        ext.wpilibLibraryPath        = wpilibBuildPath    + '/native_windows/shared/x64/wpiutil.lib'
+        } else {
+	        ext.wpilibcLibraryPath       = wpilibBuildPath    + '/native_windows/shared/x86/wpilibc.lib'
+	        ext.networkTablesLibraryPath = wpilibBuildPath    + '/native_windows/shared/x86/ntcore.lib'
+	        ext.wpilibLibraryPath        = wpilibBuildPath    + '/native_windows/shared/x86/wpiutil.lib'
+        }
+    } else {
+        throw new GradleException("${name} does not support building on ${ext.buildPlatform}.")
+    }
+
+
+}
+
     
 
 def ctreOverrideSetupModel = { project ->
@@ -18,7 +49,7 @@ def ctreOverrideSetupModel = { project ->
                 if (project.isArm) {
                     targetPlatform 'arm'
                 } else {
-                    //targetPlatform 'x86'
+                    targetPlatform 'x86'
                     targetPlatform 'x64'
                 }
                 setupDefines(project, binaries)
@@ -30,6 +61,7 @@ def ctreOverrideSetupModel = { project ->
                 {
                     tasks.withType(CppCompile) 
                     {
+                        defineLibraryPaths(targetPlatform)
                         linker.args  wpilibcLibraryPath
                         linker.args  networkTablesLibraryPath
                         linker.args  wpilibLibraryPath
@@ -38,13 +70,13 @@ def ctreOverrideSetupModel = { project ->
                 sources {
                     cpp {
                         source {
-                            srcDirs = ["${rootDir}/ctre_override/cpp/lib/", "${rootDir}/ctre_override/java/jni"]
+                            srcDirs = ["${rootDir}/ctre_override/cpp/lib/", "${rootDir}/ctre_override/java/jni", "${rootDir}/ctre_override/sim/lib"]
                             includes = ['**/*.cpp']
                             
                             println srcDirs
                         }
                         exportedHeaders {
-                            srcDirs = ["${rootDir}/ctre_override/cpp/include"]
+                            srcDirs = ["${rootDir}/ctre_override/cpp/include", "${rootDir}/ctre_override/sim/include"]
                             if (includeJava) {
                                 project.jniHeadersCtreOverride.outputs.files.each { file ->
                                     srcDirs file.getPath()

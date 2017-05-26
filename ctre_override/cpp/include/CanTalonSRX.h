@@ -118,6 +118,16 @@
 #include <mutex>
 
 
+#ifndef __FUNCTION_NAME__
+    #ifdef WIN32   //WINDOWS
+        #define __FUNCTION_NAME__   __FUNCTION__
+    #else          //*NIX
+        #define __FUNCTION_NAME__   __func__
+    #endif
+#endif
+
+#define LOG_UNSUPPORTED()              std::cerr << "Unsupported function at " << __FILE__ << ":" << __LINE__ << " - " << __FUNCTION_NAME__ << std::endl
+
 extern "C" {
   void *c_TalonSRX_Create3(int deviceNumber, int controlPeriodMs, int enablePeriodMs);
   void *c_TalonSRX_Create2(int deviceNumber, int controlPeriodMs);

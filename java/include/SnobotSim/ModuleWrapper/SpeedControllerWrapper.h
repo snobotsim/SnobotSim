@@ -18,21 +18,21 @@ public:
     SpeedControllerWrapper(int aPort);
     virtual ~SpeedControllerWrapper();
 
-    void SetMotorSimulator(const std::shared_ptr<IMotorSimulator>& aSimulator);
+    virtual void SetMotorSimulator(const std::shared_ptr<IMotorSimulator>& aSimulator);
 
-    double GetVoltagePercentage();
+    virtual double GetVoltagePercentage();
 
-    void SetVoltagePercentage(double aSpeed);
+    virtual void SetVoltagePercentage(double aSpeed);
 
-    void Update(double aWaitTime);
+    virtual void Update(double aWaitTime);
 
-    double GetPosition();
+    virtual double GetPosition();
 
-    double GetVelocity();
+    virtual double GetVelocity();
 
-    void Reset();
+    virtual void Reset();
 
-    void Reset(double aPosition, double aVelocity, double aCurrent);
+    virtual void Reset(double aPosition, double aVelocity, double aCurrent);
 
 protected:
 

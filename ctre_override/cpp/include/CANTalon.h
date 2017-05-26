@@ -21,10 +21,12 @@
 #include "tables/ITableListener.h"
 #include "GadgeteerUartClient.h"
 
+#include "SnobotSim/ExportHelper.h"
+
 /**
  * CTRE Talon SRX Speed Controller with CAN Control
  */
-class CANTalon : public frc::MotorSafety,
+class EXPORT_ CANTalon : public frc::MotorSafety,
                  public frc::CANSpeedController,
                  //public frc::ErrorBase,
                  public frc::LiveWindowSendable,

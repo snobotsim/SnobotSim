@@ -11,31 +11,29 @@
 
 #include <iostream>
 
-#define LOG_UNSUPPORTED()    std::cerr << "Unsupported function " << __LINE__ << std::endl
-#define LOG_UNSUPPORTED222() std::cerr << "Unsupported function 2 " << __LINE__ << std::endl
-
 
 extern "C" {
 
+
 JNIEXPORT jlong JNICALL Java_com_ctre_CanTalonJNI_new_1CanTalonSRX__III
-  (JNIEnv *, jclass, jint, jint, jint)
+  (JNIEnv *, jclass, jint deviceNumber, jint controlPeriodMs, jint enablePeriodMs)
 {
-    LOG_UNSUPPORTED();
-    return 0;
+    c_TalonSRX_Create3(deviceNumber, controlPeriodMs, enablePeriodMs);
+    return deviceNumber;
 }
 
 JNIEXPORT jlong JNICALL Java_com_ctre_CanTalonJNI_new_1CanTalonSRX__II
-  (JNIEnv *, jclass, jint, jint)
+  (JNIEnv *, jclass, jint deviceNumber, jint controlPeriodMs)
 {
-    LOG_UNSUPPORTED();
-    return 0;
+    c_TalonSRX_Create2(deviceNumber, controlPeriodMs);
+    return deviceNumber;
 }
 
 JNIEXPORT jlong JNICALL Java_com_ctre_CanTalonJNI_new_1CanTalonSRX__I
-  (JNIEnv *, jclass, jint)
+  (JNIEnv *, jclass, jint deviceNumber)
 {
-    LOG_UNSUPPORTED();
-    return 0;
+    c_TalonSRX_Create1(deviceNumber);
+    return deviceNumber;
 }
 
 JNIEXPORT jlong JNICALL Java_com_ctre_CanTalonJNI_new_1CanTalonSRX__
@@ -46,9 +44,9 @@ JNIEXPORT jlong JNICALL Java_com_ctre_CanTalonJNI_new_1CanTalonSRX__
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_delete_1CanTalonSRX
-  (JNIEnv *, jclass, jlong)
+  (JNIEnv *, jclass, jlong deviceNumber)
 {
-    LOG_UNSUPPORTED();
+    c_TalonSRX_Destroy(&deviceNumber);
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetLastError
@@ -59,9 +57,10 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetLastError
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_GetMotionProfileStatus
-  (JNIEnv *, jclass, jlong, jobject, jobject)
+  (JNIEnv *, jclass, jlong handle, jobject, jobject)
 {
-    LOG_UNSUPPORTED222();
+    int fakeInt = 0;
+    c_TalonSRX_GetMotionProfileStatus(&handle, &fakeInt, &fakeInt, &fakeInt, &fakeInt, &fakeInt, &fakeInt, &fakeInt, &fakeInt);
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_Set

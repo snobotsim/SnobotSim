@@ -1,25 +1,18 @@
 #include "CANTalon.h"
 #include <iostream>
 
-#ifndef __FUNCTION_NAME__
-    #ifdef WIN32   //WINDOWS
-        #define __FUNCTION_NAME__   __FUNCTION__
-    #else          //*NIX
-        #define __FUNCTION_NAME__   __func__
-    #endif
-#endif
-
-#define LOG_UNSUPPORTED() std::cerr << "Unsupported function at " << __FILE__ << ":" << __LINE__ << " - " << __FUNCTION_NAME__ << std::endl
 
 
-CANTalon::CANTalon(int deviceNumber)
+CANTalon::CANTalon(int deviceNumber):
+    m_deviceNumber(deviceNumber)
 {
-    LOG_UNSUPPORTED();
+    c_TalonSRX_Create1(deviceNumber);
 }
 
-CANTalon::CANTalon(int deviceNumber, int controlPeriodMs)
+CANTalon::CANTalon(int deviceNumber, int controlPeriodMs):
+    m_deviceNumber(deviceNumber)
 {
-    LOG_UNSUPPORTED();
+    c_TalonSRX_Create2(deviceNumber, controlPeriodMs);
 }
 
 
@@ -30,8 +23,7 @@ CANTalon::~CANTalon()
 
 int CANTalon::GetDeviceID()
 {
-    LOG_UNSUPPORTED();
-    return 0;
+    return m_deviceNumber;
 }
 
 void CANTalon::PIDWrite(double output)
@@ -539,18 +531,18 @@ void CANTalon::SetControlMode(ControlMode mode)
 
 void CANTalon::SetTalonControlMode(TalonControlMode talonControlMode)
 {
-    LOG_UNSUPPORTED();
+    m_sendMode = talonControlMode;
 }
 
 CANTalon::TalonControlMode CANTalon::GetTalonControlMode()   const
 {
     LOG_UNSUPPORTED();
-    return (CANTalon::TalonControlMode) 0;
+    return m_sendMode;
 }
 
 void CANTalon::SetFeedbackDevice(FeedbackDevice device)
 {
-    LOG_UNSUPPORTED();
+    m_feedbackDevice = device;
 }
 
 void CANTalon::SetStatusFrameRateMs(StatusFrameRate stateFrame, int periodMs)
@@ -560,8 +552,7 @@ void CANTalon::SetStatusFrameRateMs(StatusFrameRate stateFrame, int periodMs)
 
 CANTalon::ControlMode CANTalon::GetControlMode()  const
 {
-    LOG_UNSUPPORTED();
-    return (CANTalon::ControlMode) 0;
+    return m_controlMode;
 }
 
 void CANTalon::SetSensorDirection(bool reverseSensor)

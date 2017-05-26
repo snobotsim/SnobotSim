@@ -15,6 +15,7 @@ class EXPORT_ EncoderWrapper: public AModuleWrapper
 {
 public:
     EncoderWrapper(int aPortA, int aPortB);
+    EncoderWrapper(const std::string& aName);
     virtual ~EncoderWrapper();
 
     void Reset();

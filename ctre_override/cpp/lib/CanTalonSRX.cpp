@@ -1,18 +1,62 @@
 #include "CanTalonSRX.h"
 #include <iostream>
 
-#define LOG_UNSUPPORTED()    std::cerr << "Unsupported function " << __LINE__ << std::endl
+#include "CanTalonSpeedController.h"
+#include "SnobotSim/SensorActuatorRegistry.h"
+
+int GetHandle(void* handle)
+{
+    return (int) *((long*)handle);
+}
+
+int GetEncoderHandle(void* talonHandlePtr)
+{
+    int talonHandle = GetHandle(talonHandlePtr);
+
+    return talonHandle | 0xF0000000;
+}
+
+std::shared_ptr<CanTalonSpeedController> GetCanTalon(int handle)
+{
+    std::shared_ptr<SpeedControllerWrapper> speedController =
+            SensorActuatorRegistry::Get().GetSpeedControllerWrapper(handle);
+
+    return std::dynamic_pointer_cast<CanTalonSpeedController>(speedController);
+}
+
+std::shared_ptr<CanTalonSpeedController> GetCanTalon(void* handle)
+{
+    int intHandle = GetHandle(handle);
+    return GetCanTalon(intHandle);
+}
+
+
+void* c_TalonSRX_Create3(int deviceNmber, int controlPeriodMs, int enablePeriodMs)
+{
+    return c_TalonSRX_Create1(deviceNmber);
+}
+
+void* c_TalonSRX_Create2(int deviceNumber, int controlPeriodMs)
+{
+    return c_TalonSRX_Create1(deviceNumber);
+}
+
+void* c_TalonSRX_Create1(int deviceNumber)
+{
+    std::shared_ptr<SpeedControllerWrapper> speedController(new CanTalonSpeedController(deviceNumber));
+    SensorActuatorRegistry::Get().Register(deviceNumber, speedController);
+    
+    return speedController.get();
+}
 
 void c_TalonSRX_Destroy(void *handle)
 {
     LOG_UNSUPPORTED();
-
 }
 
 void c_TalonSRX_Set(void *handle, double value)
 {
-    LOG_UNSUPPORTED();
-
+    GetCanTalon(handle)->SmartSet(value);
 }
 
 CTR_Code c_TalonSRX_SetParam(void *handle, int paramEnum, double value)
@@ -329,7 +373,10 @@ CTR_Code c_TalonSRX_GetStckyFault_RevSoftLim(void *handle, int *param)
 
 CTR_Code c_TalonSRX_GetAppliedThrottle(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
+    double voltagePercent = SensorActuatorRegistry::Get().GetSpeedControllerWrapper(GetHandle(handle))->GetVoltagePercentage();
+
+    *param = (int) (voltagePercent * 1023);
+
     return CTR_OKAY;
 }
 
@@ -395,8 +442,21 @@ CTR_Code c_TalonSRX_GetBrakeIsEnabled(void *handle, int *param)
 
 CTR_Code c_TalonSRX_GetEncPosition(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+    int encoderHandle = GetEncoderHandle(handle);
+    std::shared_ptr<EncoderWrapper> wrapper =
+            SensorActuatorRegistry::Get().GetEncoderWrapper(encoderHandle);
+
+    if(wrapper)
+    {
+        double distance = wrapper->GetDistance();
+        *param = (int) (distance);
+        return CTR_OKAY;
+    }
+
+    std::cerr << "Encoder has not been hooked up for " << GetHandle(handle) << ".  The simulator is stupid, remember to call setFeedbackDevice" << std::endl;
+
+    *param = 0;
+    return CTR_InvalidParamValue;
 }
 
 CTR_Code c_TalonSRX_GetEncVel(void *handle, int *param)
@@ -563,7 +623,8 @@ CTR_Code c_TalonSRX_GetActTraj_Position(void *handle, int *param)
 
 CTR_Code c_TalonSRX_SetDemand(void *handle, int param)
 {
-    LOG_UNSUPPORTED();
+    GetCanTalon(handle)->SmartSet(param);
+
     return CTR_OKAY;
 }
 
@@ -575,7 +636,21 @@ CTR_Code c_TalonSRX_SetOverrideLimitSwitchEn(void *handle, int param)
 
 CTR_Code c_TalonSRX_SetFeedbackDeviceSelect(void *handle, int param)
 {
-    LOG_UNSUPPORTED();
+    switch(param)
+    {
+    case 0:
+    {
+        int talonHandle = GetHandle(handle);
+        int encoderHandle = GetEncoderHandle(handle);
+        std::string encoderName = "CAN Encoder " + std::to_string(talonHandle);
+        SensorActuatorRegistry::Get().Register(encoderHandle, std::shared_ptr<EncoderWrapper>(new EncoderWrapper(encoderName)));
+        break;
+    }
+    default:
+        std::cerr << "Unknown feedback device " << param << std::endl;
+
+    }
+
     return CTR_OKAY;
 }
 
@@ -593,13 +668,39 @@ CTR_Code c_TalonSRX_SetOverrideBrakeType(void *handle, int param)
 
 CTR_Code c_TalonSRX_SetModeSelect(void *handle, int param)
 {
-    LOG_UNSUPPORTED();
+    CanTalonSpeedController::ControlMode mode = CanTalonSpeedController::ControlMode_Unknown;
+
+    switch(param)
+    {
+    case 0:
+        mode = CanTalonSpeedController::ControlMode_ThrottleMode;
+        break;
+    case 5:
+        mode = CanTalonSpeedController::ControlMode_Follower;
+        break;
+    case 15:
+        mode = CanTalonSpeedController::ControlMode_Disabled;
+        break;
+    default:
+        std::cerr << "Unsupported control mode " << param << std::endl;
+    }
+
+    std::shared_ptr<CanTalonSpeedController> speedController = GetCanTalon(handle);
+    if(mode == CanTalonSpeedController::ControlMode_Follower)
+    {
+        std::shared_ptr<CanTalonSpeedController> scToFollow = GetCanTalon(speedController->GetLastSetValue());
+        scToFollow->AddFollower(speedController);
+    }
+    else
+    {
+        speedController->SetControlMode(mode);
+    }
+
     return CTR_OKAY;
 }
 
 CTR_Code c_TalonSRX_SetProfileSlotSelect(void *handle, int param)
 {
-    LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 
