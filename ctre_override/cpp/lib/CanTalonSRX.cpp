@@ -50,6 +50,7 @@ CanTalonSRX::CanTalonSRX(int deviceNumber, int controlPeriodMs,
 /* CanTalonSRX D'tor
  */
 CanTalonSRX::~CanTalonSRX() {
+
 }
 /**
  * @return true if Talon is reporting that it supports control5, and therefore
@@ -85,6 +86,8 @@ void CanTalonSRX::OpenSessionIfNeedBe() {
 void CanTalonSRX::ProcessStreamMessages() {
 }
 void CanTalonSRX::Set(double value) {
+    std::shared_ptr<CanTalonSpeedController> speedController = GetCanTalon(mDeviceNumber);
+    speedController->SmartSet(value);
 }
 /*---------------------setters and getters that use the param
  * request/response-------------*/
@@ -816,689 +819,446 @@ CTR_Code CanTalonSRX::SetRevFeedbackSensor(int param)
     return CTR_OKAY;
 }
 
-void* c_TalonSRX_Create3(int deviceNmber, int controlPeriodMs, int enablePeriodMs)
-{
-    return c_TalonSRX_Create1(deviceNmber);
-}
 
-void* c_TalonSRX_Create2(int deviceNumber, int controlPeriodMs)
+//------------------ C interface --------------------------------------------//
+extern "C" {
+void *c_TalonSRX_Create3(int deviceNumber, int controlPeriodMs, int enablePeriodMs)
 {
-    return c_TalonSRX_Create1(deviceNumber);
+  return new CanTalonSRX(deviceNumber, controlPeriodMs, enablePeriodMs);
 }
-
-void* c_TalonSRX_Create1(int deviceNumber)
+void *c_TalonSRX_Create2(int deviceNumber, int controlPeriodMs)
 {
-    std::shared_ptr<SpeedControllerWrapper> speedController(new CanTalonSpeedController(deviceNumber));
-    SensorActuatorRegistry::Get().Register(deviceNumber, speedController);
-    
-    return speedController.get();
+  return new CanTalonSRX(deviceNumber, controlPeriodMs);
 }
-
+void *c_TalonSRX_Create1(int deviceNumber)
+{
+  return new CanTalonSRX(deviceNumber);
+}
 void c_TalonSRX_Destroy(void *handle)
 {
-    LOG_UNSUPPORTED();
+  delete (CanTalonSRX*)handle;
 }
-
 void c_TalonSRX_Set(void *handle, double value)
 {
-    GetCanTalon(handle)->SmartSet(value);
+  return ((CanTalonSRX*)handle)->Set(value);
 }
-
 CTR_Code c_TalonSRX_SetParam(void *handle, int paramEnum, double value)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->SetParam((CanTalonSRX::param_t)paramEnum, value);
 }
-
 CTR_Code c_TalonSRX_RequestParam(void *handle, int paramEnum)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->RequestParam((CanTalonSRX::param_t)paramEnum);
 }
-
 CTR_Code c_TalonSRX_GetParamResponse(void *handle, int paramEnum, double *value)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetParamResponse((CanTalonSRX::param_t)paramEnum, *value);
 }
-
 CTR_Code c_TalonSRX_GetParamResponseInt32(void *handle, int paramEnum, int *value)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetParamResponseInt32((CanTalonSRX::param_t)paramEnum, *value);
 }
-
 CTR_Code c_TalonSRX_SetPgain(void *handle, int slotIdx, double gain)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->SetPgain((unsigned)slotIdx, gain);
 }
-
 CTR_Code c_TalonSRX_SetIgain(void *handle, int slotIdx, double gain)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->SetIgain((unsigned)slotIdx, gain);
 }
-
 CTR_Code c_TalonSRX_SetDgain(void *handle, int slotIdx, double gain)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->SetDgain((unsigned)slotIdx, gain);
 }
-
 CTR_Code c_TalonSRX_SetFgain(void *handle, int slotIdx, double gain)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->SetFgain((unsigned)slotIdx, gain);
 }
-
 CTR_Code c_TalonSRX_SetIzone(void *handle, int slotIdx, int zone)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->SetIzone((unsigned)slotIdx, zone);
 }
-
 CTR_Code c_TalonSRX_SetCloseLoopRampRate(void *handle, int slotIdx, int closeLoopRampRate)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->SetCloseLoopRampRate((unsigned)slotIdx, closeLoopRampRate);
 }
-
 CTR_Code c_TalonSRX_SetVoltageCompensationRate(void *handle, double voltagePerMs)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->SetVoltageCompensationRate(voltagePerMs);
 }
-
 CTR_Code c_TalonSRX_SetSensorPosition(void *handle, int pos)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->SetSensorPosition(pos);
 }
-
 CTR_Code c_TalonSRX_SetForwardSoftLimit(void *handle, int forwardLimit)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->SetForwardSoftLimit(forwardLimit);
 }
-
 CTR_Code c_TalonSRX_SetReverseSoftLimit(void *handle, int reverseLimit)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->SetReverseSoftLimit(reverseLimit);
 }
-
 CTR_Code c_TalonSRX_SetForwardSoftEnable(void *handle, int enable)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->SetForwardSoftEnable(enable);
 }
-
 CTR_Code c_TalonSRX_SetReverseSoftEnable(void *handle, int enable)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->SetReverseSoftEnable(enable);
 }
-
 CTR_Code c_TalonSRX_GetPgain(void *handle, int slotIdx, double *gain)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetPgain((unsigned)slotIdx, *gain);
 }
-
 CTR_Code c_TalonSRX_GetIgain(void *handle, int slotIdx, double *gain)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetIgain((unsigned)slotIdx, *gain);
 }
-
 CTR_Code c_TalonSRX_GetDgain(void *handle, int slotIdx, double *gain)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetDgain((unsigned)slotIdx, *gain);
 }
-
 CTR_Code c_TalonSRX_GetFgain(void *handle, int slotIdx, double *gain)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetFgain((unsigned)slotIdx, *gain);
 }
-
 CTR_Code c_TalonSRX_GetIzone(void *handle, int slotIdx, int *zone)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetIzone((unsigned)slotIdx, *zone);
 }
-
 CTR_Code c_TalonSRX_GetCloseLoopRampRate(void *handle, int slotIdx, int *closeLoopRampRate)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetCloseLoopRampRate((unsigned)slotIdx, *closeLoopRampRate);
 }
-
 CTR_Code c_TalonSRX_GetVoltageCompensationRate(void *handle, double *voltagePerMs)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetVoltageCompensationRate(*voltagePerMs);
 }
-
 CTR_Code c_TalonSRX_GetForwardSoftLimit(void *handle, int *forwardLimit)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetForwardSoftLimit(*forwardLimit);
 }
-
 CTR_Code c_TalonSRX_GetReverseSoftLimit(void *handle, int *reverseLimit)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetReverseSoftLimit(*reverseLimit);
 }
-
 CTR_Code c_TalonSRX_GetForwardSoftEnable(void *handle, int *enable)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetForwardSoftEnable(*enable);
 }
-
 CTR_Code c_TalonSRX_GetReverseSoftEnable(void *handle, int *enable)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetReverseSoftEnable(*enable);
 }
-
 CTR_Code c_TalonSRX_GetPulseWidthRiseToFallUs(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetPulseWidthRiseToFallUs(*param);
 }
-
 CTR_Code c_TalonSRX_IsPulseWidthSensorPresent(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->IsPulseWidthSensorPresent(*param);
 }
-
 CTR_Code c_TalonSRX_SetModeSelect2(void *handle, int modeSelect, int demand)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->SetModeSelect(modeSelect, demand);
 }
-
 CTR_Code c_TalonSRX_SetStatusFrameRate(void *handle, int frameEnum, int periodMs)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->SetStatusFrameRate((unsigned)frameEnum, (unsigned)periodMs);
 }
-
 CTR_Code c_TalonSRX_ClearStickyFaults(void *handle)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->ClearStickyFaults();
 }
-
 void c_TalonSRX_ChangeMotionControlFramePeriod(void *handle, int periodMs)
 {
-    LOG_UNSUPPORTED();
-
+  return ((CanTalonSRX*)handle)->ChangeMotionControlFramePeriod((uint32_t)periodMs);
 }
-
 void c_TalonSRX_ClearMotionProfileTrajectories(void *handle)
 {
-    LOG_UNSUPPORTED();
-
+  return ((CanTalonSRX*)handle)->ClearMotionProfileTrajectories();
 }
-
 int c_TalonSRX_GetMotionProfileTopLevelBufferCount(void *handle)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetMotionProfileTopLevelBufferCount();
 }
-
 int c_TalonSRX_IsMotionProfileTopLevelBufferFull(void *handle)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->IsMotionProfileTopLevelBufferFull();
 }
-
 CTR_Code c_TalonSRX_PushMotionProfileTrajectory(void *handle, int targPos, int targVel, int profileSlotSelect, int timeDurMs, int velOnly, int isLastPoint, int zeroPos)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->PushMotionProfileTrajectory(targPos, targVel, profileSlotSelect, timeDurMs, velOnly, isLastPoint, zeroPos);
 }
-
 void c_TalonSRX_ProcessMotionProfileBuffer(void *handle)
 {
-    LOG_UNSUPPORTED();
-
+  return ((CanTalonSRX*)handle)->ProcessMotionProfileBuffer();
 }
-
 CTR_Code c_TalonSRX_GetMotionProfileStatus(void *handle, int *flags, int *profileSlotSelect, int *targPos, int *targVel, int *topBufferRemaining, int *topBufferCnt, int *btmBufferCnt, int *outputEnable)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  uint32_t flags_val;
+  uint32_t profileSlotSelect_val;
+  int32_t targPos_val;
+  int32_t targVel_val;
+  uint32_t topBufferRemaining_val;
+  uint32_t topBufferCnt_val;
+  uint32_t btmBufferCnt_val;
+  uint32_t outputEnable_val;
+  CTR_Code retval = ((CanTalonSRX*)handle)->GetMotionProfileStatus(flags_val, profileSlotSelect_val, targPos_val, targVel_val, topBufferRemaining_val, topBufferCnt_val, btmBufferCnt_val, outputEnable_val);
+  *flags = (int)flags_val;
+  *profileSlotSelect = (int)profileSlotSelect_val;
+  *targPos = (int)targPos_val;
+  *targVel = (int)targVel_val;
+  *topBufferRemaining = (int)topBufferRemaining_val;
+  *topBufferCnt = (int)topBufferCnt_val;
+  *btmBufferCnt = (int)btmBufferCnt_val;
+  *outputEnable = (int)outputEnable_val;
+  return retval;
 }
-
 CTR_Code c_TalonSRX_GetFault_OverTemp(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetFault_OverTemp(*param);
 }
-
 CTR_Code c_TalonSRX_GetFault_UnderVoltage(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetFault_UnderVoltage(*param);
 }
-
 CTR_Code c_TalonSRX_GetFault_ForLim(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetFault_ForLim(*param);
 }
-
 CTR_Code c_TalonSRX_GetFault_RevLim(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetFault_RevLim(*param);
 }
-
 CTR_Code c_TalonSRX_GetFault_HardwareFailure(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetFault_HardwareFailure(*param);
 }
-
 CTR_Code c_TalonSRX_GetFault_ForSoftLim(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetFault_ForSoftLim(*param);
 }
-
 CTR_Code c_TalonSRX_GetFault_RevSoftLim(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetFault_RevSoftLim(*param);
 }
-
 CTR_Code c_TalonSRX_GetStckyFault_OverTemp(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetStckyFault_OverTemp(*param);
 }
-
 CTR_Code c_TalonSRX_GetStckyFault_UnderVoltage(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetStckyFault_UnderVoltage(*param);
 }
-
 CTR_Code c_TalonSRX_GetStckyFault_ForLim(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetStckyFault_ForLim(*param);
 }
-
 CTR_Code c_TalonSRX_GetStckyFault_RevLim(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetStckyFault_RevLim(*param);
 }
-
 CTR_Code c_TalonSRX_GetStckyFault_ForSoftLim(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetStckyFault_ForSoftLim(*param);
 }
-
 CTR_Code c_TalonSRX_GetStckyFault_RevSoftLim(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetStckyFault_RevSoftLim(*param);
 }
-
 CTR_Code c_TalonSRX_GetAppliedThrottle(void *handle, int *param)
 {
-    double voltagePercent = SensorActuatorRegistry::Get().GetSpeedControllerWrapper(GetHandle(handle))->GetVoltagePercentage();
-
-    *param = (int) (voltagePercent * 1023);
-
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetAppliedThrottle(*param);
 }
-
 CTR_Code c_TalonSRX_GetCloseLoopErr(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetCloseLoopErr(*param);
 }
-
 CTR_Code c_TalonSRX_GetFeedbackDeviceSelect(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetFeedbackDeviceSelect(*param);
 }
-
 CTR_Code c_TalonSRX_GetModeSelect(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetModeSelect(*param);
 }
-
 CTR_Code c_TalonSRX_GetLimitSwitchEn(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetLimitSwitchEn(*param);
 }
-
 CTR_Code c_TalonSRX_GetLimitSwitchClosedFor(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetLimitSwitchClosedFor(*param);
 }
-
 CTR_Code c_TalonSRX_GetLimitSwitchClosedRev(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetLimitSwitchClosedRev(*param);
 }
-
 CTR_Code c_TalonSRX_GetSensorPosition(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetSensorPosition(*param);
 }
-
 CTR_Code c_TalonSRX_GetSensorVelocity(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetSensorVelocity(*param);
 }
-
 CTR_Code c_TalonSRX_GetCurrent(void *handle, double *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetCurrent(*param);
 }
-
 CTR_Code c_TalonSRX_GetBrakeIsEnabled(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetBrakeIsEnabled(*param);
 }
-
 CTR_Code c_TalonSRX_GetEncPosition(void *handle, int *param)
 {
-    int encoderHandle = GetEncoderHandle(handle);
-    std::shared_ptr<EncoderWrapper> wrapper =
-            SensorActuatorRegistry::Get().GetEncoderWrapper(encoderHandle);
-
-    if(wrapper)
-    {
-        double distance = wrapper->GetDistance();
-        *param = (int) (distance);
-        return CTR_OKAY;
-    }
-
-    std::cerr << "Encoder has not been hooked up for " << GetHandle(handle) << ".  The simulator is stupid, remember to call setFeedbackDevice" << std::endl;
-
-    *param = 0;
-    return CTR_InvalidParamValue;
+  return ((CanTalonSRX*)handle)->GetEncPosition(*param);
 }
-
 CTR_Code c_TalonSRX_GetEncVel(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetEncVel(*param);
 }
-
 CTR_Code c_TalonSRX_GetEncIndexRiseEvents(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetEncIndexRiseEvents(*param);
 }
-
 CTR_Code c_TalonSRX_GetQuadApin(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetQuadApin(*param);
 }
-
 CTR_Code c_TalonSRX_GetQuadBpin(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetQuadBpin(*param);
 }
-
 CTR_Code c_TalonSRX_GetQuadIdxpin(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetQuadIdxpin(*param);
 }
-
 CTR_Code c_TalonSRX_GetAnalogInWithOv(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetAnalogInWithOv(*param);
 }
-
 CTR_Code c_TalonSRX_GetAnalogInVel(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetAnalogInVel(*param);
 }
-
 CTR_Code c_TalonSRX_GetTemp(void *handle, double *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetTemp(*param);
 }
-
 CTR_Code c_TalonSRX_GetBatteryV(void *handle, double *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetBatteryV(*param);
 }
-
 CTR_Code c_TalonSRX_GetResetCount(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetResetCount(*param);
 }
-
 CTR_Code c_TalonSRX_GetResetFlags(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetResetFlags(*param);
 }
-
 CTR_Code c_TalonSRX_GetFirmVers(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetFirmVers(*param);
 }
-
 CTR_Code c_TalonSRX_GetPulseWidthPosition(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetPulseWidthPosition(*param);
 }
-
 CTR_Code c_TalonSRX_GetPulseWidthVelocity(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetPulseWidthVelocity(*param);
 }
-
 CTR_Code c_TalonSRX_GetPulseWidthRiseToRiseUs(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetPulseWidthRiseToRiseUs(*param);
 }
-
 CTR_Code c_TalonSRX_GetActTraj_IsValid(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetActTraj_IsValid(*param);
 }
-
 CTR_Code c_TalonSRX_GetActTraj_ProfileSlotSelect(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetActTraj_ProfileSlotSelect(*param);
 }
-
 CTR_Code c_TalonSRX_GetActTraj_VelOnly(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetActTraj_VelOnly(*param);
 }
-
 CTR_Code c_TalonSRX_GetActTraj_IsLast(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetActTraj_IsLast(*param);
 }
-
 CTR_Code c_TalonSRX_GetOutputType(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetOutputType(*param);
 }
-
 CTR_Code c_TalonSRX_GetHasUnderrun(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetHasUnderrun(*param);
 }
-
 CTR_Code c_TalonSRX_GetIsUnderrun(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetIsUnderrun(*param);
 }
-
 CTR_Code c_TalonSRX_GetNextID(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetNextID(*param);
 }
-
 CTR_Code c_TalonSRX_GetBufferIsFull(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetBufferIsFull(*param);
 }
-
 CTR_Code c_TalonSRX_GetCount(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetCount(*param);
 }
-
 CTR_Code c_TalonSRX_GetActTraj_Velocity(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetActTraj_Velocity(*param);
 }
-
 CTR_Code c_TalonSRX_GetActTraj_Position(void *handle, int *param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->GetActTraj_Position(*param);
 }
-
 CTR_Code c_TalonSRX_SetDemand(void *handle, int param)
 {
-    GetCanTalon(handle)->SmartSet(param);
-
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->SetDemand(param);
 }
-
 CTR_Code c_TalonSRX_SetOverrideLimitSwitchEn(void *handle, int param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->SetOverrideLimitSwitchEn(param);
 }
-
 CTR_Code c_TalonSRX_SetFeedbackDeviceSelect(void *handle, int param)
 {
-    switch(param)
-    {
-    case 0:
-    {
-        int talonHandle = GetHandle(handle);
-        int encoderHandle = GetEncoderHandle(handle);
-        std::string encoderName = "CAN Encoder " + std::to_string(talonHandle);
-        SensorActuatorRegistry::Get().Register(encoderHandle, std::shared_ptr<EncoderWrapper>(new EncoderWrapper(encoderName)));
-        break;
-    }
-    default:
-        std::cerr << "Unknown feedback device " << param << std::endl;
-
-    }
-
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->SetFeedbackDeviceSelect(param);
 }
-
 CTR_Code c_TalonSRX_SetRevMotDuringCloseLoopEn(void *handle, int param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->SetRevMotDuringCloseLoopEn(param);
 }
-
 CTR_Code c_TalonSRX_SetOverrideBrakeType(void *handle, int param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->SetOverrideBrakeType(param);
 }
-
 CTR_Code c_TalonSRX_SetModeSelect(void *handle, int param)
 {
-    CanTalonSpeedController::ControlMode mode = CanTalonSpeedController::ControlMode_Unknown;
-
-    switch(param)
-    {
-    case 0:
-        mode = CanTalonSpeedController::ControlMode_ThrottleMode;
-        break;
-    case 5:
-        mode = CanTalonSpeedController::ControlMode_Follower;
-        break;
-    case 15:
-        mode = CanTalonSpeedController::ControlMode_Disabled;
-        break;
-    default:
-        std::cerr << "Unsupported control mode " << param << std::endl;
-    }
-
-    std::shared_ptr<CanTalonSpeedController> speedController = GetCanTalon(handle);
-    if(mode == CanTalonSpeedController::ControlMode_Follower)
-    {
-        std::shared_ptr<CanTalonSpeedController> scToFollow = GetCanTalon(speedController->GetLastSetValue());
-        scToFollow->AddFollower(speedController);
-    }
-    else
-    {
-        speedController->SetControlMode(mode);
-    }
-
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->SetModeSelect(param);
 }
-
 CTR_Code c_TalonSRX_SetProfileSlotSelect(void *handle, int param)
 {
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->SetProfileSlotSelect(param);
 }
-
 CTR_Code c_TalonSRX_SetRampThrottle(void *handle, int param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->SetRampThrottle(param);
 }
-
 CTR_Code c_TalonSRX_SetRevFeedbackSensor(void *handle, int param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+  return ((CanTalonSRX*)handle)->SetRevFeedbackSensor(param);
+}
 }
 
 
