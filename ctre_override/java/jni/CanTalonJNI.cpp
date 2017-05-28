@@ -12,795 +12,973 @@
 #include <iostream>
 
 
+
 extern "C" {
 
 
+inline bool CheckCTRStatus(JNIEnv *env, CTR_Code status) {
+  if (status != CTR_OKAY)
+  {
+	  std::cerr << "CTR Error: " << status << std::endl;
+  }
+  return status == CTR_OKAY;
+}
+
+
 JNIEXPORT jlong JNICALL Java_com_ctre_CanTalonJNI_new_1CanTalonSRX__III
-  (JNIEnv *, jclass, jint deviceNumber, jint controlPeriodMs, jint enablePeriodMs)
+  (JNIEnv *env, jclass, jint deviceNumber, jint controlPeriodMs, jint enablePeriodMs)
 {
-    c_TalonSRX_Create3(deviceNumber, controlPeriodMs, enablePeriodMs);
-    return deviceNumber;
+	  return (jlong)(new CanTalonSRX((int)deviceNumber, (int)controlPeriodMs, (int)enablePeriodMs));
 }
 
 JNIEXPORT jlong JNICALL Java_com_ctre_CanTalonJNI_new_1CanTalonSRX__II
-  (JNIEnv *, jclass, jint deviceNumber, jint controlPeriodMs)
+  (JNIEnv *env, jclass, jint deviceNumber, jint controlPeriodMs)
 {
-    c_TalonSRX_Create2(deviceNumber, controlPeriodMs);
-    return deviceNumber;
+	  return (jlong)(new CanTalonSRX((int)deviceNumber, (int)controlPeriodMs));
 }
 
 JNIEXPORT jlong JNICALL Java_com_ctre_CanTalonJNI_new_1CanTalonSRX__I
-  (JNIEnv *, jclass, jint deviceNumber)
+  (JNIEnv *env, jclass, jint deviceNumber)
 {
-    c_TalonSRX_Create1(deviceNumber);
-    return deviceNumber;
+	  return (jlong)(new CanTalonSRX((int)deviceNumber));
 }
 
 JNIEXPORT jlong JNICALL Java_com_ctre_CanTalonJNI_new_1CanTalonSRX__
-  (JNIEnv *, jclass)
+  (JNIEnv *env, jclass)
 {
-    LOG_UNSUPPORTED();
-	return 0;
+	  return (jlong)(new CanTalonSRX);
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_delete_1CanTalonSRX
-  (JNIEnv *, jclass, jlong deviceNumber)
+  (JNIEnv *env, jclass, jlong handle)
 {
-    c_TalonSRX_Destroy(&deviceNumber);
+	  delete (CanTalonSRX*)handle;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetLastError
-  (JNIEnv *, jclass, jlong)
+  (JNIEnv *env, jclass, jlong)
 {
     LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_GetMotionProfileStatus
-  (JNIEnv *, jclass, jlong handle, jobject, jobject)
+  (JNIEnv *env, jclass, jlong handle, jobject, jobject)
 {
-    int fakeInt = 0;
-    c_TalonSRX_GetMotionProfileStatus(&handle, &fakeInt, &fakeInt, &fakeInt, &fakeInt, &fakeInt, &fakeInt, &fakeInt, &fakeInt);
+//    int fakeInt = 0;
+//    CTR_Code status = ((CanTalonSRX*)handle)->GetMotionProfileStatus(&fakeInt, &fakeInt, &fakeInt, &fakeInt, &fakeInt, &fakeInt, &fakeInt, &fakeInt);
+//    CheckCTRStatus(env, status);
+
+    LOG_UNSUPPORTED();
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_Set
-  (JNIEnv *, jclass, jlong handle, jdouble value)
+  (JNIEnv *env, jclass, jlong handle, jdouble value)
 {
-    c_TalonSRX_Set(&handle, value);
+    ((CanTalonSRX*)handle)->Set(value);
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetParam
-  (JNIEnv *, jclass, jlong handle, jint paramEnum, jdouble value)
+  (JNIEnv *env, jclass, jlong handle, jint paramEnum, jdouble value)
 {
-    c_TalonSRX_SetParam(&handle, paramEnum, value);
+	CanTalonSRX::param_t param = (CanTalonSRX::param_t) paramEnum;
+    CTR_Code status = ((CanTalonSRX*)handle)->SetParam(param, value);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_RequestParam
-  (JNIEnv *, jclass, jlong handle, jint paramEnum)
+  (JNIEnv *env, jclass, jlong handle, jint paramEnum)
 {
-    c_TalonSRX_RequestParam(&handle, paramEnum);
+	CanTalonSRX::param_t param = (CanTalonSRX::param_t) paramEnum;
+    CTR_Code status = ((CanTalonSRX*)handle)->RequestParam(param);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetParamResponse
-  (JNIEnv *, jclass, jlong handle, jint paramEnum)
+  (JNIEnv *env, jclass, jlong handle, jint paramEnum)
 {
+	CanTalonSRX::param_t param = (CanTalonSRX::param_t) paramEnum;
+
     double output = 0;
-    output = c_TalonSRX_GetParamResponse(&handle, paramEnum, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetParamResponse(param, output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetParamResponseInt32
-  (JNIEnv *, jclass, jlong handle, jint paramEnum)
+  (JNIEnv *env, jclass, jlong handle, jint paramEnum)
 {
+	CanTalonSRX::param_t param = (CanTalonSRX::param_t) paramEnum;
+
     int output = 0;
-    output = c_TalonSRX_GetParamResponseInt32(&handle, paramEnum, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetParamResponseInt32(param, output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetPgain
-  (JNIEnv *, jclass, jlong handle, jint slotIdx, jdouble gain)
+  (JNIEnv *env, jclass, jlong handle, jint slotIdx, jdouble gain)
 {
-    c_TalonSRX_SetPgain(&handle, slotIdx, gain);
+    CTR_Code status = ((CanTalonSRX*)handle)->SetPgain(slotIdx, gain);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetIgain
-  (JNIEnv *, jclass, jlong handle, jint slotIdx, jdouble gain)
+  (JNIEnv *env, jclass, jlong handle, jint slotIdx, jdouble gain)
 {
-    c_TalonSRX_SetIgain(&handle, slotIdx, gain);
+    CTR_Code status = ((CanTalonSRX*)handle)->SetIgain(slotIdx, gain);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetDgain
-  (JNIEnv *, jclass, jlong handle, jint slotIdx, jdouble gain)
+  (JNIEnv *env, jclass, jlong handle, jint slotIdx, jdouble gain)
 {
-    c_TalonSRX_SetDgain(&handle, slotIdx, gain);
+    CTR_Code status = ((CanTalonSRX*)handle)->SetDgain(slotIdx, gain);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetFgain
-  (JNIEnv *, jclass, jlong handle, jint slotIdx, jdouble gain)
+  (JNIEnv *env, jclass, jlong handle, jint slotIdx, jdouble gain)
 {
-    c_TalonSRX_SetFgain(&handle, slotIdx, gain);
+    CTR_Code status = ((CanTalonSRX*)handle)->SetFgain(slotIdx, gain);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetIzone
-  (JNIEnv *, jclass, jlong handle, jint slotIdx, jint zone)
+  (JNIEnv *env, jclass, jlong handle, jint slotIdx, jint zone)
 {
-    c_TalonSRX_SetIzone(&handle, slotIdx, zone);
+    CTR_Code status = ((CanTalonSRX*)handle)->SetIzone(slotIdx, zone);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetCloseLoopRampRate
-  (JNIEnv *, jclass, jlong handle, jint slotIdx, jint closeLoopRampRate)
+  (JNIEnv *env, jclass, jlong handle, jint slotIdx, jint closeLoopRampRate)
 {
-    c_TalonSRX_SetCloseLoopRampRate(&handle, slotIdx, closeLoopRampRate);
+    CTR_Code status = ((CanTalonSRX*)handle)->SetCloseLoopRampRate(slotIdx, closeLoopRampRate);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetVoltageCompensationRate
-  (JNIEnv *, jclass, jlong handle, jdouble voltagePerMs)
+  (JNIEnv *env, jclass, jlong handle, jdouble voltagePerMs)
 {
-    c_TalonSRX_SetVoltageCompensationRate(&handle, voltagePerMs);
+    CTR_Code status = ((CanTalonSRX*)handle)->SetVoltageCompensationRate(voltagePerMs);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetSensorPosition
-  (JNIEnv *, jclass, jlong handle, jint pos)
+  (JNIEnv *env, jclass, jlong handle, jint pos)
 {
-    c_TalonSRX_SetSensorPosition(&handle, pos);
+    CTR_Code status = ((CanTalonSRX*)handle)->SetSensorPosition(pos);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetForwardSoftLimit
-  (JNIEnv *, jclass, jlong handle, jint forwardLimit)
+  (JNIEnv *env, jclass, jlong handle, jint forwardLimit)
 {
-    c_TalonSRX_SetForwardSoftLimit(&handle, forwardLimit);
+    CTR_Code status = ((CanTalonSRX*)handle)->SetForwardSoftLimit(forwardLimit);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetReverseSoftLimit
-  (JNIEnv *, jclass, jlong handle, jint reverseLimit)
+  (JNIEnv *env, jclass, jlong handle, jint reverseLimit)
 {
-    c_TalonSRX_SetReverseSoftLimit(&handle, reverseLimit);
+    CTR_Code status = ((CanTalonSRX*)handle)->SetReverseSoftLimit(reverseLimit);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetForwardSoftEnable
-  (JNIEnv *, jclass, jlong handle, jint enable)
+  (JNIEnv *env, jclass, jlong handle, jint enable)
 {
-    c_TalonSRX_SetForwardSoftEnable(&handle, enable);
+    CTR_Code status = ((CanTalonSRX*)handle)->SetForwardSoftEnable(enable);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetReverseSoftEnable
-  (JNIEnv *, jclass, jlong handle, jint enable)
+  (JNIEnv *env, jclass, jlong handle, jint enable)
 {
-    c_TalonSRX_SetReverseSoftEnable(&handle, enable);
+    CTR_Code status = ((CanTalonSRX*)handle)->SetReverseSoftEnable(enable);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetPgain
-  (JNIEnv *, jclass, jlong handle, jint slotIdx)
+  (JNIEnv *env, jclass, jlong handle, jint slotIdx)
 {
     double output = 0;
-    output = c_TalonSRX_GetPgain(&handle, slotIdx, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetPgain(slotIdx, output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetIgain
-  (JNIEnv *, jclass, jlong handle, jint slotIdx)
+  (JNIEnv *env, jclass, jlong handle, jint slotIdx)
 {
     double output = 0;
-    output = c_TalonSRX_GetIgain(&handle, slotIdx, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetIgain(slotIdx, output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetDgain
-  (JNIEnv *, jclass, jlong handle, jint slotIdx)
+  (JNIEnv *env, jclass, jlong handle, jint slotIdx)
 {
     double output = 0;
-    output = c_TalonSRX_GetDgain(&handle, slotIdx, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetDgain(slotIdx, output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetFgain
-  (JNIEnv *, jclass, jlong handle, jint slotIdx)
+  (JNIEnv *env, jclass, jlong handle, jint slotIdx)
 {
     double output = 0;
-    output = c_TalonSRX_GetFgain(&handle, slotIdx, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetFgain(slotIdx, output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetIzone
-  (JNIEnv *, jclass, jlong handle, jint slotIdx)
+  (JNIEnv *env, jclass, jlong handle, jint slotIdx)
 {
     int output = 0;
-    output = c_TalonSRX_GetIzone(&handle, slotIdx, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetIzone(slotIdx, output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetCloseLoopRampRate
-  (JNIEnv *, jclass, jlong handle, jint slotIdx)
+  (JNIEnv *env, jclass, jlong handle, jint slotIdx)
 {
     int output = 0;
-    output = c_TalonSRX_GetCloseLoopRampRate(&handle, slotIdx, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetCloseLoopRampRate(slotIdx, output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetVoltageCompensationRate
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     double output = 0;
-    output = c_TalonSRX_GetVoltageCompensationRate(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetVoltageCompensationRate(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetForwardSoftLimit
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetForwardSoftLimit(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetForwardSoftLimit(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetReverseSoftLimit
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetReverseSoftLimit(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetReverseSoftLimit(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetForwardSoftEnable
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetForwardSoftEnable(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetForwardSoftEnable(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetReverseSoftEnable
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetReverseSoftEnable(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetReverseSoftEnable(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetPulseWidthRiseToFallUs
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetPulseWidthRiseToFallUs(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetPulseWidthRiseToFallUs(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_IsPulseWidthSensorPresent
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_IsPulseWidthSensorPresent(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->IsPulseWidthSensorPresent(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetModeSelect2
-  (JNIEnv *, jclass, jlong handle, jint modeSelect, jint demand)
+  (JNIEnv *env, jclass, jlong handle, jint modeSelect, jint demand)
 {
-    c_TalonSRX_SetModeSelect2(&handle, modeSelect, demand);
+//    CTR_Code status = ((CanTalonSRX*)handle)->SetModeSelect2(modeSelect, demand);
+//    CheckCTRStatus(env, status);
+
+    LOG_UNSUPPORTED();
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetStatusFrameRate
-  (JNIEnv *, jclass, jlong handle, jint frameEnum, jint periodMs)
+  (JNIEnv *env, jclass, jlong handle, jint frameEnum, jint periodMs)
 {
-    c_TalonSRX_SetStatusFrameRate(&handle, frameEnum, periodMs);
+    CTR_Code status = ((CanTalonSRX*)handle)->SetStatusFrameRate(frameEnum, periodMs);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_ClearStickyFaults
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
-    c_TalonSRX_ClearStickyFaults(&handle);
+    CTR_Code status = ((CanTalonSRX*)handle)->ClearStickyFaults();
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_ChangeMotionControlFramePeriod
-  (JNIEnv *, jclass, jlong handle, jint periodMs)
+  (JNIEnv *env, jclass, jlong handle, jint periodMs)
 {
-    c_TalonSRX_ChangeMotionControlFramePeriod(&handle, periodMs);
+    ((CanTalonSRX*)handle)->ChangeMotionControlFramePeriod(periodMs);
+
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_ClearMotionProfileTrajectories
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
-    c_TalonSRX_ClearMotionProfileTrajectories(&handle);
+    ((CanTalonSRX*)handle)->ClearMotionProfileTrajectories();
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetMotionProfileTopLevelBufferCount
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
-    return c_TalonSRX_GetMotionProfileTopLevelBufferCount(&handle);
+//    return CTR_Code status = ((CanTalonSRX*)handle)->GetMotionProfileTopLevelBufferCount();
+//    CheckCTRStatus(env, status);
+
+	LOG_UNSUPPORTED();
+    return 0;
+
 }
 
 JNIEXPORT jboolean JNICALL Java_com_ctre_CanTalonJNI_IsMotionProfileTopLevelBufferFull
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
-    return c_TalonSRX_IsMotionProfileTopLevelBufferFull(&handle);
+//    return CTR_Code status = ((CanTalonSRX*)handle)->IsMotionProfileTopLevelBufferFull();
+//    CheckCTRStatus(env, status);
+
+	LOG_UNSUPPORTED();
+	return false;
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_PushMotionProfileTrajectory
-  (JNIEnv *, jclass, jlong handle, jint targPos, jint targVel, jint profileSlotSelect, jint timeDurMs, jint velOnly, jint isLastPoint, jint zeroPos)
+  (JNIEnv *env, jclass, jlong handle, jint targPos, jint targVel, jint profileSlotSelect, jint timeDurMs, jint velOnly, jint isLastPoint, jint zeroPos)
 {
-    c_TalonSRX_PushMotionProfileTrajectory(&handle, targPos, targVel, profileSlotSelect, timeDurMs, velOnly, isLastPoint, zeroPos);
+    CTR_Code status = ((CanTalonSRX*)handle)->PushMotionProfileTrajectory(targPos, targVel, profileSlotSelect, timeDurMs, velOnly, isLastPoint, zeroPos);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_ProcessMotionProfileBuffer
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
-    c_TalonSRX_ProcessMotionProfileBuffer(&handle);
+    ((CanTalonSRX*)handle)->ProcessMotionProfileBuffer();
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFault_1OverTemp
-  (JNIEnv *, jclass, jlong)
+  (JNIEnv *env, jclass, jlong)
 {
     LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFault_1UnderVoltage
-  (JNIEnv *, jclass, jlong)
+  (JNIEnv *env, jclass, jlong)
 {
     LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFault_1ForLim
-  (JNIEnv *, jclass, jlong)
+  (JNIEnv *env, jclass, jlong)
 {
     LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFault_1RevLim
-  (JNIEnv *, jclass, jlong)
+  (JNIEnv *env, jclass, jlong)
 {
     LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFault_1HardwareFailure
-  (JNIEnv *, jclass, jlong)
+  (JNIEnv *env, jclass, jlong)
 {
     LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFault_1ForSoftLim
-  (JNIEnv *, jclass, jlong)
+  (JNIEnv *env, jclass, jlong)
 {
     LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFault_1RevSoftLim
-  (JNIEnv *, jclass, jlong)
+  (JNIEnv *env, jclass, jlong)
 {
     LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetStckyFault_1OverTemp
-  (JNIEnv *, jclass, jlong)
+  (JNIEnv *env, jclass, jlong)
 {
     LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetStckyFault_1UnderVoltage
-  (JNIEnv *, jclass, jlong)
+  (JNIEnv *env, jclass, jlong)
 {
     LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetStckyFault_1ForLim
-  (JNIEnv *, jclass, jlong)
+  (JNIEnv *env, jclass, jlong)
 {
     LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetStckyFault_1RevLim
-  (JNIEnv *, jclass, jlong)
+  (JNIEnv *env, jclass, jlong)
 {
     LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetStckyFault_1ForSoftLim
-  (JNIEnv *, jclass, jlong)
+  (JNIEnv *env, jclass, jlong)
 {
     LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetStckyFault_1RevSoftLim
-  (JNIEnv *, jclass, jlong)
+  (JNIEnv *env, jclass, jlong)
 {
     LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetAppliedThrottle
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetAppliedThrottle(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetAppliedThrottle(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetCloseLoopErr
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetCloseLoopErr(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetCloseLoopErr(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFeedbackDeviceSelect
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetFeedbackDeviceSelect(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetFeedbackDeviceSelect(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetModeSelect
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetModeSelect(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetModeSelect(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetLimitSwitchEn
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetLimitSwitchEn(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetLimitSwitchEn(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetLimitSwitchClosedFor
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetLimitSwitchClosedFor(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetLimitSwitchClosedFor(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetLimitSwitchClosedRev
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetLimitSwitchClosedRev(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetLimitSwitchClosedRev(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetSensorPosition
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetSensorPosition(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetSensorPosition(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetSensorVelocity
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetSensorVelocity(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetSensorVelocity(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetCurrent
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     double output = 0;
-    output = c_TalonSRX_GetCurrent(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetCurrent(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetBrakeIsEnabled
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetBrakeIsEnabled(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetBrakeIsEnabled(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetEncPosition
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetEncPosition(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetEncPosition(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetEncVel
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetEncVel(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetEncVel(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetEncIndexRiseEvents
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetEncIndexRiseEvents(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetEncIndexRiseEvents(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetQuadApin
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetQuadApin(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetQuadApin(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetQuadBpin
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetQuadBpin(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetQuadBpin(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetQuadIdxpin
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetQuadIdxpin(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetQuadIdxpin(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetAnalogInWithOv
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetAnalogInWithOv(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetAnalogInWithOv(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetAnalogInVel
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetAnalogInVel(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetAnalogInVel(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetTemp
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     double output = 0;
-    output = c_TalonSRX_GetTemp(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetTemp(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetBatteryV
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     double output = 0;
-    output = c_TalonSRX_GetBatteryV(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetBatteryV(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetClearPosOnIdx
-  (JNIEnv *, jclass, jlong)
+  (JNIEnv *env, jclass, jlong)
 {
     LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetClearPosOnLimR
-  (JNIEnv *, jclass, jlong)
+  (JNIEnv *env, jclass, jlong)
 {
     LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetClearPosOnLimF
-  (JNIEnv *, jclass, jlong)
+  (JNIEnv *env, jclass, jlong)
 {
     LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetResetCount
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetResetCount(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetResetCount(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetResetFlags
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetResetFlags(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetResetFlags(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFirmVers
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetFirmVers(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetFirmVers(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetPulseWidthPosition
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetPulseWidthPosition(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetPulseWidthPosition(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetPulseWidthVelocity
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetPulseWidthVelocity(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetPulseWidthVelocity(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetPulseWidthRiseToRiseUs
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetPulseWidthRiseToRiseUs(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetPulseWidthRiseToRiseUs(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetActTraj_1IsValid
-  (JNIEnv *, jclass, jlong)
+  (JNIEnv *env, jclass, jlong)
 {
     LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetActTraj_1ProfileSlotSelect
-  (JNIEnv *, jclass, jlong)
+  (JNIEnv *env, jclass, jlong)
 {
     LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetActTraj_1VelOnly
-  (JNIEnv *, jclass, jlong)
+  (JNIEnv *env, jclass, jlong)
 {
     LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetActTraj_1IsLast
-  (JNIEnv *, jclass, jlong)
+  (JNIEnv *env, jclass, jlong)
 {
     LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetOutputType
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetOutputType(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetOutputType(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetHasUnderrun
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetHasUnderrun(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetHasUnderrun(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetIsUnderrun
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetIsUnderrun(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetIsUnderrun(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetNextID
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetNextID(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetNextID(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetBufferIsFull
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetBufferIsFull(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetBufferIsFull(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetCount
-  (JNIEnv *, jclass, jlong handle)
+  (JNIEnv *env, jclass, jlong handle)
 {
     int output = 0;
-    output = c_TalonSRX_GetCount(&handle, &output);
+    CTR_Code status = ((CanTalonSRX*)handle)->GetCount(output);
+    CheckCTRStatus(env, status);
+
     return output;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetActTraj_1Velocity
-  (JNIEnv *, jclass, jlong)
+  (JNIEnv *env, jclass, jlong)
 {
     LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetActTraj_1Position
-  (JNIEnv *, jclass, jlong)
+  (JNIEnv *env, jclass, jlong)
 {
     LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetDemand
-  (JNIEnv *, jclass, jlong handle, jint param)
+  (JNIEnv *env, jclass, jlong handle, jint param)
 {
-    c_TalonSRX_SetDemand(&handle, param);
+    CTR_Code status = ((CanTalonSRX*)handle)->SetDemand(param);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetOverrideLimitSwitchEn
-  (JNIEnv *, jclass, jlong handle, jint param)
+  (JNIEnv *env, jclass, jlong handle, jint param)
 {
-    c_TalonSRX_SetOverrideLimitSwitchEn(&handle, param);
+    CTR_Code status = ((CanTalonSRX*)handle)->SetOverrideLimitSwitchEn(param);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetFeedbackDeviceSelect
-  (JNIEnv *, jclass, jlong handle, jint param)
+  (JNIEnv *env, jclass, jlong handle, jint param)
 {
-    c_TalonSRX_SetFeedbackDeviceSelect(&handle, param);
+    CTR_Code status = ((CanTalonSRX*)handle)->SetFeedbackDeviceSelect(param);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetRevMotDuringCloseLoopEn
-  (JNIEnv *, jclass, jlong handle, jint param)
+  (JNIEnv *env, jclass, jlong handle, jint param)
 {
-    c_TalonSRX_SetRevMotDuringCloseLoopEn(&handle, param);
+    CTR_Code status = ((CanTalonSRX*)handle)->SetRevMotDuringCloseLoopEn(param);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetOverrideBrakeType
-  (JNIEnv *, jclass, jlong handle, jint param)
+  (JNIEnv *env, jclass, jlong handle, jint param)
 {
-    c_TalonSRX_SetOverrideBrakeType(&handle, param);
+    CTR_Code status = ((CanTalonSRX*)handle)->SetOverrideBrakeType(param);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetModeSelect
-  (JNIEnv *, jclass, jlong handle, jint param)
+  (JNIEnv *env, jclass, jlong handle, jint param)
 {
-    c_TalonSRX_SetModeSelect(&handle, param);
+    CTR_Code status = ((CanTalonSRX*)handle)->SetModeSelect(param);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetProfileSlotSelect
-  (JNIEnv *, jclass, jlong handle, jint param)
+  (JNIEnv *env, jclass, jlong handle, jint param)
 {
-    c_TalonSRX_SetProfileSlotSelect(&handle, param);
+    CTR_Code status = ((CanTalonSRX*)handle)->SetProfileSlotSelect(param);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetRampThrottle
-  (JNIEnv *, jclass, jlong handle, jint param)
+  (JNIEnv *env, jclass, jlong handle, jint param)
 {
-    c_TalonSRX_SetRampThrottle(&handle, param);
+    CTR_Code status = ((CanTalonSRX*)handle)->SetRampThrottle(param);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetRevFeedbackSensor
-  (JNIEnv *, jclass, jlong handle, jint param)
+  (JNIEnv *env, jclass, jlong handle, jint param)
 {
-    c_TalonSRX_SetRevFeedbackSensor(&handle, param);
+    CTR_Code status = ((CanTalonSRX*)handle)->SetRevFeedbackSensor(param);
+    CheckCTRStatus(env, status);
+
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetCurrentLimEnable
-  (JNIEnv *, jclass, jlong, jboolean)
+  (JNIEnv *env, jclass, jlong, jboolean)
 {
     LOG_UNSUPPORTED();
 }
