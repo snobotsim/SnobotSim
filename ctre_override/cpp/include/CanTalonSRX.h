@@ -111,7 +111,6 @@
 #include "ctre/CtreCanNode.h"
 #include "ctre/structs_mtrCntrl.h"
 #include "GadgeteerUartClient.h"
-#include <FRC_NetworkCommunication/CANSessionMux.h>  //CAN Comm
 #include <map>
 #include <atomic>
 #include <deque>
@@ -150,7 +149,7 @@ class CanTalonSRX  {
   // soliciting
   uint32_t _can_h;    //!< Session handle for catching response params.
   int32_t _can_stat;  //!< Session handle status.
-  struct tCANStreamMessage _msgBuff[20];
+//  struct tCANStreamMessage _msgBuff[20];
   static int const kMsgCapacity = 20;
   typedef std::map<uint32_t, uint32_t> sigs_t;
   // Catches signal updates that are solicited.  Expect this to be very few.

@@ -59,8 +59,7 @@ task jniHeadersCtreOverride {
     def outputFolder = file(generatedJNIHeaderLoc)
     inputs.files sourceSets.main.output
     outputs.file outputFolder
-    println "FJLDKSJFLKJ " + outputFolder
-    println "FJLDKSJFLKJ " + sourceSets.main.output.classesDir
+
     doLast {
         outputFolder.mkdirs()
         exec {

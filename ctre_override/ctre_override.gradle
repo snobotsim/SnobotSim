@@ -1,10 +1,10 @@
 
 import org.gradle.internal.os.OperatingSystem
 
-ext.wpilibBuildPath = '/home/pj/GitHub/FIRST/2017/TempAllWpi/build'
+//ext.wpilibBuildPath = '/home/pj/GitHub/FIRST/2017/TempAllWpi/build'
+ext.wpilibBuildPath = 'C:/Users/PJ/Documents/GitHub/frc2017/fakeWpi/build'
 
 ext.wpilibc_path    = wpilibBuildPath + "/cpp/wpilibc/include"
-ext.hal_path        = wpilibBuildPath + "/cpp/hal/include"
 ext.network_tables  = wpilibBuildPath + "/cpp/networktables/include"
 
 def defineLibraryPaths(targetPlatform)
@@ -72,8 +72,6 @@ def ctreOverrideSetupModel = { project ->
                         source {
                             srcDirs = ["${rootDir}/ctre_override/cpp/lib/", "${rootDir}/ctre_override/java/jni", "${rootDir}/ctre_override/sim/lib"]
                             includes = ['**/*.cpp']
-                            
-                            println srcDirs
                         }
                         exportedHeaders {
                             srcDirs = ["${rootDir}/ctre_override/cpp/include", "${rootDir}/ctre_override/sim/include"]
@@ -83,18 +81,16 @@ def ctreOverrideSetupModel = { project ->
                                 }
                             }
                             srcDirs ext.wpilibc_path
-                            srcDirs ext.hal_path
                             srcDirs ext.network_tables
                             
-                            //srcDirs.each {
-                        	//    def dir = new File("${it}")
-                        	//    if(!dir.exists())
-                        	//    {
-                        	//    	throw new GradleException("Could not find include directory ${it}")
-                        	//    }
-                        	//    
-                        	//    println "XXX: " + dir
-                            //}
+                            srcDirs.each {
+                        	    def dir = new File("${it}")
+                        	    if(!dir.exists())
+                        	    {
+                        	        println "Missing include directory : " + dir
+                        	    	//throw new GradleException("Could not find include directory ${it}")
+                        	    }
+                            }
                             
                             
                             includes = ['**/*.h']
@@ -104,9 +100,11 @@ def ctreOverrideSetupModel = { project ->
                         } else if (project.isArm) {
                             // If roboRIO, link shared
                             lib project: ':arm:snobotSimHal', library: 'snobotSimHal', linkage: 'shared'
+                            lib project: ':arm:HALAthena', library: 'HALAthena', linkage: 'shared'
                         } else {
                             lib project: ':native:snobotSimHal', library: 'snobotSimHal', linkage: 'shared'
-                            //lib project: ':native:wpiutil', library: 'wpiutil', linkage: 'shared'
+                            lib project: ':native:HALAthena', library: 'HALAthena', linkage: 'shared'
+                            lib project: ':native:wpiutil', library: 'wpiutil', linkage: 'static'
                         }
                     }
                 }
