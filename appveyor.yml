@@ -1,7 +1,7 @@
 version: 1.0.{build}
 image: Visual Studio 2015
 build_script:
-- cmd: gradlew.bat build
+- cmd: gradlew.bat build -PskipArm
 artifacts:
 - path: build/*
   name: Test

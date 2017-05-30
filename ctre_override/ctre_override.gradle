@@ -1,9 +1,7 @@
 
 import org.gradle.internal.os.OperatingSystem
 
-//ext.wpilibBuildPath = '/home/pj/GitHub/FIRST/2017/TempAllWpi/build'
-ext.wpilibBuildPath = 'C:/Users/PJ/Documents/GitHub/frc2017/fakeWpi/build'
-
+ext.wpilibBuildPath = "${rootDir}/external_dependencies/"
 ext.wpilibc_path    = wpilibBuildPath + "/cpp/wpilibc/include"
 ext.network_tables  = wpilibBuildPath + "/cpp/networktables/include"
 

@@ -32,5 +32,6 @@ clean {
     delete "build"
     delete "native"
     delete "arm"
+    delete "external_dependencies"
 }
 

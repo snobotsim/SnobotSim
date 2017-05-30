@@ -206,6 +206,7 @@ hs_err_pid*
 ### Gradle ###
 .gradle
 build/
+external_dependencies/
 
 # Ignore Gradle GUI config
 gradle-app.setting

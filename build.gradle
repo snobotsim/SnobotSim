@@ -1,4 +1,5 @@
 import org.gradle.internal.os.OperatingSystem
+import de.undercouch.gradle.tasks.download.Download
 
 buildscript {
     repositories {
@@ -11,9 +12,43 @@ buildscript {
         classpath 'gradle.plugin.edu.wpi.first.wpilib.versioning:wpilib-version-plugin:1.4'
     }
 }
+plugins {
+    id "de.undercouch.download" version "3.2.0"
+}
 
 ext.buildArm = !project.hasProperty('skipArm')
 ext.includeJava = !project.hasProperty('skipJava')
+
+task download_wpilibs (type: Copy) {
+
+	def output_folder = new File("${rootDir}/external_dependencies/")
+
+    if( !output_folder.exists() ) {
+      output_folder.mkdirs()
+    }
+    
+    
+    if(project.hasProperty('local_wpilib'))
+    {
+	    from project.local_wpilib
+	    into output_folder
+    }
+    else
+    {
+        //apply plugin: download
+	    task downloadFile(type: Download) {
+
+		    src "http://ci.appveyor.com/api/projects/pjreiniger/tempallwpi/artifacts/test.zip"
+		    dest output_folder
+		    onlyIfNewer true
+		    
+	        from zipTree(output_folder.toString() + "/test.zip")
+	        into output_folder
+		}
+		
+		dependsOn downloadFile
+    }
+}
 
 if (hasProperty('makeDesktop')) {
     println 'Making desktop classifier jar. NOTE: This desktop version should only be used for local testing.' +
@@ -66,6 +101,7 @@ apply from: "ctre_override/ctre_override.gradle"
 // built when running ./gradlew build
 task build
 
+build.dependsOn download_wpilibs
 build.dependsOn snobotSimHalSourceZip
 build.dependsOn wpiutilSourceZip
 
