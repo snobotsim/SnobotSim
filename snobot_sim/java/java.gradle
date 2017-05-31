@@ -16,7 +16,7 @@ def generatedJNIHeaderLoc = "${buildDir}/include"
 sourceSets {
     main {
         java {
-            srcDirs = ["${rootDir}/java/src"]
+            srcDirs = ["${rootDir}/snobot_sim/java/src"]
         }
     }
 }

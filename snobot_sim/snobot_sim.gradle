@@ -113,7 +113,7 @@ if (buildArm) {
 
         apply from: "${rootDir}/toolchains/arm.gradle"
         if (includeJava) {
-            apply from: "${rootDir}/java/java.gradle"
+            apply from: "${rootDir}/snobot_sim/java/java.gradle"
         }
 
         snobotSimHalSetupModel(project)
@@ -127,7 +127,7 @@ project(':native:snobotSimHal') {
     apply from: "${rootDir}/toolchains/native.gradle"
 
     if (includeJava) {
-        apply from: "${rootDir}/java/java.gradle"
+        apply from: "${rootDir}/snobot_sim/java/java.gradle"
     }
 
     snobotSimHalSetupModel(project)
