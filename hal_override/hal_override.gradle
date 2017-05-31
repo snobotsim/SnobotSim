@@ -11,7 +11,7 @@ def HALAthenaSetupModel = { project ->
                 setupDefines(project, binaries)
 
                 binaries.all {
-                    project.setupDef(linker, "${rootDir}/mockhal.def")
+                    project.setupDef(linker, "${rootDir}/hal_override/mockhal.def")
                 }
                 
                 sources {

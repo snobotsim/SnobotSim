@@ -17,7 +17,7 @@ def defineLibraryPaths(targetPlatform)
 	        ext.wpilibLibraryPath        = wpilibBuildPath    + '/native_linux/shared/amd64/libwpiutil.so'
         } else {
 	        ext.wpilibcLibraryPath       = wpilibBuildPath    + '/native_linux/shared/x86/libwpilibc.so'
-	        ext.networkTablesLibraryPath = wpilibBuildPath    + '/native_linux/shared/x86/libntcore.so'
+	        ext.networkTablesLibraryPath = wpilibBuildPath    + '/native_linux/shared/i386/libntcore.so'
 	        ext.wpilibLibraryPath        = wpilibBuildPath    + '/native_linux/shared/x86/libwpiutil.so'
         }
         
@@ -73,13 +73,12 @@ def ctreOverrideSetupModel = { project ->
                         }
                         exportedHeaders {
                             srcDirs = ["${rootDir}/ctre_override/cpp/include", "${rootDir}/ctre_override/sim/include"]
-                            if (includeJava) {
-                                project.jniHeadersCtreOverride.outputs.files.each { file ->
-                                    srcDirs file.getPath()
-                                }
-                            }
                             srcDirs ext.wpilibc_path
                             srcDirs ext.network_tables
+                            
+                            project.jniHeadersCtreOverride.outputs.files.each { file ->
+                                srcDirs file.getPath()
+                            }
                             
                             srcDirs.each {
                         	    def dir = new File("${it}")

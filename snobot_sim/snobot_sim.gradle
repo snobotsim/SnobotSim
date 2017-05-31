@@ -10,33 +10,20 @@ def snobotSimHalSetupModel = { project ->
                 }
                 setupDefines(project, binaries)
 
-                if (includeJava) {
-                    project.setupJniIncludes(binaries)
-                    project.checkNativeSymbols(project.getNativeJNISymbols)
-                   // binaries.all {
-                   //     project.setupDef(linker, "${rootDir}/ntcore-jni.def")
-                   // }
-                } else {
-                    binaries.all {
-                        project.setupDef(linker, "${rootDir}/ntcore.def")
-                    }
-                }
+                project.setupJniIncludes(binaries)
+                project.checkNativeSymbols(project.getNativeJNISymbols)
 
                 sources {
                     cpp {
                         source {
                             srcDirs = ["${rootDir}/snobot_sim/cpp"]
-                            if (includeJava) {
-                                srcDirs "${rootDir}/java/lib"
-                            }
+                            srcDirs "${rootDir}/java/lib"
                             includes = ['**/*.cpp']
                         }
                         exportedHeaders {
                             srcDirs = ["${rootDir}/snobot_sim/cpp/include", "${rootDir}/java/include/"]
-                            if (includeJava) {
-                                project.jniHeadersNetworkTables.outputs.files.each { file ->
-                                    srcDirs file.getPath()
-                                }
+                            project.jniHeadersNetworkTables.outputs.files.each { file ->
+                                srcDirs file.getPath()
                             }
                             includes = ['**/*.h']
                         }
@@ -112,9 +99,7 @@ if (buildArm) {
         apply plugin: 'cpp'
 
         apply from: "${rootDir}/toolchains/arm.gradle"
-        if (includeJava) {
-            apply from: "${rootDir}/snobot_sim/java/java.gradle"
-        }
+        apply from: "${rootDir}/snobot_sim/java/java.gradle"
 
         snobotSimHalSetupModel(project)
         snobotSimHalZipTask(project)
@@ -125,10 +110,7 @@ project(':native:snobotSimHal') {
     apply plugin: 'cpp'
 
     apply from: "${rootDir}/toolchains/native.gradle"
-
-    if (includeJava) {
-        apply from: "${rootDir}/snobot_sim/java/java.gradle"
-    }
+    apply from: "${rootDir}/snobot_sim/java/java.gradle"
 
     snobotSimHalSetupModel(project)
     snobotSimHalZipTask(project)
@@ -150,15 +132,13 @@ task snobotSimHalSourceZip(type: Zip) {
         into 'include'
     }
 
-    if (includeJava) {
-        from('java/lib') {
-            into 'src'
-        }
+    from('java/lib') {
+        into 'src'
+    }
 
-        project(':native:snobotSimHal').jniHeadersNetworkTables.outputs.each {
-            from(it) {
-                into 'include'
-            }
+    project(':native:snobotSimHal').jniHeadersNetworkTables.outputs.each {
+        from(it) {
+            into 'include'
         }
     }
 }

@@ -17,7 +17,6 @@ plugins {
 }
 
 ext.buildArm = !project.hasProperty('skipArm')
-ext.includeJava = !project.hasProperty('skipJava')
 
 task download_wpilibs (type: Copy) {
 
