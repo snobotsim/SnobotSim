@@ -25,14 +25,14 @@ def snobotSimHalSetupModel = { project ->
                 sources {
                     cpp {
                         source {
-                            srcDirs = ["${rootDir}/src"]
+                            srcDirs = ["${rootDir}/snobot_sim/cpp"]
                             if (includeJava) {
                                 srcDirs "${rootDir}/java/lib"
                             }
                             includes = ['**/*.cpp']
                         }
                         exportedHeaders {
-                            srcDirs = ["${rootDir}/include", "${rootDir}/java/include/"]
+                            srcDirs = ["${rootDir}/snobot_sim/cpp/include", "${rootDir}/java/include/"]
                             if (includeJava) {
                                 project.jniHeadersNetworkTables.outputs.files.each { file ->
                                     srcDirs file.getPath()
