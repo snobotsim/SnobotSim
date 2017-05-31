@@ -4,4 +4,4 @@ build_script:
 - cmd: gradlew.bat build install -PskipArm
 artifacts:
 - path: build
-  name: Test
+  name: SnobotSim
