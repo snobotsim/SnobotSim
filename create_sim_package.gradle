@@ -1,4 +1,4 @@
-
+import org.gradle.internal.os.OperatingSystem
 
 task copyNativeSharedLibs(type: Copy) {
 	dependsOn build
@@ -41,10 +41,92 @@ task copySource(type: Copy) {
 		into "build/cpp/include"
 	}
 }
+
+task createJar(type: Jar) {
+
+    manifest {
+        attributes 'Main-Class': 'com.ServerManager'
+    }
+    description = 'Generates NetworkTables jar, with the JNI shared libraries embedded'
+    baseName = 'snobotSim'
+    duplicatesStrategy = 'exclude'
+
+	dependsOn copyJar
+	dependsOn copyNativeSharedLibs
+	
+	def os_name = "Windows"
+	def x64_name = "amd64"
+	def x86_name = "x86"
+	
+	if (OperatingSystem.current().isLinux()) 
+	{
+	    os_name = "Linux"
+	    x64_name = "amd64"
+	    x86_name = "x86"
+	} 
+	else if (OperatingSystem.current().isWindows()) 
+	{
+	    os_name = "Windows"
+	    x64_name = "amd64"
+	    x86_name = "x86"
+	} 
+	else {
+	    throw new GradleException("${name} does not support building on ${ext.buildPlatform}.")
+	}
+
+    from(file("build/native/shared/x64")) {
+        into os_name + '/' + x64_name
+        include '*.dll'
+        include '*.so'
+    }
+
+    from(file("build/native/shared/x86")) {
+        into os_name + '/' + x86_name
+        include '*.dll'
+        include '*.so'
+    }
+
+    from(file("external_dependencies/native_windows/shared/x64")) {
+        into os_name + '/' + x64_name
+        include '*.dll'
+        include '*.so'
+    }
+
+    from(file("external_dependencies/native_windows/shared/x86")) {
+        into os_name + '/' + x86_name
+        include '*.dll'
+        include '*.so'
+    }
+    
+    from project(":native:snobotSimHal").configurations.archives.allArtifacts.files.collect {
+        zipTree(it)
+    }
+}
+
+task zipSource(type: Zip) {
+	dependsOn copyJar
+	dependsOn copyNativeSharedLibs
+	
+    baseName = 'snobotSim'
+	
+	from ("build/native")
+	{
+    	into "native"
+	}
+
+	from ("build/cpp")
+	{
+    	into "cpp"
+	}
+}
+
+
 clean {
     delete "build"
     delete "native"
     delete "arm"
     delete "external_dependencies"
+    delete "snobotSim.jar"
+    delete "snobotSim.zip"
 }
 

@@ -113,6 +113,8 @@ task install(type: Copy) {
 	dependsOn copyNativeSharedLibs
 	dependsOn copyNativeStaticLibs
 	dependsOn copyJar
+	dependsOn createJar
+	dependsOn zipSource
 }
 
 task wrapper(type: Wrapper) {

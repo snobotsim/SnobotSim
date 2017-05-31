@@ -222,3 +222,7 @@ gradle-app.setting
 
 #VSCode
 .vscode/
+
+# My stuff
+snobotSim.zip
+snobotSim.jar
