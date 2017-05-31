@@ -37,11 +37,11 @@ task download_wpilibs (type: Copy) {
         //apply plugin: download
 	    task downloadFile(type: Download) {
 
-		    src "http://ci.appveyor.com/api/projects/pjreiniger/tempallwpi/artifacts/test.zip"
+		    src "http://ci.appveyor.com/api/projects/pjreiniger/tempallwpi/artifacts/AthenaHal.zip"
 		    dest output_folder
 		    onlyIfNewer true
 		    
-	        from zipTree(output_folder.toString() + "/test.zip")
+	        from zipTree(output_folder.toString() + "/AthenaHal.zip")
 	        into output_folder
 		}
 		

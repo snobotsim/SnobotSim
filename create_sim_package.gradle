@@ -28,6 +28,19 @@ task copyJar(type: Copy) {
 	into "build/java"
 	include "ntcore*.jar"
 }
+task copySource(type: Copy) {
+	dependsOn build
+
+	copy {
+		from "ctre_override/cpp/include"
+		into "build/cpp/include"
+	}
+
+	copy {
+		from "snobot_sim/cpp/include"
+		into "build/cpp/include"
+	}
+}
 clean {
     delete "build"
     delete "native"
