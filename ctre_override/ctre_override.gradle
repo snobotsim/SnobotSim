@@ -9,30 +9,14 @@ def defineLibraryPaths(targetPlatform)
 {
     String architecture = targetPlatform.architecture
 
-    if (OperatingSystem.current().isLinux()) {
- 		     
-        if (architecture.contains('64')) {  
-	        ext.wpilibcLibraryPath       = wpilibBuildPath    + '/native_linux/shared/x64/libwpilibc.so'
-	        ext.networkTablesLibraryPath = wpilibBuildPath    + '/native_linux/shared/amd64/libntcore.so'
-	        ext.wpilibLibraryPath        = wpilibBuildPath    + '/native_linux/shared/amd64/libwpiutil.so'
-        } else {
-	        ext.wpilibcLibraryPath       = wpilibBuildPath    + '/native_linux/shared/x86/libwpilibc.so'
-	        ext.networkTablesLibraryPath = wpilibBuildPath    + '/native_linux/shared/i386/libntcore.so'
-	        ext.wpilibLibraryPath        = wpilibBuildPath    + '/native_linux/shared/x86/libwpiutil.so'
-        }
-        
-    } else if (OperatingSystem.current().isWindows()) {
-        if (architecture.contains('64')) {  
-	        ext.wpilibcLibraryPath       = wpilibBuildPath    + '/native_windows/shared/x64/wpilibc.lib'
-	        ext.networkTablesLibraryPath = wpilibBuildPath    + '/native_windows/shared/x64/ntcore.lib'
-	        ext.wpilibLibraryPath        = wpilibBuildPath    + '/native_windows/shared/x64/wpiutil.lib'
-        } else {
-	        ext.wpilibcLibraryPath       = wpilibBuildPath    + '/native_windows/shared/x86/wpilibc.lib'
-	        ext.networkTablesLibraryPath = wpilibBuildPath    + '/native_windows/shared/x86/ntcore.lib'
-	        ext.wpilibLibraryPath        = wpilibBuildPath    + '/native_windows/shared/x86/wpiutil.lib'
-        }
+    if (architecture.contains('64')) {  
+        ext.wpilibcLibraryPath       = wpilibBuildPath    + '/native/shared/x64/wpilibc.lib'
+        ext.networkTablesLibraryPath = wpilibBuildPath    + '/native/shared/x64/ntcore.lib'
+        ext.wpilibLibraryPath        = wpilibBuildPath    + '/native/shared/x64/wpiutil.lib'
     } else {
-        throw new GradleException("${name} does not support building on ${ext.buildPlatform}.")
+        ext.wpilibcLibraryPath       = wpilibBuildPath    + '/native/shared/x86/wpilibc.lib'
+        ext.networkTablesLibraryPath = wpilibBuildPath    + '/native/shared/x86/ntcore.lib'
+        ext.wpilibLibraryPath        = wpilibBuildPath    + '/native/shared/x86/wpiutil.lib'
     }
 
 

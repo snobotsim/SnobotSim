@@ -1,58 +1,53 @@
 import org.gradle.internal.os.OperatingSystem
-import de.undercouch.gradle.tasks.download.Download
+
+ext.maven_repo = "C:/Users/PJ/GitHub/FIRST_2017/maven_repo"
 
 buildscript {
     repositories {
         maven {
             url "https://plugins.gradle.org/m2/"
-        }
+            }
     }
     dependencies {
         classpath 'net.ltgt.gradle:gradle-errorprone-plugin:0.0.8'
         classpath 'gradle.plugin.edu.wpi.first.wpilib.versioning:wpilib-version-plugin:1.4'
     }
 }
-plugins {
-    id "de.undercouch.download" version "3.2.0"
-}
 
 ext.buildArm = !project.hasProperty('skipArm')
 
 task download_wpilibs (type: Copy) {
 
-	def output_folder = new File("${rootDir}/external_dependencies/")
+    def output_folder = new File("${rootDir}/external_dependencies/")
 
     if( !output_folder.exists() ) {
       output_folder.mkdirs()
     }
     
-    
     if(project.hasProperty('local_wpilib'))
     {
-	    from project.local_wpilib
-	    into output_folder
+        from project.local_wpilib
+        into output_folder
     }
     else
     {
-        //apply plugin: download
-	    task downloadFile(type: Download) {
-
-		    src "http://ci.appveyor.com/api/projects/pjreiniger/tempallwpi/artifacts/AthenaHal.zip"
-		    dest output_folder
-		    onlyIfNewer true
-		    
-	        from zipTree(output_folder.toString() + "/AthenaHal.zip")
-	        into output_folder
-		}
-		
-		dependsOn downloadFile
+        repositories {
+            maven {
+                url maven_repo
+            }
+        }
+        
+        configurations.create("snobotSimDeps")
+        
+        dependencies {
+            snobotSimDeps 'edu.wpilib:wpilibSim:+'
+        }
+        
+        configurations.snobotSimDeps.files.each { file ->
+            from zipTree(file)
+            into output_folder
+        }
     }
-}
-
-if (hasProperty('makeDesktop')) {
-    println 'Making desktop classifier jar. NOTE: This desktop version should only be used for local testing.' +
-            'It will only support the current platform, and will override fetching the latest development version from' +
-            ' the maven repo until you manually delete it!'
 }
 
 ext.getPlatformPath = { binary ->
@@ -83,11 +78,11 @@ ext.getPlatformPath = { binary ->
 
 ext.setupDefines = { project, binaries ->
     binaries.all {
-	if (project.hasProperty('debug')) {
-	    project.setupDebugDefines(cppCompiler, linker)
-	} else {
-	    project.setupReleaseDefines(cppCompiler, linker)
-	}
+    if (project.hasProperty('debug')) {
+        project.setupDebugDefines(cppCompiler, linker)
+    } else {
+        project.setupReleaseDefines(cppCompiler, linker)
+    }
     }
 }
 
@@ -110,11 +105,11 @@ apply from: 'create_sim_package.gradle'
 
 task install(type: Copy) {
 
-	dependsOn copyNativeSharedLibs
-	dependsOn copyNativeStaticLibs
-	dependsOn copyJar
-	dependsOn createJar
-	dependsOn zipSource
+    dependsOn copyNativeSharedLibs
+    dependsOn copyNativeStaticLibs
+    dependsOn copyJar
+    dependsOn createJar
+    dependsOn zipSource
 }
 
 task wrapper(type: Wrapper) {
