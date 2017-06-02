@@ -1,12 +1,10 @@
 import org.gradle.internal.os.OperatingSystem
 
-ext.maven_repo = "C:/Users/PJ/GitHub/FIRST_2017/maven_repo"
-
 buildscript {
     repositories {
         maven {
             url "https://plugins.gradle.org/m2/"
-            }
+        }
     }
     dependencies {
         classpath 'net.ltgt.gradle:gradle-errorprone-plugin:0.0.8'
@@ -33,14 +31,14 @@ task download_wpilibs (type: Copy) {
     {
         repositories {
             maven {
-                url maven_repo
+                url "http://raw.githubusercontent.com/pjreiniger/maven_repo/master/"
             }
         }
         
         configurations.create("snobotSimDeps")
         
         dependencies {
-            snobotSimDeps 'edu.wpilib:wpilibSim:+'
+            snobotSimDeps 'edu.wpilib:wpilibSim:1.0'
         }
         
         configurations.snobotSimDeps.files.each { file ->
