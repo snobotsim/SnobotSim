@@ -12,8 +12,6 @@ buildscript {
     }
 }
 
-ext.buildArm = !project.hasProperty('skipArm')
-
 task download_wpilibs (type: Copy) {
 
     def output_folder = new File("${rootDir}/external_dependencies/")

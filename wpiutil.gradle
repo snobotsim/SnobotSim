@@ -72,17 +72,6 @@ def wpiutilZipTask = { project ->
     }
 }
 
-if (buildArm) {
-    project(':arm:wpiutil') {
-        apply plugin: 'cpp'
-
-        apply from: "${rootDir}/toolchains/arm.gradle"
-
-        wpiutilSetupModel(project)
-        wpiutilZipTask(project)
-    }
-}
-
 project(':native:wpiutil') {
     apply plugin: 'cpp'
 

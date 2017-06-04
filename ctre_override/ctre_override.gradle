@@ -94,15 +94,6 @@ def ctreOverrideSetupModel = { project ->
     }
 }
 
-if (buildArm) {
-    project(':arm:ctre_override') {
-        apply plugin: 'cpp'
-
-        apply from: "${rootDir}/toolchains/arm.gradle"
-        apply from: "${rootDir}/ctre_override/java/ctre_java.gradle"
-    }
-}
-
 project(':native:ctre_override') {
     apply plugin: 'cpp'
 

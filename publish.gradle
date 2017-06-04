@@ -38,10 +38,6 @@ outputVersions.mustRunAfter clean
 
 project(':native:wpiutil').build.dependsOn outputVersions
 project(':native:snobotSimHal').build.dependsOn outputVersions
-if (project.buildArm) {
-    project(':arm:wpiutil').build.dependsOn outputVersions
-    project(':arm:snobotSimHal').build.dependsOn outputVersions
-}
 
 // We change what repo we publish to depending on whether this is a development, beta, stable, or full
 // release. This is set up in the main gradle file.
@@ -53,14 +49,6 @@ publishing {
                 artifact nat.jar
                 artifact nat.networktablesJavaSource
                 artifact nat.networktablesJavadoc
-                if (project.buildArm) {
-                    def natArm = project('arm:snobotSimHal')
-                    artifact natArm.jar
-                    // If the library is not embedded include it in the repo
-                    if (!project.hasProperty('compilerPrefix')) {
-                        artifact natArm.snobotSimHalZip
-                    }
-                }
 
                 if (project.hasProperty('makeDesktop')) {
                     artifact nat.jar, {
@@ -76,9 +64,6 @@ publishing {
         cpp(MavenPublication) {
             artifact nat.snobotSimHalZip
             artifact snobotSimHalSourceZip
-            if (project.buildArm) {
-                artifact project(':arm:snobotSimHal').snobotSimHalZip
-            }
 
             if (project.hasProperty('makeDesktop')) {
                 artifact nat.snobotSimHalZip, {
@@ -93,9 +78,6 @@ publishing {
         wpiutil(MavenPublication) {
             artifact project(':native:wpiutil').wpiutilZip
             artifact wpiutilSourceZip
-            if (project.buildArm) {
-                artifact project(':arm:wpiutil').wpiutilZip
-            }
 
             if (project.hasProperty('makeDesktop')) {
                 artifact project(':native:wpiutil').wpiutilZip, {

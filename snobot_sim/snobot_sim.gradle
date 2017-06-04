@@ -94,18 +94,6 @@ def snobotSimHalZipTask = { project ->
     }
 }
 
-if (buildArm) {
-    project(':arm:snobotSimHal') {
-        apply plugin: 'cpp'
-
-        apply from: "${rootDir}/toolchains/arm.gradle"
-        apply from: "${rootDir}/snobot_sim/java/java.gradle"
-
-        snobotSimHalSetupModel(project)
-        snobotSimHalZipTask(project)
-    }
-}
-
 project(':native:snobotSimHal') {
     apply plugin: 'cpp'
 

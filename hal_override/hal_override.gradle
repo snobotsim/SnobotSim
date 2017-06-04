@@ -87,17 +87,6 @@ def HALAthenaZipTask = { project ->
     }
 }
 
-if (buildArm) {
-    project(':arm:HALAthena') {
-        apply plugin: 'cpp'
-
-        apply from: "${rootDir}/toolchains/arm.gradle"
-
-        HALAthenaSetupModel(project)
-        HALAthenaZipTask(project)
-    }
-}
-
 project(':native:HALAthena') {
     apply plugin: 'cpp'
 
