@@ -224,5 +224,5 @@ gradle-app.setting
 .vscode/
 
 # My stuff
-snobotSim.zip
-snobotSim.jar
+snobotSim*.zip
+snobotSim*.jar

@@ -3,7 +3,7 @@
 #include <jni.h>
 #include "support/jni_util.h"
 
-#include "com_snobot_simulator_module_wrapper_SpeedControllerWrapperJni.h"
+#include "com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/GetSensorActuatorHelper.h"
 
@@ -13,11 +13,11 @@ extern "C"
 {
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_SpeedControllerWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni
  * Method:    setName
  * Signature: (ILjava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_module_1wrapper_SpeedControllerWrapperJni_setName
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_setName
   (JNIEnv * env, jclass, jint aPortHandle, jstring aName)
 {
     std::shared_ptr<SpeedControllerWrapper> wrapper = GetSensorActuatorHelper::GetSpeedControllerWrapper(aPortHandle);
@@ -28,11 +28,11 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_module_1wrapper_SpeedController
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_SpeedControllerWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni
  * Method:    getName
  * Signature: ()Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_com_snobot_simulator_module_1wrapper_SpeedControllerWrapperJni_getName(JNIEnv * env, jclass, jint portHandle)
+JNIEXPORT jstring JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_getName(JNIEnv * env, jclass, jint portHandle)
 {
 
     jstring output = MakeJString(env, SensorActuatorRegistry::Get().GetSpeedControllerWrapper(portHandle)->GetName());
@@ -41,31 +41,31 @@ JNIEXPORT jstring JNICALL Java_com_snobot_simulator_module_1wrapper_SpeedControl
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_SpeedControllerWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni
  * Method:    getWantsHidden
  * Signature: (I)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_module_1wrapper_SpeedControllerWrapperJni_getWantsHidden(JNIEnv *, jclass, jint portHandle)
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_getWantsHidden(JNIEnv *, jclass, jint portHandle)
 {
     return SensorActuatorRegistry::Get().GetSpeedControllerWrapper(portHandle)->WantsHidden();
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_SpeedControllerWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni
  * Method:    getVoltagePercentage
  * Signature: ()D
  */
-JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_module_1wrapper_SpeedControllerWrapperJni_getVoltagePercentage(JNIEnv *, jclass, jint portHandle)
+JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_getVoltagePercentage(JNIEnv *, jclass, jint portHandle)
 {
     return SensorActuatorRegistry::Get().GetSpeedControllerWrapper(portHandle)->GetVoltagePercentage();
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_SpeedControllerWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni
  * Method:    updateAllSpeedControllers
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_module_1wrapper_SpeedControllerWrapperJni_updateAllSpeedControllers(JNIEnv *, jclass, jdouble aUpdatePeriod)
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_updateAllSpeedControllers(JNIEnv *, jclass, jdouble aUpdatePeriod)
 {
     std::map<int, std::shared_ptr<SpeedControllerWrapper>>& speedControllers = SensorActuatorRegistry::Get().GetSpeedControllerWrapperMap();
 
@@ -78,11 +78,11 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_module_1wrapper_SpeedController
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_SpeedControllerWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni
  * Method:    getPortList
  * Signature: ()[I
  */
-JNIEXPORT jintArray JNICALL Java_com_snobot_simulator_module_1wrapper_SpeedControllerWrapperJni_getPortList(JNIEnv * env, jclass)
+JNIEXPORT jintArray JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_getPortList(JNIEnv * env, jclass)
 {
     const std::map<int, std::shared_ptr<SpeedControllerWrapper>>& speedControllers = SensorActuatorRegistry::Get().GetSpeedControllerWrapperMap();
 

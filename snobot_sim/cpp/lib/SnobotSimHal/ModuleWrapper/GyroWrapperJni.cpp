@@ -3,7 +3,7 @@
 #include <jni.h>
 #include "support/jni_util.h"
 
-#include "com_snobot_simulator_module_wrapper_GyroWrapperJni.h"
+#include "com_snobot_simulator_jni_module_wrapper_GyroWrapperJni.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/GetSensorActuatorHelper.h"
 
@@ -13,11 +13,11 @@ extern "C"
 {
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_GyroWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_GyroWrapperJni
  * Method:    register
  * Signature: (ILjava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_module_1wrapper_GyroWrapperJni_register
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_register
   (JNIEnv * env, jclass, jint aHandle, jstring aName)
 {
     std::shared_ptr<GyroWrapper> gyroWrapper(new GyroWrapper(env->GetStringUTFChars(aName, NULL)));
@@ -25,11 +25,11 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_module_1wrapper_GyroWrapperJni_
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_GyroWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_GyroWrapperJni
  * Method:    setName
  * Signature: (ILjava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_module_1wrapper_GyroWrapperJni_setName
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_setName
   (JNIEnv * env, jclass, jint aPortHandle, jstring aName)
 {
     std::shared_ptr<GyroWrapper> wrapper = GetSensorActuatorHelper::GetGyroWrapper(aPortHandle);
@@ -40,11 +40,11 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_module_1wrapper_GyroWrapperJni_
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_GyroWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_GyroWrapperJni
  * Method:    getName
  * Signature: (I)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_com_snobot_simulator_module_1wrapper_GyroWrapperJni_getName
+JNIEXPORT jstring JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_getName
   (JNIEnv * env, jclass, jint aPortHandle)
 {
     jstring output = MakeJString(env, SensorActuatorRegistry::Get().GetGyroWrapper(aPortHandle)->GetName());
@@ -52,44 +52,44 @@ JNIEXPORT jstring JNICALL Java_com_snobot_simulator_module_1wrapper_GyroWrapperJ
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_GyroWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_GyroWrapperJni
  * Method:    getWantsHidden
  * Signature: (I)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_module_1wrapper_GyroWrapperJni_getWantsHidden
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_getWantsHidden
   (JNIEnv *, jclass, jint aPortHandle)
 {
     return SensorActuatorRegistry::Get().GetGyroWrapper(aPortHandle)->WantsHidden();
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_GyroWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_GyroWrapperJni
  * Method:    getVoltagePercentage
  * Signature: (I)D
  */
-JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_module_1wrapper_GyroWrapperJni_getAngle
+JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_getAngle
   (JNIEnv *, jclass, jint aPortHandle)
 {
     return SensorActuatorRegistry::Get().GetGyroWrapper(aPortHandle)->GetAngle();
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_GyroWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_GyroWrapperJni
  * Method:    reset
  * Signature: (I)D
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_module_1wrapper_GyroWrapperJni_reset
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_reset
   (JNIEnv *, jclass, jint aPortHandle)
 {
     SensorActuatorRegistry::Get().GetGyroWrapper(aPortHandle)->SetAngle(0);
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_GyroWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_GyroWrapperJni
  * Method:    getPortList
  * Signature: ()[I
  */
-JNIEXPORT jintArray JNICALL Java_com_snobot_simulator_module_1wrapper_GyroWrapperJni_getPortList
+JNIEXPORT jintArray JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_getPortList
   (JNIEnv * env, jclass)
 {
     const std::map<int, std::shared_ptr<GyroWrapper>>& gyroWrappers =

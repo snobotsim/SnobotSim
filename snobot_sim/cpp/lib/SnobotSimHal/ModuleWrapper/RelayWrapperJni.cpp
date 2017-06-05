@@ -3,7 +3,7 @@
 #include <jni.h>
 #include "support/jni_util.h"
 
-#include "com_snobot_simulator_module_wrapper_RelayWrapperJni.h"
+#include "com_snobot_simulator_jni_module_wrapper_RelayWrapperJni.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/GetSensorActuatorHelper.h"
 
@@ -13,11 +13,11 @@ extern "C"
 {
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_RelayWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_RelayWrapperJni
  * Method:    setName
  * Signature: (ILjava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_module_1wrapper_RelayWrapperJni_setName
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_RelayWrapperJni_setName
   (JNIEnv * env, jclass, jint aPortHandle, jstring aName)
 {
     std::shared_ptr<RelayWrapper> wrapper = GetSensorActuatorHelper::GetRelayWrapper(aPortHandle);
@@ -28,11 +28,11 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_module_1wrapper_RelayWrapperJni
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_RelayWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_RelayWrapperJni
  * Method:    getName
  * Signature: (I)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_com_snobot_simulator_module_1wrapper_RelayWrapperJni_getName(
+JNIEXPORT jstring JNICALL Java_com_snobot_simulator_jni_module_1wrapper_RelayWrapperJni_getName(
         JNIEnv * env, jclass, jint portHandle)
 {
     return MakeJString(env,
@@ -40,41 +40,41 @@ JNIEXPORT jstring JNICALL Java_com_snobot_simulator_module_1wrapper_RelayWrapper
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_RelayWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_RelayWrapperJni
  * Method:    getWantsHidden
  * Signature: (I)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_module_1wrapper_RelayWrapperJni_getWantsHidden(JNIEnv *, jclass, jint portHandle)
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_RelayWrapperJni_getWantsHidden(JNIEnv *, jclass, jint portHandle)
 {
     return SensorActuatorRegistry::Get().GetRelayWrapper(portHandle)->WantsHidden();
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_RelayWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_RelayWrapperJni
  * Method:    getFowardValue
  * Signature: (I)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_module_1wrapper_RelayWrapperJni_getFowardValue(JNIEnv *, jclass, jint portHandle)
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_RelayWrapperJni_getFowardValue(JNIEnv *, jclass, jint portHandle)
 {
     return SensorActuatorRegistry::Get().GetRelayWrapper(portHandle)->GetRelayForwards();
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_RelayWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_RelayWrapperJni
  * Method:    getReverseValue
  * Signature: (I)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_module_1wrapper_RelayWrapperJni_getReverseValue(JNIEnv *, jclass, jint portHandle)
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_RelayWrapperJni_getReverseValue(JNIEnv *, jclass, jint portHandle)
 {
     return SensorActuatorRegistry::Get().GetRelayWrapper(portHandle)->GetRelayReverse();
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_RelayWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_RelayWrapperJni
  * Method:    getPortList
  * Signature: ()[I
  */
-JNIEXPORT jintArray JNICALL Java_com_snobot_simulator_module_1wrapper_RelayWrapperJni_getPortList(
+JNIEXPORT jintArray JNICALL Java_com_snobot_simulator_jni_module_1wrapper_RelayWrapperJni_getPortList(
         JNIEnv * env, jclass)
 {
     const std::map<int, std::shared_ptr<RelayWrapper>>& relays =

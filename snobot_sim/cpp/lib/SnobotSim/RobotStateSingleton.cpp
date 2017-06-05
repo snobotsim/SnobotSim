@@ -22,9 +22,12 @@ RobotStateSingleton::RobotStateSingleton() :
 
 RobotStateSingleton::~RobotStateSingleton()
 {
-	std::cout << "Destroying singleton" << std::endl;
-	mRunning = false;
-	mUpdateThread.join();
+	std::cout << "Destroying singleton: " << mRunning << std::endl;
+	if(mRunning)
+	{
+        mRunning = false;
+        mUpdateThread.join();
+	}
 	std::cout << "Destroyed" << std::endl;
 }
 

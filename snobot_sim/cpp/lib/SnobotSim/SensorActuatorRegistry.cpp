@@ -7,13 +7,13 @@
 
 #include "SnobotSim/SensorActuatorRegistry.h"
 
-SensorActuatorRegistry SensorActuatorRegistry::sInstance =
-        SensorActuatorRegistry();
+SensorActuatorRegistry* SensorActuatorRegistry::sInstance =
+        new SensorActuatorRegistry();
 
 
 SensorActuatorRegistry& SensorActuatorRegistry::Get()
 {
-	return sInstance;
+	return *sInstance;
 }
     
 SensorActuatorRegistry::SensorActuatorRegistry()
@@ -23,9 +23,22 @@ SensorActuatorRegistry::SensorActuatorRegistry()
 
 SensorActuatorRegistry::~SensorActuatorRegistry()
 {
-
+    Reset();
 }
 
+
+void SensorActuatorRegistry::Reset()
+{
+    mSpeedControllerWrapperMap.clear();
+    mRelayWrapperMap.clear();
+    mDigitalSourceWrapperMap.clear();
+    mAnalogSourceWrapperMap.clear();
+    mSolenoidWrapperMap.clear();
+    mEncoderWrapperMap.clear();
+    mGyroWrapperMap.clear();
+    mAccelerometerWrapperMap.clear();
+    mSimulatorComponents.clear();
+}
 
 std::shared_ptr<ISpiWrapper> SensorActuatorRegistry::GetSpiWrapper()
 {

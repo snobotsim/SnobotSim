@@ -3,7 +3,7 @@
 #include <jni.h>
 #include "support/jni_util.h"
 
-#include "com_snobot_simulator_module_wrapper_DigitalSourceWrapperJni.h"
+#include "com_snobot_simulator_jni_module_wrapper_DigitalSourceWrapperJni.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/GetSensorActuatorHelper.h"
 
@@ -13,11 +13,11 @@ extern "C"
 {
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_DigitalSourceWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_DigitalSourceWrapperJni
  * Method:    setName
  * Signature: (ILjava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_module_1wrapper_DigitalSourceWrapperJni_setName
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_DigitalSourceWrapperJni_setName
   (JNIEnv * env, jclass, jint aPortHandle, jstring aName)
 {
     std::shared_ptr<DigitalSourceWrapper> wrapper = GetSensorActuatorHelper::GetDigitalSourceWrapper(aPortHandle);
@@ -28,11 +28,11 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_module_1wrapper_DigitalSourceWr
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_DigitalSourceWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_DigitalSourceWrapperJni
  * Method:    getName
  * Signature: (I)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_com_snobot_simulator_module_1wrapper_DigitalSourceWrapperJni_getName(
+JNIEXPORT jstring JNICALL Java_com_snobot_simulator_jni_module_1wrapper_DigitalSourceWrapperJni_getName(
         JNIEnv * env, jclass, jint portHandle)
 {
     return MakeJString(env,
@@ -40,32 +40,32 @@ JNIEXPORT jstring JNICALL Java_com_snobot_simulator_module_1wrapper_DigitalSourc
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_DigitalSourceWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_DigitalSourceWrapperJni
  * Method:    getWantsHidden
  * Signature: (I)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_module_1wrapper_DigitalSourceWrapperJni_getWantsHidden(JNIEnv *, jclass, jint portHandle)
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_DigitalSourceWrapperJni_getWantsHidden(JNIEnv *, jclass, jint portHandle)
 {
     return SensorActuatorRegistry::Get().GetDigitalSourceWrapper(portHandle)->WantsHidden();
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_DigitalSourceWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_DigitalSourceWrapperJni
  * Method:    getState
  * Signature: (I)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_module_1wrapper_DigitalSourceWrapperJni_getState(
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_DigitalSourceWrapperJni_getState(
         JNIEnv * env, jclass, jint portHandle)
 {
     return SensorActuatorRegistry::Get().GetDigitalSourceWrapper(portHandle)->Get();
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_DigitalSourceWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_DigitalSourceWrapperJni
  * Method:    getPortList
  * Signature: ()[I
  */
-JNIEXPORT jintArray JNICALL Java_com_snobot_simulator_module_1wrapper_DigitalSourceWrapperJni_getPortList(
+JNIEXPORT jintArray JNICALL Java_com_snobot_simulator_jni_module_1wrapper_DigitalSourceWrapperJni_getPortList(
         JNIEnv * env, jclass)
 {
     const std::map<int, std::shared_ptr<DigitalSourceWrapper>>& digitalSources =

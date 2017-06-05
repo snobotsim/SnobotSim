@@ -44,22 +44,22 @@ static DcMotorModel ConvertDcMotorModel(JNIEnv * env, jobject& aJavaModelConfig)
 extern "C"
 {
 /*
- * Class:     com_snobot_simulator_SimulationConnectorJni
+ * Class:     com_snobot_simulator_jni_SimulationConnectorJni
  * Method:    updateLoop
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_SimulationConnectorJni_updateLoop
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_updateLoop
   (JNIEnv *, jclass)
 {
     RobotStateSingleton::Get().UpdateLoop();
 }
 
 /*
- * Class:     com_snobot_simulator_SimulationConnectorJni
+ * Class:     com_snobot_simulator_jni_SimulationConnectorJni
  * Method:    setSpeedControllerModel_Simple
  * Signature: (ID)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_SimulationConnectorJni_setSpeedControllerModel_1Simple
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setSpeedControllerModel_1Simple
   (JNIEnv *, jclass, jint aHandle, jdouble aMaxSpeed)
 {
 	std::shared_ptr<SpeedControllerWrapper> speedController = GetSpeedControllerWrapper(aHandle);
@@ -70,11 +70,11 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_SimulationConnectorJni_setSpeed
 }
 
 /*
- * Class:     com_snobot_simulator_SimulationConnectorJni
+ * Class:     com_snobot_simulator_jni_SimulationConnectorJni
  * Method:    setSpeedControllerModel_Static
  * Signature: (ILcom/snobot/simulator/DcMotorModelConfigJni;DD)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_SimulationConnectorJni_setSpeedControllerModel_1Static
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setSpeedControllerModel_1Static
   (JNIEnv * env, jclass, jint aSpeedControllerHandle,
         jobject aConfig, jdouble aLoad, jdouble aConversionFactor)
 {
@@ -88,11 +88,11 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_SimulationConnectorJni_setSpeed
 }
 
 /*
- * Class:     com_snobot_simulator_SimulationConnectorJni
+ * Class:     com_snobot_simulator_jni_SimulationConnectorJni
  * Method:    setSpeedControllerModel_Gravitational
  * Signature: (ILcom/snobot/simulator/DcMotorModelConfigJni;D)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_SimulationConnectorJni_setSpeedControllerModel_1Gravitational
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setSpeedControllerModel_1Gravitational
   (JNIEnv * env, jclass,
         jint aSpeedControllerHandle, jobject aConfig, jdouble aLoad)
 {
@@ -106,11 +106,11 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_SimulationConnectorJni_setSpeed
 }
 
 /*
- * Class:     com_snobot_simulator_SimulationConnectorJni
+ * Class:     com_snobot_simulator_jni_SimulationConnectorJni
  * Method:    setSpeedControllerModel_Rotational
  * Signature: (ILcom/snobot/simulator/DcMotorModelConfigJni;DDDD)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_SimulationConnectorJni_setSpeedControllerModel_1Rotational
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setSpeedControllerModel_1Rotational
   (JNIEnv * env, jclass, jint aSpeedControllerHandle,
         jobject aConfig, jdouble aArmCenterOfMass, jdouble aArmMass, jdouble aConstantAssistTorque, jdouble aOverCenterAssistTorque)
 {
@@ -121,11 +121,11 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_SimulationConnectorJni_setSpeed
 }
 
 /*
- * Class:     com_snobot_simulator_SimulationConnectorJni
+ * Class:     com_snobot_simulator_jni_SimulationConnectorJni
  * Method:    connectEncoderAndSpeedController
  * Signature: (II)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_SimulationConnectorJni_connectEncoderAndSpeedController
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_connectEncoderAndSpeedController
   (JNIEnv *, jclass, jint aEncoderhandle, jint aScHandle)
 {
 	std::shared_ptr<EncoderWrapper> encoder = SensorActuatorRegistry::Get().GetEncoderWrapper(aEncoderhandle);
@@ -138,11 +138,11 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_SimulationConnectorJni_connectE
 }
 
 /*
- * Class:     com_snobot_simulator_SimulationConnectorJni
+ * Class:     com_snobot_simulator_jni_SimulationConnectorJni
  * Method:    connectTankDriveSimulator
  * Signature: (IIID)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_SimulationConnectorJni_connectTankDriveSimulator
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_connectTankDriveSimulator
   (JNIEnv *, jclass,
           jint aLeftEncHandle,
           jint aRightEncHandle,

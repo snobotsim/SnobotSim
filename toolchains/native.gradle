@@ -1,6 +1,5 @@
 import org.gradle.internal.os.OperatingSystem
 
-ext.isArm = false
 ext.buildPlatform = OperatingSystem.current().getFamilyName()
 
 if (OperatingSystem.current().isLinux()) {

@@ -36,7 +36,7 @@ class EXPORT_ SensorActuatorRegistry
 {
 private:
     SensorActuatorRegistry();
-    static SensorActuatorRegistry sInstance;
+    static SensorActuatorRegistry* sInstance;
 
 public:
     virtual ~SensorActuatorRegistry();
@@ -44,6 +44,8 @@ public:
     static SensorActuatorRegistry& Get();
 
     void AddSimulatorComponent(const std::shared_ptr<ISimulatorUpdater>& aSimulatorComponent);
+
+    void Reset();
 
     std::vector<std::shared_ptr<ISimulatorUpdater>>& GetSimulatorComponents();
 

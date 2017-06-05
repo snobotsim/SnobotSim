@@ -104,10 +104,12 @@ task createJar(type: Jar) {
 }
 
 task zipSource(type: Zip) {
+
 	dependsOn copyJar
 	dependsOn copyNativeSharedLibs
 	
-    baseName = 'snobotSim'
+    baseName = 'snobotSimNative'
+    classifier = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
 	
 	from ("build/native")
 	{
@@ -126,7 +128,7 @@ clean {
     delete "native"
     delete "arm"
     delete "external_dependencies"
-    delete "snobotSim.jar"
-    delete "snobotSim.zip"
+    delete fileTree(".") { include "**/snobotSim*.jar" }
+    delete fileTree(".") { include "**/snobotSim*.zip" }
 }
 

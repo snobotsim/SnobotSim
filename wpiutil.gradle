@@ -2,12 +2,8 @@ def wpiutilSetupModel = { project ->
     project.model {
         components {
             wpiutil(NativeLibrarySpec) {
-                if (project.isArm) {
-                    targetPlatform 'arm'
-                } else {
-                    targetPlatform 'x86'
-                    targetPlatform 'x64'
-                }
+                targetPlatform 'x86'
+                targetPlatform 'x64'
                 setupDefines(project, binaries)
 
                 sources {

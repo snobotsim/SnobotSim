@@ -1,7 +1,7 @@
 
 #include <assert.h>
 #include <jni.h>
-#include "com_snobot_simulator_JoystickJni.h"
+#include "com_snobot_simulator_jni_JoystickJni.h"
 #include "SnobotSim/JoystickManager.h"
 #include <iostream>
 
@@ -30,11 +30,11 @@ std::ostream& operator<<(std::ostream& aStream, const JoystickInformation& aJoys
 extern "C"
 {
 /*
- * Class:     com_snobot_simulator_JoystickJni
+ * Class:     com_snobot_simulator_jni_JoystickJni
  * Method:    setJoystickInformation
  * Signature: (I[F[S[Z)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_JoystickJni_setJoystickInformation
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_JoystickJni_setJoystickInformation
   (JNIEnv * env, jclass, 
    jint aHandle, jfloatArray aAxes, jshortArray aPovs, jint aButtonCount, jint aButtonMask)
 {

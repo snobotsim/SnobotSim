@@ -44,12 +44,9 @@ def ctreOverrideSetupModel = { project ->
     project.model {
         components {
             ctreOverride(NativeLibrarySpec) {
-                if (project.isArm) {
-                    targetPlatform 'arm'
-                } else {
-                    targetPlatform 'x86'
-                    targetPlatform 'x64'
-                }
+
+                targetPlatform 'x86'
+                targetPlatform 'x64'
                 setupDefines(project, binaries)
 
                 project.setupJniIncludes(binaries)
@@ -92,30 +89,14 @@ def ctreOverrideSetupModel = { project ->
                             
                             includes = ['**/*.h']
                         }
-                        if (project.isArm && project.hasProperty('compilerPrefix')) {
-                            lib project: ':arm:snobotSimHal', library: 'snobotSimHal', linkage: 'shared'
-                        } else if (project.isArm) {
-                            // If roboRIO, link shared
-                            lib project: ':arm:snobotSimHal', library: 'snobotSimHal', linkage: 'shared'
-                            lib project: ':arm:HALAthena', library: 'HALAthena', linkage: 'shared'
-                        } else {
-                            lib project: ':native:snobotSimHal', library: 'snobotSimHal', linkage: 'shared'
-                            lib project: ':native:HALAthena', library: 'HALAthena', linkage: 'shared'
-                            lib project: ':native:wpiutil', library: 'wpiutil', linkage: 'static'
-                        }
+
+                        lib project: ':native:snobotSimHal', library: 'snobotSimHal', linkage: 'shared'
+                        lib project: ':native:HALAthena', library: 'HALAthena', linkage: 'shared'
+                        lib project: ':native:wpiutil', library: 'wpiutil', linkage: 'static'
                     }
                 }
             }
         }
-    }
-}
-
-if (buildArm) {
-    project(':arm:ctre_override') {
-        apply plugin: 'cpp'
-
-        apply from: "${rootDir}/toolchains/arm.gradle"
-        apply from: "${rootDir}/ctre_override/java/ctre_java.gradle"
     }
 }
 

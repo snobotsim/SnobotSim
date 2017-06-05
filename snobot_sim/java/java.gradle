@@ -23,7 +23,7 @@ sourceSets {
 
 jar {
     description = 'Generates NetworkTables jar, with the JNI shared libraries embedded'
-    baseName = 'ntcore'
+    baseName = 'snobotSim'
     classifier = "$buildPlatform"
     duplicatesStrategy = 'exclude'
 
@@ -31,23 +31,18 @@ jar {
     model {
         binaries {
             withType(SharedLibraryBinarySpec) { binary ->
-                // Only include the native file if not cross compiling to the roboRIO
-                if (!project.isArm || project.hasProperty('compilerPrefix'))
-                    from(file(binary.sharedLibraryFile)) {
-                        into getPlatformPath(binary)
-                    }
+                from(file(binary.sharedLibraryFile)) {
+                    into getPlatformPath(binary)
+                }
             }
         }
     }
 }
 
 project.tasks.whenTaskAdded { task ->
-    if (isArm) {
-        if (task.name == 'ntcoreSharedLibrary') jar.dependsOn task
-    } else {
-        if (task.name == 'ntcoreX64SharedLibrary' || task.name == 'ntcoreX86SharedLibrary')
-            jar.dependsOn task
-    }
+
+    if (task.name == 'ntcoreX64SharedLibrary' || task.name == 'ntcoreX86SharedLibrary')
+        jar.dependsOn task
 }
 
 task networktablesJavaSource(type: Jar, dependsOn: classes) {
@@ -91,17 +86,18 @@ task jniHeadersNetworkTables {
             
             
             //////////////////////////////////////////////////////
-            args 'com.snobot.simulator.module_wrapper.AccelerometerWrapperJni'
-            args 'com.snobot.simulator.module_wrapper.AnalogSourceWrapperJni'
-            args 'com.snobot.simulator.module_wrapper.DigitalSourceWrapperJni'
-            args 'com.snobot.simulator.module_wrapper.EncoderWrapperJni'
-            args 'com.snobot.simulator.module_wrapper.GyroWrapperJni'
-            args 'com.snobot.simulator.module_wrapper.RelayWrapperJni'
-            args 'com.snobot.simulator.module_wrapper.SolenoidWrapperJni'
-            args 'com.snobot.simulator.module_wrapper.SpeedControllerWrapperJni'
-            args 'com.snobot.simulator.RobotStateSingletonJni'
-            args 'com.snobot.simulator.SimulationConnectorJni'
-            args 'com.snobot.simulator.JoystickJni'
+            args 'com.snobot.simulator.jni.module_wrapper.AccelerometerWrapperJni'
+            args 'com.snobot.simulator.jni.module_wrapper.AnalogSourceWrapperJni'
+            args 'com.snobot.simulator.jni.module_wrapper.DigitalSourceWrapperJni'
+            args 'com.snobot.simulator.jni.module_wrapper.EncoderWrapperJni'
+            args 'com.snobot.simulator.jni.module_wrapper.GyroWrapperJni'
+            args 'com.snobot.simulator.jni.module_wrapper.RelayWrapperJni'
+            args 'com.snobot.simulator.jni.module_wrapper.SolenoidWrapperJni'
+            args 'com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni'
+            args 'com.snobot.simulator.jni.RobotStateSingletonJni'
+            args 'com.snobot.simulator.jni.SimulationConnectorJni'
+            args 'com.snobot.simulator.jni.SnobotSimulatorJni'
+            args 'com.snobot.simulator.jni.JoystickJni'
             
         }
     }

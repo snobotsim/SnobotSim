@@ -14,7 +14,7 @@ class EXPORT_ GyroWrapper: public AModuleWrapper
 {
 public:
     GyroWrapper(const std::string& aName);
-    ~GyroWrapper();
+    virtual ~GyroWrapper();
     
     void SetAngle(double aAngle);
     

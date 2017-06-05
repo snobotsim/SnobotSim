@@ -2,12 +2,9 @@ def snobotSimHalSetupModel = { project ->
     project.model {
         components {
             snobotSimHal(NativeLibrarySpec) {
-                if (project.isArm) {
-                    targetPlatform 'arm'
-                } else {
-                    targetPlatform 'x86'
-                    targetPlatform 'x64'
-                }
+            
+                targetPlatform 'x86'
+                targetPlatform 'x64'
                 setupDefines(project, binaries)
 
                 project.setupJniIncludes(binaries)
@@ -27,14 +24,8 @@ def snobotSimHalSetupModel = { project ->
                             }
                             includes = ['**/*.h']
                         }
-                        if (project.isArm && project.hasProperty('compilerPrefix')) {
-                            lib project: ':arm:wpiutil', library: 'wpiutil', linkage: 'static'
-                        } else if (project.isArm) {
-                            // If roboRIO, link shared
-                            lib project: ':arm:wpiutil', library: 'wpiutil', linkage: 'shared'
-                        } else {
-                            lib project: ':native:wpiutil', library: 'wpiutil', linkage: 'static'
-                        }
+
+                        lib project: ':native:wpiutil', library: 'wpiutil', linkage: 'static'
                     }
                 }
             }

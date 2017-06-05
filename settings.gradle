@@ -2,11 +2,6 @@ include 'native:snobotSimHal'
 include 'native:HALAthena'
 include 'native:ctre_override'
 include 'native:wpiutil'
+include 'native:unit_tests'
+include 'native:snobot_sim_gui'
 include 'gmock'
-
-if (!hasProperty('skipArm')) {
-    include 'arm:HALAthena'
-    include 'arm:snobotSimHal'
-    include 'arm:ctre_override'
-    include 'arm:wpiutil'
-}

@@ -1,0 +1,53 @@
+
+
+
+project(':native:snobot_sim_gui') {
+    apply plugin: 'java'
+    
+    repositories {
+        mavenCentral()
+    }
+    
+    sourceSets {
+        main {
+            java {
+                srcDirs = ["${rootDir}/snobot_sim_gui/snobot_sim", 
+                           "${rootDir}/snobot_sim_gui/3rdPartyOverrides/ctre", 
+                           "${rootDir}/snobot_sim_gui/3rdPartyOverrides/navx_frc", 
+                           "${rootDir}/snobot_sim_gui/3rdPartyOverrides/wpilib"]
+            }
+        }
+    }
+    
+    dependencies {
+        
+        compile project(':native:snobotSimHal')
+        
+        // WPILib
+        compile 'edu.wpi.first.wpilibj:athena:+'
+        compile 'edu.wpi.first.wpilib.networktables.java:NetworkTables:+:desktop'
+        
+        // 3rd Party
+        compile 'net.java.jinput:jinput:2.0.7'
+        compile 'jfree:jcommon:1.0.16'
+        compile 'jfree:jfreechart:1.0.13'
+        compile 'org.python:jython:2.7.1b3'
+        compile 'org.yaml:snakeyaml:1.18'
+        compile files("${rootDir}/snobot_sim_gui/NonMavenLibraries/opencv-320.jar")
+    }
+    
+    jar {
+       baseName = "SnobotSimGui"
+
+       from("${rootDir}/snobot_sim_gui/snobot_sim") {
+          include  '**/*.png'
+       }
+    }
+    
+
+    task copyDependencies(type: Copy) {
+        into "lib"
+        from configurations.compile
+    }
+    copyDependencies.dependsOn jar
+}

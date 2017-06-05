@@ -31,23 +31,18 @@ jar {
     model {
         binaries {
             withType(SharedLibraryBinarySpec) { binary ->
-                // Only include the native file if not cross compiling to the roboRIO
-                if (!project.isArm || project.hasProperty('compilerPrefix'))
-                    from(file(binary.sharedLibraryFile)) {
-                        into getPlatformPath(binary)
-                    }
+                from(file(binary.sharedLibraryFile)) {
+                    into getPlatformPath(binary)
+                }
             }
         }
     }
 }
 
 project.tasks.whenTaskAdded { task ->
-    if (isArm) {
-        if (task.name == 'ntcoreSharedLibrary') jar.dependsOn task
-    } else {
-        if (task.name == 'ntcoreX64SharedLibrary' || task.name == 'ntcoreX86SharedLibrary')
-            jar.dependsOn task
-    }
+
+    if (task.name == 'ntcoreX64SharedLibrary' || task.name == 'ntcoreX86SharedLibrary')
+        jar.dependsOn task
 }
 
 /**

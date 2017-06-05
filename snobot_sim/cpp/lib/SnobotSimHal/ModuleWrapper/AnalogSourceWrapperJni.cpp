@@ -3,7 +3,7 @@
 #include <jni.h>
 #include "support/jni_util.h"
 
-#include "com_snobot_simulator_module_wrapper_AnalogSourceWrapperJni.h"
+#include "com_snobot_simulator_jni_module_wrapper_AnalogSourceWrapperJni.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/GetSensorActuatorHelper.h"
 
@@ -13,11 +13,11 @@ extern "C"
 {
 
 /*
- * Class:     Java_com_snobot_simulator_module_1wrapper_AnalogSourceWrapperJni_setName
+ * Class:     Java_com_snobot_simulator_jni_module_1wrapper_AnalogSourceWrapperJni_setName
  * Method:    setName
  * Signature: (ILjava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_module_1wrapper_AnalogSourceWrapperJni_setName
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_AnalogSourceWrapperJni_setName
   (JNIEnv * env, jclass, jint aPortHandle, jstring aName)
 {
     std::shared_ptr<AnalogSourceWrapper> wrapper = GetSensorActuatorHelper::GetAnalogSourceWrapper(aPortHandle);
@@ -28,11 +28,11 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_module_1wrapper_AnalogSourceWra
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_AnalogSourceWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_AnalogSourceWrapperJni
  * Method:    getName
  * Signature: (I)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_com_snobot_simulator_module_1wrapper_AnalogSourceWrapperJni_getName
+JNIEXPORT jstring JNICALL Java_com_snobot_simulator_jni_module_1wrapper_AnalogSourceWrapperJni_getName
   (
         JNIEnv * env, jclass, jint portHandle)
 {
@@ -41,32 +41,32 @@ JNIEXPORT jstring JNICALL Java_com_snobot_simulator_module_1wrapper_AnalogSource
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_AnalogSourceWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_AnalogSourceWrapperJni
  * Method:    getWantsHidden
  * Signature: (I)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_module_1wrapper_AnalogSourceWrapperJni_getWantsHidden(JNIEnv *, jclass, jint portHandle)
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_AnalogSourceWrapperJni_getWantsHidden(JNIEnv *, jclass, jint portHandle)
 {
     return SensorActuatorRegistry::Get().GetAnalogSourceWrapper(portHandle)->WantsHidden();
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_AnalogSourceWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_AnalogSourceWrapperJni
  * Method:    getVoltage
  * Signature: ()D
  */
-JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_module_1wrapper_AnalogSourceWrapperJni_getVoltage(
+JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_AnalogSourceWrapperJni_getVoltage(
         JNIEnv * env, jclass, jint portHandle)
 {
     return SensorActuatorRegistry::Get().GetAnalogSourceWrapper(portHandle)->GetVoltage();
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_AnalogSourceWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_AnalogSourceWrapperJni
  * Method:    getPortList
  * Signature: ()[I
  */
-JNIEXPORT jintArray JNICALL Java_com_snobot_simulator_module_1wrapper_AnalogSourceWrapperJni_getPortList
+JNIEXPORT jintArray JNICALL Java_com_snobot_simulator_jni_module_1wrapper_AnalogSourceWrapperJni_getPortList
   (
         JNIEnv * env, jclass)
 {

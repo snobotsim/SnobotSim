@@ -3,7 +3,7 @@
 #include <jni.h>
 #include "support/jni_util.h"
 
-#include "com_snobot_simulator_module_wrapper_SolenoidWrapperJni.h"
+#include "com_snobot_simulator_jni_module_wrapper_SolenoidWrapperJni.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/GetSensorActuatorHelper.h"
 
@@ -13,11 +13,11 @@ extern "C"
 {
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_SolenoidWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_SolenoidWrapperJni
  * Method:    setName
  * Signature: (ILjava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_module_1wrapper_SolenoidWrapperJni_setName
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SolenoidWrapperJni_setName
   (JNIEnv * env, jclass, jint aPortHandle, jstring aName)
 {
     std::shared_ptr<SolenoidWrapper> wrapper = GetSensorActuatorHelper::GetSolenoidWrapper(aPortHandle);
@@ -28,11 +28,11 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_module_1wrapper_SolenoidWrapper
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_SolenoidWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_SolenoidWrapperJni
  * Method:    getName
  * Signature: ()Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_com_snobot_simulator_module_1wrapper_SolenoidWrapperJni_getName(JNIEnv * env, jclass, jint portHandle)
+JNIEXPORT jstring JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SolenoidWrapperJni_getName(JNIEnv * env, jclass, jint portHandle)
 {
 
     jstring output = MakeJString(env, SensorActuatorRegistry::Get().GetSolenoidWrapper(portHandle)->GetName());
@@ -41,31 +41,31 @@ JNIEXPORT jstring JNICALL Java_com_snobot_simulator_module_1wrapper_SolenoidWrap
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_SolenoidWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_SolenoidWrapperJni
  * Method:    getWantsHidden
  * Signature: (I)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_module_1wrapper_SolenoidWrapperJni_getWantsHidden(JNIEnv *, jclass, jint portHandle)
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SolenoidWrapperJni_getWantsHidden(JNIEnv *, jclass, jint portHandle)
 {
     return SensorActuatorRegistry::Get().GetSolenoidWrapper(portHandle)->WantsHidden();
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_SolenoidWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_SolenoidWrapperJni
  * Method:    get
  * Signature: (I)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_module_1wrapper_SolenoidWrapperJni_get(JNIEnv *, jclass, jint portHandle)
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SolenoidWrapperJni_get(JNIEnv *, jclass, jint portHandle)
 {
     return SensorActuatorRegistry::Get().GetSolenoidWrapper(portHandle)->GetState();
 }
 
 /*
- * Class:     com_snobot_simulator_module_wrapper_SolenoidWrapperJni
+ * Class:     com_snobot_simulator_jni_module_wrapper_SolenoidWrapperJni
  * Method:    getPortList
  * Signature: ()[I
  */
-JNIEXPORT jintArray JNICALL Java_com_snobot_simulator_module_1wrapper_SolenoidWrapperJni_getPortList(JNIEnv * env, jclass)
+JNIEXPORT jintArray JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SolenoidWrapperJni_getPortList(JNIEnv * env, jclass)
 {
     const std::map<int, std::shared_ptr<SolenoidWrapper>>& solenoids = SensorActuatorRegistry::Get().GetSolenoidWrapperMap();
 

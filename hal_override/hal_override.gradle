@@ -2,12 +2,9 @@ def HALAthenaSetupModel = { project ->
     project.model {
         components {
             HALAthena(NativeLibrarySpec) {
-                if (project.isArm) {
-                    targetPlatform 'arm'
-                } else {
-                    targetPlatform 'x86'
-                    targetPlatform 'x64'
-                }
+
+                targetPlatform 'x86'
+                targetPlatform 'x64'
                 setupDefines(project, binaries)
 
                 binaries.all {
@@ -24,17 +21,9 @@ def HALAthenaSetupModel = { project ->
                             srcDirs = ["${rootDir}/hal_override/include/"]
                             includes = ['**/*.h']
                         }
-                        if (project.isArm && project.hasProperty('compilerPrefix')) {
-                            lib project: ':arm:wpiutil', library: 'wpiutil', linkage: 'static'
-                            lib project: ':arm:snobotSimHal', library: 'snobotSimHal', linkage: 'static'
-                        } else if (project.isArm) {
-                            // If roboRIO, link shared
-                            lib project: ':arm:wpiutil', library: 'wpiutil', linkage: 'shared'
-                            lib project: ':arm:snobotSimHal', library: 'snobotSimHal', linkage: 'shared'
-                        } else {
-                            lib project: ':native:wpiutil', library: 'wpiutil', linkage: 'static'
-                            lib project: ':native:snobotSimHal', library: 'snobotSimHal', linkage: 'shared'
-                        }
+
+                        lib project: ':native:wpiutil', library: 'wpiutil', linkage: 'static'
+                        lib project: ':native:snobotSimHal', library: 'snobotSimHal', linkage: 'shared'
                         
                     }
                 }
