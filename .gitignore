@@ -226,3 +226,4 @@ gradle-app.setting
 # My stuff
 snobotSim*.zip
 snobotSim*.jar
+!snobot_sim_gui/NonMavenLibraries
