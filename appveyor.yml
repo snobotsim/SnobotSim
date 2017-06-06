@@ -4,20 +4,20 @@ build_script:
 - cmd: gradlew.bat build
 artifacts:
 
-- path: snobotSim.jar
+- path: build/snobotSim.jar
   name: snobotSimJar
 
-- path: snobotSimGui.jar
+- path: build/snobotSimGui.jar
   name: snobotSimGui
 
-- path: snobotSimLibrary-windows.jar
+- path: build/snobotSimLibrary-windows.jar
   name: snobotSimNativeLibraryJar
 
-- path: snobotSimCppSources.zip
+- path: build/snobotSimCppSources.zip
   name: snobotSimCppSources
 
-- path: snobotSimJavaDependencies.zip
+- path: build/snobotSimJavaDependencies.zip
   name: snobotSimJavaDependencies
 
-- path: snobotSimLibrary-windows.zip
+- path: build/snobotSimLibrary-windows.zip
   name: snobotSimNativeLibraryZip
