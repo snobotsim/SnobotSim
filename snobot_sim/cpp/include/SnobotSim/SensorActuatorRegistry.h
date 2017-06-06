@@ -29,8 +29,8 @@
     const std::map<int, std::shared_ptr<ItemType>>& Get##ItemType##Map() const; \
     std::map<int, std::shared_ptr<ItemType>>& Get##ItemType##Map();
 
-#define REGISTRATION_LOG(x) x;
-//#define REGISTRATION_LOG(x)
+//#define REGISTRATION_LOG(x) x;
+#define REGISTRATION_LOG(x)
 
 class EXPORT_ SensorActuatorRegistry
 {

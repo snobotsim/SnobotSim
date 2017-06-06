@@ -178,7 +178,6 @@ public abstract class RobotBase {
 
     // Load opencv
     try {
-    	System.out.println(Core.NATIVE_LIBRARY_NAME);
       System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     } catch (UnsatisfiedLinkError ex) {
       System.out.println("OpenCV Native Libraries could not be loaded.");

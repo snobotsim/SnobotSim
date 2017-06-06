@@ -35,10 +35,8 @@ public class Simulator
 
     public Simulator()
     {
-    	System.out.println("XX");
         JniLibraryResourceLoader.loadLibrary("snobotSimHal");
         JniLibraryResourceLoader.loadLibrary("HALAthena");
-    	System.out.println("XX");
 
         File config_dir = new File(sUSER_CONFIG_DIR);
         if (!Files.exists(config_dir.toPath()))

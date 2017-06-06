@@ -22,21 +22,11 @@ sourceSets {
 }
 
 jar {
-    description = 'Generates NetworkTables jar, with the JNI shared libraries embedded'
+
     baseName = 'snobotSim'
-    classifier = "$buildPlatform"
     duplicatesStrategy = 'exclude'
 
     dependsOn { classes }
-    model {
-        binaries {
-            withType(SharedLibraryBinarySpec) { binary ->
-                from(file(binary.sharedLibraryFile)) {
-                    into getPlatformPath(binary)
-                }
-            }
-        }
-    }
 }
 
 project.tasks.whenTaskAdded { task ->

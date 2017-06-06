@@ -94,22 +94,17 @@ apply from: "snobot_sim_gui/snobot_sim_gui.gradle"
 task build
 
 build.dependsOn download_wpilibs
-build.dependsOn snobotSimHalSourceZip
-build.dependsOn wpiutilSourceZip
-
-apply from: 'publish.gradle'
-
-apply from: 'create_sim_package.gradle'
-
-task install(type: Copy) {
-
-    dependsOn copyNativeSharedLibs
-    dependsOn copyNativeStaticLibs
-    dependsOn copyJar
-    dependsOn createJar
-    dependsOn zipSource
-}
 apply from: "unit_tests/unit_tests.gradle"
+
+
+task clean(type: Delete) {
+    delete "build"
+    delete "native"
+    delete "arm"
+    delete "external_dependencies"
+    delete fileTree(".") { include "**/snobotSim*.jar" }
+    delete fileTree(".") { include "**/snobotSim*.zip" }
+}
 
 task wrapper(type: Wrapper) {
     gradleVersion = '3.3'

@@ -3,7 +3,21 @@ image: Visual Studio 2015
 build_script:
 - cmd: gradlew.bat build install
 artifacts:
-- path: snobotSim.zip
-  name: snobotSimSource
+
 - path: snobotSim.jar
-  name: SnobotSimJar
+  name: snobotSimJar
+
+- path: snobotSimGui.jar
+  name: snobotSimGui
+
+- path: snobotSimLibrary-windows.jar
+  name: snobotSimNativeLibraryJar
+
+- path: snobotSimCppSources.zip
+  name: snobotSimCppSources
+
+- path: snobotSimJavaDependencies.zip
+  name: snobotSimJavaDependencies
+
+- path: snobotSimLibrary-windows.zip
+  name: snobotSimNativeLibraryZip

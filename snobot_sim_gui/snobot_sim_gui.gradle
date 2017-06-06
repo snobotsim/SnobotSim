@@ -1,7 +1,142 @@
+import org.gradle.internal.os.OperatingSystem
+apply plugin: 'edu.wpi.first.wpilib.versioning.WPILibVersioningPlugin'
 
+
+task copyNativeLibraries(type: Copy) {
+	into "build/native"
+    
+    from ("native/HALAthena/build/libs/hALAthena")
+    {
+        include "**/*.dll" // Windows
+        include "**/*.lib" // Windows
+        include "**/*.so"  // Linux
+        include "**/*.a"   // Linux
+    }
+    
+    from ("native/snobotSimHal/build/libs/snobotSimHal")
+    {
+        include "**/*.dll" // Windows
+        include "**/*.lib" // Windows
+        include "**/*.so"  // Linux
+        include "**/*.a"   // Linux
+    }
+    
+    from ("native/ctre_override/build/libs/ctreOverride")
+    {
+        include "**/*.dll" // Windows
+        include "**/*.lib" // Windows
+        include "**/*.so"  // Linux
+        include "**/*.a"   // Linux
+    }
+}
+
+task createNativeLibrary(type: Jar, dependsOn: copyNativeLibraries) {
+
+	baseName = "snobotSimNative"
+    duplicatesStrategy = 'exclude'
+    classifier = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
+    destinationDir = file("$rootDir/build")
+
+    def os_name = "Windows"
+    def x64_name = "amd64"
+    def x86_name = "x86"
+    
+    if (OperatingSystem.current().isLinux()) 
+    {
+        os_name = "Linux"
+        x64_name = "amd64"
+        x86_name = "x86"
+    } 
+    else if (OperatingSystem.current().isWindows()) 
+    {
+        os_name = "Windows"
+        x64_name = "amd64"
+        x86_name = "x86"
+    } 
+    else {
+        throw new GradleException("${name} does not support building on ${ext.buildPlatform}.")
+    }
+    
+    from(file("external_dependencies/native_windows/shared/x64")) {
+        into os_name + '/' + x64_name
+        include '*.dll'
+        include '*.so'
+    }
+
+    from(file("external_dependencies/native_windows/shared/x86")) {
+        into os_name + '/' + x86_name
+        include '*.dll'
+        include '*.so'
+    }
+
+    from(file("native/HALAthena/build/libs/hALAthena/shared/x64")) {
+        into os_name + '/' + x64_name
+        include '*.dll'
+        include '*.so'
+    }
+
+    from(file("native/HALAthena/build/libs/hALAthena/shared/x86")) {
+        into os_name + '/' + x86_name
+        include '*.dll'
+        include '*.so'
+    }
+
+    from(file("native/snobotSimHal/build/libs/snobotSimHal/shared/x64")) {
+        into os_name + '/' + x64_name
+        include '*.dll'
+        include '*.so'
+    }
+
+    from(file("native/snobotSimHal/build/libs/snobotSimHal/shared/x86")) {
+        into os_name + '/' + x86_name
+        include '*.dll'
+        include '*.so'
+    }
+
+    from(file("native/ctre_override/build/libs/ctreOverride/shared/x64")) {
+        into os_name + '/' + x64_name
+        include '*.dll'
+        include '*.so'
+    }
+
+    from(file("native/ctre_override/build/libs/ctreOverride/shared/x86")) {
+        into os_name + '/' + x86_name
+        include '*.dll'
+        include '*.so'
+    }
+}
+
+
+task createSnobotSimLibraryZip(type: Zip, dependsOn: copyNativeLibraries) {
+
+    baseName = "snobotSimLibrary"
+    classifier = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
+    destinationDir = file("$rootDir/build")
+    
+    from ("$rootDir/build/native")
+    {
+        into "native"
+    }
+}
+
+task createCppSouceZip(type: Zip) {
+
+    destinationDir = file("$rootDir/build")
+    baseName = "snobotSimCppSources"
+    
+    from "ctre_override/cpp/include"
+    from "snobot_sim/cpp/include"
+}
+
+task copyOtherArtifacts(type: Copy) {
+    from "native/snobot_sim_gui/build/libs"
+    from "native/snobotSimHal/build/libs/snobotSim.jar"
+    into "build"
+}
 
 
 project(':native:snobot_sim_gui') {
+
     apply plugin: 'java'
     
     repositories {
@@ -21,7 +156,7 @@ project(':native:snobot_sim_gui') {
     
     dependencies {
         
-        compile project(':native:snobotSimHal')
+        compile project(':native:snobotSimHal').sourceSets.main.output
         
         // WPILib
         compile 'edu.wpi.first.wpilibj:athena:+'
@@ -37,17 +172,24 @@ project(':native:snobot_sim_gui') {
     }
     
     jar {
-       baseName = "SnobotSimGui"
+       baseName = "snobotSimGui"
 
        from("${rootDir}/snobot_sim_gui/snobot_sim") {
           include  '**/*.png'
        }
     }
-    
 
-    task copyDependencies(type: Copy) {
-        into "lib"
+    task copyDependencies(type: Zip, dependsOn: jar) {
+        baseName = "snobotSimJavaDependencies"
+        destinationDir = file("$rootDir/build")
+        
         from configurations.compile
+        exclude "com"
     }
-    copyDependencies.dependsOn jar
+    
+    project.build.dependsOn createSnobotSimLibraryZip
+    project.build.dependsOn createCppSouceZip
+    project.build.dependsOn copyDependencies
+    project.build.dependsOn createNativeLibrary
+    project.build.dependsOn copyOtherArtifacts
 }

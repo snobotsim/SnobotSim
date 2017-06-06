@@ -33,58 +33,6 @@ def snobotSimHalSetupModel = { project ->
     }
 }
 
-def snobotSimHalZipTask = { project ->
-    project.ext.snobotSimHalZip = project.tasks.create("snobotSimHalZip", Zip) {
-        description = 'Creates platform-specific zip of the desktop snobotSimHal libraries.'
-        group = 'WPILib'
-        destinationDir = project.buildDir
-        baseName = 'snobotSimHal'
-        classifier = "${project.buildPlatform}"
-        duplicatesStrategy = 'exclude'
-
-        from(file('include')) {
-            into 'include'
-        }
-
-        if (!project.hasProperty('skipJava')) {
-            project.jniHeadersNetworkTables.outputs.each {
-                from(it) {
-                    into 'include'
-                }
-            }
-        }
-
-        project.model {
-            binaries {
-                withType(StaticLibraryBinarySpec) { binary ->
-                    from(binary.staticLibraryFile) {
-                        into getPlatformPath(binary)
-                    }
-                }
-                withType(SharedLibraryBinarySpec) { binary ->
-                    from(binary.sharedLibraryFile) {
-                        into getPlatformPath(binary)
-                    }
-                    from(new File(binary.sharedLibraryFile.absolutePath + ".debug")) {
-                        into getPlatformPath(binary)
-                    }
-                }
-            }
-        }
-    }
-
-    project.build.dependsOn project.snobotSimHalZip
-
-    project.debugStripSetup()
-
-    project.tasks.whenTaskAdded { task ->
-        def name = task.name.toLowerCase()
-        if (name.contains("snobotSimHalsharedlibrary") || name.contains("snobotSimHalstaticlibrary") || name.contains("snobotSimHaltest")) {
-            project.snobotSimHalZip.dependsOn task
-        }
-    }
-}
-
 project(':native:snobotSimHal') {
     apply plugin: 'cpp'
 
@@ -92,32 +40,5 @@ project(':native:snobotSimHal') {
     apply from: "${rootDir}/snobot_sim/java/java.gradle"
 
     snobotSimHalSetupModel(project)
-    snobotSimHalZipTask(project)
 }
 
-task snobotSimHalSourceZip(type: Zip) {
-    description = 'Creates a sources-zip of the snobotSimHal source files'
-    group = 'WPILib'
-    destinationDir = project.buildDir
-    baseName = 'snobotSimHal'
-    classifier = "sources"
-    duplicatesStrategy = 'exclude'
-
-    from('src') {
-        into 'src'
-    }
-
-    from('include') {
-        into 'include'
-    }
-
-    from('java/lib') {
-        into 'src'
-    }
-
-    project(':native:snobotSimHal').jniHeadersNetworkTables.outputs.each {
-        from(it) {
-            into 'include'
-        }
-    }
-}
