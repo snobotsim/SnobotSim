@@ -57,13 +57,13 @@ task createNativeLibrary(type: Jar, dependsOn: copyNativeLibraries) {
         throw new GradleException("${name} does not support building on ${ext.buildPlatform}.")
     }
     
-    from(file("external_dependencies/native_windows/shared/x64")) {
+    from(file("external_dependencies/native/shared/x64")) {
         into os_name + '/' + x64_name
         include '*.dll'
         include '*.so'
     }
 
-    from(file("external_dependencies/native_windows/shared/x86")) {
+    from(file("external_dependencies/native/shared/x86")) {
         into os_name + '/' + x86_name
         include '*.dll'
         include '*.so'

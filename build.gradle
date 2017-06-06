@@ -1,5 +1,4 @@
 import org.gradle.internal.os.OperatingSystem
-import de.undercouch.gradle.tasks.download.Download
 
 buildscript {
     repositories {
@@ -11,9 +10,6 @@ buildscript {
         classpath 'net.ltgt.gradle:gradle-errorprone-plugin:0.0.8'
         classpath 'gradle.plugin.edu.wpi.first.wpilib.versioning:wpilib-version-plugin:1.4'
     }
-}
-plugins {
-    id "de.undercouch.download" version "3.2.0"
 }
 
 task download_wpilibs (type: Copy) {
@@ -32,18 +28,22 @@ task download_wpilibs (type: Copy) {
     }
     else
     {
-        //apply plugin: download
-        task downloadFile(type: Download) {
-
-            src "http://ci.appveyor.com/api/projects/pjreiniger/tempallwpi/artifacts/AthenaHal.zip"
-            dest output_folder
-            onlyIfNewer true
-            
-            from zipTree(output_folder.toString() + "/AthenaHal.zip")
-            into output_folder
+        repositories {
+            maven {
+                url "http://raw.githubusercontent.com/pjreiniger/maven_repo/master/"
+            }
         }
         
-        dependsOn downloadFile
+        configurations.create("snobotSimDeps")
+        
+        dependencies {
+            snobotSimDeps 'edu.wpilib:wpilibSim:1.0'
+        }
+        
+        configurations.snobotSimDeps.files.each { file ->
+            from zipTree(file)
+            into output_folder
+        }
     }
 }
 
