@@ -28,5 +28,12 @@ cache:
 
 script:
   - ./gradlew build --refresh-dependencies
+  
+after_failure:
+  - ls
+  - ls external_dependencies
+  - ls external_dependencies/cpp
+  - ls external_dependencies/cpp/wpilibc
+  - ls external_dependencies/cpp/wpilibc/include
 
 
