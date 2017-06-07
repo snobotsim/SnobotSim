@@ -5,8 +5,9 @@ matrix:
     - os: linux
       dist: trusty
       sudo: required
-    - os: osx
-      osx_image: xcode8
+
+    #- os: osx
+    #  osx_image: xcode8
 
 addons:
   apt:
@@ -14,18 +15,18 @@ addons:
       - g++-multilib
       - lib32stdc++6
 
-before_install:
-  - .travis-scripts/install.sh
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 
 install:
   - ./gradlew assemble
 
-script:
-  - ./gradlew build
-
-before_cache:
-  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+
+script:
+  - ./gradlew build
+
+
