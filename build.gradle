@@ -37,7 +37,11 @@ task download_wpilibs (type: Copy) {
         configurations.create("snobotSimDeps")
         
         dependencies {
-            snobotSimDeps 'edu.wpilib:wpilibSim:1.0'
+            if (OperatingSystem.current().isWindows()) {
+                snobotSimDeps 'edu.wpilib:wpilibSim:1.0'
+            } else if (OperatingSystem.current().isLinux()) {
+                snobotSimDeps 'edu.wpilib:wpilibSim:1.0:linux@zip'
+            }
         }
         
         configurations.snobotSimDeps.files.each { file ->

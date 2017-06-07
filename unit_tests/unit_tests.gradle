@@ -23,6 +23,8 @@ project(':native:unit_tests') {
         
         if (OperatingSystem.current().isWindows()) {
             testCompile files("${rootDir}/build/snobotSimNative-windows.jar")
+        } else if (OperatingSystem.current().isLinux()) {
+            testCompile files("${rootDir}/build/snobotSimNative-linux.jar")
         }
         
     }
