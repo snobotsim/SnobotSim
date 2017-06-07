@@ -19,13 +19,13 @@ project(':native:unit_tests') {
         testCompile project(":native:snobotSimHal")
         testCompile project(":native:snobot_sim_gui")
         testCompile 'junit:junit:4.12'
-        testCompile 'edu.wpi.first.wpilibj:athena:+'
         
         if (OperatingSystem.current().isWindows()) {
             testCompile files("${rootDir}/build/snobotSimNative-windows.jar")
         } else if (OperatingSystem.current().isLinux()) {
             testCompile files("${rootDir}/build/snobotSimNative-linux.jar")
         }
+        testCompile 'edu.wpi.first.wpilibj:athena:+'
         
     }
 }
