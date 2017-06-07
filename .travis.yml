@@ -18,7 +18,11 @@ addons:
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 
-install: []
+install: 
+  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test 
+  - sudo apt-get update
+  - sudo apt-get upgrade
+  - sudo apt-get dist-upgrade
 
 cache:
   directories:
