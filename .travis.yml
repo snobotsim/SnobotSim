@@ -18,8 +18,7 @@ addons:
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 
-install:
-  - ./gradlew assemble --refresh-dependencies
+install: []
 
 cache:
   directories:
@@ -30,6 +29,13 @@ script:
   - ./gradlew build --refresh-dependencies
   
 after_failure:
+  - ls
+  - ls external_dependencies
+  - ls external_dependencies/cpp
+  - ls external_dependencies/cpp/wpilibc
+  - ls external_dependencies/cpp/wpilibc/include
+  
+after_script:
   - ls
   - ls external_dependencies
   - ls external_dependencies/cpp
