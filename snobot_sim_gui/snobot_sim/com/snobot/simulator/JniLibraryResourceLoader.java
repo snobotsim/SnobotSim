@@ -5,11 +5,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 public class JniLibraryResourceLoader
 {
     private static final File TEMP_DIR;
+	private static final Set<String> LOADED_LIBS;
 
     static
     {
@@ -18,6 +21,7 @@ public class JniLibraryResourceLoader
         TEMP_DIR.mkdirs();
         TEMP_DIR.deleteOnExit();
 
+		LOADED_LIBS = new HashSet<>();
     }
 
     private static void createAndLoadTempLibrary(File aTempDir, String aResourceName) throws IOException
@@ -57,8 +61,13 @@ public class JniLibraryResourceLoader
         }
     }
 
-    private static void loadLibrary(File aTempDir, String aLibraryname)
+	private static void loadLibrary(File aTempDir, String aLibraryName)
     {
+		if (LOADED_LIBS.contains(aLibraryName)) {
+			System.out.println("Already loaded " + aLibraryName);
+			return;
+		}
+
         String osname = System.getProperty("os.name");
         String resname;
         if (osname.startsWith("Windows"))
@@ -72,15 +81,15 @@ public class JniLibraryResourceLoader
 
         if (osname.startsWith("Windows"))
         {
-            resname += aLibraryname + ".dll";
+			resname += aLibraryName + ".dll";
         }
         else if (osname.startsWith("Mac"))
         {
-            resname += aLibraryname + ".dylib";
+			resname += aLibraryName + ".dylib";
         }
         else
         {
-            resname += "lib" + aLibraryname + ".so";
+			resname += "lib" + aLibraryName + ".so";
         }
 
         try
@@ -94,6 +103,7 @@ public class JniLibraryResourceLoader
             else
             {
                 createAndLoadTempLibrary(aTempDir, resname);
+				LOADED_LIBS.add(aLibraryName);
             }
         }
         catch (Exception e)
