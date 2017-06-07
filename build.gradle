@@ -98,7 +98,7 @@ apply from: "snobot_sim_gui/snobot_sim_gui.gradle"
 task build
 
 build.dependsOn download_wpilibs
-apply from: "unit_tests/unit_tests.gradle"
+//apply from: "unit_tests/unit_tests.gradle"
 
 
 task clean(type: Delete) {
