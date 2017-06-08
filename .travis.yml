@@ -11,11 +11,7 @@ addons:
     - lib32stdc++6
 before_cache:
 - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
-install:
-- sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-- sudo apt-get update
-- sudo apt-get install gcc-4.9
-- sudo apt-get upgrade libstdc++6 || true
+install: []
 cache:
   directories:
   - "$HOME/.gradle/caches/"

@@ -5,19 +5,19 @@ build_script:
 artifacts:
 
 - path: build/snobotSim.jar
-  name: snobotSimJar
+  name: snobotSim
 
-- path: build/snobotSimGui.jar
-  name: snobotSimGui
+- path: build/snobotSim-gui.jar
+  name: snobotSim-gui
 
-- path: build/snobotSimLibrary-windows.jar
-  name: snobotSimNativeLibraryJar
+- path: build/snobotSim-NativeJava-windows.jar
+  name: snobotSim-NativeJava-windows
 
-- path: build/snobotSimCppSources.zip
-  name: snobotSimCppSources
+- path: build/snobotSim-cpp-sources.zip
+  name: snobotSim-cpp-sources
 
-- path: build/snobotSimJavaDependencies.zip
-  name: snobotSimJavaDependencies
+- path: build/snobotSim-javadeps.zip
+  name: snobotSim-javadeps
 
-- path: build/snobotSimLibrary-windows.zip
-  name: snobotSimNativeLibraryZip
+- path: build/snobotSim-NativeCpp-linux.zip
+  name: snobotSim-NativeCpp-linux

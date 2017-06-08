@@ -1,6 +1,10 @@
 import org.gradle.internal.os.OperatingSystem
 
 ext.publishing_path = '/home/pj/GitHub/FIRST/2017/maven_repo/'
+if(hasProperty('maven_repo'))
+{
+    ext.publishing_path = maven_repo
+}
 
 buildscript {
     repositories {
