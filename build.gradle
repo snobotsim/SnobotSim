@@ -1,5 +1,7 @@
 import org.gradle.internal.os.OperatingSystem
 
+ext.publishing_path = '/home/pj/GitHub/FIRST/2017/maven_repo/'
+
 buildscript {
     repositories {
         maven {
@@ -99,6 +101,8 @@ task build
 
 build.dependsOn download_wpilibs
 apply from: "unit_tests/unit_tests.gradle"
+
+apply from: "publish.gradle"
 
 
 task clean(type: Delete) {

@@ -16,15 +16,12 @@ project(':native:unit_tests') {
     }
     
     dependencies {
+        def osname = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
+
         testCompile project(":native:snobotSimHal")
         testCompile project(":native:snobot_sim_gui")
         testCompile 'junit:junit:4.12'
-        
-        if (OperatingSystem.current().isWindows()) {
-            testCompile files("${rootDir}/build/snobotSimNative-windows.jar")
-        } else if (OperatingSystem.current().isLinux()) {
-            testCompile files("${rootDir}/build/snobotSimNative-linux.jar")
-        }
+        testCompile files("${rootDir}/build/snobotSim-NativeJava-" + osname + ".jar")
         testCompile 'edu.wpi.first.wpilibj:athena:+'
         
     }

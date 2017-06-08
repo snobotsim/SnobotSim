@@ -1,0 +1,35 @@
+import org.gradle.internal.os.OperatingSystem
+
+apply plugin: 'maven-publish'
+
+def getVersion = {
+    return "1.0"
+}
+
+
+publishing {
+
+	repositories {
+	   maven {
+	   	url publishing_path
+	   }
+	}
+	
+
+    publications {
+        def gui_proj = project(':native:snobot_sim_gui')
+        def sim_proj = project(':native:snobotSimHal')
+
+        java(MavenPublication) {
+            artifact sim_proj.jar
+            artifact gui_proj.jar
+            artifact gui_proj.copyDependencies
+            artifact gui_proj.createSnobotSimLibraryZip
+            artifact gui_proj.createNativeLibrary
+
+            groupId 'com.snobot.simulator'
+            artifactId 'snobotSim'
+            version getVersion()
+        }
+    }
+}
