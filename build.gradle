@@ -42,12 +42,10 @@ task download_wpilibs (type: Copy) {
         
         configurations.create("snobotSimDeps")
         
+        def osname = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
+        
         dependencies {
-            if (OperatingSystem.current().isWindows()) {
-                snobotSimDeps 'edu.wpilib:wpilibSim:1.0'
-            } else if (OperatingSystem.current().isLinux()) {
-                snobotSimDeps 'edu.wpilib:wpilibSim:1.0:linux@zip'
-            }
+            snobotSimDeps 'edu.wpilib:wpilibSim:1.0:' + osname + "@zip"
         }
         
         configurations.snobotSimDeps.files.each { file ->
