@@ -21,3 +21,6 @@ artifacts:
 
 - path: build/snobotSim-NativeCpp-linux.zip
   name: snobotSim-NativeCpp-linux
+
+- path: build/distributions
+  name: SnobotSimulator

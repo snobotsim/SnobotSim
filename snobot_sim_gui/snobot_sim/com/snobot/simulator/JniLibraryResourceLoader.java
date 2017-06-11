@@ -23,19 +23,18 @@ public class JniLibraryResourceLoader
 
 		LOADED_LIBS = new HashSet<>();
     }
-
-    private static void createAndLoadTempLibrary(File aTempDir, String aResourceName) throws IOException
+    
+    public static boolean copyResourceFromJar(String aResourceName, File resourceFile) throws IOException
     {
-        String fileName = aResourceName.substring(aResourceName.lastIndexOf("/") + 1);
+    	boolean success = false;
 
         InputStream is = JniLibraryResourceLoader.class.getResourceAsStream(aResourceName);
         if (is != null)
         {
-            File jniLibrary = new File(aTempDir, fileName);
 
             // flag for delete on exit
-            jniLibrary.deleteOnExit();
-            OutputStream os = new FileOutputStream(jniLibrary);
+            resourceFile.deleteOnExit();
+            OutputStream os = new FileOutputStream(resourceFile);
 
             byte[] buffer = new byte[1024];
             int readBytes;
@@ -45,6 +44,8 @@ public class JniLibraryResourceLoader
                 {
                     os.write(buffer, 0, readBytes);
                 }
+                
+                success = true;
             }
             finally
             {
@@ -52,13 +53,25 @@ public class JniLibraryResourceLoader
                 is.close();
             }
 
-            System.out.println("Created temporary library at " + jniLibrary.getAbsolutePath() + " from resource " + aResourceName);
-            System.load(jniLibrary.getAbsolutePath());
+            System.out.println("Copied resource to " + resourceFile.getAbsolutePath() + " from resource " + aResourceName);
         }
         else
         {
         	System.err.println("Could not find resource at " + aResourceName);
         }
+        
+        return success;
+    }
+
+    private static void createAndLoadTempLibrary(File aTempDir, String aResourceName) throws IOException
+    {
+        String fileName = aResourceName.substring(aResourceName.lastIndexOf("/") + 1);
+        File resourceFile = new File(aTempDir, fileName);
+        
+    	if(copyResourceFromJar(aResourceName, resourceFile))
+    	{
+    		System.load(resourceFile.getAbsolutePath());
+    	}
     }
 
 	private static void loadLibrary(File aTempDir, String aLibraryName)

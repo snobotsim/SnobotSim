@@ -5,7 +5,9 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
@@ -53,7 +55,11 @@ public class Simulator
             if (!Files.exists(Paths.get(aFile)))
             {
                 System.err.println("Could not read properties file, will use defaults and will overwrite the file if it exists");
-                Files.copy(Paths.get("_default_properties.properties"), Paths.get(aFile));
+
+            	if(!JniLibraryResourceLoader.copyResourceFromJar("/com/snobot/simulator/default_properties.properties", new File(sPROPERTIES_FILE)))
+            	{
+            		throw new RuntimeException("Could not copy properties file!  Have to exit!");
+            	}
             }
 
             Properties p = new Properties();

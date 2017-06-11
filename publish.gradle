@@ -20,16 +20,26 @@ publishing {
         def gui_proj = project(':native:snobot_sim_gui')
         def sim_proj = project(':native:snobotSimHal')
 
-        java(MavenPublication) {
+        snobotSimLibs(MavenPublication) {
             artifact sim_proj.jar
             artifact gui_proj.jar
             artifact gui_proj.copyDependencies
             artifact gui_proj.createSnobotSimLibraryZip
             artifact gui_proj.createNativeLibrary
+        
+            groupId 'com.snobot.simulator'
+            artifactId 'snobotSim'
+            version getVersion()
+        }
+
+        snobotSimApplication(MavenPublication) {
 
             groupId 'com.snobot.simulator'
             artifactId 'snobotSim'
             version getVersion()
+            
+            artifact gui_proj.distZip
+            artifactId "snobotSimApplication"
         }
     }
 }
