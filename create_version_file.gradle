@@ -1,12 +1,7 @@
 
 
 ext.getVersionName = { ->
-    def stdout = new ByteArrayOutputStream()
-    exec {
-        commandLine 'git', 'show', '-s', '--format=%ci'
-        standardOutput = stdout
-    }
-    return stdout.toString().trim()
+    return System.getenv('APPVEYOR_BUILD_NUMBER')
 }
 
 
