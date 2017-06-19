@@ -92,6 +92,11 @@ project(':native:snobot_sim_gui') {
           include  '**/*.properties'
        }
     }
+    
+    compileJava {
+        apply from: "${rootDir}/create_version_file.gradle"
+        createJavaVersion("${rootDir}/snobot_sim_gui/snobot_sim/com/snobot/simulator", "SnobotSimGuiVersion", "com.snobot.simulator", getVersionName())
+    }
 
     task copyDependencies(type: Zip, dependsOn: jar) {
         

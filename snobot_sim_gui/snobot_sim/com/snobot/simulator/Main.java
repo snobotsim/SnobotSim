@@ -1,10 +1,13 @@
 package com.snobot.simulator;
 
+import com.snobot.simulator.jni.SnobotSimulatorJni;
 
 public class Main
 {
     public static void main(String[] args)
     {
+        printVersions();
+        
         try
         {
             Simulator simulator = new Simulator();
@@ -34,5 +37,12 @@ public class Main
             e.printStackTrace();
             System.exit(1);
         }
+    }
+    
+    private static void printVersions()
+    {
+        System.out.println("Versions:");
+        System.out.println("SnobotSim HAL: " + SnobotSimGuiVersion.Version);
+        System.out.println("SnobotSim GUI: " + SnobotSimulatorJni.getVersion());
     }
 }

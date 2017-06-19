@@ -9,6 +9,9 @@ def snobotSimHalSetupModel = { project ->
 
                 project.setupJniIncludes(binaries)
                 project.checkNativeSymbols(project.getNativeJNISymbols)
+                
+                apply from: "${rootDir}/create_version_file.gradle"
+                createCppVersion("${rootDir}/snobot_sim/cpp/lib/SnobotSim", "SnobotSimHal", "SnobotSimHalVersion", getVersionName())
 
                 sources {
                     cpp {

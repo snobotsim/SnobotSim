@@ -227,3 +227,5 @@ gradle-app.setting
 snobotSim*.zip
 snobotSim*.jar
 !snobot_sim_gui/NonMavenLibraries
+snobot_sim_gui/snobot_sim/com/snobot/simulator/SnobotSimGuiVersion.java
+snobot_sim/cpp/lib/SnobotSim/SnobotSimHalVersion.cpp
