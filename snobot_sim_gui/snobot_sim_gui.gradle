@@ -65,7 +65,7 @@ project(':native:snobot_sim_gui') {
     dependencies {
         def osname = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
         
-        compile project(':native:snobotSimHal').sourceSets.main.output
+        compile project(':native:snobotSimHal')
         compile files("${rootDir}/build/snobotSim-NativeJava-" + osname + ".jar")
         
         // WPILib
@@ -97,6 +97,10 @@ project(':native:snobot_sim_gui') {
         apply from: "${rootDir}/create_version_file.gradle"
         createJavaVersion("${rootDir}/snobot_sim_gui/snobot_sim/com/snobot/simulator", "SnobotSimGuiVersion", "com.snobot.simulator", getVersionName())
     }
+    
+    clean {
+        delete "${rootDir}/snobot_sim_gui/snobot_sim/com/snobot/simulator/SnobotSimGuiVersion.java"
+    }
 
     task copyDependencies(type: Zip, dependsOn: jar) {
         
@@ -104,7 +108,7 @@ project(':native:snobot_sim_gui') {
             copy {
                 configurations.nativeDeps.each {
                     from zipTree(it)
-                    into destinationDir.toString() + "jinput_native"
+                    into destinationDir.toString() + "/jinput_native"
                     include "*.dll"
                     include "*.so"
                 }
@@ -116,7 +120,7 @@ project(':native:snobot_sim_gui') {
         classifier = "javadeps"
         
         from configurations.compile
-        from destinationDir.toString() + "jinput_native"
+        from destinationDir.toString() + "/jinput_native"
         exclude "com"
         exclude "jinput-platform-2.0.7-natives-*.jar"
     }
@@ -227,5 +231,25 @@ project(':native:snobot_sim_gui') {
     project.build.dependsOn createNativeLibrary
 
     mainClassName = "com.snobot.simulator.Main"
+    
+
+    // Include more stuff in the application
+    applicationDefaultJvmArgs = ["-Djava.library.path=../lib"]
+    
+    distributions {
+        main {
+            contents {
+                from(createNativeLibrary) {
+                    into "lib"
+                }
+                
+                from(zipTree("$rootDir/build/snobotSim-javadeps.zip")) {
+                    into "lib"
+                    include "*.dll"
+                    include "*.so"
+                }
+            }
+        }
+    }
 }
 

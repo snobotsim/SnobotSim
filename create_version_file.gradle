@@ -1,7 +1,35 @@
 
 
 ext.getVersionName = { ->
-    return System.getenv('APPVEYOR_BUILD_NUMBER')
+    def output = "Unknown"
+    
+    if(System.getenv('APPVEYOR_BUILD_NUMBER') != null)
+    {
+        output = "Appveyor build #" + System.getenv('APPVEYOR_BUILD_NUMBER') + 
+            " for commit " + System.getenv('APPVEYOR_REPO_COMMIT')
+    }
+    else if(System.getenv('TRAVIS_BUILD_NUMBER') != null)
+    {
+        output = "Travis CI build #" + System.getenv('TRAVIS_BUILD_NUMBER') + " for commit " + System.getenv('TRAVIS_COMMIT')
+    }
+    else
+    {
+        try
+        {
+            def stdout = new ByteArrayOutputStream()
+            exec {
+                commandLine 'git', 'rev-parse', '--short', 'HEAD'
+                standardOutput = stdout
+            }
+            output = "Local build.  Last commit: " + stdout.toString().trim()
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace()
+        }
+    }
+    
+    return output
 }
 
 

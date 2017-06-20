@@ -19,8 +19,8 @@ artifacts:
 - path: build/snobotSim-javadeps.zip
   name: snobotSim-javadeps
 
-- path: build/snobotSim-NativeCpp-linux.zip
-  name: snobotSim-NativeCpp-linux
+- path: build/snobotSim-NativeCpp-windows.zip
+  name: snobotSim-NativeCpp-windows
 
-- path: build/distributions
+- path: native/snobot_sim_gui/build/distributions
   name: SnobotSimulator

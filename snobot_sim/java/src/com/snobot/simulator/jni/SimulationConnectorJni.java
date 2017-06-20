@@ -3,7 +3,8 @@ package com.snobot.simulator.jni;
 
 import com.snobot.simulator.DcMotorModelConfig;
 
-public class SimulationConnectorJni {
+public class SimulationConnectorJni extends BaseSimulatorJni
+{
     
     public static native void updateLoop();
 

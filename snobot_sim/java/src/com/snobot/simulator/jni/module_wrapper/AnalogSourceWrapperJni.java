@@ -1,7 +1,10 @@
 
 package com.snobot.simulator.jni.module_wrapper;
 
-public class AnalogSourceWrapperJni {
+import com.snobot.simulator.jni.BaseSimulatorJni;
+
+public class AnalogSourceWrapperJni extends BaseSimulatorJni
+{
     
     public static native void setName(int aPort, String aName);
     

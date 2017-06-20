@@ -1,7 +1,8 @@
 
 package com.snobot.simulator.jni;
 
-public class RobotStateSingletonJni {
+public class RobotStateSingletonJni extends BaseSimulatorJni
+{
 
     public static native void setDisabled(boolean aDisabled);
 

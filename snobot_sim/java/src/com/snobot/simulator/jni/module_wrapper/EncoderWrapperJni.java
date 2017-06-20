@@ -1,7 +1,10 @@
 
 package com.snobot.simulator.jni.module_wrapper;
 
-public class EncoderWrapperJni {
+import com.snobot.simulator.jni.BaseSimulatorJni;
+
+public class EncoderWrapperJni extends BaseSimulatorJni
+{
 	
     public static native int getHandle(int aPortA, int aPortB);
     

@@ -1,7 +1,10 @@
 
 package com.snobot.simulator.jni.module_wrapper;
 
-public class AccelerometerWrapperJni {
+import com.snobot.simulator.jni.BaseSimulatorJni;
+
+public class AccelerometerWrapperJni extends BaseSimulatorJni
+{
     
     public static void register(int aPort)
     {

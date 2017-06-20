@@ -5,9 +5,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
@@ -35,10 +33,13 @@ public class Simulator
     private IRobotClassContainer mRobot; // The robot code to run
     private ASimulator mSimulator; // The robot code to run
 
-    public Simulator()
+    public Simulator() throws Exception
     {
         JniLibraryResourceLoader.loadLibrary("snobotSimHal");
         JniLibraryResourceLoader.loadLibrary("HALAthena");
+
+        PluginSniffer sniffer = new PluginSniffer();
+        sniffer.loadPlugins();
 
         File config_dir = new File(sUSER_CONFIG_DIR);
         if (!Files.exists(config_dir.toPath()))

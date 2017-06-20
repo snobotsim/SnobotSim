@@ -1,7 +1,10 @@
 
 package com.snobot.simulator.jni.module_wrapper;
 
-public class SpeedControllerWrapperJni {
+import com.snobot.simulator.jni.BaseSimulatorJni;
+
+public class SpeedControllerWrapperJni extends BaseSimulatorJni
+{
     
     public static native void setName(int aPort, String aName);
     
