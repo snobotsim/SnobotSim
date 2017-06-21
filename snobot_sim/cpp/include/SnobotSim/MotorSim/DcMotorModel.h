@@ -16,6 +16,8 @@ public:
     DcMotorModel(const DcMotorModelConfig& aModelConfig);
     virtual ~DcMotorModel();
 
+    const DcMotorModelConfig& GetModelConfig() const;
+
     void Reset(double aPosition, double aVelocity, double aCurrent);
 
     void Step(double aAppliedVoltage, double aLoad, double aExternalTorque, double aTimestep);

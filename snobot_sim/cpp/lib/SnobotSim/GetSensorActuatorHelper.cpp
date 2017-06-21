@@ -7,6 +7,7 @@
 
 #include "SnobotSim/GetSensorActuatorHelper.h"
 #include "SnobotSim/PortUnwrapper.h"
+#include <iostream>
 
 #define FIND_MODULE_FUNC(WrapperType) \
 std::shared_ptr<WrapperType> Get##WrapperType(int aHandle)                                                                     \

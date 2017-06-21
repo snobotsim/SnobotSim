@@ -76,6 +76,11 @@ task jniHeadersNetworkTables {
             
             
             //////////////////////////////////////////////////////
+            args 'com.snobot.simulator.jni.JoystickJni'
+            args 'com.snobot.simulator.jni.MotorConfigFactoryJni'
+            args 'com.snobot.simulator.jni.RobotStateSingletonJni'
+            args 'com.snobot.simulator.jni.SimulationConnectorJni'
+            args 'com.snobot.simulator.jni.SnobotSimulatorJni'
             args 'com.snobot.simulator.jni.module_wrapper.AccelerometerWrapperJni'
             args 'com.snobot.simulator.jni.module_wrapper.AnalogSourceWrapperJni'
             args 'com.snobot.simulator.jni.module_wrapper.DigitalSourceWrapperJni'
@@ -84,10 +89,6 @@ task jniHeadersNetworkTables {
             args 'com.snobot.simulator.jni.module_wrapper.RelayWrapperJni'
             args 'com.snobot.simulator.jni.module_wrapper.SolenoidWrapperJni'
             args 'com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni'
-            args 'com.snobot.simulator.jni.RobotStateSingletonJni'
-            args 'com.snobot.simulator.jni.SimulationConnectorJni'
-            args 'com.snobot.simulator.jni.SnobotSimulatorJni'
-            args 'com.snobot.simulator.jni.JoystickJni'
             
         }
     }

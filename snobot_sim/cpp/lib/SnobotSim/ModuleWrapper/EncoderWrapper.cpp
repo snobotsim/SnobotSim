@@ -66,3 +66,19 @@ void EncoderWrapper::SetSpeedController(const std::shared_ptr<SpeedControllerWra
 {
     mMotorWrapper = aMotorWrapper;
 }
+
+
+const std::shared_ptr<SpeedControllerWrapper>& EncoderWrapper::GetSpeedController()
+{
+    return mMotorWrapper;
+}
+
+void EncoderWrapper::SetDistancePerTick(double aDPT)
+{
+    mDistancePerTick = aDPT;
+}
+
+double EncoderWrapper::GetDistancePerTick()
+{
+    return mDistancePerTick;
+}

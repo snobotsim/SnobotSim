@@ -6,7 +6,6 @@
  */
 
 #include "SnobotSim/JoystickManager.h"
-#include <iostream>
 
 JoystickManager JoystickManager::sINSTANCE = JoystickManager();
 JoystickInformation JoystickManager::sNULL_INSTANCE = JoystickInformation();

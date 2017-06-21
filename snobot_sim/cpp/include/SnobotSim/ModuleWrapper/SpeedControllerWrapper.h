@@ -18,7 +18,11 @@ public:
     SpeedControllerWrapper(int aPort);
     virtual ~SpeedControllerWrapper();
 
+    virtual int GetId();
+
     virtual void SetMotorSimulator(const std::shared_ptr<IMotorSimulator>& aSimulator);
+
+    virtual const std::shared_ptr<IMotorSimulator>& GetMotorSimulator();
 
     virtual double GetVoltagePercentage();
 
@@ -36,6 +40,7 @@ public:
 
 protected:
 
+    int mId;
     std::shared_ptr<IMotorSimulator> mMotorSimulator;
 
 };

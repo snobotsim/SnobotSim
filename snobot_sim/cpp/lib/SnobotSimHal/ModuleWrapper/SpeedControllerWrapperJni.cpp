@@ -6,6 +6,9 @@
 #include "com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/GetSensorActuatorHelper.h"
+#include "SnobotSim/MotorSim/StaticLoadDcMotorSim.h"
+#include "../ConversionUtils.h"
+#include <iostream>
 
 using namespace wpi::java;
 
@@ -75,6 +78,69 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedContro
     {
         iter->second->Update(aUpdatePeriod);
     }
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni
+ * Method:    getMotorConfig
+ * Signature: (I)Lcom/snobot/simulator/DcMotorModelConfig;
+ */
+JNIEXPORT jobject JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_getMotorConfig
+  (JNIEnv * env, jclass, jint aPortHandle)
+{
+    const std::shared_ptr<IMotorSimulator>& motorSim =
+            SensorActuatorRegistry::Get().GetSpeedControllerWrapper(aPortHandle)->GetMotorSimulator();
+    std::string type = motorSim->GetSimulatorType();
+
+    jobject output = NULL;
+
+    if(type == "Static Load")
+    {
+        std::shared_ptr<StaticLoadDcMotorSim>& castMotorSim = std::dynamic_pointer_cast<StaticLoadDcMotorSim>(motorSim);
+        output = ConversionUtils::ConvertDcMotorModelConfig(env, castMotorSim->GetMotorModel().GetModelConfig());
+    }
+    else if(type == "Null" || type == "Simple")
+    {
+        std::cerr << "The type " << type << " does not have a DC Motor config..." << std::endl;
+    }
+    else
+    {
+        std::cerr <<"Unknown motor sim type " << type << std::endl;
+    }
+
+    return output;
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni
+ * Method:    getMotorSimTypeNative
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_getMotorSimTypeNative
+  (JNIEnv *, jclass, jint aPortHandle)
+{
+    const std::shared_ptr<IMotorSimulator>& motorSim =
+            SensorActuatorRegistry::Get().GetSpeedControllerWrapper(aPortHandle)->GetMotorSimulator();
+    std::string type = motorSim->GetSimulatorType();
+
+    if(type == "Null")
+    {
+        return 0;
+    }
+    else if(type == "Simple")
+    {
+        return 1;
+    }
+    else if(type == "Static Load")
+    {
+        return 2;
+    }
+    else
+    {
+        std::cerr <<"Unknown motor sim type " << type << std::endl;
+    }
+
+    return -1;
 }
 
 /*

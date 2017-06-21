@@ -14,8 +14,13 @@
 class BaseDcMotorSimulator: public IMotorSimulator
 {
 public:
-    BaseDcMotorSimulator(const DcMotorModel& aMotorModel, double aConversionFactor = 1);
+    BaseDcMotorSimulator(
+            const std::string& aSimulatorType,
+            const DcMotorModel& aMotorModel,
+            double aConversionFactor = 1);
     virtual ~BaseDcMotorSimulator();
+
+    virtual const std::string& GetSimulatorType() override;
 
     virtual void SetVoltagePercentage(double aSpeed) override;
 
@@ -33,8 +38,11 @@ public:
 
     virtual void Reset(double aPosition, double aVelocity, double aCurrent) override;
 
+    virtual const DcMotorModel& GetMotorModel();
+
 protected:
 
+    std::string mSimulatorType;
     DcMotorModel mMotorModel;
     const double mConversionFactor;
     double mVoltagePercentage;

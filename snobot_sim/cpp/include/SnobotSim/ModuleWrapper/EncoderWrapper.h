@@ -28,6 +28,12 @@ public:
 
     void SetSpeedController(const std::shared_ptr<SpeedControllerWrapper>& aMotorWrapper);
 
+    const std::shared_ptr<SpeedControllerWrapper>& GetSpeedController();
+
+    void SetDistancePerTick(double aDPT);
+
+    double GetDistancePerTick();
+
 protected:
 
     std::shared_ptr<SpeedControllerWrapper> mMotorWrapper;

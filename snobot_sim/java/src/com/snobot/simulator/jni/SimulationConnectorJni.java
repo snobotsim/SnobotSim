@@ -47,10 +47,6 @@ public class SimulationConnectorJni extends BaseSimulatorJni
             double aArmMass,
             double aConstantAssistTorque,
             double aOverCenterAssistTorque);
-    
-    public static native void connectEncoderAndSpeedController(
-            int aEncoderHandle, 
-            int aSpeedControllerHandle);
 
     public static native void connectTankDriveSimulator(
             int aLeftEncoderHandle, 

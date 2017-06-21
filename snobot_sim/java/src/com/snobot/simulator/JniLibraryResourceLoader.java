@@ -77,7 +77,7 @@ public class JniLibraryResourceLoader
 	private static void loadLibrary(File aTempDir, String aLibraryName)
     {
 		if (LOADED_LIBS.contains(aLibraryName)) {
-			System.out.println("Already loaded " + aLibraryName);
+            // System.out.println("Already loaded " + aLibraryName);
 			return;
 		}
 

@@ -9,7 +9,8 @@
 #include "SnobotSim/PortUnwrapper.h"
 
 SpeedControllerWrapper::SpeedControllerWrapper(int aPort) :
-        AModuleWrapper("SpeedController" + std::to_string(UnwrapPort(aPort))),
+        AModuleWrapper("SpeedController " + std::to_string(UnwrapPort(aPort))),
+        mId(aPort),
         mMotorSimulator(new NullMotorSimulator)
 {
 
@@ -20,10 +21,22 @@ SpeedControllerWrapper::~SpeedControllerWrapper()
 
 }
 
+
+int SpeedControllerWrapper::GetId()
+{
+    return mId;
+}
+
 void SpeedControllerWrapper::SetMotorSimulator(
         const std::shared_ptr<IMotorSimulator>& aSimulator)
 {
     mMotorSimulator = aSimulator;
+}
+
+
+const std::shared_ptr<IMotorSimulator>& SpeedControllerWrapper::GetMotorSimulator()
+{
+    return mMotorSimulator;
 }
 
 double SpeedControllerWrapper::GetVoltagePercentage()

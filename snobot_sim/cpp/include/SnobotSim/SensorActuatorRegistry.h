@@ -10,7 +10,6 @@
 
 #include <map>
 #include <vector>
-#include <iostream>
 #include "SnobotSim/ExportHelper.h"
 #include "SnobotSim/ModuleWrapper/SpeedControllerWrapper.h"
 #include "SnobotSim/ModuleWrapper/RelayWrapper.h"
@@ -29,6 +28,7 @@
     const std::map<int, std::shared_ptr<ItemType>>& Get##ItemType##Map() const; \
     std::map<int, std::shared_ptr<ItemType>>& Get##ItemType##Map();
 
+//#include <iostream>
 //#define REGISTRATION_LOG(x) x;
 #define REGISTRATION_LOG(x)
 

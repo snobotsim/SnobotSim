@@ -31,7 +31,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SnobotSimulatorJni_reset
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SnobotSimulatorJni_shutdown
   (JNIEnv *, jclass)
 {
-    std::cout << "Shutting down the simulator..." << std::endl;
+    SensorActuatorRegistry::Get().Reset();
 }
 
 /*

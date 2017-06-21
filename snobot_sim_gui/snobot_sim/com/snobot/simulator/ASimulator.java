@@ -3,6 +3,7 @@ package com.snobot.simulator;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.snobot.simulator.config.SimulatorConfigReader;
 import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni;
 import com.snobot.simulator.robot_container.IRobotClassContainer;
 

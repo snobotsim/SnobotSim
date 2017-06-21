@@ -8,9 +8,29 @@
 #ifndef DCMOTORMODELCONFIG_H_
 #define DCMOTORMODELCONFIG_H_
 
+#include <string>
+
 struct DcMotorModelConfig {
 public:
+    struct FactoryParams
+    {
+        std::string mMotorName;
+        int mNumMotors;
+        double mGearReduction;
+        double mTransmissionEfficiency;
+
+        FactoryParams() :
+            mMotorName(""),
+            mNumMotors(0),
+            mGearReduction(0),
+            mTransmissionEfficiency(0)
+        {
+
+        }
+    };
+
     DcMotorModelConfig(
+            const FactoryParams& aFactoryParams,
             double aNominalVoltage, 
             double aFreeSpeedRpm, 
             double aFreeCurrent, 
@@ -21,6 +41,7 @@ public:
             bool aInverted=false);
 
     DcMotorModelConfig(
+            const FactoryParams& aFactoryParams,
             double aNominalVoltage,
             double aFreeSpeedRpm,
             double aFreeCurrent,
@@ -37,6 +58,7 @@ public:
             
     virtual ~DcMotorModelConfig();
 
+    FactoryParams mFactoryParams;
 
     // Motor Parameters
     const double NOMINAL_VOLTAGE;

@@ -14,8 +14,16 @@ public class EncoderWrapperJni extends BaseSimulatorJni
 
     public static native boolean getWantsHidden(int aPort);
     
+    public static native void connectSpeedController(int aEncoderHandle, int aSpeedControllerHandle);
+
     public static native boolean isHookedUp(int aPort);
     
+    public static native int getHookedUpId(int aPort);
+
+    public static native void setDistancePerTick(int aPort, double aDistancePerTick);
+
+    public static native double getDistancePerTick(int aPort);
+
     public static native double getRaw(int aPort);
     
     public static native double getDistance(int aPort);

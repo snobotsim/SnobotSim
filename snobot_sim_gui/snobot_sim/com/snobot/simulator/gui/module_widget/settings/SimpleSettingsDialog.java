@@ -10,13 +10,16 @@ import javax.swing.JTextField;
 
 public class SimpleSettingsDialog extends JDialog
 {
+    protected int mHandle;
+
     private JTextField mNameField;
     private JButton mSubmitButton;
 
-    public SimpleSettingsDialog(String aTitle, int aKey, String aName)
+    public SimpleSettingsDialog(String aTitle, int aHandle, String aName)
     {
         setTitle(aTitle);
 
+        mHandle = aHandle;
         mNameField = new JTextField(aName);
         mSubmitButton = new JButton("Submit");
         

@@ -11,35 +11,16 @@
 #include "SnobotSim/SimulatorComponents/ISimulatorUpdater.h"
 #include "SnobotSim/SimulatorComponents/TankDriveSimulator.h"
 #include "SnobotSim/SimulatorComponents/Gyro/GyroWrapper.h"
+#include "ConversionUtils.h"
 #include <vector>
 #include <memory>
+#include <iostream>
 
 
 #include "SnobotSim/GetSensorActuatorHelper.h"
 
 using namespace GetSensorActuatorHelper;
 
-
-static DcMotorModel ConvertDcMotorModel(JNIEnv * env, jobject& aJavaModelConfig)
-{
-    DcMotorModelConfig config(
-            env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "NOMINAL_VOLTAGE", "D")),
-            env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "FREE_SPEED_RPM", "D")),
-            env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "FREE_CURRENT", "D")),
-            env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "STALL_TORQUE", "D")),
-            env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "STALL_CURRENT", "D")),
-            env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mMotorInertia", "D")),
-
-            env->GetBooleanField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mHasBrake", "Z")),
-            env->GetBooleanField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mInverted", "Z")),
-
-            env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mKT", "D")),
-            env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mKV", "D")),
-            env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mResistance", "D"))
-    );
-
-    return DcMotorModel(config);
-}
 
 extern "C"
 {
@@ -78,7 +59,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setS
   (JNIEnv * env, jclass, jint aSpeedControllerHandle,
         jobject aConfig, jdouble aLoad, jdouble aConversionFactor)
 {
-    DcMotorModel motorModel = ConvertDcMotorModel(env, aConfig);
+    DcMotorModel motorModel(ConversionUtils::ConvertDcMotorModelConfig(env, aConfig));
 
 	std::shared_ptr<SpeedControllerWrapper> speedController = GetSpeedControllerWrapper(aSpeedControllerHandle);
 	if(speedController)
@@ -96,7 +77,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setS
   (JNIEnv * env, jclass,
         jint aSpeedControllerHandle, jobject aConfig, jdouble aLoad)
 {
-    DcMotorModel motorModel = ConvertDcMotorModel(env, aConfig);
+    DcMotorModel motorModel(ConversionUtils::ConvertDcMotorModelConfig(env, aConfig));
 
 	std::shared_ptr<SpeedControllerWrapper> speedController = GetSpeedControllerWrapper(aSpeedControllerHandle);
 	if(speedController)
@@ -118,23 +99,6 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setS
 //    DcMotorModel motorModel = ConvertDcMotorModel(aConfig);
 //    std::shared_ptr<SpeedControllerWrapper> speedController = SensorActuatorRegistry::Get().GetSpeedControllerWrapper(aSpeedControllerHandle);
 //    speedController->SetMotorSimulator(std::shared_ptr < IMotorSimulator > (new StaticLoadDcMotorSimulator(aLoad, aConversionFactor)));
-}
-
-/*
- * Class:     com_snobot_simulator_jni_SimulationConnectorJni
- * Method:    connectEncoderAndSpeedController
- * Signature: (II)V
- */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_connectEncoderAndSpeedController
-  (JNIEnv *, jclass, jint aEncoderhandle, jint aScHandle)
-{
-	std::shared_ptr<EncoderWrapper> encoder = SensorActuatorRegistry::Get().GetEncoderWrapper(aEncoderhandle);
-	std::shared_ptr<SpeedControllerWrapper> speedController = GetSpeedControllerWrapper(aScHandle);
-
-	if(encoder)
-	{
-	    encoder->SetSpeedController(speedController);
-	}
 }
 
 /*

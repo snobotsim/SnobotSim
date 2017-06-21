@@ -8,6 +8,7 @@
 #ifndef INCLUDE_SNOBOTSIM_MOTORSIM_IMOTORSIMULATOR_HPP_
 #define INCLUDE_SNOBOTSIM_MOTORSIM_IMOTORSIMULATOR_HPP_
 
+#include <string>
 
 class IMotorSimulator
 {
@@ -16,6 +17,8 @@ public:
     virtual ~IMotorSimulator()
     {
     }
+
+    virtual const std::string& GetSimulatorType() = 0;
 
     virtual void SetVoltagePercentage(double aSpeed) = 0;
 
@@ -48,6 +51,12 @@ public:
 
     virtual ~NullMotorSimulator()
     {
+    }
+
+    const std::string& GetSimulatorType() override
+    {
+        static std::string sName = "Null";
+        return sName;
     }
 
     void SetVoltagePercentage(double aSpeed) override

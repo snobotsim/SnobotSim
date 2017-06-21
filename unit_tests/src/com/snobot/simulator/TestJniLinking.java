@@ -14,10 +14,6 @@ public class TestJniLinking
     @Test
     public void testLoad()
     {
-        JniLibraryResourceLoader.loadLibrary("snobotSimHal");
-        JniLibraryResourceLoader.loadLibrary("HALAthena");
-        JniLibraryResourceLoader.loadLibrary("wpilibJavaJNI");
-        
         HAL.initialize(0);
         Assert.assertEquals(0, SpeedControllerWrapperJni.getPortList().length);
         

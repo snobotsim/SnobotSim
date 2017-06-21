@@ -9,8 +9,11 @@
 #include "SnobotSim/MotorSim/BaseDcMotorSimulator.h"
 
 
-BaseDcMotorSimulator::BaseDcMotorSimulator(const DcMotorModel& aMotorModel, double aConversionFactor) :
-        mMotorModel(aMotorModel), mConversionFactor(aConversionFactor), mVoltagePercentage(0)
+BaseDcMotorSimulator::BaseDcMotorSimulator(
+        const std::string& aSimulatorType,
+        const DcMotorModel& aMotorModel,
+        double aConversionFactor) :
+        mSimulatorType(aSimulatorType), mMotorModel(aMotorModel), mConversionFactor(aConversionFactor), mVoltagePercentage(0)
 
 {
 
@@ -21,6 +24,11 @@ BaseDcMotorSimulator::~BaseDcMotorSimulator()
 
 }
 
+
+const std::string& BaseDcMotorSimulator::GetSimulatorType()
+{
+    return mSimulatorType;
+}
 
 void BaseDcMotorSimulator::SetVoltagePercentage(double aSpeed)
 {
@@ -60,4 +68,10 @@ void BaseDcMotorSimulator::Reset(double aPosition, double aVelocity, double aCur
 double BaseDcMotorSimulator::GetCurrent()
 {
     return mMotorModel.GetCurrent();
+}
+
+
+const DcMotorModel& BaseDcMotorSimulator::GetMotorModel()
+{
+    return mMotorModel;
 }

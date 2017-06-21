@@ -1,4 +1,4 @@
-package com.snobot.simulator;
+package com.snobot.simulator.config;
 
 import java.io.File;
 import java.io.FileReader;
@@ -11,12 +11,12 @@ import java.util.Map;
 
 import org.yaml.snakeyaml.Yaml;
 
+import com.snobot.simulator.DcMotorModelConfig;
 import com.snobot.simulator.jni.SimulationConnectorJni;
 import com.snobot.simulator.jni.module_wrapper.EncoderWrapperJni;
 import com.snobot.simulator.jni.module_wrapper.RelayWrapperJni;
 import com.snobot.simulator.jni.module_wrapper.SolenoidWrapperJni;
 import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni;
-import com.snobot.simulator.motor_sim.motors.MakeTransmission;
 
 @SuppressWarnings("unchecked")
 public class SimulatorConfigReader
@@ -131,7 +131,7 @@ public class SimulatorConfigReader
             if (encConfig.containsKey("speed_controller_handle"))
             {
                 int speedControllerHandle = getIntHandle(encConfig.get("speed_controller_handle"));
-                SimulationConnectorJni.connectEncoderAndSpeedController(handle, speedControllerHandle);
+                EncoderWrapperJni.connectSpeedController(handle, speedControllerHandle);
             }
         }
     }
@@ -238,40 +238,40 @@ public class SimulatorConfigReader
     {
         DcMotorModelConfig output = null;
 
-        if (modelConfig.containsKey("motor_factory_func"))
-        {
-            String motorFactoryFunc = modelConfig.get("motor_factory_func").toString();
-
-            int lastDot = motorFactoryFunc.lastIndexOf(".");
-            String className = motorFactoryFunc.substring(0, lastDot);
-            String methodName = motorFactoryFunc.substring(lastDot + 1);
-
-            try
-            {
-                Class<?> myClass = Class.forName(className);
-                Method myMethod = myClass.getDeclaredMethod(methodName);
-                output = (DcMotorModelConfig) myMethod.invoke(null);
-            }
-            catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalArgumentException | IllegalAccessException
-                    | InvocationTargetException e)
-            {
-                e.printStackTrace();
-            }
-        }
-        else
-        {
-            System.err.println("Only reflection creation is supported");
-        }
-
-        if (modelConfig.containsKey("transmission"))
-        {
-            Map<String, Object> transmissionConfig = (Map<String, Object>) modelConfig.get("transmission");
-            int numMotors = (Integer) transmissionConfig.get("num_motors");
-            double reduction = ((Number) transmissionConfig.get("gear_reduction")).doubleValue();
-            double efficiency = ((Number) transmissionConfig.get("efficiency")).doubleValue();
-
-            output = MakeTransmission.makeTransmission(output, numMotors, reduction, efficiency);
-        }
+//        if (modelConfig.containsKey("motor_factory_func"))
+//        {
+//            String motorFactoryFunc = modelConfig.get("motor_factory_func").toString();
+//
+//            int lastDot = motorFactoryFunc.lastIndexOf(".");
+//            String className = motorFactoryFunc.substring(0, lastDot);
+//            String methodName = motorFactoryFunc.substring(lastDot + 1);
+//
+//            try
+//            {
+//                Class<?> myClass = Class.forName(className);
+//                Method myMethod = myClass.getDeclaredMethod(methodName);
+//                output = (DcMotorModelConfig) myMethod.invoke(null);
+//            }
+//            catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalArgumentException | IllegalAccessException
+//                    | InvocationTargetException e)
+//            {
+//                e.printStackTrace();
+//            }
+//        }
+//        else
+//        {
+//            System.err.println("Only reflection creation is supported");
+//        }
+//
+//        if (modelConfig.containsKey("transmission"))
+//        {
+//            Map<String, Object> transmissionConfig = (Map<String, Object>) modelConfig.get("transmission");
+//            int numMotors = (Integer) transmissionConfig.get("num_motors");
+//            double reduction = ((Number) transmissionConfig.get("gear_reduction")).doubleValue();
+//            double efficiency = ((Number) transmissionConfig.get("efficiency")).doubleValue();
+//
+//            output = MakeTransmission.makeTransmission(output, numMotors, reduction, efficiency);
+//        }
 
         if (modelConfig.containsKey("inverted"))
         {

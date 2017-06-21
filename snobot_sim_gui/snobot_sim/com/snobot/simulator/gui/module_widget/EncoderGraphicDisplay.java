@@ -25,7 +25,6 @@ public class EncoderGraphicDisplay extends BaseWidgetDisplay<Integer, EncoderWra
         setBorder(new TitledBorder(aString));
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void update()
     {

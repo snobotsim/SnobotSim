@@ -23,7 +23,10 @@ DcMotorModel::~DcMotorModel()
 
 }
 
-
+const DcMotorModelConfig& DcMotorModel::GetModelConfig() const
+{
+    return mModelConfig;
+}
 
 void DcMotorModel::Reset(double aPosition, double aVelocity, double aCurrent)
 {

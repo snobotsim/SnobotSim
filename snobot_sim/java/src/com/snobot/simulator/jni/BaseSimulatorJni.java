@@ -7,6 +7,12 @@ public class BaseSimulatorJni
 
     static
     {
+        initilaize();
+    }
+
+    public static void initilaize()
+    {
         JniLibraryResourceLoader.loadLibrary("snobotSimHal");
+        JniLibraryResourceLoader.loadLibrary("HALAthena");
     }
 }

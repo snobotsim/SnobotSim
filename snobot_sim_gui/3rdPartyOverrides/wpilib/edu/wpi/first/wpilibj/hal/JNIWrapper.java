@@ -7,11 +7,20 @@
 
 package edu.wpi.first.wpilibj.hal;
 
+import com.snobot.simulator.JniLibraryResourceLoader;
+import com.snobot.simulator.jni.BaseSimulatorJni;
+
 //
 // base class for all JNI wrappers
 //
 public class JNIWrapper
 {
+    static
+    {
+        BaseSimulatorJni.initilaize();
+        JniLibraryResourceLoader.loadLibrary("wpilibJavaJNI");
+    }
+
     public static int getPortWithModule(byte module, byte channel)
     {
         return channel;

@@ -8,9 +8,6 @@
 #ifndef SRC_PORTUNWRAPPER_H_
 #define SRC_PORTUNWRAPPER_H_
 
-
-#include <iostream>
-
 inline int UnwrapPort(int aInPort)
 {
 	int output;

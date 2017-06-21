@@ -6,9 +6,14 @@
 #include "com_snobot_simulator_jni_module_wrapper_EncoderWrapperJni.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/PortUnwrapper.h"
+#include "SnobotSim/GetSensorActuatorHelper.h"
 #include <sstream>
+#include <iostream>
 
 using namespace wpi::java;
+
+#define LOG_UNSUPPORTED() std::cerr << "Unsupported function at " << __FILE__ << ":" << __LINE__ << " - " << std::endl
+
 
 extern "C"
 {
@@ -79,12 +84,69 @@ JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_Encoder
 
 /*
  * Class:     com_snobot_simulator_jni_module_wrapper_EncoderWrapperJni
+ * Method:    connectSpeedController
+ * Signature: (II)V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_connectSpeedController
+  (JNIEnv *, jclass, jint aEncoderhandle, jint aScHandle)
+{
+    std::shared_ptr<EncoderWrapper> encoder = SensorActuatorRegistry::Get().GetEncoderWrapper(aEncoderhandle);
+    std::shared_ptr<SpeedControllerWrapper> speedController = GetSensorActuatorHelper::GetSpeedControllerWrapper(aScHandle);
+
+    if(encoder)
+    {
+        encoder->SetSpeedController(speedController);
+    }
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_module_wrapper_EncoderWrapperJni
  * Method:    isConnected
  * Signature: (I)Z
  */
 JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_isHookedUp(JNIEnv *, jclass, jint portHandle)
 {
     return SensorActuatorRegistry::Get().GetEncoderWrapper(portHandle)->IsHookedUp();
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_module_wrapper_EncoderWrapperJni
+ * Method:    getHookedUpId
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_getHookedUpId
+  (JNIEnv *, jclass, jint portHandle)
+{
+    std::shared_ptr<SpeedControllerWrapper> sc = SensorActuatorRegistry::Get().GetEncoderWrapper(portHandle)->GetSpeedController();
+    int output = -1;
+    if(sc)
+    {
+        output = sc->GetId();
+    }
+
+    return output;
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_module_wrapper_EncoderWrapperJni
+ * Method:    setDistancePerTick
+ * Signature: (ID)V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_setDistancePerTick
+  (JNIEnv *, jclass, jint aPortHandle, jdouble aDistancePerTick)
+{
+    SensorActuatorRegistry::Get().GetEncoderWrapper(aPortHandle)->SetDistancePerTick(aDistancePerTick);
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_module_wrapper_EncoderWrapperJni
+ * Method:    getDistancePerTick
+ * Signature: (I)D
+ */
+JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_getDistancePerTick
+  (JNIEnv *, jclass, jint portHandle)
+{
+    return SensorActuatorRegistry::Get().GetEncoderWrapper(portHandle)->GetDistancePerTick();
 }
 
 /*

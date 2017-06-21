@@ -15,6 +15,7 @@
 #include <cmath>
 
 DcMotorModelConfig::DcMotorModelConfig(
+            const FactoryParams& aFactoryParams,
             double aNominalVoltage, 
             double aFreeSpeedRpm, 
             double aFreeCurrent, 
@@ -25,6 +26,7 @@ DcMotorModelConfig::DcMotorModelConfig(
             bool aInverted):
 
             DcMotorModelConfig(
+                    aFactoryParams,
                     aNominalVoltage,
                     aFreeSpeedRpm,
                     aFreeCurrent,
@@ -42,6 +44,7 @@ DcMotorModelConfig::DcMotorModelConfig(
 
 
 DcMotorModelConfig::DcMotorModelConfig(
+            const FactoryParams& aFactoryParams,
             double aNominalVoltage,
             double aFreeSpeedRpm,
             double aFreeCurrent,
@@ -55,6 +58,8 @@ DcMotorModelConfig::DcMotorModelConfig(
             double aKT,
             double aKV,
             double aResistance):
+
+    mFactoryParams(aFactoryParams),
 
     NOMINAL_VOLTAGE(aNominalVoltage),
     FREE_SPEED_RPM(aFreeSpeedRpm),

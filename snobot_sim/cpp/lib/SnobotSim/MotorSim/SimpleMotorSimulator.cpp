@@ -21,6 +21,11 @@ SimpleMotorSimulator::~SimpleMotorSimulator()
 
 }
 
+const std::string& SimpleMotorSimulator::GetSimulatorType()
+{
+    return "Simple";
+}
+
 void SimpleMotorSimulator::SetVoltagePercentage(double aSpeed)
 {
     mVoltagePercent = aSpeed;

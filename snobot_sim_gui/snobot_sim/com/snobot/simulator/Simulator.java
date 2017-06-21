@@ -35,9 +35,6 @@ public class Simulator
 
     public Simulator() throws Exception
     {
-        JniLibraryResourceLoader.loadLibrary("snobotSimHal");
-        JniLibraryResourceLoader.loadLibrary("HALAthena");
-
         PluginSniffer sniffer = new PluginSniffer();
         sniffer.loadPlugins();
 
@@ -57,7 +54,8 @@ public class Simulator
             {
                 System.err.println("Could not read properties file, will use defaults and will overwrite the file if it exists");
 
-            	if(!JniLibraryResourceLoader.copyResourceFromJar("/com/snobot/simulator/default_properties.properties", new File(sPROPERTIES_FILE)))
+                if (!JniLibraryResourceLoader.copyResourceFromJar("/com/snobot/simulator/onfig/default_properties.properties",
+                        new File(sPROPERTIES_FILE)))
             	{
             		throw new RuntimeException("Could not copy properties file!  Have to exit!");
             	}

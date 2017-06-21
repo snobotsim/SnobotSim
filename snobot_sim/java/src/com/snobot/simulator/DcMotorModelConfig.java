@@ -2,6 +2,11 @@ package com.snobot.simulator;
 
 public class DcMotorModelConfig
 {
+    // Factory parameters
+    public final String mMotorType;
+    public final int mNumMotors;
+    public final double mGearReduction;
+    public final double mGearboxEfficiency;
 
     // Motor Parameters
     public final double NOMINAL_VOLTAGE;
@@ -20,7 +25,12 @@ public class DcMotorModelConfig
     // Indicates the motor has a brake, i.e. when givin 0 volts it will stay put
     public boolean mHasBrake;
 
-    public DcMotorModelConfig(
+    private DcMotorModelConfig(
+            String aMotorType,
+            int aNumMotors,
+            double aGearReduction,
+            double aGearboxEfficiency,
+            
             double aNominalVoltage, 
             double aFreeSpeedRpm, 
             double aFreeCurrent, 
@@ -29,6 +39,8 @@ public class DcMotorModelConfig
             double aMotorInertia)
     {
         this(
+                aMotorType, aNumMotors, aGearReduction, aGearboxEfficiency,
+
                 aNominalVoltage, 
                 aFreeSpeedRpm, 
                 aFreeCurrent, 
@@ -39,7 +51,12 @@ public class DcMotorModelConfig
                 false);
     }
 
-    public DcMotorModelConfig(
+    private DcMotorModelConfig(
+            String aMotorType,
+            int aNumMotors,
+            double aGearReduction,
+            double aGearboxEfficiency,
+            
             double aNominalVoltage, 
             double aFreeSpeedRpm, 
             double aFreeCurrent, 
@@ -50,6 +67,8 @@ public class DcMotorModelConfig
             boolean aInverted)
     {
         this(
+                aMotorType, aNumMotors, aGearReduction, aGearboxEfficiency,
+
                 aNominalVoltage, 
                 aFreeSpeedRpm, 
                 aFreeCurrent, 
@@ -63,9 +82,14 @@ public class DcMotorModelConfig
                 aNominalVoltage / aStallCurrent);
     }
 
-    public DcMotorModelConfig(DcMotorModelConfig aCopyConfig)
+    private DcMotorModelConfig(DcMotorModelConfig aCopyConfig)
     {
         this(
+                aCopyConfig.mMotorType, 
+                aCopyConfig.mNumMotors, 
+                aCopyConfig.mGearReduction, 
+                aCopyConfig.mGearboxEfficiency,
+                
                 aCopyConfig.NOMINAL_VOLTAGE,
                 aCopyConfig.FREE_SPEED_RPM,
                 aCopyConfig.FREE_CURRENT,
@@ -81,7 +105,12 @@ public class DcMotorModelConfig
                 aCopyConfig.mResistance);
     }
 
-    public DcMotorModelConfig(
+    private DcMotorModelConfig(
+            String aMotorType,
+            int aNumMotors,
+            double aGearReduction,
+            double aGearboxEfficiency,
+            
             double aNominalVoltage, 
             double aFreeSpeedRpm, 
             double aFreeCurrent, 
@@ -96,6 +125,11 @@ public class DcMotorModelConfig
             double aKV, 
             double aResistance)
     {
+        mMotorType = aMotorType;
+        mNumMotors = aNumMotors;
+        mGearReduction = aGearReduction;
+        mGearboxEfficiency = aGearboxEfficiency;
+
         NOMINAL_VOLTAGE = aNominalVoltage;
         FREE_SPEED_RPM = aFreeSpeedRpm;
         FREE_CURRENT = aFreeCurrent;
@@ -124,9 +158,12 @@ public class DcMotorModelConfig
     @Override
     public String toString()
     {
-        return "DcMotorModelConfig [NOMINAL_VOLTAGE=" + NOMINAL_VOLTAGE + ", FREE_SPEED_RPM=" + FREE_SPEED_RPM + ", FREE_CURRENT=" + FREE_CURRENT
-                + ", STALL_TORQUE=" + STALL_TORQUE + ", STALL_CURRENT=" + STALL_CURRENT + ", mKT=" + mKT + ", mKV=" + mKV + ", mResistance="
-                + mResistance + ", mMotorInertia=" + mMotorInertia + ", mInverted=" + mInverted + ", mHasBrake=" + mHasBrake + "]";
+        return "DcMotorModelConfig [mMotorType=" + mMotorType + ", mNumMotors=" + mNumMotors + ", mGearReduction=" + mGearReduction
+                + ", mGearboxEfficiency=" + mGearboxEfficiency + ", NOMINAL_VOLTAGE=" + NOMINAL_VOLTAGE + ", FREE_SPEED_RPM=" + FREE_SPEED_RPM
+                + ", FREE_CURRENT=" + FREE_CURRENT + ", STALL_TORQUE=" + STALL_TORQUE + ", STALL_CURRENT=" + STALL_CURRENT + ", mKT=" + mKT + ", mKV="
+                + mKV + ", mResistance=" + mResistance + ", mMotorInertia=" + mMotorInertia + ", mInverted=" + mInverted + ", mHasBrake=" + mHasBrake
+                + "]";
     }
+
 
 }
