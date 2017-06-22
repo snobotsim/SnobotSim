@@ -24,7 +24,7 @@ TankDriveSimulator::TankDriveSimulator(
 
     if(!mIsSetup)
     {
-        SNOBOT_LOG(SnobotLogging::ERROR, "Tank drive simulator is not set up! Will not update gyro!");
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Tank drive simulator is not set up! Will not update gyro!");
     }
 }
 

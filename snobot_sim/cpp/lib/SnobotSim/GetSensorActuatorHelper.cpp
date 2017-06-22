@@ -18,7 +18,7 @@ std::shared_ptr<WrapperType> Get##WrapperType(int aHandle)                      
         wrapper = SensorActuatorRegistry::Get().Get##WrapperType(packedPort, false);                                                   \
         if(!wrapper)                                                                                                                   \
         {                                                                                                                              \
-            SNOBOT_LOG(SnobotLogging::ERROR, "Could not find " << #WrapperType << " for handles " << aHandle << " or " << packedPort); \
+            SNOBOT_LOG(SnobotLogging::CRITICAL, "Could not find " << #WrapperType << " for handles " << aHandle << " or " << packedPort); \
         }                                                                                                                              \
     }                                                                                                                                  \
     return wrapper;                                                                                                                    \

@@ -47,7 +47,7 @@ void SnobotCoutLogger::Log(
     case WARN:
         logLevelStr << "Warn";
         break;
-    case ERROR:
+    case CRITICAL:
         logLevelStr << "Error";
         break;
     }

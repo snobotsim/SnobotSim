@@ -40,7 +40,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_JoystickJni_setJoystickInfo
 {
     if (!JoystickManager::Get().HasJoystick(aHandle))
     {
-        SNOBOT_LOG(SnobotLogging::ERROR, "Unregistered joystick " << aHandle);
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unregistered joystick " << aHandle);
         return;
     }
 

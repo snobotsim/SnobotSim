@@ -94,7 +94,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setS
   (JNIEnv * env, jclass, jint aSpeedControllerHandle,
         jobject aConfig, jdouble aArmCenterOfMass, jdouble aArmMass, jdouble aConstantAssistTorque, jdouble aOverCenterAssistTorque)
 {
-    SNOBOT_LOG(SnobotLogging::ERROR, "Unsupported");
+    SNOBOT_LOG(SnobotLogging::CRITICAL, "Unsupported");
 //    std::cerr << "Unsupported!" << std::endl;
 //    DcMotorModel motorModel = ConvertDcMotorModel(aConfig);
 //    std::shared_ptr<SpeedControllerWrapper> speedController = SensorActuatorRegistry::Get().GetSpeedControllerWrapper(aSpeedControllerHandle);

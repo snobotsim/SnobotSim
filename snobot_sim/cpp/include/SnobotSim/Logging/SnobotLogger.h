@@ -19,7 +19,8 @@ namespace SnobotLogging
         DEBUG = 0,
         INFO = 1,
         WARN = 2,
-        ERROR = 3,
+        CRITICAL = 3,
+        NONE = 4,
     };
 
     class EXPORT_ ISnobotLogger
@@ -90,7 +91,7 @@ namespace SnobotLogging
     SnobotLogging::LoggerWrapper::Log(logLevel, __LINE__, __FILE__, message.str());  \
 }
 
-#define LOG_UNSUPPORTED()  SNOBOT_LOG(SnobotLogging::ERROR, "Unsupported function " << __FUNCTION_NAME__);
+#define LOG_UNSUPPORTED()  SNOBOT_LOG(SnobotLogging::CRITICAL, "Unsupported function " << __FUNCTION_NAME__);
 
 
 #endif /* SNOBOTLOGGER_H_ */

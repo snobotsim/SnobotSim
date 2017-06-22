@@ -105,7 +105,7 @@ JNIEXPORT jobject JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedCon
     }
     else
     {
-        SNOBOT_LOG(SnobotLogging::ERROR, "Unknown motor sim type " << type);
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown motor sim type " << type);
     }
 
     return output;
@@ -137,7 +137,7 @@ JNIEXPORT jint JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedContro
     }
     else
     {
-        SNOBOT_LOG(SnobotLogging::ERROR, "Unknown motor sim type " << type);
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown motor sim type " << type);
     }
 
     return -1;

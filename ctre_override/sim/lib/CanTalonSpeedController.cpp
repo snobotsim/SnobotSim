@@ -49,11 +49,11 @@ void CanTalonSpeedController::SetControlMode(ControlMode aControlMode)
     }
     case ControlMode_Follower:
     {
-        SNOBOT_LOG(SnobotLogging::ERROR, "This shouldn't be called directly");
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "This shouldn't be called directly");
         break;
     }
     default:
-        SNOBOT_LOG(SnobotLogging::ERROR, "Unknown control mode");
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown control mode");
     }
 }
 

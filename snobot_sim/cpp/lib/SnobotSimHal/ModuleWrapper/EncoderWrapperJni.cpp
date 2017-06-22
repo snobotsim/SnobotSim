@@ -36,7 +36,7 @@ JNIEXPORT jint JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrap
         return packedHandle;
     }
 
-    SNOBOT_LOG(SnobotLogging::ERROR,
+    SNOBOT_LOG(SnobotLogging::CRITICAL,
             "Could not find encoder with ports (" << handleA << ", " << handleB << "), " <<
             "tried " << basicHandle << " and " << packedHandle);
 

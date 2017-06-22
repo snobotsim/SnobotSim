@@ -2,9 +2,6 @@
 #include <iostream>
 #include "SnobotSim/Logging/SnobotLogger.h"
 
-//TODO Shouldn't need to redefine this
-#define LOG_UNSUPPORTED() std::cerr << "Unsupported function at " << __FILE__ << ":" << __LINE__ << " - " << __FUNCTION_NAME__ << std::endl
-
 CANTalon::CANTalon(int deviceNumber):
     m_deviceNumber(deviceNumber)
 {

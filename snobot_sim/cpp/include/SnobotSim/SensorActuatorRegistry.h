@@ -87,7 +87,7 @@ protected:
         {
             if (logError)
             {
-                SNOBOT_LOG(SnobotLogging::ERROR, "Unregistered " << aType << " on port " << aPort << ".  Map has " << aMap.size() << " elements.")
+                SNOBOT_LOG(SnobotLogging::CRITICAL, "Unregistered " << aType << " on port " << aPort << ".  Map has " << aMap.size() << " elements.")
             }
             return std::shared_ptr<ItemType>();
         }
