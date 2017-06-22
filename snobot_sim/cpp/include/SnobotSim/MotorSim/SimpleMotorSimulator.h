@@ -40,6 +40,8 @@ protected:
     double mVoltagePercent;
     double mVelocity;
     double mPosition;
+
+    static const std::string SIMULATOR_TYPE;
 };
 
 #endif /* INCLUDE_SIMPLEMOTORSIMULATOR_H_ */
