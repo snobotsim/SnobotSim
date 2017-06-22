@@ -23,6 +23,12 @@ namespace SnobotLogging
                 int aLineNumber,
                 const std::string& aFileName,
                 const std::string& aMessage);
+
+    protected:
+
+        std::string FixWindowsSlashes(const std::string& aInput);
+
+        std::string mDirectorySubstring;
     };
 }
 #endif /* SNOBOTCOUTLOGGER_H_ */

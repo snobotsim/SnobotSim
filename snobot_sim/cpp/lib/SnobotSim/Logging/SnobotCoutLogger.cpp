@@ -13,7 +13,15 @@ using namespace SnobotLogging;
 
 SnobotCoutLogger::SnobotCoutLogger()
 {
+    mDirectorySubstring = "";
 
+    std::string thisFile = FixWindowsSlashes(__FILE__);
+    int filenamePos = thisFile.find("snobot_sim/cpp/lib/SnobotSim/Logging/SnobotCoutLogger.cpp");
+
+    if(filenamePos != -1)
+    {
+        mDirectorySubstring = thisFile.substr(0, thisFile.size() - filenamePos - 1);
+    }
 }
 
 SnobotCoutLogger::~SnobotCoutLogger()
@@ -22,6 +30,21 @@ SnobotCoutLogger::~SnobotCoutLogger()
 }
 
 
+std::string SnobotCoutLogger::FixWindowsSlashes(const std::string& aInput)
+{
+    std::string output = aInput;
+
+    // Stupid windows
+    // https://stackoverflow.com/questions/20406744/how-to-find-and-replace-all-occurrences-of-a-substring-in-a-string
+    std::string::size_type n = 0;
+    while ((n = output.find("\\", n )) != std::string::npos )
+    {
+        output.replace( n, 1, "/");
+        n += 1;
+    }
+
+    return output;
+}
 
 void SnobotCoutLogger::Log(
         LogLevel aLogLevel,
@@ -50,16 +73,25 @@ void SnobotCoutLogger::Log(
     case CRITICAL:
         logLevelStr << "Error";
         break;
+    case NONE:
+        logLevelStr << "Invalid";
+        break;
+    }
+
+    std::string shortenedFileName = FixWindowsSlashes(aFileName);
+
+    int filenamePos = shortenedFileName.find(mDirectorySubstring);
+    if(filenamePos != -1)
+    {
+        shortenedFileName = shortenedFileName.substr(mDirectorySubstring.size());
     }
 
     if(aLogLevel <= INFO)
     {
-        std::cout << logLevelStr.str() << " " << aFileName << ":" << aLineNumber << " - " << aMessage << std::endl;
+        std::cout << logLevelStr.str() << " " << shortenedFileName << ":" << aLineNumber << " - " << aMessage << std::endl;
     }
     else
     {
-        std::cerr << logLevelStr.str() << " " << aFileName << ":" << aLineNumber << " - " << aMessage << std::endl;
+        std::cerr << logLevelStr.str() << " " << shortenedFileName << ":" << aLineNumber << " - " << aMessage << std::endl;
     }
-
-
 }
