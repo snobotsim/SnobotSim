@@ -7,8 +7,8 @@
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/GetSensorActuatorHelper.h"
 #include "SnobotSim/MotorSim/StaticLoadDcMotorSim.h"
+#include "SnobotSim/Logging/SnobotLogger.h"
 #include "../ConversionUtils.h"
-#include <iostream>
 
 using namespace wpi::java;
 
@@ -101,11 +101,11 @@ JNIEXPORT jobject JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedCon
     }
     else if(type == "Null" || type == "Simple")
     {
-        std::cerr << "The type " << type << " does not have a DC Motor config..." << std::endl;
+        SNOBOT_LOG(SnobotLogging::WARN, "The type " << type << " does not have a DC Motor config...");
     }
     else
     {
-        std::cerr <<"Unknown motor sim type " << type << std::endl;
+        SNOBOT_LOG(SnobotLogging::ERROR, "Unknown motor sim type " << type);
     }
 
     return output;
@@ -137,7 +137,7 @@ JNIEXPORT jint JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedContro
     }
     else
     {
-        std::cerr <<"Unknown motor sim type " << type << std::endl;
+        SNOBOT_LOG(SnobotLogging::ERROR, "Unknown motor sim type " << type);
     }
 
     return -1;

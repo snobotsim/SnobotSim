@@ -6,7 +6,7 @@
  */
 
 #include "SnobotSim/SimulatorComponents/TankDriveSimulator.h"
-#include <iostream>
+#include "SnobotSim/Logging/SnobotLogger.h"
 
 
 TankDriveSimulator::TankDriveSimulator(
@@ -24,7 +24,7 @@ TankDriveSimulator::TankDriveSimulator(
 
     if(!mIsSetup)
     {
-        std::cerr << "Tank drive simulator is not set up! Will not update gyro!" << std::endl;
+        SNOBOT_LOG(SnobotLogging::ERROR, "Tank drive simulator is not set up! Will not update gyro!");
     }
 }
 

@@ -7,13 +7,10 @@
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/PortUnwrapper.h"
 #include "SnobotSim/GetSensorActuatorHelper.h"
+#include "SnobotSim/Logging/SnobotLogger.h"
 #include <sstream>
-#include <iostream>
 
 using namespace wpi::java;
-
-#define LOG_UNSUPPORTED() std::cerr << "Unsupported function at " << __FILE__ << ":" << __LINE__ << " - " << std::endl
-
 
 extern "C"
 {
@@ -39,7 +36,9 @@ JNIEXPORT jint JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrap
         return packedHandle;
     }
 
-    std::cerr << "Could not find encoder with ports (" << handleA << ", " << handleB << "), tried " << basicHandle << " and " << packedHandle << std::endl;
+    SNOBOT_LOG(SnobotLogging::ERROR,
+            "Could not find encoder with ports (" << handleA << ", " << handleB << "), " <<
+            "tried " << basicHandle << " and " << packedHandle);
 
     return -1;
 

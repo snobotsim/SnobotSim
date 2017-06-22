@@ -14,7 +14,6 @@
 #include "ConversionUtils.h"
 #include <vector>
 #include <memory>
-#include <iostream>
 
 
 #include "SnobotSim/GetSensorActuatorHelper.h"
@@ -95,7 +94,8 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setS
   (JNIEnv * env, jclass, jint aSpeedControllerHandle,
         jobject aConfig, jdouble aArmCenterOfMass, jdouble aArmMass, jdouble aConstantAssistTorque, jdouble aOverCenterAssistTorque)
 {
-    std::cerr << "Unsupported!" << std::endl;
+    SNOBOT_LOG(SnobotLogging::ERROR, "Unsupported");
+//    std::cerr << "Unsupported!" << std::endl;
 //    DcMotorModel motorModel = ConvertDcMotorModel(aConfig);
 //    std::shared_ptr<SpeedControllerWrapper> speedController = SensorActuatorRegistry::Get().GetSpeedControllerWrapper(aSpeedControllerHandle);
 //    speedController->SetMotorSimulator(std::shared_ptr < IMotorSimulator > (new StaticLoadDcMotorSimulator(aLoad, aConversionFactor)));

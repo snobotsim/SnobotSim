@@ -14,8 +14,6 @@
 #include "HAL/handles/HandlesInternal.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 
-#include <iostream>
-
 using namespace hal;
 
 

@@ -13,6 +13,7 @@ import com.snobot.simulator.gui.SimulatorFrame;
 import com.snobot.simulator.jni.JoystickJni;
 import com.snobot.simulator.jni.RobotStateSingletonJni;
 import com.snobot.simulator.jni.SimulationConnectorJni;
+import com.snobot.simulator.jni.SnobotSimulatorJni;
 import com.snobot.simulator.joysticks.IMockJoystick;
 import com.snobot.simulator.joysticks.JoystickFactory;
 import com.snobot.simulator.robot_container.CppRobotContainer;
@@ -33,8 +34,10 @@ public class Simulator
     private IRobotClassContainer mRobot; // The robot code to run
     private ASimulator mSimulator; // The robot code to run
 
-    public Simulator() throws Exception
+    public Simulator(int aLogLevel) throws Exception
     {
+        SnobotSimulatorJni.initializeLogging(aLogLevel);
+
         PluginSniffer sniffer = new PluginSniffer();
         sniffer.loadPlugins();
 

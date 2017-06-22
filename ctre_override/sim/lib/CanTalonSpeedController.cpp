@@ -6,7 +6,7 @@
  */
 
 #include "CanTalonSpeedController.h"
-#include <iostream>
+#include "SnobotSim/Logging/SnobotLogger.h"
 
 CanTalonSpeedController::CanTalonSpeedController(int aHandle) :
     SpeedControllerWrapper(aHandle),
@@ -49,11 +49,11 @@ void CanTalonSpeedController::SetControlMode(ControlMode aControlMode)
     }
     case ControlMode_Follower:
     {
-        std::cerr << "This shouldn't be called directly" << std::endl;
+        SNOBOT_LOG(SnobotLogging::ERROR, "This shouldn't be called directly");
         break;
     }
     default:
-        std::cerr << "Unknown control mode" << std::endl;
+        SNOBOT_LOG(SnobotLogging::ERROR, "Unknown control mode");
     }
 }
 

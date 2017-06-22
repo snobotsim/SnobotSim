@@ -7,9 +7,9 @@
 
 #include "SnobotSim/RobotStateSingleton.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/Logging/SnobotLogger.h"
 
 #include <chrono>
-#include <iostream>
 #include <future>
 
 RobotStateSingleton RobotStateSingleton::sINSTANCE;
@@ -22,13 +22,15 @@ RobotStateSingleton::RobotStateSingleton() :
 
 RobotStateSingleton::~RobotStateSingleton()
 {
-	std::cout << "Destroying singleton: " << mRunning << std::endl;
-	if(mRunning)
-	{
+    SNOBOT_LOG(SnobotLogging::INFO, "Destroying Singleton");
+
+    if(mRunning)
+    {
         mRunning = false;
         mUpdateThread.join();
-	}
-	std::cout << "Destroyed" << std::endl;
+    }
+
+    SNOBOT_LOG(SnobotLogging::INFO, "Destroyed");
 }
 
 RobotStateSingleton& RobotStateSingleton::Get()
@@ -40,31 +42,30 @@ void RobotStateSingleton::WaitForProgramToStart()
 {
     if (!mRobotStarted)
     {
-    	std::cout << "Waiting for robot to initialize..." << std::endl;
+        SNOBOT_LOG(SnobotLogging::INFO, "Waiting for robot to initialize...");
         std::unique_lock<std::mutex> lk(mProgramStartedMutex);
      	mProgramStartedCv.wait(lk);
     }
     else
     {
-        std::cerr << "Robot already initialized!" << std::endl;
+        SNOBOT_LOG(SnobotLogging::WARN, "Robot already initialized!");
     }
 }
 
 void RobotStateSingleton::HandleRobotInitialized()
 {
- 	std::cout << "Robot initialized\n\n" << std::endl;
- 	mRobotStarted = true;
- 	mRunning = true;
- 	mProgramStartedCv.notify_all();
- 	
- 	mUpdateThread = std::thread(&RobotStateSingleton::RunUpdateLoopThread, this);
+    SNOBOT_LOG(SnobotLogging::INFO, "Robot initialized\n\n");
+    mRobotStarted = true;
+    mRunning = true;
+    mProgramStartedCv.notify_all();
+
+    mUpdateThread = std::thread(&RobotStateSingleton::RunUpdateLoopThread, this);
 }
-	
+
 void RobotStateSingleton::WaitForNextControlLoop()
 {
     std::unique_lock<std::mutex> lk(mControlLoopMutex);
- 	mControlLoopCv.wait(lk);
-	
+    mControlLoopCv.wait(lk);
 }
 
 void RobotStateSingleton::RunUpdateLoopThread()

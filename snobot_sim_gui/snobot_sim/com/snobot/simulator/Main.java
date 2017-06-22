@@ -1,5 +1,8 @@
 package com.snobot.simulator;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import com.snobot.simulator.jni.SnobotSimulatorJni;
 
 import edu.wpi.first.wpilibj.util.WPILibVersion;
@@ -8,11 +11,17 @@ public class Main
 {
     public static void main(String[] args)
     {
-        printVersions();
         
+        Collection<String> argList = Arrays.asList(args);
+
+        if (argList.contains("version"))
+        {
+            printVersions();
+        }
+
         try
         {
-            Simulator simulator = new Simulator();
+            Simulator simulator = new Simulator(parseLogLevel(argList));
             simulator.startSimulation();
         }
         catch (ClassNotFoundException e)
@@ -41,6 +50,21 @@ public class Main
         }
     }
     
+    private static int parseLogLevel(Collection<String> argList)
+    {
+        int logLevel = 0;
+
+        for (String arg : argList)
+        {
+            if (arg.startsWith("log_level="))
+            {
+                logLevel = Integer.parseInt(arg.substring("log_level=".length()));
+            }
+        }
+
+        return logLevel;
+    }
+
     private static void printVersions()
 	{
         System.out.println("Versions:");

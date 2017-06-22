@@ -6,6 +6,8 @@
 #include "com_snobot_simulator_jni_SnobotSimulatorJni.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/SnobotSimHalVersion.h"
+#include "SnobotSim/Logging/SnobotLogger.h"
+#include "SnobotSim/Logging/SnobotCoutLogger.h"
 
 using namespace wpi::java;
 
@@ -45,6 +47,22 @@ JNIEXPORT jstring JNICALL Java_com_snobot_simulator_jni_SnobotSimulatorJni_getVe
     jstring output = MakeJString(env, SnobotSimHal::Version);
 
     return output;
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_SnobotSimulatorJni
+ * Method:    initializeLogging
+ * Signature: (I)Ljava/lang/String;
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SnobotSimulatorJni_initializeLogging
+  (JNIEnv *, jclass, jint aLogLevel)
+{
+    static SnobotLogging::SnobotCoutLogger coutLogger;
+
+    SnobotLogging::LogLevel logLevel = (SnobotLogging::LogLevel) aLogLevel;
+    coutLogger.SetLogLevel(logLevel);
+
+    SnobotLogging::LoggerWrapper::SetLogger(&coutLogger);
 }
 
 }

@@ -6,7 +6,7 @@
  */
 
 #include "SnobotSim/MotorFactory/VexMotorFactory.h"
-#include <iostream>
+#include "SnobotSim/Logging/SnobotLogger.h"
 
 
 const std::string VexMotorFactory::MOTOR_NAME_CIM            = "CIM";
@@ -53,8 +53,6 @@ DcMotorModelConfig VexMotorFactory::MakeTransmission(
     output.mKT *= aEfficiency * aNumMotors * aReduction;
 
     return output;
-
-//    return aMotorConfig;
 }
 
 DcMotorModelConfig VexMotorFactory::CreateMotor(
@@ -142,7 +140,7 @@ DcMotorModelConfig VexMotorFactory::CreateMotor(
     }
     else
     {
-        std::cerr << "Unknown motor name " << aName << std::endl;
+        SNOBOT_LOG(SnobotLogging::ERROR, "Unknown motor sim name " << aName);
     }
 
     factoryParams.mMotorName = "";

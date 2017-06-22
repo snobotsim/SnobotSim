@@ -21,6 +21,7 @@
 #include "SnobotSim/SimulatorComponents/ISimulatorUpdater.h"
 #include "SnobotSim/SimulatorComponents/Accelerometer/AccelerometerWrapper.h"
 #include "SnobotSim/SimulatorComponents/Gyro/GyroWrapper.h"
+#include "SnobotSim/Logging/SnobotLogger.h"
 
 #define ACTUATOR_GETTERS(ItemType)                                              \
     bool Register(int aPort, const std::shared_ptr<ItemType>& aActuator);       \
@@ -28,9 +29,6 @@
     const std::map<int, std::shared_ptr<ItemType>>& Get##ItemType##Map() const; \
     std::map<int, std::shared_ptr<ItemType>>& Get##ItemType##Map();
 
-//#include <iostream>
-//#define REGISTRATION_LOG(x) x;
-#define REGISTRATION_LOG(x)
 
 class EXPORT_ SensorActuatorRegistry
 {
@@ -74,7 +72,7 @@ protected:
 
         aMap[aPort] = aItem;
 
-        REGISTRATION_LOG(std::cout << "Registered " << aType << " on port " << aPort << ".  The map has " << aMap.size() << " elements." << std::endl)
+        SNOBOT_LOG(SnobotLogging::DEBUG, "Registered " << aType << " on port " << aPort << ".  The map has " << aMap.size() << " elements.")
 
         return true;
     }
@@ -89,7 +87,7 @@ protected:
         {
             if (logError)
             {
-                REGISTRATION_LOG(std::cerr << "Unregistered " << aType << " on port " << aPort << ".  Map has " << aMap.size() << " elements." << std::endl)
+                SNOBOT_LOG(SnobotLogging::ERROR, "Unregistered " << aType << " on port " << aPort << ".  Map has " << aMap.size() << " elements.")
             }
             return std::shared_ptr<ItemType>();
         }

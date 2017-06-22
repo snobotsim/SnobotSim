@@ -3,7 +3,7 @@
 #include <jni.h>
 #include "com_snobot_simulator_jni_JoystickJni.h"
 #include "SnobotSim/JoystickManager.h"
-#include <iostream>
+#include "SnobotSim/Logging/SnobotLogger.h"
 
 
 std::ostream& operator<<(std::ostream& aStream, const JoystickInformation& aJoystickInfo)
@@ -40,7 +40,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_JoystickJni_setJoystickInfo
 {
     if (!JoystickManager::Get().HasJoystick(aHandle))
     {
-        std::cerr << "Unregistered joystick " << aHandle << std::endl;
+        SNOBOT_LOG(SnobotLogging::ERROR, "Unregistered joystick " << aHandle);
         return;
     }
 
