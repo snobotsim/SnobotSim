@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.snobot.simulator.config.SimulatorConfigWriter;
 import com.snobot.simulator.gui.joysticks.JoystickManagerDialog;
 import com.snobot.simulator.jni.RobotStateSingletonJni;
 
@@ -57,7 +58,7 @@ public class SimulatorFrame extends JFrame
         });
 
         JButton changeSettingsBtn = new JButton("Change Settings");
-        JButton hideSettingsBtn = new JButton("Save Settings");
+        JButton saveSettingsBtn = new JButton("Save Settings");
 
         changeSettingsBtn.addActionListener(new ActionListener()
         {
@@ -66,29 +67,31 @@ public class SimulatorFrame extends JFrame
             public void actionPerformed(ActionEvent e)
             {
                 changeSettingsBtn.setVisible(false);
-                hideSettingsBtn.setVisible(true);
+                saveSettingsBtn.setVisible(true);
 
                 showSettingsOptions(true);
             }
         });
 
-        hideSettingsBtn.addActionListener(new ActionListener()
+        saveSettingsBtn.addActionListener(new ActionListener()
         {
 
             @Override
             public void actionPerformed(ActionEvent e)
             {
                 changeSettingsBtn.setVisible(true);
-                hideSettingsBtn.setVisible(false);
+                saveSettingsBtn.setVisible(false);
 
+                SimulatorConfigWriter writer = new SimulatorConfigWriter();
+                writer.writeConfig("./DumpedConfig.yml");
                 showSettingsOptions(false);
             }
         });
-        hideSettingsBtn.setVisible(false);
+        saveSettingsBtn.setVisible(false);
 
         JPanel settingsPanel = new JPanel(new BorderLayout());
         settingsPanel.add(changeSettingsBtn, BorderLayout.NORTH);
-        settingsPanel.add(hideSettingsBtn, BorderLayout.SOUTH);
+        settingsPanel.add(saveSettingsBtn, BorderLayout.SOUTH);
 
         JPanel buttonPanel = new JPanel(new BorderLayout());
         buttonPanel.add(configureJoystickBtn, BorderLayout.NORTH);

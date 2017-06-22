@@ -23,13 +23,13 @@ def defineLibraryPaths(targetPlatform)
         
     } else if (OperatingSystem.current().isWindows()) {
         if (architecture.contains('64')) {  
-	        ext.wpilibcLibraryPath       = wpilibBuildPath    + '/native/shared/x64/wpilibc.lib'
-	        ext.networkTablesLibraryPath = wpilibBuildPath    + '/native/shared/x64/ntcore.lib'
-	        ext.wpilibLibraryPath        = wpilibBuildPath    + '/native/shared/x64/wpiutil.lib'
+            ext.wpilibcLibraryPath       = wpilibBuildPath    + '/native/shared/x64/wpilibc.lib'
+            ext.networkTablesLibraryPath = wpilibBuildPath    + '/native/shared/x64/ntcore.lib'
+            ext.wpilibLibraryPath        = wpilibBuildPath    + '/native/shared/x64/wpiutil.lib'
         } else {
-	        ext.wpilibcLibraryPath       = wpilibBuildPath    + '/native/shared/x86/wpilibc.lib'
-	        ext.networkTablesLibraryPath = wpilibBuildPath    + '/native/shared/x86/ntcore.lib'
-	        ext.wpilibLibraryPath        = wpilibBuildPath    + '/native/shared/x86/wpiutil.lib'
+            ext.wpilibcLibraryPath       = wpilibBuildPath    + '/native/shared/x86/wpilibc.lib'
+            ext.networkTablesLibraryPath = wpilibBuildPath    + '/native/shared/x86/ntcore.lib'
+            ext.wpilibLibraryPath        = wpilibBuildPath    + '/native/shared/x86/wpiutil.lib'
         }
     } else {
         throw new GradleException("${name} does not support building on ${ext.buildPlatform}.")

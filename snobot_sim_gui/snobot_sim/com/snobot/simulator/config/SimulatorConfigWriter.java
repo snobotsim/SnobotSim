@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
 import com.snobot.simulator.DcMotorModelConfig;
@@ -31,7 +32,10 @@ public class SimulatorConfigWriter
 
             Map<String, Object> output = dumpConfig();
 
-            Yaml yaml = new Yaml();
+            DumperOptions options = new DumperOptions();
+            options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+
+            Yaml yaml = new Yaml(options);
             yaml.dump(output, new FileWriter(file));
         }
         catch (IOException e)
@@ -175,7 +179,12 @@ public class SimulatorConfigWriter
         motorSim.put("type", "StaticLoad");
         motorSim.put("load", 1);
         motorSim.put("conversion_factor", 1);
-        motorSim.put("motor_model", dumpDcMotorModelConfig(SpeedControllerWrapperJni.getMotorConfig(aHandle)));
+
+        DcMotorModelConfig modelConfig = SpeedControllerWrapperJni.getMotorConfig(aHandle);
+        if (modelConfig != null)
+        {
+            motorSim.put("motor_model", dumpDcMotorModelConfig(modelConfig));
+        }
 
         aScConfig.put("motor_sim", motorSim);
     }
@@ -195,23 +204,15 @@ public class SimulatorConfigWriter
         Map<String, Object> output = new LinkedHashMap<>();
 
         output.put("motor_type", aConfig.mMotorType);
-        output.put("num_motors", aConfig.mNumMotors);
-        output.put("gear_reduction", aConfig.mGearReduction);
-        output.put("efficiency", aConfig.mGearboxEfficiency);
+        output.put("inverted", aConfig.mInverted);
+        output.put("has_brake", aConfig.mHasBrake);
+
+        Map<String, Object> transmissionConfig = new LinkedHashMap<>();
+        transmissionConfig.put("num_motors", aConfig.mNumMotors);
+        transmissionConfig.put("gear_reduction", aConfig.mGearReduction);
+        transmissionConfig.put("efficiency", aConfig.mGearboxEfficiency);
+        output.put("transmission", transmissionConfig);
 
         return output;
     }
-
-    // List<Integer> speedControllers =
-    // IntStream.of(SpeedControllerWrapperJni.getPortList()).boxed().collect(Collectors.toList());
-    // List<Integer> digitalSource =
-    // IntStream.of(DigitalSourceWrapperJni.getPortList()).boxed().collect(Collectors.toList());
-    // List<Integer> relaySource =
-    // IntStream.of(RelayWrapperJni.getPortList()).boxed().collect(Collectors.toList());
-    // List<Integer> analogSource =
-    // IntStream.of(AnalogSourceWrapperJni.getPortList()).boxed().collect(Collectors.toList());
-    // List<Integer> encoders =
-    // IntStream.of(EncoderWrapperJni.getPortList()).boxed().collect(Collectors.toList());
-    // List<Integer> solenoids =
-    // IntStream.of(SolenoidWrapperJni.getPortList()).boxed().collect(Collectors.toList());
 }

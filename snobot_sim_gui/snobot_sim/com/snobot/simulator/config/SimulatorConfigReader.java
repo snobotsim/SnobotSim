@@ -4,14 +4,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
 import org.yaml.snakeyaml.Yaml;
 
 import com.snobot.simulator.DcMotorModelConfig;
+import com.snobot.simulator.jni.MotorConfigFactoryJni;
 import com.snobot.simulator.jni.SimulationConnectorJni;
 import com.snobot.simulator.jni.module_wrapper.EncoderWrapperJni;
 import com.snobot.simulator.jni.module_wrapper.RelayWrapperJni;
@@ -238,56 +237,32 @@ public class SimulatorConfigReader
     {
         DcMotorModelConfig output = null;
 
-//        if (modelConfig.containsKey("motor_factory_func"))
-//        {
-//            String motorFactoryFunc = modelConfig.get("motor_factory_func").toString();
-//
-//            int lastDot = motorFactoryFunc.lastIndexOf(".");
-//            String className = motorFactoryFunc.substring(0, lastDot);
-//            String methodName = motorFactoryFunc.substring(lastDot + 1);
-//
-//            try
-//            {
-//                Class<?> myClass = Class.forName(className);
-//                Method myMethod = myClass.getDeclaredMethod(methodName);
-//                output = (DcMotorModelConfig) myMethod.invoke(null);
-//            }
-//            catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalArgumentException | IllegalAccessException
-//                    | InvocationTargetException e)
-//            {
-//                e.printStackTrace();
-//            }
-//        }
-//        else
-//        {
-//            System.err.println("Only reflection creation is supported");
-//        }
-//
-//        if (modelConfig.containsKey("transmission"))
-//        {
-//            Map<String, Object> transmissionConfig = (Map<String, Object>) modelConfig.get("transmission");
-//            int numMotors = (Integer) transmissionConfig.get("num_motors");
-//            double reduction = ((Number) transmissionConfig.get("gear_reduction")).doubleValue();
-//            double efficiency = ((Number) transmissionConfig.get("efficiency")).doubleValue();
-//
-//            output = MakeTransmission.makeTransmission(output, numMotors, reduction, efficiency);
-//        }
+        String motorType = modelConfig.get("motor_type").toString();
+
+        if (modelConfig.containsKey("transmission"))
+        {
+            Map<String, Object> transmissionConfig = (Map<String, Object>) modelConfig.get("transmission");
+            int numMotors = (Integer) transmissionConfig.get("num_motors");
+            double gearRatio = ((Number) transmissionConfig.get("gear_reduction")).doubleValue();
+            double gearboxEfficiency = ((Number) transmissionConfig.get("efficiency")).doubleValue();
+            output = MotorConfigFactoryJni.createMotor(motorType, numMotors, gearRatio, gearboxEfficiency);
+        }
+        else
+        {
+            output = MotorConfigFactoryJni.createMotor(motorType);
+        }
 
         if (modelConfig.containsKey("inverted"))
         {
             output.setInverted((Boolean) modelConfig.get("inverted"));
         }
 
+        if (modelConfig.containsKey("has_brake"))
+        {
+            output.setHasBrake((Boolean) modelConfig.get("has_brake"));
+        }
+
         return output;
-        // return new DcMotorModelConfig(
-        // output.NOMINAL_VOLTAGE,
-        // output.FREE_SPEED_RPM,
-        // output.FREE_CURRENT,
-        // output.STALL_TORQUE,
-        // output.STALL_CURRENT,
-        // output.mMotorInertia,
-        // output.mHasBrake,
-        // output.mInverted);
     }
 
     protected int getIntHandle(Object aHandleObject)

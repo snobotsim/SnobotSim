@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
 import com.snobot.simulator.gui.Util;
-import com.snobot.simulator.gui.module_widget.settings.SimpleSettingsDialog;
+import com.snobot.simulator.gui.module_widget.settings.SpeedControllerSettingsDialog;
 import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni;
 
 public class SpeedControllerGraphicDisplay extends BaseWidgetDisplay<Integer, MotorDisplay>
@@ -43,7 +43,7 @@ public class SpeedControllerGraphicDisplay extends BaseWidgetDisplay<Integer, Mo
     @Override
     protected JDialog createSettingsDialog(Integer aKey)
     {
-        SimpleSettingsDialog dialog = new SimpleSettingsDialog("Speed Controller " + aKey + " Settings", aKey, getName(aKey));
+        SpeedControllerSettingsDialog dialog = new SpeedControllerSettingsDialog("Speed Controller " + aKey + " Settings", aKey, getName(aKey));
         dialog.addSubmitListener(new ActionListener()
         {
 

@@ -1,9 +1,15 @@
 package com.ctre;
 
+import com.snobot.simulator.JniLibraryResourceLoader;
+
 public class CTREJNIWrapper
 {
-    public CTREJNIWrapper()
+    static
     {
+        JniLibraryResourceLoader.loadLibrary("ntcore");
+        JniLibraryResourceLoader.loadLibrary("wpiutil");
+        JniLibraryResourceLoader.loadLibrary("wpilibc");
+        JniLibraryResourceLoader.loadLibrary("ctreOverride");
     }
 
     public static native int getPortWithModule(byte paramByte1, byte paramByte2);
