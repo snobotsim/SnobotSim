@@ -4,26 +4,11 @@ build_script:
 - cmd: gradlew.bat build publish -Pmaven_repo=build/maven_repo
 artifacts:
 
-- path: build/snobotSim.jar
-  name: snobotSim
+- path: build/maven_repo/com/snobot/simulator/snobotSim/**/snobotSim*.jar
+  name: snobotSimJars
 
-- path: build/snobotSim-gui.jar
-  name: snobotSim-gui
+- path: build/maven_repo/com/snobot/simulator/snobotSim/**/snobotSim*.zip
+  name: snobotSimZips
 
-- path: build/snobotSim-NativeJava-windows.jar
-  name: snobotSim-NativeJava-windows
-
-- path: build/snobotSim-cpp-sources.zip
-  name: snobotSim-cpp-sources
-
-- path: build/snobotSim-javadeps.zip
-  name: snobotSim-javadeps
-
-- path: build/snobotSim-NativeCpp-windows.zip
-  name: snobotSim-NativeCpp-windows
-
-- path: native/snobot_sim_gui/build/distributions
-  name: SnobotSimulator
-
-- path: build/maven_repo
-  name: MavenStuff
+- path: build/maven_repo/com/snobot/simulator/snobotSimApplication/**/snobotSimApplication*.zip
+  name: snobotApplication
