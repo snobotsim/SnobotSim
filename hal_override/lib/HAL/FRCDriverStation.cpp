@@ -15,8 +15,10 @@
 #include "HAL/DriverStation.h"
 #include "HAL/cpp/priority_condition_variable.h"
 #include "HAL/cpp/priority_mutex.h"
+
 #include "SnobotSim/RobotStateSingleton.h"
 #include "SnobotSim/JoystickManager.h"
+#include "SnobotSim/Logging/SnobotLogger.h"
 
 static_assert(sizeof(int32_t) >= sizeof(int),
               "FRC_NetworkComm status variable is larger than 32 bits");
@@ -160,14 +162,17 @@ int32_t HAL_GetJoystickButtons(int32_t joystickNum,
  */
 int32_t HAL_GetJoystickDescriptor(int32_t joystickNum,
                                   HAL_JoystickDescriptor* desc) {
+    LOG_UNSUPPORTED();
     return 0;
 }
 
 HAL_Bool HAL_GetJoystickIsXbox(int32_t joystickNum) {
+    LOG_UNSUPPORTED();
     return 0;
 }
 
 int32_t HAL_GetJoystickType(int32_t joystickNum) {
+    LOG_UNSUPPORTED();
     return 0;
 }
 
@@ -209,19 +214,19 @@ void HAL_ObserveUserProgramStarting(void) {
 }
 
 void HAL_ObserveUserProgramDisabled(void) {
-
+    // Nothing to do...
 }
 
 void HAL_ObserveUserProgramAutonomous(void) {
-
+    // Nothing to do...
 }
 
 void HAL_ObserveUserProgramTeleop(void) {
-
+    // Nothing to do...
 }
 
 void HAL_ObserveUserProgramTest(void) {
-
+    // Nothing to do...
 }
 
 bool HAL_IsNewControlData(void) {
@@ -247,7 +252,7 @@ HAL_Bool HAL_WaitForDSDataTimeout(double timeout) {
 }
 
 void HAL_InitializeDriverStation(void) {
-
+    // Nothing to do...
 }
 
 }  // extern "C"

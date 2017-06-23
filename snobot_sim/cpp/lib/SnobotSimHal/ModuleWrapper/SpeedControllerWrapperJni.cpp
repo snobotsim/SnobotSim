@@ -7,9 +7,13 @@
 #include "SnobotSim/ModuleWrapper/SpeedControllerWrapper.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/GetSensorActuatorHelper.h"
-#include "SnobotSim/MotorSim/StaticLoadDcMotorSim.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
 #include "../ConversionUtils.h"
+
+#include "SnobotSim/MotorSim/GravityLoadDcMotorSim.h"
+#include "SnobotSim/MotorSim/RotationalLoadDcMotorSim.h"
+#include "SnobotSim/MotorSim/StaticLoadDcMotorSim.h"
+#include "SnobotSim/MotorSim/SimpleMotorSimulator.h"
 
 using namespace wpi::java;
 
@@ -83,37 +87,6 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedContro
 
 /*
  * Class:     com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni
- * Method:    getMotorConfig
- * Signature: (I)Lcom/snobot/simulator/DcMotorModelConfig;
- */
-JNIEXPORT jobject JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_getMotorConfig
-  (JNIEnv * env, jclass, jint aPortHandle)
-{
-    const std::shared_ptr<IMotorSimulator>& motorSim =
-            SensorActuatorRegistry::Get().GetSpeedControllerWrapper(aPortHandle)->GetMotorSimulator();
-    std::string type = motorSim->GetSimulatorType();
-
-    jobject output = NULL;
-
-    if(type == "Static Load")
-    {
-        const std::shared_ptr<StaticLoadDcMotorSim>& castMotorSim = std::dynamic_pointer_cast<StaticLoadDcMotorSim>(motorSim);
-        output = ConversionUtils::ConvertDcMotorModelConfig(env, castMotorSim->GetMotorModel().GetModelConfig());
-    }
-    else if(type == "Null" || type == "Simple")
-    {
-        SNOBOT_LOG(SnobotLogging::WARN, "The type " << type << " does not have a DC Motor config...");
-    }
-    else
-    {
-        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown motor sim type " << type);
-    }
-
-    return output;
-}
-
-/*
- * Class:     com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni
  * Method:    getMotorSimTypeNative
  * Signature: (I)I
  */
@@ -168,6 +141,107 @@ JNIEXPORT jintArray JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedC
     env->SetIntArrayRegion(output, 0, speedControllers.size(), values);
 
     return output;
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni
+ * Method:    getMotorConfig
+ * Signature: (I)Lcom/snobot/simulator/DcMotorModelConfig;
+ */
+JNIEXPORT jobject JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_getMotorConfig
+  (JNIEnv * env, jclass, jint aPortHandle)
+{
+    const std::shared_ptr<IMotorSimulator>& motorSim =
+            SensorActuatorRegistry::Get().GetSpeedControllerWrapper(aPortHandle)->GetMotorSimulator();
+    std::string type = motorSim->GetSimulatorType();
+
+    jobject output = NULL;
+
+    if(type == "Static Load")
+    {
+        const std::shared_ptr<StaticLoadDcMotorSim>& castMotorSim = std::dynamic_pointer_cast<StaticLoadDcMotorSim>(motorSim);
+        output = ConversionUtils::ConvertDcMotorModelConfig(env, castMotorSim->GetMotorModel().GetModelConfig());
+    }
+    else if(type == "Null" || type == "Simple")
+    {
+        SNOBOT_LOG(SnobotLogging::WARN, "The type " << type << " does not have a DC Motor config...");
+    }
+    else
+    {
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown motor sim type " << type);
+    }
+
+    return output;
+}
+
+
+/*
+ * Class:     com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni
+ * Method:    getMotorSimSimpleModelConfig
+ * Signature: (I)D
+ */
+JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_getMotorSimSimpleModelConfig
+  (JNIEnv *, jclass, jint aPortHandle)
+{
+    const std::shared_ptr<IMotorSimulator>& motorSim =
+            SensorActuatorRegistry::Get().GetSpeedControllerWrapper(aPortHandle)->GetMotorSimulator();
+    const std::shared_ptr<SimpleMotorSimulator>& castMotorSim = std::dynamic_pointer_cast<SimpleMotorSimulator>(motorSim);
+    if(castMotorSim)
+    {
+        return castMotorSim->GetMaxSpeed();
+    }
+    else
+    {
+        SNOBOT_LOG(SnobotLogging::DEBUG, "Could not cast motor sim to desired type ");
+    }
+
+    return 0;
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni
+ * Method:    getMotorSimStaticModelConfig
+ * Signature: (I)D
+ */
+JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_getMotorSimStaticModelConfig
+  (JNIEnv *, jclass, jint aPortHandle)
+{
+    const std::shared_ptr<IMotorSimulator>& motorSim =
+            SensorActuatorRegistry::Get().GetSpeedControllerWrapper(aPortHandle)->GetMotorSimulator();
+    const std::shared_ptr<StaticLoadDcMotorSim>& castMotorSim = std::dynamic_pointer_cast<StaticLoadDcMotorSim>(motorSim);
+    if(castMotorSim)
+    {
+        return castMotorSim->GetLoad();
+    }
+    else
+    {
+        SNOBOT_LOG(SnobotLogging::DEBUG, "Could not cast motor sim to desired type ");
+    }
+
+    return 0;
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni
+ * Method:    getMotorSimGravitationalModelConfig
+ * Signature: (I)D
+ */
+JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_getMotorSimGravitationalModelConfig
+  (JNIEnv *, jclass, jint aPortHandle)
+{
+    const std::shared_ptr<IMotorSimulator>& motorSim =
+            SensorActuatorRegistry::Get().GetSpeedControllerWrapper(aPortHandle)->GetMotorSimulator();
+    const std::shared_ptr<GravityLoadDcMotorSim>& castMotorSim = std::dynamic_pointer_cast<GravityLoadDcMotorSim>(motorSim);
+    if(castMotorSim)
+    {
+        return castMotorSim->GetLoad();
+    }
+    else
+    {
+        SNOBOT_LOG(SnobotLogging::DEBUG, "Could not cast motor sim to desired type ");
+    }
+
+    return 0;
 }
 
 

@@ -3,8 +3,6 @@ package com.snobot.simulator.gui.module_widget;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.Map.Entry;
 
@@ -47,17 +45,16 @@ public class DigitalSourceGraphicDisplay extends BaseWidgetDisplay<Integer, Digi
     @Override
     protected JDialog createSettingsDialog(Integer aKey)
     {
-        SimpleSettingsDialog dialog = new SimpleSettingsDialog("Digital " + aKey + " Settings", aKey, getName(aKey));
-        dialog.addSubmitListener(new ActionListener()
+        SimpleSettingsDialog dialog = new SimpleSettingsDialog("Digital " + aKey + " Settings", aKey, getName(aKey))
         {
-
             @Override
-            public void actionPerformed(ActionEvent e)
+            protected void onSubmit()
             {
-                DigitalSourceWrapperJni.setName(aKey, dialog.getComponentName());
-                mLabelMap.get(aKey).setText(dialog.getComponentName());
+                DigitalSourceWrapperJni.setName(aKey, getComponentName());
+                mLabelMap.get(aKey).setText(getComponentName());
             }
-        });
+        };
+
         dialog.pack();
 
         return dialog;

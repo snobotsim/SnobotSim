@@ -34,6 +34,8 @@ public:
 
     virtual void Update(double aCycleTime) override;
 
+    double GetMaxSpeed();
+
 protected:
     double mMaxSpeed;
 

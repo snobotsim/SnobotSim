@@ -11,17 +11,34 @@ import java.util.Set;
 
 public class JniLibraryResourceLoader
 {
+    private static final File TEMP_DIR_ROOT;
     private static final File TEMP_DIR;
 	private static final Set<String> LOADED_LIBS;
 
     static
     {
+        TEMP_DIR_ROOT = new File("temp");
+        removeOldLibraries(TEMP_DIR_ROOT, "");
+
         long rando = new Random().nextLong();
-        TEMP_DIR = new File("temp/" + rando + "/");
+        TEMP_DIR = new File(TEMP_DIR_ROOT, "" + rando);
         TEMP_DIR.mkdirs();
         TEMP_DIR.deleteOnExit();
 
 		LOADED_LIBS = new HashSet<>();
+    }
+    
+    private static void removeOldLibraries(File f, String indent)
+    {
+        if (f.isDirectory())
+        {
+            for (File childFile : f.listFiles())
+            {
+                removeOldLibraries(childFile, indent + "  ");
+            }
+        }
+
+        f.delete();
     }
     
     public static boolean copyResourceFromJar(String aResourceName, File resourceFile) throws IOException

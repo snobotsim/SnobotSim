@@ -71,6 +71,7 @@ public abstract class BaseWidgetDisplay<KeyType, WidgetType extends Container> e
                         @Override
                         public void actionPerformed(ActionEvent e)
                         {
+                            settingsDialog.setLocationRelativeTo(BaseWidgetDisplay.this);
                             settingsDialog.setVisible(true);
                         }
                     });

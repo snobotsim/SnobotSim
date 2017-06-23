@@ -46,6 +46,8 @@ project(':native:snobot_sim_gui') {
         compile 'org.python:jython:2.7.1b3'
         compile 'org.yaml:snakeyaml:1.18'
         compile files("${rootDir}/snobot_sim_gui/NonMavenLibraries/opencv-320.jar")
+        compile group: 'com.miglayout', name: 'miglayout-swing', version: '4.2'
+        
     }
     
     jar {
@@ -249,6 +251,11 @@ project(':native:snobot_sim_gui') {
                     into "lib"
                     include "*.dll"
                     include "*.so"
+                }
+                
+                from("$rootDir/snobot_sim_gui") {
+                    into "bin"
+                    include "open_smart_dashboard.*"
                 }
             }
         }

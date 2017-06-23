@@ -6,6 +6,7 @@
  */
 
 #include "SnobotSim/SimulatorComponents/Gyro/SpiGyro.h"
+#include <cstring>
 
 SpiGyro::SpiGyro():
     GyroWrapper("Spi Gyro")

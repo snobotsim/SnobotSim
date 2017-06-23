@@ -28,6 +28,11 @@ const std::string& SimpleMotorSimulator::GetSimulatorType()
     return SIMULATOR_TYPE;
 }
 
+double SimpleMotorSimulator::GetMaxSpeed()
+{
+    return mMaxSpeed;
+}
+
 void SimpleMotorSimulator::SetVoltagePercentage(double aSpeed)
 {
     mVoltagePercent = aSpeed;

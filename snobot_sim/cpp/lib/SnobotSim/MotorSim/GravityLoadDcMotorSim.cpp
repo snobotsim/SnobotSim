@@ -20,6 +20,10 @@ GravityLoadDcMotorSim::~GravityLoadDcMotorSim()
 
 }
 
+double GravityLoadDcMotorSim::GetLoad()
+{
+    return mLoad;
+}
 
 void GravityLoadDcMotorSim::Update(double cycleTime)
 {

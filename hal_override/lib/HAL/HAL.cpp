@@ -22,6 +22,9 @@
 #include "HAL/cpp/priority_mutex.h"
 #include "HAL/handles/HandlesInternal.h"
 
+#include "SnobotSim/Logging/SnobotLogger.h"
+#include "SnobotSim/RobotStateSingleton.h"
+
 using namespace hal;
 
 
@@ -167,7 +170,7 @@ const char* HAL_GetErrorMessage(int32_t code) {
 /**
  * Returns the runtime type of this HAL
  */
-HAL_RuntimeType HAL_GetRuntimeType() { return HAL_Athena; }
+HAL_RuntimeType HAL_GetRuntimeType() { return HAL_Mock; }
 
 /**
  * Return the FPGA Version number.
@@ -187,6 +190,7 @@ int32_t HAL_GetFPGAVersion(int32_t* status) {
  * @return FPGA Revision number.
  */
 int64_t HAL_GetFPGARevision(int32_t* status) {
+    LOG_UNSUPPORTED();
     return 0;
 }
 
@@ -197,7 +201,7 @@ int64_t HAL_GetFPGARevision(int32_t* status) {
  * reset).
  */
 uint64_t HAL_GetFPGATime(int32_t* status) {
-    return 0;
+    return RobotStateSingleton::Get().GetMatchTime() * 1e6;
 }
 
 /**
@@ -205,26 +209,29 @@ uint64_t HAL_GetFPGATime(int32_t* status) {
  * @return true if the button is currently pressed down
  */
 HAL_Bool HAL_GetFPGAButton(int32_t* status) {
+    LOG_UNSUPPORTED();
     return false;
 }
 
 HAL_Bool HAL_GetSystemActive(int32_t* status) {
+    LOG_UNSUPPORTED();
     return true;
 }
 
 HAL_Bool HAL_GetBrownedOut(int32_t* status) {
+    LOG_UNSUPPORTED();
     return false;
 }
 
 void HAL_BaseInitialize(int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 /**
  * Call this to start up HAL. This is required for robot programs.
  */
 int32_t HAL_Initialize(int32_t mode) {
-    return 0;
+    return 1;
 }
 
 int64_t HAL_Report(int32_t resource, int32_t instanceNumber, int32_t context,

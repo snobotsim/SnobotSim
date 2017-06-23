@@ -13,10 +13,13 @@
 class GravityLoadDcMotorSim: public BaseDcMotorSimulator
 {
 public:
+
     GravityLoadDcMotorSim(const DcMotorModel& aMotorModel, double aLoad);
     virtual ~GravityLoadDcMotorSim();
 
     void Update(double aCycleTime) override;
+
+    double GetLoad();
 
 protected:
     const double mLoad;

@@ -5,11 +5,14 @@
 
 #include "com_snobot_simulator_jni_SnobotSimulatorJni.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/RobotStateSingleton.h"
 #include "SnobotSim/SnobotSimHalVersion.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
 #include "SnobotSim/Logging/SnobotCoutLogger.h"
 
 using namespace wpi::java;
+
+static SnobotLogging::ISnobotLogger* sSnobotLogger = NULL;
 
 extern "C"
 {
@@ -33,7 +36,15 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SnobotSimulatorJni_reset
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SnobotSimulatorJni_shutdown
   (JNIEnv *, jclass)
 {
+    RobotStateSingleton::Get().Reset();
     SensorActuatorRegistry::Get().Reset();
+
+    if(sSnobotLogger)
+    {
+        delete sSnobotLogger;
+        sSnobotLogger = NULL;
+    }
+    SnobotLogging::SetLogger(NULL);
 }
 
 /*
@@ -57,12 +68,15 @@ JNIEXPORT jstring JNICALL Java_com_snobot_simulator_jni_SnobotSimulatorJni_getVe
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SnobotSimulatorJni_initializeLogging
   (JNIEnv *, jclass, jint aLogLevel)
 {
-    static SnobotLogging::SnobotCoutLogger coutLogger;
+    if(!sSnobotLogger)
+    {
+        sSnobotLogger = new SnobotLogging::SnobotCoutLogger();
+    }
 
     SnobotLogging::LogLevel logLevel = (SnobotLogging::LogLevel) aLogLevel;
-    coutLogger.SetLogLevel(logLevel);
+    sSnobotLogger->SetLogLevel(logLevel);
 
-    SnobotLogging::LoggerWrapper::SetLogger(&coutLogger);
+    SnobotLogging::SetLogger(sSnobotLogger);
 }
 
 }

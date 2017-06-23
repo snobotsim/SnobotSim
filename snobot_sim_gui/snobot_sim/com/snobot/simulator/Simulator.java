@@ -9,6 +9,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
 
+import javax.swing.JFrame;
+
 import com.snobot.simulator.gui.SimulatorFrame;
 import com.snobot.simulator.jni.JoystickJni;
 import com.snobot.simulator.jni.RobotStateSingletonJni;
@@ -57,7 +59,7 @@ public class Simulator
             {
                 System.err.println("Could not read properties file, will use defaults and will overwrite the file if it exists");
 
-                if (!JniLibraryResourceLoader.copyResourceFromJar("/com/snobot/simulator/onfig/default_properties.properties",
+                if (!JniLibraryResourceLoader.copyResourceFromJar("/com/snobot/simulator/config/default_properties.properties",
                         new File(sPROPERTIES_FILE)))
             	{
             		throw new RuntimeException("Could not copy properties file!  Have to exit!");
@@ -114,6 +116,7 @@ public class Simulator
     {
         loadConfig(sPROPERTIES_FILE);
 
+        sendJoystickUpdate();
         createSimulator();
         createRobot();
 
@@ -138,6 +141,7 @@ public class Simulator
                 SimulatorFrame frame = new SimulatorFrame();
                 frame.pack();
                 frame.setVisible(true);
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.addWindowListener(new WindowAdapter()
                 {
                     /**
@@ -145,7 +149,7 @@ public class Simulator
                      */
                     public void windowClosing(WindowEvent e)
                     {
-                        System.exit(0);
+                        SnobotSimulatorJni.shutdown();
                     }
                 });
 
@@ -155,21 +159,26 @@ public class Simulator
 
                     mSimulator.update();
                     frame.updateLoop();
-
-                    IMockJoystick[] joysticks = JoystickFactory.get().getAll();
-                    for (int i = 0; i < joysticks.length; ++i)
-                    {
-                        IMockJoystick joystick = joysticks[i];
-                        JoystickJni.setJoystickInformation(i, joystick.getAxisValues(), joystick.getPovValues(), joystick.getButtonCount(),
-                                joystick.getButtonMask());
-                    }
+                    sendJoystickUpdate();
 
                     SimulationConnectorJni.updateLoop();
                 }
             }
-        });
+        }, "SimulatorThread");
         t.start();
         robotThread.start();
+    }
+
+    private void sendJoystickUpdate()
+    {
+
+        IMockJoystick[] joysticks = JoystickFactory.get().getAll();
+        for (int i = 0; i < joysticks.length; ++i)
+        {
+            IMockJoystick joystick = joysticks[i];
+            JoystickJni.setJoystickInformation(i, joystick.getAxisValues(), joystick.getPovValues(), joystick.getButtonCount(),
+                    joystick.getButtonMask());
+        }
     }
 
     private void createSimulator()

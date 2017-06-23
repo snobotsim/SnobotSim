@@ -1,11 +1,15 @@
 package com.snobot.simulator.gui.module_widget.settings;
 
+import java.awt.BorderLayout;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
+import com.snobot.simulator.jni.module_wrapper.EncoderWrapperJni;
 import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni;
 
 public class EncoderSettingsDialog extends SimpleSettingsDialog
@@ -34,35 +38,61 @@ public class EncoderSettingsDialog extends SimpleSettingsDialog
     {
         super(aTitle, aKey, aName);
 
-    }
-
-    // @Override
-    // protected void initComponents()
-    // {
-    // super.initComponents();
-    //
-    // mSpeedControllerSelection = new JComboBox<>();
-    // mContentPane.add(mSpeedControllerSelection, BorderLayout.CENTER);
-    // }
-
-    @Override
-    public void setVisible(boolean aVisible)
-    {
-        mSpeedControllerSelection.removeAllItems();
+        mSpeedControllerSelection = new JComboBox<>();
+        mSpeedControllerSelection.addItem(new SpeedControllerOption(-1, "None"));
 
         List<Integer> speedControllers = IntStream.of(SpeedControllerWrapperJni.getPortList()).boxed().collect(Collectors.toList());
         for (int handle : speedControllers)
         {
-            mSpeedControllerSelection.addItem(new SpeedControllerOption(handle, SpeedControllerWrapperJni.getName(handle)));
+            SpeedControllerOption option = new SpeedControllerOption(handle, SpeedControllerWrapperJni.getName(handle));
+            mSpeedControllerSelection.addItem(option);
         }
 
+        selectAttachedControllerAndRefreshNames();
+
+        JPanel scSelectionPanel = new JPanel();
+        scSelectionPanel.add(new JLabel("Connected SC"));
+        scSelectionPanel.add(mSpeedControllerSelection);
+        getContentPane().add(scSelectionPanel, BorderLayout.CENTER);
+    }
+
+    @Override
+    public void setVisible(boolean aVisible)
+    {
+        selectAttachedControllerAndRefreshNames();
         super.setVisible(aVisible);
     }
 
-    public int getSpeedControllerId()
+    private void selectAttachedControllerAndRefreshNames()
     {
-        SpeedControllerOption scId = (SpeedControllerOption) mSpeedControllerSelection.getSelectedItem();
-        return scId == null ? -1 : scId.mHandle;
+        int connectedSc = -1;
+        if (EncoderWrapperJni.isHookedUp(mHandle))
+        {
+            connectedSc = EncoderWrapperJni.getHookedUpId(mHandle);
+        }
+
+        for (int i = 0; i < mSpeedControllerSelection.getItemCount(); ++i)
+        {
+            SpeedControllerOption option = mSpeedControllerSelection.getItemAt(i);
+
+            if (option.mHandle == connectedSc)
+            {
+                mSpeedControllerSelection.setSelectedIndex(i);
+            }
+            if (option.mHandle != -1)
+            {
+                option.mName = SpeedControllerWrapperJni.getName(option.mHandle);
+            }
+        }
+    }
+
+    @Override
+    protected void onSubmit()
+    {
+        SpeedControllerOption option = (SpeedControllerOption) mSpeedControllerSelection.getSelectedItem();
+        int scId = option == null ? -1 : option.mHandle;
+
+        EncoderWrapperJni.connectSpeedController(mHandle, scId);
     }
 
 }

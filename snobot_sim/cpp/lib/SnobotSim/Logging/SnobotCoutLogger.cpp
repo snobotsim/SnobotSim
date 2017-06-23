@@ -20,7 +20,7 @@ SnobotCoutLogger::SnobotCoutLogger()
 
     if(filenamePos != -1)
     {
-        mDirectorySubstring = thisFile.substr(0, thisFile.size() - filenamePos - 1);
+        mDirectorySubstring = thisFile.substr(0, filenamePos);
     }
 }
 
@@ -62,16 +62,16 @@ void SnobotCoutLogger::Log(
     switch(aLogLevel)
     {
     case DEBUG:
-        logLevelStr << "Debug";
+        logLevelStr << "Debug  ";
         break;
     case INFO:
-        logLevelStr << "Info";
+        logLevelStr << "Info   ";
         break;
     case WARN:
-        logLevelStr << "Warn";
+        logLevelStr << "Warn   ";
         break;
     case CRITICAL:
-        logLevelStr << "Error";
+        logLevelStr << "Error  ";
         break;
     case NONE:
         logLevelStr << "Invalid";

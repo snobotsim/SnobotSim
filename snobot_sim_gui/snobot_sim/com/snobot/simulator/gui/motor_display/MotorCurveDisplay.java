@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -22,46 +23,32 @@ public class MotorCurveDisplay extends JPanel
 {
     private ValueMarker mRpmMarker;
 
-    public MotorCurveDisplay(DcMotorModelConfig aModel)
-    {
-        this(aModel.NOMINAL_VOLTAGE, aModel.FREE_SPEED_RPM, aModel.STALL_CURRENT, aModel.FREE_CURRENT, aModel.STALL_TORQUE);
-    }
+    protected final XYSeries mCurrentPoints;
+    protected final XYSeries mTorquePoints;
+    protected final XYSeries mPowerPoints;
+    protected final XYSeries mEfficiencyPoints;
+    protected final JFreeChart mChart;
+    
+    protected final int mNumPoints;
 
-    public MotorCurveDisplay(double aNominalVoltage, double aFreeSpeedRpm, double aStallCurrent, double aFreeCurrent, double aStallTorque)
+    public MotorCurveDisplay()
     {
+        mNumPoints = 600;
+
+        mCurrentPoints = new XYSeries("Current");
+        mTorquePoints = new XYSeries("Torque");
+        mPowerPoints = new XYSeries("Power");
+        mEfficiencyPoints = new XYSeries("Efficiency");
+
         XYSeriesCollection series = new XYSeriesCollection();
+        series.addSeries(mCurrentPoints);
+        series.addSeries(mTorquePoints);
+        series.addSeries(mPowerPoints);
+        series.addSeries(mEfficiencyPoints);
 
-        double currentSlope = (aFreeCurrent - aStallCurrent) / aFreeSpeedRpm;
-        double torqueSlope = (0 - aStallTorque) / aFreeSpeedRpm;
-
-        XYSeries currentPoints = new XYSeries("Current");
-        XYSeries torquePoints = new XYSeries("Torque");
-        XYSeries powerPoints = new XYSeries("Power");
-        XYSeries efficiencyPoints = new XYSeries("Efficiency");
-
-        series.addSeries(currentPoints);
-        series.addSeries(torquePoints);
-        series.addSeries(powerPoints);
-        series.addSeries(efficiencyPoints);
-
-        for (int rpm = 0; rpm < aFreeSpeedRpm; rpm += 10)
-        {
-            double omega = 2 * rpm * Math.PI / 60;
-            double current = aStallCurrent + rpm * currentSlope;
-            double torque = aStallTorque + rpm * torqueSlope;
-            double input_power = aNominalVoltage * current;
-            double output_power = torque * omega;
-            double efficiency = output_power / input_power * 100;
-
-            currentPoints.add(rpm, current);
-            torquePoints.add(rpm, torque);
-            powerPoints.add(rpm, output_power);
-            efficiencyPoints.add(rpm, efficiency);
-        }
-
-        final JFreeChart chart = ChartFactory.createXYLineChart(
-                "Motion Profile", 
-                "Time (sec)", 
+        mChart = ChartFactory.createXYLineChart(
+                "Unknown Motor", 
+                "RPM", 
                 "Data", 
                 series, 
                 PlotOrientation.VERTICAL, true, 
@@ -69,17 +56,71 @@ public class MotorCurveDisplay extends JPanel
                 false);
 
 
-        mRpmMarker = new ValueMarker(1300);
+        mRpmMarker = new ValueMarker(0);
         mRpmMarker.setPaint(Color.black);
 
-        XYPlot plot = (XYPlot) chart.getPlot();
+        XYPlot plot = (XYPlot) mChart.getPlot();
         plot.addDomainMarker(mRpmMarker);
 
-        ChartPanel chartPanel = new ChartPanel(chart);
+        ChartPanel chartPanel = new ChartPanel(mChart);
         chartPanel.setPreferredSize(new Dimension(400, 300));
 
         setLayout(new BorderLayout());
         add(chartPanel);
+    }
+
+    public void setCurveParams(DcMotorModelConfig aModel)
+    {
+        setCurveParams(aModel.mMotorType, aModel.NOMINAL_VOLTAGE, aModel.FREE_SPEED_RPM, aModel.STALL_CURRENT, aModel.FREE_CURRENT, aModel.STALL_TORQUE);
+    }
+
+    public void setCurveParams(String motorName, double aNominalVoltage, double aFreeSpeedRpm, double aStallCurrent, double aFreeCurrent, double aStallTorque)
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
+
+            @Override
+            public void run()
+            {
+                mChart.setTitle(motorName);
+
+                mCurrentPoints.clear();
+                mTorquePoints.clear();
+                mPowerPoints.clear();
+                mEfficiencyPoints.clear();
+
+
+                double currentSlope = (aFreeCurrent - aStallCurrent) / aFreeSpeedRpm;
+                double torqueSlope = (0 - aStallTorque) / aFreeSpeedRpm;
+
+                int dRpm = (int) Math.ceil(aFreeSpeedRpm / mNumPoints);
+
+                for (int rpm = 0; rpm < aFreeSpeedRpm; rpm += dRpm)
+                {
+                    addPoint(aNominalVoltage, aStallCurrent, aStallTorque, rpm, currentSlope, torqueSlope);
+                }
+
+                // Add the last point always
+                addPoint(aNominalVoltage, aStallCurrent, aStallTorque, (int) aFreeSpeedRpm, currentSlope, torqueSlope);
+            }
+        });
+    }
+    
+    private void addPoint(
+            double aNominalVoltage, double aStallCurrent, double aStallTorque, 
+            int rpm, double currentSlope, double torqueSlope)
+    {
+        double omega = 2 * rpm * Math.PI / 60;
+        double current = aStallCurrent + rpm * currentSlope;
+        double torque = aStallTorque + rpm * torqueSlope;
+        double input_power = aNominalVoltage * current;
+        double output_power = torque * omega;
+        double efficiency = output_power / input_power * 100;
+
+        mCurrentPoints.add(rpm, current);
+        mTorquePoints.add(rpm, torque);
+        mPowerPoints.add(rpm, output_power);
+        mEfficiencyPoints.add(rpm, efficiency);
     }
 
     public void setCurrentRpm(double aRpm)

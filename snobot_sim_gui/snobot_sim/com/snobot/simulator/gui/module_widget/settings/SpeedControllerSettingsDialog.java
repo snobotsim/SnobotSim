@@ -2,141 +2,256 @@ package com.snobot.simulator.gui.module_widget.settings;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
 
 import com.snobot.simulator.DcMotorModelConfig;
+import com.snobot.simulator.jni.SimulationConnectorJni;
 import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni;
 import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni.MotorSimType;
 
 public class SpeedControllerSettingsDialog extends SimpleSettingsDialog
 {
+    protected final JPanel mSimOptionsPanel;
+    protected final JComboBox<MotorSimType> mSimModeSelector;
+
     public SpeedControllerSettingsDialog(String aTitle, int aKey, String aName)
     {
         super(aTitle, aKey, aName);
 
-        DcMotorModelConfig modelConfig = SpeedControllerWrapperJni.getMotorConfig(aKey);
-
-        JPanel nullSimPanel = new JPanel();
-        JPanel simpleSimPanel = new SimpleSimConfigPanel();
-        JPanel staticLoadSimPanel = new StaticLoadSimConfigPanel(modelConfig);
-        JPanel rotationalLoadSimPanel = new RotationalLoadSimConfigPanel(modelConfig);
-        JPanel gravitationalLoadSimPanel = new GravitationalLoadSimConfigPanel(modelConfig);
+        JPanel nullSimPanel = new NullSimConfigPanel(mHandle);
+        JPanel simpleSimPanel = new SimpleSimConfigPanel(mHandle);
+        JPanel staticLoadSimPanel = new StaticLoadSimConfigPanel(mHandle);
+        JPanel rotationalLoadSimPanel = new RotationalLoadSimConfigPanel(mHandle);
+        JPanel gravitationalLoadSimPanel = new GravitationalLoadSimConfigPanel(mHandle);
 
         CardLayout simOptionsLayout = new CardLayout();
-        JPanel simOptionsPanel = new JPanel(simOptionsLayout);
-        simOptionsPanel.add(nullSimPanel, MotorSimType.None.toString());
-        simOptionsPanel.add(simpleSimPanel, MotorSimType.Simple.toString());
-        simOptionsPanel.add(staticLoadSimPanel, MotorSimType.StaticLoad.toString());
-        simOptionsPanel.add(rotationalLoadSimPanel, MotorSimType.RotationalLoad.toString());
-        simOptionsPanel.add(gravitationalLoadSimPanel, MotorSimType.GravitationalLoad.toString());
+        mSimOptionsPanel = new JPanel(simOptionsLayout);
+        mSimOptionsPanel.add(nullSimPanel, MotorSimType.None.toString());
+        mSimOptionsPanel.add(simpleSimPanel, MotorSimType.Simple.toString());
+        mSimOptionsPanel.add(staticLoadSimPanel, MotorSimType.StaticLoad.toString());
+        mSimOptionsPanel.add(rotationalLoadSimPanel, MotorSimType.RotationalLoad.toString());
+        mSimOptionsPanel.add(gravitationalLoadSimPanel, MotorSimType.GravitationalLoad.toString());
 
-        String comboBoxItems[] = new String[MotorSimType.values().length];
-        for (int i = 0; i < MotorSimType.values().length; ++i)
-        {
-            comboBoxItems[i] = MotorSimType.values()[i].toString();
-        }
+        mSimModeSelector = new JComboBox<>(MotorSimType.values());
+        JPanel typeSelectionPanel = new JPanel();
+        typeSelectionPanel.add(new JLabel("Simulation Type"));
+        typeSelectionPanel.add(mSimModeSelector);
 
-        JComboBox<String> simModeSelector = new JComboBox<>(comboBoxItems);
         JPanel simDisplayPanel = new JPanel(new BorderLayout());
-        simDisplayPanel.add(simModeSelector, BorderLayout.NORTH);
-        simDisplayPanel.add(simOptionsPanel, BorderLayout.CENTER);
+        simDisplayPanel.add(typeSelectionPanel, BorderLayout.NORTH);
+        simDisplayPanel.add(mSimOptionsPanel, BorderLayout.CENTER);
 
-        getContentPane().add(simDisplayPanel, BorderLayout.EAST);
+        getContentPane().add(simDisplayPanel, BorderLayout.CENTER);
 
-        simModeSelector.addItemListener(new ItemListener()
+        mSimModeSelector.addItemListener(new ItemListener()
         {
 
             @Override
             public void itemStateChanged(ItemEvent e)
             {
-                simOptionsLayout.show(simOptionsPanel, (String) e.getItem());
+                simOptionsLayout.show(mSimOptionsPanel, e.getItem().toString());
             }
         });
 
         MotorSimType mode = SpeedControllerWrapperJni.getMotorSimType(mHandle);
-        simModeSelector.setSelectedItem(mode.toString());
-    }
-}
-
-class SimpleSimConfigPanel extends JPanel
-{
-    public SimpleSimConfigPanel()
-    {
-        add(new JLabel("Simple sim!"));
+        mSimModeSelector.setSelectedItem(mode);
     }
 
-}
-
-class StaticLoadSimConfigPanel extends JPanel
-{
-    private MotorSimPanel mMotorSimPanel;
-
-    public StaticLoadSimConfigPanel(DcMotorModelConfig aConfig)
+    public void setVisible(boolean aVisible)
     {
-        mMotorSimPanel = new MotorSimPanel(aConfig);
-        add(mMotorSimPanel);
+        MotorSimType mode = SpeedControllerWrapperJni.getMotorSimType(mHandle);
+        mSimModeSelector.setSelectedItem(mode);
+        super.setVisible(aVisible);
     }
-}
 
-class RotationalLoadSimConfigPanel extends JPanel
-{
-    private MotorSimPanel mMotorSimPanel;
-
-    public RotationalLoadSimConfigPanel(DcMotorModelConfig aConfig)
+    @Override
+    protected void onSubmit()
     {
-        mMotorSimPanel = new MotorSimPanel(aConfig);
-        add(mMotorSimPanel);
-    }
-}
-
-class GravitationalLoadSimConfigPanel extends JPanel
-{
-    private MotorSimPanel mMotorSimPanel;
-
-    public GravitationalLoadSimConfigPanel(DcMotorModelConfig aConfig)
-    {
-        mMotorSimPanel = new MotorSimPanel(aConfig);
-        add(mMotorSimPanel);
-    }
-}
-
-class MotorSimPanel extends JPanel
-{
-    private JComboBox<String> mMotorSelectionBox;
-    private JSpinner mNumMotors;
-    private JTextField mGearReduction;
-    private JTextField mGearboxEfficiency;
-
-    public MotorSimPanel(DcMotorModelConfig aConfig)
-    {
-        mNumMotors = new JSpinner();
-        mGearReduction = new JTextField();
-        mGearboxEfficiency = new JTextField();
-
-        mMotorSelectionBox = new JComboBox<>();
-        mMotorSelectionBox.addItem("Some Motor");
-        mMotorSelectionBox.addItem("CIM");
-        mMotorSelectionBox.addItem("Other Motor");
-
-        if (aConfig != null)
+        for (Component comp : mSimOptionsPanel.getComponents())
         {
-            mMotorSelectionBox.setSelectedItem(aConfig.mMotorType);
-            mNumMotors.setValue(aConfig.mNumMotors);
-            mGearReduction.setText("" + aConfig.mGearReduction);
-            mGearboxEfficiency.setText("" + aConfig.mGearboxEfficiency);
+            if (comp.isVisible() == true)
+            {
+                SubmitableMotorSimulator motorSimulatorPanel = (SubmitableMotorSimulator) comp;
+                motorSimulatorPanel.submit();
+            }
+        }
+    }
+}
+
+interface SubmitableMotorSimulator
+{
+    public void submit();
+}
+
+class NullSimConfigPanel extends JPanel implements SubmitableMotorSimulator
+{
+    protected int mHandle;
+
+    public NullSimConfigPanel(int aHandle)
+    {
+        this.mHandle = aHandle;
+        add(new JLabel("Null simulator.  Position will not change"));
+    }
+
+    @Override
+    public void submit()
+    {
+        SimulationConnectorJni.setSpeedControllerModel_Simple(mHandle, 0);
+    }
+
+}
+
+class SimpleSimConfigPanel extends JPanel implements SubmitableMotorSimulator
+{
+    protected int mHandle;
+    protected JTextField mMaxSpeedField;
+
+    public SimpleSimConfigPanel(int aHandle)
+    {
+        this.mHandle = aHandle;
+
+        mMaxSpeedField = new JTextField(3);
+        add(new JLabel("Max Speed"));
+        add(mMaxSpeedField);
+    }
+
+    @Override
+    public void submit()
+    {
+        double maxSpeed = Double.parseDouble(mMaxSpeedField.getText());
+        SimulationConnectorJni.setSpeedControllerModel_Simple(mHandle, maxSpeed);
+    }
+
+    @Override
+    public void setVisible(boolean aVisible)
+    {
+        if (aVisible)
+        {
+            mMaxSpeedField.setText("" + SpeedControllerWrapperJni.getMotorSimSimpleModelConfig(mHandle));
         }
 
-        add(mMotorSelectionBox);
-        add(mNumMotors);
-        add(mGearReduction);
-        add(mGearboxEfficiency);
+        super.setVisible(aVisible);
+    }
 
+}
+
+abstract class MotorSimWithModelPanel extends JPanel implements SubmitableMotorSimulator
+{
+    protected DcMotorConfigPanel mMotorSimPanel;
+    protected int mHandle;
+
+    protected MotorSimWithModelPanel(int aHandle)
+    {
+        setLayout(new BorderLayout());
+        mHandle = aHandle;
+        mMotorSimPanel = new DcMotorConfigPanel();
+        add(mMotorSimPanel, BorderLayout.CENTER);
+    }
+
+    @Override
+    public void setVisible(boolean aVisible)
+    {
+        if (aVisible)
+        {
+            DcMotorModelConfig modelConfig = SpeedControllerWrapperJni.getMotorConfig(mHandle);
+            mMotorSimPanel.setModelConfig(modelConfig);
+            updateSimulatorParams();
+        }
+
+        super.setVisible(aVisible);
+    }
+
+    protected abstract void updateSimulatorParams();
+}
+
+class StaticLoadSimConfigPanel extends MotorSimWithModelPanel
+{
+    protected JTextField mLoadField;
+
+    public StaticLoadSimConfigPanel(int aKey)
+    {
+        super(aKey);
+
+        mLoadField = new JTextField(5);
+
+        JPanel simPanel = new JPanel();
+        simPanel.setBorder(new TitledBorder("Simulator Parameters"));
+        simPanel.add(new JLabel("Load"));
+        simPanel.add(mLoadField);
+
+        add(simPanel, BorderLayout.NORTH);
+    }
+
+    @Override
+    public void submit()
+    {
+        double load = Double.parseDouble(mLoadField.getText());
+        SimulationConnectorJni.setSpeedControllerModel_Static(mHandle, mMotorSimPanel.getMotorConfig(), load);
+    }
+
+    @Override
+    protected void updateSimulatorParams()
+    {
+        mLoadField.setText("" + SpeedControllerWrapperJni.getMotorSimStaticModelConfig(mHandle));
+    }
+}
+
+class RotationalLoadSimConfigPanel extends MotorSimWithModelPanel
+{
+    public RotationalLoadSimConfigPanel(int aKey)
+    {
+        super(aKey);
+    }
+
+    @Override
+    public void submit()
+    {
+        SimulationConnectorJni.setSpeedControllerModel_Rotational(mHandle, mMotorSimPanel.getMotorConfig(), 1, 1);
+    }
+
+    @Override
+    protected void updateSimulatorParams()
+    {
+
+    }
+}
+
+class GravitationalLoadSimConfigPanel extends MotorSimWithModelPanel
+{
+    protected JTextField mLoadField;
+
+    public GravitationalLoadSimConfigPanel(int aKey)
+    {
+        super(aKey);
+
+        mLoadField = new JTextField(5);
+
+        JPanel simPanel = new JPanel();
+        simPanel.setBorder(new TitledBorder("Simulator Parameters"));
+        simPanel.add(new JLabel("Load"));
+        simPanel.add(mLoadField);
+
+        add(simPanel, BorderLayout.NORTH);
+    }
+
+    @Override
+    public void submit()
+    {
+        double load = Double.parseDouble(mLoadField.getText());
+        SimulationConnectorJni.setSpeedControllerModel_Gravitational(mHandle, mMotorSimPanel.getMotorConfig(), load);
+    }
+
+    @Override
+    protected void updateSimulatorParams()
+    {
+        mLoadField.setText("" + SpeedControllerWrapperJni.getMotorSimGravitationalModelConfig(mHandle));
     }
 }

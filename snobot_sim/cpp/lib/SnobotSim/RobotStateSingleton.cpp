@@ -22,7 +22,17 @@ RobotStateSingleton::RobotStateSingleton() :
 
 RobotStateSingleton::~RobotStateSingleton()
 {
-    SNOBOT_LOG(SnobotLogging::INFO, "Destroying Singleton");
+    Reset();
+}
+
+RobotStateSingleton& RobotStateSingleton::Get()
+{
+	return sINSTANCE;
+}
+
+void RobotStateSingleton::Reset()
+{
+    SNOBOT_LOG(SnobotLogging::INFO, "Resetting...");
 
     if(mRunning)
     {
@@ -30,12 +40,13 @@ RobotStateSingleton::~RobotStateSingleton()
         mUpdateThread.join();
     }
 
-    SNOBOT_LOG(SnobotLogging::INFO, "Destroyed");
-}
+    mRobotStarted = false;
+    mEnabled = false;
+    mAutonomous = false;
+    mTest = false;
+    mRunning = false;
 
-RobotStateSingleton& RobotStateSingleton::Get()
-{
-	return sINSTANCE;
+    SNOBOT_LOG(SnobotLogging::INFO, "Reset complete!");
 }
 
 void RobotStateSingleton::WaitForProgramToStart()

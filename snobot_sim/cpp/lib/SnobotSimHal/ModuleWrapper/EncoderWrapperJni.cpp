@@ -91,10 +91,15 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrap
   (JNIEnv *, jclass, jint aEncoderhandle, jint aScHandle)
 {
     std::shared_ptr<EncoderWrapper> encoder = SensorActuatorRegistry::Get().GetEncoderWrapper(aEncoderhandle);
-    std::shared_ptr<SpeedControllerWrapper> speedController = GetSensorActuatorHelper::GetSpeedControllerWrapper(aScHandle);
 
     if(encoder)
     {
+        std::shared_ptr<SpeedControllerWrapper> speedController;
+        if(aScHandle != -1)
+        {
+            speedController = GetSensorActuatorHelper::GetSpeedControllerWrapper(aScHandle);
+        }
+
         encoder->SetSpeedController(speedController);
     }
 }

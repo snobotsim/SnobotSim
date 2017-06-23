@@ -126,7 +126,7 @@ public class SimulatorConfigWriter
             {
                 Map<String, Object> singleConfig = new LinkedHashMap<>();
                 singleConfig.put("name", EncoderWrapperJni.getName(handle));
-                singleConfig.put("handle", handle);
+                singleConfig.put("single_handle", handle);
 
                 if (EncoderWrapperJni.isHookedUp(handle))
                 {
@@ -168,7 +168,7 @@ public class SimulatorConfigWriter
     {
         Map<String, Object> motorSim = new LinkedHashMap<>();
         motorSim.put("type", "Simple");
-        motorSim.put("max_speed", 1);
+        motorSim.put("max_speed", SpeedControllerWrapperJni.getMotorSimSimpleModelConfig(aHandle));
 
         aScConfig.put("motor_sim", motorSim);
     }
@@ -177,7 +177,7 @@ public class SimulatorConfigWriter
     {
         Map<String, Object> motorSim = new LinkedHashMap<>();
         motorSim.put("type", "StaticLoad");
-        motorSim.put("load", 1);
+        motorSim.put("load", SpeedControllerWrapperJni.getMotorSimStaticModelConfig(aHandle));
         motorSim.put("conversion_factor", 1);
 
         DcMotorModelConfig modelConfig = SpeedControllerWrapperJni.getMotorConfig(aHandle);

@@ -2,8 +2,6 @@ package com.snobot.simulator.gui.module_widget;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.Map.Entry;
 
@@ -47,17 +45,17 @@ public class AnalogOutputDisplay extends BaseWidgetDisplay<Integer, AnalogDispla
     @Override
     protected JDialog createSettingsDialog(Integer aKey)
     {
-        SimpleSettingsDialog dialog = new SimpleSettingsDialog("Analog " + aKey + " Settings", aKey, getName(aKey));
-        dialog.addSubmitListener(new ActionListener()
+        SimpleSettingsDialog dialog = new SimpleSettingsDialog("Analog " + aKey + " Settings", aKey, getName(aKey))
         {
 
             @Override
-            public void actionPerformed(ActionEvent e)
+            protected void onSubmit()
             {
-                AnalogSourceWrapperJni.setName(aKey, dialog.getComponentName());
-                mLabelMap.get(aKey).setText(dialog.getComponentName());
+                AnalogSourceWrapperJni.setName(aKey, getComponentName());
+                mLabelMap.get(aKey).setText(getComponentName());
             }
-        });
+
+        };
 
         dialog.pack();
 

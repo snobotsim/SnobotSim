@@ -39,9 +39,15 @@ public class SpeedControllerWrapperJni extends BaseSimulatorJni
         return MotorSimType.values()[rawType];
     }
 
-    public static native DcMotorModelConfig getMotorConfig(int aPort);
-
     private static native int getMotorSimTypeNative(int aPort);
     
     public static native int[] getPortList();
+
+    public static native DcMotorModelConfig getMotorConfig(int aPort);
+
+    public static native double getMotorSimSimpleModelConfig(int aPort);
+
+    public static native double getMotorSimStaticModelConfig(int aPort);
+
+    public static native double getMotorSimGravitationalModelConfig(int aPort);
 }

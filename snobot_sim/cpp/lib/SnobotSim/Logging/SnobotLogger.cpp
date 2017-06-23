@@ -8,37 +8,31 @@
 #include "SnobotSim/Logging/SnobotLogger.h"
 
 
-SnobotLogging::NullLogger SnobotLogging::LoggerWrapper::sNullLogger;
-SnobotLogging::ISnobotLogger* SnobotLogging::LoggerWrapper::sLogger = &sNullLogger;
-
-
-void SnobotLogging::NullLogger::Log(
-        LogLevel aLogLevel,
-        int aLineNumber,
-        const std::string& aFileName,
-        const std::string& aMessage)
+namespace SnobotLogging
 {
+    ISnobotLogger* sLogger = NULL;
 
-}
-
-
-void SnobotLogging::LoggerWrapper::SetLogger(ISnobotLogger* aLogger)
-{
-    if(aLogger == NULL)
-    {
-        sLogger = &sNullLogger;
-    }
-    else
+    void SetLogger(ISnobotLogger* aLogger)
     {
         sLogger = aLogger;
     }
+
+    void Log(
+            LogLevel aLogLevel,
+            int aLineNumber,
+            const std::string& aFileName,
+            const std::string& aMessage)
+    {
+        if(sLogger != NULL)
+        {
+            sLogger->Log(aLogLevel, aLineNumber, aFileName, aMessage);
+        }
+    }
+
 }
 
-void SnobotLogging::LoggerWrapper::Log(
-        LogLevel aLogLevel,
-        int aLineNumber,
-        const std::string& aFileName,
-        const std::string& aMessage)
-{
-    sLogger->Log(aLogLevel, aLineNumber, aFileName, aMessage);
-}
+
+
+
+
+

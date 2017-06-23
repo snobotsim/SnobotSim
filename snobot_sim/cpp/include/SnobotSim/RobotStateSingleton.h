@@ -26,6 +26,8 @@ public:
 
     static RobotStateSingleton& Get();
 
+    void Reset();
+
     void UpdateLoop();
 
     void SetDisabled(bool aDisabled);

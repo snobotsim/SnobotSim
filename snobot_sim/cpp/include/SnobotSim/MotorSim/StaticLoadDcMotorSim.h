@@ -18,6 +18,8 @@ public:
 
     void Update(double aCycleTime) override;
 
+    double GetLoad();
+
 protected:
     const double mLoad;
 };

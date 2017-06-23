@@ -27,6 +27,8 @@ namespace SnobotLogging
     {
     public:
 
+        virtual ~ISnobotLogger() {}
+
         virtual void SetLogLevel(LogLevel aLevel)
         {
             mLogLevel = aLevel;
@@ -41,38 +43,13 @@ namespace SnobotLogging
         LogLevel mLogLevel;
     };
 
-    class EXPORT_ NullLogger : public ISnobotLogger
-    {
-    public:
-        virtual void Log(
-                LogLevel aLogLevel,
-                int aLineNumber,
-                const std::string& aFileName,
-                const std::string& aMessage);
-    };
+    void EXPORT_ SetLogger(ISnobotLogger* aLogger);
 
-    class EXPORT_ LoggerWrapper
-    {
-    public:
-
-        static void SetLogger(ISnobotLogger* aLogger);
-
-        static void Log(
-                LogLevel aLogLevel,
-                int aLineNumber,
-                const std::string& aFileName,
-                const std::string& aMessage);
-
-    private:
-        static ISnobotLogger* sLogger;
-        static NullLogger sNullLogger;
-    };
-
-
-    inline void SetLogger(ISnobotLogger* aLogger)
-    {
-        LoggerWrapper::SetLogger(aLogger);
-    }
+    void EXPORT_ Log(
+            LogLevel aLogLevel,
+            int aLineNumber,
+            const std::string& aFileName,
+            const std::string& aMessage);
 }
 
 
@@ -84,11 +61,11 @@ namespace SnobotLogging
     #endif
 #endif
 
-#define SNOBOT_LOG(logLevel, messageStream)                                                   \
-{                                                                                             \
-    std::stringstream message;                                                                \
-    message << messageStream;                                                                 \
-    SnobotLogging::LoggerWrapper::Log(logLevel, __LINE__, __FILE__, message.str());  \
+#define SNOBOT_LOG(logLevel, messageStream)                           \
+{                                                                     \
+    std::stringstream message;                                        \
+    message << messageStream;                                         \
+    SnobotLogging::Log(logLevel, __LINE__, __FILE__, message.str());  \
 }
 
 #define LOG_UNSUPPORTED()  SNOBOT_LOG(SnobotLogging::CRITICAL, "Unsupported function " << __FUNCTION_NAME__);

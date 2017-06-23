@@ -2,19 +2,15 @@ package com.snobot.simulator.gui.module_widget;
 
 import java.text.DecimalFormat;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import com.snobot.simulator.gui.module_widget.settings.EncoderSettingsDialog;
 import com.snobot.simulator.jni.module_wrapper.EncoderWrapperJni;
-import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni;
 
 public class EncoderGraphicDisplay extends BaseWidgetDisplay<Integer, EncoderWrapperDisplay>
 {
@@ -48,37 +44,21 @@ public class EncoderGraphicDisplay extends BaseWidgetDisplay<Integer, EncoderWra
     @Override
     protected JDialog createSettingsDialog(Integer aKey)
     {
-        JDialog dialog = new JDialog();
 
-        class SpeedControllerOption
+        EncoderSettingsDialog dialog = new EncoderSettingsDialog("Encoder " + aKey + " Settings", aKey, getName(aKey))
         {
-            int mHandle;
-            String mName;
-
-            public SpeedControllerOption(int aHandle, String aName)
-            {
-                mHandle = aHandle;
-                mName = aName;
-            }
 
             @Override
-            public String toString()
+            protected void onSubmit()
             {
-                return mName + "(" + mHandle + ")";
+                super.onSubmit();
+
+                EncoderWrapperJni.setName(aKey, getComponentName());
+                mLabelMap.get(aKey).setText(getComponentName());
             }
-        }
 
-        JComboBox<SpeedControllerOption> speedControllerSelector = new JComboBox<>();
+        };
 
-        List<Integer> speedControllers = IntStream.of(SpeedControllerWrapperJni.getPortList()).boxed().collect(Collectors.toList());
-        for (int handle : speedControllers)
-        {
-            speedControllerSelector.addItem(new SpeedControllerOption(handle, SpeedControllerWrapperJni.getName(handle)));
-        }
-
-        dialog.setTitle("Encoder " + aKey + " Settings");
-        dialog.getContentPane().add(new JTextField(getName(aKey)));
-        dialog.getContentPane().add(speedControllerSelector);
         dialog.pack();
 
         return dialog;

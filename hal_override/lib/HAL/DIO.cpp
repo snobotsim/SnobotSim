@@ -141,6 +141,7 @@ HAL_Bool HAL_GetDIO(HAL_DigitalHandle dioPortHandle, int32_t* status) {
  * @return The direction of the specified channel
  */
 HAL_Bool HAL_GetDIODirection(HAL_DigitalHandle dioPortHandle, int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 
@@ -164,6 +165,7 @@ void HAL_Pulse(HAL_DigitalHandle dioPortHandle, double pulseLength,
  * @return A pulse is in progress
  */
 HAL_Bool HAL_IsPulsing(HAL_DigitalHandle dioPortHandle, int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 
@@ -173,6 +175,7 @@ HAL_Bool HAL_IsPulsing(HAL_DigitalHandle dioPortHandle, int32_t* status) {
  * @return A pulse on some line is in progress
  */
 HAL_Bool HAL_IsAnyPulsing(int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 
@@ -199,6 +202,7 @@ void HAL_SetFilterSelect(HAL_DigitalHandle dioPortHandle, int32_t filterIndex,
  * where 0 means "none" and 1 - 3 means filter # filterIndex - 1.
  */
 int32_t HAL_GetFilterSelect(HAL_DigitalHandle dioPortHandle, int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 
@@ -231,6 +235,7 @@ void HAL_SetFilterPeriod(int32_t filterIndex, int64_t value, int32_t* status) {
  * counted as a transition.
  */
 int64_t HAL_GetFilterPeriod(int32_t filterIndex, int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 }

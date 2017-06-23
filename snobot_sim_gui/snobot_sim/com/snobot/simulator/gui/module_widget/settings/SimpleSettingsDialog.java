@@ -1,14 +1,16 @@
 package com.snobot.simulator.gui.module_widget.settings;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class SimpleSettingsDialog extends JDialog
+public abstract class SimpleSettingsDialog extends JDialog
 {
     protected int mHandle;
 
@@ -20,25 +22,36 @@ public class SimpleSettingsDialog extends JDialog
         setTitle(aTitle);
 
         mHandle = aHandle;
-        mNameField = new JTextField(aName);
+        mNameField = new JTextField(aName, 20);
         mSubmitButton = new JButton("Submit");
-        
 
+        JPanel namePanel = new JPanel();
+        namePanel.add(new JLabel("Display Name"));
+        namePanel.add(mNameField);
+        
         JPanel contentPane = new JPanel(new BorderLayout());
-        contentPane.add(mNameField, BorderLayout.CENTER);
+        contentPane.add(namePanel, BorderLayout.NORTH);
         contentPane.add(mSubmitButton, BorderLayout.SOUTH);
 
         setContentPane(contentPane);
-    }
 
-    public void addSubmitListener(ActionListener aListener)
-    {
-        mSubmitButton.addActionListener(aListener);
+        mSubmitButton.addActionListener(new ActionListener()
+        {
+
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                onSubmit();
+                dispose();
+            }
+        });
     }
 
     public String getComponentName()
     {
         return mNameField.getText();
     }
+
+    protected abstract void onSubmit();
 
 }
