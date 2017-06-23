@@ -32,3 +32,13 @@ void SpiGyro::ResetAccumulatorValue()
 {
     SetAngle(0);
 }
+
+
+int32_t SpiGyro::Read(uint8_t* buffer, int32_t count)
+{
+    uint32_t numToPut = 0x00400AE0;
+
+    std::memcpy(&buffer[0], &numToPut, sizeof(numToPut));
+
+    return 0xe;
+}

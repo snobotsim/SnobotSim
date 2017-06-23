@@ -14,30 +14,32 @@
 #include "HAL/Errors.h"
 #include "HAL/cpp/SerialHelper.h"
 
+#include "SnobotSim/Logging/SnobotLogger.h"
+
 extern "C" {
 
 void HAL_InitializeOSSerialPort(HAL_SerialPort port, int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 void HAL_SetOSSerialBaudRate(HAL_SerialPort port, int32_t baud,
                              int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 void HAL_SetOSSerialDataBits(HAL_SerialPort port, int32_t bits,
                              int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 void HAL_SetOSSerialParity(HAL_SerialPort port, int32_t parity,
                            int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 void HAL_SetOSSerialStopBits(HAL_SerialPort port, int32_t stopBits,
                              int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 void HAL_SetOSSerialWriteMode(HAL_SerialPort port, int32_t mode,
@@ -52,17 +54,16 @@ void HAL_SetOSSerialFlowControl(HAL_SerialPort port, int32_t flow,
 
 void HAL_SetOSSerialTimeout(HAL_SerialPort port, double timeout,
                             int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 void HAL_EnableOSSerialTermination(HAL_SerialPort port, char terminator,
                                    int32_t* status) {
-  // \n is hardcoded for now. Will fix later
-  // Seems like a VISA only setting, need to check
+    LOG_UNSUPPORTED();
 }
 
 void HAL_DisableOSSerialTermination(HAL_SerialPort port, int32_t* status) {
-  // Seems like a VISA only setting, need to check
+    LOG_UNSUPPORTED();
 }
 
 void HAL_SetOSSerialReadBufferSize(HAL_SerialPort port, int32_t size,
@@ -77,6 +78,7 @@ void HAL_SetOSSerialWriteBufferSize(HAL_SerialPort port, int32_t size,
 
 int32_t HAL_GetOSSerialBytesReceived(HAL_SerialPort port, int32_t* status) {
   int bytes = 0;
+  LOG_UNSUPPORTED();
 
   return bytes;
 }
@@ -85,21 +87,26 @@ int32_t HAL_ReadOSSerial(HAL_SerialPort port, char* buffer, int32_t count,
                          int32_t* status) {
 
   int bytesRead = 0;
+  LOG_UNSUPPORTED();
 
   return bytesRead;
 }
 
 int32_t HAL_WriteOSSerial(HAL_SerialPort port, const char* buffer,
                           int32_t count, int32_t* status) {
+    LOG_UNSUPPORTED();
     return 0;
 }
 void HAL_FlushOSSerial(HAL_SerialPort port, int32_t* status) {
+    LOG_UNSUPPORTED();
 
 }
 void HAL_ClearOSSerial(HAL_SerialPort port, int32_t* status) {
+    LOG_UNSUPPORTED();
 
 }
 void HAL_CloseOSSerial(HAL_SerialPort port, int32_t* status) {
+    LOG_UNSUPPORTED();
 
 }
 }

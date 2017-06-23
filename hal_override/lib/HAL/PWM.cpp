@@ -12,7 +12,9 @@
 #include "ConstantsInternal.h"
 #include "DigitalInternal.h"
 #include "HAL/handles/HandlesInternal.h"
+
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/ModuleWrapper/SpeedControllerWrapper.h"
 
 using namespace hal;
 
@@ -40,6 +42,7 @@ HAL_Bool HAL_CheckPWMChannel(int32_t channel) {
 void HAL_SetPWMConfig(HAL_DigitalHandle pwmPortHandle, double max,
                       double deadbandMax, double center, double deadbandMin,
                       double min, int32_t* status) {
+    // Nothing for simulator to do
 
 }
 
@@ -47,6 +50,7 @@ void HAL_SetPWMConfigRaw(HAL_DigitalHandle pwmPortHandle, int32_t maxPwm,
                          int32_t deadbandMaxPwm, int32_t centerPwm,
                          int32_t deadbandMinPwm, int32_t minPwm,
                          int32_t* status) {
+    LOG_UNSUPPORTED();
 
 }
 
@@ -54,16 +58,19 @@ void HAL_GetPWMConfigRaw(HAL_DigitalHandle pwmPortHandle, int32_t* maxPwm,
                          int32_t* deadbandMaxPwm, int32_t* centerPwm,
                          int32_t* deadbandMinPwm, int32_t* minPwm,
                          int32_t* status) {
+    LOG_UNSUPPORTED();
 
 }
 
 void HAL_SetPWMEliminateDeadband(HAL_DigitalHandle pwmPortHandle,
                                  HAL_Bool eliminateDeadband, int32_t* status) {
+    // Nothing for simulator to do
 
 }
 
 HAL_Bool HAL_GetPWMEliminateDeadband(HAL_DigitalHandle pwmPortHandle,
                                      int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 
@@ -77,6 +84,7 @@ HAL_Bool HAL_GetPWMEliminateDeadband(HAL_DigitalHandle pwmPortHandle,
  */
 void HAL_SetPWMRaw(HAL_DigitalHandle pwmPortHandle, int32_t value,
                    int32_t* status) {
+    LOG_UNSUPPORTED();
 
 }
 
@@ -106,11 +114,12 @@ void HAL_SetPWMSpeed(HAL_DigitalHandle pwmPortHandle, double speed,
  */
 void HAL_SetPWMPosition(HAL_DigitalHandle pwmPortHandle, double pos,
                         int32_t* status) {
+    LOG_UNSUPPORTED();
 
 }
 
 void HAL_SetPWMDisabled(HAL_DigitalHandle pwmPortHandle, int32_t* status) {
-
+    // Nothing for simulator to do
 }
 
 /**
@@ -120,6 +129,7 @@ void HAL_SetPWMDisabled(HAL_DigitalHandle pwmPortHandle, int32_t* status) {
  * @return The raw PWM value.
  */
 int32_t HAL_GetPWMRaw(HAL_DigitalHandle pwmPortHandle, int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 
@@ -140,11 +150,12 @@ double HAL_GetPWMSpeed(HAL_DigitalHandle pwmPortHandle, int32_t* status) {
  * @return The scaled PWM value.
  */
 double HAL_GetPWMPosition(HAL_DigitalHandle pwmPortHandle, int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 
 void HAL_LatchPWMZero(HAL_DigitalHandle pwmPortHandle, int32_t* status) {
-
+    // Nothing for simulator to do
 }
 
 /**
@@ -155,6 +166,7 @@ void HAL_LatchPWMZero(HAL_DigitalHandle pwmPortHandle, int32_t* status) {
  */
 void HAL_SetPWMPeriodScale(HAL_DigitalHandle pwmPortHandle, int32_t squelchMask,
                            int32_t* status) {
+    // Nothing for simulator to do
 
 }
 

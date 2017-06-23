@@ -30,36 +30,36 @@ HAL_GyroHandle HAL_InitializeAnalogGyro(HAL_AnalogInputHandle analogHandle,
 }
 
 void HAL_SetupAnalogGyro(HAL_GyroHandle handle, int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 void HAL_FreeAnalogGyro(HAL_GyroHandle handle) {
-
+    LOG_UNSUPPORTED();
 }
 
 void HAL_SetAnalogGyroParameters(HAL_GyroHandle handle,
                                  double voltsPerDegreePerSecond, double offset,
                                  int32_t center, int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 void HAL_SetAnalogGyroVoltsPerDegreePerSecond(HAL_GyroHandle handle,
                                               double voltsPerDegreePerSecond,
                                               int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 void HAL_ResetAnalogGyro(HAL_GyroHandle handle, int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 void HAL_CalibrateAnalogGyro(HAL_GyroHandle handle, int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 void HAL_SetAnalogGyroDeadband(HAL_GyroHandle handle, double volts,
                                int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 double HAL_GetAnalogGyroAngle(HAL_GyroHandle handle, int32_t* status) {
@@ -67,14 +67,17 @@ double HAL_GetAnalogGyroAngle(HAL_GyroHandle handle, int32_t* status) {
 }
 
 double HAL_GetAnalogGyroRate(HAL_GyroHandle handle, int32_t* status) {
+    LOG_UNSUPPORTED();
     return 0;
 }
 
 double HAL_GetAnalogGyroOffset(HAL_GyroHandle handle, int32_t* status) {
+    LOG_UNSUPPORTED();
     return 0;
 }
 
 int32_t HAL_GetAnalogGyroCenter(HAL_GyroHandle handle, int32_t* status) {
+    LOG_UNSUPPORTED();
     return 0;
 }
 }

@@ -14,6 +14,7 @@
 #include "HAL/handles/LimitedHandleResource.h"
 #include "PortsInternal.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/ModuleWrapper/DigitalSourceWrapper.h"
 
 using namespace hal;
 
@@ -46,6 +47,7 @@ HAL_Bool HAL_CheckDIOChannel(int32_t channel) {
 }
 
 void HAL_FreeDIOPort(HAL_DigitalHandle dioPortHandle) {
+    LOG_UNSUPPORTED();
 
 }
 
@@ -56,6 +58,7 @@ void HAL_FreeDIOPort(HAL_DigitalHandle dioPortHandle) {
  * @return PWM Generator handle
  */
 HAL_DigitalPWMHandle HAL_AllocateDigitalPWM(int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 
@@ -66,6 +69,7 @@ HAL_DigitalPWMHandle HAL_AllocateDigitalPWM(int32_t* status) {
  * allocateDigitalPWM()
  */
 void HAL_FreeDigitalPWM(HAL_DigitalPWMHandle pwmGenerator, int32_t* status) {
+    LOG_UNSUPPORTED();
 }
 
 /**
@@ -77,6 +81,7 @@ void HAL_FreeDigitalPWM(HAL_DigitalPWMHandle pwmGenerator, int32_t* status) {
  * @param rate The frequency to output all digital output PWM signals.
  */
 void HAL_SetDigitalPWMRate(double rate, int32_t* status) {
+    LOG_UNSUPPORTED();
 
 }
 
@@ -88,6 +93,7 @@ void HAL_SetDigitalPWMRate(double rate, int32_t* status) {
  */
 void HAL_SetDigitalPWMDutyCycle(HAL_DigitalPWMHandle pwmGenerator,
                                 double dutyCycle, int32_t* status) {
+    LOG_UNSUPPORTED();
 
 }
 
@@ -99,6 +105,7 @@ void HAL_SetDigitalPWMDutyCycle(HAL_DigitalPWMHandle pwmGenerator,
  */
 void HAL_SetDigitalPWMOutputChannel(HAL_DigitalPWMHandle pwmGenerator,
                                     int32_t channel, int32_t* status) {
+    LOG_UNSUPPORTED();
 
 }
 
@@ -147,6 +154,7 @@ HAL_Bool HAL_GetDIODirection(HAL_DigitalHandle dioPortHandle, int32_t* status) {
  */
 void HAL_Pulse(HAL_DigitalHandle dioPortHandle, double pulseLength,
                int32_t* status) {
+    LOG_UNSUPPORTED();
 
 }
 
@@ -178,6 +186,7 @@ HAL_Bool HAL_IsAnyPulsing(int32_t* status) {
  */
 void HAL_SetFilterSelect(HAL_DigitalHandle dioPortHandle, int32_t filterIndex,
                          int32_t* status) {
+    LOG_UNSUPPORTED();
 
 }
 
@@ -205,6 +214,7 @@ int32_t HAL_GetFilterSelect(HAL_DigitalHandle dioPortHandle, int32_t* status) {
  * counted as a transition.
  */
 void HAL_SetFilterPeriod(int32_t filterIndex, int64_t value, int32_t* status) {
+    LOG_UNSUPPORTED();
 
 }
 

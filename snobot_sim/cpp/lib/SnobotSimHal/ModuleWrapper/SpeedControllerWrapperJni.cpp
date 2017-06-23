@@ -4,6 +4,7 @@
 #include "support/jni_util.h"
 
 #include "com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni.h"
+#include "SnobotSim/ModuleWrapper/SpeedControllerWrapper.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/GetSensorActuatorHelper.h"
 #include "SnobotSim/MotorSim/StaticLoadDcMotorSim.h"

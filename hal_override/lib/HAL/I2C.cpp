@@ -10,6 +10,10 @@
 #include "HAL/DIO.h"
 #include "HAL/HAL.h"
 
+#include "SnobotSim/Logging/SnobotLogger.h"
+#include "SnobotSim/SimulatorComponents/II2CWrapper.h"
+#include "SnobotSim/SensorActuatorRegistry.h"
+
 extern "C" {
 /*
  * Initialize the I2C port. Opens the port if necessary and saves the handle.
@@ -18,6 +22,8 @@ extern "C" {
  */
 void HAL_InitializeI2C(int32_t port, int32_t* status) {
 
+    std::shared_ptr<II2CWrapper> i2cWrapper(new NullI2CWrapper);
+    SensorActuatorRegistry::Get().Register(port, i2cWrapper);
 }
 
 /**
@@ -35,7 +41,8 @@ void HAL_InitializeI2C(int32_t port, int32_t* status) {
 int32_t HAL_TransactionI2C(int32_t port, int32_t deviceAddress,
                            uint8_t* dataToSend, int32_t sendSize,
                            uint8_t* dataReceived, int32_t receiveSize) {
-    return 0;
+
+    return SensorActuatorRegistry::Get().GetII2CWrapper(port)->Transaction(dataToSend, sendSize, dataReceived, receiveSize);
 }
 
 /**
@@ -51,6 +58,7 @@ int32_t HAL_TransactionI2C(int32_t port, int32_t deviceAddress,
  */
 int32_t HAL_WriteI2C(int32_t port, int32_t deviceAddress, uint8_t* dataToSend,
                      int32_t sendSize) {
+    LOG_UNSUPPORTED();
     return 0;
 }
 
@@ -69,10 +77,11 @@ int32_t HAL_WriteI2C(int32_t port, int32_t deviceAddress, uint8_t* dataToSend,
  */
 int32_t HAL_ReadI2C(int32_t port, int32_t deviceAddress, uint8_t* buffer,
                     int32_t count) {
+    LOG_UNSUPPORTED();
     return 0;
 }
 
 void HAL_CloseI2C(int32_t port) {
-
+    LOG_UNSUPPORTED();
 }
 }

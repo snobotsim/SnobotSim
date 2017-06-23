@@ -14,6 +14,7 @@
 #include "PortsInternal.h"
 
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/ModuleWrapper/SolenoidWrapper.h"
 
 using namespace hal;
 
@@ -35,6 +36,7 @@ HAL_SolenoidHandle HAL_InitializeSolenoidPort(HAL_PortHandle portHandle,
 }
 
 void HAL_FreeSolenoidPort(HAL_SolenoidHandle solenoidPortHandle) {
+    LOG_UNSUPPORTED();
 
 }
 
@@ -52,6 +54,7 @@ HAL_Bool HAL_GetSolenoid(HAL_SolenoidHandle solenoidPortHandle,
 }
 
 int32_t HAL_GetAllSolenoids(int32_t module, int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 
@@ -61,19 +64,24 @@ void HAL_SetSolenoid(HAL_SolenoidHandle solenoidPortHandle, HAL_Bool value,
 }
 
 void HAL_SetAllSolenoids(int32_t module, int32_t state, int32_t* status) {
+    LOG_UNSUPPORTED();
 
 }
 
 int32_t HAL_GetPCMSolenoidBlackList(int32_t module, int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 HAL_Bool HAL_GetPCMSolenoidVoltageStickyFault(int32_t module, int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 HAL_Bool HAL_GetPCMSolenoidVoltageFault(int32_t module, int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 void HAL_ClearAllPCMStickyFaults(int32_t module, int32_t* status) {
+    LOG_UNSUPPORTED();
 
 }
 

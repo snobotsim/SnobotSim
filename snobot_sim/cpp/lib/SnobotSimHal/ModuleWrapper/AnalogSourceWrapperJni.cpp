@@ -6,6 +6,7 @@
 #include "com_snobot_simulator_jni_module_wrapper_AnalogSourceWrapperJni.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/GetSensorActuatorHelper.h"
+#include "SnobotSim/ModuleWrapper/AnalogSourceWrapper.h"
 
 using namespace wpi::java;
 

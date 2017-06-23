@@ -35,9 +35,10 @@ void HAL_InitializeSPI(int32_t port, int32_t* status) {
 
     std::shared_ptr<SpiGyro> spiGyro(new SpiGyro);
     std::shared_ptr<ISpiWrapper> wrapper(spiGyro);
+    std::shared_ptr<GyroWrapper> castGyro = spiGyro;
 
-    SensorActuatorRegistry::Get().SetSpiWrapper(wrapper);
-    SensorActuatorRegistry::Get().Register(100, spiGyro);
+    SensorActuatorRegistry::Get().Register(port, wrapper);
+    SensorActuatorRegistry::Get().Register(port + 100, castGyro);
 }
 
 /**
@@ -54,6 +55,7 @@ void HAL_InitializeSPI(int32_t port, int32_t* status) {
  */
 int32_t HAL_TransactionSPI(int32_t port, uint8_t* dataToSend,
                            uint8_t* dataReceived, int32_t size) {
+    LOG_UNSUPPORTED();
     return 0;
 }
 
@@ -68,6 +70,7 @@ int32_t HAL_TransactionSPI(int32_t port, uint8_t* dataToSend,
  * @return The number of bytes written. -1 for an error
  */
 int32_t HAL_WriteSPI(int32_t port, uint8_t* dataToSend, int32_t sendSize) {
+    LOG_UNSUPPORTED();
     return 0;
 }
 
@@ -85,11 +88,8 @@ int32_t HAL_WriteSPI(int32_t port, uint8_t* dataToSend, int32_t sendSize) {
  * @return Number of bytes read. -1 for error.
  */
 int32_t HAL_ReadSPI(int32_t port, uint8_t* buffer, int32_t count) {
-    uint32_t numToPut = 0x00400AE0;
 
-    std::memcpy(&buffer[0], &numToPut, sizeof(numToPut));
-
-    return 0xe;
+    return SensorActuatorRegistry::Get().GetISpiWrapper(port)->Read(buffer, count);
 }
 
 /**
@@ -98,7 +98,7 @@ int32_t HAL_ReadSPI(int32_t port, uint8_t* buffer, int32_t count) {
  * @param port The number of the port to use. 0-3 for Onboard CS0-CS2, 4 for MXP
  */
 void HAL_CloseSPI(int32_t port) {
-
+    LOG_UNSUPPORTED();
 }
 
 /**
@@ -108,7 +108,7 @@ void HAL_CloseSPI(int32_t port) {
  * @param speed The speed in Hz (0-1MHz)
  */
 void HAL_SetSPISpeed(int32_t port, int32_t speed) {
-
+    LOG_UNSUPPORTED();
 }
 
 /**
@@ -123,7 +123,7 @@ void HAL_SetSPISpeed(int32_t port, int32_t speed) {
  */
 void HAL_SetSPIOpts(int32_t port, HAL_Bool msbFirst, HAL_Bool sampleOnTrailing,
                     HAL_Bool clkIdleHigh) {
-
+    LOG_UNSUPPORTED();
 }
 
 /**
@@ -132,7 +132,7 @@ void HAL_SetSPIOpts(int32_t port, HAL_Bool msbFirst, HAL_Bool sampleOnTrailing,
  * @param port The number of the port to use. 0-3 for Onboard CS0-CS2, 4 for MXP
  */
 void HAL_SetSPIChipSelectActiveHigh(int32_t port, int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 /**
@@ -141,7 +141,7 @@ void HAL_SetSPIChipSelectActiveHigh(int32_t port, int32_t* status) {
  * @param port The number of the port to use. 0-3 for Onboard CS0-CS2, 4 for MXP
  */
 void HAL_SetSPIChipSelectActiveLow(int32_t port, int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 /**
@@ -151,6 +151,7 @@ void HAL_SetSPIChipSelectActiveLow(int32_t port, int32_t* status) {
  * @return The stored handle for the SPI port. 0 represents no stored handle.
  */
 int32_t HAL_GetSPIHandle(int32_t port) {
+    LOG_UNSUPPORTED();
     return 0;
 }
 
@@ -162,7 +163,7 @@ int32_t HAL_GetSPIHandle(int32_t port) {
  * @param handle The value of the handle for the port.
  */
 void HAL_SetSPIHandle(int32_t port, int32_t handle) {
-
+    LOG_UNSUPPORTED();
 }
 
 /**
@@ -186,21 +187,21 @@ void HAL_InitSPIAccumulator(int32_t port, int32_t period, int32_t cmd,
                             int32_t validValue, int32_t dataShift,
                             int32_t dataSize, HAL_Bool isSigned,
                             HAL_Bool bigEndian, int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 /**
  * Frees a SPI accumulator.
  */
 void HAL_FreeSPIAccumulator(int32_t port, int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 /**
  * Resets the accumulator to zero.
  */
 void HAL_ResetSPIAccumulator(int32_t port, int32_t* status) {
-    return SensorActuatorRegistry::Get().GetSpiWrapper()->ResetAccumulatorValue();
+    return SensorActuatorRegistry::Get().GetISpiWrapper(port)->ResetAccumulatorValue();
 }
 
 /**
@@ -214,7 +215,7 @@ void HAL_ResetSPIAccumulator(int32_t port, int32_t* status) {
  */
 void HAL_SetSPIAccumulatorCenter(int32_t port, int32_t center,
                                  int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 /**
@@ -222,13 +223,14 @@ void HAL_SetSPIAccumulatorCenter(int32_t port, int32_t center,
  */
 void HAL_SetSPIAccumulatorDeadband(int32_t port, int32_t deadband,
                                    int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 /**
  * Read the last value read by the accumulator engine.
  */
 int32_t HAL_GetSPIAccumulatorLastValue(int32_t port, int32_t* status) {
+    LOG_UNSUPPORTED();
     return 0;
 }
 
@@ -238,7 +240,7 @@ int32_t HAL_GetSPIAccumulatorLastValue(int32_t port, int32_t* status) {
  * @return The 64-bit value accumulated since the last Reset().
  */
 int64_t HAL_GetSPIAccumulatorValue(int32_t port, int32_t* status) {
-    return SensorActuatorRegistry::Get().GetSpiWrapper()->GetAccumulatorValue();
+    return SensorActuatorRegistry::Get().GetISpiWrapper(port)->GetAccumulatorValue();
 }
 
 /**
@@ -250,6 +252,7 @@ int64_t HAL_GetSPIAccumulatorValue(int32_t port, int32_t* status) {
  * @return The number of times samples from the channel were accumulated.
  */
 int64_t HAL_GetSPIAccumulatorCount(int32_t port, int32_t* status) {
+    LOG_UNSUPPORTED();
     return 0;
 }
 
@@ -259,6 +262,7 @@ int64_t HAL_GetSPIAccumulatorCount(int32_t port, int32_t* status) {
  * @return The accumulated average value (value / count).
  */
 double HAL_GetSPIAccumulatorAverage(int32_t port, int32_t* status) {
+    LOG_UNSUPPORTED();
     return 0;
 }
 
@@ -273,6 +277,7 @@ double HAL_GetSPIAccumulatorAverage(int32_t port, int32_t* status) {
  */
 void HAL_GetSPIAccumulatorOutput(int32_t port, int64_t* value, int64_t* count,
                                  int32_t* status) {
+    LOG_UNSUPPORTED();
 
 }
 }

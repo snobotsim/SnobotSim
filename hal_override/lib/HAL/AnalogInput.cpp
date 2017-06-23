@@ -14,7 +14,9 @@
 #include "HAL/cpp/priority_mutex.h"
 #include "HAL/handles/HandlesInternal.h"
 #include "PortsInternal.h"
+
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/ModuleWrapper/AnalogSourceWrapper.h"
 
 using namespace hal;
 
@@ -43,7 +45,7 @@ HAL_AnalogInputHandle HAL_InitializeAnalogInputPort(HAL_PortHandle portHandle,
  * @param analogPortHandle Handle to the analog port.
  */
 void HAL_FreeAnalogInputPort(HAL_AnalogInputHandle analogPortHandle) {
-
+    LOG_UNSUPPORTED();
 }
 
 /**
@@ -74,7 +76,7 @@ HAL_Bool HAL_CheckAnalogInputChannel(int32_t channel) {
  * @param samplesPerSecond The number of samples per channel per second.
  */
 void HAL_SetAnalogSampleRate(double samplesPerSecond, int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 /**
@@ -86,6 +88,7 @@ void HAL_SetAnalogSampleRate(double samplesPerSecond, int32_t* status) {
  * @return Sample rate.
  */
 double HAL_GetAnalogSampleRate(int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 
@@ -101,7 +104,7 @@ double HAL_GetAnalogSampleRate(int32_t* status) {
  */
 void HAL_SetAnalogAverageBits(HAL_AnalogInputHandle analogPortHandle,
                               int32_t bits, int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 /**
@@ -115,6 +118,7 @@ void HAL_SetAnalogAverageBits(HAL_AnalogInputHandle analogPortHandle,
  */
 int32_t HAL_GetAnalogAverageBits(HAL_AnalogInputHandle analogPortHandle,
                                  int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 
@@ -131,7 +135,7 @@ int32_t HAL_GetAnalogAverageBits(HAL_AnalogInputHandle analogPortHandle,
  */
 void HAL_SetAnalogOversampleBits(HAL_AnalogInputHandle analogPortHandle,
                                  int32_t bits, int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 /**
@@ -146,6 +150,7 @@ void HAL_SetAnalogOversampleBits(HAL_AnalogInputHandle analogPortHandle,
  */
 int32_t HAL_GetAnalogOversampleBits(HAL_AnalogInputHandle analogPortHandle,
                                     int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 
@@ -161,6 +166,7 @@ int32_t HAL_GetAnalogOversampleBits(HAL_AnalogInputHandle analogPortHandle,
  */
 int32_t HAL_GetAnalogValue(HAL_AnalogInputHandle analogPortHandle,
                            int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 
@@ -180,6 +186,7 @@ int32_t HAL_GetAnalogValue(HAL_AnalogInputHandle analogPortHandle,
  */
 int32_t HAL_GetAnalogAverageValue(HAL_AnalogInputHandle analogPortHandle,
                                   int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 
@@ -194,6 +201,7 @@ int32_t HAL_GetAnalogAverageValue(HAL_AnalogInputHandle analogPortHandle,
  */
 double HAL_GetAnalogVoltage(HAL_AnalogInputHandle analogPortHandle,
                             int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 
@@ -212,6 +220,7 @@ double HAL_GetAnalogVoltage(HAL_AnalogInputHandle analogPortHandle,
  */
 double HAL_GetAnalogAverageVoltage(HAL_AnalogInputHandle analogPortHandle,
                                    int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 
@@ -229,6 +238,7 @@ double HAL_GetAnalogAverageVoltage(HAL_AnalogInputHandle analogPortHandle,
  */
 int32_t HAL_GetAnalogVoltsToValue(HAL_AnalogInputHandle analogPortHandle,
                                   double voltage, int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 
@@ -244,6 +254,7 @@ int32_t HAL_GetAnalogVoltsToValue(HAL_AnalogInputHandle analogPortHandle,
  */
 int32_t HAL_GetAnalogLSBWeight(HAL_AnalogInputHandle analogPortHandle,
                                int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 
@@ -259,6 +270,7 @@ int32_t HAL_GetAnalogLSBWeight(HAL_AnalogInputHandle analogPortHandle,
  */
 int32_t HAL_GetAnalogOffset(HAL_AnalogInputHandle analogPortHandle,
                             int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 }

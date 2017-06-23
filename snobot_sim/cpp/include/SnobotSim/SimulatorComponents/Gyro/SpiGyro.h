@@ -19,8 +19,10 @@ public:
     SpiGyro();
     virtual ~SpiGyro();
 
-    double GetAccumulatorValue();
-    void ResetAccumulatorValue();
+    double GetAccumulatorValue() override;
+    void ResetAccumulatorValue() override;
+
+    int32_t Read(uint8_t* buffer, int32_t count) override;
 
 protected:
 

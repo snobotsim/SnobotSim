@@ -10,7 +10,9 @@
 #include "HAL/Errors.h"
 #include "HAL/handles/HandlesInternal.h"
 #include "HAL/handles/IndexedHandleResource.h"
+
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/ModuleWrapper/AnalogSourceWrapper.h"
 
 using namespace hal;
 extern "C" {
@@ -34,6 +36,7 @@ HAL_AnalogOutputHandle HAL_InitializeAnalogOutputPort(HAL_PortHandle portHandle,
 }
 
 void HAL_FreeAnalogOutputPort(HAL_AnalogOutputHandle analogOutputHandle) {
+    LOG_UNSUPPORTED();
 
 }
 
@@ -45,16 +48,19 @@ void HAL_FreeAnalogOutputPort(HAL_AnalogOutputHandle analogOutputHandle) {
  * @return Analog channel is valid
  */
 HAL_Bool HAL_CheckAnalogOutputChannel(int32_t channel) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 
 void HAL_SetAnalogOutput(HAL_AnalogOutputHandle analogOutputHandle,
                          double voltage, int32_t* status) {
+    LOG_UNSUPPORTED();
 
 }
 
 double HAL_GetAnalogOutput(HAL_AnalogOutputHandle analogOutputHandle,
                            int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 }

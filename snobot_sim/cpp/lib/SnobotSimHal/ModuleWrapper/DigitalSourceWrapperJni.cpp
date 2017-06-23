@@ -4,6 +4,7 @@
 #include "support/jni_util.h"
 
 #include "com_snobot_simulator_jni_module_wrapper_DigitalSourceWrapperJni.h"
+#include "SnobotSim/ModuleWrapper/DigitalSourceWrapper.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/GetSensorActuatorHelper.h"
 

@@ -7,16 +7,19 @@
 
 #include "HAL/Interrupts.h"
 
+#include "SnobotSim/Logging/SnobotLogger.h"
 
 
 extern "C" {
 
 HAL_InterruptHandle HAL_InitializeInterrupts(HAL_Bool watcher,
                                              int32_t* status) {
+    LOG_UNSUPPORTED();
     return 0;
 }
 
 void HAL_CleanInterrupts(HAL_InterruptHandle interruptHandle, int32_t* status) {
+    LOG_UNSUPPORTED();
 }
 
 /**
@@ -29,6 +32,7 @@ void HAL_CleanInterrupts(HAL_InterruptHandle interruptHandle, int32_t* status) {
 int64_t HAL_WaitForInterrupt(HAL_InterruptHandle interruptHandle,
                              double timeout, HAL_Bool ignorePrevious,
                              int32_t* status) {
+    LOG_UNSUPPORTED();
     return 0;
 }
 
@@ -40,6 +44,7 @@ int64_t HAL_WaitForInterrupt(HAL_InterruptHandle interruptHandle,
  */
 void HAL_EnableInterrupts(HAL_InterruptHandle interruptHandle,
                           int32_t* status) {
+    LOG_UNSUPPORTED();
 
 }
 
@@ -48,6 +53,7 @@ void HAL_EnableInterrupts(HAL_InterruptHandle interruptHandle,
  */
 void HAL_DisableInterrupts(HAL_InterruptHandle interruptHandle,
                            int32_t* status) {
+    LOG_UNSUPPORTED();
 
 }
 
@@ -58,6 +64,7 @@ void HAL_DisableInterrupts(HAL_InterruptHandle interruptHandle,
  */
 double HAL_ReadInterruptRisingTimestamp(HAL_InterruptHandle interruptHandle,
                                         int32_t* status) {
+    LOG_UNSUPPORTED();
     return 0;
 }
 
@@ -68,6 +75,7 @@ double HAL_ReadInterruptRisingTimestamp(HAL_InterruptHandle interruptHandle,
 */
 double HAL_ReadInterruptFallingTimestamp(HAL_InterruptHandle interruptHandle,
                                          int32_t* status) {
+    LOG_UNSUPPORTED();
     return 0;
 }
 
@@ -75,25 +83,25 @@ void HAL_RequestInterrupts(HAL_InterruptHandle interruptHandle,
                            HAL_Handle digitalSourceHandle,
                            HAL_AnalogTriggerType analogTriggerType,
                            int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 void HAL_AttachInterruptHandler(HAL_InterruptHandle interruptHandle,
                                 HAL_InterruptHandlerFunction handler,
                                 void* param, int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 void HAL_AttachInterruptHandlerThreaded(HAL_InterruptHandle interrupt_handle,
                                         HAL_InterruptHandlerFunction handler,
                                         void* param, int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 void HAL_SetInterruptUpSourceEdge(HAL_InterruptHandle interruptHandle,
                                   HAL_Bool risingEdge, HAL_Bool fallingEdge,
                                   int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 }  // extern "C"

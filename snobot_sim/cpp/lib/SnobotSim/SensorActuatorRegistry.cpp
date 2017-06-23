@@ -6,6 +6,7 @@
  */
 
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/SimulatorComponents/CompressorWrapper.h"
 
 SensorActuatorRegistry* SensorActuatorRegistry::sInstance =
         new SensorActuatorRegistry();
@@ -16,7 +17,8 @@ SensorActuatorRegistry& SensorActuatorRegistry::Get()
 	return *sInstance;
 }
     
-SensorActuatorRegistry::SensorActuatorRegistry()
+SensorActuatorRegistry::SensorActuatorRegistry() :
+        mCompressor(new CompressorWrapper)
 {
 
 }
@@ -37,17 +39,15 @@ void SensorActuatorRegistry::Reset()
     mEncoderWrapperMap.clear();
     mGyroWrapperMap.clear();
     mAccelerometerWrapperMap.clear();
+    mISpiWrapperMap.clear();
+    mII2CWrapperMap.clear();
+
     mSimulatorComponents.clear();
 }
 
-std::shared_ptr<ISpiWrapper> SensorActuatorRegistry::GetSpiWrapper()
+std::shared_ptr<CompressorWrapper> SensorActuatorRegistry::GetCompressorWrapper()
 {
-    return mSpiWrapper;
-}
-
-void SensorActuatorRegistry::SetSpiWrapper(const std::shared_ptr<ISpiWrapper>& aSpiWrapper)
-{
-    mSpiWrapper = aSpiWrapper;
+    return mCompressor;
 }
 
 void SensorActuatorRegistry::AddSimulatorComponent(const std::shared_ptr<ISimulatorUpdater>& aSimulatorComponent)
@@ -88,3 +88,5 @@ ACTUATOR_GETTERS(SolenoidWrapper)
 ACTUATOR_GETTERS(EncoderWrapper)
 ACTUATOR_GETTERS(AccelerometerWrapper)
 ACTUATOR_GETTERS(GyroWrapper)
+ACTUATOR_GETTERS(ISpiWrapper)
+ACTUATOR_GETTERS(II2CWrapper)

@@ -8,6 +8,7 @@
 #include "HAL/AnalogAccumulator.h"
 
 #include "HAL/HAL.h"
+#include "SnobotSim/Logging/SnobotLogger.h"
 
 extern "C" {
 /**
@@ -18,6 +19,7 @@ extern "C" {
  */
 HAL_Bool HAL_IsAccumulatorChannel(HAL_AnalogInputHandle analogPortHandle,
                                   int32_t* status) {
+    LOG_UNSUPPORTED();
     return true;
 }
 
@@ -28,7 +30,7 @@ HAL_Bool HAL_IsAccumulatorChannel(HAL_AnalogInputHandle analogPortHandle,
  */
 void HAL_InitAccumulator(HAL_AnalogInputHandle analogPortHandle,
                          int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 /**
@@ -38,7 +40,7 @@ void HAL_InitAccumulator(HAL_AnalogInputHandle analogPortHandle,
  */
 void HAL_ResetAccumulator(HAL_AnalogInputHandle analogPortHandle,
                           int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 /**
@@ -58,7 +60,7 @@ void HAL_ResetAccumulator(HAL_AnalogInputHandle analogPortHandle,
  */
 void HAL_SetAccumulatorCenter(HAL_AnalogInputHandle analogPortHandle,
                               int32_t center, int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 /**
@@ -69,7 +71,7 @@ void HAL_SetAccumulatorCenter(HAL_AnalogInputHandle analogPortHandle,
  */
 void HAL_SetAccumulatorDeadband(HAL_AnalogInputHandle analogPortHandle,
                                 int32_t deadband, int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 /**
@@ -83,6 +85,7 @@ void HAL_SetAccumulatorDeadband(HAL_AnalogInputHandle analogPortHandle,
  */
 int64_t HAL_GetAccumulatorValue(HAL_AnalogInputHandle analogPortHandle,
                                 int32_t* status) {
+    LOG_UNSUPPORTED();
     return 0;
 }
 
@@ -97,6 +100,7 @@ int64_t HAL_GetAccumulatorValue(HAL_AnalogInputHandle analogPortHandle,
  */
 int64_t HAL_GetAccumulatorCount(HAL_AnalogInputHandle analogPortHandle,
                                 int32_t* status) {
+    LOG_UNSUPPORTED();
     return 0;
 }
 
@@ -112,6 +116,7 @@ int64_t HAL_GetAccumulatorCount(HAL_AnalogInputHandle analogPortHandle,
  */
 void HAL_GetAccumulatorOutput(HAL_AnalogInputHandle analogPortHandle,
                               int64_t* value, int64_t* count, int32_t* status) {
+    LOG_UNSUPPORTED();
 
 }
 }

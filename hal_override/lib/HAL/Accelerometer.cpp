@@ -15,6 +15,8 @@
 
 #include "HAL/HAL.h"
 
+#include "SnobotSim/Logging/SnobotLogger.h"
+
 // The 7-bit I2C address with a 0 "send" bit
 static const uint8_t kSendAddress = (0x1c << 1) | 0;
 
@@ -78,7 +80,7 @@ extern "C" {
  * mode to change any configuration.
  */
 void HAL_SetAccelerometerActive(HAL_Bool active) {
-
+    LOG_UNSUPPORTED();
 }
 
 /**
@@ -86,7 +88,7 @@ void HAL_SetAccelerometerActive(HAL_Bool active) {
  * The accelerometer should be in standby mode when this is called.
  */
 void HAL_SetAccelerometerRange(HAL_AccelerometerRange range) {
-
+    LOG_UNSUPPORTED();
 }
 
 /**
@@ -95,6 +97,7 @@ void HAL_SetAccelerometerRange(HAL_AccelerometerRange range) {
  * This is a floating point value in units of 1 g-force
  */
 double HAL_GetAccelerometerX() {
+    LOG_UNSUPPORTED();
     return 0;
 }
 
@@ -104,6 +107,7 @@ double HAL_GetAccelerometerX() {
  * This is a floating point value in units of 1 g-force
  */
 double HAL_GetAccelerometerY() {
+    LOG_UNSUPPORTED();
     return 0;
 }
 
@@ -113,6 +117,7 @@ double HAL_GetAccelerometerY() {
  * This is a floating point value in units of 1 g-force
  */
 double HAL_GetAccelerometerZ() {
+    LOG_UNSUPPORTED();
     return 0;
 }
 

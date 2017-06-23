@@ -1,7 +1,7 @@
 #include "CanTalonSRX.h"
-#include <iostream>
 
 #include "CanTalonSpeedController.h"
+#include "SnobotSim/ModuleWrapper/EncoderWrapper.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 
 
@@ -273,7 +273,7 @@ CTR_Code CanTalonSRX::SetModeSelect(int modeSelect, int demand) {
         mode = CanTalonSpeedController::ControlMode_Disabled;
         break;
     default:
-        std::cerr << "Unsupported control mode " << modeSelect << std::endl;
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unsupported control mode " << modeSelect);
     }
 
     std::shared_ptr<CanTalonSpeedController> speedController = GetCanTalon(mDeviceNumber);
@@ -562,8 +562,7 @@ CTR_Code CanTalonSRX::GetLimitSwitchClosedRev(int &param)
 }
 CTR_Code CanTalonSRX::GetSensorPosition(int &param)
 {
-    LOG_UNSUPPORTED();
-    return CTR_OKAY;
+    return GetEncPosition(param);
 }
 CTR_Code CanTalonSRX::GetSensorVelocity(int &param)
 {
@@ -593,7 +592,7 @@ CTR_Code CanTalonSRX::GetEncPosition(int &param)
         return CTR_OKAY;
     }
 
-    std::cerr << "Encoder has not been hooked up for " << mDeviceNumber << ".  The simulator is stupid, remember to call setFeedbackDevice" << std::endl;
+    SNOBOT_LOG(SnobotLogging::CRITICAL, "Encoder has not been hooked up for " << mDeviceNumber << ".  The simulator is stupid, remember to call setFeedbackDevice");
 
     param = 0;
     return CTR_InvalidParamValue;
@@ -755,7 +754,7 @@ CTR_Code CanTalonSRX::SetFeedbackDeviceSelect(int param)
         break;
     }
     default:
-        std::cerr << "Unknown feedback device " << param << std::endl;
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown feedback device " << param);
 
     }
 
@@ -788,7 +787,7 @@ CTR_Code CanTalonSRX::SetModeSelect(int param)
         mode = CanTalonSpeedController::ControlMode_Disabled;
         break;
     default:
-        std::cerr << "Unsupported control mode " << param << std::endl;
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unsupported control mode " << param);
     }
 
     std::shared_ptr<CanTalonSpeedController> speedController = GetCanTalon(mDeviceNumber);

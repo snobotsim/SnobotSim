@@ -9,7 +9,9 @@
 
 #include "HAL/handles/IndexedHandleResource.h"
 #include "PortsInternal.h"
+
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/ModuleWrapper/RelayWrapper.h"
 
 using namespace hal;
 
@@ -26,6 +28,7 @@ HAL_RelayHandle HAL_InitializeRelayPort(HAL_PortHandle portHandle, HAL_Bool fwd,
 }
 
 void HAL_FreeRelayPort(HAL_RelayHandle relayPortHandle) {
+    LOG_UNSUPPORTED();
 
 }
 

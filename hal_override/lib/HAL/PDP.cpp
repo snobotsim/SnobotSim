@@ -13,6 +13,7 @@
 #include "HAL/Ports.h"
 #include "HAL/cpp/make_unique.h"
 #include "PortsInternal.h"
+#include "SnobotSim/Logging/SnobotLogger.h"
 
 using namespace hal;
 
@@ -32,35 +33,43 @@ HAL_Bool HAL_CheckPDPChannel(int32_t channel) {
 }
 
 double HAL_GetPDPTemperature(int32_t module, int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 
 double HAL_GetPDPVoltage(int32_t module, int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 
 double HAL_GetPDPChannelCurrent(int32_t module, int32_t channel,
                                 int32_t* status) {
+//    LOG_UNSUPPORTED();
   return 0;
 }
 
 double HAL_GetPDPTotalCurrent(int32_t module, int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 
 double HAL_GetPDPTotalPower(int32_t module, int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 
 double HAL_GetPDPTotalEnergy(int32_t module, int32_t* status) {
+    LOG_UNSUPPORTED();
   return 0;
 }
 
 void HAL_ResetPDPTotalEnergy(int32_t module, int32_t* status) {
+    LOG_UNSUPPORTED();
 
 }
 
 void HAL_ClearPDPStickyFaults(int32_t module, int32_t* status) {
+    LOG_UNSUPPORTED();
 
 }
 

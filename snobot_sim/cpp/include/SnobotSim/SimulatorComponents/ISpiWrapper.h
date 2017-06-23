@@ -15,6 +15,8 @@ public:
 
     virtual double GetAccumulatorValue() = 0;
     virtual void ResetAccumulatorValue() = 0;
+
+    virtual int32_t Read(uint8_t* buffer, int32_t count) = 0;
 };
 
 

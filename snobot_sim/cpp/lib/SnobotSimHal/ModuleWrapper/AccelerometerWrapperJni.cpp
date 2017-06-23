@@ -5,6 +5,7 @@
 
 #include "com_snobot_simulator_jni_module_wrapper_GyroWrapperJni.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/SimulatorComponents/Accelerometer/AccelerometerWrapper.h"
 
 using namespace wpi::java;
 

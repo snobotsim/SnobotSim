@@ -9,19 +9,23 @@
 #define INCLUDE_SNOBOTSIM_SENSORACTUATORREGISTRY_H_
 
 #include <map>
+#include <memory>
 #include <vector>
 #include "SnobotSim/ExportHelper.h"
-#include "SnobotSim/ModuleWrapper/SpeedControllerWrapper.h"
-#include "SnobotSim/ModuleWrapper/RelayWrapper.h"
-#include "SnobotSim/ModuleWrapper/DigitalSourceWrapper.h"
-#include "SnobotSim/ModuleWrapper/AnalogSourceWrapper.h"
-#include "SnobotSim/ModuleWrapper/SolenoidWrapper.h"
-#include "SnobotSim/ModuleWrapper/EncoderWrapper.h"
-#include "SnobotSim/SimulatorComponents/ISpiWrapper.h"
 #include "SnobotSim/SimulatorComponents/ISimulatorUpdater.h"
-#include "SnobotSim/SimulatorComponents/Accelerometer/AccelerometerWrapper.h"
-#include "SnobotSim/SimulatorComponents/Gyro/GyroWrapper.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
+
+class SpeedControllerWrapper;
+class RelayWrapper;
+class DigitalSourceWrapper;
+class AnalogSourceWrapper;
+class SolenoidWrapper;
+class EncoderWrapper;
+class GyroWrapper;
+class AccelerometerWrapper;
+class ISpiWrapper;
+class II2CWrapper;
+class CompressorWrapper;
 
 #define ACTUATOR_GETTERS(ItemType)                                              \
     bool Register(int aPort, const std::shared_ptr<ItemType>& aActuator);       \
@@ -47,8 +51,7 @@ public:
 
     std::vector<std::shared_ptr<ISimulatorUpdater>>& GetSimulatorComponents();
 
-    std::shared_ptr<ISpiWrapper> GetSpiWrapper();
-    void SetSpiWrapper(const std::shared_ptr<ISpiWrapper>& aSpiWrapper);
+    std::shared_ptr<CompressorWrapper> GetCompressorWrapper();
 
     ACTUATOR_GETTERS(SpeedControllerWrapper)
     ACTUATOR_GETTERS(RelayWrapper)
@@ -58,6 +61,8 @@ public:
     ACTUATOR_GETTERS(EncoderWrapper)
     ACTUATOR_GETTERS(AccelerometerWrapper)
     ACTUATOR_GETTERS(GyroWrapper)
+    ACTUATOR_GETTERS(ISpiWrapper)
+    ACTUATOR_GETTERS(II2CWrapper)
 
 protected:
 
@@ -103,10 +108,12 @@ protected:
     std::map<int, std::shared_ptr<EncoderWrapper>> mEncoderWrapperMap;
     std::map<int, std::shared_ptr<GyroWrapper>> mGyroWrapperMap;
     std::map<int, std::shared_ptr<AccelerometerWrapper>> mAccelerometerWrapperMap;
+    std::map<int, std::shared_ptr<ISpiWrapper>> mISpiWrapperMap;
+    std::map<int, std::shared_ptr<II2CWrapper>> mII2CWrapperMap;
+
+    std::shared_ptr<CompressorWrapper> mCompressor;
 
     std::vector<std::shared_ptr<ISimulatorUpdater>> mSimulatorComponents;
-
-    std::shared_ptr<ISpiWrapper> mSpiWrapper;
 };
 
 #undef ACTUATOR_GETTERS

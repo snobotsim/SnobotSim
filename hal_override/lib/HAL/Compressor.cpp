@@ -11,6 +11,10 @@
 #include "HAL/handles/HandlesInternal.h"
 #include "PortsInternal.h"
 
+#include "SnobotSim/Logging/SnobotLogger.h"
+#include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/SimulatorComponents/CompressorWrapper.h"
+
 using namespace hal;
 
 extern "C" {
@@ -26,55 +30,63 @@ HAL_Bool HAL_CheckCompressorModule(int32_t module) {
 
 HAL_Bool HAL_GetCompressor(HAL_CompressorHandle compressorHandle,
                            int32_t* status) {
-
+    LOG_UNSUPPORTED();
     return true;
 }
 
 void HAL_SetCompressorClosedLoopControl(HAL_CompressorHandle compressorHandle,
                                         HAL_Bool value, int32_t* status) {
-
+    LOG_UNSUPPORTED();
 }
 
 HAL_Bool HAL_GetCompressorClosedLoopControl(
     HAL_CompressorHandle compressorHandle, int32_t* status) {
 
+    LOG_UNSUPPORTED();
     return true;
 }
 
 HAL_Bool HAL_GetCompressorPressureSwitch(HAL_CompressorHandle compressorHandle,
                                          int32_t* status) {
 
-    return true;
+    return SensorActuatorRegistry::Get().GetCompressorWrapper()->IsPressureSwitchFull();
 }
 
 double HAL_GetCompressorCurrent(HAL_CompressorHandle compressorHandle,
                                 int32_t* status) {
 
+    LOG_UNSUPPORTED();
     return 0;
 }
 HAL_Bool HAL_GetCompressorCurrentTooHighFault(
     HAL_CompressorHandle compressorHandle, int32_t* status) {
 
+    LOG_UNSUPPORTED();
     return false;
 }
 HAL_Bool HAL_GetCompressorCurrentTooHighStickyFault(
     HAL_CompressorHandle compressorHandle, int32_t* status) {
+    LOG_UNSUPPORTED();
     return false;
 }
 HAL_Bool HAL_GetCompressorShortedStickyFault(
     HAL_CompressorHandle compressorHandle, int32_t* status) {
+    LOG_UNSUPPORTED();
     return false;
 }
 HAL_Bool HAL_GetCompressorShortedFault(HAL_CompressorHandle compressorHandle,
                                        int32_t* status) {
+    LOG_UNSUPPORTED();
     return false;
 }
 HAL_Bool HAL_GetCompressorNotConnectedStickyFault(
     HAL_CompressorHandle compressorHandle, int32_t* status) {
+    LOG_UNSUPPORTED();
     return false;
 }
 HAL_Bool HAL_GetCompressorNotConnectedFault(
     HAL_CompressorHandle compressorHandle, int32_t* status) {
+    LOG_UNSUPPORTED();
     return false;
 }
 }  // extern "C"
