@@ -64,6 +64,11 @@ double SpeedControllerWrapper::GetVelocity()
     return mMotorSimulator->GetVelocity();
 }
 
+double SpeedControllerWrapper::GetCurrent()
+{
+    return mMotorSimulator->GetCurrent();
+}
+
 void SpeedControllerWrapper::Reset()
 {
     mMotorSimulator->Reset();

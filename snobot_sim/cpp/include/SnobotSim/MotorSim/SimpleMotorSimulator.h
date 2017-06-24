@@ -28,6 +28,8 @@ public:
 
     virtual double GetPosition() override;
 
+    virtual double GetCurrent() override;
+
     virtual void Reset() override;
 
     virtual void Reset(double aPosition, double aVelocity, double aCurrent) override;

@@ -48,6 +48,11 @@ double SimpleMotorSimulator::GetAcceleration()
     return 0;
 }
 
+double SimpleMotorSimulator::GetCurrent()
+{
+    return 0;
+}
+
 double SimpleMotorSimulator::GetVelocity()
 {
     return mVelocity;

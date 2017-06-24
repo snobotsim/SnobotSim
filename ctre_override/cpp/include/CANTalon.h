@@ -21,14 +21,12 @@
 #include "tables/ITableListener.h"
 #include "GadgeteerUartClient.h"
 
-#include "SnobotSim/ExportHelper.h"
-
 /**
  * CTRE Talon SRX Speed Controller with CAN Control
  */
-class EXPORT_ CANTalon : public frc::MotorSafety,
+ class EXPORT_ CANTalon : public frc::MotorSafety,
                  public frc::CANSpeedController,
-                 //public frc::ErrorBase,
+                 public frc::ErrorBase,
                  public frc::LiveWindowSendable,
                  public ITableListener,
                  public frc::PIDSource,
@@ -371,6 +369,59 @@ class EXPORT_ CANTalon : public frc::MotorSafety,
   void EnableZeroSensorPositionOnIndex(bool enable, bool risingEdge);
   void EnableZeroSensorPositionOnForwardLimit(bool enable);
   void EnableZeroSensorPositionOnReverseLimit(bool enable);
+  /**
+   * @param voltage       Motor voltage to output when closed loop features are being used (Position,
+   *                      Speed, Motion Profile, Motion Magic, etc.) in volts.
+   *                      Pass 0 to disable feature.  Input should be within [0.0 V,255.0 V]
+   */
+  void SetNominalClosedLoopVoltage(double voltage);
+  /**
+   * Disables the nominal closed loop voltage compensation.
+   * Same as calling SetNominalClosedLoopVoltage(0).
+   */
+  void DisableNominalClosedLoopVoltage();
+  /**
+   * @return the currently selected nominal closed loop voltage. Zero (Default) means feature is disabled.
+   */
+  double GetNominalClosedLoopVoltage();
+
+  enum VelocityMeasurementPeriod{
+	Period_1Ms = 1,
+	Period_2Ms = 2,
+	Period_5Ms = 5,
+	Period_10Ms = 10,
+	Period_20Ms = 20,
+	Period_25Ms = 25,
+	Period_50Ms = 50,
+	Period_100Ms = 100,
+  };
+  /**
+   * Sets the duration of time that the Talon measures for each velocity measurement (which occures at each 1ms process loop).
+   * The default value is 100, which means that every process loop (1ms), the Talon will measure the change in position
+   * between now and 100ms ago, and will insert into a rolling average.
+   *
+   * Decreasing this from the default (100ms) will yield a less-resolute measurement since there is less time for the sensor to change.
+   * This will be perceived as increased granularity in the measurement (or stair-stepping).  But doing so will also decrease the latency
+   * between sensor motion and measurement.
+   *
+   * Regardles of this setting value, native velocity units are still in change-in-sensor-per-100ms.
+   *
+   * @param period      Support period enum.  Curent valid values are 1,2,5,10,20,25,50, or 100ms.
+   */
+  void SetVelocityMeasurementPeriod(VelocityMeasurementPeriod period);
+  /**
+   * Sets the window size of the rolling average used in velocity measurement.
+   * The default value is 64, which means that every process loop (1ms), the Talon will insert a velocity measurement
+   * into a windowed averager with a history of 64 samples.
+   * Each sample is inserted every 1ms regardless of what Period is selected.
+   * As a result the window is practically in ms units.
+   *
+   * @param windowSize    Window size of rolling average.
+   */
+  void SetVelocityMeasurementWindow(uint32_t windowSize);
+  VelocityMeasurementPeriod GetVelocityMeasurementPeriod();
+  uint32_t GetVelocityMeasurementWindow();
+
   int ConfigSetParameter(uint32_t paramEnum, double value);
   bool GetParameter(uint32_t paramEnum, double& dvalue) const;
 
@@ -496,7 +547,30 @@ class EXPORT_ CANTalon : public frc::MotorSafety,
    * RPM per second if units are configured, velocity native units per second otherwise.
    */
   double GetMotionMagicAcceleration();
+
+  /**
+   * @return current Motion Magic trajectory point's target velocity.
+   * RPM if units are configured, velocity native units otherwise.
+   */
+  double GetMotionMagicActTrajVelocity();
+  /**
+   * @return current Motion Magic trajectory point's target position.
+   * Rotations if units are configured, position native units otherwise.
+   */
+  double GetMotionMagicActTrajPosition();
+  /**
+	 * Set the Value of the current limit.  Use {@link #EnableCurrentLimit(boolean)}
+	 * to turn feature on and off.
+	 *
+	 * @param amps Current Limit in amps.
+	*/
   int SetCurrentLimit(uint32_t amps);
+  /**
+	 * Enable or Disable the current limit.  Use {@link #SetCurrentLimit(int)}
+	 * to set the value of the limit.
+	 *
+	 * @param enable True to Enable, False to Disable.
+	*/
   int EnableCurrentLimit(bool enable);
   bool HasResetOccured();
   int GetCustomParam0(int32_t & value);
@@ -520,6 +594,11 @@ class EXPORT_ CANTalon : public frc::MotorSafety,
   // SpeedController overrides
   void SetInverted(bool isInverted) override;
   bool GetInverted() const override;
+
+/**
+ * @return low level object for advanced control.
+ */
+ CanTalonSRX & GetLowLevelObject() { return *m_impl; }
   
  private:
 
@@ -548,6 +627,7 @@ class EXPORT_ CANTalon : public frc::MotorSafety,
 };
 
   int m_deviceNumber;
+  std::unique_ptr<CanTalonSRX> m_impl;
   std::unique_ptr<frc::MotorSafetyHelper> m_safetyHelper;
   int m_profile = 0;  // Profile from CANTalon to use. Set to zero until we can
                       // actually test this.

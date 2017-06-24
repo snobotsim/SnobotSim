@@ -30,6 +30,8 @@ public:
 
     virtual double GetPosition() = 0;
 
+    virtual double GetCurrent() = 0;
+
     virtual void Reset() = 0;
 
     virtual void Reset(double aPosition, double aVelocity, double aCurrent) = 0;
@@ -82,6 +84,11 @@ public:
     virtual double GetPosition() override
     {
         return 0;
+    }
+
+    virtual double GetCurrent() override
+    {
+    	return 0;
     }
 
     virtual void Reset() override

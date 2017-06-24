@@ -32,7 +32,7 @@ public:
 
     virtual double GetPosition() override;
 
-    virtual double GetCurrent();
+    virtual double GetCurrent() override;
 
     virtual void Reset() override;
 

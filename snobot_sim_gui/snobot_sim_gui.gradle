@@ -32,6 +32,7 @@ project(':native:snobot_sim_gui') {
     dependencies {
         def osname = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
         
+        compile 'edu.wpi.first.wpilibj:athena:+'
         compile project(':native:snobotSimHal')
         compile files("${rootDir}/build/snobotSim-NativeJava-" + osname + ".jar")
         
@@ -205,6 +206,12 @@ project(':native:snobot_sim_gui') {
         from(file("$rootDir/native/ctre_override/build/libs/ctreOverride/shared/x86")) {
             into os_name + '/' + x86_name
             include '*.dll'
+            include '*.so'
+        }
+        
+    	//Linux only
+        from(file("$rootDir/external_dependencies/native/shared/amd64")) {
+            into os_name + '/' + x64_name
             include '*.so'
         }
     }

@@ -34,6 +34,8 @@ public:
 
     virtual double GetVelocity();
 
+    virtual double GetCurrent();
+
     virtual void Reset();
 
     virtual void Reset(double aPosition, double aVelocity, double aCurrent);

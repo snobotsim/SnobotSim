@@ -162,7 +162,17 @@ int32_t HAL_GetJoystickButtons(int32_t joystickNum,
  */
 int32_t HAL_GetJoystickDescriptor(int32_t joystickNum,
                                   HAL_JoystickDescriptor* desc) {
-    LOG_UNSUPPORTED();
+
+    JoystickInformation& info = JoystickManager::Get().GetJoystick(joystickNum);
+
+	desc->isXbox      = false;
+	desc->type        = 0;
+//	desc->name        = "";
+	desc->axisCount   = HAL_kMaxJoystickAxes;
+//	desc->axisTypes[HAL_kMaxJoystickAxes];
+	desc->buttonCount = info.mButtons.count;
+	desc->povCount    = HAL_kMaxJoystickPOVs;
+
     return 0;
 }
 

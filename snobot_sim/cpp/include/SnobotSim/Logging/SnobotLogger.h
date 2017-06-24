@@ -68,7 +68,8 @@ namespace SnobotLogging
     SnobotLogging::Log(logLevel, __LINE__, __FILE__, message.str());  \
 }
 
-#define LOG_UNSUPPORTED()  SNOBOT_LOG(SnobotLogging::CRITICAL, "Unsupported function " << __FUNCTION_NAME__);
+#define LOG_UNSUPPORTED()                      SNOBOT_LOG(SnobotLogging::CRITICAL, "Unsupported function " << __FUNCTION_NAME__);
+#define LOG_UNSUPPORTED_WITH_MESSAGE(message)  SNOBOT_LOG(SnobotLogging::CRITICAL, "Unsupported function " << __FUNCTION_NAME__ << " " << message);
 
 
 #endif /* SNOBOTLOGGER_H_ */

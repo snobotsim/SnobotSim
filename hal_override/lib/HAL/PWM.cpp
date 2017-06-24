@@ -114,8 +114,8 @@ void HAL_SetPWMSpeed(HAL_DigitalHandle pwmPortHandle, double speed,
  */
 void HAL_SetPWMPosition(HAL_DigitalHandle pwmPortHandle, double pos,
                         int32_t* status) {
-    LOG_UNSUPPORTED();
-
+    SensorActuatorRegistry::Get().GetSpeedControllerWrapper(pwmPortHandle)->Reset(pos, 0, 0);
+    SensorActuatorRegistry::Get().GetSpeedControllerWrapper(pwmPortHandle)->SetVoltagePercentage(pos);
 }
 
 void HAL_SetPWMDisabled(HAL_DigitalHandle pwmPortHandle, int32_t* status) {
