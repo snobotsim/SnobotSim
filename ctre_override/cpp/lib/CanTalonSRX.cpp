@@ -5,23 +5,6 @@
 #include "SnobotSim/SensorActuatorRegistry.h"
 
 
-
-int GetHandle(void* handle)
-{
-    return (int) *((long*)handle);
-}
-
-int GetEncoderHandle(int talonHandle)
-{
-    return talonHandle | 0xF0000000;
-}
-
-int GetEncoderHandle(void* talonHandlePtr)
-{
-    int talonHandle = GetHandle(talonHandlePtr);
-    return GetEncoderHandle(talonHandle);
-}
-
 std::shared_ptr<CanTalonSpeedController> GetCanTalon(int handle)
 {
     std::shared_ptr<SpeedControllerWrapper> speedController =
@@ -29,15 +12,6 @@ std::shared_ptr<CanTalonSpeedController> GetCanTalon(int handle)
 
     return std::dynamic_pointer_cast<CanTalonSpeedController>(speedController);
 }
-
-std::shared_ptr<CanTalonSpeedController> GetCanTalon(void* handle)
-{
-    int intHandle = GetHandle(handle);
-    return GetCanTalon(intHandle);
-}
-
-
-
 
 
 CanTalonSRX::CanTalonSRX(int deviceNumber, int controlPeriodMs,
@@ -127,7 +101,7 @@ CTR_Code CanTalonSRX::RequestParam(param_t paramEnum) {
 }
 
 CTR_Code CanTalonSRX::SetParam(param_t paramEnum, double value) {
-    LOG_UNSUPPORTED();
+	LOG_UNSUPPORTED_WITH_MESSAGE(paramEnum << ", " << value);
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetParamResponse(param_t paramEnum, double &value) {
@@ -295,7 +269,7 @@ CTR_Code CanTalonSRX::SetModeSelect(int modeSelect, int demand) {
  */
 CTR_Code CanTalonSRX::SetStatusFrameRate(unsigned frameEnum,
                                          unsigned periodMs) {
-    LOG_UNSUPPORTED();
+    // Nothing to do
     return CTR_OKAY;
 }
 /**
@@ -562,16 +536,20 @@ CTR_Code CanTalonSRX::GetLimitSwitchClosedRev(int &param)
 }
 CTR_Code CanTalonSRX::GetSensorPosition(int &param)
 {
-    return GetEncPosition(param);
+    std::shared_ptr<CanTalonSpeedController> speedController = GetCanTalon(mDeviceNumber);
+    param = speedController->GetSensorPosition();
+    return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetSensorVelocity(int &param)
 {
-    LOG_UNSUPPORTED();
+    std::shared_ptr<CanTalonSpeedController> speedController = GetCanTalon(mDeviceNumber);
+    param = speedController->GetSensorVelocity();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetCurrent(double &param)
 {
-    LOG_UNSUPPORTED();
+    std::shared_ptr<CanTalonSpeedController> speedController = GetCanTalon(mDeviceNumber);
+    param = speedController->GetCurrent();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetBrakeIsEnabled(int &param)
@@ -581,25 +559,15 @@ CTR_Code CanTalonSRX::GetBrakeIsEnabled(int &param)
 }
 CTR_Code CanTalonSRX::GetEncPosition(int &param)
 {
-    int encoderHandle = GetEncoderHandle(mDeviceNumber);
-    std::shared_ptr<EncoderWrapper> wrapper =
-            SensorActuatorRegistry::Get().GetEncoderWrapper(encoderHandle);
-
-    if(wrapper)
-    {
-        double distance = wrapper->GetDistance();
-        param = (int) (distance);
-        return CTR_OKAY;
-    }
-
-    SNOBOT_LOG(SnobotLogging::CRITICAL, "Encoder has not been hooked up for " << mDeviceNumber << ".  The simulator is stupid, remember to call setFeedbackDevice");
-
-    param = 0;
-    return CTR_InvalidParamValue;
+    std::shared_ptr<CanTalonSpeedController> speedController = GetCanTalon(mDeviceNumber);
+    param = speedController->GetEncoderPosition();
+    return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetEncVel(int &param)
 {
-    LOG_UNSUPPORTED();
+    std::shared_ptr<CanTalonSpeedController> speedController = GetCanTalon(mDeviceNumber);
+    param = speedController->GetEncoderVelocity();
+
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetEncIndexRiseEvents(int &param)
@@ -744,19 +712,19 @@ CTR_Code CanTalonSRX::SetOverrideLimitSwitchEn(int param)
 }
 CTR_Code CanTalonSRX::SetFeedbackDeviceSelect(int param)
 {
+	CanTalonSpeedController::ConnectedSensor sensor = CanTalonSpeedController::ConnectedSensor_Unknown;
     switch(param)
     {
-    case 0:
+    case 0: // Quad Encoder
+    case 6: // Mag Encoder
     {
-        int encoderHandle = GetEncoderHandle(mDeviceNumber);
-        std::string encoderName = "CAN Encoder " + std::to_string(mDeviceNumber);
-        SensorActuatorRegistry::Get().Register(encoderHandle, std::shared_ptr<EncoderWrapper>(new EncoderWrapper(encoderName)));
-        break;
+    	sensor = CanTalonSpeedController::ConnectedSensor_Encoder;
     }
     default:
         SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown feedback device " << param);
-
     }
+    std::shared_ptr<CanTalonSpeedController> speedController = GetCanTalon(mDeviceNumber);
+    speedController->SetFeedbackDevice(sensor);
 
     return CTR_OKAY;
 }
@@ -814,7 +782,8 @@ CTR_Code CanTalonSRX::SetRampThrottle(int param)
 }
 CTR_Code CanTalonSRX::SetRevFeedbackSensor(int param)
 {
-    LOG_UNSUPPORTED();
+//    LOG_UNSUPPORTED();
+	SNOBOT_LOG(SnobotLogging::DEBUG, "Unsupported...");
     return CTR_OKAY;
 }
 

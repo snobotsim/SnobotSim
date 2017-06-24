@@ -2045,7 +2045,7 @@ void CANTalon::ValueChanged(ITable* source, llvm::StringRef key,
                             std::shared_ptr<nt::Value> value, bool isNew) {
   if (key == "Mode" && value->IsDouble())
     SetControlMode(
-        static_cast<CANSpeedController::ControlMode>(value->GetDouble()));
+        static_cast<CANSpeedController::ControlMode>((int) value->GetDouble()));
   if (key == "p" && value->IsDouble()) SetP(value->GetDouble());
   if (key == "i" && value->IsDouble()) SetI(value->GetDouble());
   if (key == "d" && value->IsDouble()) SetD(value->GetDouble());

@@ -91,18 +91,18 @@ public class AHRS extends SensorBase implements PIDSource, LiveWindowSendable
 
     public double getCompassHeading()
     {
-        System.err.println("Unsupported");
+        System.err.println("AHRS getRate Unsupported");
         return 0;
     }
 
     public void resetAngle()
     {
-        System.err.println("Unsupported");
+        System.err.println("AHRS getRate Unsupported");
     }
 
     public void zeroYaw()
     {
-        System.err.println("Unsupported");
+        System.err.println("AHRS getRate Unsupported");
     }
 
     /**

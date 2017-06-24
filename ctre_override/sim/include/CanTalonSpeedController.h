@@ -23,6 +23,12 @@ public:
         ControlMode_Unknown
     };
 
+    enum ConnectedSensor
+    {
+        ConnectedSensor_Encoder,
+		ConnectedSensor_Unknown
+    };
+
 
     CanTalonSpeedController(int aHandle);
     virtual ~CanTalonSpeedController();
@@ -31,17 +37,28 @@ public:
 
     void SetControlMode(ControlMode aControlMode);
 
+    void SetFeedbackDevice(ConnectedSensor aSensor);
+
     void AddFollower(const std::shared_ptr<CanTalonSpeedController>& aFollower);
 
     void Update(double aWaitTime) override;
 
     double GetLastSetValue() const;
 
+    double GetSensorPosition();
+
+    double GetSensorVelocity();
+
+    double GetEncoderPosition();
+
+    double GetEncoderVelocity();
+
 protected:
 
     double mLastSetValue;
 
     ControlMode mControlMode;
+    ConnectedSensor mFeedbackDevice;
     std::vector<std::shared_ptr<CanTalonSpeedController>> mFollowers;
 };
 
