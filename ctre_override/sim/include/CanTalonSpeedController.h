@@ -53,7 +53,13 @@ public:
 
     double GetEncoderVelocity();
 
+    void SetEncoderPosition(double aPosition);
+
+    void SetEncoderTicksPerRotation(double aDistancePerTicks);
+
 protected:
+
+    int GetFeedbackSensorHandle();
 
     double mLastSetValue;
 

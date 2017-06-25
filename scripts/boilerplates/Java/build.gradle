@@ -1,0 +1,40 @@
+
+
+plugins {
+    id 'java'
+    id 'edu.wpi.first.wpilib.versioning.WPILibVersioningPlugin' version '1.5.1'
+}
+
+
+repositories {
+    mavenCentral()
+
+    maven {
+        url "http://raw.githubusercontent.com/pjreiniger/maven_repo/master/"
+    }
+}
+
+sourceSets {
+    main
+    {
+        java
+        {
+            srcDirs = ["${rootDir}/src"]
+        }
+    }
+}
+
+dependencies {
+    // WPILib
+    compile 'edu.wpi.first.wpilibj:athena:+'
+    compile 'edu.wpi.first.wpilib.networktables.java:NetworkTables:+:desktop'
+    
+    // 3rd Party
+}
+
+
+jar {
+    dependsOn { classes }
+}
+
+

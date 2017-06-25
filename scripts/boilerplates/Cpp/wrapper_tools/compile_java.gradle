@@ -1,0 +1,85 @@
+
+apply plugin: 'java'
+
+def generatedJNIHeaderLoc = "${buildDir}/wrapperSource/src"
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ["build/wrapperSource/java"]
+        }
+    }
+}
+
+println project.hasProperty('robotName')
+
+ext.internalJarName = "${robotName}"
+if (project.hasProperty('jarName'))
+{
+    ext.internalJarName = project.jarName
+}
+
+
+jar {
+    description = 'Generates NetworkTables jar, with the JNI shared libraries embedded'
+    baseName = "${internalJarName}CppSimulator"
+    duplicatesStrategy = 'exclude'
+
+    dependsOn { classes }
+    
+    model {
+        binaries {
+            withType(SharedLibraryBinarySpec) { binary ->
+                from(file(binary.sharedLibraryFile)) {
+                    into getPlatformPath(binary)
+                }
+            }
+        }
+    }
+}
+
+clean {
+    delete generatedJNIHeaderLoc
+}
+
+
+/**
+ * Generates the JNI headers
+ */
+task createSimulaterWrapperJniHeaders {
+    description = 'Generates JNI headers'
+    group = 'SnobotSim'
+    
+    def outputFolder = file(generatedJNIHeaderLoc)
+    inputs.files sourceSets.main.output
+    outputs.file outputFolder
+    doLast {
+        outputFolder.mkdirs()
+        exec {
+            executable org.gradle.internal.jvm.Jvm.current().getExecutable('javah')
+            args '-d', outputFolder
+            args '-classpath', sourceSets.main.output.classesDir
+            
+            //////////////////////////////////////////////////////
+            args "com.snobot.simulator.cpp_wrapper.${robotName}.${robotName}SimulatorJni"
+            
+        }
+    }
+}
+
+ext.setupJniIncludes = { binaries ->
+    def platformSpecificIncludeFlag = { loc, cppCompiler ->
+        if (OperatingSystem.current().isWindows()) {
+            cppCompiler.args "/I$loc"
+        } else {
+            cppCompiler.args '-I', loc
+        }
+    }
+    binaries.all {
+        tasks.withType(CppCompile) {
+
+            dependsOn createSimulaterWrapperJniHeaders
+        }
+    }
+}
+

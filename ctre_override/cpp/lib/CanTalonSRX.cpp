@@ -101,7 +101,17 @@ CTR_Code CanTalonSRX::RequestParam(param_t paramEnum) {
 }
 
 CTR_Code CanTalonSRX::SetParam(param_t paramEnum, double value) {
-	LOG_UNSUPPORTED_WITH_MESSAGE(paramEnum << ", " << value);
+	switch(paramEnum)
+	{
+	case eEncPosition:
+		GetCanTalon(mDeviceNumber)->SetEncoderPosition(value);
+		break;
+	case eNumberEncoderCPR:
+		GetCanTalon(mDeviceNumber)->SetEncoderTicksPerRotation(value);
+		break;
+	default:
+		LOG_UNSUPPORTED_WITH_MESSAGE(paramEnum << ", " << value);
+	}
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetParamResponse(param_t paramEnum, double &value) {
@@ -191,11 +201,11 @@ CTR_Code CanTalonSRX::SetReverseSoftLimit(int reverseLimit) {
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::SetForwardSoftEnable(int enable) {
-    LOG_UNSUPPORTED();
+    LOG_UNSUPPORTED_WITH_MESSAGE("Enable: " << enable);
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::SetReverseSoftEnable(int enable) {
-    LOG_UNSUPPORTED();
+    LOG_UNSUPPORTED_WITH_MESSAGE("Enable: " << enable);
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetForwardSoftLimit(int &forwardLimit) {
@@ -707,7 +717,7 @@ CTR_Code CanTalonSRX::SetDemand(int param)
 }
 CTR_Code CanTalonSRX::SetOverrideLimitSwitchEn(int param)
 {
-    LOG_UNSUPPORTED();
+    LOG_UNSUPPORTED_WITH_MESSAGE("Param: " << param);
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::SetFeedbackDeviceSelect(int param)
@@ -719,6 +729,7 @@ CTR_Code CanTalonSRX::SetFeedbackDeviceSelect(int param)
     case 6: // Mag Encoder
     {
     	sensor = CanTalonSpeedController::ConnectedSensor_Encoder;
+    	break;
     }
     default:
         SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown feedback device " << param);
@@ -736,7 +747,7 @@ CTR_Code CanTalonSRX::SetRevMotDuringCloseLoopEn(int param)
 }
 CTR_Code CanTalonSRX::SetOverrideBrakeType(int param)
 {
-    LOG_UNSUPPORTED();
+    LOG_UNSUPPORTED_WITH_MESSAGE("Param: " << param);
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::SetModeSelect(int param)

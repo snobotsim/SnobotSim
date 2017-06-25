@@ -1,0 +1,179 @@
+import org.gradle.internal.os.OperatingSystem
+
+apply plugin: 'cpp'
+
+
+if (OperatingSystem.current().isLinux()) 
+{
+    apply from: "wrapper_tools/toolchains/linux.gradle"
+}
+else
+{
+    apply from: "wrapper_tools/toolchains/windows.gradle"
+}
+
+ext.wpilibBuildPath      = "${rootDir}/external_dependencies/wpilibSim"
+ext.snobotSimCppSources  = "${rootDir}/external_dependencies/snobotSim"
+ext.snobotSimNativeLibs  = "${rootDir}/external_dependencies/snobotSim"
+
+ext.wpilibcIncludePath       = wpilibBuildPath + "/cpp/wpilibc/include"
+ext.halIncludePath           = wpilibBuildPath + "/cpp/hal/include"
+ext.wpiIncludePath           = wpilibBuildPath + "/cpp/wpiutil/include"
+ext.networkTablesIncludePath = wpilibBuildPath + "/cpp/networktables/include"
+ext.niLibrariesIncludePath   = wpilibBuildPath + "/cpp/ni-libraries/include"
+
+
+ext.user_includes   = [snobotSimCppSources]
+    
+
+defineExternalLibraries()
+
+
+ext.robotName = "RobotName"
+//ext.jarName = "2017-FRC2062"
+
+
+ext.wrapperDir = new File('build/wrapperSource')
+
+apply from: 'wrapper_tools/generate_wrapper_files.gradle'
+apply from: 'wrapper_tools/compile_java.gradle'
+
+
+ext.getPlatformPath = { binary ->
+    if (binary.targetPlatform.architecture.arm) {
+        return 'Linux/arm'
+    } else if (binary.targetPlatform.operatingSystem.linux) {
+        if (binary.targetPlatform.architecture.amd64) {
+            return 'Linux/amd64'
+        } else {
+            return 'Linux/' + binary.targetPlatform.architecture.name
+        }
+    } else if (binary.targetPlatform.operatingSystem.windows) {
+        if (binary.targetPlatform.architecture.amd64) {
+            return 'Windows/amd64'
+        } else {
+            return 'Windows/' + binary.targetPlatform.architecture.name
+        }
+    } else if (binary.targetPlatform.operatingSystem.macOsX) {
+        if (binary.targetPlatform.architecture.amd64) {
+            return 'Mac OS X/x86_64'
+        } else {
+            return 'Mac OS X/' + binary.targetPlatform.architecture.name
+        }
+    } else {
+        return binary.targetPlatform.operatingSystem.name + '/' + binary.targetPlatform.architecture.name
+    }
+}
+
+task download_sim_tools(type: Copy) {
+
+    def output_folder = new File("${rootDir}/external_dependencies/")
+    if( !output_folder.exists() ) {
+      output_folder.mkdirs()
+    }
+    
+    if(project.hasProperty('local_wpilib') && project.hasProperty('local_snobotSim'))
+    {
+        println "Using local copies"
+        copy {
+            from project.local_wpilib
+            into output_folder.toString() + "/wpilib"
+        }
+        copy {
+            from project.local_snobotSim
+            into output_folder.toString() + "/snobotSim"
+        }
+    }
+    else
+    {
+        repositories {
+            maven {
+                url "http://raw.githubusercontent.com/pjreiniger/maven_repo/master/"
+            }
+        }
+        
+        configurations.create("zippedDeps")
+        
+        dependencies {
+            def osname = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
+
+            zippedDeps 'com.snobot.simulator:snobotSim:1.0:cpp-sources@zip'
+            zippedDeps 'com.snobot.simulator:snobotSim:1.0:NativeCpp-' + osname + '@zip'
+            zippedDeps 'edu.wpilib:wpilibSim:1.0:' + osname + "@zip"
+        }
+        
+        configurations.zippedDeps.files.each { file ->
+        
+            copy {
+	            def depName = file.name.substring(0, file.name.indexOf('-'))
+	            println file.toString() + ", " + depName
+	            from zipTree(file) 
+	            into output_folder.toString() + "/" + depName
+            }
+        }
+    }   
+}
+
+
+model {
+
+    platforms 
+    {
+        x86 {
+            architecture 'x86'
+        }
+        x64 {
+            architecture 'x86_64'
+        }
+    }
+    
+    components {
+        RobotName(NativeLibrarySpec) {
+            targetPlatform "x64"
+
+            setupJniIncludes(binaries)
+            
+            binaries.all 
+            {
+                tasks.withType(CppCompile) 
+                {
+                    dependsOn download_sim_tools
+                    dependsOn generateCppRobotWrapper
+                    dependsOn generateWrapperJavaJni
+                    linker.args  wpilibcLibraryPath
+                    linker.args  halLibraryPath
+                    linker.args  networkTablesLibraryPath
+                    linker.args  wpilibLibraryPath
+                    linker.args  canTalonLibraryPath
+                }
+            }
+            sources 
+            {
+                cpp 
+                {
+                    source 
+                    {
+                        srcDirs = ["src", "build/wrapperSource/src", halIncludePath, wpilibcIncludePath]
+                        includes = ["**/*.cpp"]
+                    }
+                    exportedHeaders 
+                    {
+                        srcDirs = ["src", niLibrariesIncludePath, niLibrariesIncludePath, halIncludePath, wpilibcIncludePath, wpiIncludePath, networkTablesIncludePath]
+                        srcDirs += ext.user_includes
+                        
+                        srcDirs.each {
+                            println it
+                        }
+                        //println srcDirs
+                    }
+                }
+            }
+        }
+    }
+}
+
+clean {
+    delete "external_dependencies"
+}
+
+
