@@ -15,6 +15,7 @@
 #include "LiveWindow/LiveWindow.h"
 #include "WPIErrors.h"
 
+using namespace frc;
 
 int CANTalon::GetDeviceID()
 {
@@ -1644,7 +1645,7 @@ void CANTalon::SetSafetyEnabled(bool enabled) {
   m_safetyHelper->SetSafetyEnabled(enabled);
 }
 
-void CANTalon::GetDescription(std::ostringstream& desc) const {
+void CANTalon::GetDescription(llvm::raw_ostream& desc) const {
   desc << "CANTalon ID " << m_deviceNumber;
 }
 

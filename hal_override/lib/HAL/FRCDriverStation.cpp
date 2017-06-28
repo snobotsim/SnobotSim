@@ -28,9 +28,9 @@ struct HAL_JoystickAxesInt {
   int16_t axes[HAL_kMaxJoystickAxes];
 };
 
-static priority_mutex msgMutex;
-static priority_condition_variable newDSDataAvailableCond;
-static priority_mutex newDSDataAvailableMutex;
+static hal::priority_mutex msgMutex;
+static hal::priority_condition_variable newDSDataAvailableCond;
+static hal::priority_mutex newDSDataAvailableMutex;
 
 extern "C" {
 int32_t HAL_SetErrorData(const char* errors, int32_t errorsLength,
@@ -45,7 +45,7 @@ int32_t HAL_SendError(HAL_Bool isError, int32_t errorCode, HAL_Bool isLVCode,
   // Avoid flooding console by keeping track of previous 5 error
   // messages and only printing again if they're longer than 1 second old.
   static constexpr int KEEP_MSGS = 5;
-  std::lock_guard<priority_mutex> lock(msgMutex);
+  std::lock_guard<hal::priority_mutex> lock(msgMutex);
   static std::string prevMsg[KEEP_MSGS];
   static std::chrono::time_point<std::chrono::steady_clock>
       prevMsgTime[KEEP_MSGS];

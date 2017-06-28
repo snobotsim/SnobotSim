@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import com.snobot.simulator.jni.SnobotSimulatorJni;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.util.WPILibVersion;
 
 public class Main
@@ -17,6 +18,12 @@ public class Main
         if (argList.contains("version"))
         {
             printVersions();
+        }
+
+        if (argList.contains("find_robots"))
+        {
+            discoverRobots();
+            System.exit(0);
         }
 
         try
@@ -72,5 +79,63 @@ public class Main
         System.out.println("SnobotSim HAL : " + SnobotSimGuiVersion.Version);
         System.out.println("SnobotSim GUI : " + SnobotSimulatorJni.getVersion());
 
+    }
+
+    private static void discoverRobots()
+    {
+        try
+        {
+            RobotBase.initializeHardwareConfiguration();
+            PluginSniffer sniffer = new PluginSniffer();
+            sniffer.loadPlugins();
+            sniffer.findRobots();
+
+            StringBuilder output = new StringBuilder();
+            output.append("\n\n\n\n");
+            output.append("# <--------------------------------------->\n");
+            output.append("# <- Here is a config script you can use ->\n");
+            output.append("# <--------------------------------------->\n");
+            output.append("\n\n\n\n");
+
+            if (!sniffer.getCppRobots().isEmpty())
+            {
+                output.append("################################\n");
+                output.append("#          CPP Robots          #\n");
+                output.append("################################\n");
+                output.append("\n\n");
+
+                for (Class<?> clazzName : sniffer.getCppRobots())
+                {
+                    output.append("# " + clazzName.getSimpleName() + "\n");
+                    output.append("robot_class     : " + clazzName.getName() + "\n");
+                    output.append("robot_type      : cpp\n");
+                    output.append("simulator_class :\n");
+                    output.append("\n\n");
+                }
+            }
+
+            if (!sniffer.getJavaRobots().isEmpty())
+            {
+                output.append("################################\n");
+                output.append("#          Java Robots         #\n");
+                output.append("################################\n");
+
+                for (Class<?> clazzName : sniffer.getJavaRobots())
+                {
+                    output.append("# " + clazzName.getSimpleName() + "\n");
+                    output.append("robot_class     : " + clazzName.getName() + "\n");
+                    output.append("robot_type      : java\n");
+                    output.append("simulator_class :\n");
+                    output.append("\n\n");
+                }
+            }
+
+            System.out.println(output.toString());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            System.exit(-1);
+        }
     }
 }

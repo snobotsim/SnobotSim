@@ -256,7 +256,7 @@
   void StopMotor() override;
   void SetSafetyEnabled(bool enabled) override;
   bool IsSafetyEnabled() const override;
-  void GetDescription(std::ostringstream& desc) const override;
+  void GetDescription(llvm::raw_ostream& desc) const override;
 
   // CANSpeedController interface
   double Get() const override;

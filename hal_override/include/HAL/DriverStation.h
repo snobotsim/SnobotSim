@@ -106,6 +106,8 @@ double HAL_GetMatchTime(int32_t* status);
 
 #ifndef HAL_USE_LABVIEW
 
+void HAL_ReleaseDSMutex(void);
+bool HAL_IsNewControlData(void);
 void HAL_WaitForDSData(void);
 HAL_Bool HAL_WaitForDSDataTimeout(double timeout);
 void HAL_InitializeDriverStation(void);

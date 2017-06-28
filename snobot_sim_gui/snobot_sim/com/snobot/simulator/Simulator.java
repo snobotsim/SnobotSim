@@ -149,7 +149,7 @@ public class Simulator
                      */
                     public void windowClosing(WindowEvent e)
                     {
-                        SnobotSimulatorJni.shutdown();
+                        // SnobotSimulatorJni.shutdown();
                     }
                 });
 

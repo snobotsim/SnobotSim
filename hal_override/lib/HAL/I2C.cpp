@@ -20,7 +20,7 @@ extern "C" {
  * If opening the MXP port, also sets up the channel functions appropriately
  * @param port The port to open, 0 for the on-board, 1 for the MXP.
  */
-void HAL_InitializeI2C(int32_t port, int32_t* status) {
+void HAL_InitializeI2C(HAL_I2CPort port, int32_t* status) {
 
     std::shared_ptr<II2CWrapper> i2cWrapper(new NullI2CWrapper);
     SensorActuatorRegistry::Get().Register(port, i2cWrapper);
@@ -38,7 +38,7 @@ void HAL_InitializeI2C(int32_t port, int32_t* status) {
  * @param receiveSize Number of bytes to read from the device.
  * @return >= 0 on success or -1 on transfer abort.
  */
-int32_t HAL_TransactionI2C(int32_t port, int32_t deviceAddress,
+int32_t HAL_TransactionI2C(HAL_I2CPort port, int32_t deviceAddress,
                            uint8_t* dataToSend, int32_t sendSize,
                            uint8_t* dataReceived, int32_t receiveSize) {
 
@@ -56,7 +56,7 @@ int32_t HAL_TransactionI2C(int32_t port, int32_t deviceAddress,
  * @param data The byte to write to the register on the device.
  * @return >= 0 on success or -1 on transfer abort.
  */
-int32_t HAL_WriteI2C(int32_t port, int32_t deviceAddress, uint8_t* dataToSend,
+int32_t HAL_WriteI2C(HAL_I2CPort port, int32_t deviceAddress, uint8_t* dataToSend,
                      int32_t sendSize) {
     LOG_UNSUPPORTED();
     return 0;
@@ -75,13 +75,13 @@ int32_t HAL_WriteI2C(int32_t port, int32_t deviceAddress, uint8_t* dataToSend,
  * device.
  * @return >= 0 on success or -1 on transfer abort.
  */
-int32_t HAL_ReadI2C(int32_t port, int32_t deviceAddress, uint8_t* buffer,
+int32_t HAL_ReadI2C(HAL_I2CPort port, int32_t deviceAddress, uint8_t* buffer,
                     int32_t count) {
     LOG_UNSUPPORTED();
     return 0;
 }
 
-void HAL_CloseI2C(int32_t port) {
+void HAL_CloseI2C(HAL_I2CPort port) {
     LOG_UNSUPPORTED();
 }
 }

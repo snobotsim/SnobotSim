@@ -11,6 +11,8 @@ model {
                     args << '-Wno-error=deprecated-declarations' << '-pthread'
                     args << '-m32'
                     args << '-DFRC_SIMULATOR'
+                    args << '-DNAMESPACED_WPILIB'
+                    args << '-DNAMESPACED_PRIORITY'
                 }
                 linker.withArguments { args ->
                     args << '-rdynamic' << '-pthread'
@@ -25,6 +27,8 @@ model {
                     // deprecated function, remove this line (this will cause calling deprecated functions
                     // to be treated as a warning rather than an error).
                     args << '-Wno-error=deprecated-declarations' << '-pthread'
+                    args << '-DNAMESPACED_WPILIB'
+                    args << '-DNAMESPACED_PRIORITY'
                 }
                 linker.withArguments { args ->
                     args << '-rdynamic' << '-pthread'

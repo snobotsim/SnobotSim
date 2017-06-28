@@ -19,6 +19,8 @@ model {
                     if (file(VS_2015_INCLUDE_DIR).exists()) {
                         args << "/I$VS_2015_INCLUDE_DIR"
                     }
+                    args << '-DNAMESPACED_WPILIB'
+                    args << '-DNAMESPACED_PRIORITY'
                 }
                 linker.withArguments { args ->
                     if (file(VS_2015_LIB_DIR).exists()) {
