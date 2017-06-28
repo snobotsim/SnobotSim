@@ -12,3 +12,6 @@ artifacts:
 
 - path: build/maven_repo/com/snobot/simulator/snobotSimApplication/**/snobotSimApplication*.zip
   name: snobotApplication
+
+- path: build/maven_repo
+  name: MavenStuff
