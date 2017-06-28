@@ -3,7 +3,7 @@ import org.gradle.internal.os.OperatingSystem
 apply plugin: 'maven-publish'
 
 def getVersion = {
-    return "1.0"
+    return "0.0"
 }
 
 
