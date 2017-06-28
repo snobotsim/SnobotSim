@@ -26,6 +26,7 @@ publishing {
             artifact gui_proj.copyDependencies
             artifact gui_proj.createSnobotSimLibraryZip
             artifact gui_proj.createNativeLibrary
+            artifact gui_proj.createCppSouceZip
         
             groupId 'com.snobot.simulator'
             artifactId 'snobotSim'
