@@ -1,0 +1,103 @@
+
+import org.gradle.internal.os.OperatingSystem
+
+ext.wpilibBuildPath = "${rootDir}/external_dependencies/"
+ext.wpilibc_path    = wpilibBuildPath + "/cpp/wpilibc/include"
+ext.network_tables  = wpilibBuildPath + "/cpp/networktables/include"
+
+def defineLibraryPaths(targetPlatform)
+{
+    String architecture = targetPlatform.architecture
+
+    if (OperatingSystem.current().isLinux()) {
+ 		     
+        if (architecture.contains('64')) {  
+	        ext.wpilibcLibraryPath       = wpilibBuildPath    + 'native/shared/x64/libwpilibc.so'
+	        ext.networkTablesLibraryPath = wpilibBuildPath    + 'native/shared/amd64/libntcore.so'
+	        ext.wpilibLibraryPath        = wpilibBuildPath    + 'native/shared/amd64/libwpiutil.so'
+        } else {
+	        ext.wpilibcLibraryPath       = wpilibBuildPath    + 'native/shared/x86/libwpilibc.so'
+	        ext.networkTablesLibraryPath = wpilibBuildPath    + 'native/shared/i386/libntcore.so'
+	        ext.wpilibLibraryPath        = wpilibBuildPath    + 'native/shared/x86/libwpiutil.so'
+        }
+        
+    } else if (OperatingSystem.current().isWindows()) {
+        if (architecture.contains('64')) {  
+            ext.wpilibcLibraryPath       = wpilibBuildPath    + '/native/shared/x64/wpilibc.lib'
+            ext.networkTablesLibraryPath = wpilibBuildPath    + '/native/shared/x64/ntcore.lib'
+            ext.wpilibLibraryPath        = wpilibBuildPath    + '/native/shared/x64/wpiutil.lib'
+        } else {
+            ext.wpilibcLibraryPath       = wpilibBuildPath    + '/native/shared/x86/wpilibc.lib'
+            ext.networkTablesLibraryPath = wpilibBuildPath    + '/native/shared/x86/ntcore.lib'
+            ext.wpilibLibraryPath        = wpilibBuildPath    + '/native/shared/x86/wpiutil.lib'
+        }
+    } else {
+        throw new GradleException("${name} does not support building on ${ext.buildPlatform}.")
+    }
+
+
+}
+
+    
+
+def navxOverrideSetupModel = { project ->
+    project.model {
+        components {
+            navxOverride(NativeLibrarySpec) {
+
+                targetPlatform 'x86'
+                targetPlatform 'x64'
+                setupDefines(project, binaries)
+
+                binaries.all 
+                {
+                    tasks.withType(CppCompile) 
+                    {
+                        defineLibraryPaths(targetPlatform)
+                        linker.args  wpilibcLibraryPath
+                        linker.args  networkTablesLibraryPath
+                        linker.args  wpilibLibraryPath
+                    }
+                }
+                sources {
+                    cpp {
+                        source {
+                            srcDirs = ["${rootDir}/navx_override/cpp/lib/"]
+                            includes = ['**/*.cpp']
+                        }
+                        exportedHeaders {
+                            srcDirs = ["${rootDir}/navx_override/cpp/include", "${rootDir}/navx_override/sim/include"]
+                            srcDirs ext.wpilibc_path
+                            srcDirs ext.network_tables
+                            
+                            srcDirs.each {
+                        	    def dir = new File("${it}")
+                        	    if(!dir.exists())
+                        	    {
+                        	        println "Missing include directory : " + dir
+                        	    	//throw new GradleException("Could not find include directory ${it}")
+                        	    }
+                            }
+                            
+                            
+                            includes = ['**/*.h']
+                        }
+
+                        lib project: ':native:snobotSimHal', library: 'snobotSimHal', linkage: 'shared'
+                        lib project: ':native:HALAthena', library: 'HALAthena', linkage: 'shared'
+                        lib project: ':native:wpiutil', library: 'wpiutil', linkage: 'static'
+                    }
+                }
+            }
+        }
+    }
+}
+
+project(':native:navx_override') {
+    apply plugin: 'cpp'
+
+    apply from: "${rootDir}/toolchains/native.gradle"
+    apply from: "${rootDir}/navx_override/java/navx_java.gradle"
+    
+    navxOverrideSetupModel(project)
+}

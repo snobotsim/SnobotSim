@@ -60,7 +60,7 @@ public class Simulator
                 System.err.println("Could not read properties file, will use defaults and will overwrite the file if it exists");
 
                 if (!JniLibraryResourceLoader.copyResourceFromJar("/com/snobot/simulator/config/default_properties.properties",
-                        new File(sPROPERTIES_FILE)))
+                        new File(sPROPERTIES_FILE), false))
             	{
             		throw new RuntimeException("Could not copy properties file!  Have to exit!");
             	}

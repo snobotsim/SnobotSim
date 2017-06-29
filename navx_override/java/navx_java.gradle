@@ -1,0 +1,53 @@
+import org.gradle.internal.os.OperatingSystem
+
+apply plugin: 'java'
+apply plugin: 'net.ltgt.errorprone'
+
+repositories {
+    mavenCentral()
+}
+
+configurations.errorprone {
+    resolutionStrategy.force 'com.google.errorprone:error_prone_core:2.0.9'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ["${rootDir}/navx_override/java/src"]
+        }
+    }
+}
+
+jar {
+    description = 'Generates jar'
+    baseName = 'Navx'
+    classifier = "$buildPlatform"
+    duplicatesStrategy = 'exclude'
+
+    dependsOn { classes }
+    model {
+        binaries {
+            withType(SharedLibraryBinarySpec) { binary ->
+                from(file(binary.sharedLibraryFile)) {
+                    into getPlatformPath(binary)
+                }
+            }
+        }
+    }
+}
+
+project.tasks.whenTaskAdded { task ->
+
+    if (task.name == 'ntcoreX64SharedLibrary' || task.name == 'ntcoreX86SharedLibrary')
+        jar.dependsOn task
+}
+
+compileJava {
+    options.compilerArgs << '-Xlint:unchecked'
+}
+
+javadoc {
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+

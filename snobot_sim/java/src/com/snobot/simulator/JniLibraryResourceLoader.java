@@ -41,7 +41,12 @@ public class JniLibraryResourceLoader
         f.delete();
     }
     
-    public static boolean copyResourceFromJar(String aResourceName, File resourceFile) throws IOException
+    public static boolean copyResourceFromJar(String aResourceName, File aResourceFile) throws IOException
+    {
+        return copyResourceFromJar(aResourceName, aResourceFile, true);
+    }
+
+    public static boolean copyResourceFromJar(String aResourceName, File aResourceFile, boolean aDeleteOnExit) throws IOException
     {
     	boolean success = false;
 
@@ -50,8 +55,11 @@ public class JniLibraryResourceLoader
         {
 
             // flag for delete on exit
-            resourceFile.deleteOnExit();
-            OutputStream os = new FileOutputStream(resourceFile);
+            if (aDeleteOnExit)
+            {
+                aResourceFile.deleteOnExit();
+            }
+            OutputStream os = new FileOutputStream(aResourceFile);
 
             byte[] buffer = new byte[1024];
             int readBytes;
@@ -71,7 +79,7 @@ public class JniLibraryResourceLoader
             }
 
             // System.out.println("Copied resource to " +
-            // resourceFile.getAbsolutePath() + " from resource " +
+            // aResourceFile.getAbsolutePath() + " from resource " +
             // aResourceName);
         }
         else

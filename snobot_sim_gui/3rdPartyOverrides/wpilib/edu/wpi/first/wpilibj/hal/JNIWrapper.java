@@ -21,13 +21,7 @@ public class JNIWrapper
         JniLibraryResourceLoader.loadLibrary("wpilibJavaJNI");
     }
 
-    public static int getPortWithModule(byte module, byte channel)
-    {
-        return channel;
-    }
+    public static native int getPortWithModule(byte module, byte channel);
 
-    public static int getPort(byte channel)
-    {
-        return channel;
-    }
+    public static native int getPort(byte channel);
 }

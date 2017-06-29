@@ -17,8 +17,6 @@ project(':native:snobot_sim_gui') {
         main {
             java {
                 srcDirs = ["${rootDir}/snobot_sim_gui/snobot_sim", 
-                           "${rootDir}/snobot_sim_gui/3rdPartyOverrides/ctre", 
-                           "${rootDir}/snobot_sim_gui/3rdPartyOverrides/navx_frc", 
                            "${rootDir}/snobot_sim_gui/3rdPartyOverrides/wpilib"]
             }
         }
@@ -49,6 +47,17 @@ project(':native:snobot_sim_gui') {
         compile files("${rootDir}/snobot_sim_gui/NonMavenLibraries/opencv-320.jar")
         compile group: 'com.miglayout', name: 'miglayout-swing', version: '4.2'
         
+        
+        /////////////////
+        compile 'org.json:json:20170516'
+        compile 'com.googlecode.json-simple:json-simple:1.1.1'
+        compile group: 'log4j', name: 'log4j', version: '1.2.16'
+        compile group: 'com.google.inject', name: 'guice', version: '3.0'
+        compile group: 'com.google.inject.extensions', name: 'guice-assistedinject', version: '3.0'
+        compile group: 'org.influxdb', name: 'influxdb-java', version: '2.5'
+    
+        compile files(System.getProperty("user.home") + "/wpilib/user/java/lib/CTRLib.jar")
+        compile files(System.getProperty("user.home") + "/wpilib/user/java/lib/strongback.jar")
     }
     
     jar {
