@@ -30,12 +30,12 @@ project(':native:snobot_sim_gui') {
     dependencies {
         def osname = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
         
-        compile 'edu.wpi.first.wpilibj:athena:+'
+        compile 'edu.wpi.first.wpilibj:athena:2017.3.1-20170625123227-31-g98a587a'
         compile project(':native:snobotSimHal')
         compile files("${rootDir}/build/snobotSim-NativeJava-" + osname + ".jar")
         
         // WPILib
-        compile 'edu.wpi.first.wpilibj:athena:+'
+        compile 'edu.wpi.first.wpilibj:athena:2017.3.1-20170625123227-31-g98a587a'
         compile 'edu.wpi.first.wpilib.networktables.java:NetworkTables:+:desktop'
         
         // 3rd Party
@@ -135,7 +135,7 @@ project(':native:snobot_sim_gui') {
             include "**/*.a"   // Linux
         }
         
-        from ("$rootDir/native/ctre_override/build/libs/ctreOverride")
+        from ("$rootDir/native/ctre_override/build/libs/cTRLibDriver")
         {
             include "**/*.dll" // Windows
             include "**/*.lib" // Windows
@@ -206,13 +206,13 @@ project(':native:snobot_sim_gui') {
             include '*.so'
         }
     
-        from(file("$rootDir/native/ctre_override/build/libs/ctreOverride/shared/x64")) {
+        from(file("$rootDir/native/ctre_override/build/libs/cTRLibDriver/shared/x64")) {
             into os_name + '/' + x64_name
             include '*.dll'
             include '*.so'
         }
     
-        from(file("$rootDir/native/ctre_override/build/libs/ctreOverride/shared/x86")) {
+        from(file("$rootDir/native/ctre_override/build/libs/cTRLibDriver/shared/x86")) {
             into os_name + '/' + x86_name
             include '*.dll'
             include '*.so'

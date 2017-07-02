@@ -221,8 +221,8 @@ double HAL_GetAnalogVoltage(HAL_AnalogInputHandle analogPortHandle,
  */
 double HAL_GetAnalogAverageVoltage(HAL_AnalogInputHandle analogPortHandle,
                                    int32_t* status) {
-    LOG_UNSUPPORTED();
-  return 0;
+    double voltage = SensorActuatorRegistry::Get().GetAnalogSourceWrapper(analogPortHandle)->GetVoltage();
+    return voltage;
 }
 
 /**

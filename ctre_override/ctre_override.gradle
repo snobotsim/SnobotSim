@@ -43,7 +43,7 @@ def defineLibraryPaths(targetPlatform)
 def ctreOverrideSetupModel = { project ->
     project.model {
         components {
-            ctreOverride(NativeLibrarySpec) {
+            CTRLibDriver(NativeLibrarySpec) {
 
                 targetPlatform 'x86'
                 targetPlatform 'x64'

@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import com.snobot.simulator.config.SimulatorConfigWriter;
 import com.snobot.simulator.gui.joysticks.JoystickManagerDialog;
@@ -96,8 +97,10 @@ public class SimulatorFrame extends JFrame
         JPanel buttonPanel = new JPanel(new BorderLayout());
         buttonPanel.add(configureJoystickBtn, BorderLayout.NORTH);
         buttonPanel.add(settingsPanel, BorderLayout.SOUTH);
+        
+        JScrollPane scrollPane = new JScrollPane(mBasicPanel);
 
-        add(mBasicPanel, BorderLayout.CENTER);
+        add(scrollPane, BorderLayout.CENTER);
         add(mEnablePanel, BorderLayout.NORTH);
         add(buttonPanel, BorderLayout.SOUTH);
 
