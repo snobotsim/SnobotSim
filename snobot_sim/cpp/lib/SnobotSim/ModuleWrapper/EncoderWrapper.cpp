@@ -53,6 +53,19 @@ double EncoderWrapper::GetDistance()
     }
 }
 
+
+double EncoderWrapper::GetVelocity()
+{
+    if (mMotorWrapper)
+    {
+        return mMotorWrapper->GetVelocity();
+    }
+    else
+    {
+        return 0;
+    }
+}
+
 bool EncoderWrapper::IsHookedUp()
 {
     if (mMotorWrapper)

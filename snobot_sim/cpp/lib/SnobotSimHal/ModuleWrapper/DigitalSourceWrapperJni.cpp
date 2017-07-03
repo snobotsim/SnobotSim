@@ -63,6 +63,17 @@ JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_Digital
 
 /*
  * Class:     com_snobot_simulator_jni_module_wrapper_DigitalSourceWrapperJni
+ * Method:    setState
+ * Signature: (IZ)V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_DigitalSourceWrapperJni_setState
+  (JNIEnv *, jclass, jint portHandle, jboolean value)
+{
+    SensorActuatorRegistry::Get().GetDigitalSourceWrapper(portHandle)->Set(value);
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_module_wrapper_DigitalSourceWrapperJni
  * Method:    getPortList
  * Signature: ()[I
  */

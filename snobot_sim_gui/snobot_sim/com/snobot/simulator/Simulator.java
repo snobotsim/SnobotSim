@@ -129,39 +129,48 @@ public class Simulator
             @Override
             public void run()
             {
-                RobotStateSingletonJni.waitForProgramToStart();
-
-                if (mSimulator != null)
+            	try
+            	{
+	                RobotStateSingletonJni.waitForProgramToStart();
+	
+	                if (mSimulator != null)
+	                {
+	                    mSimulator.createSimulatorComponents(mSimulatorConfig);
+	                    mSimulator.setRobot(mRobot);
+	                    System.out.println("Created simulator : " + mSimulatorClassName);
+	                }
+	
+	                SimulatorFrame frame = new SimulatorFrame();
+	                frame.pack();
+	                frame.setVisible(true);
+	                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	                frame.addWindowListener(new WindowAdapter()
+	                {
+	                    /**
+	                     * Invoked when a window has been closed.
+	                     */
+	                    public void windowClosing(WindowEvent e)
+	                    {
+	                        // SnobotSimulatorJni.shutdown();
+	                    }
+	                });
+	
+	                while (true)
+	                {
+	                    RobotStateSingletonJni.waitForNextUpdateLoop();
+	 
+	                    mSimulator.update();
+	                    frame.updateLoop();
+	                    sendJoystickUpdate();
+	
+	                    SimulationConnectorJni.updateLoop();
+	                }
+	            }
+                catch(Throwable e)
                 {
-                    mSimulator.createSimulatorComponents(mSimulatorConfig);
-                    mSimulator.setRobot(mRobot);
-                    System.out.println("Created simulator : " + mSimulatorClassName);
-                }
-
-                SimulatorFrame frame = new SimulatorFrame();
-                frame.pack();
-                frame.setVisible(true);
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.addWindowListener(new WindowAdapter()
-                {
-                    /**
-                     * Invoked when a window has been closed.
-                     */
-                    public void windowClosing(WindowEvent e)
-                    {
-                        // SnobotSimulatorJni.shutdown();
-                    }
-                });
-
-                while (true)
-                {
-                    RobotStateSingletonJni.waitForNextUpdateLoop();
-
-                    mSimulator.update();
-                    frame.updateLoop();
-                    sendJoystickUpdate();
-
-                    SimulationConnectorJni.updateLoop();
+                	System.err.println("Encountered fatal error, will exit.  Error: " + e.getMessage());
+                	e.printStackTrace();
+                	System.exit(1);
                 }
             }
         }, "SimulatorThread");

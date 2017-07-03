@@ -14,6 +14,7 @@ import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
 import com.snobot.simulator.DcMotorModelConfig;
+import com.snobot.simulator.jni.module_wrapper.DigitalSourceWrapperJni;
 import com.snobot.simulator.jni.module_wrapper.EncoderWrapperJni;
 import com.snobot.simulator.jni.module_wrapper.RelayWrapperJni;
 import com.snobot.simulator.jni.module_wrapper.SolenoidWrapperJni;
@@ -52,9 +53,30 @@ public class SimulatorConfigWriter
         dumpEncoders(output);
         dumpRelays(output);
         dumpSolenoids(output);
+        dumpDigital(output);
 
 
         return output;
+    }
+
+
+    protected void dumpDigital(Map<String, Object> aOutMap)
+    {
+        List<Integer> digital = IntStream.of(DigitalSourceWrapperJni.getPortList()).boxed().collect(Collectors.toList());
+
+        if (!digital.isEmpty())
+        {
+            List<Object> listConfig = new ArrayList<>();
+            for (int handle : digital)
+            {
+                Map<String, Object> singleConfig = new LinkedHashMap<>();
+                singleConfig.put("name", DigitalSourceWrapperJni.getName(handle));
+                singleConfig.put("handle", handle);
+
+                listConfig.add(singleConfig);
+            }
+            aOutMap.put("digital", listConfig);
+        }
     }
 
     protected void dumpRelays(Map<String, Object> aOutMap)

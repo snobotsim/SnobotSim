@@ -12,6 +12,7 @@ import org.yaml.snakeyaml.Yaml;
 import com.snobot.simulator.DcMotorModelConfig;
 import com.snobot.simulator.jni.MotorConfigFactoryJni;
 import com.snobot.simulator.jni.SimulationConnectorJni;
+import com.snobot.simulator.jni.module_wrapper.DigitalSourceWrapperJni;
 import com.snobot.simulator.jni.module_wrapper.EncoderWrapperJni;
 import com.snobot.simulator.jni.module_wrapper.RelayWrapperJni;
 import com.snobot.simulator.jni.module_wrapper.SolenoidWrapperJni;
@@ -68,6 +69,11 @@ public class SimulatorConfigReader
             parseSolenoids((List<Map<String, Object>>) config.get("solenoids"));
         }
 
+        if (config.containsKey("digital"))
+        {
+            parseDigital((List<Map<String, Object>>) config.get("digital"));
+        }
+
         if (config.containsKey("tank_drives"))
         {
             parseTankDriveConfig((List<Map<String, Object>>) config.get("tank_drives"));
@@ -83,6 +89,18 @@ public class SimulatorConfigReader
             if (solenoidConfig.containsKey("name"))
             {
                 SolenoidWrapperJni.setName(handle, solenoidConfig.get("name").toString());
+            }
+        }
+    }
+
+    protected void parseDigital(List<Map<String, Object>> aDigital)
+    {
+        for (Map<String, Object> digitalConfig : aDigital)
+        {
+            int handle = getIntHandle(digitalConfig.get("handle"));
+            if (digitalConfig.containsKey("name"))
+            {
+                DigitalSourceWrapperJni.setName(handle, digitalConfig.get("name").toString());
             }
         }
     }

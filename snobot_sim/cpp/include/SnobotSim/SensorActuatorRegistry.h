@@ -14,6 +14,7 @@
 #include "SnobotSim/ExportHelper.h"
 #include "SnobotSim/SimulatorComponents/ISimulatorUpdater.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
+#include "SnobotSim/StackTraceHelper.h"
 
 class SpeedControllerWrapper;
 class RelayWrapper;
@@ -93,6 +94,7 @@ protected:
             if (logError)
             {
                 SNOBOT_LOG(SnobotLogging::CRITICAL, "Unregistered " << aType << " on port " << aPort << ".  Map has " << aMap.size() << " elements.")
+                StackTraceHelper::PrintStackTracker();
             }
             return std::shared_ptr<ItemType>();
         }

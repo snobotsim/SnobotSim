@@ -92,8 +92,7 @@ double HAL_GetEncoderDistance(HAL_EncoderHandle encoderHandle,
 }
 
 double HAL_GetEncoderRate(HAL_EncoderHandle encoderHandle, int32_t* status) {
-    LOG_UNSUPPORTED();
-    return 0;
+    return SensorActuatorRegistry::Get().GetEncoderWrapper(encoderHandle)->GetVelocity();
 }
 
 void HAL_SetEncoderMinRate(HAL_EncoderHandle encoderHandle, double minRate,

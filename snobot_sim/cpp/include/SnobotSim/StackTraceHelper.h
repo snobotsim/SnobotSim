@@ -1,0 +1,6 @@
+
+
+namespace StackTraceHelper
+{
+	void PrintStackTracker();
+}

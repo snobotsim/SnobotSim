@@ -24,6 +24,8 @@ public:
 
     double GetDistance();
 
+    double GetVelocity();
+
     bool IsHookedUp();
 
     void SetSpeedController(const std::shared_ptr<SpeedControllerWrapper>& aMotorWrapper);

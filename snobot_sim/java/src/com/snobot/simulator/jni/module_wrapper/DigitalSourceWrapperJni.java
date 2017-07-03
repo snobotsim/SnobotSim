@@ -14,5 +14,7 @@ public class DigitalSourceWrapperJni extends BaseSimulatorJni
     
     public static native boolean getState(int aPort);
     
+    public static native void setState(int aPort, boolean aValue);
+    
     public static native int[] getPortList();
 }
