@@ -124,7 +124,7 @@ project(':native:snobot_sim_gui') {
         {
             include "**/*.dll" // Windows
             include "**/*.lib" // Windows
-            include "*.pdb"    // Windows
+            include "**/*.pdb" // Windows
             include "**/*.so"  // Linux
             include "**/*.a"   // Linux
         }

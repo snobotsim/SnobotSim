@@ -24,7 +24,14 @@ HAL_RelayHandle HAL_InitializeRelayPort(HAL_PortHandle portHandle, HAL_Bool fwd,
   
     SensorActuatorRegistry::Get().Register(portHandle, std::shared_ptr < RelayWrapper > (new RelayWrapper(portHandle)));
 
-    return fwd ? portHandle : portHandle + kNumRelayHeaders;
+    HAL_RelayHandle output = fwd ? portHandle : portHandle + kNumRelayHeaders;
+
+    SNOBOT_LOG(SnobotLogging::DEBUG, "Relay for handle " << portHandle << " (" <<
+    		(fwd ? "Forwards" : "Reverse") <<
+			" is " << output << ")");
+
+
+    return output;
 }
 
 void HAL_FreeRelayPort(HAL_RelayHandle relayPortHandle) {
@@ -46,7 +53,9 @@ HAL_Bool HAL_CheckRelayChannel(int32_t channel) {
 void HAL_SetRelay(HAL_RelayHandle relayPortHandle, HAL_Bool on,
                   int32_t* status) {
 
-    if (relayPortHandle < kNumRelayHeaders)
+	static int maxRelayHandle = 0x2000100 + kNumRelayHeaders;
+
+    if (relayPortHandle < maxRelayHandle)
     {
         SensorActuatorRegistry::Get().GetRelayWrapper(relayPortHandle)->SetRelayForwards(on);
     }

@@ -14,7 +14,7 @@
 #include "SnobotSim/ExportHelper.h"
 #include "SnobotSim/SimulatorComponents/ISimulatorUpdater.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
-#include "SnobotSim/StackTraceHelper.h"
+#include "SnobotSim/StackHelper/StackTraceHelper.h"
 
 class SpeedControllerWrapper;
 class RelayWrapper;
