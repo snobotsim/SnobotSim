@@ -69,11 +69,20 @@ protected:
 
     template<typename ItemType>
     bool RegisterItem(int aPort, std::shared_ptr<ItemType> aItem,
-            std::map<int, std::shared_ptr<ItemType>>& aMap, const std::string& aType)
+            std::map<int, std::shared_ptr<ItemType>>& aMap, const std::string& aType,
+            bool aOverwriteOnConflict)
     {
         if (aMap.find(aPort) != aMap.end())
         {
-            return false;
+            if(aOverwriteOnConflict)
+            {
+                SNOBOT_LOG(SnobotLogging::INFO, "Overwriting registration of " << aType << " on port " << aPort);
+            }
+            else
+            {
+                SNOBOT_LOG(SnobotLogging::WARN, "Type " << aType << " already has registered item on port " << aPort << ".");
+                return false;
+            }
         }
 
         aMap[aPort] = aItem;

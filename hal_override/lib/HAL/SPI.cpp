@@ -20,6 +20,8 @@
 
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/SimulatorComponents/Gyro/SpiGyro.h"
+#include <cstring>
+
 
 using namespace hal;
 
@@ -33,12 +35,8 @@ extern "C" {
  */
 void HAL_InitializeSPI(HAL_SPIPort port, int32_t* status) {
 
-    std::shared_ptr<SpiGyro> spiGyro(new SpiGyro);
-    std::shared_ptr<ISpiWrapper> wrapper(spiGyro);
-    std::shared_ptr<GyroWrapper> castGyro = spiGyro;
-
-    SensorActuatorRegistry::Get().Register(port, wrapper);
-    SensorActuatorRegistry::Get().Register(port + 100, castGyro);
+    std::shared_ptr<ISpiWrapper> spiWrapper(new NullSpiWrapper);
+    SensorActuatorRegistry::Get().Register(port, spiWrapper);
 }
 
 /**
@@ -70,7 +68,33 @@ int32_t HAL_TransactionSPI(HAL_SPIPort port, uint8_t* dataToSend,
  * @return The number of bytes written. -1 for an error
  */
 int32_t HAL_WriteSPI(HAL_SPIPort port, uint8_t* dataToSend, int32_t sendSize) {
-    LOG_UNSUPPORTED();
+
+    bool handled = false;
+
+    if(sendSize == 4)
+    {
+        uint32_t data = 0;
+        std::memcpy(&data, &dataToSend[0], sizeof(data));
+
+        // Magic word that SPI Gyro uses
+        if(data == 6272)
+        {
+            std::shared_ptr<SpiGyro> spiGyro(new SpiGyro);
+            std::shared_ptr<ISpiWrapper> wrapper(spiGyro);
+            std::shared_ptr<GyroWrapper> castGyro = spiGyro;
+
+            SensorActuatorRegistry::Get().Register(port, wrapper);
+            SensorActuatorRegistry::Get().Register(port + 100, castGyro);
+
+            handled = true;
+        }
+    }
+
+    if(!handled)
+    {
+        LOG_UNSUPPORTED();
+    }
+
     return 0;
 }
 
@@ -108,7 +132,7 @@ void HAL_CloseSPI(HAL_SPIPort port) {
  * @param speed The speed in Hz (0-1MHz)
  */
 void HAL_SetSPISpeed(HAL_SPIPort port, int32_t speed) {
-    LOG_UNSUPPORTED();
+    LOG_UNSUPPORTED_WITH_LEVEL(SnobotLogging::DEBUG);
 }
 
 /**
@@ -123,7 +147,7 @@ void HAL_SetSPISpeed(HAL_SPIPort port, int32_t speed) {
  */
 void HAL_SetSPIOpts(HAL_SPIPort port, HAL_Bool msbFirst, HAL_Bool sampleOnTrailing,
                     HAL_Bool clkIdleHigh) {
-    LOG_UNSUPPORTED();
+    LOG_UNSUPPORTED_WITH_LEVEL(SnobotLogging::DEBUG);
 }
 
 /**
@@ -132,7 +156,7 @@ void HAL_SetSPIOpts(HAL_SPIPort port, HAL_Bool msbFirst, HAL_Bool sampleOnTraili
  * @param port The number of the port to use. 0-3 for Onboard CS0-CS2, 4 for MXP
  */
 void HAL_SetSPIChipSelectActiveHigh(HAL_SPIPort port, int32_t* status) {
-    LOG_UNSUPPORTED();
+    LOG_UNSUPPORTED_WITH_LEVEL(SnobotLogging::DEBUG);
 }
 
 /**
@@ -141,7 +165,7 @@ void HAL_SetSPIChipSelectActiveHigh(HAL_SPIPort port, int32_t* status) {
  * @param port The number of the port to use. 0-3 for Onboard CS0-CS2, 4 for MXP
  */
 void HAL_SetSPIChipSelectActiveLow(HAL_SPIPort port, int32_t* status) {
-    LOG_UNSUPPORTED();
+    LOG_UNSUPPORTED_WITH_LEVEL(SnobotLogging::DEBUG);
 }
 
 /**
@@ -187,7 +211,7 @@ void HAL_InitSPIAccumulator(HAL_SPIPort port, int32_t period, int32_t cmd,
                             int32_t validValue, int32_t dataShift,
                             int32_t dataSize, HAL_Bool isSigned,
                             HAL_Bool bigEndian, int32_t* status) {
-    LOG_UNSUPPORTED();
+    LOG_UNSUPPORTED_WITH_LEVEL(SnobotLogging::DEBUG);
 }
 
 /**
@@ -215,7 +239,7 @@ void HAL_ResetSPIAccumulator(HAL_SPIPort port, int32_t* status) {
  */
 void HAL_SetSPIAccumulatorCenter(HAL_SPIPort port, int32_t center,
                                  int32_t* status) {
-    LOG_UNSUPPORTED();
+    LOG_UNSUPPORTED_WITH_LEVEL(SnobotLogging::DEBUG);
 }
 
 /**
@@ -223,7 +247,7 @@ void HAL_SetSPIAccumulatorCenter(HAL_SPIPort port, int32_t center,
  */
 void HAL_SetSPIAccumulatorDeadband(HAL_SPIPort port, int32_t deadband,
                                    int32_t* status) {
-    LOG_UNSUPPORTED();
+    LOG_UNSUPPORTED_WITH_LEVEL(SnobotLogging::DEBUG);
 }
 
 /**
@@ -262,7 +286,7 @@ int64_t HAL_GetSPIAccumulatorCount(HAL_SPIPort port, int32_t* status) {
  * @return The accumulated average value (value / count).
  */
 double HAL_GetSPIAccumulatorAverage(HAL_SPIPort port, int32_t* status) {
-    LOG_UNSUPPORTED();
+    LOG_UNSUPPORTED_WITH_LEVEL(SnobotLogging::DEBUG);
     return 0;
 }
 

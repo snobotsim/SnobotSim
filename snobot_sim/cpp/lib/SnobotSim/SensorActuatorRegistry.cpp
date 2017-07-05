@@ -62,10 +62,10 @@ std::vector<std::shared_ptr<ISimulatorUpdater>>& SensorActuatorRegistry::GetSimu
 }
 
 
-#define ACTUATOR_GETTERS(ItemType)                                                                              \
+#define ACTUATOR_GETTERS(ItemType, aOverwriteOnConflict)                                                        \
     bool SensorActuatorRegistry::Register(int aPort,  const std::shared_ptr<ItemType>& aActuator)               \
     {                                                                                                           \
-        return RegisterItem(aPort, aActuator, m##ItemType##Map, #ItemType);                                     \
+        return RegisterItem(aPort, aActuator, m##ItemType##Map, #ItemType, aOverwriteOnConflict);               \
     }                                                                                                           \
     std::shared_ptr<ItemType> SensorActuatorRegistry::Get##ItemType(int aPort, bool aLogError)                  \
     {                                                                                                           \
@@ -80,13 +80,13 @@ std::vector<std::shared_ptr<ISimulatorUpdater>>& SensorActuatorRegistry::GetSimu
         return m##ItemType##Map;                                                                                \
     }                                                                                                           \
 
-ACTUATOR_GETTERS(SpeedControllerWrapper)
-ACTUATOR_GETTERS(RelayWrapper)
-ACTUATOR_GETTERS(DigitalSourceWrapper)
-ACTUATOR_GETTERS(AnalogSourceWrapper)
-ACTUATOR_GETTERS(SolenoidWrapper)
-ACTUATOR_GETTERS(EncoderWrapper)
-ACTUATOR_GETTERS(AccelerometerWrapper)
-ACTUATOR_GETTERS(GyroWrapper)
-ACTUATOR_GETTERS(ISpiWrapper)
-ACTUATOR_GETTERS(II2CWrapper)
+ACTUATOR_GETTERS(SpeedControllerWrapper, false)
+ACTUATOR_GETTERS(RelayWrapper, false)
+ACTUATOR_GETTERS(DigitalSourceWrapper, false)
+ACTUATOR_GETTERS(AnalogSourceWrapper, false)
+ACTUATOR_GETTERS(SolenoidWrapper, false)
+ACTUATOR_GETTERS(EncoderWrapper, false)
+ACTUATOR_GETTERS(AccelerometerWrapper, false)
+ACTUATOR_GETTERS(GyroWrapper, false)
+ACTUATOR_GETTERS(ISpiWrapper, true)
+ACTUATOR_GETTERS(II2CWrapper, true)
