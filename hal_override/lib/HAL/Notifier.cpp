@@ -127,36 +127,36 @@ void updateNotifierAlarmInternal(std::shared_ptr<Notifier> notifierPointer,
   SNOBOT_LOG(SnobotLogging::CRITICAL, "Finish" << __FUNCTION_NAME__);
 }
 
-static void alarmCallback(uint32_t, void*) {
-    SNOBOT_LOG(SnobotLogging::CRITICAL, "Start " << __FUNCTION_NAME__);
-  std::unique_lock<priority_recursive_mutex> sync(notifierMutex);
-
-  int32_t status = 0;
-  uint64_t currentTime = 0;
-
-  // the hardware disables itself after each alarm
-  closestTrigger = UINT64_MAX;
-
-  // process all notifiers
-  std::shared_ptr<Notifier> notifier = notifiers;
-  while (notifier) {
-    if (notifier->triggerTime != UINT64_MAX) {
-      if (currentTime == 0) currentTime = HAL_GetFPGATime(&status);
-      if (notifier->triggerTime < currentTime) {
-        notifier->triggerTime = UINT64_MAX;
-        auto process = notifier->process;
-        auto handle = notifier->handle;
-        sync.unlock();
-        process(currentTime, handle);
-        sync.lock();
-      } else if (notifier->triggerTime < closestTrigger) {
-        updateNotifierAlarmInternal(notifier, notifier->triggerTime, &status);
-      }
-    }
-    notifier = notifier->next;
-  }
-  SNOBOT_LOG(SnobotLogging::CRITICAL, "Finish " << __FUNCTION_NAME__);
-}
+//static void alarmCallback(uint32_t, void*) {
+//    SNOBOT_LOG(SnobotLogging::CRITICAL, "Start " << __FUNCTION_NAME__);
+//  std::unique_lock<priority_recursive_mutex> sync(notifierMutex);
+//
+//  int32_t status = 0;
+//  uint64_t currentTime = 0;
+//
+//  // the hardware disables itself after each alarm
+//  closestTrigger = UINT64_MAX;
+//
+//  // process all notifiers
+//  std::shared_ptr<Notifier> notifier = notifiers;
+//  while (notifier) {
+//    if (notifier->triggerTime != UINT64_MAX) {
+//      if (currentTime == 0) currentTime = HAL_GetFPGATime(&status);
+//      if (notifier->triggerTime < currentTime) {
+//        notifier->triggerTime = UINT64_MAX;
+//        auto process = notifier->process;
+//        auto handle = notifier->handle;
+//        sync.unlock();
+//        process(currentTime, handle);
+//        sync.lock();
+//      } else if (notifier->triggerTime < closestTrigger) {
+//        updateNotifierAlarmInternal(notifier, notifier->triggerTime, &status);
+//      }
+//    }
+//    notifier = notifier->next;
+//  }
+//  SNOBOT_LOG(SnobotLogging::CRITICAL, "Finish " << __FUNCTION_NAME__);
+//}
 
 static void cleanupNotifierAtExit() {
 //  notifierAlarm = nullptr;
