@@ -21,15 +21,19 @@ static priority_recursive_mutex digitalRelayMutex;
 extern "C" {
 HAL_RelayHandle HAL_InitializeRelayPort(HAL_PortHandle portHandle, HAL_Bool fwd,
                                         int32_t* status) {
-  
-    SensorActuatorRegistry::Get().Register(portHandle, std::shared_ptr < RelayWrapper > (new RelayWrapper(portHandle)));
 
-    HAL_RelayHandle output = fwd ? portHandle : portHandle + kNumRelayHeaders;
+    // Relays call this function twice; once for forwards, once for reverse.  Assume
+    // it is OK if the relay is already initialized
+    if (!SensorActuatorRegistry::Get().GetAnalogSourceWrapper(portHandle, false) && !fwd)
+    {
+        SensorActuatorRegistry::Get().Register(portHandle, std::shared_ptr < RelayWrapper > (new RelayWrapper(portHandle)));
 
-    SNOBOT_LOG(SnobotLogging::DEBUG, "Relay for handle " << portHandle << " (" <<
-    		(fwd ? "Forwards" : "Reverse") <<
-			" is " << output << ")");
+        HAL_RelayHandle output = fwd ? portHandle : portHandle + kNumRelayHeaders;
 
+        SNOBOT_LOG(SnobotLogging::DEBUG, "Relay for handle " << portHandle << " (" <<
+                (fwd ? "Forwards" : "Reverse") <<
+                " is " << output << ")");
+    }
 
     return output;
 }
@@ -57,11 +61,28 @@ void HAL_SetRelay(HAL_RelayHandle relayPortHandle, HAL_Bool on,
 
     if (relayPortHandle < maxRelayHandle)
     {
-        SensorActuatorRegistry::Get().GetRelayWrapper(relayPortHandle)->SetRelayForwards(on);
+        std::shared_ptr<RelayWrapper> wrapper = SensorActuatorRegistry::Get().GetRelayWrapper(relayPortHandle);
+        if(wrapper)
+        {
+            wrapper->SetRelayForwards(on);
+        }
+        else
+        {
+            SNOBOT_LOG(SnobotLogging::CRITICAL, "Relay port " << relayPortHandle << " does not exist");
+        }
     }
     else
     {
-        SensorActuatorRegistry::Get().GetRelayWrapper(relayPortHandle - kNumRelayHeaders)->SetRelayReverse(on);
+        int actualPort = relayPortHandle - kNumRelayHeaders;
+        std::shared_ptr<RelayWrapper> wrapper = SensorActuatorRegistry::Get().GetRelayWrapper(relayPortHandle - kNumRelayHeaders);
+        if(wrapper)
+        {
+            wrapper->SetRelayReverse(on);
+        }
+        else
+        {
+            SNOBOT_LOG(SnobotLogging::CRITICAL, "Relay port " << actualPort << " does not exist");
+        }
     }
 }
 

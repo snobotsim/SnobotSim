@@ -7,6 +7,12 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+    compile project(':native:snobotSimHal')
+    compile 'edu.wpi.first.wpilibj:athena:2017.3.1-20170625123227-31-g98a587a'
+    compile 'edu.wpi.first.wpilib.networktables.java:NetworkTables:+:desktop'
+}
+
 configurations.errorprone {
     resolutionStrategy.force 'com.google.errorprone:error_prone_core:2.0.9'
 }
@@ -14,7 +20,7 @@ configurations.errorprone {
 sourceSets {
     main {
         java {
-            srcDirs = ["${rootDir}/navx_override/java/src"]
+            srcDirs = ["${rootDir}/navx_override/java"]
         }
     }
 }
