@@ -108,7 +108,7 @@ void updateNotifierAlarmInternal(std::shared_ptr<Notifier> notifierPointer,
   auto notifier = notifierPointer;
   // no need for a null check, as this must always be a valid pointer.
   notifier->triggerTime = triggerTime;
-  bool wasActive = (closestTrigger != UINT64_MAX);
+//  bool wasActive = (closestTrigger != UINT64_MAX);
 
 //  if (!notifierInterruptMutex.try_lock() || notifierRefCount == 0 ||
 //      !notifierAlarm)

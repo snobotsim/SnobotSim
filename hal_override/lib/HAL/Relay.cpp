@@ -22,20 +22,26 @@ extern "C" {
 HAL_RelayHandle HAL_InitializeRelayPort(HAL_PortHandle portHandle, HAL_Bool fwd,
                                         int32_t* status) {
 
+    HAL_RelayHandle output = fwd ? portHandle : portHandle + kNumRelayHeaders;
+
     // Relays call this function twice; once for forwards, once for reverse.  Assume
     // it is OK if the relay is already initialized
     if (!SensorActuatorRegistry::Get().GetAnalogSourceWrapper(portHandle, false) && !fwd)
     {
         SensorActuatorRegistry::Get().Register(portHandle, std::shared_ptr < RelayWrapper > (new RelayWrapper(portHandle)));
 
-        HAL_RelayHandle output = fwd ? portHandle : portHandle + kNumRelayHeaders;
 
         SNOBOT_LOG(SnobotLogging::DEBUG, "Relay for handle " << portHandle << " (" <<
                 (fwd ? "Forwards" : "Reverse") <<
                 " is " << output << ")");
+
+        return output;
     }
+    SNOBOT_LOG(SnobotLogging::CRITICAL, "Relay for handle " << portHandle <<
+            " (" << output << ") has already been defined");
 
     return output;
+
 }
 
 void HAL_FreeRelayPort(HAL_RelayHandle relayPortHandle) {
