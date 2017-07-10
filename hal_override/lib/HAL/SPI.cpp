@@ -112,8 +112,6 @@ int32_t HAL_TransactionSPI(HAL_SPIPort port, uint8_t* dataToSend,
  */
 int32_t HAL_WriteSPI(HAL_SPIPort port, uint8_t* dataToSend, int32_t sendSize) {
 
-    bool handled = false;
-
     std::shared_ptr<ISpiWrapper> wrapper = GetSpiWrapperImpl(port, dataToSend, sendSize);
 
     if(wrapper)
