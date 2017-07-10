@@ -20,11 +20,55 @@
 
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/SimulatorComponents/Gyro/SpiGyro.h"
+#include "SnobotSim/SimulatorComponents/navx/SpiNavxSimulator.h"
 #include <cstring>
 
 
 using namespace hal;
 
+
+
+static std::shared_ptr<ISpiWrapper> GetSpiWrapperImpl(HAL_SPIPort port, uint8_t* dataToSend, int32_t sendSize)
+{
+	std::shared_ptr<ISpiWrapper> output;
+
+	std::shared_ptr<ISpiWrapper> registeredSpi = SensorActuatorRegistry::Get().GetISpiWrapper(port);
+	std::shared_ptr<ISpiWrapper> spiAsNull = std::dynamic_pointer_cast<NullSpiWrapper>(registeredSpi);
+
+	uint32_t data = 0;
+	std::memcpy(&data, &dataToSend[0], sizeof(sendSize));
+
+	if(spiAsNull)
+	{
+		if(sendSize == 4)
+		{
+			uint32_t data = 0;
+			std::memcpy(&data, &dataToSend[0], sizeof(data));
+
+			// Magic word that SPI Gyro uses
+			if(data == 6272)
+			{
+				std::shared_ptr<SpiGyro> spiGyro(new SpiGyro);
+				std::shared_ptr<GyroWrapper> castGyro = spiGyro;
+				output = spiGyro;
+
+				SensorActuatorRegistry::Get().Register(port, output);
+				SensorActuatorRegistry::Get().Register(port + 100, castGyro);
+			}
+		}
+		else
+		{
+		    output = std::shared_ptr<ISpiWrapper>(new SpiNavxSimulator(port));
+			SensorActuatorRegistry::Get().Register(port, output);
+		}
+	}
+	else
+	{
+		output = registeredSpi;
+	}
+
+	return output;
+}
 
 extern "C" {
 
@@ -53,8 +97,7 @@ void HAL_InitializeSPI(HAL_SPIPort port, int32_t* status) {
  */
 int32_t HAL_TransactionSPI(HAL_SPIPort port, uint8_t* dataToSend,
                            uint8_t* dataReceived, int32_t size) {
-    LOG_UNSUPPORTED();
-    return 0;
+    return SensorActuatorRegistry::Get().GetISpiWrapper(port)->Read(dataReceived, size);
 }
 
 /**
@@ -71,31 +114,18 @@ int32_t HAL_WriteSPI(HAL_SPIPort port, uint8_t* dataToSend, int32_t sendSize) {
 
     bool handled = false;
 
-    if(sendSize == 4)
+    std::shared_ptr<ISpiWrapper> wrapper = GetSpiWrapperImpl(port, dataToSend, sendSize);
+
+    if(wrapper)
     {
-        uint32_t data = 0;
-        std::memcpy(&data, &dataToSend[0], sizeof(data));
-
-        // Magic word that SPI Gyro uses
-        if(data == 6272)
-        {
-            std::shared_ptr<SpiGyro> spiGyro(new SpiGyro);
-            std::shared_ptr<ISpiWrapper> wrapper(spiGyro);
-            std::shared_ptr<GyroWrapper> castGyro = spiGyro;
-
-            SensorActuatorRegistry::Get().Register(port, wrapper);
-            SensorActuatorRegistry::Get().Register(port + 100, castGyro);
-
-            handled = true;
-        }
+    	wrapper->Write(dataToSend, sendSize);
+    }
+    else
+    {
+    	LOG_UNSUPPORTED_WITH_MESSAGE("Size: " << sendSize);
     }
 
-    if(!handled)
-    {
-        LOG_UNSUPPORTED();
-    }
-
-    return 0;
+    return sendSize;
 }
 
 /**

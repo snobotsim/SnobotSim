@@ -146,6 +146,15 @@ project(':native:snobot_sim_gui') {
             include "**/*.so"  // Linux
             include "**/*.a"   // Linux
         }
+        
+        from ("$rootDir/native/ctre_override/build/libs/ctrCpp")
+        {
+            include "**/*.dll" // Windows
+            include "**/*.lib" // Windows
+            include "*.pdb"    // Windows
+            include "**/*.so"  // Linux
+            include "**/*.a"   // Linux
+        }
     }
     
     task createNativeLibrary(type: Jar, dependsOn: copyNativeLibraries) {
@@ -223,7 +232,21 @@ project(':native:snobot_sim_gui') {
             include '*.so'
         }
     
+        from(file("$rootDir/native/ctre_override/build/libs/ctrCpp/shared/x64")) {
+            into os_name + '/' + x64_name
+            include '*.dll'
+            include "*.pdb"
+            include '*.so'
+        }
+    
         from(file("$rootDir/native/ctre_override/build/libs/cTRLibDriver/shared/x86")) {
+            into os_name + '/' + x86_name
+            include '*.dll'
+            include "*.pdb"
+            include '*.so'
+        }
+    
+        from(file("$rootDir/native/ctre_override/build/libs/ctrCpp/shared/x86")) {
             into os_name + '/' + x86_name
             include '*.dll'
             include "*.pdb"

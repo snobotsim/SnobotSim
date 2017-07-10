@@ -10,12 +10,14 @@ import javax.swing.JPanel;
 import com.snobot.simulator.gui.module_widget.AnalogOutputDisplay;
 import com.snobot.simulator.gui.module_widget.DigitalSourceGraphicDisplay;
 import com.snobot.simulator.gui.module_widget.EncoderGraphicDisplay;
+import com.snobot.simulator.gui.module_widget.GyroGraphicDisplay;
 import com.snobot.simulator.gui.module_widget.RelayGraphicDisplay;
 import com.snobot.simulator.gui.module_widget.SolenoidGraphicDisplay;
 import com.snobot.simulator.gui.module_widget.SpeedControllerGraphicDisplay;
 import com.snobot.simulator.jni.module_wrapper.AnalogSourceWrapperJni;
 import com.snobot.simulator.jni.module_wrapper.DigitalSourceWrapperJni;
 import com.snobot.simulator.jni.module_wrapper.EncoderWrapperJni;
+import com.snobot.simulator.jni.module_wrapper.GyroWrapperJni;
 import com.snobot.simulator.jni.module_wrapper.RelayWrapperJni;
 import com.snobot.simulator.jni.module_wrapper.SolenoidWrapperJni;
 import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni;
@@ -33,6 +35,7 @@ public class GraphicalSensorDisplayPanel extends JPanel
     private RelayGraphicDisplay mRelayPanel;
     private AnalogOutputDisplay mAnalogPanel;
     private EncoderGraphicDisplay mEncoderPanel;
+    private GyroGraphicDisplay mGyroPanel;
 
     public void create()
     {
@@ -42,6 +45,7 @@ public class GraphicalSensorDisplayPanel extends JPanel
         List<Integer> analogSource = IntStream.of(AnalogSourceWrapperJni.getPortList()).boxed().collect(Collectors.toList());
         List<Integer> encoders = IntStream.of(EncoderWrapperJni.getPortList()).boxed().collect(Collectors.toList());
         List<Integer> solenoids = IntStream.of(SolenoidWrapperJni.getPortList()).boxed().collect(Collectors.toList());
+        List<Integer> gyros = IntStream.of(GyroWrapperJni.getPortList()).boxed().collect(Collectors.toList());
 
         mSpeedControllerPanel = new SpeedControllerGraphicDisplay(speedControllers);
         mSolenoidPanel = new SolenoidGraphicDisplay(solenoids);
@@ -49,6 +53,7 @@ public class GraphicalSensorDisplayPanel extends JPanel
         mRelayPanel = new RelayGraphicDisplay(relaySource);
         mAnalogPanel = new AnalogOutputDisplay(analogSource);
         mEncoderPanel = new EncoderGraphicDisplay(encoders, "Encoders");
+        mGyroPanel = new GyroGraphicDisplay(gyros);
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -76,6 +81,10 @@ public class GraphicalSensorDisplayPanel extends JPanel
         {
             add(mEncoderPanel);
         }
+        if(!mGyroPanel.isEmpty())
+        {
+        	add(mGyroPanel);
+        }
     }
 
     public void update()
@@ -86,6 +95,7 @@ public class GraphicalSensorDisplayPanel extends JPanel
         mRelayPanel.update();
         mAnalogPanel.update();
         mEncoderPanel.update();
+        mGyroPanel.update();
 
         repaint();
     }
@@ -99,5 +109,6 @@ public class GraphicalSensorDisplayPanel extends JPanel
         mRelayPanel.showSettingsButtons(aShow);
         mAnalogPanel.showSettingsButtons(aShow);
         mEncoderPanel.showSettingsButtons(aShow);
+        mGyroPanel.showSettingsButtons(aShow);
     }
 }

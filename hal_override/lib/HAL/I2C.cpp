@@ -12,6 +12,7 @@
 
 #include "SnobotSim/Logging/SnobotLogger.h"
 #include "SnobotSim/SimulatorComponents/II2CWrapper.h"
+#include "SnobotSim/SimulatorComponents/navx/I2CNavxSimulator.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 
 extern "C" {
@@ -58,8 +59,8 @@ int32_t HAL_TransactionI2C(HAL_I2CPort port, int32_t deviceAddress,
  */
 int32_t HAL_WriteI2C(HAL_I2CPort port, int32_t deviceAddress, uint8_t* dataToSend,
                      int32_t sendSize) {
-    LOG_UNSUPPORTED();
-    return 0;
+	return SensorActuatorRegistry::Get().GetII2CWrapper(port)->Write(
+			deviceAddress, dataToSend, sendSize);
 }
 
 /**
@@ -77,8 +78,8 @@ int32_t HAL_WriteI2C(HAL_I2CPort port, int32_t deviceAddress, uint8_t* dataToSen
  */
 int32_t HAL_ReadI2C(HAL_I2CPort port, int32_t deviceAddress, uint8_t* buffer,
                     int32_t count) {
-    LOG_UNSUPPORTED();
-    return 0;
+	return SensorActuatorRegistry::Get().GetII2CWrapper(port)->Read(
+			deviceAddress, buffer, count);
 }
 
 void HAL_CloseI2C(HAL_I2CPort port) {

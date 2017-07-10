@@ -65,7 +65,57 @@ def ctreOverrideSetupModel = { project ->
                 sources {
                     cpp {
                         source {
-                            srcDirs = ["${rootDir}/ctre_override/cpp/lib/", "${rootDir}/ctre_override/java/jni", "${rootDir}/ctre_override/sim/lib"]
+                            srcDirs = ["${rootDir}/ctre_override/java/jni", "${rootDir}/ctre_override/sim/lib"]
+                            includes = ['**/*.cpp']
+                        }
+                        exportedHeaders {
+                            srcDirs = ["${rootDir}/ctre_override/cpp/include", "${rootDir}/ctre_override/sim/include"]
+                            
+                            project.jniHeadersCtreOverride.outputs.files.each { file ->
+                                srcDirs file.getPath()
+                            }
+                            
+                            srcDirs.each {
+                        	    def dir = new File("${it}")
+                        	    if(!dir.exists())
+                        	    {
+                        	        println "Missing include directory : " + dir
+                        	    	//throw new GradleException("Could not find include directory ${it}")
+                        	    }
+                            }
+                            
+                            
+                            includes = ['**/*.h']
+                        }
+
+                        lib project: ':native:snobotSimHal', library: 'snobotSimHal', linkage: 'shared'
+                    }
+                }
+            }
+            
+            CtrCpp(NativeLibrarySpec) {
+
+                targetPlatform 'x86'
+                targetPlatform 'x64'
+                setupDefines(project, binaries)
+
+                project.setupJniIncludes(binaries)
+                project.checkNativeSymbols(project.getNativeJNISymbols)
+
+                binaries.all 
+                {
+                    tasks.withType(CppCompile) 
+                    {
+                        defineLibraryPaths(targetPlatform)
+                        linker.args  wpilibcLibraryPath
+                        linker.args  networkTablesLibraryPath
+                        linker.args  wpilibLibraryPath
+                    }
+                }
+                sources {
+                    cpp {
+                        source {
+                            srcDirs = ["${rootDir}/ctre_override/cpp/lib/", "${rootDir}/ctre_override/sim/lib"]
                             includes = ['**/*.cpp']
                         }
                         exportedHeaders {

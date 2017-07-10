@@ -43,3 +43,8 @@ int32_t SpiGyro::Read(uint8_t* buffer, int32_t count)
 
     return 0xe;
 }
+
+void SpiGyro::Write(uint8_t* dataToSend, int32_t sendSize)
+{
+
+}

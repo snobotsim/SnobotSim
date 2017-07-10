@@ -6,6 +6,7 @@
  */
 
 #include "SnobotSim/SimulatorComponents/II2CWrapper.h"
+#include "SnobotSim/Logging/SnobotLogger.h"
 
 
 int NullI2CWrapper::Transaction(
@@ -50,5 +51,22 @@ int NullI2CWrapper::Transaction(
     dataReceived[i++] = 43; // Height
     dataReceived[i++] = 0;
 
+    SNOBOT_LOG(SnobotLogging::WARN, "Null Wrapper: " << __FUNCTION_NAME__);
+
     return 0;
+}
+
+
+int32_t NullI2CWrapper::Read(
+		int32_t deviceAddress, uint8_t* buffer, int32_t count)
+{
+    SNOBOT_LOG(SnobotLogging::WARN, "Null Wrapper: " << __FUNCTION_NAME__);
+	return count;
+}
+
+int32_t NullI2CWrapper::Write(
+		int32_t deviceAddress, uint8_t* dataToSend, int32_t sendSize)
+{
+    SNOBOT_LOG(SnobotLogging::WARN, "Null Wrapper: " << __FUNCTION_NAME__);
+	return sendSize;
 }
