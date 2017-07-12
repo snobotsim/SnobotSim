@@ -13,6 +13,7 @@
 #include "SnobotSim/Logging/SnobotLogger.h"
 #include "SnobotSim/SimulatorComponents/II2CWrapper.h"
 #include "SnobotSim/SimulatorComponents/navx/I2CNavxSimulator.h"
+#include "SnobotSim/SimulatorComponents/Accelerometer/I2CAccelerometer.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 
 extern "C" {
@@ -24,6 +25,7 @@ extern "C" {
 void HAL_InitializeI2C(HAL_I2CPort port, int32_t* status) {
 
     std::shared_ptr<II2CWrapper> i2cWrapper(new NullI2CWrapper);
+    // std::shared_ptr<II2CWrapper> i2cWrapper(new I2CAccelerometer(port, "ADXL345"));
     SensorActuatorRegistry::Get().Register(port, i2cWrapper);
 }
 

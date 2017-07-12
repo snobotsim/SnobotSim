@@ -10,7 +10,7 @@
 
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 
-class AccelerometerWrapper: public AModuleWrapper
+class EXPORT_ AccelerometerWrapper: public AModuleWrapper
 {
 public:
     AccelerometerWrapper(const std::string& aName);

@@ -11,7 +11,8 @@
 NavxSimulator::NavxSimulator(int aPort) :
 	mYawGyro(new GyroWrapper("NavX Yaw")),
 	mPitchGyro(new GyroWrapper("NavX Pitch")),
-	mRollGyro(new GyroWrapper("NavX Roll"))
+	mRollGyro(new GyroWrapper("NavX Roll")),
+    mThreeAxisAccelerometer((aPort + 1) * 150, "NavX")
 {
 	SensorActuatorRegistry::Get().Register((aPort + 1) * 150 + 1, mYawGyro);
 	SensorActuatorRegistry::Get().Register((aPort + 1) * 150 + 2, mPitchGyro);

@@ -5,7 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -18,11 +20,13 @@ public class SimulatorFrame extends JFrame
 
     private GraphicalSensorDisplayPanel mBasicPanel;
     private EnablePanel mEnablePanel;
+    private String mSimulatorConfigFile;
 
-    public SimulatorFrame()
+    public SimulatorFrame(String aSimulatorConfigFile)
     {
         initComponenents();
-        // setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        mSimulatorConfigFile = aSimulatorConfigFile;
     }
 
     public void updateLoop()
@@ -83,9 +87,7 @@ public class SimulatorFrame extends JFrame
                 changeSettingsBtn.setVisible(true);
                 saveSettingsBtn.setVisible(false);
 
-                SimulatorConfigWriter writer = new SimulatorConfigWriter();
-                writer.writeConfig("./DumpedConfig.yml");
-                showSettingsOptions(false);
+                saveSettings();
             }
         });
         saveSettingsBtn.setVisible(false);
@@ -109,6 +111,47 @@ public class SimulatorFrame extends JFrame
 
         mEnablePanel.setRobotEnabled(true);
         RobotStateSingletonJni.setDisabled(false);
+    }
+
+    private void saveSettings()
+    {
+        SimulatorConfigWriter writer = new SimulatorConfigWriter();
+        
+        String dumpFile = null;
+        
+        if(mSimulatorConfigFile == null)
+        {
+            JFileChooser fc = new JFileChooser(".");
+            int result = fc.showSaveDialog(this);
+            if(result == JFileChooser.APPROVE_OPTION)
+            {
+                dumpFile = fc.getSelectedFile().toString();
+            }
+        }
+        else
+        {
+            dumpFile = mSimulatorConfigFile;
+        }
+        
+        if(dumpFile != null)
+        {
+            System.out.println("Saving to '" + dumpFile + "'");
+            if (mSimulatorConfigFile == null)
+            {
+                String message = "<html>This does not update the simulator file, you must add this line to the simulator config file:<br><br><br>"
+                        + "simulator_config: " + dumpFile + "<html>";
+                JOptionPane.showMessageDialog(null, message, "Warning", JOptionPane.INFORMATION_MESSAGE);
+                mSimulatorConfigFile = dumpFile;
+            }
+
+            writer.writeConfig(dumpFile);
+        }
+        else
+        {
+            System.err.println("User cancelled save!");
+        }
+        
+        showSettingsOptions(false);
     }
 
     private void showJoystickDialog()

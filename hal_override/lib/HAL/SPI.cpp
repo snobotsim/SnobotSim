@@ -20,6 +20,7 @@
 
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/SimulatorComponents/Gyro/SpiGyro.h"
+#include "SnobotSim/SimulatorComponents/Accelerometer/SpiAccelerometer.h"
 #include "SnobotSim/SimulatorComponents/navx/SpiNavxSimulator.h"
 #include <cstring>
 
@@ -46,8 +47,13 @@ static std::shared_ptr<ISpiWrapper> GetSpiWrapperImpl(HAL_SPIPort port, uint8_t*
 			std::memcpy(&data, &dataToSend[0], sizeof(data));
 
 			// Magic word that SPI Gyro uses
-			if(data == 6272)
+			if(data == 0x1880)
 			{
+                SNOBOT_LOG(SnobotLogging::INFO,
+                        "Writing " << sendSize << " bytes " <<
+                        "(0x" << std::hex << data << ")" <<
+                        " to unregistered spi port " << port << ", assuming it is a ADXRS450 Gyro");
+
 				std::shared_ptr<SpiGyro> spiGyro(new SpiGyro);
 				std::shared_ptr<GyroWrapper> castGyro = spiGyro;
 				output = spiGyro;
@@ -56,8 +62,25 @@ static std::shared_ptr<ISpiWrapper> GetSpiWrapperImpl(HAL_SPIPort port, uint8_t*
 				SensorActuatorRegistry::Get().Register(port + 100, castGyro);
 			}
 		}
+        else if(sendSize == 3)
+        {
+            uint32_t data = 0;
+            std::memcpy(&data, &dataToSend[0], sendSize);
+
+            if(data == 0x20B)
+            {
+                SNOBOT_LOG(SnobotLogging::INFO,
+                        "Writing " << sendSize << " bytes " <<
+                        "(0x" << std::hex << data << ")" <<
+                        " to unregistered spi port " << port << ", assuming it is a ADXL362 Accelerometer");
+
+                output = std::shared_ptr<ISpiWrapper>(new SpiAccelerometer(port, "ADXL362"));
+                SensorActuatorRegistry::Get().Register(port, output);
+            }
+        }
 		else
 		{
+            SNOBOT_LOG(SnobotLogging::INFO, "Writing " << sendSize << " bytes to unregistered spi port " << port << ", assuming it is a Navx ");
 		    output = std::shared_ptr<ISpiWrapper>(new SpiNavxSimulator(port));
 			SensorActuatorRegistry::Get().Register(port, output);
 		}
@@ -97,6 +120,7 @@ void HAL_InitializeSPI(HAL_SPIPort port, int32_t* status) {
  */
 int32_t HAL_TransactionSPI(HAL_SPIPort port, uint8_t* dataToSend,
                            uint8_t* dataReceived, int32_t size) {
+    HAL_WriteSPI(port, dataToSend, size);
     return SensorActuatorRegistry::Get().GetISpiWrapper(port)->Read(dataReceived, size);
 }
 

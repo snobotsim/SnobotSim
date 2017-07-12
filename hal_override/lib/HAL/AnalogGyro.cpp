@@ -30,7 +30,7 @@ HAL_GyroHandle HAL_InitializeAnalogGyro(HAL_AnalogInputHandle analogHandle,
 }
 
 void HAL_SetupAnalogGyro(HAL_GyroHandle handle, int32_t* status) {
-    LOG_UNSUPPORTED();
+    // Nothing to do
 }
 
 void HAL_FreeAnalogGyro(HAL_GyroHandle handle) {
@@ -54,7 +54,7 @@ void HAL_ResetAnalogGyro(HAL_GyroHandle handle, int32_t* status) {
 }
 
 void HAL_CalibrateAnalogGyro(HAL_GyroHandle handle, int32_t* status) {
-    LOG_UNSUPPORTED();
+    // Nothing to do
 }
 
 void HAL_SetAnalogGyroDeadband(HAL_GyroHandle handle, double volts,

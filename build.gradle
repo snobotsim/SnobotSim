@@ -95,7 +95,6 @@ apply from: "snobot_sim/snobot_sim.gradle"
 apply from: "wpiutil.gradle"
 apply from: "hal_override/hal_override.gradle"
 apply from: "ctre_override/ctre_override.gradle"
-apply from: "navx_override/navx_override.gradle"
 apply from: "snobot_sim_gui/snobot_sim_gui.gradle"
 
 // Empty task for build so that ntcoreSourceZip and wpiutilSourceZip will be

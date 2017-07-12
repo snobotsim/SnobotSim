@@ -1,5 +1,6 @@
 package com.snobot.simulator.gui;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -7,13 +8,16 @@ import java.util.stream.IntStream;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
+import com.snobot.simulator.gui.module_widget.AccelerometerOutputDisplay;
 import com.snobot.simulator.gui.module_widget.AnalogOutputDisplay;
+import com.snobot.simulator.gui.module_widget.BaseWidgetDisplay;
 import com.snobot.simulator.gui.module_widget.DigitalSourceGraphicDisplay;
 import com.snobot.simulator.gui.module_widget.EncoderGraphicDisplay;
 import com.snobot.simulator.gui.module_widget.GyroGraphicDisplay;
 import com.snobot.simulator.gui.module_widget.RelayGraphicDisplay;
 import com.snobot.simulator.gui.module_widget.SolenoidGraphicDisplay;
 import com.snobot.simulator.gui.module_widget.SpeedControllerGraphicDisplay;
+import com.snobot.simulator.jni.module_wrapper.AccelerometerWrapperJni;
 import com.snobot.simulator.jni.module_wrapper.AnalogSourceWrapperJni;
 import com.snobot.simulator.jni.module_wrapper.DigitalSourceWrapperJni;
 import com.snobot.simulator.jni.module_wrapper.EncoderWrapperJni;
@@ -29,86 +33,47 @@ public class GraphicalSensorDisplayPanel extends JPanel
         create();
     }
 
-    private SpeedControllerGraphicDisplay mSpeedControllerPanel;
-    private SolenoidGraphicDisplay mSolenoidPanel;
-    private DigitalSourceGraphicDisplay mDigitalSourcePanel;
-    private RelayGraphicDisplay mRelayPanel;
-    private AnalogOutputDisplay mAnalogPanel;
-    private EncoderGraphicDisplay mEncoderPanel;
-    private GyroGraphicDisplay mGyroPanel;
+    private List<BaseWidgetDisplay<?, ?>> mDisplayPanels;
 
     public void create()
     {
-        List<Integer> speedControllers = IntStream.of(SpeedControllerWrapperJni.getPortList()).boxed().collect(Collectors.toList());
-        List<Integer> digitalSource = IntStream.of(DigitalSourceWrapperJni.getPortList()).boxed().collect(Collectors.toList());
-        List<Integer> relaySource = IntStream.of(RelayWrapperJni.getPortList()).boxed().collect(Collectors.toList());
-        List<Integer> analogSource = IntStream.of(AnalogSourceWrapperJni.getPortList()).boxed().collect(Collectors.toList());
-        List<Integer> encoders = IntStream.of(EncoderWrapperJni.getPortList()).boxed().collect(Collectors.toList());
-        List<Integer> solenoids = IntStream.of(SolenoidWrapperJni.getPortList()).boxed().collect(Collectors.toList());
-        List<Integer> gyros = IntStream.of(GyroWrapperJni.getPortList()).boxed().collect(Collectors.toList());
+        mDisplayPanels = new ArrayList<>();
 
-        mSpeedControllerPanel = new SpeedControllerGraphicDisplay(speedControllers);
-        mSolenoidPanel = new SolenoidGraphicDisplay(solenoids);
-        mDigitalSourcePanel = new DigitalSourceGraphicDisplay(digitalSource);
-        mRelayPanel = new RelayGraphicDisplay(relaySource);
-        mAnalogPanel = new AnalogOutputDisplay(analogSource);
-        mEncoderPanel = new EncoderGraphicDisplay(encoders, "Encoders");
-        mGyroPanel = new GyroGraphicDisplay(gyros);
+        mDisplayPanels.add(new SpeedControllerGraphicDisplay(IntStream.of(SpeedControllerWrapperJni.getPortList()).boxed().collect(Collectors.toList())));
+        mDisplayPanels.add(new SolenoidGraphicDisplay(IntStream.of(SolenoidWrapperJni.getPortList()).boxed().collect(Collectors.toList())));
+        mDisplayPanels.add(new DigitalSourceGraphicDisplay(IntStream.of(DigitalSourceWrapperJni.getPortList()).boxed().collect(Collectors.toList())));
+        mDisplayPanels.add(new RelayGraphicDisplay(IntStream.of(RelayWrapperJni.getPortList()).boxed().collect(Collectors.toList())));
+        mDisplayPanels.add(new AnalogOutputDisplay(IntStream.of(AnalogSourceWrapperJni.getPortList()).boxed().collect(Collectors.toList())));
+        mDisplayPanels.add(new EncoderGraphicDisplay(IntStream.of(EncoderWrapperJni.getPortList()).boxed().collect(Collectors.toList()), "Encoders"));
+        mDisplayPanels.add(new GyroGraphicDisplay(IntStream.of(GyroWrapperJni.getPortList()).boxed().collect(Collectors.toList())));
+        mDisplayPanels.add(new AccelerometerOutputDisplay(IntStream.of(AccelerometerWrapperJni.getPortList()).boxed().collect(Collectors.toList())));
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-        if (!mSpeedControllerPanel.isEmpty())
+        
+        for(BaseWidgetDisplay<?, ?> panel : mDisplayPanels)
         {
-            add(mSpeedControllerPanel);
-        }
-        if (!mSolenoidPanel.isEmpty())
-        {
-            add(mSolenoidPanel);
-        }
-        if (!mDigitalSourcePanel.isEmpty())
-        {
-            add(mDigitalSourcePanel);
-        }
-        if (!mRelayPanel.isEmpty())
-        {
-            add(mRelayPanel);
-        }
-        if (!mAnalogPanel.isEmpty())
-        {
-            add(mAnalogPanel);
-        }
-        if (!mEncoderPanel.isEmpty())
-        {
-            add(mEncoderPanel);
-        }
-        if(!mGyroPanel.isEmpty())
-        {
-        	add(mGyroPanel);
+            if(!panel.isEmpty())
+            {
+                add(panel);
+            }
         }
     }
 
     public void update()
     {
-        mSpeedControllerPanel.update();
-        mSolenoidPanel.update();
-        mDigitalSourcePanel.update();
-        mRelayPanel.update();
-        mAnalogPanel.update();
-        mEncoderPanel.update();
-        mGyroPanel.update();
+        for(BaseWidgetDisplay<?, ?> panel : mDisplayPanels)
+        {
+            panel.update();
+        }
 
         repaint();
     }
 
     public void showSettingsButtons(boolean aShow)
     {
-
-        mSpeedControllerPanel.showSettingsButtons(aShow);
-        mSolenoidPanel.showSettingsButtons(aShow);
-        mDigitalSourcePanel.showSettingsButtons(aShow);
-        mRelayPanel.showSettingsButtons(aShow);
-        mAnalogPanel.showSettingsButtons(aShow);
-        mEncoderPanel.showSettingsButtons(aShow);
-        mGyroPanel.showSettingsButtons(aShow);
+        for(BaseWidgetDisplay<?, ?> panel : mDisplayPanels)
+        {
+            panel.showSettingsButtons(aShow);
+        }
     }
 }

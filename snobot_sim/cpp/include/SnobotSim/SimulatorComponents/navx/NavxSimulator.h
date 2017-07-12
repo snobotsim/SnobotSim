@@ -12,6 +12,7 @@
 #include <cstring>
 #include "SnobotSim/ExportHelper.h"
 #include "SnobotSim/SimulatorComponents/Gyro/GyroWrapper.h"
+#include "SnobotSim/SimulatorComponents/Accelerometer/ThreeAxisAccelerometer.h"
 
 class EXPORT_ NavxSimulator
 {
@@ -33,6 +34,8 @@ protected:
 	std::shared_ptr<GyroWrapper> mYawGyro;
 	std::shared_ptr<GyroWrapper> mPitchGyro;
 	std::shared_ptr<GyroWrapper> mRollGyro;
+
+	ThreeAxisAccelerometer mThreeAxisAccelerometer;
 };
 
 #endif /* NAVXSIMULATOR_H_ */

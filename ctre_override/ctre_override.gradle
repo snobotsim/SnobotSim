@@ -99,9 +99,6 @@ def ctreOverrideSetupModel = { project ->
                 targetPlatform 'x64'
                 setupDefines(project, binaries)
 
-                project.setupJniIncludes(binaries)
-                project.checkNativeSymbols(project.getNativeJNISymbols)
-
                 binaries.all 
                 {
                     tasks.withType(CppCompile) 
@@ -122,10 +119,6 @@ def ctreOverrideSetupModel = { project ->
                             srcDirs = ["${rootDir}/ctre_override/cpp/include", "${rootDir}/ctre_override/sim/include"]
                             srcDirs ext.wpilibc_path
                             srcDirs ext.network_tables
-                            
-                            project.jniHeadersCtreOverride.outputs.files.each { file ->
-                                srcDirs file.getPath()
-                            }
                             
                             srcDirs.each {
                         	    def dir = new File("${it}")

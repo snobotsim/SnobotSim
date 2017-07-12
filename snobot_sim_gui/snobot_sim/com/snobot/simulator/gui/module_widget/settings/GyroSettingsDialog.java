@@ -9,14 +9,13 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.snobot.simulator.jni.module_wrapper.EncoderWrapperJni;
 import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni;
 
-public class EncoderSettingsDialog extends SimpleSettingsDialog
+public class GyroSettingsDialog extends SimpleSettingsDialog
 {
     protected JComboBox<SpeedControllerOption> mSpeedControllerSelection;
 
-    public EncoderSettingsDialog(String aTitle, int aKey, String aName)
+    public GyroSettingsDialog(String aTitle, int aKey, String aName)
     {
         super(aTitle, aKey, aName);
 
@@ -30,8 +29,6 @@ public class EncoderSettingsDialog extends SimpleSettingsDialog
             mSpeedControllerSelection.addItem(option);
         }
 
-        selectAttachedControllerAndRefreshNames();
-
         JPanel scSelectionPanel = new JPanel();
         scSelectionPanel.add(new JLabel("Connected SC"));
         scSelectionPanel.add(mSpeedControllerSelection);
@@ -41,31 +38,7 @@ public class EncoderSettingsDialog extends SimpleSettingsDialog
     @Override
     public void setVisible(boolean aVisible)
     {
-        selectAttachedControllerAndRefreshNames();
         super.setVisible(aVisible);
-    }
-
-    private void selectAttachedControllerAndRefreshNames()
-    {
-        int connectedSc = -1;
-        if (EncoderWrapperJni.isHookedUp(mHandle))
-        {
-            connectedSc = EncoderWrapperJni.getHookedUpId(mHandle);
-        }
-
-        for (int i = 0; i < mSpeedControllerSelection.getItemCount(); ++i)
-        {
-            SpeedControllerOption option = mSpeedControllerSelection.getItemAt(i);
-
-            if (option.mHandle == connectedSc)
-            {
-                mSpeedControllerSelection.setSelectedIndex(i);
-            }
-            if (option.mHandle != -1)
-            {
-                option.mName = SpeedControllerWrapperJni.getName(option.mHandle);
-            }
-        }
     }
 
     @Override
@@ -74,7 +47,7 @@ public class EncoderSettingsDialog extends SimpleSettingsDialog
         SpeedControllerOption option = (SpeedControllerOption) mSpeedControllerSelection.getSelectedItem();
         int scId = option == null ? -1 : option.mHandle;
 
-        EncoderWrapperJni.connectSpeedController(mHandle, scId);
+        // EncoderWrapperJni.connectSpeedController(mHandle, scId);
     }
 
 }
