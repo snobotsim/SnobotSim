@@ -7,6 +7,7 @@
 
 #include "SnobotSim/SimulatorComponents/Accelerometer/SpiAccelerometer.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
+#include <cstring>
 
 SpiAccelerometer::SpiAccelerometer(int aPort, const std::string& aBaseName):
     mThreeAxisAccelerometer((aPort * 75), aBaseName),

@@ -140,7 +140,7 @@ public class Simulator
 	                    System.out.println("Created simulator : " + mSimulatorClassName);
 	                }
 	
-	                SimulatorFrame frame = new SimulatorFrame();
+                    SimulatorFrame frame = new SimulatorFrame(mSimulatorConfig);
 	                frame.pack();
 	                frame.setVisible(true);
 	                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

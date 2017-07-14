@@ -107,9 +107,10 @@ public class Main
                 for (Class<?> clazzName : sniffer.getCppRobots())
                 {
                     output.append("# " + clazzName.getSimpleName() + "\n");
-                    output.append("robot_class     : " + clazzName.getName() + "\n");
-                    output.append("robot_type      : cpp\n");
-                    output.append("simulator_class :\n");
+                    output.append("robot_class      : " + clazzName.getName() + "\n");
+                    output.append("robot_type       : cpp\n");
+                    output.append("simulator_class  :\n");
+                    output.append("simulator_config : simulator_config/2016-TeamXXXX.yml\n");
                     output.append("\n\n");
                 }
             }

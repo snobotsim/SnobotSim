@@ -7,8 +7,7 @@
 
 #include "SnobotSim/SimulatorComponents/Accelerometer/I2CAccelerometer.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
-
-#include <iostream>
+#include <cstring>
 
 I2CAccelerometer::I2CAccelerometer(int aPort, const std::string& aBaseName):
     mThreeAxisAccelerometer((aPort * 50), aBaseName)
