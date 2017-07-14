@@ -27,7 +27,8 @@ public class CppRobotContainer implements IRobotClassContainer
         JniLibraryResourceLoader.loadLibrary("ntcore");
         JniLibraryResourceLoader.loadLibrary("wpiutil");
         JniLibraryResourceLoader.loadLibrary("wpilibc");
-        JniLibraryResourceLoader.loadLibrary("ctreOverride");
+        JniLibraryResourceLoader.loadLibrary("CTRLibDriver");
+        JniLibraryResourceLoader.loadLibrary("CtrCpp");
         JniLibraryResourceLoader.loadLibrary(libraryName);
 
         Method method = mJniClass.getMethod("createRobot");
