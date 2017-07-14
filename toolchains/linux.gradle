@@ -65,9 +65,10 @@ ext.debugStripSetup = {
     }
 }
 
-ext.checkNativeSymbols = { getSymbolFunc ->
+ext.checkNativeSymbols = { getSymbolFunc, library_name=null ->
     project.tasks.whenObjectAdded { task ->
-        if (task.name.contains('link') && task.name.contains('SharedLibrary')) {
+        def right_library = library_name == null ? true : task.name.contains(library_name)
+        if (task.name.contains('link') && task.name.contains('SharedLibrary') && right_library) {
             def library = task.outputFile.absolutePath
             task.doLast {
                 def nmOutput = new ByteArrayOutputStream()
