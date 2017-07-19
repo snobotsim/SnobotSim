@@ -54,5 +54,5 @@ ext.setupDef = { linker, deffile ->
 ext.debugStripSetup = { }
 
 // This is a noop on Windows. The def file already implicilty checks for the symbols
-ext.checkNativeSymbols = { getSymbolFunc ->
+ext.checkNativeSymbols = { getSymbolFunc, library_name=null ->
 }

@@ -50,7 +50,7 @@ def ctreOverrideSetupModel = { project ->
                 setupDefines(project, binaries)
 
                 project.setupJniIncludes(binaries)
-                project.checkNativeSymbols(project.getNativeJNISymbols)
+                project.checkNativeSymbols(project.getNativeJNISymbols, "CTRLibDriver")
 
                 binaries.all 
                 {
