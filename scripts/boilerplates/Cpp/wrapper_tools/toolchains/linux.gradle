@@ -54,7 +54,7 @@ def defineExternalLibraries() {
     ext.networkTablesLibraryPath = wpilibBuildPath     + '/native/shared/amd64/libntcore.so'
     ext.wpilibLibraryPath        = wpilibBuildPath     + '/native/shared/amd64/libwpiutil.so'
     ext.halLibraryPath           = snobotSimNativeLibs + '/native/shared/x64/libHALAthena.so'
-    ext.canTalonLibraryPath      = snobotSimNativeLibs + '/native/shared/x64/libctreOverride.so'
+    ext.canTalonLibraryPath      = snobotSimNativeLibs + '/native/shared/x64/libctrCpp.so'
 }
 
 ext

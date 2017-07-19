@@ -29,8 +29,9 @@ ext.user_includes   = [snobotSimCppSources]
 defineExternalLibraries()
 
 
-ext.robotName = "RobotName"
-//ext.jarName = "2017-FRC2062"
+ext.robotName = "Robot"        // Name of your robots header file.  By default, the WPI plugin doesn't make a header file, but it is required for this
+ext.libraryName = "RobotName"  // Needs to match cpp library down below
+//ext.jarName = "RobotNameJar" // Optional, used to specify Java jar wrapper name
 
 
 ext.wrapperDir = new File('build/wrapperSource')
@@ -97,9 +98,9 @@ task download_sim_tools(type: Copy) {
         dependencies {
             def osname = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
 
-            zippedDeps 'com.snobot.simulator:snobotSim:1.0:cpp-sources@zip'
-            zippedDeps 'com.snobot.simulator:snobotSim:1.0:NativeCpp-' + osname + '@zip'
-            zippedDeps 'edu.wpilib:wpilibSim:1.0:' + osname + "@zip"
+            zippedDeps 'com.snobot.simulator:snobotSim:0.0:cpp-sources@zip'
+            zippedDeps 'com.snobot.simulator:snobotSim:0.0:NativeCpp-' + osname + '@zip'
+            zippedDeps 'edu.wpilib:wpilibSim:0.0:' + osname + "@zip"
         }
         
         configurations.zippedDeps.files.each { file ->
