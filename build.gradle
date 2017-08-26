@@ -1,147 +1,169 @@
-import org.gradle.internal.os.OperatingSystem
-
-ext.publishing_path = '/home/pj/GitHub/FIRST/2017/maven_repo/'
-ext.publishing_path = '/home/pj/GitHub/FIRST/2017/maven_repo/'
-if(hasProperty('maven_repo'))
-{
-    ext.publishing_path = maven_repo
-}
+import edu.wpi.first.nativeutils.NativeUtils
+import edu.wpi.first.nativeutils.tasks.JNIHeaders
 
 buildscript {
     repositories {
+        mavenLocal()
         maven {
             url "https://plugins.gradle.org/m2/"
         }
     }
     dependencies {
-        classpath 'net.ltgt.gradle:gradle-errorprone-plugin:0.0.8'
-        classpath 'gradle.plugin.edu.wpi.first.wpilib.versioning:wpilib-version-plugin:1.4'
+        classpath 'gradle.plugin.edu.wpi.first:native-utils:1.2.12'
     }
 }
 
-ext.wpiVersion = "xxx"
-
-
-def unzip_local(headers_zip, output_folder)
-{
-	println "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD"
-	println headers_zip
-	println output_folder
-	
-            from zipTree(headers_zip)
-            into output_folder
-
+plugins {
+    id 'net.ltgt.errorprone' version '0.0.10'
+    id 'edu.wpi.first.wpilib.versioning.WPILibVersioningPlugin' version '1.6'
 }
 
-task download_wpilibs (type: Copy) {
+ext.licenseFile = file("$rootDir/license.txt")
 
-    def output_folder = new File("${rootDir}/external_dependencies/")
+ext.getJNIHeadersClass = {
+    return JNIHeaders
+}
 
-    if( !output_folder.exists() ) {
-      output_folder.mkdirs()
-    }
-    
-    if(project.hasProperty('local_wpilib'))
-    {
-         println "Using local repository....  Copying to " + output_folder.toString() + " from " + project.local_wpilib
-         //from zipTree(project.local_wpilib + "/edu/wpi/first/hal/hal/ABCD/hal-ABCD-windowsx86-64.zip") 
-         //from zipTree(project.local_wpilib + "/edu/wpi/first/wpilibc/wpilibc/ABCD/wpilibc-ABCD-windowsx86-64.zip") 
-         //from zipTree(project.local_wpilib + "/edu/wpi/first/wpilibj/wpilibj-java/ABCD/wpilibj-java-ABCD.zip") 
-         //from zipTree(project.local_wpilib + "/edu/wpi/first/wpilibj/wpilibj-jni/ABCD/wpilibj-jni-ABCD-windowsx86-64.zip") 
-         //from zipTree(project.local_wpilib + "/edu/wpi/first/wpilibj/wpilibj-jniShared/ABCD/wpilibj-jniShared-ABCD-all.zip") 
-         
-         
-         from zipTree(project.local_wpilib + "/edu/wpi/first/hal/hal/ABCD/hal-ABCD-headers.zip") 
-         from zipTree(project.local_wpilib + "/edu/wpi/first/ni-libraries/ni-libraries/ABCD/ni-libraries-ABCD-headers.zip") 
-         from zipTree(project.local_wpilib + "/edu/wpi/first/wpilibc/wpilibc/ABCD/wpilibc-ABCD-headers.zip") 
-         into output_folder.toString() + "/include"
-        
-    }
-    else
-    {
-        repositories {
-            maven {
-                url "http://raw.githubusercontent.com/pjreiniger/maven_repo/master/"
+ext.getClassifier = { binary->
+    return NativeUtils.getClassifier(binary)
+}
+
+ext.getPlatformPath = { binary->
+    return NativeUtils.getPlatformPath(binary)
+}
+
+ext.createComponentZipTasks = { components, name, base, type, project, func ->
+    def configMap = [:]
+    components.each {
+        if (it in NativeLibrarySpec && it.name == name) {
+            it.binaries.each {
+                def target = getClassifier(it)
+                if (configMap.containsKey(target)) {
+                    configMap.get(target).add(it)
+                } else {
+                    configMap.put(target, [])
+                    configMap.get(target).add(it)
+                }
             }
         }
-        
-        configurations.create("snobotSimDeps")
-        
-        def osname = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
-        
-        dependencies {
-            snobotSimDeps 'edu.wpilib:wpilibSim:0.0:' + osname + "@zip"
+    }
+    def taskList = []
+    def outputsFolder = file("$project.buildDir/outputs")
+    def baseN = base + name
+    configMap.each { key, value ->
+        def task = project.tasks.create(baseN + "-${key}", type) {
+            description = 'Creates component archive for platform ' + key
+            destinationDir =  outputsFolder
+            classifier = key
+            baseName = baseN + '-classifier'
+            duplicatesStrategy = 'exclude'
+
+            from(licenseFile) {
+                into '/'
+            }
+
+            func(it, value)
         }
-        
-        configurations.snobotSimDeps.files.each { file ->
-            from zipTree(file)
-            into output_folder
+        taskList.add(task)
+
+        project.build.dependsOn task
+
+        project.artifacts {
+            task
+        }
+    }
+    return taskList
+}
+
+ext.createAllCombined = { list, name, base, type, project ->
+    def outputsFolder = file("$project.buildDir/outputs")
+    def baseN = base + name
+    def task = project.tasks.create(baseN + '-all', type) {
+        description = 'Creates component archive for all classifiers'
+        destinationDir = outputsFolder
+        classifier = 'all'
+        baseName = baseN + '-classifier'
+        duplicatesStrategy = 'exclude'
+
+        list.each {
+            it.outputs.files.each {
+                from project.zipTree(it)
+            }
+            dependsOn it
+        }
+    }
+
+    project.build.dependsOn task
+
+    project.artifacts {
+        task
+    }
+
+    return task
+
+}
+
+ext.includeStandardZipFormat = { task, value ->
+    value.each { binary->
+        if (binary.buildable) {
+            if (binary instanceof SharedLibraryBinarySpec) {
+                task.dependsOn binary.buildTask
+                task.from(new File(binary.sharedLibraryFile.absolutePath + ".debug")) {
+                    into getPlatformPath(binary) + '/shared'
+                }
+                task.from (binary.sharedLibraryFile) {
+                    into getPlatformPath(binary) + '/shared'
+                }
+                task.from (binary.sharedLibraryLinkFile) {
+                    into getPlatformPath(binary) + '/shared'
+                }
+            } else if (binary instanceof StaticLibraryBinarySpec) {
+                task.dependsOn binary.buildTask
+                task.from (binary.staticLibraryFile) {
+                    into getPlatformPath(binary) + '/static'
+                }
+            }
         }
     }
 }
 
-ext.getPlatformPath = { binary ->
-    if (binary.targetPlatform.architecture.arm) {
-        return 'Linux/arm'
-    } else if (binary.targetPlatform.operatingSystem.linux) {
-        if (binary.targetPlatform.architecture.amd64) {
-            return 'Linux/amd64'
-        } else {
-            return 'Linux/' + binary.targetPlatform.architecture.name
-        }
-    } else if (binary.targetPlatform.operatingSystem.windows) {
-        if (binary.targetPlatform.architecture.amd64) {
-            return 'Windows/amd64'
-        } else {
-            return 'Windows/' + binary.targetPlatform.architecture.name
-        }
-    } else if (binary.targetPlatform.operatingSystem.macOsX) {
-        if (binary.targetPlatform.architecture.amd64) {
-            return 'Mac OS X/x86_64'
-        } else {
-            return 'Mac OS X/' + binary.targetPlatform.architecture.name
-        }
-    } else {
-        return binary.targetPlatform.operatingSystem.name + '/' + binary.targetPlatform.architecture.name
+// Ensure that the WPILibVersioningPlugin is setup by setting the release type, if releaseType wasn't
+// already specified on the command line
+if (!hasProperty('releaseType')) {
+    WPILibVersion {
+        releaseType = 'dev'
     }
 }
-
-ext.setupDefines = { project, binaries ->
-    binaries.all {
-        if (project.hasProperty('debug')) {
-            project.setupDebugDefines(cppCompiler, linker)
-        } else {
-            project.setupReleaseDefines(cppCompiler, linker)
-        }
-    }
-}
-
-apply from: "snobot_sim/snobot_sim.gradle"
-//apply from: "wpiutil.gradle"
-apply from: "hal_override/hal_override.gradle"
-apply from: "ctre_override/ctre_override.gradle"
-apply from: "snobot_sim_gui/snobot_sim_gui.gradle"
-
-// Empty task for build so that ntcoreSourceZip and wpiutilSourceZip will be
-// built when running ./gradlew build
-task build
-
-//build.dependsOn download_wpilibs
-//apply from: "unit_tests/unit_tests.gradle"
-
-//apply from: "publish.gradle"
-
 
 task clean(type: Delete) {
-    delete "build"
-    delete "native"
-    delete "arm"
-    delete "external_dependencies"
-    delete fileTree(".") { include "**/snobotSim*.jar" }
-    delete fileTree(".") { include "**/snobotSim*.zip" }
+    delete buildDir
 }
+
+subprojects {
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
+    //apply plugin: 'checkstyle'
+
+    //checkstyle {
+    //    toolVersion = "8.1"
+    //    configFile = new File(rootDir, "styleguide/checkstyle.xml")
+    //}
+
+    // Disables doclint in java 8.
+    if (JavaVersion.current().isJava8Compatible()) {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
+    ext.setupWpilibRepo = { publishing ->
+        publishing.repositories.maven {
+            url = WPILibVersion.mavenLocalUrl
+        }
+    }
+}
+//
+//apply from: 'copy_maven_artifacts.gradle'
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.3'
+    gradleVersion = '4.1'
 }
-
