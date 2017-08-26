@@ -78,9 +78,7 @@ public class JniLibraryResourceLoader
                 is.close();
             }
 
-            // System.out.println("Copied resource to " +
-            // aResourceFile.getAbsolutePath() + " from resource " +
-            // aResourceName);
+            System.out.println("Copied resource to " + aResourceFile.getAbsolutePath() + " from resource " + aResourceName);
         }
         else
         {

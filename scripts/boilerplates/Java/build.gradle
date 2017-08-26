@@ -28,6 +28,8 @@ dependencies {
     // WPILib
     compile 'edu.wpi.first.wpilibj:athena:+'
     compile 'edu.wpi.first.wpilib.networktables.java:NetworkTables:+:desktop'
+    compile 'edu.wpi.cscore.java:cscore:+:arm'
+    compile 'org.opencv:opencv-java:+'
     
     // 3rd Party
 }

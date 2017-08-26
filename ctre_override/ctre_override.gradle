@@ -2,8 +2,8 @@
 import org.gradle.internal.os.OperatingSystem
 
 ext.wpilibBuildPath = "${rootDir}/external_dependencies/"
-ext.wpilibc_path    = wpilibBuildPath + "/cpp/wpilibc/include"
-ext.network_tables  = wpilibBuildPath + "/cpp/networktables/include"
+ext.wpilibc_path    = wpilibBuildPath + "/include"
+ext.network_tables  = wpilibBuildPath + "/include"
 
 def defineLibraryPaths(targetPlatform)
 {
@@ -12,24 +12,24 @@ def defineLibraryPaths(targetPlatform)
     if (OperatingSystem.current().isLinux()) {
  		     
         if (architecture.contains('64')) {  
-	        ext.wpilibcLibraryPath       = wpilibBuildPath    + 'native/shared/x64/libwpilibc.so'
-	        ext.networkTablesLibraryPath = wpilibBuildPath    + 'native/shared/amd64/libntcore.so'
-	        ext.wpilibLibraryPath        = wpilibBuildPath    + 'native/shared/amd64/libwpiutil.so'
+	        ext.wpilibcLibraryPath       = wpilibBuildPath    + 'libraries/amd64/libwpilibc.so'
+	        ext.networkTablesLibraryPath = wpilibBuildPath    + 'libraries/amd64/libntcore.so'
+	        ext.wpilibLibraryPath        = wpilibBuildPath    + 'libraries/amd64/libwpiutil.so'
         } else {
-	        ext.wpilibcLibraryPath       = wpilibBuildPath    + 'native/shared/x86/libwpilibc.so'
-	        ext.networkTablesLibraryPath = wpilibBuildPath    + 'native/shared/i386/libntcore.so'
-	        ext.wpilibLibraryPath        = wpilibBuildPath    + 'native/shared/x86/libwpiutil.so'
+	        ext.wpilibcLibraryPath       = wpilibBuildPath    + 'libraries/x86/libwpilibc.so'
+	        ext.networkTablesLibraryPath = wpilibBuildPath    + 'libraries/i386/libntcore.so'
+	        ext.wpilibLibraryPath        = wpilibBuildPath    + 'libraries/x86/libwpiutil.so'
         }
         
     } else if (OperatingSystem.current().isWindows()) {
         if (architecture.contains('64')) {  
-            ext.wpilibcLibraryPath       = wpilibBuildPath    + '/native/shared/x64/wpilibc.lib'
-            ext.networkTablesLibraryPath = wpilibBuildPath    + '/native/shared/x64/ntcore.lib'
-            ext.wpilibLibraryPath        = wpilibBuildPath    + '/native/shared/x64/wpiutil.lib'
+            ext.wpilibcLibraryPath       = wpilibBuildPath    + '/libraries/amd64/wpilibc.lib'
+            ext.networkTablesLibraryPath = wpilibBuildPath    + '/libraries/amd64/ntcore.lib'
+            ext.wpilibLibraryPath        = wpilibBuildPath    + '/libraries/amd64/wpiutil.lib'
         } else {
-            ext.wpilibcLibraryPath       = wpilibBuildPath    + '/native/shared/x86/wpilibc.lib'
-            ext.networkTablesLibraryPath = wpilibBuildPath    + '/native/shared/x86/ntcore.lib'
-            ext.wpilibLibraryPath        = wpilibBuildPath    + '/native/shared/x86/wpiutil.lib'
+            ext.wpilibcLibraryPath       = wpilibBuildPath    + '/libraries/x86/wpilibc.lib'
+            ext.networkTablesLibraryPath = wpilibBuildPath    + '/libraries/x86/ntcore.lib'
+            ext.wpilibLibraryPath        = wpilibBuildPath    + '/libraries/x86/wpiutil.lib'
         }
     } else {
         throw new GradleException("${name} does not support building on ${ext.buildPlatform}.")
@@ -45,7 +45,7 @@ def ctreOverrideSetupModel = { project ->
         components {
             CTRLibDriver(NativeLibrarySpec) {
 
-                targetPlatform 'x86'
+               // targetPlatform 'x86'
                 targetPlatform 'x64'
                 setupDefines(project, binaries)
 
@@ -95,7 +95,7 @@ def ctreOverrideSetupModel = { project ->
             
             CtrCpp(NativeLibrarySpec) {
 
-                targetPlatform 'x86'
+                //targetPlatform 'x86'
                 targetPlatform 'x64'
                 setupDefines(project, binaries)
 
@@ -135,7 +135,7 @@ def ctreOverrideSetupModel = { project ->
 
                         lib project: ':native:snobotSimHal', library: 'snobotSimHal', linkage: 'shared'
                         lib project: ':native:HALAthena', library: 'HALAthena', linkage: 'shared'
-                        lib project: ':native:wpiutil', library: 'wpiutil', linkage: 'static'
+                        //lib project: ':native:wpiutil', library: 'wpiutil', linkage: 'static'
                     }
                 }
             }

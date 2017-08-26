@@ -22,7 +22,8 @@ project(':native:unit_tests') {
         testCompile project(":native:snobot_sim_gui")
         testCompile 'junit:junit:4.12'
         testCompile files("${rootDir}/build/snobotSim-NativeJava-" + osname + ".jar")
-        testCompile 'edu.wpi.first.wpilibj:athena:2017.3.1-20170625123227-31-g98a587a'
+        testCompile files("${rootDir}/external_dependencies/java/wpilibj-java-ABCD.jar")
+        testCompile files("${rootDir}/external_dependencies/java/wpiutil-java-2.0.0-20170823220923-29-g8416b4e.jar")
         
     }
 }

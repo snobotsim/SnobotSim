@@ -1,6 +1,7 @@
 import org.gradle.internal.os.OperatingSystem
 
 ext.publishing_path = '/home/pj/GitHub/FIRST/2017/maven_repo/'
+ext.publishing_path = '/home/pj/GitHub/FIRST/2017/maven_repo/'
 if(hasProperty('maven_repo'))
 {
     ext.publishing_path = maven_repo
@@ -18,6 +19,20 @@ buildscript {
     }
 }
 
+ext.wpiVersion = "xxx"
+
+
+def unzip_local(headers_zip, output_folder)
+{
+	println "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD"
+	println headers_zip
+	println output_folder
+	
+            from zipTree(headers_zip)
+            into output_folder
+
+}
+
 task download_wpilibs (type: Copy) {
 
     def output_folder = new File("${rootDir}/external_dependencies/")
@@ -26,11 +41,21 @@ task download_wpilibs (type: Copy) {
       output_folder.mkdirs()
     }
     
-    
     if(project.hasProperty('local_wpilib'))
     {
-        from project.local_wpilib
-        into output_folder
+         println "Using local repository....  Copying to " + output_folder.toString() + " from " + project.local_wpilib
+         //from zipTree(project.local_wpilib + "/edu/wpi/first/hal/hal/ABCD/hal-ABCD-windowsx86-64.zip") 
+         //from zipTree(project.local_wpilib + "/edu/wpi/first/wpilibc/wpilibc/ABCD/wpilibc-ABCD-windowsx86-64.zip") 
+         //from zipTree(project.local_wpilib + "/edu/wpi/first/wpilibj/wpilibj-java/ABCD/wpilibj-java-ABCD.zip") 
+         //from zipTree(project.local_wpilib + "/edu/wpi/first/wpilibj/wpilibj-jni/ABCD/wpilibj-jni-ABCD-windowsx86-64.zip") 
+         //from zipTree(project.local_wpilib + "/edu/wpi/first/wpilibj/wpilibj-jniShared/ABCD/wpilibj-jniShared-ABCD-all.zip") 
+         
+         
+         from zipTree(project.local_wpilib + "/edu/wpi/first/hal/hal/ABCD/hal-ABCD-headers.zip") 
+         from zipTree(project.local_wpilib + "/edu/wpi/first/ni-libraries/ni-libraries/ABCD/ni-libraries-ABCD-headers.zip") 
+         from zipTree(project.local_wpilib + "/edu/wpi/first/wpilibc/wpilibc/ABCD/wpilibc-ABCD-headers.zip") 
+         into output_folder.toString() + "/include"
+        
     }
     else
     {
@@ -92,7 +117,7 @@ ext.setupDefines = { project, binaries ->
 }
 
 apply from: "snobot_sim/snobot_sim.gradle"
-apply from: "wpiutil.gradle"
+//apply from: "wpiutil.gradle"
 apply from: "hal_override/hal_override.gradle"
 apply from: "ctre_override/ctre_override.gradle"
 apply from: "snobot_sim_gui/snobot_sim_gui.gradle"
@@ -101,10 +126,10 @@ apply from: "snobot_sim_gui/snobot_sim_gui.gradle"
 // built when running ./gradlew build
 task build
 
-build.dependsOn download_wpilibs
-apply from: "unit_tests/unit_tests.gradle"
+//build.dependsOn download_wpilibs
+//apply from: "unit_tests/unit_tests.gradle"
 
-apply from: "publish.gradle"
+//apply from: "publish.gradle"
 
 
 task clean(type: Delete) {

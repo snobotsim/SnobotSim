@@ -1,3 +1,6 @@
+
+import org.gradle.internal.os.OperatingSystem
+
 def HALAthenaSetupModel = { project ->
     project.model {
         components {
@@ -11,6 +14,32 @@ def HALAthenaSetupModel = { project ->
                     project.setupDef(linker, "${rootDir}/hal_override/mockhal.def")
                 }
                 
+                binaries.all 
+                {
+                    tasks.withType(CppCompile) 
+                    {
+    String architecture = targetPlatform.architecture
+
+    if (OperatingSystem.current().isLinux()) {
+ 		     
+        if (architecture.contains('64')) {  
+	        ext.wpiutilLibraryPath       = "${rootDir}/external_dependencies/libraries/amd64/libwpiutil.so"
+        } else {
+	        ext.wpiutilLibraryPath       = "${rootDir}/external_dependencies/libraries/x86/libwpiutil.so"
+        }
+        
+    } else if (OperatingSystem.current().isWindows()) {
+        if (architecture.contains("64")) {  
+	        ext.wpiutilLibraryPath       = "${rootDir}/external_dependencies/libraries/amd64/wpiutil.lib"
+        } else {
+	        ext.wpiutilLibraryPath       = "${rootDir}/external_dependencies/libraries/x86/wpiutil.lib"
+        }
+    } else {
+        throw new GradleException("${name} does not support building on ${ext.buildPlatform}.")
+    }
+                        linker.args  wpiutilLibraryPath
+                    }
+                }
                 sources {
                     cpp {
                         source {
@@ -19,10 +48,11 @@ def HALAthenaSetupModel = { project ->
                         }
                         exportedHeaders {
                             srcDirs = ["${rootDir}/hal_override/include/"]
+                            srcDirs "${rootDir}/external_dependencies/include"
                             includes = ['**/*.h']
                         }
 
-                        lib project: ':native:wpiutil', library: 'wpiutil', linkage: 'static'
+                        //lib project: ':native:wpiutil', library: 'wpiutil', linkage: 'static'
                         lib project: ':native:snobotSimHal', library: 'snobotSimHal', linkage: 'shared'
                         
                     }

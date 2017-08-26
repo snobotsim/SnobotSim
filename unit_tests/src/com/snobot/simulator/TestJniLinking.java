@@ -14,7 +14,7 @@ public class TestJniLinking
     @Test
     public void testLoad()
     {
-        HAL.initialize(0);
+        HAL.initialize(0, 0);
         Assert.assertEquals(0, SpeedControllerWrapperJni.getPortList().length);
         
         // Initialize one, check again

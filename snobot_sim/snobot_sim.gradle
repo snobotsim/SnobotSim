@@ -1,3 +1,8 @@
+
+import org.gradle.internal.os.OperatingSystem
+
+
+
 def snobotSimHalSetupModel = { project ->
     project.model {
         components {
@@ -13,6 +18,32 @@ def snobotSimHalSetupModel = { project ->
                 apply from: "${rootDir}/create_version_file.gradle"
                 createCppVersion("${rootDir}/snobot_sim/cpp/lib/SnobotSim", "SnobotSimHal", "SnobotSimHalVersion", getVersionName())
 
+                binaries.all 
+                {
+                    tasks.withType(CppCompile) 
+                    {
+    String architecture = targetPlatform.architecture
+
+    if (OperatingSystem.current().isLinux()) {
+ 		     
+        if (architecture.contains('64')) {  
+	        ext.wpiutilLibraryPath       = "${rootDir}/external_dependencies/libraries/amd64/libwpiutil.so"
+        } else {
+	        ext.wpiutilLibraryPath       = "${rootDir}/external_dependencies/libraries/x86/libwpiutil.so"
+        }
+        
+    } else if (OperatingSystem.current().isWindows()) {
+        if (architecture.contains("64")) {  
+	        ext.wpiutilLibraryPath       = "${rootDir}/external_dependencies/libraries/amd64/wpiutil.lib"
+        } else {
+	        ext.wpiutilLibraryPath       = "${rootDir}/external_dependencies/libraries/x86/wpiutil.lib"
+        }
+    } else {
+        throw new GradleException("${name} does not support building on ${ext.buildPlatform}.")
+    }
+                        linker.args  wpiutilLibraryPath
+                    }
+                }
                 sources {
                     cpp {
                         source {
@@ -25,10 +56,13 @@ def snobotSimHalSetupModel = { project ->
                             project.jniHeadersNetworkTables.outputs.files.each { file ->
                                 srcDirs file.getPath()
                             }
+                            srcDirs "${rootDir}/external_dependencies/include"
+                            
+                            println srcDirs
                             includes = ['**/*.h']
                         }
 
-                        lib project: ':native:wpiutil', library: 'wpiutil', linkage: 'static'
+                        //lib project: ':native:wpiutil', library: 'wpiutil', linkage: 'static'
                     }
                 }
             }

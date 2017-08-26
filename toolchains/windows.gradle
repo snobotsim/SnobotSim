@@ -12,6 +12,12 @@ model {
             if (vsInstallDir.exists()) {
                 installDir = vsInstallDir
             }
+            def jni_include_path = System.properties.'java.home' + "/../include"
+            def jni_dir = new File("${jni_include_path}")
+            if(!jni_dir.exists())
+            {
+                //throw new GradleException("Could not find JNI include path ${jni_dir}.  Make sure JAVA_HOME is defined and points to a JDK, and not a JRE")
+            }
 
             eachPlatform {
                 cppCompiler.withArguments { args ->
@@ -21,6 +27,8 @@ model {
                     }
                     args << '-DNAMESPACED_WPILIB'
                     args << '-DNAMESPACED_PRIORITY'
+                        args << "/I$jni_include_path"
+                        args << "/I$jni_include_path/win32"
                 }
                 linker.withArguments { args ->
                     if (file(VS_2015_LIB_DIR).exists()) {

@@ -230,8 +230,8 @@ void HAL_BaseInitialize(int32_t* status) {
 /**
  * Call this to start up HAL. This is required for robot programs.
  */
-int32_t HAL_Initialize(int32_t mode) {
-    return 1;
+HAL_Bool HAL_Initialize(int32_t timeout, int32_t mode) {
+    return true;
 }
 
 int64_t HAL_Report(int32_t resource, int32_t instanceNumber, int32_t context,
