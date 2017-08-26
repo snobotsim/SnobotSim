@@ -1,10 +1,8 @@
 include 'snobot_sim'
-//include 'hal_override'
+include 'hal_override'
 //include 'native:ctre_override'
-//include 'native:wpiutil'
-//include 'native:unit_tests'
-//include 'native:snobot_sim_gui'
-//include 'gmock'
+include 'snobot_sim_gui'
+include 'unit_tests'
 
 
 rootProject.name = 'CppSimulator'
