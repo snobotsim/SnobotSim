@@ -1,10 +1,36 @@
+import edu.wpi.first.nativeutils.NativeUtils
+
 apply plugin: 'cpp'
 apply plugin: 'visual-studio'
 apply plugin: 'edu.wpi.first.NativeUtils'
 
 apply from: '../config.gradle'
 
-ext.addWpilibCCompilerArguments = { binary->
+task packageNativeJars(type: Jar) {
+    destinationDir = project.buildDir
+    classifier = "nativeHal"
+
+    project.model {
+        binaries {
+            withType(SharedLibraryBinarySpec) { binary ->
+                if (binary.component.name == 'HALAthena') {
+                    from(binary.sharedLibraryFile) {
+                        into NativeUtils.getPlatformPath(binary)
+                    }
+    
+                    from("../temp_libs/wpiutil.dll") {
+                        into NativeUtils.getPlatformPath(binary)
+                    }
+                    dependsOn binary.buildTask
+                }
+            }
+        }
+    }
+}
+
+build.dependsOn packageNativeJars
+
+ext.addHALAthenaCompilerArguments = { binary->
     tasks.withType(CppCompile) {
         binary.cppCompiler.args "-DNAMESPACED_WPILib"
     }
@@ -28,7 +54,7 @@ task extractHalHeadersZip(type: Copy) {
 }
 ///////////////////////////////////////////////////
 
-ext.addWpilibCToLinker = { binary->
+ext.addHALAthenaToLinker = { binary->
     //binary.lib project: ':wpilibc', library: 'wpilibc', linkage: 'shared'
 }
 
@@ -57,7 +83,7 @@ model {
             headerClassifier = 'headers'
             ext = 'zip'
             version = '+'
-            sharedConfigs = [ wpilibc: [],
+            sharedConfigs = [ HALAthena: [],
                               wpilibcTestingBase: [],
                               wpilibcDev: [] ]
         }
@@ -73,7 +99,7 @@ model {
         //}
     }
     components {
-        wpilibc(NativeLibrarySpec) {
+        HALAthena(NativeLibrarySpec) {
             sources {
                 cpp {
                     source {
@@ -82,8 +108,6 @@ model {
                     }
                     exportedHeaders {
                         srcDirs = ["${extractHalHeadersZip.libsdir}"]
-                            println "ZZZZZZZZZZZZZ"
-                            println srcDirs
                     }
                 }
             }
@@ -96,9 +120,9 @@ model {
         // By default, a development executable will be generated. This is to help the case of
         // testing specific functionality of the library.
         if (!project.hasProperty('skipDevExe')) {
-            wpilibcDev(NativeExecutableSpec) {
+            HALAthenaDev(NativeExecutableSpec) {
                 binaries.all {
-                    project.addWpilibCToLinker(it)
+                    project.addHALAthenaToLinker(it)
                 }
                 sources {
                     cpp {
@@ -109,8 +133,6 @@ model {
                         exportedHeaders {
                             //srcDirs ['src/dev/native/include', "${extractHalHeadersZip.libsdir}/cunit/2.1-2/include"]
                             srcDirs "${extractHalHeadersZip.libsdir}/"
-                            println "YYYYYYYYYYYYYYYYYYYY"
-                            println srcDirs
                         }
                     }
                 }
@@ -125,14 +147,14 @@ model {
             }
             project(':snobot_sim').addHalCompilerArguments(it)
             project(':snobot_sim').addHalToLinker(it)
-            project.addWpilibCCompilerArguments(it)
+            project.addHALAthenaCompilerArguments(it)
         }
     }
     //tasks {
     //    runCpp(Exec) {
     //        def found = false
     //        $.components.each {
-    //            if (it in NativeExecutableSpec && it.name == 'wpilibcDev') {
+    //            if (it in NativeExecutableSpec && it.name == 'HALAthenaDev') {
     //                it.binaries.each {
     //                    if (!found) {
     //                        def arch = it.targetPlatform.architecture.name

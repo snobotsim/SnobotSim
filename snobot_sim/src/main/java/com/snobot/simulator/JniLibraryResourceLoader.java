@@ -9,11 +9,13 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import edu.wpi.first.wpiutil.RuntimeDetector;
+
 public class JniLibraryResourceLoader
 {
     private static final File TEMP_DIR_ROOT;
     private static final File TEMP_DIR;
-	private static final Set<String> LOADED_LIBS;
+    private static final Set<String> LOADED_LIBS;
 
     static
     {
@@ -25,22 +27,22 @@ public class JniLibraryResourceLoader
         TEMP_DIR.mkdirs();
         TEMP_DIR.deleteOnExit();
 
-		LOADED_LIBS = new HashSet<>();
+        LOADED_LIBS = new HashSet<>();
     }
-    
+
     private static void removeOldLibraries(File f, String indent)
     {
         if (f.isDirectory())
         {
             for (File childFile : f.listFiles())
             {
-                removeOldLibraries(childFile, indent + "  ");
+                removeOldLibraries(childFile, indent + " ");
             }
         }
 
         f.delete();
     }
-    
+
     public static boolean copyResourceFromJar(String aResourceName, File aResourceFile) throws IOException
     {
         return copyResourceFromJar(aResourceName, aResourceFile, true);
@@ -48,7 +50,7 @@ public class JniLibraryResourceLoader
 
     public static boolean copyResourceFromJar(String aResourceName, File aResourceFile, boolean aDeleteOnExit) throws IOException
     {
-    	boolean success = false;
+        boolean success = false;
 
         InputStream is = JniLibraryResourceLoader.class.getResourceAsStream(aResourceName);
         if (is != null)
@@ -69,7 +71,7 @@ public class JniLibraryResourceLoader
                 {
                     os.write(buffer, 0, readBytes);
                 }
-                
+
                 success = true;
             }
             finally
@@ -82,9 +84,9 @@ public class JniLibraryResourceLoader
         }
         else
         {
-        	System.err.println("Could not find resource at " + aResourceName);
+            System.err.println("Could not find resource at " + aResourceName);
         }
-        
+
         return success;
     }
 
@@ -92,57 +94,26 @@ public class JniLibraryResourceLoader
     {
         String fileName = aResourceName.substring(aResourceName.lastIndexOf("/") + 1);
         File resourceFile = new File(aTempDir, fileName);
-        
-    	if(copyResourceFromJar(aResourceName, resourceFile))
-    	{
-    		System.load(resourceFile.getAbsolutePath());
-    	}
+
+        if (copyResourceFromJar(aResourceName, resourceFile))
+        {
+            System.load(resourceFile.getAbsolutePath());
+        }
     }
 
-	private static void loadLibrary(File aTempDir, String aLibraryName)
+    private static void loadLibrary(File aTempDir, String aLibraryName)
     {
-		if (LOADED_LIBS.contains(aLibraryName)) {
+        if (LOADED_LIBS.contains(aLibraryName))
+        {
             // System.out.println("Already loaded " + aLibraryName);
-			return;
-		}
-
-        String osname = System.getProperty("os.name");
-        String resname;
-        if (osname.startsWith("Windows"))
-        {
-            resname = "/Windows/" + System.getProperty("os.arch") + "/";
+            return;
         }
-        else
-        {
-            resname = "/" + osname + "/" + System.getProperty("os.arch") + "/";
-        }
-
-        if (osname.startsWith("Windows"))
-        {
-			resname += aLibraryName + ".dll";
-        }
-        else if (osname.startsWith("Mac"))
-        {
-			resname += aLibraryName + ".dylib";
-        }
-        else
-        {
-			resname += "lib" + aLibraryName + ".so";
-        }
+        String resname = RuntimeDetector.getLibraryResource(aLibraryName);
 
         try
         {
-            if (aTempDir == null)
-            {
-                File f = new File("../2017MockWpi/native_wpi_libs" + resname);
-                System.out.println(f.getAbsolutePath());
-                System.load(f.getAbsolutePath());
-            }
-            else
-            {
-                createAndLoadTempLibrary(aTempDir, resname);
-				LOADED_LIBS.add(aLibraryName);
-            }
+            createAndLoadTempLibrary(aTempDir, resname);
+            LOADED_LIBS.add(aLibraryName);
         }
         catch (Exception e)
         {

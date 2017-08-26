@@ -64,22 +64,21 @@ def jniClasses = [
     'com.snobot.simulator.jni.module_wrapper.RelayWrapperJni',
     'com.snobot.simulator.jni.module_wrapper.SolenoidWrapperJni',
     'com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni',
-    'com.snobot.simulator.jni.CANJNI.BaseSimulatorJni'
 ]
 
 model {
-    //jniConfigs {
-    //    snobotSimXXXShared(JNIConfig) {
-    //        jniDefinitionClasses = jniClasses
-    //        jniArmHeaderLocations = [ all: file("${projectDir}/src/arm-linux-jni") ]
-    //        sourceSets = [ project.sourceSets.main ]
-    //    }
-    //    snobotSimXXXStatic(JNIConfig) {
-    //        jniDefinitionClasses = jniClasses
-    //        jniArmHeaderLocations = [ all: file("${projectDir}/src/arm-linux-jni") ]
-    //        sourceSets = [ project.sourceSets.main ]
-    //    }
-    //}
+    jniConfigs {
+        snobotSimXXXShared(JNIConfig) {
+            jniDefinitionClasses = jniClasses
+            jniArmHeaderLocations = [ all: file("${projectDir}/src/arm-linux-jni") ]
+            sourceSets = [ project.sourceSets.main ]
+        }
+        snobotSimXXXStatic(JNIConfig) {
+            jniDefinitionClasses = jniClasses
+            jniArmHeaderLocations = [ all: file("${projectDir}/src/arm-linux-jni") ]
+            sourceSets = [ project.sourceSets.main ]
+        }
+    }
     exportsConfigs {
         snobotSimXXXShared(ExportsConfig) {
             x86SymbolFilter = { symbols->
@@ -104,20 +103,20 @@ model {
         snobotSimXXXStatic(ExportsConfig) {
             x86SymbolFilter = { symbols->
                 def retList = []
-                symbols.each { symbol->
-                    if (symbol.startsWith('Java_') || symbol.startsWith('JNI_')) {
-                        retList << symbol
-                    }
-                }
+                //symbols.each { symbol->
+                //    if (symbol.startsWith('Java_') || symbol.startsWith('JNI_')) {
+                //        retList << symbol
+                //    }
+                //}
                 return retList
             }
             x64SymbolFilter = { symbols->
                 def retList = []
-                symbols.each { symbol->
-                    if (symbol.startsWith('Java_') || symbol.startsWith('JNI_')) {
-                        retList << symbol
-                    }
-                }
+                //symbols.each { symbol->
+                //    if (symbol.startsWith('Java_') || symbol.startsWith('JNI_')) {
+                //        retList << symbol
+                //    }
+                //}
                 return retList
             }
         }
