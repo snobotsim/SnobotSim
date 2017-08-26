@@ -9,8 +9,9 @@
 #define DCMOTORMODELCONFIG_H_
 
 #include <string>
+#include "SnobotSim/ExportHelper.h"
 
-struct DcMotorModelConfig {
+struct EXPORT_ DcMotorModelConfig {
 public:
     struct FactoryParams
     {

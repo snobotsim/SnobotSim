@@ -9,125 +9,29 @@ repositories {
 apply plugin: 'cpp'
 apply plugin: 'visual-studio'
 apply plugin: 'edu.wpi.first.NativeUtils'
-apply plugin: 'java'
 
 apply from: '../config.gradle'
 
-task nativeTestFilesJar(type: Jar) {
-    destinationDir = project.buildDir
-    classifier = "nativeTestFiles"
-
-    project.model {
-        binaries {
-            withType(SharedLibraryBinarySpec) { binary ->
-                if (binary.component.name == 'snobotSimXXXStatic') {
-                    from(binary.sharedLibraryFile) {
-                        into NativeUtils.getPlatformPath(binary)
-                    }
-                    dependsOn binary.buildTask
-                }
-            }
-        }
-    }
-}
-
-ext.addHalCompilerArguments = { binary->
-
-}
-
-ext.addHalToLinker = { binary->
+ext.addSnobotSimToLinker = { binary->
     binary.lib project: ':snobot_sim', library: 'snobotSimXXXStatic', linkage: 'shared'
 }
 
-test.dependsOn nativeTestFilesJar
+//test.dependsOn nativeTestFilesJar
 
 def willPublish = false
 gradle.taskGraph.addTaskExecutionGraphListener { graph ->
     //willPublish = graph.hasTask(publish)
 }
 
-dependencies {
-    compile 'edu.wpi.first.wpiutil:wpiutil-java:+'
-}
-
-def jniClasses = [
-    'com.snobot.simulator.jni.JoystickJni',
-    'com.snobot.simulator.jni.MotorConfigFactoryJni',
-    'com.snobot.simulator.jni.RobotStateSingletonJni',
-    'com.snobot.simulator.jni.SimulationConnectorJni',
-    'com.snobot.simulator.jni.SnobotSimulatorJni',
-    'com.snobot.simulator.jni.module_wrapper.AccelerometerWrapperJni',
-    'com.snobot.simulator.jni.module_wrapper.AnalogSourceWrapperJni',
-    'com.snobot.simulator.jni.module_wrapper.DigitalSourceWrapperJni',
-    'com.snobot.simulator.jni.module_wrapper.EncoderWrapperJni',
-    'com.snobot.simulator.jni.module_wrapper.GyroWrapperJni',
-    'com.snobot.simulator.jni.module_wrapper.RelayWrapperJni',
-    'com.snobot.simulator.jni.module_wrapper.SolenoidWrapperJni',
-    'com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni',
-]
 
 model {
-    jniConfigs {
-        snobotSimXXXShared(JNIConfig) {
-            jniDefinitionClasses = jniClasses
-            jniArmHeaderLocations = [ all: file("${projectDir}/src/arm-linux-jni") ]
-            sourceSets = [ project.sourceSets.main ]
-        }
-        snobotSimXXXStatic(JNIConfig) {
-            jniDefinitionClasses = jniClasses
-            jniArmHeaderLocations = [ all: file("${projectDir}/src/arm-linux-jni") ]
-            sourceSets = [ project.sourceSets.main ]
-        }
-    }
-    exportsConfigs {
-        snobotSimXXXShared(ExportsConfig) {
-            x86SymbolFilter = { symbols->
-                def retList = []
-                symbols.each { symbol->
-                    if (symbol.startsWith('Java_') || symbol.startsWith('JNI_')) {
-                        retList << symbol
-                    }
-                }
-                return retList
-            }
-            x64SymbolFilter = { symbols->
-                def retList = []
-                symbols.each { symbol->
-                    if (symbol.startsWith('Java_') || symbol.startsWith('JNI_')) {
-                        retList << symbol
-                    }
-                }
-                return retList
-            }
-        }
-        snobotSimXXXStatic(ExportsConfig) {
-            x86SymbolFilter = { symbols->
-                def retList = []
-                //symbols.each { symbol->
-                //    if (symbol.startsWith('Java_') || symbol.startsWith('JNI_')) {
-                //        retList << symbol
-                //    }
-                //}
-                return retList
-            }
-            x64SymbolFilter = { symbols->
-                def retList = []
-                //symbols.each { symbol->
-                //    if (symbol.startsWith('Java_') || symbol.startsWith('JNI_')) {
-                //        retList << symbol
-                //    }
-                //}
-                return retList
-            }
-        }
-    }
     dependencyConfigs {
         wpiutil(DependencyConfig) {
             groupId = 'edu.wpi.first.wpiutil'
             artifactId = 'wpiutil-cpp'
             headerClassifier = 'headers'
             ext = 'zip'
-            version = '+'
+            version = getWpiUtilVersion()
             sharedConfigs = [ snobotSimXXXShared: [] ]
             staticConfigs = [ snobotSimXXXStatic: [] ]
         }

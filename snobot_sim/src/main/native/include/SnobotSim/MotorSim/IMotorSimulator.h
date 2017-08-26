@@ -9,8 +9,9 @@
 #define INCLUDE_SNOBOTSIM_MOTORSIM_IMOTORSIMULATOR_HPP_
 
 #include <string>
+#include "SnobotSim/ExportHelper.h"
 
-class IMotorSimulator
+class EXPORT_ IMotorSimulator
 {
 public:
 

@@ -10,7 +10,7 @@
 
 #include "SnobotSim/MotorSim/DcMotorModelConfig.h"
 
-class DcMotorModel
+class EXPORT_ DcMotorModel
 {
 public:
     DcMotorModel(const DcMotorModelConfig& aModelConfig);

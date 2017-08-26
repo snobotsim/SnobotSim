@@ -12,7 +12,7 @@
 #include "SnobotSim/SimulatorComponents/ISimulatorUpdater.h"
 #include "SnobotSim/SimulatorComponents/Gyro/GyroWrapper.h"
 
-class TankDriveSimulator: public ISimulatorUpdater
+class EXPORT_ TankDriveSimulator: public ISimulatorUpdater
 {
 public:
     TankDriveSimulator(

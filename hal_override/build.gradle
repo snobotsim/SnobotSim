@@ -6,29 +6,6 @@ apply plugin: 'edu.wpi.first.NativeUtils'
 
 apply from: '../config.gradle'
 
-task packageNativeJars(type: Jar) {
-    destinationDir = project.buildDir
-    classifier = "nativeHal"
-
-    project.model {
-        binaries {
-            withType(SharedLibraryBinarySpec) { binary ->
-                if (binary.component.name == 'HALAthena') {
-                    from(binary.sharedLibraryFile) {
-                        into NativeUtils.getPlatformPath(binary)
-                    }
-    
-                    from("../temp_libs/wpiutil.dll") {
-                        into NativeUtils.getPlatformPath(binary)
-                    }
-                    dependsOn binary.buildTask
-                }
-            }
-        }
-    }
-}
-
-build.dependsOn packageNativeJars
 
 ext.addHALAthenaCompilerArguments = { binary->
     tasks.withType(CppCompile) {
@@ -43,7 +20,7 @@ configurations {
 
 
 dependencies {
-    halHeaders 'edu.wpi.first.hal:hal:+:headers@zip'
+    halHeaders getHalHeadersVersion()
 }
 
   // Task to explode the zipped library into a temporary dir
@@ -82,21 +59,11 @@ model {
             artifactId = 'wpiutil-cpp'
             headerClassifier = 'headers'
             ext = 'zip'
-            version = '+'
+            version = getWpiUtilVersion()
             sharedConfigs = [ HALAthena: [],
                               wpilibcTestingBase: [],
                               wpilibcDev: [] ]
         }
-        //hal(DependencyConfig) {
-        //    groupId = 'edu.wpi.first.hal'
-        //    artifactId = 'hal'
-        //    headerClassifier = 'headers'
-        //    ext = 'zip'
-        //    version = '+'
-        //    sharedConfigs = [ wpilibc: [],
-        //                      wpilibcTestingBase: [],
-        //                      wpilibcDev: [] ]
-        //}
     }
     components {
         HALAthena(NativeLibrarySpec) {
@@ -145,8 +112,7 @@ model {
                 //dependsOn generateCppVersion
                 dependsOn extractHalHeadersZip
             }
-            project(':snobot_sim').addHalCompilerArguments(it)
-            project(':snobot_sim').addHalToLinker(it)
+            project(':snobot_sim').addSnobotSimToLinker(it)
             project.addHALAthenaCompilerArguments(it)
         }
     }

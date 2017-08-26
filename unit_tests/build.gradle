@@ -18,14 +18,13 @@ sourceSets {
 dependencies {
     def osname = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
 
-    testCompile project(":snobot_sim")
+    //testCompile project(":snobot_sim")
     testCompile project(":snobot_sim_gui")
     testCompile 'junit:junit:4.12'
     testRuntime files('../temp_libs/wpilibj-jni-ABCD-all.jar')
-    testRuntime files('../snobot_sim/build/snobot_sim-nativeTestFiles.jar')
-    testRuntime files('../hal_override/build/nativeHal.jar')
+    testRuntime files('../snobot_sim_gui/build/snobot_sim_gui-nativeTestFiles.jar')
     
-    testRuntime files(project(':snobot_sim').sourceSets.test.output)
+    //testRuntime files(project(':snobot_sim').sourceSets.test.output)
 }
 
 

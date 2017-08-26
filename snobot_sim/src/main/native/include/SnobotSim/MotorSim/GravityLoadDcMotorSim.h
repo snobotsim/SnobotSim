@@ -10,7 +10,7 @@
 
 #include "SnobotSim/MotorSim/BaseDcMotorSimulator.h"
 
-class GravityLoadDcMotorSim: public BaseDcMotorSimulator
+class EXPORT_ GravityLoadDcMotorSim: public BaseDcMotorSimulator
 {
 public:
 

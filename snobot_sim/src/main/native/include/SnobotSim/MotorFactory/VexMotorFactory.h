@@ -11,7 +11,7 @@
 #include "SnobotSim/MotorSim/DcMotorModelConfig.h"
 #include <string>
 
-class VexMotorFactory
+class EXPORT_ VexMotorFactory
 {
 private:
     VexMotorFactory();

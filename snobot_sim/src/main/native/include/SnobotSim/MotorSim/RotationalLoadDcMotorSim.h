@@ -12,7 +12,7 @@
 #include "SnobotSim/MotorSim/BaseDcMotorSimulator.h"
 #include "SnobotSim/ModuleWrapper/SpeedControllerWrapper.h"
 
-class RotationalLoadDcMotorSim: public BaseDcMotorSimulator
+class EXPORT_ RotationalLoadDcMotorSim: public BaseDcMotorSimulator
 {
 public:
     RotationalLoadDcMotorSim(const DcMotorModel& aMotorModel, const std::shared_ptr<SpeedControllerWrapper>& aSpeedController, double aArmCenterOfMass,

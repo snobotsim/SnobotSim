@@ -10,7 +10,7 @@
 
 #include "SnobotSim/MotorSim/BaseDcMotorSimulator.h"
 
-class StaticLoadDcMotorSim: public BaseDcMotorSimulator
+class EXPORT_ StaticLoadDcMotorSim: public BaseDcMotorSimulator
 {
 public:
     StaticLoadDcMotorSim(const DcMotorModel& aMotorModel, double aLoad, double aConversionFactor = 1);

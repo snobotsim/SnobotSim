@@ -11,7 +11,7 @@
 #include "SnobotSim/MotorSim/DcMotorModel.h"
 #include "SnobotSim/MotorSim/IMotorSimulator.h"
 
-class BaseDcMotorSimulator: public IMotorSimulator
+class EXPORT_ BaseDcMotorSimulator: public IMotorSimulator
 {
 public:
     BaseDcMotorSimulator(

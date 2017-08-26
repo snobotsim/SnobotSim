@@ -12,7 +12,7 @@
 
 namespace SnobotLogging
 {
-    class SnobotCoutLogger : public ISnobotLogger
+    class EXPORT_ SnobotCoutLogger : public ISnobotLogger
     {
     public:
         SnobotCoutLogger();

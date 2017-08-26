@@ -10,7 +10,7 @@
 
 #include "SnobotSim/MotorSim/IMotorSimulator.h"
 
-class SimpleMotorSimulator: public IMotorSimulator
+class EXPORT_ SimpleMotorSimulator: public IMotorSimulator
 {
 public:
     SimpleMotorSimulator(double aMaxSpeed);
