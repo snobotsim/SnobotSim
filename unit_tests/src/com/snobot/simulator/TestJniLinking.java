@@ -25,7 +25,7 @@ public class TestJniLinking
              Assert.assertEquals(1,
              SpeedControllerWrapperJni.getPortList().length);
         }
-        catch (Exception e)
+        catch (Exception | UnsatisfiedLinkError e)
         {
             e.printStackTrace();
         }
