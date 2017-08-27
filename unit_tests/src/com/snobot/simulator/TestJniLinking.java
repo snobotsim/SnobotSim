@@ -13,9 +13,9 @@ public class TestJniLinking
     @Test
     public void testLoad()
     {
-        // try
+        try
         {
-             HAL.initialize(0, 0);
+            HAL.initialize(0, 0);
             Assert.assertEquals(0, SpeedControllerWrapperJni.getPortList().length);
             
             // Initialize one, check again
@@ -23,9 +23,9 @@ public class TestJniLinking
             // Assert.assertEquals(1,
             // SpeedControllerWrapperJni.getPortList().length);
         }
-        // catch (Exception | UnsatisfiedLinkError e)
-        // {
-        // e.printStackTrace();
-        // }
+        catch (Exception | UnsatisfiedLinkError e)
+        {
+            e.printStackTrace();
+        }
     }
 }
