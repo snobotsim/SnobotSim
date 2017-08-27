@@ -4,10 +4,10 @@ build_script:
 - cmd: gradlew.bat build publish  -i -Pmaven_repo=build/maven_repo
 artifacts:
 
-- path: build/maven_repo/com/snobot/simulator/snobotSim/**/snobotSim*.jar
+- path: build/maven_repo/com/snobot/simulator/snobot_sim/**/snobot_sim*.zip
   name: snobotSimJars
 
-- path: build/maven_repo/com/snobot/simulator/snobotSim/**/snobotSim*.zip
+- path: build/maven_repo/com/snobot/simulator/snobot_sim_gui/**/snobot_sim_gui*.jar
   name: snobotSimZips
 
 - path: build/maven_repo/com/snobot/simulator/snobotSimApplication/**/snobotSimApplication*.zip

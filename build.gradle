@@ -43,6 +43,8 @@ if(hasProperty('maven_repo'))
 {
     ext.maven_publishing_path = maven_repo
 }
+ext.maven_publishing_path = new File(maven_repo).getAbsolutePath()
+println "Publishing maven to " + ext.maven_publishing_path.toString()
 
 ext.maven_version = "0.1"
 if(hasProperty('maven_version'))
