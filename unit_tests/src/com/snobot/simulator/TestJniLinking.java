@@ -32,7 +32,7 @@ public class TestJniLinking
         }
         catch (Exception | UnsatisfiedLinkError e)
         {
-            e.printStackTrace();
+            // e.printStackTrace();
             throw e;
         }
     }
