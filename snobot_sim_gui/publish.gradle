@@ -25,6 +25,36 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
+task copyDependencies(type: Zip)  {
+        
+    doFirst {
+        copy {
+            configurations.native3rdPartyDeps.each {
+                println it
+                from zipTree(it)
+                into destinationDir.toString() + "/jinput_native"
+                include "*.dll"
+                include "*.pdb"
+                include "*.so"
+            }
+        }
+    }
+
+    destinationDir = project.buildDir
+    classifier = "javadeps"
+    
+    from configurations.compile {
+        into "dependencies"
+        exclude "jinput-platform-2.0.7-natives-*.jar"
+    }
+    
+    from (destinationDir.toString() + "/jinput_native") {
+        into "native"
+    }
+    
+    
+}
+
 publishing {
     repositories {
        maven {
@@ -40,6 +70,7 @@ publishing {
             artifact jar
             artifact cppSourcesZip
             artifact javadocJar
+            artifact copyDependencies
             project(':snobot_sim_gui').configurations.snobotSimGuiNativeDeps.artifacts.each { artifact it }
         }
         

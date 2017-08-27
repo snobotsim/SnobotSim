@@ -1,7 +1,7 @@
 version: 1.0.{build}
 image: Visual Studio 2015
 build_script:
-- cmd: gradlew.bat build publish  -i -Pmaven_repo=build/maven_repo
+- cmd: gradlew.bat build publish -Pmaven_repo=build/maven_repo
 artifacts:
 
 - path: build/maven_repo/com/snobot/simulator/snobot_sim/**/snobot_sim*.zip
@@ -10,7 +10,7 @@ artifacts:
 - path: build/maven_repo/com/snobot/simulator/snobot_sim_gui/**/snobot_sim_gui*.jar
   name: snobotSimZips
 
-- path: build/maven_repo/com/snobot/simulator/snobotSimApplication/**/snobotSimApplication*.zip
+- path: build/maven_repo/com/snobot/simulator/snobot_sim_gui_application/**/snobot_sim_gui_application*.zip
   name: snobotApplication
 
 - path: build/maven_repo
