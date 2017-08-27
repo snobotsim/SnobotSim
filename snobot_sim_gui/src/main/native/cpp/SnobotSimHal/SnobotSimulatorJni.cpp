@@ -55,7 +55,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SnobotSimulatorJni_shutdown
 JNIEXPORT jstring JNICALL Java_com_snobot_simulator_jni_SnobotSimulatorJni_getVersion
   (JNIEnv * env, jclass)
 {
-    jstring output = MakeJString(env, "TODO" /*SnobotSimHal::Version*/);
+    jstring output = MakeJString(env, SnobotSim::GetSnobotSimVersion());
 
     return output;
 }

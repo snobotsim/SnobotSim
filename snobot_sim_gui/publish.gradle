@@ -32,7 +32,7 @@ publishing {
        }
     }
     publications {
-        hal_override(MavenPublication) {
+        snobot_sim_gui(MavenPublication) {
             groupId 'com.snobot.simulator'
             artifactId 'snobot_sim_gui'
             version maven_version
@@ -41,6 +41,15 @@ publishing {
             artifact cppSourcesZip
             artifact javadocJar
             project(':snobot_sim_gui').configurations.snobotSimGuiNativeDeps.artifacts.each { artifact it }
+        }
+        
+        snobot_sim_gui_application(MavenPublication) {
+            groupId 'com.snobot.simulator'
+            artifactId 'snobot_sim_gui_application'
+            version maven_version
+            
+            artifact distZip
+            artifact distTar
         }
     }
 

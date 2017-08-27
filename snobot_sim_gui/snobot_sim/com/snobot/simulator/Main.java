@@ -76,8 +76,8 @@ public class Main
 	{
         System.out.println("Versions:");
         System.out.println("Wpilib Java   : " + WPILibVersion.Version);
-        //System.out.println("SnobotSim HAL : " + SnobotSimGuiVersion.Version);
-        //System.out.println("SnobotSim GUI : " + SnobotSimulatorJni.getVersion());
+        System.out.println("SnobotSim HAL : " + SnobotSimGuiVersion.Version);
+        System.out.println("SnobotSim GUI : " + SnobotSimulatorJni.getVersion());
 
     }
 

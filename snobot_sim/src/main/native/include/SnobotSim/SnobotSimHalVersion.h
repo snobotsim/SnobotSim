@@ -1,5 +1,9 @@
 
-namespace SnobotSimHal
+#include "SnobotSim/ExportHelper.h"
+
+namespace SnobotSim
 {
-    extern const char* Version;
+    EXPORT_ const char* GetSnobotSimVersion();
+
+
 }

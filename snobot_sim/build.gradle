@@ -53,6 +53,10 @@ model {
         }
         snobotSimXXXShared(NativeLibrarySpec) {
             baseName = 'snobotSimXXX'
+            
+            apply from: "../create_version_file.gradle"
+            createCppVersion("src/main/native/cpp/SnobotSim", "SnobotSim", "SnobotSimHalVersion", getVersionName())
+            
             sources {
                 cpp {
                     source {

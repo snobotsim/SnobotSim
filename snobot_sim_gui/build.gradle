@@ -11,6 +11,7 @@ apply plugin: 'cpp'
 apply plugin: 'visual-studio'
 apply plugin: 'edu.wpi.first.NativeUtils'
 apply plugin: 'java'
+apply plugin: 'application'
 
 apply from: '../config.gradle'
 
@@ -113,6 +114,14 @@ jar {
    }
 }
 
+compileJava {
+    apply from: "../create_version_file.gradle"
+    createJavaVersion("snobot_sim/com/snobot/simulator", "SnobotSimGuiVersion", "com.snobot.simulator", getVersionName())
+}
+    
+clean {
+    delete "snobot_sim/com/snobot/simulator/SnobotSimGuiVersion.java"
+}
 
 
 model {
@@ -223,4 +232,30 @@ model {
     }
 }
 
+
 apply from: "publish.gradle"
+
+///////////////////////////////////////////////////////////
+// Build Application
+mainClassName = "com.snobot.simulator.Main"
+applicationDefaultJvmArgs = ["-Djava.library.path=../lib"]
+
+
+task xxx(type: Copy) {
+	from(project(':snobot_sim_gui').configurations.snobotSimGuiNativeDeps.artifacts.each { })
+}
+
+
+distributions {
+    main {
+        contents {
+            from(".") {
+                into "bin"
+                include "open_smart_dashboard.*"
+            }
+        }
+    }
+
+}
+
+///////////////////////////////////////////////////////////

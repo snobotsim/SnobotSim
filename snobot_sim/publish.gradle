@@ -18,7 +18,7 @@ publishing {
        }
     }
     publications {
-        hal_override(MavenPublication) {
+        snobot_sim(MavenPublication) {
             groupId 'com.snobot.simulator'
             artifactId 'snobot_sim'
             version maven_version
