@@ -28,7 +28,7 @@ using namespace hal;
 
 static const int32_t kTimerInterruptNumber = 28;
 
-static priority_mutex notifierInterruptMutex;
+static hal::priority_mutex notifierInterruptMutex;
 static priority_recursive_mutex notifierMutex;
 static uint64_t closestTrigger = UINT64_MAX;
 
@@ -128,7 +128,6 @@ void updateNotifierAlarmInternal(std::shared_ptr<Notifier> notifierPointer,
 }
 
 //static void alarmCallback(uint32_t, void*) {
-//    SNOBOT_LOG(SnobotLogging::CRITICAL, "Start " << __FUNCTION_NAME__);
 //  std::unique_lock<priority_recursive_mutex> sync(notifierMutex);
 //
 //  int32_t status = 0;
@@ -155,7 +154,6 @@ void updateNotifierAlarmInternal(std::shared_ptr<Notifier> notifierPointer,
 //    }
 //    notifier = notifier->next;
 //  }
-//  SNOBOT_LOG(SnobotLogging::CRITICAL, "Finish " << __FUNCTION_NAME__);
 //}
 
 static void cleanupNotifierAtExit() {
@@ -179,8 +177,8 @@ static void threadedNotifierHandler(uint64_t currentTimeInt,
 
 extern "C" {
 
-HAL_NotifierHandle HAL_InitializeNotifier(HAL_NotifierProcessFunction process,
-                                          void* param, int32_t* status) {
+HAL_NotifierHandle HAL_InitializeNotifierNonThreadedUnsafe(
+    HAL_NotifierProcessFunction process, void* param, int32_t* status) {
     SNOBOT_LOG(SnobotLogging::CRITICAL, "Start " << __FUNCTION_NAME__);
   if (!process) {
     *status = NULL_PARAMETER;
@@ -189,7 +187,7 @@ HAL_NotifierHandle HAL_InitializeNotifier(HAL_NotifierProcessFunction process,
   if (!notifierAtexitRegistered.test_and_set())
     std::atexit(cleanupNotifierAtExit);
   if (notifierRefCount.fetch_add(1) == 0) {
-    std::lock_guard<priority_mutex> sync(notifierInterruptMutex);
+    std::lock_guard<hal::priority_mutex> sync(notifierInterruptMutex);
     // create manager and alarm if not already created
 //    if (!notifierManager) {
 //      notifierManager = std::make_unique<tInterruptManager>(
@@ -219,15 +217,15 @@ HAL_NotifierHandle HAL_InitializeNotifier(HAL_NotifierProcessFunction process,
   return handle;
 }
 
-HAL_NotifierHandle HAL_InitializeNotifierThreaded(
-    HAL_NotifierProcessFunction process, void* param, int32_t* status) {
+HAL_NotifierHandle HAL_InitializeNotifier(HAL_NotifierProcessFunction process,
+                                          void* param, int32_t* status) {
     SNOBOT_LOG(SnobotLogging::CRITICAL, "Start " << __FUNCTION_NAME__);
   NotifierThreadOwner* notify = new NotifierThreadOwner;
   notify->Start();
   notify->SetFunc(process, param);
 
-  auto notifierHandle =
-      HAL_InitializeNotifier(threadedNotifierHandler, notify, status);
+  auto notifierHandle = HAL_InitializeNotifierNonThreadedUnsafe(
+      threadedNotifierHandler, notify, status);
 
   if (notifierHandle == HAL_kInvalidHandle || *status != 0) {
     delete notify;
@@ -265,7 +263,7 @@ void HAL_CleanNotifier(HAL_NotifierHandle notifierHandle, int32_t* status) {
   }
 
   if (notifierRefCount.fetch_sub(1) == 1) {
-    std::lock_guard<priority_mutex> sync(notifierInterruptMutex);
+    std::lock_guard<hal::priority_mutex> sync(notifierInterruptMutex);
     // if this was the last notifier, clean up alarm and manager
 //    if (notifierAlarm) {
 //      notifierAlarm->writeEnable(false, status);

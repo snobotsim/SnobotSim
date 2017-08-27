@@ -63,11 +63,6 @@ void HAL_SetSolenoid(HAL_SolenoidHandle solenoidPortHandle, HAL_Bool value,
     SensorActuatorRegistry::Get().GetSolenoidWrapper(solenoidPortHandle)->SetState(value);
 }
 
-void HAL_SetAllSolenoids(int32_t module, int32_t state, int32_t* status) {
-    LOG_UNSUPPORTED();
-
-}
-
 int32_t HAL_GetPCMSolenoidBlackList(int32_t module, int32_t* status) {
     LOG_UNSUPPORTED();
   return 0;

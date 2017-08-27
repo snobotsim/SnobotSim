@@ -14,7 +14,7 @@ public class BaseSimulatorJni
     {
         JniLibraryResourceLoader.loadLibrary("wpiutil");
         JniLibraryResourceLoader.loadLibrary("snobotSimXXX");
-        JniLibraryResourceLoader.loadLibrary("HALAthena");
+        JniLibraryResourceLoader.loadLibrary("wpiHal");
         JniLibraryResourceLoader.loadLibrary("snobotSimJni");
     }
 }

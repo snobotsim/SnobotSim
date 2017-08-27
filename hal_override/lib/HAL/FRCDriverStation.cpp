@@ -201,6 +201,11 @@ char* HAL_GetJoystickName(int32_t joystickNum) {
   }
 }
 
+void HAL_FreeJoystickName(char* name)
+{
+    LOG_UNSUPPORTED();
+}
+
 int32_t HAL_GetJoystickAxisType(int32_t joystickNum, int32_t axis) {
   HAL_JoystickDescriptor joystickDesc;
   if (HAL_GetJoystickDescriptor(joystickNum, &joystickDesc) < 0) {
@@ -263,6 +268,14 @@ HAL_Bool HAL_WaitForDSDataTimeout(double timeout) {
 
 void HAL_InitializeDriverStation(void) {
     // Nothing to do...
+}
+
+/*
+ * Releases the DS Mutex to allow proper shutdown of any threads that are
+ * waiting on it.
+ */
+void HAL_ReleaseDSMutex(void) {
+    LOG_UNSUPPORTED();
 }
 
 }  // extern "C"
