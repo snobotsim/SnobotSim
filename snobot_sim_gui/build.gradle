@@ -59,6 +59,14 @@ task packageNativeFilesInJar(type: Jar) {
 }
 
 build.dependsOn packageNativeFilesInJar
+
+configurations {
+    snobotSimGuiNativeDeps
+}
+
+artifacts {
+    snobotSimGuiNativeDeps packageNativeFilesInJar
+}
     
 dependencies {
     

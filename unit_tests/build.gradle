@@ -22,7 +22,5 @@ dependencies {
     testCompile project(":snobot_sim_gui")
     testCompile 'junit:junit:4.12'
     testRuntime files('../temp_libs/wpilibj-jni-ABCD-all.jar')
-    testRuntime files(project(':snobot_sim_gui').packageNativeFilesInJar)
-    
-    //testRuntime files(project(':snobot_sim').sourceSets.test.output)
+    testRuntime project(path: ':snobot_sim_gui', configuration: 'snobotSimGuiNativeDeps')
 }

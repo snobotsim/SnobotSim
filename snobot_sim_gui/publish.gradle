@@ -40,8 +40,7 @@ publishing {
             artifact jar
             artifact cppSourcesZip
             artifact javadocJar
-            artifact packageNativeFilesInJar
-    
+            project(':snobot_sim_gui').configurations.snobotSimGuiNativeDeps.artifacts.each { artifact it }
         }
     }
 
