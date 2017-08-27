@@ -1,4 +1,5 @@
 
+
 buildscript {
     repositories {
         mavenLocal()
@@ -34,6 +35,20 @@ ext.getWpilibjVersion = {
     return '+'
 }
 /////////////////////////////////////////
+
+// Publshing Information
+
+ext.maven_publishing_path = '/home/pj/GitHub/FIRST/2017/maven_repo/'
+if(hasProperty('maven_repo'))
+{
+    ext.maven_publishing_path = maven_repo
+}
+
+ext.maven_version = "0.1"
+if(hasProperty('maven_version'))
+{
+    ext.maven_version = maven_version
+}
 
 //
 //apply from: 'copy_maven_artifacts.gradle'

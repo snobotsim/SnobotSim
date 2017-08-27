@@ -22,32 +22,9 @@ sourceSets {
     }
 }
 
-
-//task packageNativeJars(type: Jar) {
-//    destinationDir = project.buildDir
-//    classifier = "nativeHal"
-//
-//    project.model {
-//        binaries {
-//            withType(SharedLibraryBinarySpec) { binary ->
-//                if (binary.component.name == 'HALAthena') {
-//                    from(binary.sharedLibraryFile) {
-//                        into NativeUtils.getPlatformPath(binary)
-//                    }
-//    
-//                    from("../temp_libs/wpiutil.dll") {
-//                        into NativeUtils.getPlatformPath(binary)
-//                    }
-//                    dependsOn binary.buildTask
-//                }
-//            }
-//        }
-//    }
-//}
-
 task packageNativeFilesInJar(type: Jar) {
     destinationDir = project.buildDir
-    classifier = "nativeTestFiles"
+    classifier = "native-" + org.gradle.internal.os.OperatingSystem.current().getFamilyName();
 
     project.model {
         binaries {
@@ -66,7 +43,9 @@ task packageNativeFilesInJar(type: Jar) {
                         include "*.dll"
                         include "*.so"
                     }
-                    from("../temp_libs/") {
+                    
+                    def os_name = org.gradle.internal.os.OperatingSystem.current().getFamilyName()
+                    from("../build/dependencies/wpiutil-cpp/" + os_name + "x86-64/" + os_name + "/x86-64/shared") {
                         into NativeUtils.getPlatformPath(binary)
                         include "*.dll"
                         include "*.so"
@@ -235,3 +214,5 @@ model {
         }
     }
 }
+
+apply from: "publish.gradle"

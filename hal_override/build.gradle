@@ -116,25 +116,8 @@ model {
             project.addHALAthenaCompilerArguments(it)
         }
     }
-    //tasks {
-    //    runCpp(Exec) {
-    //        def found = false
-    //        $.components.each {
-    //            if (it in NativeExecutableSpec && it.name == 'HALAthenaDev') {
-    //                it.binaries.each {
-    //                    if (!found) {
-    //                        def arch = it.targetPlatform.architecture.name
-    //                        if (arch == 'x86-64' || arch == 'x86') {
-    //                            dependsOn it.tasks.install
-    //                            commandLine it.tasks.install.runScript
-    //                            found = true
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
 }
 
-//apply from: 'publish.gradle'
+apply from: 'publish.gradle'
+
+

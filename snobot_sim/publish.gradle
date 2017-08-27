@@ -1,0 +1,31 @@
+
+apply plugin: 'maven-publish'
+
+task cppSourcesZip(type: Zip) {
+    destinationDir = project.buildDir
+    
+    classifier = "sources"
+    
+    from('src/main/native') {
+        into 'SnobotSim'
+    }
+}
+
+publishing {
+    repositories {
+       maven {
+           url maven_publishing_path
+       }
+    }
+    publications {
+        hal_override(MavenPublication) {
+            groupId 'com.snobot.simulator'
+            artifactId 'snobot_sim'
+            version maven_version
+            
+            artifact cppSourcesZip
+    
+        }
+    }
+
+}

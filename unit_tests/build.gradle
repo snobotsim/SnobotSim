@@ -22,38 +22,7 @@ dependencies {
     testCompile project(":snobot_sim_gui")
     testCompile 'junit:junit:4.12'
     testRuntime files('../temp_libs/wpilibj-jni-ABCD-all.jar')
-    testRuntime files('../snobot_sim_gui/build/snobot_sim_gui-nativeTestFiles.jar')
+    testRuntime files(project(':snobot_sim_gui').packageNativeFilesInJar)
     
     //testRuntime files(project(':snobot_sim').sourceSets.test.output)
 }
-
-
-//import org.gradle.internal.os.OperatingSystem
-//
-//project(':native:unit_tests') {
-//    apply plugin: 'java'
-//    
-//    repositories {
-//        mavenCentral()
-//    }
-//    
-//    sourceSets {
-//        test {
-//            java {
-//                srcDirs = ["${rootDir}/unit_tests/src"]
-//            }
-//        }
-//    }
-//    
-//    dependencies {
-//        def osname = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
-//
-//        testCompile project(":native:snobotSimHal")
-//        testCompile project(":native:snobot_sim_gui")
-//        testCompile 'junit:junit:4.12'
-//        testCompile files("${rootDir}/build/snobotSim-NativeJava-" + osname + ".jar")
-//        testCompile files("${rootDir}/external_dependencies/java/wpilibj-java-ABCD.jar")
-//        testCompile files("${rootDir}/external_dependencies/java/wpiutil-java-2.0.0-20170823220923-29-g8416b4e.jar")
-//        
-//    }
-//}
