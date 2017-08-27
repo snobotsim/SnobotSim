@@ -22,5 +22,5 @@ dependencies {
     testCompile project(":snobot_sim_gui")
     testCompile 'junit:junit:4.12'
     testRuntime files('../temp_libs/wpilibj-jni-ABCD-all.jar')
-    testRuntime project(path: ':snobot_sim_gui', configuration: 'snobotSimGuiNativeDeps')
+    testRuntime files('../snobot_sim_gui/build/snobot_sim_gui-native-windows.jar')
 }
