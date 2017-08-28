@@ -24,6 +24,9 @@ sourceSets {
 }
 
 task packageNativeFilesInJar(type: Jar) {
+
+    println "Packging native files"
+    
     destinationDir = project.buildDir
     classifier = "native-" + org.gradle.internal.os.OperatingSystem.current().getFamilyName();
 
@@ -31,28 +34,49 @@ task packageNativeFilesInJar(type: Jar) {
         binaries {
             withType(SharedLibraryBinarySpec) { binary ->
                 if (binary.component.name == 'snobotSimJniStatic') {
-                    from(binary.sharedLibraryFile) {
-                        into NativeUtils.getPlatformPath(binary)
+                    def os_name = org.gradle.internal.os.OperatingSystem.current().getFamilyName()
+                    def snobot_sim_path = "../snobot_sim/build/libs/snobotSimXXXShared/shared/x86-64"
+                    def snobot_sim_gui_path = "../snobot_sim_gui/build/libs/snobotSimJniShared/shared/x86-64"
+                    def hal_override_path = "../hal_override/build/libs/hALAthena/shared/x86-64"
+                    def wpiutil_path = "../build/dependencies/wpiutil-cpp/" + os_name + "x86-64/" + os_name + "/x86-64/shared"
+                    
+                    if(!new File(snobot_sim_path).exists())
+                    {
+                        println "Uh oh, " + new File(snobot_sim_path).getAbsolutePath() + " doesnt exist"
                     }
-                    from("../snobot_sim/build/libs/snobotSimXXXShared/shared/x86-64") {
+                    if(!new File(hal_override_path).exists())
+                    {
+                        println "Uh oh, " + hal_override_path + " doesnt exist"
+                    }
+                    if(!new File(wpiutil_path).exists())
+                    {
+                        println "Uh oh, " + wpiutil_path + " doesnt exist"
+                    }
+                    
+                    from(snobot_sim_path) {
                         into NativeUtils.getPlatformPath(binary)
                         include "*.dll"
                         include "*.so"
                     }
-                    from("../hal_override/build/libs/hALAthena/shared/x86-64") {
+                    from(snobot_sim_gui_path) {
+                        into NativeUtils.getPlatformPath(binary)
+                        include "*.dll"
+                        include "*.so"
+                    }
+                    from(hal_override_path) {
                         into NativeUtils.getPlatformPath(binary)
                         include "*.dll"
                         include "*.so"
                     }
                     
-                    def os_name = org.gradle.internal.os.OperatingSystem.current().getFamilyName()
-                    from("../build/dependencies/wpiutil-cpp/" + os_name + "x86-64/" + os_name + "/x86-64/shared") {
+                    from(wpiutil_path) {
                         into NativeUtils.getPlatformPath(binary)
                         include "*.dll"
                         include "*.so"
                     }
                     
                     dependsOn binary.buildTask
+                    dependsOn project(':hal_override').build
                 }
             }
         }
