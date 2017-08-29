@@ -1,0 +1,244 @@
+import edu.wpi.first.nativeutils.NativeUtils
+import org.gradle.api.file.FileCollection
+import org.gradle.internal.os.OperatingSystem
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'cpp'
+apply plugin: 'java'
+apply plugin: 'visual-studio'
+apply plugin: 'edu.wpi.first.NativeUtils'
+
+apply from: '../config.gradle'
+
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ["java/src"]
+        }
+    }
+}
+
+
+task packageNativeFilesInJar(type: Jar) {
+    destinationDir = project.buildDir
+    classifier = "native-" + org.gradle.internal.os.OperatingSystem.current().getFamilyName();
+
+    project.model {
+        binaries {
+            withType(SharedLibraryBinarySpec) { binary ->
+                if (binary.component.name == 'CTRLibDriverShared' || binary.component.name == 'CtrCpp') {
+                    from(binary.sharedLibraryFile) {
+                        into NativeUtils.getPlatformPath(binary)
+                    }
+                    dependsOn binary.buildTask
+                }
+            }
+        }
+    }
+
+}
+
+build.dependsOn packageNativeFilesInJar
+
+///////////////////////////////////////////////////
+configurations {
+    wpilibcHeaders
+    wpilibcLibrary
+}
+
+
+dependencies {
+    wpilibcHeaders 'edu.wpi.first.wpilibc:wpilibc:' + getWpilibcVersion() + ':headers@zip'
+    wpilibcLibrary files('../temp_libs/wpilibc-ABCD-all.zip')
+    
+    compile project(":snobot_sim_gui")
+}
+
+  // Task to explode the zipped library into a temporary dir
+task extractWplibcHeadersZip(type: Copy) {
+    ext.libsdir = "${rootProject.buildDir}/dependencies/wpilibc/include"
+    from { configurations.wpilibcHeaders.collect { println it; zipTree(it) } }
+    into libsdir
+}
+task extractWplibcLibraryZip(type: Copy) {
+    ext.libsdir = "${rootProject.buildDir}/dependencies/wpilibc/lib"
+    from { configurations.wpilibcLibrary.collect { zipTree(it); } }
+    into libsdir
+}
+///////////////////////////////////////////////////
+
+
+def jniClasses = ['com.ctre.CanTalonJNI']
+
+model {
+    jniConfigs {
+        CTRLibDriverShared(JNIConfig) {
+            jniDefinitionClasses = jniClasses
+            jniArmHeaderLocations = [ all: file("${projectDir}/../snobot_sim_gui/src/arm-linux-jni") ]
+            sourceSets = [ project.sourceSets.main ]
+        }
+        CTRLibDriverStatic(JNIConfig) {
+            jniDefinitionClasses = jniClasses
+            jniArmHeaderLocations = [ all: file("${projectDir}/../snobot_sim_gui/src/arm-linux-jni") ]
+            sourceSets = [ project.sourceSets.main ]
+        }
+    }
+    exportsConfigs {
+        CTRLibDriverShared(ExportsConfig) {
+            x86SymbolFilter = { symbols->
+                def retList = []
+                //symbols.each { symbol->
+                //    if (symbol.startsWith('Java_') || symbol.startsWith('JNI_')) {
+                //        retList << symbol
+                //    }
+                //}
+                return retList
+            }
+            x64SymbolFilter = { symbols->
+                def retList = []
+                //symbols.each { symbol->
+                //    if (symbol.startsWith('Java_') || symbol.startsWith('JNI_')) {
+                //        retList << symbol
+                //    }
+                //}
+                return retList
+            }
+        }
+        CTRLibDriverStatic(ExportsConfig) {
+            x86SymbolFilter = { symbols->
+                def retList = []
+                //symbols.each { symbol->
+                //    if (symbol.startsWith('Java_') || symbol.startsWith('JNI_')) {
+                //        retList << symbol
+                //    }
+                //}
+                return retList
+            }
+            x64SymbolFilter = { symbols->
+                def retList = []
+                //symbols.each { symbol->
+                //    if (symbol.startsWith('Java_') || symbol.startsWith('JNI_')) {
+                //        retList << symbol
+                //    }
+                //}
+                return retList
+            }
+        }
+    }
+    
+    dependencyConfigs {
+        wpiutil(DependencyConfig) {
+            groupId = 'edu.wpi.first.wpiutil'
+            artifactId = 'wpiutil-cpp'
+            headerClassifier = 'headers'
+            ext = 'zip'
+            version = getWpiUtilVersion()
+            sharedConfigs = [ CtrCpp: [],
+                              CTRLibDriver: [] ]
+        }
+        ntcore(DependencyConfig) {
+            groupId = 'edu.wpi.first.ntcore'
+            artifactId = 'ntcore-cpp'
+            headerClassifier = 'headers'
+            ext = 'zip'
+            version = getNtCoreVersion()
+            sharedConfigs = [ CtrCpp: [],
+                              CTRLibDriver: [] ]
+        }
+        //wpilibc(DependencyConfig) {
+        //    groupId = 'edu.wpi.first.wpilibc'
+        //    artifactId = 'wpilibc'
+        //    headerClassifier = 'headers'
+        //    ext = 'zip'
+        //    version = getWpiUtilVersion()
+        //    sharedConfigs = [ HALAthena: [] ]
+        //}
+    }
+    
+
+    components {
+        CtrCpp(NativeLibrarySpec) {
+            baseName = 'CtrCpp'
+            sources {
+                cpp {
+                    source {
+                        srcDirs = [ 'cpp/lib', 'sim/lib' ]
+                        includes = ["**/*.cpp"]
+                    }
+                    exportedHeaders {
+                        srcDirs = ["cpp/include", "sim/include", "${extractWplibcHeadersZip.libsdir}", project(':hal_override').extractHalHeadersZip.libsdir]
+                        println srcDirs
+                    }
+                }
+            }
+        }
+        
+        CTRLibDriverStatic(NativeLibrarySpec) {
+            baseName = 'CTRLibDriver'
+            sources {
+                cpp {
+                    source {
+                        srcDirs = [ 'java/jni', "${rootDir}/ctre_override/sim/lib"]
+                        includes = ["**/*.cpp"]
+                    }
+                    exportedHeaders {
+                        srcDirs = ["cpp/include", "sim/include"]
+                    }
+                }
+            }
+        }
+        CTRLibDriverShared(NativeLibrarySpec) {
+            baseName = 'CTRLibDriver'
+            sources {
+                cpp {
+                    source {
+                        srcDirs = [ 'java/jni', "${rootDir}/ctre_override/sim/lib"]
+                        includes = ["**/*.cpp"]
+                    }
+                    exportedHeaders {
+                        srcDirs = ["cpp/include", "sim/include"]
+                    }
+                }
+            }
+        }
+    }
+    binaries {
+        all {
+            tasks.withType(CppCompile) {
+                dependsOn extractWplibcHeadersZip
+                dependsOn extractWplibcLibraryZip
+            }
+        }
+        withType(NativeBinarySpec) {
+            project(':snobot_sim').addSnobotSimToLinker(it)
+            project(':hal_override').addHALAthenaLinkerArguments(it)
+            
+            if(it.targetPlatform.architecture.name != "athena")
+            {
+                if (OperatingSystem.current().isWindows())
+                {
+                    linker.args extractWplibcLibraryZip.libsdir + "/windows/" + it.targetPlatform.architecture.name + "/shared/wpilibc.lib"
+                }
+                else if (OperatingSystem.current().isLinux())
+                {
+                    buildable = false
+                    linker.args extractWplibcLibraryZip.libsdir + "/linux/" + it.targetPlatform.architecture.name + "/shared/wpilibc.so"
+                }
+            }
+            else
+            {
+                buildable = false
+            }
+        }
+        withType(StaticLibraryBinarySpec) {
+            buildable = false
+        }
+    }
+}
+
+
+apply from: 'publish.gradle'

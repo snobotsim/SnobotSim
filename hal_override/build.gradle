@@ -13,6 +13,10 @@ ext.addHALAthenaCompilerArguments = { binary->
     }
 }
 
+ext.addHALAthenaLinkerArguments = { binary->
+    binary.lib project: ':hal_override', library: 'HALAthena', linkage: 'shared'
+}
+
 ///////////////////////////////////////////////////
 configurations {
     halHeaders
@@ -25,7 +29,7 @@ dependencies {
 
   // Task to explode the zipped library into a temporary dir
 task extractHalHeadersZip(type: Copy) {
-    ext.libsdir = "${rootProject.buildDir}/dependencies/xxx"
+    ext.libsdir = "${rootProject.buildDir}/dependencies/hal"
     from { configurations.halHeaders.collect { zipTree(it) } }
     into libsdir
 }
@@ -118,11 +122,9 @@ model {
     binaries {
         all {
             tasks.withType(CppCompile) {
-                //dependsOn generateCppVersion
                 dependsOn extractHalHeadersZip
             }
             project(':snobot_sim').addSnobotSimToLinker(it)
-            project.addHALAthenaCompilerArguments(it)
         }
     }
 }

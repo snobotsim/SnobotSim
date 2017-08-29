@@ -34,6 +34,9 @@ ext.getNtCoreVersion = {
 ext.getWpilibjVersion = {
     return '+'
 }
+ext.getWpilibcVersion = {
+    return '+'
+}
 /////////////////////////////////////////
 
 // Publshing Information

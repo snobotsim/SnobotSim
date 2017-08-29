@@ -1,0 +1,32 @@
+
+apply plugin: 'maven-publish'
+
+
+task xxxxx(type: Zip) {
+}
+
+
+model {
+publishing {
+    repositories {
+       maven {
+           url maven_publishing_path
+       }
+    }
+    
+    
+    publications {
+        hal_override(MavenPublication) {
+            groupId 'com.snobot.simulator'
+            artifactId 'ctre_override'
+            version maven_version
+            
+            FileTree tree = fileTree(project(':ctre_override').buildDir).include('*.jar')
+            tree.each { 
+                artifact it
+            }
+        }
+    }
+
+}
+}
