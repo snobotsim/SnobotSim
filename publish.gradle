@@ -2,45 +2,45 @@ import org.gradle.internal.os.OperatingSystem
 
 apply plugin: 'maven-publish'
 
-def getVersion = {
-    return "0.0"
+
+task combineLibrariesIntoOne(type: Jar) {
+
+    def os_name = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
+
+    classifier = "uber_native-" + os_name;
+    
+    from(zipTree('ctre_override/build/libs/ctre_override.jar')) 
+    from(zipTree('ctre_override/build/ctre_override-native-' + os_name + ".jar"))
+    from(zipTree('hal_override/build/halAthena-native-' + os_name + ".jar"))
+    from(zipTree('snobot_sim/build/snobotSim-native-' + os_name + ".jar"))
+    from(zipTree('snobot_sim_gui/build/snobot_sim_gui-native-' + os_name + ".jar"))
+    
+    def wpiutil_path = "build/dependencies/wpiutil-cpp/" + os_name + "x86-64/" + os_name + "/x86-64/shared"
+
+    from(wpiutil_path) {
+        into os_name + "/x86-64/"
+        include "*.dll"
+        include "*.so"
+    }
 }
 
 
 publishing {
 
-	repositories {
-	   maven {
-	   	url publishing_path
-	   }
-	}
-	
+    repositories {
+       maven {
+           url maven_publishing_path
+       }
+    }
+    
 
     publications {
-        def gui_proj = project(':native:snobot_sim_gui')
-        def sim_proj = project(':native:snobotSimHal')
-
         snobotSimLibs(MavenPublication) {
-            artifact sim_proj.jar
-            artifact gui_proj.jar
-            artifact gui_proj.copyDependencies
-            artifact gui_proj.createSnobotSimLibraryZip
-            artifact gui_proj.createNativeLibrary
-            artifact gui_proj.createCppSouceZip
+            artifact combineLibrariesIntoOne
         
-            groupId 'com.snobot.simulator'
-            artifactId 'snobotSim'
-            version getVersion()
-        }
-
-        snobotSimApplication(MavenPublication) {
-
-            groupId 'com.snobot.simulator'
-            artifactId 'snobotSim'
-            version getVersion()
-            
-            artifact gui_proj.distZip
-            artifactId "snobotSimApplication"
+            groupId 'com.snobot.simulator.snobot_sim_native'
+            artifactId 'snobot_sim'
+            version maven_version
         }
     }
 }

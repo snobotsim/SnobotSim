@@ -55,8 +55,7 @@ if(hasProperty('maven_version'))
     ext.maven_version = maven_version
 }
 
-//
-//apply from: 'copy_maven_artifacts.gradle'
+apply from: 'publish.gradle'
 
 task wrapper(type: Wrapper) {
     gradleVersion = '4.1'

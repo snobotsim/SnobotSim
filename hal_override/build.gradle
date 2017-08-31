@@ -17,6 +17,25 @@ ext.addHALAthenaLinkerArguments = { binary->
     binary.lib project: ':hal_override', library: 'HALAthena', linkage: 'shared'
 }
 
+task packageNativeFilesInJar(type: Jar) {
+
+    destinationDir = project.buildDir
+    classifier = "halAthena-native-" + org.gradle.internal.os.OperatingSystem.current().getFamilyName();
+
+    project.model {
+        binaries {
+            withType(SharedLibraryBinarySpec) { binary ->
+                if (binary.component.name == 'HALAthena') {
+                    from(binary.sharedLibraryFile) {
+                        into NativeUtils.getPlatformPath(binary)
+                    }
+                }
+            }
+        }
+    }
+}
+build.dependsOn packageNativeFilesInJar
+
 ///////////////////////////////////////////////////
 configurations {
     halHeaders
@@ -86,8 +105,6 @@ model {
                         retList << symbol
                     }
                 }
-                println "CCCCC"
-                println retList
                 return retList
             }
             x64SymbolFilter = { symbols->
@@ -97,8 +114,6 @@ model {
                         retList << symbol
                     }
                 }
-                println "DDDD"
-                println retList
                 return retList
             }
         }

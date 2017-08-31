@@ -23,6 +23,25 @@ gradle.taskGraph.addTaskExecutionGraphListener { graph ->
     //willPublish = graph.hasTask(publish)
 }
 
+task packageNativeFilesInJar(type: Jar) {
+
+    destinationDir = project.buildDir
+    classifier = "snobotSim-native-" + org.gradle.internal.os.OperatingSystem.current().getFamilyName();
+
+    project.model {
+        binaries {
+            withType(SharedLibraryBinarySpec) { binary ->
+                if (binary.component.name == 'snobotSimXXXShared') {
+                    from(binary.sharedLibraryFile) {
+                        into NativeUtils.getPlatformPath(binary)
+                    }
+                }
+            }
+        }
+    }
+}
+build.dependsOn packageNativeFilesInJar
+
 
 model {
     dependencyConfigs {
