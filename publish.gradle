@@ -28,6 +28,44 @@ task combineLibrariesIntoOne(type: Jar) {
 }
 
 
+task gatherWpiLibs(type: Zip) {
+    def os_name = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
+
+    classifier = "wpi_native-" + os_name;
+    
+    from('build/dependencies/wpiutil-cpp/' + os_name + 'x86-64/' + os_name + '/x86-64/shared') {
+        into "lib"
+        
+        include "*.dll"
+        include "*.so"
+    }
+    from('build/dependencies/ntcore-cpp/' + os_name + 'x86-64/' + os_name + '/x86-64/shared') {
+        into "lib"
+    
+        include "*.dll"
+        include "*.so"
+    }
+}
+    
+task gatherWpiHeaders(type: Zip) {
+
+    classifier = "wpi_headers";
+    
+    from('build/dependencies/wpiutil-cpp/headers') {
+        into "include"
+    }
+    from('ctre_override/cpp/include') {
+        into "include"
+    }
+    from('build/dependencies/ntcore-cpp/headers') {
+        into "include"
+    }
+    from('build/dependencies/hal') {
+        into "include"
+    }
+}
+
+
 publishing {
 
     repositories {
@@ -38,11 +76,22 @@ publishing {
     
 
     publications {
-        snobotSimLibs(MavenPublication) {
+        uberNative(MavenPublication) {
             artifact combineLibrariesIntoOne
         
             groupId 'com.snobot.simulator'
             artifactId 'snobot_sim_native'
+            version maven_version
+        }
+    }
+
+    publications {
+        wpilibCopies(MavenPublication) {
+            artifact gatherWpiLibs
+            artifact gatherWpiHeaders
+        
+            groupId 'com.snobot.simulator'
+            artifactId 'wpilib'
             version maven_version
         }
     }
