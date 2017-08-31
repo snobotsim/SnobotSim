@@ -45,6 +45,12 @@ task gatherWpiLibs(type: Zip) {
         include "*.dll"
         include "*.so"
     }
+    from('build/dependencies/wpilibc/lib/' + os_name + '/x86-64/shared') {
+        into "lib"
+    
+        include "*.dll"
+        include "*.so"
+    }
 }
     
 task gatherWpiHeaders(type: Zip) {
@@ -54,13 +60,16 @@ task gatherWpiHeaders(type: Zip) {
     from('build/dependencies/wpiutil-cpp/headers') {
         into "include"
     }
-    from('ctre_override/cpp/include') {
-        into "include"
-    }
     from('build/dependencies/ntcore-cpp/headers') {
         into "include"
     }
     from('build/dependencies/hal') {
+        into "include"
+    }
+    from('build/dependencies/wpilibc/include') {
+        into "include"
+    }
+    from('ctre_override/cpp/include') {
         into "include"
     }
 }
