@@ -37,18 +37,21 @@ task gatherWpiLibs(type: Zip) {
         into "lib"
         
         include "*.dll"
+        include "*.lib"
         include "*.so"
     }
     from('build/dependencies/ntcore-cpp/' + os_name + 'x86-64/' + os_name + '/x86-64/shared') {
         into "lib"
     
         include "*.dll"
+        include "*.lib"
         include "*.so"
     }
     from('build/dependencies/wpilibc/lib/' + os_name + '/x86-64/shared') {
         into "lib"
     
         include "*.dll"
+        include "*.lib"
         include "*.so"
     }
 }
