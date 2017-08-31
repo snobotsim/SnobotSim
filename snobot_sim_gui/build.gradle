@@ -43,16 +43,38 @@ task packageNativeFilesInJar(type: Jar) {
     }
 }
 
-build.dependsOn packageNativeFilesInJar
 
-configurations {
-    snobotSimGuiNativeDeps
-    native3rdPartyDeps
-    compile.extendsFrom(native3rdPartyDeps)
+task combineNativeLibrariesIntoOne(type: Jar) {
+
+    def os_name = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
+
+    classifier = "uber_native-" + os_name;
+    
+    if(new File('../ctre_override/build/libs/ctre_override.jar').exists()) 
+    {
+        from(zipTree('../ctre_override/build/libs/ctre_override.jar')) 
+        from(zipTree('../ctre_override/build/ctre_override-native-' + os_name + ".jar"))
+    }
+    from(zipTree('../hal_override/build/halAthena-native-' + os_name + ".jar"))
+    from(zipTree('../snobot_sim/build/snobotSim-native-' + os_name + ".jar"))
+    from(zipTree('../snobot_sim_gui/build/snobot_sim_gui-native-' + os_name + ".jar"))
+    from(zipTree('../temp_libs/wpilibj-jni-ABCD-all.jar'))
+    
+    def wpiutil_path = "../build/dependencies/wpiutil-cpp/" + os_name + "x86-64/" + os_name + "/x86-64/shared"
+
+    from(wpiutil_path) {
+        into os_name + "/x86-64/"
+        include "*.dll"
+        include "*.so"
+    }
 }
 
-artifacts {
-    snobotSimGuiNativeDeps packageNativeFilesInJar
+build.dependsOn packageNativeFilesInJar
+build.finalizedBy(combineNativeLibrariesIntoOne)
+
+configurations {
+    native3rdPartyDeps
+    compile.extendsFrom(native3rdPartyDeps)
 }
     
 dependencies {
@@ -225,11 +247,6 @@ apply from: "publish.gradle"
 // Build Application
 mainClassName = "com.snobot.simulator.Main"
 applicationDefaultJvmArgs = ["-Djava.library.path=../lib"]
-
-
-task xxx(type: Copy) {
-	from(project(':snobot_sim_gui').configurations.snobotSimGuiNativeDeps.artifacts.each { })
-}
 
 
 distributions {

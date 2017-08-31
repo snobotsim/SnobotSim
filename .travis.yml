@@ -5,6 +5,10 @@ matrix:
     dist: trusty
     sudo: required
     group: edge
+    
+  - os: osx
+    osx_image: xcode8
+      
 addons:
   apt:
     packages:

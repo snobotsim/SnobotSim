@@ -21,6 +21,5 @@ dependencies {
     //testCompile project(":snobot_sim")
     testCompile project(":snobot_sim_gui")
     testCompile 'junit:junit:4.12'
-    testRuntime files('../temp_libs/wpilibj-jni-ABCD-all.jar')
-    testRuntime files('../snobot_sim_gui/build/snobot_sim_gui-native-windows.jar')
+    testRuntime files('../snobot_sim_gui/build/libs/snobot_sim_gui-uber_native-' + osname + '.jar')
 }

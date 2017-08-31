@@ -51,8 +51,6 @@ task copyDependencies(type: Zip)  {
     from (destinationDir.toString() + "/jinput_native") {
         into "native"
     }
-    
-    
 }
 
 publishing {
@@ -71,7 +69,7 @@ publishing {
             artifact cppSourcesZip
             artifact javadocJar
             artifact copyDependencies
-            project(':snobot_sim_gui').configurations.snobotSimGuiNativeDeps.artifacts.each { artifact it }
+            artifact combineNativeLibrariesIntoOne
         }
         
         snobot_sim_gui_application(MavenPublication) {
