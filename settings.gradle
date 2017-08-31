@@ -1,6 +1,6 @@
 include 'snobot_sim'
 include 'hal_override'
-include 'ctre_override'
+//include 'ctre_override'
 include 'snobot_sim_gui'
 include 'unit_tests'
 
