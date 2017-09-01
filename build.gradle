@@ -60,3 +60,25 @@ apply from: 'publish.gradle'
 task wrapper(type: Wrapper) {
     gradleVersion = '4.1'
 }
+
+
+task tempCombineWindowsAndLinuxWpilibjLibraries(type: Jar) {
+   destinationDir(file('temp_libs'))
+   classifier "wpilibj-jni-ABCD-all"
+   
+   from(zipTree('temp_libs/wpilibj-jni-ABCD-windowsx86-64.jar'))
+   from(zipTree('temp_libs/wpilibj-jni-ABCD-linuxx86-64.jar'))
+}
+
+
+task tempCombineWindowsAndLinuxWpilibcLibraries(type: Zip) {
+   destinationDir(file('temp_libs'))
+   classifier "wpilibc-ABCD-all"
+   
+   from(zipTree('temp_libs/wpilibc-ABCD-windowsx86-64.zip'))
+   from(zipTree('temp_libs/wpilibc-ABCD-linuxx86-64.zip'))
+}
+
+
+
+
