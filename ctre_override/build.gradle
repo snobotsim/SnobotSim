@@ -225,9 +225,7 @@ model {
                 }
                 else if (OperatingSystem.current().isLinux())
                 {
-                    println "IS LINUX, SHOULDN'T BUILD IT"
-                    buildable = false
-                    linker.args extractWplibcLibraryZip.libsdir + "/linux/" + it.targetPlatform.architecture.name + "/shared/wpilibc.so"
+                    linker.args extractWplibcLibraryZip.libsdir + "/linux/" + it.targetPlatform.architecture.name + "/shared/libwpilibc.so"
                 }
             }
             else
