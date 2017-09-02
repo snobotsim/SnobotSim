@@ -8,3 +8,5 @@ cd ../../pjreiniger/maven_repo
 echo "CD"
 ls
 ./commit_updates.sh
+
+cd $TRAVIS_BUILD
