@@ -30,10 +30,12 @@ script:
 - ls
 - ls ..
 - ls ../..
+- ls ../../pjreiniger
+- ls ../../pjreiniger/maven_repo
 
 deploy:
   - provider: script
-    script: pwd; cd ../../pjreiniger/maven_repo; pwd; ls; commit_updates.sh
+    script: pwd; cd ../../pjreiniger/maven_repo; pwd; ls; chmod +x commit_updates.sh; ./commit_updates.sh
     skip_cleanup: true
 
 env:
