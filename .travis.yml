@@ -22,11 +22,18 @@ cache:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
 script:
-- "./gradlew build --refresh-dependencies"
+- echo "Getting Maven Repo"
+- git clone --depth=50 --branch=master https://github.com/pjreiniger/maven_repo.git ../../pjreiniger/maven_repo
+- echo "Got it"
+- "./gradlew build publish --refresh-dependencies -Pmaven_repo=../../pjreiniger/maven_repo"
+- echo "built..."
+- ls
+- ls ..
+- ls ../..
 
 deploy:
   - provider: script
-    script: chmod +x scripts/deploy.sh && scripts/deploy.sh
+    script: pwd; cd ../../pjreiniger/maven_repo; pwd; ls; commit_updates.sh
     skip_cleanup: true
 
 env:
