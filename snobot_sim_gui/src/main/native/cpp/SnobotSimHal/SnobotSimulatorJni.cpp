@@ -4,6 +4,8 @@
 #include "support/jni_util.h"
 
 #include "com_snobot_simulator_jni_SnobotSimulatorJni.h"
+#include "SnobotSim/CallbackSetup.h"
+#include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/RobotStateSingleton.h"
 #include "SnobotSim/SnobotSimHalVersion.h"
@@ -16,6 +18,17 @@ static SnobotLogging::ISnobotLogger* sSnobotLogger = NULL;
 
 extern "C"
 {
+
+/*
+ * Class:     com_snobot_simulator_jni_SnobotSimulatorJni
+ * Method:    initializeSimulator
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SnobotSimulatorJni_initializeSimulator
+  (JNIEnv *, jclass)
+{
+	SnobotSim::InitializeSnobotCallbacks();
+}
 
 /*
  * Class:     com_snobot_simulator_jni_SnobotSimulatorJni

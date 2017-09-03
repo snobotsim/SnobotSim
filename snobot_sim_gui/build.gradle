@@ -55,7 +55,7 @@ task combineNativeLibrariesIntoOne(type: Jar) {
         from(zipTree('../ctre_override/build/libs/ctre_override.jar')) 
         from(zipTree('../ctre_override/build/ctre_override-native-' + os_name + ".jar"))
     }
-    from(zipTree('../hal_override/build/halAthena-native-' + os_name + ".jar"))
+
     from(zipTree('../snobot_sim/build/snobotSim-native-' + os_name + ".jar"))
     from(zipTree('../snobot_sim_gui/build/snobot_sim_gui-native-' + os_name + ".jar"))
     from(zipTree('../temp_libs/wpilibj-jni-ABCD-all.jar'))
@@ -66,6 +66,12 @@ task combineNativeLibrariesIntoOne(type: Jar) {
         into os_name + "/x86-64/"
         include "*.dll"
         include "*.so"
+    }
+    
+    def hal_path = new File('temp_libs/hal/' + os_name + '/x86-64').getAbsolutePath()
+    from(hal_path) {
+        into os_name + "/x86-64/"
+        include "*.dll"
     }
 }
 
