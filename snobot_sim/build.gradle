@@ -127,7 +127,7 @@ model {
                 }
                 else if (OperatingSystem.current().isLinux())
                 {
-                    hal_path += "/wpiHal.so"
+                    hal_path += "/libwpiHal.so"
                 }
                 hal_path = new File(hal_path).getAbsolutePath()
                 linker.args hal_path
