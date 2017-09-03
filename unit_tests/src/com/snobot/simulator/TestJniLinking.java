@@ -17,12 +17,20 @@ public class TestJniLinking
 	@Before 
 	public void setup()
 	{
-        System.out.println("Versions:");
-        System.out.println("Wpilib Java   : " + WPILibVersion.Version);
-        System.out.println("SnobotSim HAL : " + SnobotSimGuiVersion.Version);
-        System.out.println("SnobotSim GUI : " + SnobotSimulatorJni.getVersion());
-        
-        SnobotSimulatorJni.initializeLogging(0);
+        try
+        {
+	        System.out.println("Versions:");
+	        System.out.println("Wpilib Java   : " + WPILibVersion.Version);
+	        System.out.println("SnobotSim HAL : " + SnobotSimGuiVersion.Version);
+	        System.out.println("SnobotSim GUI : " + SnobotSimulatorJni.getVersion());
+	        
+	        SnobotSimulatorJni.initializeLogging(0);
+        }
+        catch (Exception | UnsatisfiedLinkError e)
+        {
+            e.printStackTrace();
+            // throw e;
+        }
 	}
 
     @Test
