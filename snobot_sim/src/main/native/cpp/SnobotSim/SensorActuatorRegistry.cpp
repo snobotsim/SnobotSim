@@ -7,6 +7,7 @@
 
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/SimulatorComponents/CompressorWrapper.h"
+#include "HAL/handles/HandlesInternal.h"
 
 SensorActuatorRegistry* SensorActuatorRegistry::sInstance =
         new SensorActuatorRegistry();
@@ -31,6 +32,8 @@ SensorActuatorRegistry::~SensorActuatorRegistry()
 
 void SensorActuatorRegistry::Reset()
 {
+	hal::HandleBase::ResetGlobalHandles();
+
     mSpeedControllerWrapperMap.clear();
     mRelayWrapperMap.clear();
     mDigitalSourceWrapperMap.clear();

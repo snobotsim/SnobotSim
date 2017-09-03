@@ -19,7 +19,6 @@ public class JNIWrapper {
   static File jniLibrary = null;
 
   static {
-        System.out.println("Hello There");
         JniLibraryResourceLoader.loadLibrary("wpilibJNI");
   }
 
