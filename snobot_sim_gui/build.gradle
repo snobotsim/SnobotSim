@@ -52,6 +52,8 @@ task packageNativeFilesInJar(type: Jar) {
 
 task combineNativeLibrariesIntoOne(type: Jar) {
 
+    dependsOn packageNativeFilesInJar
+
     def os_name = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
 
     classifier = "uber_native-" + os_name;
