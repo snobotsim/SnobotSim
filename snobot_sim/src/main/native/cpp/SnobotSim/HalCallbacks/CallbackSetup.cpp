@@ -8,5 +8,5 @@
 void SnobotSim::InitializeSnobotCallbacks()
 {
 	InitializePwmCallbacks();
-	InitializePwmCallbacks();
+	InitializeEncoderCallbacks();
 }
