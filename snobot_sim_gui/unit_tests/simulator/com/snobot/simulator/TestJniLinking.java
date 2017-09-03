@@ -1,9 +1,10 @@
-package com.snobot.simulator;
+package simulator.com.snobot.simulator;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.snobot.simulator.SnobotSimGuiVersion;
 import com.snobot.simulator.jni.SnobotSimulatorJni;
 import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni;
 

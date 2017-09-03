@@ -12,6 +12,7 @@ apply plugin: 'visual-studio'
 apply plugin: 'edu.wpi.first.NativeUtils'
 apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'jacoco'
 
 apply from: '../config.gradle'
 
@@ -19,6 +20,11 @@ sourceSets {
     main {
         java {
             srcDirs = ["snobot_sim"]
+        }
+    }
+    test {
+        java {
+            srcDirs = ["unit_tests"]
         }
     }
 }
@@ -76,7 +82,6 @@ task combineNativeLibrariesIntoOne(type: Jar) {
 }
 
 build.dependsOn packageNativeFilesInJar
-build.finalizedBy(combineNativeLibrariesIntoOne)
 
 configurations {
     native3rdPartyDeps
@@ -98,6 +103,10 @@ dependencies {
     //compile 'org.python:jython:2.7.1b3'
     compile 'org.yaml:snakeyaml:1.18'
     compile group: 'com.miglayout', name: 'miglayout-swing', version: '4.2'
+    
+    // Test
+    testCompile 'junit:junit:4.12'
+    testRuntime combineNativeLibrariesIntoOne.outputs.files
 }
 
 def jniClasses = [

@@ -1,7 +1,6 @@
 include 'snobot_sim'
 //include 'ctre_override'
 include 'snobot_sim_gui'
-include 'unit_tests'
 
 
 rootProject.name = 'CppSimulator'
