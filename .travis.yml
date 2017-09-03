@@ -25,13 +25,16 @@ script:
 - echo "Getting Maven Repo"
 - git clone --depth=50 --branch=master https://github.com/pjreiniger/maven_repo.git ../../pjreiniger/maven_repo
 - echo "Got it"
-- "./gradlew build publish --refresh-dependencies -Pmaven_repo=../../pjreiniger/maven_repo"
+- "./gradlew build jacocoTestReport publish --refresh-dependencies -Pmaven_repo=../../pjreiniger/maven_repo"
 - echo "built..."
 - ls
 - ls ..
 - ls ../..
 - ls ../../pjreiniger
 - ls ../../pjreiniger/maven_repo
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 
 deploy:
   - provider: script

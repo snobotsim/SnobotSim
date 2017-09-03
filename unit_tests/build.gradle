@@ -14,6 +14,16 @@ sourceSets {
     }
 }
 
+apply plugin: 'jacoco'
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled false
+    }
+}
+check.dependsOn jacocoTestReport
+
 
 dependencies {
     def osname = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
