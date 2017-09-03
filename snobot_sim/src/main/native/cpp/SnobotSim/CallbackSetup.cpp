@@ -2,7 +2,7 @@
 
 #include "SnobotSim/CallbackSetup.h"
 #include "MockData/EncoderData.h"
-#include "MockData/PwmData.h"
+#include "MockData/PWMData.h"
 #include "HAL/Ports.h"
 
 #include "SnobotSim/SensorActuatorRegistry.h"
