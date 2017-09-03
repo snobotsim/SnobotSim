@@ -23,8 +23,9 @@ import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni.MotorSi
 
 public class SimulatorConfigWriter
 {
-    public void writeConfig(String aOutFile)
+    public boolean writeConfig(String aOutFile)
     {
+        boolean success = false;
 
         try
         {
@@ -38,11 +39,15 @@ public class SimulatorConfigWriter
 
             Yaml yaml = new Yaml(options);
             yaml.dump(output, new FileWriter(file));
+
+            success = true;
         }
         catch (IOException e)
         {
             e.printStackTrace();
         }
+
+        return success;
     }
 
     protected Map<String, Object> dumpConfig()
