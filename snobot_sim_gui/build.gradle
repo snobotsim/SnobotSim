@@ -112,6 +112,7 @@ dependencies {
     // Test
     testCompile 'junit:junit:4.12'
     testRuntime combineNativeLibrariesIntoOne.outputs.files
+    testRuntime 'edu.wpi.first.ntcore:ntcore-jni:' + getNtCoreVersion() + ':all'
 }
 
 def jniClasses = [

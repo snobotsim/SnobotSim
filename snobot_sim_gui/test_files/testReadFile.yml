@@ -1,0 +1,10 @@
+speed_controllers:
+- name: SpeedController 0
+  handle: 0
+- name: SpeedController 1
+  handle: 1
+quad_encoders:
+- name: Encoder (0, 0)
+  single_handle: 0
+- name: Encoder (1, 1)
+  single_handle: 1

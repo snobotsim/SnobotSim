@@ -22,15 +22,17 @@ import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni;
 public class SimulatorConfigReader
 {
 
-    public void loadConfig(String aConfigFile)
+    public boolean loadConfig(String aConfigFile)
     {
         if (aConfigFile == null)
         {
             System.out.println("*******************************************");
             System.out.println("Config file not set, won't hook anything up");
             System.out.println("*******************************************");
-            return;
+            return true;
         }
+
+        boolean success = false;
 
         try
         {
@@ -38,11 +40,15 @@ public class SimulatorConfigReader
             System.out.println("Loading " + file.getAbsolutePath());
             Yaml yaml = new Yaml();
             parseConfig(yaml.load(new FileReader(file)));
+
+            success = true;
         }
         catch (IOException e)
         {
             e.printStackTrace();
         }
+
+        return success;
     }
 
     protected void parseConfig(Object aConfig)
