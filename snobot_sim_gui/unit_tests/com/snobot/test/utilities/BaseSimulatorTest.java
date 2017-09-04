@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 public class BaseSimulatorTest
 {
     private static boolean INITIALIZED = false;
+    protected static final double DOUBLE_EPSILON = .00001;
 
     private void delete(File path)
     {
@@ -36,9 +37,7 @@ public class BaseSimulatorTest
         {
             SnobotSimulatorJni.reset();
             RobotBase.initializeHardwareConfiguration();
-
-            SnobotSimulatorJni.reset();
-            RobotBase.initializeHardwareConfiguration();
+            SnobotSimulatorJni.initializeLogging(2);
 
             File directory = new File("test_output");
             if (directory.exists())

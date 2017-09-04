@@ -20,9 +20,11 @@ public class TestEncoderJni extends BaseSimulatorTest
         Assert.assertEquals(0, EncoderWrapperJni.getPortList().length);
 
         new Encoder(0, 1);
+        Assert.assertEquals("Encoder (0, 0)", EncoderWrapperJni.getName(0));
         Assert.assertEquals(1, EncoderWrapperJni.getPortList().length);
 
         new Encoder(2, 3);
+        // Assert.assertEquals("Encoder (0, 0)", EncoderWrapperJni.getName(1));
         Assert.assertEquals(2, EncoderWrapperJni.getPortList().length);
     }
 
@@ -52,7 +54,7 @@ public class TestEncoderJni extends BaseSimulatorTest
             SpeedControllerWrapperJni.updateAllSpeedControllers(.02);
         }
 
-        // Assert.assertEquals(12.0, encoder.getDistance(), .00001);
-        Assert.assertEquals(12.0, EncoderWrapperJni.getDistance(0), .00001);
+        // Assert.assertEquals(12.0, encoder.getDistance(), DOUBLE_EPSILON);
+        Assert.assertEquals(12.0, EncoderWrapperJni.getDistance(0), DOUBLE_EPSILON);
     }
 }

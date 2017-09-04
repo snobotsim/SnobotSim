@@ -261,7 +261,16 @@ model {
     }
     binaries {
         withType(NativeBinarySpec) {
-            project(':snobot_sim').addSnobotSimToLinker(it)
+        
+            if(it.targetPlatform.architecture.name != "athena")
+            {
+                project(':snobot_sim').addSnobotSimToLinker(it)
+                project(':snobot_sim').addHalSimToLinker(linker)
+            }
+            else
+            {
+                buildable = false
+            }
         }
         withType(StaticLibraryBinarySpec) {
             it.buildable = false

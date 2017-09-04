@@ -17,9 +17,11 @@ public class TestRelayJni extends BaseSimulatorTest
         Assert.assertEquals(0, RelayWrapperJni.getPortList().length);
 
         new Relay(0);
+        Assert.assertEquals("Relay 0", RelayWrapperJni.getName(0));
         Assert.assertEquals(1, RelayWrapperJni.getPortList().length);
 
         new Relay(1);
+        Assert.assertEquals("Relay 1", RelayWrapperJni.getName(1));
         Assert.assertEquals(2, RelayWrapperJni.getPortList().length);
     }
 

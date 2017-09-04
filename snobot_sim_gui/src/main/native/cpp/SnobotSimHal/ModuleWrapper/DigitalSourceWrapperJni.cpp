@@ -8,6 +8,8 @@
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/GetSensorActuatorHelper.h"
 
+#include "MockData/DIOData.h"
+
 using namespace wpi::java;
 
 extern "C"
@@ -69,7 +71,7 @@ JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_Digital
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_DigitalSourceWrapperJni_setState
   (JNIEnv *, jclass, jint portHandle, jboolean value)
 {
-    SensorActuatorRegistry::Get().GetDigitalSourceWrapper(portHandle)->Set(value);
+	HALSIM_SetDIOValue(portHandle, value);
 }
 
 /*
