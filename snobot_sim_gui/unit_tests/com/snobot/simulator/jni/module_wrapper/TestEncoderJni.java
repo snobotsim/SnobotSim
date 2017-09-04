@@ -1,30 +1,19 @@
-package simulator.com.snobot.simulator.jni.module_wrapper;
+package com.snobot.simulator.jni.module_wrapper;
 
 
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.snobot.simulator.jni.SimulationConnectorJni;
-import com.snobot.simulator.jni.SnobotSimulatorJni;
-import com.snobot.simulator.jni.module_wrapper.EncoderWrapperJni;
-import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni;
+import com.snobot.test.utilities.BaseSimulatorTest;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 
-public class TestEncoderJni
+public class TestEncoderJni extends BaseSimulatorTest
 {
-    @Before
-    public void setup()
-    {
-        SnobotSimulatorJni.reset();
-        RobotBase.initializeHardwareConfiguration();
-    }
-
     @Test
     public void testCreateEncoder()
     {

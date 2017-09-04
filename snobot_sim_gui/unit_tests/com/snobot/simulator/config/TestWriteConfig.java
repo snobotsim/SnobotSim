@@ -1,31 +1,13 @@
-package simulator.com.snobot.simulator.config;
-
-import java.io.File;
+package com.snobot.simulator.config;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
-import com.snobot.simulator.config.SimulatorConfigWriter;
-import com.snobot.simulator.jni.SnobotSimulatorJni;
+import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.MockRobot;
 
-import edu.wpi.first.wpilibj.RobotBase;
-import simulator.com.snobot.simulator.robot_tests.MockRobot;
-
-public class TestWriteConfig
+public class TestWriteConfig extends BaseSimulatorTest
 {
-    @Before
-    public void setup()
-    {
-        SnobotSimulatorJni.reset();
-        RobotBase.initializeHardwareConfiguration();
-
-        File directory = new File("test_output");
-        if (!directory.exists())
-        {
-            directory.mkdirs();
-        }
-    }
 
     @Test
     public void testWriteConfig()

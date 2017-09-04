@@ -1,5 +1,6 @@
-package simulator.com.snobot.simulator.robot_tests;
+package com.snobot.test.utilities;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Relay;
@@ -16,6 +17,7 @@ public class MockRobot extends IterativeRobot
     private SpeedController mLeftMotor;
     private Relay mRelay;
     private Solenoid mSolenoid;
+    private DigitalInput mDigitalIn;
 
     public MockRobot()
     {
@@ -27,5 +29,6 @@ public class MockRobot extends IterativeRobot
 
         mRelay = new Relay(0);
         mSolenoid = new Solenoid(0);
+        mDigitalIn = new DigitalInput(4);
     }
 }

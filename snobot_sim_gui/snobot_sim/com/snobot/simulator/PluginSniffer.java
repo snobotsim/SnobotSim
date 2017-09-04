@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 
 public class PluginSniffer
 {
-    private static final File PLUGIN_DIR = new File("user_libs");
+    private static final File DEFAULT_PLUGIN_DIR = new File("user_libs");
 
     private File[] mDiscoveredJars;
     private List<Class<?>> mCppRobots;
@@ -39,8 +39,13 @@ public class PluginSniffer
 
     public void loadPlugins() throws Exception
     {
-    	System.out.println("Searching for robot plugins in " + PLUGIN_DIR.getAbsolutePath());
-        mDiscoveredJars = PLUGIN_DIR.listFiles(new FilenameFilter()
+        loadPlugins(DEFAULT_PLUGIN_DIR);
+    }
+
+    public void loadPlugins(File pluginDir) throws Exception
+    {
+        System.out.println("Searching for robot plugins in " + pluginDir.getAbsolutePath());
+        mDiscoveredJars = pluginDir.listFiles(new FilenameFilter()
         {
 
             public boolean accept(File dir, String name)

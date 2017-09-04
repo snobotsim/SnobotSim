@@ -8,3 +8,9 @@ quad_encoders:
   single_handle: 0
 - name: Encoder (1, 1)
   single_handle: 1
+relays:
+- name: Relay 0
+  handle: 0
+solenoids:
+- name: Solenoid 0
+  handle: 0

@@ -1,25 +1,15 @@
-package simulator.com.snobot.simulator.jni.module_wrapper;
+package com.snobot.simulator.jni.module_wrapper;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
-import com.snobot.simulator.jni.SnobotSimulatorJni;
-import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni;
+import com.snobot.test.utilities.BaseSimulatorTest;
 
 import edu.wpi.first.wpilibj.Jaguar;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Talon;
 
-public class TestPwmJni
+public class TestPwmJni extends BaseSimulatorTest
 {
-    @Before
-    public void setup()
-    {
-        SnobotSimulatorJni.reset();
-        RobotBase.initializeHardwareConfiguration();
-    }
-
     @Test
     public void testCreatePwm()
     {

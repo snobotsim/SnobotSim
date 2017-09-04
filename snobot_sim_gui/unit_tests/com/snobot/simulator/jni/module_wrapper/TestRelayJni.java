@@ -1,25 +1,16 @@
-package simulator.com.snobot.simulator.jni.module_wrapper;
+package com.snobot.simulator.jni.module_wrapper;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.snobot.simulator.jni.SnobotSimulatorJni;
-import com.snobot.simulator.jni.module_wrapper.RelayWrapperJni;
+import com.snobot.test.utilities.BaseSimulatorTest;
 
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Relay.Value;
-import edu.wpi.first.wpilibj.RobotBase;
 
-public class TestRelayJni
+public class TestRelayJni extends BaseSimulatorTest
 {
-    @Before
-    public void setup()
-    {
-        SnobotSimulatorJni.reset();
-        RobotBase.initializeHardwareConfiguration();
-    }
-
     @Test
     public void testCreateRelays()
     {

@@ -1,4 +1,4 @@
-package simulator.com.snobot.simulator.config;
+package com.snobot.simulator.config;
 
 import org.junit.Assert;
 import org.junit.Test;

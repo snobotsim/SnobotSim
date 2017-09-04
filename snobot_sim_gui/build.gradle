@@ -35,7 +35,7 @@ test {
 jacocoTestReport {
     reports {
         xml.enabled true
-        html.enabled false
+        html.enabled true
     }
 }
 
@@ -120,6 +120,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testRuntime combineNativeLibrariesIntoOne.outputs.files
     testRuntime 'edu.wpi.first.ntcore:ntcore-jni:' + getNtCoreVersion() + ':all'
+    testRuntime jar.outputs.files
 }
 
 def jniClasses = [

@@ -90,40 +90,51 @@ public class JniLibraryResourceLoader
         return success;
     }
 
-    private static void createAndLoadTempLibrary(File aTempDir, String aResourceName) throws IOException
+    private static boolean createAndLoadTempLibrary(File aTempDir, String aResourceName) throws IOException
     {
         String fileName = aResourceName.substring(aResourceName.lastIndexOf("/") + 1);
         File resourceFile = new File(aTempDir, fileName);
+        boolean success = false;
 
         if (copyResourceFromJar(aResourceName, resourceFile))
         {
             System.load(resourceFile.getAbsolutePath());
+            success = true;
         }
+
+        return success;
     }
 
-    private static void loadLibrary(File aTempDir, String aLibraryName)
+    private static boolean loadLibrary(File aTempDir, String aLibraryName)
     {
         if (LOADED_LIBS.contains(aLibraryName))
         {
             // System.out.println("Already loaded " + aLibraryName);
-            return;
+            return true;
         }
+
+        boolean output = false;
         String resname = RuntimeDetector.getLibraryResource(aLibraryName);
 
         try
         {
-            createAndLoadTempLibrary(aTempDir, resname);
-            LOADED_LIBS.add(aLibraryName);
+            output = createAndLoadTempLibrary(aTempDir, resname);
+            if (output)
+            {
+                LOADED_LIBS.add(aLibraryName);
+            }
         }
         catch (Exception e)
         {
             e.printStackTrace();
             throw new RuntimeException("Could not load " + resname);
         }
+
+        return output;
     }
 
-    public static void loadLibrary(String aLibraryname)
+    public static boolean loadLibrary(String aLibraryname)
     {
-        loadLibrary(TEMP_DIR, aLibraryname);
+        return loadLibrary(TEMP_DIR, aLibraryname);
     }
 }
