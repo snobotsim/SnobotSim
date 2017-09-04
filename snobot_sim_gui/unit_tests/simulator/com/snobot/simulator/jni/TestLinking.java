@@ -15,7 +15,6 @@ public class TestLinking
     @Before
     public void setup()
     {
-        SnobotSimulatorJni.initializeLogging(0);
         SnobotSimulatorJni.reset();
         RobotBase.initializeHardwareConfiguration();
     }

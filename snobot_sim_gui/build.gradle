@@ -32,6 +32,13 @@ test {
 	ignoreFailures = true
 }
 
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled false
+    }
+}
+
 task packageNativeFilesInJar(type: Jar) {
 
     println "Packging native files"

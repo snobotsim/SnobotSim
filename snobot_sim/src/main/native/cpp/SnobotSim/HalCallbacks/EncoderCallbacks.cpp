@@ -23,12 +23,24 @@ void EncoderCallback(const char* name, void* param, const struct HAL_Value* valu
 	}
 }
 
+int gEncoderArrayIndices[26];
 
 void SnobotSim::InitializeEncoderCallbacks()
 {
 
 	for(int i = 0; i < HAL_GetNumEncoders(); ++i)
 	{
-		HALSIM_RegisterEncoderInitializedCallback(i, &EncoderCallback, new int(i), false);
+		gEncoderArrayIndices[i] = i;
+		HALSIM_RegisterEncoderInitializedCallback(i, &EncoderCallback, &gEncoderArrayIndices[i], false);
 	}
+}
+
+void SnobotSim::ResetEncoderCallbacks()
+{
+	for(int i = 0; i < HAL_GetNumEncoders(); ++i)
+	{
+		HALSIM_ResetEncoderData(i);
+	}
+
+	InitializeEncoderCallbacks();
 }

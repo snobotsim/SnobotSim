@@ -39,6 +39,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SnobotSimulatorJni_reset
   (JNIEnv *, jclass)
 {
     SensorActuatorRegistry::Get().Reset();
+	SnobotSim::ResetSnobotCallbacks();
 }
 
 /*

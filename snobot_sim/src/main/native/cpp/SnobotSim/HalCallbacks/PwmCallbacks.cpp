@@ -19,17 +19,38 @@ void PwmCallback(const char* name, void* param, const struct HAL_Value* value)
 				std::shared_ptr < SpeedControllerWrapper
 						> (new SpeedControllerWrapper(port)));
 	}
+	else if(nameStr == "Speed")
+	{
+		double speed = value->data.v_double;
+	    SensorActuatorRegistry::Get().GetSpeedControllerWrapper(port)->SetVoltagePercentage(speed);
+	}
 	else
 	{
         SNOBOT_LOG(SnobotLogging::WARN, "Unknown name " << nameStr);
 	}
 }
 
+int gPwmArrayIndices[26];
 
 void SnobotSim::InitializePwmCallbacks()
 {
 	for(int i = 0; i < HAL_GetNumPWMChannels(); ++i)
 	{
-		HALSIM_RegisterPWMInitializedCallback(i, &PwmCallback, new int(i), false);
+		gPwmArrayIndices[i] = i;
+		HALSIM_RegisterPWMInitializedCallback(i, &PwmCallback, &gPwmArrayIndices[i], false);
+		HALSIM_RegisterPWMSpeedCallback(i, &PwmCallback, &gPwmArrayIndices[i], false);
+		HALSIM_RegisterPWMRawValueCallback(i, &PwmCallback, &gPwmArrayIndices[i], false);
+		HALSIM_RegisterPWMPositionCallback(i, &PwmCallback, &gPwmArrayIndices[i], false);
 	}
 }
+
+void SnobotSim::ResetPwmCallbacks()
+{
+	for(int i = 0; i < HAL_GetNumPWMChannels(); ++i)
+	{
+		HALSIM_ResetPWMData(i);
+	}
+
+	InitializePwmCallbacks();
+}
+

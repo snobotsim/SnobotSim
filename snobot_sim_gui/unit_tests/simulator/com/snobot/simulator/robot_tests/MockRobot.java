@@ -2,6 +2,8 @@ package simulator.com.snobot.simulator.robot_tests;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 
@@ -12,6 +14,8 @@ public class MockRobot extends IterativeRobot
     private Encoder mLeftEncoder;
     private SpeedController mRightMotor;
     private SpeedController mLeftMotor;
+    private Relay mRelay;
+    private Solenoid mSolenoid;
 
     public MockRobot()
     {
@@ -20,5 +24,8 @@ public class MockRobot extends IterativeRobot
 
         mRightMotor = new Talon(0);
         mLeftMotor = new Talon(1);
+
+        mRelay = new Relay(0);
+        mSolenoid = new Solenoid(0);
     }
 }

@@ -6,18 +6,21 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.snobot.simulator.jni.SimulationConnectorJni;
 import com.snobot.simulator.jni.SnobotSimulatorJni;
 import com.snobot.simulator.jni.module_wrapper.EncoderWrapperJni;
+import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.Talon;
 
 public class TestEncoderJni
 {
     @Before
     public void setup()
     {
-        SnobotSimulatorJni.initializeLogging(0);
         SnobotSimulatorJni.reset();
         RobotBase.initializeHardwareConfiguration();
     }
@@ -39,9 +42,28 @@ public class TestEncoderJni
     {
         Assert.assertEquals(0, EncoderWrapperJni.getPortList().length);
 
-        new Encoder(4, 5);
-        // Assert.assertEquals(1, EncoderWrapperJni.getPortList().length);
+        new Encoder(0, 1);
+        Assert.assertEquals(1, EncoderWrapperJni.getPortList().length);
 
-        new Encoder(6, 5);
+        new Encoder(1, 2);
+    }
+
+    @Test
+    public void testSpeedControllerFeedback()
+    {
+        SpeedController sc = new Talon(0);
+        Encoder encoder = new Encoder(1, 2);
+
+        EncoderWrapperJni.connectSpeedController(0, 0);
+        SimulationConnectorJni.setSpeedControllerModel_Simple(0, 12);
+
+        for (int i = 0; i < 50; ++i)
+        {
+            sc.set(1);
+            SpeedControllerWrapperJni.updateAllSpeedControllers(.02);
+        }
+
+        // Assert.assertEquals(12.0, encoder.getDistance(), .00001);
+        Assert.assertEquals(12.0, EncoderWrapperJni.getDistance(0), .00001);
     }
 }
