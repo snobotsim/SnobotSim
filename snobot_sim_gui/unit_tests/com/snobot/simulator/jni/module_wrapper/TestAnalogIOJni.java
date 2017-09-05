@@ -16,12 +16,12 @@ public class TestAnalogIOJni extends BaseSimulatorTest
         Assert.assertEquals(0, AnalogSourceWrapperJni.getPortList().length);
 
         new AnalogInput(0);
-        Assert.assertEquals("Analog Source0", AnalogSourceWrapperJni.getName(0));
         Assert.assertEquals(1, AnalogSourceWrapperJni.getPortList().length);
+        Assert.assertEquals("Analog Source0", AnalogSourceWrapperJni.getName(0));
 
         new AnalogInput(3);
-        Assert.assertEquals("Analog Source3", AnalogSourceWrapperJni.getName(3));
         Assert.assertEquals(2, AnalogSourceWrapperJni.getPortList().length);
+        Assert.assertEquals("Analog Source3", AnalogSourceWrapperJni.getName(3));
     }
 
     @Test

@@ -30,4 +30,8 @@ void SnobotSim::ResetSnobotCallbacks()
     ResetPwmCallbacks();
     ResetRelayCallbacks();
     ResetSolenoidCallbacks();
+
+
+    // Re-initialize after you are done
+    InitializeSnobotCallbacks();
 }

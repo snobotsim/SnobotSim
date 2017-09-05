@@ -16,12 +16,12 @@ public class TestDigitalIOJni extends BaseSimulatorTest
         Assert.assertEquals(0, DigitalSourceWrapperJni.getPortList().length);
 
         new DigitalInput(0);
-        Assert.assertEquals("Digital Source0", DigitalSourceWrapperJni.getName(0));
         Assert.assertEquals(1, DigitalSourceWrapperJni.getPortList().length);
+        Assert.assertEquals("Digital Source0", DigitalSourceWrapperJni.getName(0));
 
         new DigitalInput(3);
-        Assert.assertEquals("Digital Source3", DigitalSourceWrapperJni.getName(3));
         Assert.assertEquals(2, DigitalSourceWrapperJni.getPortList().length);
+        Assert.assertEquals("Digital Source3", DigitalSourceWrapperJni.getName(3));
     }
 
     @Test

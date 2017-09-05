@@ -16,12 +16,12 @@ public class TestPwmJni extends BaseSimulatorTest
         Assert.assertEquals(0, SpeedControllerWrapperJni.getPortList().length);
 
         new Jaguar(0);
-        Assert.assertEquals("SpeedController 0", SpeedControllerWrapperJni.getName(0));
         Assert.assertEquals(1, SpeedControllerWrapperJni.getPortList().length);
+        Assert.assertEquals("SpeedController 0", SpeedControllerWrapperJni.getName(0));
 
         new Talon(3);
-        Assert.assertEquals("SpeedController 3", SpeedControllerWrapperJni.getName(3));
         Assert.assertEquals(2, SpeedControllerWrapperJni.getPortList().length);
+        Assert.assertEquals("SpeedController 3", SpeedControllerWrapperJni.getName(3));
     }
 
     @Test(expected = RuntimeException.class)

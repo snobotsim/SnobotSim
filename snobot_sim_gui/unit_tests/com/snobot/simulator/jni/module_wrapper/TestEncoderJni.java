@@ -20,12 +20,12 @@ public class TestEncoderJni extends BaseSimulatorTest
         Assert.assertEquals(0, EncoderWrapperJni.getPortList().length);
 
         new Encoder(0, 1);
-        Assert.assertEquals("Encoder (0, 0)", EncoderWrapperJni.getName(0));
         Assert.assertEquals(1, EncoderWrapperJni.getPortList().length);
+        Assert.assertEquals("Encoder (0, 0)", EncoderWrapperJni.getName(0));
 
         new Encoder(2, 3);
-        // Assert.assertEquals("Encoder (0, 0)", EncoderWrapperJni.getName(1));
         Assert.assertEquals(2, EncoderWrapperJni.getPortList().length);
+        // Assert.assertEquals("Encoder (0, 0)", EncoderWrapperJni.getName(1));
     }
 
     @Test(expected = RuntimeException.class)

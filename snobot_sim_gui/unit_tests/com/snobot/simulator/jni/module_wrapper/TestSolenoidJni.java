@@ -18,12 +18,12 @@ public class TestSolenoidJni extends BaseSimulatorTest
         Assert.assertEquals(0, SolenoidWrapperJni.getPortList().length);
 
         new Solenoid(0);
-        Assert.assertEquals("Solenoid 0", SolenoidWrapperJni.getName(0));
         Assert.assertEquals(1, SolenoidWrapperJni.getPortList().length);
+        Assert.assertEquals("Solenoid 0", SolenoidWrapperJni.getName(0));
 
         new Solenoid(3);
-        Assert.assertEquals("Solenoid 3", SolenoidWrapperJni.getName(3));
         Assert.assertEquals(2, SolenoidWrapperJni.getPortList().length);
+        Assert.assertEquals("Solenoid 3", SolenoidWrapperJni.getName(3));
     }
 
     @Test(expected = RuntimeException.class)
