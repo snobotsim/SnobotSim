@@ -3,6 +3,8 @@
 #include <jni.h>
 #include "com_snobot_simulator_jni_RobotStateSingletonJni.h"
 #include "SnobotSim/RobotStateSingleton.h"
+#include "MockData/MockHooks.h"
+#include "MockData/DriverStationData.h"
 
 extern "C"
 {
@@ -14,7 +16,7 @@ extern "C"
  */
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RobotStateSingletonJni_setDisabled(JNIEnv *, jclass, jboolean aBool)
 {
-    RobotStateSingleton::Get().SetDisabled(aBool);
+    HALSIM_SetDriverStationEnabled(!aBool);
 }
 
 /*
@@ -24,7 +26,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RobotStateSingletonJni_setD
  */
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RobotStateSingletonJni_setAutonomous(JNIEnv *, jclass, jboolean aBool)
 {
-    RobotStateSingleton::Get().SetAutonomous(aBool);
+    HALSIM_SetDriverStationAutonomous(aBool);
 }
 
 /*
@@ -34,7 +36,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RobotStateSingletonJni_setA
  */
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RobotStateSingletonJni_setTest(JNIEnv *, jclass, jboolean aBool)
 {
-    RobotStateSingleton::Get().SetTest(aBool);
+    HALSIM_SetDriverStationTest(aBool);
 }
 
 /*
@@ -55,7 +57,7 @@ JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_RobotStateSingletonJni_g
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RobotStateSingletonJni_waitForProgramToStart
   (JNIEnv *, jclass)
 {
-	RobotStateSingleton::Get().WaitForProgramToStart();
+    HALSIM_WaitForProgramStart();
 }
 
 /*
