@@ -22,7 +22,7 @@ artifacts:
 - path: build/maven_repo/com/snobot/simulator/snobot_sim_gui/**/snobot_sim_gui-*-javadeps.zip
   name: javadeps
 
-- path: build/maven_repo/com/snobot/simulator/snobot_sim_gui/**/snobot_sim_gui-*-uber_native*.jar
+- path: build/maven_repo/com/snobot/simulator/snobot_sim_gui/**/snobot_sim_gui-*-uber_native-*.jar
   name: native
 
 - path: build/maven_repo/com/snobot/simulator/snobot_sim_gui_application/**/snobot_sim_gui_application*.zip
