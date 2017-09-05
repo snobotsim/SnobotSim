@@ -7,10 +7,12 @@
 #include "SnobotSim/HalCallbacks/PwmCallbacks.h"
 #include "SnobotSim/HalCallbacks/RelayCallbacks.h"
 #include "SnobotSim/HalCallbacks/SolenoidCallbacks.h"
+#include "SnobotSim/Logging/SnobotLogger.h"
 
 
 void SnobotSim::InitializeSnobotCallbacks()
 {
+    SNOBOT_LOG(SnobotLogging::INFO, "Initializing Callbacks");
 	InitializeAnalogIOCallbacks();
 	InitializeDigitalIOCallbacks();
 	InitializeEncoderCallbacks();
@@ -21,6 +23,7 @@ void SnobotSim::InitializeSnobotCallbacks()
 
 void SnobotSim::ResetSnobotCallbacks()
 {
+    SNOBOT_LOG(SnobotLogging::INFO, "Resetting Callbacks");
 	ResetAnalogIOCallbacks();
 	ResetDigitalIOCallbacks();
 	ResetEncoderCallbacks();

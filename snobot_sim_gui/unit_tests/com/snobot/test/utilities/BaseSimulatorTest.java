@@ -35,9 +35,7 @@ public class BaseSimulatorTest
     {
         if (!INITIALIZED)
         {
-            SnobotSimulatorJni.reset();
-            RobotBase.initializeHardwareConfiguration();
-            SnobotSimulatorJni.initializeLogging(2);
+            SnobotSimulatorJni.initializeLogging(0);
 
             File directory = new File("test_output");
             if (directory.exists())
@@ -46,5 +44,8 @@ public class BaseSimulatorTest
             }
             directory.mkdirs();
         }
+
+        SnobotSimulatorJni.reset();
+        RobotBase.initializeHardwareConfiguration();
     }
 }

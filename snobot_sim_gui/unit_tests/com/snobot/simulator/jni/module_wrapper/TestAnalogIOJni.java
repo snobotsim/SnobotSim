@@ -61,7 +61,9 @@ public class TestAnalogIOJni extends BaseSimulatorTest
     @Test
     public void testAnalogIn()
     {
+        Assert.assertEquals(0, AnalogSourceWrapperJni.getPortList().length);
         AnalogInput input = new AnalogInput(0);
+        Assert.assertEquals(1, AnalogSourceWrapperJni.getPortList().length);
 
         Assert.assertEquals(0, input.getVoltage(), DOUBLE_EPSILON);
         Assert.assertEquals(0, AnalogSourceWrapperJni.getVoltage(0), DOUBLE_EPSILON);
