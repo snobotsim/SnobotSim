@@ -4,9 +4,9 @@ build_script:
 - cmd: gradlew.bat build publish -Pmaven_repo=build/maven_repo
 
 after_success:
-- "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
-- pip install codecov
-- codecov -f "snobot_sim_gui/build/reports/jacoco/test/jacocoTestReport.xml"
+- cmd: "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
+- cmd: pip install codecov
+- cmd: codecov -f "snobot_sim_gui/build/reports/jacoco/test/jacocoTestReport.xml"
 
 artifacts:
 
