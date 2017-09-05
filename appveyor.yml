@@ -2,7 +2,16 @@ version: 1.0.{build}
 image: Visual Studio 2015
 build_script:
 - cmd: gradlew.bat build publish -Pmaven_repo=build/maven_repo
+
+after_success:
+- "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
+- pip install codecov
+- codecov -f "snobot_sim_gui/build/reports/jacoco/test/jacocoTestReport.xml"
+
 artifacts:
+
+- path: snobot_sim_gui/build/test-results
+  name: testResults
 
 - path: build/maven_repo/com/snobot/simulator/snobot_sim/**/snobot_sim*.zip
   name: snobotSimJars
@@ -13,7 +22,7 @@ artifacts:
 - path: build/maven_repo/com/snobot/simulator/snobot_sim_gui/**/snobot_sim_gui-*-javadeps.zip
   name: javadeps
 
-- path: build/maven_repo/com/snobot/simulator/snobot_sim_native/**/snobot_sim_native-*-uber_native*.jar
+- path: build/maven_repo/com/snobot/simulator/snobot_sim_gui/**/snobot_sim_gui-*-uber_native*.jar
   name: native
 
 - path: build/maven_repo/com/snobot/simulator/snobot_sim_gui_application/**/snobot_sim_gui_application*.zip

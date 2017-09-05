@@ -33,8 +33,8 @@ script:
 - ls ../../pjreiniger
 - ls ../../pjreiniger/maven_repo
 
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+//after_success:
+//  - bash <(curl -s https://codecov.io/bash)
 
 deploy:
   - provider: script
