@@ -17,8 +17,8 @@
 class EXPORT_ NavxSimulator
 {
 public:
-	NavxSimulator(int aPort);
-	virtual ~NavxSimulator();
+    NavxSimulator(int aPort);
+    virtual ~NavxSimulator();
 
 protected:
 
@@ -31,11 +31,11 @@ protected:
     void GetCurrentData(uint8_t* aBuffer, int aFirstAddress);
     void GetWriteConfig(uint8_t* aBuffer);
 
-	std::shared_ptr<GyroWrapper> mYawGyro;
-	std::shared_ptr<GyroWrapper> mPitchGyro;
-	std::shared_ptr<GyroWrapper> mRollGyro;
+    std::shared_ptr<GyroWrapper> mYawGyro;
+    std::shared_ptr<GyroWrapper> mPitchGyro;
+    std::shared_ptr<GyroWrapper> mRollGyro;
 
-	ThreeAxisAccelerometer mThreeAxisAccelerometer;
+    ThreeAxisAccelerometer mThreeAxisAccelerometer;
 };
 
 #endif /* NAVXSIMULATOR_H_ */

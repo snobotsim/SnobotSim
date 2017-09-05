@@ -27,7 +27,7 @@ RobotStateSingleton::~RobotStateSingleton()
 
 RobotStateSingleton& RobotStateSingleton::Get()
 {
-	return sINSTANCE;
+    return sINSTANCE;
 }
 
 void RobotStateSingleton::Reset()
@@ -55,7 +55,7 @@ void RobotStateSingleton::WaitForProgramToStart()
     {
         SNOBOT_LOG(SnobotLogging::INFO, "Waiting for robot to initialize...");
         std::unique_lock<std::mutex> lk(mProgramStartedMutex);
-     	mProgramStartedCv.wait(lk);
+         mProgramStartedCv.wait(lk);
     }
     else
     {

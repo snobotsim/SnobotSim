@@ -58,15 +58,15 @@ int NullI2CWrapper::Transaction(
 
 
 int32_t NullI2CWrapper::Read(
-		int32_t deviceAddress, uint8_t* buffer, int32_t count)
+        int32_t deviceAddress, uint8_t* buffer, int32_t count)
 {
     SNOBOT_LOG(SnobotLogging::WARN, "Null Wrapper: " << __FUNCTION_NAME__);
-	return count;
+    return count;
 }
 
 int32_t NullI2CWrapper::Write(
-		int32_t deviceAddress, uint8_t* dataToSend, int32_t sendSize)
+        int32_t deviceAddress, uint8_t* dataToSend, int32_t sendSize)
 {
     SNOBOT_LOG(SnobotLogging::WARN, "Null Wrapper: " << __FUNCTION_NAME__);
-	return sendSize;
+    return sendSize;
 }

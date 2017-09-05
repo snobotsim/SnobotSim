@@ -3,6 +3,6 @@
 
 namespace SnobotSim
 {
-	EXPORT_ void InitializeSolenoidCallbacks();
-	EXPORT_ void ResetSolenoidCallbacks();
+    EXPORT_ void InitializeSolenoidCallbacks();
+    EXPORT_ void ResetSolenoidCallbacks();
 }

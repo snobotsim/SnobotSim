@@ -9,7 +9,7 @@
 #include "SnobotSim/Logging/SnobotLogger.h"
 
 I2CNavxSimulator::I2CNavxSimulator(int aPort)  :
-	NavxSimulator(aPort)
+    NavxSimulator(aPort)
 {
 
 }
@@ -30,29 +30,29 @@ int32_t I2CNavxSimulator::Transaction(
 
 
 int32_t I2CNavxSimulator::Read(
-		int32_t deviceAddress, uint8_t* buffer, int32_t count)
+        int32_t deviceAddress, uint8_t* buffer, int32_t count)
 {
-	if(mLastWriteAddress == 0x00)
-	{
-		GetWriteConfig(buffer);
-	}
-	else if(mLastWriteAddress == 0x04 && count < 127)
-	{
-		GetCurrentData(buffer, 0x04);
-	}
-	else
-	{
-		SNOBOT_LOG(SnobotLogging::CRITICAL,  "Unknown device address " << mLastWriteAddress);
-	}
+    if(mLastWriteAddress == 0x00)
+    {
+        GetWriteConfig(buffer);
+    }
+    else if(mLastWriteAddress == 0x04 && count < 127)
+    {
+        GetCurrentData(buffer, 0x04);
+    }
+    else
+    {
+        SNOBOT_LOG(SnobotLogging::CRITICAL,  "Unknown device address " << mLastWriteAddress);
+    }
 
-	return count;
+    return count;
 }
 
 int32_t I2CNavxSimulator::Write(
-		int32_t deviceAddress, uint8_t* dataToSend, int32_t sendSize)
+        int32_t deviceAddress, uint8_t* dataToSend, int32_t sendSize)
 {
-	mLastWriteAddress = dataToSend[0];
+    mLastWriteAddress = dataToSend[0];
 
-	return 0;
+    return 0;
 }
 

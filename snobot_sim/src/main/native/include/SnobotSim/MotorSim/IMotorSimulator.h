@@ -89,7 +89,7 @@ public:
 
     virtual double GetCurrent() override
     {
-    	return 0;
+        return 0;
     }
 
     virtual void Reset() override

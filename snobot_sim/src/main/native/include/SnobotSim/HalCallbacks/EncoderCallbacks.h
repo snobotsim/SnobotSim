@@ -4,5 +4,5 @@
 namespace SnobotSim
 {
     EXPORT_ void InitializeEncoderCallbacks();
-	EXPORT_ void ResetEncoderCallbacks();
+    EXPORT_ void ResetEncoderCallbacks();
 }

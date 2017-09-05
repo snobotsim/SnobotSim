@@ -14,8 +14,8 @@
 class EXPORT_ SpiNavxSimulator : public ISpiWrapper, public NavxSimulator
 {
 public:
-	SpiNavxSimulator(int aPort);
-	virtual ~SpiNavxSimulator();
+    SpiNavxSimulator(int aPort);
+    virtual ~SpiNavxSimulator();
 
     double GetAccumulatorValue() override;
     void ResetAccumulatorValue() override;
@@ -27,7 +27,7 @@ protected:
 
     uint8_t GetCRC(uint8_t* buffer, int length);
 
-	uint8_t mLastWriteAddress;
+    uint8_t mLastWriteAddress;
 };
 
 #endif /* SPINAVXSIMULATOR_H_ */

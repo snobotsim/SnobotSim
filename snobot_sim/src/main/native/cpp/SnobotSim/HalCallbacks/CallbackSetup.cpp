@@ -13,21 +13,21 @@
 void SnobotSim::InitializeSnobotCallbacks()
 {
     SNOBOT_LOG(SnobotLogging::INFO, "Initializing Callbacks");
-	InitializeAnalogIOCallbacks();
-	InitializeDigitalIOCallbacks();
-	InitializeEncoderCallbacks();
-	InitializePwmCallbacks();
-	InitializeRelayCallbacks();
-	InitializeSolenoidCallbacks();
+    InitializeAnalogIOCallbacks();
+    InitializeDigitalIOCallbacks();
+    InitializeEncoderCallbacks();
+    InitializePwmCallbacks();
+    InitializeRelayCallbacks();
+    InitializeSolenoidCallbacks();
 }
 
 void SnobotSim::ResetSnobotCallbacks()
 {
     SNOBOT_LOG(SnobotLogging::INFO, "Resetting Callbacks");
-	ResetAnalogIOCallbacks();
-	ResetDigitalIOCallbacks();
-	ResetEncoderCallbacks();
-	ResetPwmCallbacks();
-	ResetRelayCallbacks();
-	ResetSolenoidCallbacks();
+    ResetAnalogIOCallbacks();
+    ResetDigitalIOCallbacks();
+    ResetEncoderCallbacks();
+    ResetPwmCallbacks();
+    ResetRelayCallbacks();
+    ResetSolenoidCallbacks();
 }

@@ -45,17 +45,17 @@ public:
     bool GetTest() const;
     
     
-	void WaitForProgramToStart();
-	
-	void HandleRobotInitialized();
-	
-	void WaitForNextControlLoop();
+    void WaitForProgramToStart();
+    
+    void HandleRobotInitialized();
+    
+    void WaitForNextControlLoop();
 
 protected:
 
-	void RunUpdateLoopThread();
+    void RunUpdateLoopThread();
 
-	bool mRobotStarted;
+    bool mRobotStarted;
     bool mEnabled;
     bool mAutonomous;
     bool mTest;
@@ -63,13 +63,13 @@ protected:
 
     std::chrono::time_point<std::chrono::system_clock> mTimeEnabled;
     
-	std::condition_variable mProgramStartedCv;
-	std::mutex mProgramStartedMutex;
+    std::condition_variable mProgramStartedCv;
+    std::mutex mProgramStartedMutex;
     
-	std::condition_variable mControlLoopCv;
-	std::mutex mControlLoopMutex;
-	
-	std::thread mUpdateThread;
+    std::condition_variable mControlLoopCv;
+    std::mutex mControlLoopMutex;
+    
+    std::thread mUpdateThread;
 };
 
 #endif /* ROBOTSTATESINGLETON_H_ */

@@ -13,8 +13,8 @@
 class EXPORT_ SerialNavxSimulator : public NavxSimulator
 {
 public:
-	SerialNavxSimulator(int aPort);
-	virtual ~SerialNavxSimulator();
+    SerialNavxSimulator(int aPort);
+    virtual ~SerialNavxSimulator();
 };
 
 #endif /* SERIALNAVXSIMULATOR_H_ */

@@ -15,7 +15,7 @@ SensorActuatorRegistry* SensorActuatorRegistry::sInstance =
 
 SensorActuatorRegistry& SensorActuatorRegistry::Get()
 {
-	return *sInstance;
+    return *sInstance;
 }
     
 SensorActuatorRegistry::SensorActuatorRegistry() :
@@ -32,7 +32,7 @@ SensorActuatorRegistry::~SensorActuatorRegistry()
 
 void SensorActuatorRegistry::Reset()
 {
-	hal::HandleBase::ResetGlobalHandles();
+    hal::HandleBase::ResetGlobalHandles();
 
     mSpeedControllerWrapperMap.clear();
     mRelayWrapperMap.clear();

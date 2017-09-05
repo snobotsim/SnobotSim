@@ -14,58 +14,58 @@
 
 namespace StackTraceHelper
 {
-	class MyStackWalker : public StackWalker
-	{
-	public:
+    class MyStackWalker : public StackWalker
+    {
+    public:
 
-		MyStackWalker() :
-			mIsCallstackEntry (false)
-		{
+        MyStackWalker() :
+            mIsCallstackEntry (false)
+        {
 
-		}
+        }
 
-		virtual void OnCallstackEntry(CallstackEntryType eType, CallstackEntry &entry)
-		{
-			mIsCallstackEntry = true;
-			StackWalker::OnCallstackEntry(eType, entry);
-			mIsCallstackEntry = false;
+        virtual void OnCallstackEntry(CallstackEntryType eType, CallstackEntry &entry)
+        {
+            mIsCallstackEntry = true;
+            StackWalker::OnCallstackEntry(eType, entry);
+            mIsCallstackEntry = false;
 
-		}
+        }
 
-	  virtual void OnOutput(LPCSTR szText)
-	  {
-		  std::string message = szText;
-		  mFullStream << message;
+      virtual void OnOutput(LPCSTR szText)
+      {
+          std::string message = szText;
+          mFullStream << message;
 
-		  if(mIsCallstackEntry)//message.find("ERROR") == std::string::npos)
-		  {
-			  mFilteredStream << message;
-		  }
+          if(mIsCallstackEntry)//message.find("ERROR") == std::string::npos)
+          {
+              mFilteredStream << message;
+          }
 
 
-	  }
+      }
 
-	  std::stringstream mFullStream;
-	  std::stringstream mFilteredStream;
-	  bool mIsCallstackEntry;
-	};
+      std::stringstream mFullStream;
+      std::stringstream mFilteredStream;
+      bool mIsCallstackEntry;
+    };
 
-	void PrintStackTracker()
-	{
-		std::string fullDumpFilename = "callstack_dump.txt";
+    void PrintStackTracker()
+    {
+        std::string fullDumpFilename = "callstack_dump.txt";
 
-		MyStackWalker sw;
-		sw.ShowCallstack();
+        MyStackWalker sw;
+        sw.ShowCallstack();
 
-		std::ofstream fullDump(fullDumpFilename);
-		fullDump << sw.mFullStream.str() << std::endl;
+        std::ofstream fullDump(fullDumpFilename);
+        fullDump << sw.mFullStream.str() << std::endl;
 
-		SNOBOT_LOG(SnobotLogging::CRITICAL,
-				"\nDumping stack trace... Full windows trace can be seen at " << fullDumpFilename << ".\n\n" <<
-				sw.mFilteredStream.str())
-	}
+        SNOBOT_LOG(SnobotLogging::CRITICAL,
+                "\nDumping stack trace... Full windows trace can be seen at " << fullDumpFilename << ".\n\n" <<
+                sw.mFilteredStream.str())
+    }
 
-	/*
+    /*
 struct module_data {
     std::string image_name;
     std::string module_name;
@@ -281,10 +281,10 @@ void *load_modules_symbols(HANDLE process, DWORD pid) {
 
 namespace StackTraceHelper
 {
-	void PrintStackTracker()
-	{
-		LOG_UNSUPPORTED();
-	}
+    void PrintStackTracker()
+    {
+        LOG_UNSUPPORTED();
+    }
 }
 
 #endif

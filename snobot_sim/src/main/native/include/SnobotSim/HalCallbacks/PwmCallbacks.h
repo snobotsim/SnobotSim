@@ -4,5 +4,5 @@
 namespace SnobotSim
 {
     EXPORT_ void InitializePwmCallbacks();
-	EXPORT_ void ResetPwmCallbacks();
+    EXPORT_ void ResetPwmCallbacks();
 }

@@ -4,5 +4,5 @@
 namespace SnobotSim
 {
     EXPORT_ void InitializeAnalogIOCallbacks();
-	EXPORT_ void ResetAnalogIOCallbacks();
+    EXPORT_ void ResetAnalogIOCallbacks();
 }

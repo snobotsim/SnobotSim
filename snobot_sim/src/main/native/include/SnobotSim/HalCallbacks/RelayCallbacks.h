@@ -3,6 +3,6 @@
 
 namespace SnobotSim
 {
-	EXPORT_ void InitializeRelayCallbacks();
-	EXPORT_ void ResetRelayCallbacks();
+    EXPORT_ void InitializeRelayCallbacks();
+    EXPORT_ void ResetRelayCallbacks();
 }

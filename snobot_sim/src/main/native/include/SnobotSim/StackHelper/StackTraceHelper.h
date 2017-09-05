@@ -2,5 +2,5 @@
 
 namespace StackTraceHelper
 {
-	void PrintStackTracker();
+    void PrintStackTracker();
 }

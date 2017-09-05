@@ -13,23 +13,23 @@
 
 struct EXPORT_ JoystickInformation
 {
-	static const int kMaxJoystickAxes = 12;
-	static const int kMaxJoystickPOVs = 12;
+    static const int kMaxJoystickAxes = 12;
+    static const int kMaxJoystickPOVs = 12;
 
-	struct JoystickAxes {
-	  int16_t count;
-	  float axes[kMaxJoystickAxes];
-	};
+    struct JoystickAxes {
+      int16_t count;
+      float axes[kMaxJoystickAxes];
+    };
 
-	struct JoystickPOVs {
-	  int16_t count;
-	  int16_t povs[kMaxJoystickPOVs];
-	};
+    struct JoystickPOVs {
+      int16_t count;
+      int16_t povs[kMaxJoystickPOVs];
+    };
 
-	struct JoystickButtons {
-	  uint32_t buttons;
-	  uint8_t count;
-	};
+    struct JoystickButtons {
+      uint32_t buttons;
+      uint8_t count;
+    };
 
     JoystickAxes mAxes;
     JoystickPOVs mPovs;

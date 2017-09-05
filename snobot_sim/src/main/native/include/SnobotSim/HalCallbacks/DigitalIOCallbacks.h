@@ -4,5 +4,5 @@
 namespace SnobotSim
 {
     EXPORT_ void InitializeDigitalIOCallbacks();
-	EXPORT_ void ResetDigitalIOCallbacks();
+    EXPORT_ void ResetDigitalIOCallbacks();
 }
