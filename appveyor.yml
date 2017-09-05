@@ -6,7 +6,7 @@ build_script:
 after_build:
 - cmd: "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
 - cmd: pip install codecov
-- cmd: codecov -f "snobot_sim_gui/build/reports/jacoco/test"
+- cmd: codecov -f "snobot_sim_gui/build/reports/jacoco/test/jacocoTestReport.xml"
 
 artifacts:
 
