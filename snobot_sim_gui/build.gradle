@@ -90,6 +90,7 @@ task combineNativeLibrariesIntoOne(type: Jar) {
     from(hal_path) {
         into os_name + "/x86-64/"
         include "*.dll"
+        include "*.so"
     }
 }
 
