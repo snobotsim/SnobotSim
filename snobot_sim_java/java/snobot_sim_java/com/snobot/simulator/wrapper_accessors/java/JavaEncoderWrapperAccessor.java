@@ -23,7 +23,7 @@ public class JavaEncoderWrapperAccessor extends BaseWrapperAccessor<EncoderWrapp
     @Override
     public void connectSpeedController(int aEncoderHandle, int aSpeedControllerHandle)
     {
-        throw new UnsupportedOperationException();
+
     }
 
     @Override

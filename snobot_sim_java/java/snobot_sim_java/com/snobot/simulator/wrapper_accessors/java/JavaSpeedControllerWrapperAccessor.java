@@ -48,21 +48,18 @@ public class JavaSpeedControllerWrapperAccessor extends BaseWrapperAccessor<Spee
     @Override
     public double getMotorSimGravitationalModelConfig(int aPort)
     {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
     public MotorSimType getMotorSimType(int aHandle)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return MotorSimType.GravitationalLoad;
     }
 
     @Override
     public DcMotorModelConfig getMotorConfig(int aPort)
     {
-        // TODO Auto-generated method stub
         return null;
     }
 

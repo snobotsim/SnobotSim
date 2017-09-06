@@ -5,8 +5,13 @@ import com.snobot.simulator.wrapper_accessors.java.JavaDataAccessor;
 
 public class DefaultDataAccessorFactory
 {
+    private static final boolean sINITIALIZED = false;
+
     public static void initalize()
     {
-        DataAccessorFactory.setAccessor(new JavaDataAccessor());
+        if (!sINITIALIZED)
+        {
+            DataAccessorFactory.setAccessor(new JavaDataAccessor());
+        }
     }
 }

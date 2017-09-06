@@ -4,9 +4,9 @@ import java.io.File;
 
 import org.junit.Before;
 
+import com.snobot.simulator.DefaultDataAccessorFactory;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor.SnobotLogLevel;
-import com.snobot.simulator.wrapper_accessors.java.JavaDataAccessor;
 
 import edu.wpi.first.wpilibj.RobotBase;
 
@@ -37,7 +37,7 @@ public class BaseSimulatorTest
     {
         if (!INITIALIZED)
         {
-            DataAccessorFactory.setAccessor(new JavaDataAccessor());
+            DefaultDataAccessorFactory.initalize();
             DataAccessorFactory.getInstance().getSimulatorDataAccessor().setLogLevel(SnobotLogLevel.DEBUG);
 
             File directory = new File("test_output");

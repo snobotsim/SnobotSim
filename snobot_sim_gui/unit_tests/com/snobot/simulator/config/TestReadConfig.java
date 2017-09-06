@@ -4,22 +4,31 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
-import com.snobot.simulator.wrapper_accessors.java.JavaDataAccessor;
+import com.snobot.simulator.DefaultDataAccessorFactory;
 
 
 public class TestReadConfig
 {
+    public static final int sTEST_PARAMETER = 5;
+
     @Before
     public void setup()
     {
-        DataAccessorFactory.setAccessor(new JavaDataAccessor());
+        DefaultDataAccessorFactory.initalize();
     }
 
     @Test
     public void testReadConfig()
     {
         String file = "test_files/testReadFile.yml";
+        SimulatorConfigReader reader = new SimulatorConfigReader();
+        Assert.assertTrue(reader.loadConfig(file));
+    }
+
+    @Test
+    public void testReadEmptyFile()
+    {
+        String file = "test_files/emptyFile.yml";
         SimulatorConfigReader reader = new SimulatorConfigReader();
         Assert.assertTrue(reader.loadConfig(file));
     }

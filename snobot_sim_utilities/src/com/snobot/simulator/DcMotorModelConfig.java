@@ -25,7 +25,7 @@ public class DcMotorModelConfig
     // Indicates the motor has a brake, i.e. when givin 0 volts it will stay put
     public boolean mHasBrake;
 
-    private DcMotorModelConfig(
+    public DcMotorModelConfig(
             String aMotorType,
             int aNumMotors,
             double aGearReduction,
@@ -51,7 +51,7 @@ public class DcMotorModelConfig
                 false);
     }
 
-    private DcMotorModelConfig(
+    public DcMotorModelConfig(
             String aMotorType,
             int aNumMotors,
             double aGearReduction,
