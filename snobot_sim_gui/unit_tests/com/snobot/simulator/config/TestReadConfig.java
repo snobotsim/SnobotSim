@@ -1,13 +1,20 @@
 package com.snobot.simulator.config;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
-import com.snobot.simulator.config.SimulatorConfigReader;
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
+import com.snobot.simulator.wrapper_accessors.jni.JniDataAccessor;
 
 
 public class TestReadConfig
 {
+    @Before
+    public void setup()
+    {
+        DataAccessorFactory.setAccessor(new JniDataAccessor());
+    }
 
     @Test
     public void testReadConfig()

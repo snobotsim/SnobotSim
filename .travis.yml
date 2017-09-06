@@ -8,6 +8,9 @@ matrix:
     
   //- os: osx
   //  osx_image: xcode8
+  
+notifications:
+  email: false
       
 addons:
   apt:

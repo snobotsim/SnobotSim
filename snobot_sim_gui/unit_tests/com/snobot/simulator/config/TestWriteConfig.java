@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.snobot.test.utilities.BaseSimulatorTest;
-import com.snobot.test.utilities.MockRobot;
 
 public class TestWriteConfig extends BaseSimulatorTest
 {
@@ -14,7 +13,7 @@ public class TestWriteConfig extends BaseSimulatorTest
     {
         String dump_file = "test_output/testWriteFile.yml";
 
-        new MockRobot();
+        // new MockRobot();
 
         SimulatorConfigWriter writer = new SimulatorConfigWriter();
         Assert.assertTrue(writer.writeConfig(dump_file));

@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
 import com.snobot.simulator.gui.module_widget.settings.SimpleSettingsDialog;
-import com.snobot.simulator.jni.module_wrapper.SolenoidWrapperJni;
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 public class SolenoidGraphicDisplay extends BaseWidgetDisplay<Integer, SolenoidDisplay>
 {
@@ -28,7 +28,7 @@ public class SolenoidGraphicDisplay extends BaseWidgetDisplay<Integer, SolenoidD
         {
             if (pair.getValue().isVisible())
             {
-                boolean state = SolenoidWrapperJni.get(pair.getKey());
+                boolean state = DataAccessorFactory.getInstance().getSolenoidAccessor().get(pair.getKey());
                 pair.getValue().updateDisplay(state);
             }
         }
@@ -49,7 +49,7 @@ public class SolenoidGraphicDisplay extends BaseWidgetDisplay<Integer, SolenoidD
             @Override
             protected void onSubmit()
             {
-                SolenoidWrapperJni.setName(aKey, getComponentName());
+                DataAccessorFactory.getInstance().getSolenoidAccessor().setName(aKey, getComponentName());
                 mLabelMap.get(aKey).setText(getComponentName());
             }
         };
@@ -62,7 +62,7 @@ public class SolenoidGraphicDisplay extends BaseWidgetDisplay<Integer, SolenoidD
     @Override
     protected String getName(Integer aKey)
     {
-        return SolenoidWrapperJni.getName(aKey);
+        return DataAccessorFactory.getInstance().getSolenoidAccessor().getName(aKey);
     }
 }
 

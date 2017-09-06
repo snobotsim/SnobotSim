@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
 import com.snobot.simulator.gui.module_widget.settings.SimpleSettingsDialog;
-import com.snobot.simulator.jni.module_wrapper.DigitalSourceWrapperJni;
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 public class DigitalSourceGraphicDisplay extends BaseWidgetDisplay<Integer, DigitalSourceWrapperDisplay>
 {
@@ -27,7 +27,7 @@ public class DigitalSourceGraphicDisplay extends BaseWidgetDisplay<Integer, Digi
     {
         for (Entry<Integer, DigitalSourceWrapperDisplay> pair : mWidgetMap.entrySet())
         {
-            boolean value = DigitalSourceWrapperJni.getState(pair.getKey());
+            boolean value = DataAccessorFactory.getInstance().getDigitalAccessor().getState(pair.getKey());
             pair.getValue().updateDisplay(value);
         }
     }
@@ -35,7 +35,7 @@ public class DigitalSourceGraphicDisplay extends BaseWidgetDisplay<Integer, Digi
     @Override
     protected DigitalSourceWrapperDisplay createWidget(Integer aKey)
     {
-        if (DigitalSourceWrapperJni.getWantsHidden(aKey))
+        if (DataAccessorFactory.getInstance().getDigitalAccessor().getWantsHidden(aKey))
         {
             return null;
         }
@@ -50,7 +50,7 @@ public class DigitalSourceGraphicDisplay extends BaseWidgetDisplay<Integer, Digi
             @Override
             protected void onSubmit()
             {
-                DigitalSourceWrapperJni.setName(aKey, getComponentName());
+                DataAccessorFactory.getInstance().getDigitalAccessor().setName(aKey, getComponentName());
                 mLabelMap.get(aKey).setText(getComponentName());
             }
         };
@@ -63,7 +63,7 @@ public class DigitalSourceGraphicDisplay extends BaseWidgetDisplay<Integer, Digi
     @Override
     protected String getName(Integer aKey)
     {
-        return DigitalSourceWrapperJni.getName(aKey);
+        return DataAccessorFactory.getInstance().getDigitalAccessor().getName(aKey);
     }
 }
 

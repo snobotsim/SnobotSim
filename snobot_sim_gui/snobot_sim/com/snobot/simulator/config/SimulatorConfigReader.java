@@ -12,11 +12,7 @@ import org.yaml.snakeyaml.Yaml;
 import com.snobot.simulator.DcMotorModelConfig;
 import com.snobot.simulator.jni.MotorConfigFactoryJni;
 import com.snobot.simulator.jni.SimulationConnectorJni;
-import com.snobot.simulator.jni.module_wrapper.DigitalSourceWrapperJni;
-import com.snobot.simulator.jni.module_wrapper.EncoderWrapperJni;
-import com.snobot.simulator.jni.module_wrapper.RelayWrapperJni;
-import com.snobot.simulator.jni.module_wrapper.SolenoidWrapperJni;
-import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni;
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 @SuppressWarnings("unchecked")
 public class SimulatorConfigReader
@@ -94,7 +90,7 @@ public class SimulatorConfigReader
             int handle = getIntHandle(solenoidConfig.get("handle"));
             if (solenoidConfig.containsKey("name"))
             {
-                SolenoidWrapperJni.setName(handle, solenoidConfig.get("name").toString());
+                DataAccessorFactory.getInstance().getSolenoidAccessor().setName(handle, solenoidConfig.get("name").toString());
             }
         }
     }
@@ -106,7 +102,7 @@ public class SimulatorConfigReader
             int handle = getIntHandle(digitalConfig.get("handle"));
             if (digitalConfig.containsKey("name"))
             {
-                DigitalSourceWrapperJni.setName(handle, digitalConfig.get("name").toString());
+                DataAccessorFactory.getInstance().getDigitalAccessor().setName(handle, digitalConfig.get("name").toString());
             }
         }
     }
@@ -118,7 +114,7 @@ public class SimulatorConfigReader
             int handle = getIntHandle(relayConfig.get("handle"));
             if (relayConfig.containsKey("name"))
             {
-                RelayWrapperJni.setName(handle, relayConfig.get("name").toString());
+                DataAccessorFactory.getInstance().getRelayAccessor().setName(handle, relayConfig.get("name").toString());
             }
         }
     }
@@ -130,7 +126,7 @@ public class SimulatorConfigReader
             int handle = getIntHandle(scConfig.get("handle"));
             if (scConfig.containsKey("name"))
             {
-                SpeedControllerWrapperJni.setName(handle, scConfig.get("name").toString());
+                DataAccessorFactory.getInstance().getSpeedControllerAccessor().setName(handle, scConfig.get("name").toString());
             }
 
             if (scConfig.containsKey("motor_sim"))
@@ -148,13 +144,13 @@ public class SimulatorConfigReader
 
             if (encConfig.containsKey("name"))
             {
-                EncoderWrapperJni.setName(handle, encConfig.get("name").toString());
+                DataAccessorFactory.getInstance().getEncoderAccessor().setName(handle, encConfig.get("name").toString());
             }
 
             if (encConfig.containsKey("speed_controller_handle"))
             {
                 int speedControllerHandle = getIntHandle(encConfig.get("speed_controller_handle"));
-                EncoderWrapperJni.connectSpeedController(handle, speedControllerHandle);
+                DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(handle, speedControllerHandle);
             }
         }
     }
@@ -168,7 +164,7 @@ public class SimulatorConfigReader
             int handleA = getIntHandle(aConfig.get(aDoubleHandleAKey));
             int handleB = getIntHandle(aConfig.get(aDoubleHandleBKey));
 
-            handle = EncoderWrapperJni.getHandle(handleA, handleB);
+            handle = DataAccessorFactory.getInstance().getEncoderAccessor().getHandle(handleA, handleB);
         }
         else if (aConfig.containsKey(aSingleHandleKey))
         {

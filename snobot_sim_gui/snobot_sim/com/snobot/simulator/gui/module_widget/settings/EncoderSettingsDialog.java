@@ -2,15 +2,12 @@ package com.snobot.simulator.gui.module_widget.settings;
 
 import java.awt.BorderLayout;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.snobot.simulator.jni.module_wrapper.EncoderWrapperJni;
-import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni;
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 public class EncoderSettingsDialog extends SimpleSettingsDialog
 {
@@ -23,10 +20,11 @@ public class EncoderSettingsDialog extends SimpleSettingsDialog
         mSpeedControllerSelection = new JComboBox<>();
         mSpeedControllerSelection.addItem(new SpeedControllerOption(-1, "None"));
 
-        List<Integer> speedControllers = IntStream.of(SpeedControllerWrapperJni.getPortList()).boxed().collect(Collectors.toList());
+        List<Integer> speedControllers = DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList();
         for (int handle : speedControllers)
         {
-            SpeedControllerOption option = new SpeedControllerOption(handle, SpeedControllerWrapperJni.getName(handle));
+            SpeedControllerOption option = new SpeedControllerOption(handle,
+                    DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(handle));
             mSpeedControllerSelection.addItem(option);
         }
 
@@ -48,9 +46,9 @@ public class EncoderSettingsDialog extends SimpleSettingsDialog
     private void selectAttachedControllerAndRefreshNames()
     {
         int connectedSc = -1;
-        if (EncoderWrapperJni.isHookedUp(mHandle))
+        if (DataAccessorFactory.getInstance().getEncoderAccessor().isHookedUp(mHandle))
         {
-            connectedSc = EncoderWrapperJni.getHookedUpId(mHandle);
+            connectedSc = DataAccessorFactory.getInstance().getEncoderAccessor().getHookedUpId(mHandle);
         }
 
         for (int i = 0; i < mSpeedControllerSelection.getItemCount(); ++i)
@@ -63,7 +61,7 @@ public class EncoderSettingsDialog extends SimpleSettingsDialog
             }
             if (option.mHandle != -1)
             {
-                option.mName = SpeedControllerWrapperJni.getName(option.mHandle);
+                option.mName = DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(option.mHandle);
             }
         }
     }
@@ -74,7 +72,7 @@ public class EncoderSettingsDialog extends SimpleSettingsDialog
         SpeedControllerOption option = (SpeedControllerOption) mSpeedControllerSelection.getSelectedItem();
         int scId = option == null ? -1 : option.mHandle;
 
-        EncoderWrapperJni.connectSpeedController(mHandle, scId);
+        DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(mHandle, scId);
     }
 
 }

@@ -10,7 +10,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import com.snobot.simulator.gui.module_widget.settings.EncoderSettingsDialog;
-import com.snobot.simulator.jni.module_wrapper.EncoderWrapperJni;
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 public class EncoderGraphicDisplay extends BaseWidgetDisplay<Integer, EncoderWrapperDisplay>
 {
@@ -27,9 +27,9 @@ public class EncoderGraphicDisplay extends BaseWidgetDisplay<Integer, EncoderWra
         for (Entry<Integer, EncoderWrapperDisplay> pair : mWidgetMap.entrySet())
         {
             int key = pair.getKey();
-            boolean isConnected = EncoderWrapperJni.isHookedUp(key);
-            double raw = EncoderWrapperJni.getRaw(key);
-            double distance = EncoderWrapperJni.getDistance(key);
+            boolean isConnected = DataAccessorFactory.getInstance().getEncoderAccessor().isHookedUp(key);
+            double raw = DataAccessorFactory.getInstance().getEncoderAccessor().getRaw(key);
+            double distance = DataAccessorFactory.getInstance().getEncoderAccessor().getDistance(key);
 
             pair.getValue().updateDisplay(isConnected, raw, distance);
         }
@@ -53,7 +53,7 @@ public class EncoderGraphicDisplay extends BaseWidgetDisplay<Integer, EncoderWra
             {
                 super.onSubmit();
 
-                EncoderWrapperJni.setName(aKey, getComponentName());
+                DataAccessorFactory.getInstance().getEncoderAccessor().setName(aKey, getComponentName());
                 mLabelMap.get(aKey).setText(getComponentName());
             }
 
@@ -67,7 +67,7 @@ public class EncoderGraphicDisplay extends BaseWidgetDisplay<Integer, EncoderWra
     @Override
     protected String getName(Integer aKey)
     {
-        return EncoderWrapperJni.getName(aKey);
+        return DataAccessorFactory.getInstance().getEncoderAccessor().getName(aKey);
     }
 }
 

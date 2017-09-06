@@ -9,7 +9,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import com.snobot.simulator.gui.module_widget.settings.GyroSettingsDialog;
-import com.snobot.simulator.jni.module_wrapper.GyroWrapperJni;
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 public class GyroGraphicDisplay extends BaseWidgetDisplay<Integer, GyroWrapperDisplay>
 {
@@ -26,7 +26,7 @@ public class GyroGraphicDisplay extends BaseWidgetDisplay<Integer, GyroWrapperDi
         for (Entry<Integer, GyroWrapperDisplay> pair : mWidgetMap.entrySet())
         {
             int key = pair.getKey();
-            double angle = GyroWrapperJni.getAngle(key);
+            double angle = DataAccessorFactory.getInstance().getGyroAccessor().getAngle(key);
 
             pair.getValue().updateDisplay(angle);
         }
@@ -48,7 +48,7 @@ public class GyroGraphicDisplay extends BaseWidgetDisplay<Integer, GyroWrapperDi
             {
                 super.onSubmit();
 
-                GyroWrapperJni.setName(aKey, getComponentName());
+                DataAccessorFactory.getInstance().getGyroAccessor().setName(aKey, getComponentName());
                 mLabelMap.get(aKey).setText(getComponentName());
             }
         };
@@ -61,7 +61,7 @@ public class GyroGraphicDisplay extends BaseWidgetDisplay<Integer, GyroWrapperDi
     @Override
     protected String getName(Integer aKey)
     {
-        return GyroWrapperJni.getName(aKey);
+        return DataAccessorFactory.getInstance().getGyroAccessor().getName(aKey);
     }
 }
 

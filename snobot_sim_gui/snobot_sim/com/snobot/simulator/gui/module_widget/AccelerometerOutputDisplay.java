@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
 import com.snobot.simulator.gui.module_widget.settings.SimpleSettingsDialog;
-import com.snobot.simulator.jni.module_wrapper.AccelerometerWrapperJni;
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 public class AccelerometerOutputDisplay extends BaseWidgetDisplay<Integer, AccelerometerDisplay>
 {
@@ -29,7 +29,7 @@ public class AccelerometerOutputDisplay extends BaseWidgetDisplay<Integer, Accel
         {
             if (pair.getValue().isVisible())
             {
-                double accel = AccelerometerWrapperJni.getAcceleration(pair.getKey());
+                double accel = DataAccessorFactory.getInstance().getAccelerometerAccessor().getAcceleration(pair.getKey());
                 pair.getValue().updateDisplay(accel);
             }
         }
@@ -50,7 +50,7 @@ public class AccelerometerOutputDisplay extends BaseWidgetDisplay<Integer, Accel
             @Override
             protected void onSubmit()
             {
-                AccelerometerWrapperJni.setName(aKey, getComponentName());
+                DataAccessorFactory.getInstance().getAccelerometerAccessor().setName(aKey, getComponentName());
                 mLabelMap.get(aKey).setText(getComponentName());
             }
         };
@@ -63,7 +63,7 @@ public class AccelerometerOutputDisplay extends BaseWidgetDisplay<Integer, Accel
     @Override
     protected String getName(Integer aKey)
     {
-        return AccelerometerWrapperJni.getName(aKey);
+        return DataAccessorFactory.getInstance().getAccelerometerAccessor().getName(aKey);
     }
 }
 

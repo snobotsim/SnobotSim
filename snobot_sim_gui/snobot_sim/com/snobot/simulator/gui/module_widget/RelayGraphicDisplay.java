@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
 import com.snobot.simulator.gui.module_widget.settings.SimpleSettingsDialog;
-import com.snobot.simulator.jni.module_wrapper.RelayWrapperJni;
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 import edu.wpi.first.wpilibj.Relay.Value;
 
@@ -31,8 +31,8 @@ public class RelayGraphicDisplay extends BaseWidgetDisplay<Integer, RelayDisplay
         for (Entry<Integer, RelayDisplay> pair : mWidgetMap.entrySet())
         {
             int key = pair.getKey();
-            boolean forward = RelayWrapperJni.getFowardValue(key);
-            boolean reverse = RelayWrapperJni.getReverseValue(key);
+            boolean forward = DataAccessorFactory.getInstance().getRelayAccessor().getFowardValue(key);
+            boolean reverse = DataAccessorFactory.getInstance().getRelayAccessor().getReverseValue(key);
 
             pair.getValue().updateDisplay(convertValue(forward, reverse));
         }
@@ -73,7 +73,7 @@ public class RelayGraphicDisplay extends BaseWidgetDisplay<Integer, RelayDisplay
             @Override
             protected void onSubmit()
             {
-                RelayWrapperJni.setName(aKey, getComponentName());
+                DataAccessorFactory.getInstance().getRelayAccessor().setName(aKey, getComponentName());
                 mLabelMap.get(aKey).setText(getComponentName());
             }
 
@@ -87,7 +87,7 @@ public class RelayGraphicDisplay extends BaseWidgetDisplay<Integer, RelayDisplay
     @Override
     protected String getName(Integer aKey)
     {
-        return RelayWrapperJni.getName(aKey);
+        return DataAccessorFactory.getInstance().getRelayAccessor().getName(aKey);
     }
 }
 

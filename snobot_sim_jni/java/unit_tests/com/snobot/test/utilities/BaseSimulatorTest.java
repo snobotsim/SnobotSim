@@ -5,8 +5,6 @@ import java.io.File;
 import org.junit.Before;
 
 import com.snobot.simulator.jni.SnobotSimulatorJni;
-import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
-import com.snobot.simulator.wrapper_accessors.jni.JniDataAccessor;
 
 import edu.wpi.first.wpilibj.RobotBase;
 
@@ -37,7 +35,6 @@ public class BaseSimulatorTest
     {
         if (!INITIALIZED)
         {
-            DataAccessorFactory.setAccessor(new JniDataAccessor());
             SnobotSimulatorJni.initializeLogging(0);
 
             File directory = new File("test_output");

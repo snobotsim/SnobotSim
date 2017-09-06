@@ -17,4 +17,6 @@ sourceSets {
 
 dependencies {
     compile 'edu.wpi.first.wpiutil:wpiutil-java:' + getWpiUtilVersion()
+    
+    testCompile 'junit:junit:4.12'
 }

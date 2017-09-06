@@ -11,7 +11,7 @@ import javax.swing.border.TitledBorder;
 
 import com.snobot.simulator.gui.Util;
 import com.snobot.simulator.gui.module_widget.settings.SpeedControllerSettingsDialog;
-import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni;
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 public class SpeedControllerGraphicDisplay extends BaseWidgetDisplay<Integer, MotorDisplay>
 {
@@ -27,7 +27,7 @@ public class SpeedControllerGraphicDisplay extends BaseWidgetDisplay<Integer, Mo
     {
         for (Entry<Integer, MotorDisplay> pair : mWidgetMap.entrySet())
         {
-            double value = SpeedControllerWrapperJni.getVoltagePercentage(pair.getKey());
+            double value = DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(pair.getKey());
             pair.getValue().updateDisplay(value);
         }
     }
@@ -49,7 +49,7 @@ public class SpeedControllerGraphicDisplay extends BaseWidgetDisplay<Integer, Mo
             {
                 super.onSubmit();
 
-                SpeedControllerWrapperJni.setName(aKey, getComponentName());
+                DataAccessorFactory.getInstance().getSpeedControllerAccessor().setName(aKey, getComponentName());
                 mLabelMap.get(aKey).setText(getComponentName());
             }
 
@@ -63,7 +63,7 @@ public class SpeedControllerGraphicDisplay extends BaseWidgetDisplay<Integer, Mo
     @Override
     protected String getName(Integer aKey)
     {
-        return SpeedControllerWrapperJni.getName(aKey);
+        return DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(aKey);
     }
 }
 

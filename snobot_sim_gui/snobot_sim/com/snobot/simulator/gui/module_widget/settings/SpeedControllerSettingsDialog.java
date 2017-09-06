@@ -12,8 +12,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import com.snobot.simulator.DcMotorModelConfig;
 import com.snobot.simulator.jni.SimulationConnectorJni;
-import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni.MotorSimType;
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
+import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor.MotorSimType;
 
 public class SpeedControllerSettingsDialog extends SimpleSettingsDialog
 {
@@ -59,16 +61,14 @@ public class SpeedControllerSettingsDialog extends SimpleSettingsDialog
             }
         });
 
-        // MotorSimType mode =
-        // SpeedControllerWrapperJni.getMotorSimType(mHandle);
-        // mSimModeSelector.setSelectedItem(mode);
+        MotorSimType mode = DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimType(mHandle);
+        mSimModeSelector.setSelectedItem(mode);
     }
 
     public void setVisible(boolean aVisible)
     {
-        // MotorSimType mode =
-        // SpeedControllerWrapperJni.getMotorSimType(mHandle);
-        // mSimModeSelector.setSelectedItem(mode);
+        MotorSimType mode = DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimType(mHandle);
+        mSimModeSelector.setSelectedItem(mode);
         super.setVisible(aVisible);
     }
 
@@ -135,8 +135,7 @@ class SimpleSimConfigPanel extends JPanel implements SubmitableMotorSimulator
     {
         if (aVisible)
         {
-            // mMaxSpeedField.setText("" +
-            // SpeedControllerWrapperJni.getMotorSimSimpleModelConfig(mHandle));
+            mMaxSpeedField.setText("" + DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimSimpleModelConfig(mHandle));
         }
 
         super.setVisible(aVisible);
@@ -162,9 +161,8 @@ abstract class MotorSimWithModelPanel extends JPanel implements SubmitableMotorS
     {
         if (aVisible)
         {
-            // DcMotorModelConfig modelConfig =
-            // SpeedControllerWrapperJni.getMotorConfig(mHandle);
-            // mMotorSimPanel.setModelConfig(modelConfig);
+            DcMotorModelConfig modelConfig = DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorConfig(mHandle);
+            mMotorSimPanel.setModelConfig(modelConfig);
             updateSimulatorParams();
         }
 
@@ -202,8 +200,7 @@ class StaticLoadSimConfigPanel extends MotorSimWithModelPanel
     @Override
     protected void updateSimulatorParams()
     {
-        // mLoadField.setText("" +
-        // SpeedControllerWrapperJni.getMotorSimStaticModelConfig(mHandle));
+        mLoadField.setText("" + DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimStaticModelConfig(mHandle));
     }
 }
 
@@ -255,7 +252,6 @@ class GravitationalLoadSimConfigPanel extends MotorSimWithModelPanel
     @Override
     protected void updateSimulatorParams()
     {
-        // mLoadField.setText("" +
-        // SpeedControllerWrapperJni.getMotorSimGravitationalModelConfig(mHandle));
+        mLoadField.setText("" + DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimGravitationalModelConfig(mHandle));
     }
 }

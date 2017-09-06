@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.snobot.simulator.config.SimulatorConfigReader;
-import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni;
 import com.snobot.simulator.robot_container.IRobotClassContainer;
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 public class ASimulator implements ISimulatorUpdater
 {
@@ -57,7 +57,7 @@ public class ASimulator implements ISimulatorUpdater
             {
                 synchronized (sUPDATE_MUTEX)
                 {
-                    SpeedControllerWrapperJni.updateAllSpeedControllers(sMOTOR_UPDATE_FREQUENCY);
+                    DataAccessorFactory.getInstance().getSpeedControllerAccessor().updateAllSpeedControllers(sMOTOR_UPDATE_FREQUENCY);
                 }
 
                 try

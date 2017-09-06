@@ -21,11 +21,18 @@ sourceSets {
             srcDirs = ["java/src"]
         }
     }
+    test {
+        java {
+            srcDirs = ["java/unit_tests"]
+        }
+    }
 }
 
 task packageNativeFilesInJar(type: Jar) {
 
     println "Packging native files"
+    
+    dependsOn jar
     
     destinationDir = project.buildDir
     classifier = "native-" + org.gradle.internal.os.OperatingSystem.current().getFamilyName();
@@ -51,15 +58,11 @@ task combineNativeLibrariesIntoOne(type: Jar) {
 
     classifier = "uber_native-" + os_name;
     
-    if(new File('../ctre_override/build/libs/ctre_override.jar').exists()) 
-    {
-        from(zipTree('../ctre_override/build/libs/ctre_override.jar')) 
-        from(zipTree('../ctre_override/build/ctre_override-native-' + os_name + ".jar"))
+    packageNativeFilesInJar.outputs.files.each { 
+        from(zipTree(it))
     }
 
     from(zipTree('../snobot_sim/build/snobotSim-native-' + os_name + ".jar"))
-    from(zipTree('../snobot_sim_jni/build/libs/snobot_sim_jni.jar'))
-    from(zipTree('../snobot_sim_jni/build/snobot_sim_jni-native-' + os_name + '.jar'))
     from(zipTree('../temp_libs/wpilibj-jni-ABCD-all.jar'))
     
     def wpiutil_path = "../build/dependencies/wpiutil-cpp/" + os_name + "x86-64/" + os_name + "/x86-64/shared"
@@ -87,6 +90,13 @@ jacocoTestReport {
 
 dependencies {
     compile project(":snobot_sim_utilities")
+    
+    testCompile 'junit:junit:4.12'
+    testCompile 'edu.wpi.first.wpilibj:wpilibj-java:' + getWpilibjVersion()
+    compile 'edu.wpi.first.ntcore:ntcore-java:' + getNtCoreVersion()
+    testRuntime 'edu.wpi.first.ntcore:ntcore-jni:' + getNtCoreVersion() + ':all'
+    //testRuntime jar.outputs.files
+    //testRuntime packageNativeFilesInJar.outputs.files
     testRuntime combineNativeLibrariesIntoOne.outputs.files
 }
 
@@ -202,3 +212,5 @@ model {
         }
     }
 }
+
+apply from: "publish.gradle"
