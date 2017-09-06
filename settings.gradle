@@ -1,4 +1,6 @@
 include 'snobot_sim'
+include 'snobot_sim_utilities'
+include 'snobot_sim_jni'
 //include 'ctre_override'
 include 'snobot_sim_gui'
 

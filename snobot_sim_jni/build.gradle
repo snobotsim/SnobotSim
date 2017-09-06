@@ -1,0 +1,147 @@
+import edu.wpi.first.nativeutils.NativeUtils
+import org.gradle.api.file.FileCollection
+import org.gradle.internal.os.OperatingSystem
+
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'cpp'
+apply plugin: 'visual-studio'
+apply plugin: 'edu.wpi.first.NativeUtils'
+apply plugin: 'java'
+apply plugin: 'jacoco'
+
+apply from: '../config.gradle'
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ["java/src"]
+        }
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled true
+    }
+}
+
+dependencies {
+    compile project(":snobot_sim_utilities")
+}
+
+def jniClasses = [
+    'com.snobot.simulator.jni.JoystickJni',
+    'com.snobot.simulator.jni.MotorConfigFactoryJni',
+    'com.snobot.simulator.jni.RobotStateSingletonJni',
+    'com.snobot.simulator.jni.SimulationConnectorJni',
+    'com.snobot.simulator.jni.SnobotSimulatorJni',
+    'com.snobot.simulator.jni.module_wrapper.AccelerometerWrapperJni',
+    'com.snobot.simulator.jni.module_wrapper.AnalogSourceWrapperJni',
+    'com.snobot.simulator.jni.module_wrapper.DigitalSourceWrapperJni',
+    'com.snobot.simulator.jni.module_wrapper.EncoderWrapperJni',
+    'com.snobot.simulator.jni.module_wrapper.GyroWrapperJni',
+    'com.snobot.simulator.jni.module_wrapper.RelayWrapperJni',
+    'com.snobot.simulator.jni.module_wrapper.SolenoidWrapperJni',
+    'com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni',
+]
+
+
+model {
+    jniConfigs {
+        snobotSimJniShared(JNIConfig) {
+            jniDefinitionClasses = jniClasses
+            jniArmHeaderLocations = [ all: file("${projectDir}/src/arm-linux-jni") ]
+            sourceSets = [ project.sourceSets.main ]
+            sourceSets = [ project.sourceSets.main ]
+        }
+        snobotSimJniStatic(JNIConfig) {
+            jniDefinitionClasses = jniClasses
+            jniArmHeaderLocations = [ all: file("${projectDir}/src/arm-linux-jni") ]
+            sourceSets = [ project.sourceSets.main ]
+        }
+    }
+    exportsConfigs {
+        snobotSimJniShared(ExportsConfig) {
+            x86SymbolFilter = { symbols->
+                def retList = []
+                return retList
+            }
+            x64SymbolFilter = { symbols->
+                def retList = []
+                return retList
+            }
+        }
+        snobotSimJniStatic(ExportsConfig) {
+            x86SymbolFilter = { symbols->
+                def retList = []
+                return retList
+            }
+            x64SymbolFilter = { symbols->
+                def retList = []
+                return retList
+            }
+        }
+    }
+    dependencyConfigs {
+        wpiutil(DependencyConfig) {
+            groupId = 'edu.wpi.first.wpiutil'
+            artifactId = 'wpiutil-cpp'
+            headerClassifier = 'headers'
+            ext = 'zip'
+            version = '+'
+            sharedConfigs = [ snobotSimJniShared: [] ]
+            staticConfigs = [ snobotSimJniStatic: [] ]
+        }
+    }
+    components {
+        snobotSimJniStatic(NativeLibrarySpec) {
+            baseName = 'snobotSimJni'
+            sources {
+                cpp {
+                    source {
+                        srcDirs = ['cpp']
+                        includes = ['**/*.cpp']
+                    }
+                    exportedHeaders {
+                    }
+                }
+            }
+        }
+        snobotSimJniShared(NativeLibrarySpec) {
+            baseName = 'snobotSimJni'
+            sources {
+                cpp {
+                    source {
+                        srcDirs = ['cpp']
+                        includes = ['**/*.cpp']
+                    }
+                    exportedHeaders {
+                    }
+                }
+            }
+        }
+
+    }
+    binaries {
+        withType(NativeBinarySpec) {
+        
+            if(it.targetPlatform.architecture.name != "athena")
+            {
+                project(':snobot_sim').addSnobotSimToLinker(it)
+                project(':snobot_sim').addHalSimToLinker(linker)
+            }
+            else
+            {
+                buildable = false
+            }
+        }
+        withType(StaticLibraryBinarySpec) {
+            it.buildable = false
+        }
+    }
+}

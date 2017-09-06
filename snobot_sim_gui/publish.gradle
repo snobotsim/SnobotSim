@@ -69,7 +69,7 @@ publishing {
             artifact cppSourcesZip
             artifact javadocJar
             artifact copyDependencies
-            artifact combineNativeLibrariesIntoOne
+            //artifact combineNativeLibrariesIntoOne
         }
         
         snobot_sim_gui_application(MavenPublication) {

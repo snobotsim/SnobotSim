@@ -1,0 +1,20 @@
+
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'java'
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ["src"]
+        }
+    }
+}
+
+
+dependencies {
+    compile 'edu.wpi.first.wpiutil:wpiutil-java:' + getWpiUtilVersion()
+}
