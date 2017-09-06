@@ -19,7 +19,6 @@ import com.snobot.simulator.jni.module_wrapper.EncoderWrapperJni;
 import com.snobot.simulator.jni.module_wrapper.RelayWrapperJni;
 import com.snobot.simulator.jni.module_wrapper.SolenoidWrapperJni;
 import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni;
-import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni.MotorSimType;
 
 public class SimulatorConfigWriter
 {
@@ -168,34 +167,36 @@ public class SimulatorConfigWriter
 
     private void dumpMotorSim(Map<String, Object> aScConfig, int aHandle)
     {
-        MotorSimType simType = SpeedControllerWrapperJni.getMotorSimType(aHandle);
-        switch (simType)
-        {
-        case Simple:
-            dumpMotorSimSimple(aScConfig, aHandle);
-            break;
-        case StaticLoad:
-            dumpMotorSimStaticLoad(aScConfig, aHandle);
-            break;
-        case GravitationalLoad:
-            dumpMotorSimGravitationalLoad(aScConfig, aHandle);
-            break;
-        case RotationalLoad:
-            dumpMotorSimRotationalLoad(aScConfig, aHandle);
-            break;
-
-        case None:
-        default:
-            break;
-
-        }
+        // MotorSimType simType =
+        // SpeedControllerWrapperJni.getMotorSimType(aHandle);
+        // switch (simType)
+        // {
+        // case Simple:
+        // dumpMotorSimSimple(aScConfig, aHandle);
+        // break;
+        // case StaticLoad:
+        // dumpMotorSimStaticLoad(aScConfig, aHandle);
+        // break;
+        // case GravitationalLoad:
+        // dumpMotorSimGravitationalLoad(aScConfig, aHandle);
+        // break;
+        // case RotationalLoad:
+        // dumpMotorSimRotationalLoad(aScConfig, aHandle);
+        // break;
+        //
+        // case None:
+        // default:
+        // break;
+        //
+        // }
     }
 
     private void dumpMotorSimSimple(Map<String, Object> aScConfig, int aHandle)
     {
         Map<String, Object> motorSim = new LinkedHashMap<>();
         motorSim.put("type", "Simple");
-        motorSim.put("max_speed", SpeedControllerWrapperJni.getMotorSimSimpleModelConfig(aHandle));
+        // motorSim.put("max_speed",
+        // SpeedControllerWrapperJni.getMotorSimSimpleModelConfig(aHandle));
 
         aScConfig.put("motor_sim", motorSim);
     }
@@ -204,14 +205,16 @@ public class SimulatorConfigWriter
     {
         Map<String, Object> motorSim = new LinkedHashMap<>();
         motorSim.put("type", "StaticLoad");
-        motorSim.put("load", SpeedControllerWrapperJni.getMotorSimStaticModelConfig(aHandle));
+        // motorSim.put("load",
+        // SpeedControllerWrapperJni.getMotorSimStaticModelConfig(aHandle));
         motorSim.put("conversion_factor", 1);
 
-        DcMotorModelConfig modelConfig = SpeedControllerWrapperJni.getMotorConfig(aHandle);
-        if (modelConfig != null)
-        {
-            motorSim.put("motor_model", dumpDcMotorModelConfig(modelConfig));
-        }
+        // DcMotorModelConfig modelConfig =
+        // SpeedControllerWrapperJni.getMotorConfig(aHandle);
+        // if (modelConfig != null)
+        // {
+        // motorSim.put("motor_model", dumpDcMotorModelConfig(modelConfig));
+        // }
 
         aScConfig.put("motor_sim", motorSim);
     }

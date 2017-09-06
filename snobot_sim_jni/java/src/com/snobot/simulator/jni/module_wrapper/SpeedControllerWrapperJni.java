@@ -1,7 +1,6 @@
 
 package com.snobot.simulator.jni.module_wrapper;
 
-import com.snobot.simulator.DcMotorModelConfig;
 import com.snobot.simulator.jni.BaseSimulatorJni;
 
 public class SpeedControllerWrapperJni extends BaseSimulatorJni
@@ -22,32 +21,33 @@ public class SpeedControllerWrapperJni extends BaseSimulatorJni
             return mDisplayName;
         }
     }
-    
+
     public static native void setName(int aPort, String aName);
-    
+
     public static native String getName(int aPort);
 
     public static native boolean getWantsHidden(int aPort);
-    
+
     public static native double getVoltagePercentage(int aPort);
-    
+
     public static native void updateAllSpeedControllers(double aUpdatePeriod);
-
-    public static MotorSimType getMotorSimType(int aPort)
-    {
-        int rawType = getMotorSimTypeNative(aPort);
-        return MotorSimType.values()[rawType];
-    }
-
-    private static native int getMotorSimTypeNative(int aPort);
-    
+    //
+    // public static MotorSimType getMotorSimType(int aPort)
+    // {
+    // int rawType = getMotorSimTypeNative(aPort);
+    // return MotorSimType.values()[rawType];
+    // }
+    //
+    // private static native int getMotorSimTypeNative(int aPort);
+    //
     public static native int[] getPortList();
-
-    public static native DcMotorModelConfig getMotorConfig(int aPort);
-
-    public static native double getMotorSimSimpleModelConfig(int aPort);
-
-    public static native double getMotorSimStaticModelConfig(int aPort);
-
-    public static native double getMotorSimGravitationalModelConfig(int aPort);
+    //
+    // public static native DcMotorModelConfig getMotorConfig(int aPort);
+    //
+    // public static native double getMotorSimSimpleModelConfig(int aPort);
+    //
+    // public static native double getMotorSimStaticModelConfig(int aPort);
+    //
+    // public static native double getMotorSimGravitationalModelConfig(int
+    // aPort);
 }

@@ -54,9 +54,11 @@ dependencies {
     // Internal
     compile project(":snobot_sim_utilities")
     compile project(":snobot_sim_jni")
+    compile files("../snobot_sim_jni/build/libs/snobot_sim_jni-uber_native-windows.jar")
     
     // Test
     testCompile 'junit:junit:4.12'
+    testRuntime 'edu.wpi.first.ntcore:ntcore-jni:' + getNtCoreVersion() + ':all'
     
 }
 

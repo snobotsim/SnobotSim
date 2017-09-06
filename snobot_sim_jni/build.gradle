@@ -23,6 +23,61 @@ sourceSets {
     }
 }
 
+task packageNativeFilesInJar(type: Jar) {
+
+    println "Packging native files"
+    
+    destinationDir = project.buildDir
+    classifier = "native-" + org.gradle.internal.os.OperatingSystem.current().getFamilyName();
+
+    project.model {
+        binaries {
+            withType(SharedLibraryBinarySpec) { binary ->
+                if (binary.component.name == 'snobotSimJniStatic') {
+                    from(binary.sharedLibraryFile) {
+                        into NativeUtils.getPlatformPath(binary)
+                    }
+                }
+            }
+        }
+    }
+}
+
+task combineNativeLibrariesIntoOne(type: Jar) {
+
+    dependsOn packageNativeFilesInJar
+
+    def os_name = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
+
+    classifier = "uber_native-" + os_name;
+    
+    if(new File('../ctre_override/build/libs/ctre_override.jar').exists()) 
+    {
+        from(zipTree('../ctre_override/build/libs/ctre_override.jar')) 
+        from(zipTree('../ctre_override/build/ctre_override-native-' + os_name + ".jar"))
+    }
+
+    from(zipTree('../snobot_sim/build/snobotSim-native-' + os_name + ".jar"))
+    from(zipTree('../snobot_sim_jni/build/libs/snobot_sim_jni.jar'))
+    from(zipTree('../snobot_sim_jni/build/snobot_sim_jni-native-' + os_name + '.jar'))
+    from(zipTree('../temp_libs/wpilibj-jni-ABCD-all.jar'))
+    
+    def wpiutil_path = "../build/dependencies/wpiutil-cpp/" + os_name + "x86-64/" + os_name + "/x86-64/shared"
+
+    from(wpiutil_path) {
+        into os_name + "/x86-64/"
+        include "*.dll"
+        include "*.so"
+    }
+    
+    def hal_path = new File('temp_libs/hal/' + os_name + '/x86-64').getAbsolutePath()
+    from(hal_path) {
+        into os_name + "/x86-64/"
+        include "*.dll"
+        include "*.so"
+    }
+}
+
 jacocoTestReport {
     reports {
         xml.enabled true
@@ -32,13 +87,14 @@ jacocoTestReport {
 
 dependencies {
     compile project(":snobot_sim_utilities")
+    testRuntime combineNativeLibrariesIntoOne.outputs.files
 }
 
 def jniClasses = [
     'com.snobot.simulator.jni.JoystickJni',
-    'com.snobot.simulator.jni.MotorConfigFactoryJni',
+    //'com.snobot.simulator.jni.MotorConfigFactoryJni',
     'com.snobot.simulator.jni.RobotStateSingletonJni',
-    'com.snobot.simulator.jni.SimulationConnectorJni',
+    //'com.snobot.simulator.jni.SimulationConnectorJni',
     'com.snobot.simulator.jni.SnobotSimulatorJni',
     'com.snobot.simulator.jni.module_wrapper.AccelerometerWrapperJni',
     'com.snobot.simulator.jni.module_wrapper.AnalogSourceWrapperJni',
@@ -47,8 +103,9 @@ def jniClasses = [
     'com.snobot.simulator.jni.module_wrapper.GyroWrapperJni',
     'com.snobot.simulator.jni.module_wrapper.RelayWrapperJni',
     'com.snobot.simulator.jni.module_wrapper.SolenoidWrapperJni',
-    'com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni',
+    'com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni'
 ]
+build.dependsOn packageNativeFilesInJar
 
 
 model {
