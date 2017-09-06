@@ -8,6 +8,7 @@ after_build:
 - cmd: "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
 - cmd: pip install codecov
 - cmd: codecov -f "snobot_sim_gui/build/reports/jacoco/test/jacocoTestReport.xml"
+- cmd: codecov -f "snobot_sim_java/build/reports/jacoco/test/jacocoTestReport.xml"
 
 artifacts:
 
@@ -16,6 +17,9 @@ artifacts:
 
 - path: build/maven_repo/com/snobot/simulator/snobot_sim_jni/**/snobot_sim_jni-*.jar
   name: simulator_jni
+
+- path: build/maven_repo/com/snobot/simulator/snobot_sim_java/**/snobot_sim_java-*.jar
+  name: simulator_java
 
 - path: build/maven_repo/com/snobot/simulator/snobot_sim_gui_application/**/snobot_sim_gui_application*.zip
   name: simulator_application

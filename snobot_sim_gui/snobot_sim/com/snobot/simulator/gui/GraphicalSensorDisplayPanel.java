@@ -2,8 +2,6 @@ package com.snobot.simulator.gui;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -17,14 +15,7 @@ import com.snobot.simulator.gui.module_widget.GyroGraphicDisplay;
 import com.snobot.simulator.gui.module_widget.RelayGraphicDisplay;
 import com.snobot.simulator.gui.module_widget.SolenoidGraphicDisplay;
 import com.snobot.simulator.gui.module_widget.SpeedControllerGraphicDisplay;
-import com.snobot.simulator.jni.module_wrapper.AccelerometerWrapperJni;
-import com.snobot.simulator.jni.module_wrapper.AnalogSourceWrapperJni;
-import com.snobot.simulator.jni.module_wrapper.DigitalSourceWrapperJni;
-import com.snobot.simulator.jni.module_wrapper.EncoderWrapperJni;
-import com.snobot.simulator.jni.module_wrapper.GyroWrapperJni;
-import com.snobot.simulator.jni.module_wrapper.RelayWrapperJni;
-import com.snobot.simulator.jni.module_wrapper.SolenoidWrapperJni;
-import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni;
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 public class GraphicalSensorDisplayPanel extends JPanel
 {
@@ -39,14 +30,14 @@ public class GraphicalSensorDisplayPanel extends JPanel
     {
         mDisplayPanels = new ArrayList<>();
 
-        mDisplayPanels.add(new SpeedControllerGraphicDisplay(IntStream.of(SpeedControllerWrapperJni.getPortList()).boxed().collect(Collectors.toList())));
-        mDisplayPanels.add(new SolenoidGraphicDisplay(IntStream.of(SolenoidWrapperJni.getPortList()).boxed().collect(Collectors.toList())));
-        mDisplayPanels.add(new DigitalSourceGraphicDisplay(IntStream.of(DigitalSourceWrapperJni.getPortList()).boxed().collect(Collectors.toList())));
-        mDisplayPanels.add(new RelayGraphicDisplay(IntStream.of(RelayWrapperJni.getPortList()).boxed().collect(Collectors.toList())));
-        mDisplayPanels.add(new AnalogOutputDisplay(IntStream.of(AnalogSourceWrapperJni.getPortList()).boxed().collect(Collectors.toList())));
-        mDisplayPanels.add(new EncoderGraphicDisplay(IntStream.of(EncoderWrapperJni.getPortList()).boxed().collect(Collectors.toList()), "Encoders"));
-        mDisplayPanels.add(new GyroGraphicDisplay(IntStream.of(GyroWrapperJni.getPortList()).boxed().collect(Collectors.toList())));
-        mDisplayPanels.add(new AccelerometerOutputDisplay(IntStream.of(AccelerometerWrapperJni.getPortList()).boxed().collect(Collectors.toList())));
+        mDisplayPanels.add(new SpeedControllerGraphicDisplay(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList()));
+        mDisplayPanels.add(new SolenoidGraphicDisplay(DataAccessorFactory.getInstance().getSolenoidAccessor().getPortList()));
+        mDisplayPanels.add(new DigitalSourceGraphicDisplay(DataAccessorFactory.getInstance().getDigitalAccessor().getPortList()));
+        mDisplayPanels.add(new RelayGraphicDisplay(DataAccessorFactory.getInstance().getRelayAccessor().getPortList()));
+        mDisplayPanels.add(new AnalogOutputDisplay(DataAccessorFactory.getInstance().getAnalogAccessor().getPortList()));
+        mDisplayPanels.add(new EncoderGraphicDisplay(DataAccessorFactory.getInstance().getEncoderAccessor().getPortList(), "Encoders"));
+        mDisplayPanels.add(new GyroGraphicDisplay(DataAccessorFactory.getInstance().getGyroAccessor().getPortList()));
+        mDisplayPanels.add(new AccelerometerOutputDisplay(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList()));
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         

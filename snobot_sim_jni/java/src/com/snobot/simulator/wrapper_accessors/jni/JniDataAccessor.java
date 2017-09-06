@@ -7,6 +7,7 @@ import com.snobot.simulator.wrapper_accessors.EncoderWrapperAccessor;
 import com.snobot.simulator.wrapper_accessors.GyroWrapperAccessor;
 import com.snobot.simulator.wrapper_accessors.IDataAccessor;
 import com.snobot.simulator.wrapper_accessors.RelayWrapperAccessor;
+import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor;
 import com.snobot.simulator.wrapper_accessors.SolenoidWrapperAccessor;
 import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor;
 
@@ -20,6 +21,7 @@ public class JniDataAccessor implements IDataAccessor
     private RelayWrapperAccessor relay;
     private SolenoidWrapperAccessor solenoid;
     private SpeedControllerWrapperAccessor pwm;
+    private SimulatorDataAccessor simulator;
 
     public JniDataAccessor()
     {
@@ -31,6 +33,13 @@ public class JniDataAccessor implements IDataAccessor
         relay = new JniRelayWrapperAccessor();
         solenoid = new JniSolenoidWrapperAccessor();
         pwm = new JniSpeedControllerWrapperAccessor();
+        simulator = new JniSimulatorDataAccessor();
+    }
+
+    @Override
+    public String getAccessorType()
+    {
+        return "CPP";
     }
 
     @Override
@@ -79,6 +88,12 @@ public class JniDataAccessor implements IDataAccessor
     public SpeedControllerWrapperAccessor getSpeedControllerAccessor()
     {
         return pwm;
+    }
+
+    @Override
+    public SimulatorDataAccessor getSimulatorDataAccessor()
+    {
+        return simulator;
     }
 
 }

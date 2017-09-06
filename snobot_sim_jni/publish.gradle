@@ -32,7 +32,7 @@ publishing {
        }
     }
     publications {
-        snobot_sim_gui(MavenPublication) {
+        snobot_sim_java(MavenPublication) {
             groupId 'com.snobot.simulator'
             artifactId 'snobot_sim_jni'
             version maven_version

@@ -10,8 +10,6 @@ import java.util.Map;
 import org.yaml.snakeyaml.Yaml;
 
 import com.snobot.simulator.DcMotorModelConfig;
-import com.snobot.simulator.jni.MotorConfigFactoryJni;
-import com.snobot.simulator.jni.SimulationConnectorJni;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 @SuppressWarnings("unchecked")
@@ -210,30 +208,27 @@ public class SimulatorConfigReader
             int leftEncHandle = getEncoderHandle(tankDriveConfig, "left_enc_handle_a", "left_enc_handle_b", "left_single_handle");
             int rightEncHandle = getEncoderHandle(tankDriveConfig, "right_enc_handle_a", "right_enc_handle_b", "right_single_handle");
 
-            SimulationConnectorJni.connectTankDriveSimulator(leftEncHandle, rightEncHandle, scHandle, turnKp);
+            DataAccessorFactory.getInstance().getSimulatorDataAccessor().connectTankDriveSimulator(leftEncHandle, rightEncHandle, scHandle, turnKp);
         }
     }
 
     protected void loadMotorSimSimple(int aScHandle, Map<String, Object> motorSimConfig)
     {
         double maxSpeed = ((Number) motorSimConfig.get("max_speed")).doubleValue();
-        SimulationConnectorJni.setSpeedControllerModel_Simple(aScHandle, maxSpeed);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(aScHandle, maxSpeed);
     }
 
     protected void loadMotorSimStaticLoad(int aScHandle, Map<String, Object> motorSimConfig)
     {
         double load = ((Number) motorSimConfig.get("load")).doubleValue();
         DcMotorModelConfig motorConfig = createDcMotorModel((Map<String, Object>) motorSimConfig.get("motor_model"));
+        double conversionFactor = 1;
 
         if (motorSimConfig.containsKey("conversion_factor"))
         {
-            double conversionFactor = ((Number) motorSimConfig.get("conversion_factor")).doubleValue();
-            SimulationConnectorJni.setSpeedControllerModel_Static(aScHandle, motorConfig, load, conversionFactor);
+            conversionFactor = ((Number) motorSimConfig.get("conversion_factor")).doubleValue();
         }
-        else
-        {
-            SimulationConnectorJni.setSpeedControllerModel_Static(aScHandle, motorConfig, load);
-        }
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(aScHandle, motorConfig, load, conversionFactor);
     }
 
     protected void loadMotorSimGravityLoad(int aScHandle, Map<String, Object> motorSimConfig)
@@ -241,7 +236,7 @@ public class SimulatorConfigReader
         double load = ((Number) motorSimConfig.get("load")).doubleValue();
         DcMotorModelConfig motorConfig = createDcMotorModel((Map<String, Object>) motorSimConfig.get("motor_model"));
 
-        SimulationConnectorJni.setSpeedControllerModel_Gravitational(aScHandle, motorConfig, load);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Gravitational(aScHandle, motorConfig, load);
     }
 
     protected void loadMotorSimRotationalLoad(int aScHandle, Map<String, Object> motorSimConfig)
@@ -250,7 +245,8 @@ public class SimulatorConfigReader
         double armMass = ((Number) motorSimConfig.get("arm_mass")).doubleValue();
         DcMotorModelConfig motorConfig = createDcMotorModel((Map<String, Object>) motorSimConfig.get("motor_model"));
 
-        SimulationConnectorJni.setSpeedControllerModel_Rotational(aScHandle, motorConfig, armCenterOfMass, armMass);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Rotational(aScHandle, motorConfig, armCenterOfMass,
+                armMass);
     }
 
     protected DcMotorModelConfig createDcMotorModel(Map<String, Object> modelConfig)
@@ -265,11 +261,11 @@ public class SimulatorConfigReader
             int numMotors = (Integer) transmissionConfig.get("num_motors");
             double gearRatio = ((Number) transmissionConfig.get("gear_reduction")).doubleValue();
             double gearboxEfficiency = ((Number) transmissionConfig.get("efficiency")).doubleValue();
-            output = MotorConfigFactoryJni.createMotor(motorType, numMotors, gearRatio, gearboxEfficiency);
+            output = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor(motorType, numMotors, gearRatio, gearboxEfficiency);
         }
         else
         {
-            output = MotorConfigFactoryJni.createMotor(motorType);
+            output = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor(motorType);
         }
 
         if (modelConfig.containsKey("inverted"))

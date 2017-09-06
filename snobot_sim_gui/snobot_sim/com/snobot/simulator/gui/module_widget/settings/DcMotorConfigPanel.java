@@ -18,7 +18,7 @@ import javax.swing.event.ChangeListener;
 
 import com.snobot.simulator.DcMotorModelConfig;
 import com.snobot.simulator.gui.motor_display.MotorCurveDisplay;
-import com.snobot.simulator.jni.MotorConfigFactoryJni;
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -141,7 +141,7 @@ public class DcMotorConfigPanel extends JPanel
             double gearReduction = Double.parseDouble(mGearReduction.getText());
             double efficiency = Double.parseDouble(mGearboxEfficiency.getText());
 
-            output = MotorConfigFactoryJni.createMotor(selectedMotor, numMotors, gearReduction, efficiency);
+            output = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor(selectedMotor, numMotors, gearReduction, efficiency);
             output.mInverted = mMotorParams_Inverted.isSelected();
             output.mHasBrake = mMotorParams_Brake.isSelected();
         }

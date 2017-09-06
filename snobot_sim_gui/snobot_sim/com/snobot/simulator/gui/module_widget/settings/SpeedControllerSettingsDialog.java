@@ -13,7 +13,6 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import com.snobot.simulator.DcMotorModelConfig;
-import com.snobot.simulator.jni.SimulationConnectorJni;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor.MotorSimType;
 
@@ -104,7 +103,7 @@ class NullSimConfigPanel extends JPanel implements SubmitableMotorSimulator
     @Override
     public void submit()
     {
-        SimulationConnectorJni.setSpeedControllerModel_Simple(mHandle, 0);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(mHandle, 0);
     }
 
 }
@@ -127,7 +126,7 @@ class SimpleSimConfigPanel extends JPanel implements SubmitableMotorSimulator
     public void submit()
     {
         double maxSpeed = Double.parseDouble(mMaxSpeedField.getText());
-        SimulationConnectorJni.setSpeedControllerModel_Simple(mHandle, maxSpeed);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(mHandle, maxSpeed);
     }
 
     @Override
@@ -194,7 +193,7 @@ class StaticLoadSimConfigPanel extends MotorSimWithModelPanel
     public void submit()
     {
         double load = Double.parseDouble(mLoadField.getText());
-        SimulationConnectorJni.setSpeedControllerModel_Static(mHandle, mMotorSimPanel.getMotorConfig(), load);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(mHandle, mMotorSimPanel.getMotorConfig(), load);
     }
 
     @Override
@@ -214,7 +213,8 @@ class RotationalLoadSimConfigPanel extends MotorSimWithModelPanel
     @Override
     public void submit()
     {
-        SimulationConnectorJni.setSpeedControllerModel_Rotational(mHandle, mMotorSimPanel.getMotorConfig(), 1, 1);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Rotational(mHandle, mMotorSimPanel.getMotorConfig(), 1,
+                1);
     }
 
     @Override
@@ -246,7 +246,8 @@ class GravitationalLoadSimConfigPanel extends MotorSimWithModelPanel
     public void submit()
     {
         double load = Double.parseDouble(mLoadField.getText());
-        SimulationConnectorJni.setSpeedControllerModel_Gravitational(mHandle, mMotorSimPanel.getMotorConfig(), load);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Gravitational(mHandle, mMotorSimPanel.getMotorConfig(),
+                load);
     }
 
     @Override

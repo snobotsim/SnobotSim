@@ -1,0 +1,218 @@
+import edu.wpi.first.nativeutils.NativeUtils
+import org.gradle.api.file.FileCollection
+import org.gradle.internal.os.OperatingSystem
+
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'cpp'
+apply plugin: 'visual-studio'
+apply plugin: 'edu.wpi.first.NativeUtils'
+apply plugin: 'java'
+apply plugin: 'jacoco'
+
+apply from: '../config.gradle'
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ["java/snobot_sim_java"]
+        }
+    }
+    test {
+        java {
+            srcDirs = ["java/unit_tests"]
+        }
+    }
+}
+test {
+	ignoreFailures = true
+}
+
+task packageNativeFilesInJar(type: Jar) {
+
+    println "Packging native files"
+    
+    dependsOn jar
+    
+    destinationDir = project.buildDir
+    classifier = "native-" + org.gradle.internal.os.OperatingSystem.current().getFamilyName();
+
+    project.model {
+        binaries {
+            withType(SharedLibraryBinarySpec) { binary ->
+                if (binary.component.name == 'snobotSimJavaJniShared') {
+                    from(binary.sharedLibraryFile) {
+                        into NativeUtils.getPlatformPath(binary)
+                    }
+                }
+            }
+        }
+    }
+}
+
+apply from: "$rootDir/captureWpiLibraries.gradle"
+
+task combineNativeLibrariesIntoOne(type: Jar) {
+
+    dependsOn packageNativeFilesInJar
+    dependsOn captureWpiLibraries
+
+    def os_name = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
+
+    classifier = "uber_native-" + os_name;
+    
+    packageNativeFilesInJar.outputs.files.each { 
+        from(zipTree(it))
+    }
+    
+    captureWpiLibraries.outputs.files.each {
+        from(zipTree(it))
+    }
+}
+build.dependsOn packageNativeFilesInJar
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled true
+    }
+}
+
+ext.addHalSimToLinker = { linker->
+    def os_name = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
+    def hal_path = 'temp_libs/hal/' + os_name + '/x86-64'
+    if (OperatingSystem.current().isWindows())
+    {
+        hal_path += "/wpiHal.lib"
+    }
+    else if (OperatingSystem.current().isLinux())
+    {
+        hal_path += "/libwpiHal.so"
+    }
+    hal_path = new File(hal_path).getAbsolutePath()
+    linker.args hal_path
+}
+    
+dependencies {
+    compile project(":snobot_sim_utilities")
+    
+    testCompile 'junit:junit:4.12'
+    testCompile 'edu.wpi.first.wpilibj:wpilibj-java:' + getWpilibjVersion()
+    compile 'edu.wpi.first.ntcore:ntcore-java:' + getNtCoreVersion()
+    testRuntime 'edu.wpi.first.ntcore:ntcore-jni:' + getNtCoreVersion() + ':all'
+    testRuntime combineNativeLibrariesIntoOne.outputs.files
+}
+
+def jniClasses = [
+    'com.snobot.simulator.jni.RegisterCallbacksJni',
+]
+
+///////////////////////////////////////////////////
+configurations {
+    halHeaders
+}
+
+
+dependencies {
+    halHeaders getHalHeadersVersion()
+}
+
+  // Task to explode the zipped library into a temporary dir
+task extractHalHeadersZip(type: Copy) {
+    ext.libsdir = "${rootProject.buildDir}/dependencies/hal"
+    from { configurations.halHeaders.collect { zipTree(it) } }
+    into libsdir
+}
+///////////////////////////////////////////////////
+    
+model {
+    jniConfigs {
+        snobotSimJavaJniShared(JNIConfig) {
+            jniDefinitionClasses = jniClasses
+            jniArmHeaderLocations = [ all: file("${projectDir}/src/arm-linux-jni") ]
+            sourceSets = [ project.sourceSets.main ]
+            sourceSets = [ project.sourceSets.main ]
+        }
+        snobotSimJavaJniStatic(JNIConfig) {
+            jniDefinitionClasses = jniClasses
+            jniArmHeaderLocations = [ all: file("${projectDir}/src/arm-linux-jni") ]
+            sourceSets = [ project.sourceSets.main ]
+        }
+    }
+    exportsConfigs {
+        snobotSimJavaJniShared(ExportsConfig) {
+            x86SymbolFilter = { symbols->
+                def retList = []
+                return retList
+            }
+            x64SymbolFilter = { symbols->
+                def retList = []
+                return retList
+            }
+        }
+        snobotSimJavaJniStatic(ExportsConfig) {
+            x86SymbolFilter = { symbols->
+                def retList = []
+                return retList
+            }
+            x64SymbolFilter = { symbols->
+                def retList = []
+                return retList
+            }
+        }
+    }
+    dependencyConfigs {
+        wpiutil(DependencyConfig) {
+            groupId = 'edu.wpi.first.wpiutil'
+            artifactId = 'wpiutil-cpp'
+            headerClassifier = 'headers'
+            ext = 'zip'
+            version = '+'
+            sharedConfigs = [ snobotSimJavaJniShared: [] ]
+            staticConfigs = [ snobotSimJavaJniStatic: [] ]
+        }
+    }
+    components {
+        snobotSimJavaJniShared(NativeLibrarySpec) {
+            baseName = 'snobotSimJavaJni'
+            sources {
+                cpp {
+                    source {
+                        srcDirs = ['cpp/lib']
+                        includes = ['**/*.cpp']
+                    }
+                    exportedHeaders {
+                        srcDirs = ["cpp/lib", "${extractHalHeadersZip.libsdir}"]
+                    }
+                }
+            }
+        }
+
+    }
+    binaries {
+        all {
+            tasks.withType(CppCompile) {
+                dependsOn extractHalHeadersZip
+            }
+        }
+        withType(NativeBinarySpec) {
+        
+            if(it.targetPlatform.architecture.name != "athena")
+            {
+                addHalSimToLinker(linker)
+            }
+            else
+            {
+                buildable = false
+            }
+        }
+        withType(StaticLibraryBinarySpec) {
+            it.buildable = false
+        }
+    }
+}
+
+apply from: "publish.gradle"

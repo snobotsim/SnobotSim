@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
-import com.snobot.simulator.wrapper_accessors.jni.JniDataAccessor;
+import com.snobot.simulator.wrapper_accessors.java.JavaDataAccessor;
 
 
 public class TestReadConfig
@@ -13,7 +13,7 @@ public class TestReadConfig
     @Before
     public void setup()
     {
-        DataAccessorFactory.setAccessor(new JniDataAccessor());
+        DataAccessorFactory.setAccessor(new JavaDataAccessor());
     }
 
     @Test

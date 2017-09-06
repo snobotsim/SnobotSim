@@ -13,7 +13,7 @@ import javax.swing.JScrollPane;
 
 import com.snobot.simulator.config.SimulatorConfigWriter;
 import com.snobot.simulator.gui.joysticks.JoystickManagerDialog;
-import com.snobot.simulator.jni.RobotStateSingletonJni;
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 public class SimulatorFrame extends JFrame
 {
@@ -32,7 +32,7 @@ public class SimulatorFrame extends JFrame
     public void updateLoop()
     {
         mBasicPanel.update();
-        mEnablePanel.setTime(RobotStateSingletonJni.getMatchTime());
+        mEnablePanel.setTime(DataAccessorFactory.getInstance().getSimulatorDataAccessor().getMatchTime());
     }
 
     private void initComponenents()
@@ -46,8 +46,8 @@ public class SimulatorFrame extends JFrame
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                RobotStateSingletonJni.setDisabled(!mEnablePanel.isEnabled());
-                RobotStateSingletonJni.setAutonomous(mEnablePanel.isAuton());
+                DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDisabled(!mEnablePanel.isEnabled());
+                DataAccessorFactory.getInstance().getSimulatorDataAccessor().setAutonomous(mEnablePanel.isAuton());
             }
         });
 
@@ -106,11 +106,11 @@ public class SimulatorFrame extends JFrame
         add(mEnablePanel, BorderLayout.NORTH);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        RobotStateSingletonJni.setDisabled(false);
-        RobotStateSingletonJni.setAutonomous(false);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDisabled(false);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setAutonomous(false);
 
         mEnablePanel.setRobotEnabled(true);
-        RobotStateSingletonJni.setDisabled(false);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDisabled(false);
     }
 
     private void saveSettings()

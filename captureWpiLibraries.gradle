@@ -1,0 +1,39 @@
+
+task captureWpiLibraries(type: Jar) {
+
+    def os_name = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
+    def output_path = os_name + "/x86-64/"
+
+    destinationDir = file("$rootDir/build/wpi_libraries")
+    classifier = "wpi_native-" + os_name;
+    
+    from(zipTree('../temp_libs/wpilibj-jni-ABCD-all.jar'))
+    
+    def wpiutil_path = "../build/dependencies/wpiutil-cpp/" + os_name + "x86-64/" + os_name + "/x86-64/shared"
+    from(wpiutil_path) {
+        into output_path
+        include "*.dll"
+        include "*.so"
+    }
+    
+    def wpilibc_path = 'build/dependencies/wpilibc/lib/' + os_name + '/x86-64/shared'
+    from(wpilibc_path) {
+        into output_path
+        include "*.dll"
+        include "*.so"
+    }
+    
+    def ntcore_path = 'build/dependencies/ntcore-cpp/' + os_name + 'x86-64/' + os_name + '/x86-64/shared'
+    from(ntcore_path) {
+        into output_path
+        include "*.dll"
+        include "*.so"
+    }
+    
+    def hal_path = new File('temp_libs/hal/' + os_name + '/x86-64').getAbsolutePath()
+    from(hal_path) {
+        into output_path
+        include "*.dll"
+        include "*.so"
+    }
+}

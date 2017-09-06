@@ -12,16 +12,14 @@ import java.util.Properties;
 import javax.swing.JFrame;
 
 import com.snobot.simulator.gui.SimulatorFrame;
-import com.snobot.simulator.jni.JoystickJni;
-import com.snobot.simulator.jni.RobotStateSingletonJni;
-import com.snobot.simulator.jni.SimulationConnectorJni;
-import com.snobot.simulator.jni.SnobotSimulatorJni;
 import com.snobot.simulator.joysticks.IMockJoystick;
 import com.snobot.simulator.joysticks.JoystickFactory;
 import com.snobot.simulator.robot_container.CppRobotContainer;
 import com.snobot.simulator.robot_container.IRobotClassContainer;
 import com.snobot.simulator.robot_container.JavaRobotContainer;
 import com.snobot.simulator.robot_container.PythonRobotContainer;
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
+import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor.SnobotLogLevel;
 
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
@@ -36,9 +34,9 @@ public class Simulator
     private IRobotClassContainer mRobot; // The robot code to run
     private ASimulator mSimulator; // The robot code to run
 
-    public Simulator(int aLogLevel) throws Exception
+    public Simulator(SnobotLogLevel aLogLevel) throws Exception
     {
-        SnobotSimulatorJni.initializeLogging(aLogLevel);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setLogLevel(aLogLevel);
 
         PluginSniffer sniffer = new PluginSniffer();
         sniffer.loadPlugins();
@@ -131,7 +129,7 @@ public class Simulator
             {
             	try
             	{
-	                RobotStateSingletonJni.waitForProgramToStart();
+                    DataAccessorFactory.getInstance().getSimulatorDataAccessor().waitForProgramToStart();
 	
 	                if (mSimulator != null)
 	                {
@@ -157,13 +155,13 @@ public class Simulator
 	
 	                while (true)
 	                {
-	                    RobotStateSingletonJni.waitForNextUpdateLoop();
+                        DataAccessorFactory.getInstance().getSimulatorDataAccessor().waitForNextUpdateLoop();
 	 
 	                    mSimulator.update();
 	                    frame.updateLoop();
 	                    sendJoystickUpdate();
 	
-	                    SimulationConnectorJni.updateLoop();
+                        DataAccessorFactory.getInstance().getSimulatorDataAccessor().updateLoop();
 	                }
 	            }
                 catch(Throwable e)
@@ -185,7 +183,8 @@ public class Simulator
         for (int i = 0; i < joysticks.length; ++i)
         {
             IMockJoystick joystick = joysticks[i];
-            JoystickJni.setJoystickInformation(i, joystick.getAxisValues(), joystick.getPovValues(), joystick.getButtonCount(),
+            DataAccessorFactory.getInstance().getSimulatorDataAccessor().setJoystickInformation(i, joystick.getAxisValues(), joystick.getPovValues(),
+                    joystick.getButtonCount(),
                     joystick.getButtonMask());
         }
     }

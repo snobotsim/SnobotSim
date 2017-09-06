@@ -3,7 +3,8 @@ package com.snobot.simulator;
 import java.util.Arrays;
 import java.util.Collection;
 
-import com.snobot.simulator.jni.SnobotSimulatorJni;
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
+import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor.SnobotLogLevel;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.util.WPILibVersion;
@@ -12,6 +13,7 @@ public class Main
 {
     public static void main(String[] args)
     {
+        DefaultDataAccessorFactory.initalize();
         
         Collection<String> argList = Arrays.asList(args);
 
@@ -57,7 +59,7 @@ public class Main
         }
     }
     
-    private static int parseLogLevel(Collection<String> argList)
+    private static SnobotLogLevel parseLogLevel(Collection<String> argList)
     {
         int logLevel = 0;
 
@@ -69,16 +71,16 @@ public class Main
             }
         }
 
-        return logLevel;
+        return SnobotLogLevel.values()[logLevel];
     }
 
     private static void printVersions()
 	{
         System.out.println("Versions:");
-        System.out.println("Wpilib Java   : " + WPILibVersion.Version);
-        System.out.println("SnobotSim HAL : " + SnobotSimGuiVersion.Version);
-        System.out.println("SnobotSim GUI : " + SnobotSimulatorJni.getVersion());
-
+        System.out.println("Wpilib Java    : " + WPILibVersion.Version);
+        System.out.println("SnobotSim HAL  : " + SnobotSimGuiVersion.Version);
+        System.out.println("SnobotSim GUI  : " + DataAccessorFactory.getInstance().getSimulatorDataAccessor().getNativeBuildVersion());
+        System.out.println("Simulator Type : " + DataAccessorFactory.getInstance().getAccessorType());
     }
 
     private static void discoverRobots()

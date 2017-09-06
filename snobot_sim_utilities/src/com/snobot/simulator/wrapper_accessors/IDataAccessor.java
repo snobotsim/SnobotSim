@@ -2,6 +2,8 @@ package com.snobot.simulator.wrapper_accessors;
 
 public interface IDataAccessor
 {
+    String getAccessorType();
+
     AccelerometerWrapperAccessor getAccelerometerAccessor();
 
     GyroWrapperAccessor getGyroAccessor();
@@ -17,4 +19,6 @@ public interface IDataAccessor
     SolenoidWrapperAccessor getSolenoidAccessor();
 
     SpeedControllerWrapperAccessor getSpeedControllerAccessor();
+
+    SimulatorDataAccessor getSimulatorDataAccessor();
 }
