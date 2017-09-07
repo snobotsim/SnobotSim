@@ -11,6 +11,7 @@ import com.snobot.simulator.motor_sim.IMotorSimulator;
 import com.snobot.simulator.motor_sim.RotationalLoadDcMotorSim;
 import com.snobot.simulator.motor_sim.SimpleMotorSimulator;
 import com.snobot.simulator.motor_sim.StaticLoadDcMotorSim;
+import com.snobot.simulator.motor_sim.motor_factory.MakeTransmission;
 import com.snobot.simulator.motor_sim.motor_factory.PublishedMotorFactory;
 import com.snobot.simulator.motor_sim.motor_factory.VexMotorFactory;
 import com.snobot.simulator.simulator_components.ISimulatorUpdater;
@@ -52,17 +53,10 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
         simulator.setTurnKp(turnKp);
     }
 
-    @Override
-    public DcMotorModelConfig createMotor(String motorType)
+    private DcMotorModel getModelConfig(String motorType)
     {
-        return createMotor(motorType, 1, 1, 1);
-    }
-
-    @Override
-    public DcMotorModelConfig createMotor(String motorType, int numMotors, double gearReduction, double efficiency)
-    {
-        DcMotorModel modelConfig = PublishedMotorFactory.makeRS775();
-        if("rs775".equals(motorType))
+        DcMotorModel modelConfig;
+        if ("rs775".equals(motorType))
         {
             modelConfig = PublishedMotorFactory.makeRS775();
         }
@@ -71,15 +65,21 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
             modelConfig = VexMotorFactory.make775Pro();
         }
 
-        return new DcMotorModelConfig(
-                motorType, 
-                numMotors, gearReduction, efficiency,
-                modelConfig.NOMINAL_VOLTAGE, 
-                modelConfig.FREE_SPEED_RPM, 
-                modelConfig.FREE_CURRENT, 
-                modelConfig.STALL_TORQUE, 
-                modelConfig.STALL_CURRENT, 
-                modelConfig.mMotorInertia);
+        return modelConfig;
+    }
+
+    @Override
+    public DcMotorModelConfig createMotor(String motorType)
+    {
+        return DcMotorModel.convert(motorType, getModelConfig(motorType));
+    }
+
+    @Override
+    public DcMotorModelConfig createMotor(String motorType, int numMotors, double gearReduction, double efficiency)
+    {
+        DcMotorModel throughTranny = MakeTransmission.makeTransmission(getModelConfig(motorType), numMotors, gearReduction, efficiency);
+
+        return DcMotorModel.convert(motorType, throughTranny);
     }
 
     @Override

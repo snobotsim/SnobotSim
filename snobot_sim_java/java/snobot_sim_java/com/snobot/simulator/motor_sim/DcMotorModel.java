@@ -1,5 +1,7 @@
 package com.snobot.simulator.motor_sim;
 
+import com.snobot.simulator.DcMotorModelConfig;
+
 //https://github.com/Team254/Sim-FRC-2015/blob/master/src/com/team254/frc2015/sim/DCMotor.java
 public class DcMotorModel
 {
@@ -147,5 +149,30 @@ public class DcMotorModel
     {
         return mAcceleration;
     }
+    
+    public static DcMotorModelConfig convert(String motorType, DcMotorModel aIn)
+    {
+        DcMotorModelConfig output = new DcMotorModelConfig(
+                motorType, 
+                1, 1, 1,
+                aIn.NOMINAL_VOLTAGE, 
+                aIn.FREE_SPEED_RPM, 
+                aIn.FREE_CURRENT, 
+                aIn.STALL_TORQUE, 
+                aIn.STALL_CURRENT, 
+                aIn.mMotorInertia);
 
+        output.mKT = aIn.mKT;
+
+        return output;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "DcMotorModel [NOMINAL_VOLTAGE=" + NOMINAL_VOLTAGE + ", FREE_SPEED_RPM=" + FREE_SPEED_RPM + ", FREE_CURRENT=" + FREE_CURRENT
+                + ", STALL_TORQUE=" + STALL_TORQUE + ", STALL_CURRENT=" + STALL_CURRENT + ", mHasBrake=" + mHasBrake + ", mKT=" + mKT + ", mKV=" + mKV
+                + ", mResistance=" + mResistance + ", mMotorInertia=" + mMotorInertia + ", mInverted=" + mInverted + ", mPosition=" + mPosition
+                + ", mVelocity=" + mVelocity + ", mAcceleration=" + mAcceleration + ", mCurrent=" + mCurrent + "]";
+    }
 }

@@ -2,11 +2,14 @@ package com.snobot.simulator.motor_sim;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import org.junit.Test;
 
 import com.snobot.simulator.motor_sim.motor_factory.MakeTransmission;
 import com.snobot.simulator.motor_sim.motor_factory.PublishedMotorFactory;
-import com.snobot.simulator.motor_sim.motor_factory.VexMotorFactory;
 
 public class StaticLoadDcMotorSimTest
 {
@@ -16,9 +19,13 @@ public class StaticLoadDcMotorSimTest
     }
 
     @Test
-    public void testRS775_6VSmallLoad()
+    public void testRS775_6VSmallLoad() throws IOException
     {
-        StaticLoadDcMotorSim rs775 = new StaticLoadDcMotorSim(getSingle775WithTransmission(1, 1.0), .01);
+        DcMotorModel motorModel = getSingle775WithTransmission(1, 1.0);
+        StaticLoadDcMotorSim rs775 = new StaticLoadDcMotorSim(motorModel, .01);
+
+        BufferedWriter bw = new BufferedWriter(new FileWriter("original.txt"));
+        bw.write(motorModel.toString() + "\n");
 
         // Apply a positive voltage and small load.
         System.out.println("Voltage=6V, Load=.01 kg*m^2");
@@ -34,11 +41,15 @@ public class StaticLoadDcMotorSimTest
                 System.out.print(", Velocity: " + rs775.getVelocity());
                 System.out.println(", Current: " + rs775.getCurrent());
             }
+
+            bw.write(i * 0.01 + ", " + rs775.getPosition() + ", " + rs775.getVelocity() + ", " + rs775.getCurrent() + ", " + "\n");
         }
         // We expect negligible final current, and a final velocity of ~68.04
         // rad/sec.
         assertEquals(rs775.getCurrent(), 0.0, 1E-3);
         assertEquals(rs775.getVelocity(), 68.06, 1E-2);
+
+        bw.close();
 
     }
 
