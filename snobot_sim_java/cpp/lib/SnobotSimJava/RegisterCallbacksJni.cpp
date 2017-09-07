@@ -52,6 +52,19 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RegisterCallbacksJni_regist
 
 /*
  * Class:     com_snobot_simulator_jni_RegisterCallbacksJni
+ * Method:    registerAnalogGyroCallback
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RegisterCallbacksJni_registerAnalogGyroCallback
+  (JNIEnv * env, jclass clz, jstring aFunctionName)
+{
+    SnobotSimJava::SetGlobalEnvironment(env);
+    std::string functionName = env->GetStringUTFChars(aFunctionName, NULL);
+    SetCallbackContainerInfo(env, clz, functionName, SnobotSimJava::GetAnalogGyroCallback());
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_RegisterCallbacksJni
  * Method:    registerDigitalCallback
  * Signature: (Ljava/lang/String;)V
  */

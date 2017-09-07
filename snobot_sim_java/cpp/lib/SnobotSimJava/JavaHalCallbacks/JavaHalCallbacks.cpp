@@ -9,6 +9,7 @@
 
 #include "MockData/AnalogInData.h"
 #include "MockData/AnalogOutData.h"
+#include "MockData/AnalogGyroData.h"
 #include "MockData/DIOData.h"
 #include "MockData/EncoderData.h"
 #include "MockData/PCMData.h"
@@ -25,6 +26,7 @@ namespace SnobotSimJava
     int gPwmArrayIndices[26];
     int gAnalogInArrayIndices[26];
     int gAnalogOutArrayIndices[26];
+    int gAnalogGyroArrayIndices[26];
     int gDigitalInArrayIndices[26];
     int gDigitalOutArrayIndices[26];
     int gEncoderArrayIndices[26];
@@ -88,6 +90,7 @@ namespace SnobotSimJava
     // Getters
     //////////////////////////////////////////////
     CallbackHelperContainer gAnalogCallbackContainer;
+    CallbackHelperContainer gAnalogGyroCallbackContainer;
     CallbackHelperContainer gDigitalCallbackContainer;
     CallbackHelperContainer gEncoderCallbackContainer;
     CallbackHelperContainer gPcmCallbackContainer;
@@ -95,13 +98,14 @@ namespace SnobotSimJava
     CallbackHelperContainer gPwmCallbackContainer;
     CallbackHelperContainer gRelayCallbackContainer;
 
-    CallbackHelperContainer& GetAnalogCallback()    { return gAnalogCallbackContainer; }
-    CallbackHelperContainer& GetDigitalCallback()   { return gDigitalCallbackContainer; }
-    CallbackHelperContainer& GetEncoderCallback()   { return gEncoderCallbackContainer; }
-    CallbackHelperContainer& GetPCMCallback()       { return gPcmCallbackContainer; }
-    CallbackHelperContainer& GetPDPCallback()       { return gPdpCallbackContainer; }
-    CallbackHelperContainer& GetPWMCallback()       { return gPwmCallbackContainer; }
-    CallbackHelperContainer& GetRelayCallback()     { return gRelayCallbackContainer; }
+    CallbackHelperContainer& GetAnalogCallback()     { return gAnalogCallbackContainer; }
+    CallbackHelperContainer& GetAnalogGyroCallback() { return gAnalogGyroCallbackContainer; }
+    CallbackHelperContainer& GetDigitalCallback()    { return gDigitalCallbackContainer; }
+    CallbackHelperContainer& GetEncoderCallback()    { return gEncoderCallbackContainer; }
+    CallbackHelperContainer& GetPCMCallback()        { return gPcmCallbackContainer; }
+    CallbackHelperContainer& GetPDPCallback()        { return gPdpCallbackContainer; }
+    CallbackHelperContainer& GetPWMCallback()        { return gPwmCallbackContainer; }
+    CallbackHelperContainer& GetRelayCallback()      { return gRelayCallbackContainer; }
 
     //////////////////////////////////////////////
     // Callbacks
@@ -109,6 +113,10 @@ namespace SnobotSimJava
     void AnalogIOCallback(const char* name, void* param, const struct HAL_Value* value)
     {
         CallJavaCallback(gAnalogCallbackContainer, name, param, value);
+    }
+    void AnalogGyroCallback(const char* name, void* param, const struct HAL_Value* value)
+    {
+        CallJavaCallback(gAnalogGyroCallbackContainer, name, param, value);
     }
     void DigitalIOCallback(const char* name, void* param, const struct HAL_Value* value)
     {
@@ -146,6 +154,14 @@ namespace SnobotSimJava
         {
             gAnalogOutArrayIndices[i] = i;
             HALSIM_RegisterAnalogOutInitializedCallback(i, &AnalogIOCallback, &gAnalogOutArrayIndices[i], false);
+        }
+
+        for(int i = 0; i < HAL_GetNumAccumulators(); ++i)
+        {
+            gAnalogGyroArrayIndices[i] = i;
+            HALSIM_RegisterAnalogGyroInitializedCallback(i, &AnalogGyroCallback, &gAnalogGyroArrayIndices[i], false);
+            HALSIM_RegisterAnalogGyroAngleCallback(i, &AnalogGyroCallback, &gAnalogGyroArrayIndices[i], false);
+            HALSIM_RegisterAnalogGyroRateCallback(i, &AnalogGyroCallback, &gAnalogGyroArrayIndices[i], false);
         }
 
         for(int i = 0; i < HAL_GetNumDigitalHeaders(); ++i)
@@ -196,6 +212,10 @@ namespace SnobotSimJava
         for(int i = 0; i < HAL_GetNumAnalogOutputs(); ++i)
         {
             HALSIM_ResetAnalogOutData(i);
+        }
+        for(int i = 0; i < HAL_GetNumAccumulators(); ++i)
+        {
+            HALSIM_ResetAnalogGyroData(i);
         }
         for(int i = 0; i < HAL_GetNumDigitalHeaders(); ++i)
         {

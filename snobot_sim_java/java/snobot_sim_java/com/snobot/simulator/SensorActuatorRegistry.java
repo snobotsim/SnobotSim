@@ -1,27 +1,32 @@
 package com.snobot.simulator;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.snobot.simulator.module_wrapper.AnalogWrapper;
 import com.snobot.simulator.module_wrapper.DigitalSourceWrapper;
 import com.snobot.simulator.module_wrapper.EncoderWrapper;
+import com.snobot.simulator.module_wrapper.PwmWrapper;
 import com.snobot.simulator.module_wrapper.RelayWrapper;
 import com.snobot.simulator.module_wrapper.SolenoidWrapper;
-import com.snobot.simulator.module_wrapper.SpeedControllerWrapper;
+import com.snobot.simulator.simulator_components.ISimulatorUpdater;
 import com.snobot.simulator.simulator_components.gyro.GyroWrapper;
 
 public class SensorActuatorRegistry
 {
     private static SensorActuatorRegistry mInstance = new SensorActuatorRegistry();
 
-    private Map<Integer, SpeedControllerWrapper> mSpeedControllerMap = new HashMap<>();
+    private Map<Integer, PwmWrapper> mSpeedControllerMap = new HashMap<>();
     private Map<Integer, RelayWrapper> mRelayWrapperMap = new HashMap<>();
     private Map<Integer, DigitalSourceWrapper> mDigitalSourceWrapperMap = new HashMap<>();
     private Map<Integer, AnalogWrapper> mAnalogSourceWrapperMap = new HashMap<>();
     private Map<Integer, SolenoidWrapper> mSolenoidWrapperMap = new HashMap<>();
     private Map<Integer, EncoderWrapper> mEncoderWrapperMap = new HashMap<>();
     private Map<Integer, GyroWrapper> mGyroWrapperMap = new HashMap<>();
+
+    Collection<ISimulatorUpdater> mSimulatorComponents = new ArrayList<>();
 
     private SensorActuatorRegistry()
     {
@@ -49,7 +54,7 @@ public class SensorActuatorRegistry
         return registerItem(aActuator, aPort, mAnalogSourceWrapperMap, "Analog");
     }
 
-    public boolean register(SpeedControllerWrapper aActuator, int aPort)
+    public boolean register(PwmWrapper aActuator, int aPort)
     {
         return registerItem(aActuator, aPort, mSpeedControllerMap, "Speed Controller");
     }
@@ -79,7 +84,13 @@ public class SensorActuatorRegistry
         return registerItem(aSensor, aPort, mGyroWrapperMap, "Gyro");
     }
 
-    public Map<Integer, SpeedControllerWrapper> getSpeedControllers()
+    public boolean register(ISimulatorUpdater aUpdater)
+    {
+        mSimulatorComponents.add(aUpdater);
+        return true;
+    }
+
+    public Map<Integer, PwmWrapper> getSpeedControllers()
     {
         return mSpeedControllerMap;
     }
@@ -104,9 +115,19 @@ public class SensorActuatorRegistry
         return mAnalogSourceWrapperMap;
     }
 
-    public Map<Integer, EncoderWrapper> geEncoders()
+    public Map<Integer, EncoderWrapper> getEncoders()
     {
         return mEncoderWrapperMap;
+    }
+
+    public Map<Integer, GyroWrapper> getGyros()
+    {
+        return mGyroWrapperMap;
+    }
+
+    public Collection<ISimulatorUpdater> getSimulatorComponents()
+    {
+        return mSimulatorComponents;
     }
 
     public void reset()
@@ -118,5 +139,7 @@ public class SensorActuatorRegistry
         mSolenoidWrapperMap.clear();
         mEncoderWrapperMap.clear();
         mGyroWrapperMap.clear();
+
+        mSimulatorComponents.clear();
     }
 }

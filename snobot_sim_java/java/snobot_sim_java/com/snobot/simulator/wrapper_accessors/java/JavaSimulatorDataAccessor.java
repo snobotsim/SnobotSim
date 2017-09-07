@@ -3,6 +3,9 @@ package com.snobot.simulator.wrapper_accessors.java;
 import com.snobot.simulator.DcMotorModelConfig;
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.RegisterCallbacksJni;
+import com.snobot.simulator.module_wrapper.PwmWrapper;
+import com.snobot.simulator.motor_sim.SimpleMotorSimulator;
+import com.snobot.simulator.simulator_components.ISimulatorUpdater;
 import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor;
 
 public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
@@ -48,7 +51,15 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     @Override
     public void setSpeedControllerModel_Simple(int aScHandle, double maxSpeed)
     {
-
+        PwmWrapper speedController = SensorActuatorRegistry.get().getSpeedControllers().get(aScHandle);
+        if (speedController != null)
+        {
+            speedController.setMotorSimulator(new SimpleMotorSimulator(maxSpeed));
+        }
+        else
+        {
+            System.err.println("Unknown speed controller " + aScHandle);
+        }
     }
 
     @Override
@@ -105,7 +116,6 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
         }
         catch (InterruptedException e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -113,7 +123,16 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     @Override
     public void updateLoop()
     {
-        // throw new UnsupportedOperationException();
+        for (PwmWrapper wrapper : SensorActuatorRegistry.get().getSpeedControllers().values())
+        {
+            wrapper.update(.02);
+            // tankDriveSimulator.update();
+        }
+
+        for (ISimulatorUpdater updater : SensorActuatorRegistry.get().getSimulatorComponents())
+        {
+            updater.update();
+        }
     }
 
     @Override

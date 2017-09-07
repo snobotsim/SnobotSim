@@ -29,6 +29,7 @@ namespace SnobotSimJava
     void SetGlobalEnvironment(JNIEnv * env);
 
     CallbackHelperContainer& GetAnalogCallback();
+    CallbackHelperContainer& GetAnalogGyroCallback();
     CallbackHelperContainer& GetDigitalCallback();
     CallbackHelperContainer& GetEncoderCallback();
     CallbackHelperContainer& GetPCMCallback();

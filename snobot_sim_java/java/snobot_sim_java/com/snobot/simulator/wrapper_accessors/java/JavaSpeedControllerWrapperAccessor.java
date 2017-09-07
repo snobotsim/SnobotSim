@@ -4,13 +4,13 @@ import java.util.Map;
 
 import com.snobot.simulator.DcMotorModelConfig;
 import com.snobot.simulator.SensorActuatorRegistry;
-import com.snobot.simulator.module_wrapper.SpeedControllerWrapper;
+import com.snobot.simulator.module_wrapper.PwmWrapper;
 import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor;
 
-public class JavaSpeedControllerWrapperAccessor extends BaseWrapperAccessor<SpeedControllerWrapper> implements SpeedControllerWrapperAccessor
+public class JavaSpeedControllerWrapperAccessor extends BaseWrapperAccessor<PwmWrapper> implements SpeedControllerWrapperAccessor
 {
     @Override
-    protected Map<Integer, SpeedControllerWrapper> getMap()
+    protected Map<Integer, PwmWrapper> getMap()
     {
         return SensorActuatorRegistry.get().getSpeedControllers();
     }
@@ -24,7 +24,7 @@ public class JavaSpeedControllerWrapperAccessor extends BaseWrapperAccessor<Spee
     @Override
     public void updateAllSpeedControllers(double aUpdatePeriod)
     {
-        for (SpeedControllerWrapper wrapper : getMap().values())
+        for (PwmWrapper wrapper : getMap().values())
         {
             wrapper.update(aUpdatePeriod);
         }

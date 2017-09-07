@@ -1,86 +1,58 @@
 package com.snobot.simulator.module_wrapper;
 
-public class EncoderWrapper extends ASensorWrapper
+import com.snobot.simulator.simulator_components.IMotorFeedbackSensor;
+
+public class EncoderWrapper extends ASensorWrapper implements IMotorFeedbackSensor
 {
-    private SpeedControllerWrapper mMotorWrapper;
+    public static interface DistanceSetterHelper
+    {
+        public void setDistance(double aDistance);
+    }
+
+    private final DistanceSetterHelper mSetterHelper;
     private double mEncodingFactor;
     private double mDistancePerTick;
+    private double mPosition;
 
-    public EncoderWrapper(int aIndex)
+    public EncoderWrapper(int aIndex, DistanceSetterHelper aSetterHelper)
     {
-        this("Encoder " + aIndex);
+        this("Encoder " + aIndex, aSetterHelper);
     }
 
-    public EncoderWrapper(int aIndexA, int aIndexB)
-    {
-        this("Encoder (" + aIndexA + ", " + aIndexB + ")");
-    }
-
-    public EncoderWrapper(String aName)
+    public EncoderWrapper(String aName, DistanceSetterHelper aSetterHelper)
     {
         super(aName);
 
-        // setEncodingFactor(CounterBase.EncodingType.k4X);
+        mSetterHelper = aSetterHelper;
+        mPosition = 0;
         mDistancePerTick = 1;
-    }
-
-    // private void setEncodingFactor(EncodingType aFactor)
-    // {
-    // switch (aFactor)
-    // {
-    // case k1X:
-    // mEncodingFactor = 1.0;
-    // break;
-    // case k2X:
-    // mEncodingFactor = 0.5;
-    // break;
-    // case k4X:
-    // mEncodingFactor = 0.25;
-    // break;
-    // default:
-    // // This is never reached, EncodingType enum limits values
-    // mEncodingFactor = 0.0;
-    // break;
-    // }
-    // }
-
-    public void reset()
-    {
-        if (mMotorWrapper != null)
-        {
-            mMotorWrapper.reset();
-        }
     }
 
     public int getRaw()
     {
-        return (int) (getDistance() / (mEncodingFactor * mDistancePerTick));
-    }
-
-    public double getDistance()
-    {
-        if (mMotorWrapper == null)
-        {
-            return 0;
-        }
-        else
-        {
-            return mMotorWrapper.getPosition();
-        }
-    }
-
-    public boolean isHookedUp()
-    {
-        return mMotorWrapper != null;
-    }
-
-    public void setSpeedController(SpeedControllerWrapper aMotorWrapper)
-    {
-        mMotorWrapper = aMotorWrapper;
+        return (int) (getPosition() / (mEncodingFactor * mDistancePerTick));
     }
 
     public void setDistancePerTick(double aDistancePerTick)
     {
         mDistancePerTick = aDistancePerTick;
+    }
+
+    @Override
+    public void setPosition(double aPosition)
+    {
+        boolean isUpdate = aPosition != mPosition;
+        mPosition = aPosition;
+
+        if (isUpdate)
+        {
+            mSetterHelper.setDistance(mPosition);
+        }
+    }
+
+    @Override
+    public double getPosition()
+    {
+        return mPosition;
     }
 }

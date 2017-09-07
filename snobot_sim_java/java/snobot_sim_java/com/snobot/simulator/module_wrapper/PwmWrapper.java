@@ -1,16 +1,19 @@
 package com.snobot.simulator.module_wrapper;
 
 import com.snobot.simulator.motor_sim.IMotorSimulator;
+import com.snobot.simulator.simulator_components.IMotorFeedbackSensor;
 
-public class SpeedControllerWrapper extends ASensorWrapper
+public class PwmWrapper extends ASensorWrapper
 {
     private IMotorSimulator mMotorSimulator;
+    private IMotorFeedbackSensor mFeedbackSensor;
 
-    public SpeedControllerWrapper(int index)
+    public PwmWrapper(int index)
     {
         super("Speed Controller " + index);
 
         mMotorSimulator = new IMotorSimulator.NullMotorSimulator();
+        mFeedbackSensor = new IMotorFeedbackSensor.NullFeedbackSensor();
     }
 
     public void setMotorSimulator(IMotorSimulator aSimulator)
@@ -31,6 +34,7 @@ public class SpeedControllerWrapper extends ASensorWrapper
     public void update(double aWaitTime)
     {
         mMotorSimulator.update(aWaitTime);
+        mFeedbackSensor.setPosition(mMotorSimulator.getPosition());
     }
 
     public double getPosition()
@@ -51,5 +55,15 @@ public class SpeedControllerWrapper extends ASensorWrapper
     public void reset(double aPosition, double aVelocity, double aCurrent)
     {
         mMotorSimulator.reset(aPosition, aVelocity, aCurrent);
+    }
+
+    public boolean hasFeedbackSensor()
+    {
+        return mFeedbackSensor != null;
+    }
+
+    public void setFeedbackSensor(EncoderWrapper aFeedbackSensor)
+    {
+        mFeedbackSensor = aFeedbackSensor;
     }
 }

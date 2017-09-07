@@ -20,7 +20,7 @@ public class TestRegisterJavaCallback extends BaseSimulatorTest
     {
         Assert.assertEquals(analogSize, SensorActuatorRegistry.get().getAnalog().size());
         Assert.assertEquals(digitalSize, SensorActuatorRegistry.get().getDigitalSources().size());
-        Assert.assertEquals(encoderSize, SensorActuatorRegistry.get().geEncoders().size());
+        Assert.assertEquals(encoderSize, SensorActuatorRegistry.get().getEncoders().size());
         Assert.assertEquals(pcmSize, SensorActuatorRegistry.get().getSolenoids().size());
         Assert.assertEquals(numPwm, SensorActuatorRegistry.get().getSpeedControllers().size());
     }

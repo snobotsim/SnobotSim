@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.EncoderWrapper;
+import com.snobot.simulator.module_wrapper.PwmWrapper;
 import com.snobot.simulator.wrapper_accessors.EncoderWrapperAccessor;
 
 public class JavaEncoderWrapperAccessor extends BaseWrapperAccessor<EncoderWrapper> implements EncoderWrapperAccessor
@@ -11,7 +12,7 @@ public class JavaEncoderWrapperAccessor extends BaseWrapperAccessor<EncoderWrapp
     @Override
     protected Map<Integer, EncoderWrapper> getMap()
     {
-        return SensorActuatorRegistry.get().geEncoders();
+        return SensorActuatorRegistry.get().getEncoders();
     }
 
     @Override
@@ -23,13 +24,23 @@ public class JavaEncoderWrapperAccessor extends BaseWrapperAccessor<EncoderWrapp
     @Override
     public void connectSpeedController(int aEncoderHandle, int aSpeedControllerHandle)
     {
-
+        EncoderWrapper encoder = SensorActuatorRegistry.get().getEncoders().get(aEncoderHandle);
+        PwmWrapper speedController = SensorActuatorRegistry.get().getSpeedControllers().get(aSpeedControllerHandle);
+        if (encoder != null && speedController != null)
+        {
+            speedController.setFeedbackSensor(encoder);
+        }
+        else
+        {
+            System.err.println("Could not conenct SC to ENC... " + aEncoderHandle + ", " + aSpeedControllerHandle);
+        }
     }
 
     @Override
     public boolean isHookedUp(int aPort)
     {
-        return getValue(aPort).isHookedUp();
+        // return getValue(aPort).isHookedUp();
+        return false;
     }
 
     @Override
@@ -59,6 +70,6 @@ public class JavaEncoderWrapperAccessor extends BaseWrapperAccessor<EncoderWrapp
     @Override
     public double getDistance(int aPort)
     {
-        return getValue(aPort).getDistance();
+        return getValue(aPort).getPosition();
     }
 }

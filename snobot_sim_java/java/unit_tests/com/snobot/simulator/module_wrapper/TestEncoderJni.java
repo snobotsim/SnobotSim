@@ -1,4 +1,4 @@
-package com.snobot.simulator.jni.module_wrapper;
+package com.snobot.simulator.module_wrapper;
 
 
 
@@ -9,6 +9,8 @@ import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.Talon;
 
 public class TestEncoderJni extends BaseSimulatorTest
 {
@@ -35,5 +37,24 @@ public class TestEncoderJni extends BaseSimulatorTest
         Assert.assertEquals(1, DataAccessorFactory.getInstance().getEncoderAccessor().getPortList().size());
 
         new Encoder(1, 2);
+    }
+
+    @Test
+    public void testSpeedControllerFeedback()
+    {
+        SpeedController sc = new Talon(0);
+        Encoder encoder = new Encoder(1, 2);
+
+        DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(0, 0);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(0, 12);
+
+        for (int i = 0; i < 50; ++i)
+        {
+            sc.set(1);
+            DataAccessorFactory.getInstance().getSpeedControllerAccessor().updateAllSpeedControllers(.02);
+        }
+
+        Assert.assertEquals(12.0, encoder.getDistance(), DOUBLE_EPSILON);
+        Assert.assertEquals(12.0, DataAccessorFactory.getInstance().getEncoderAccessor().getDistance(0), DOUBLE_EPSILON);
     }
 }

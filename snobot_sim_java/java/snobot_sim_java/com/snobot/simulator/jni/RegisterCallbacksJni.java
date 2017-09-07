@@ -1,28 +1,25 @@
 package com.snobot.simulator.jni;
 
-import com.snobot.simulator.JniLibraryResourceLoader;
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.AnalogWrapper;
+import com.snobot.simulator.module_wrapper.AnalogWrapper.VoltageSetterHelper;
 import com.snobot.simulator.module_wrapper.DigitalSourceWrapper;
+import com.snobot.simulator.module_wrapper.DigitalSourceWrapper.StateSetterHelper;
 import com.snobot.simulator.module_wrapper.EncoderWrapper;
+import com.snobot.simulator.module_wrapper.EncoderWrapper.DistanceSetterHelper;
+import com.snobot.simulator.module_wrapper.PwmWrapper;
 import com.snobot.simulator.module_wrapper.RelayWrapper;
 import com.snobot.simulator.module_wrapper.SolenoidWrapper;
-import com.snobot.simulator.module_wrapper.SpeedControllerWrapper;
+import com.snobot.simulator.simulator_components.gyro.GyroWrapper;
+import com.snobot.simulator.simulator_components.gyro.GyroWrapper.AngleSetterHelper;
 
-public class RegisterCallbacksJni
+public class RegisterCallbacksJni extends BaseSnobotJni
 {
-    static
-    {
-        JniLibraryResourceLoader.loadLibrary("wpiutil");
-        JniLibraryResourceLoader.loadLibrary("wpiHal");
-        JniLibraryResourceLoader.loadLibrary("snobotSimJavaJni");
-
-        reset();
-    }
-
     public static native void reset();
 
     public static native void registerAnalogCallback(String functionName);
+
+    public static native void registerAnalogGyroCallback(String functionName);
 
     public static native void registerDigitalCallback(String functionName);
 
@@ -39,6 +36,7 @@ public class RegisterCallbacksJni
     public static void registerAllCallbacks()
     {
         registerAnalogCallback();
+        registerAnalogGyroCallback();
         registerDigitalCallback();
         registerEncoderCallback();
         registerPcmCallback();
@@ -50,6 +48,11 @@ public class RegisterCallbacksJni
     public static void registerAnalogCallback()
     {
         registerAnalogCallback("analogCallback");
+    }
+
+    public static void registerAnalogGyroCallback()
+    {
+        registerAnalogGyroCallback("analogGyroCallback");
     }
 
     public static void registerDigitalCallback()
@@ -86,7 +89,15 @@ public class RegisterCallbacksJni
     {
         if ("Initialized".equals(callbackType))
         {
-            SensorActuatorRegistry.get().register(new AnalogWrapper(port), port);
+            SensorActuatorRegistry.get().register(new AnalogWrapper(port, new VoltageSetterHelper()
+            {
+
+                @Override
+                public void setVoltage(double aVoltage)
+                {
+                    SensorFeedbackJni.setAnalogVoltage(port, aVoltage);
+                }
+            }), port);
         }
         else
         {
@@ -94,11 +105,48 @@ public class RegisterCallbacksJni
         }
     }
 
+    public static void analogGyroCallback(String callbackType, int port, HalCallbackValue halValue)
+    {
+        if ("Initialized".equals(callbackType))
+        {
+            GyroWrapper wrapper = new GyroWrapper("Analog Gyro", new AngleSetterHelper()
+            {
+                @Override
+                public void setAngle(double aAngle)
+                {
+                    SensorFeedbackJni.setAnalogGyroAngle(port, aAngle);
+                }
+            });
+            SensorActuatorRegistry.get().register(wrapper, port);
+        }
+        else if ("Angle".equals(callbackType))
+        {
+            SensorActuatorRegistry.get().getGyros().get(port).setAngle(halValue.mDouble);
+        }
+        else
+        {
+            System.out.println("Unknown AnalogGyro callback " + callbackType);
+        }
+    }
+
     public static void digitalCallback(String callbackType, int port, HalCallbackValue halValue)
     {
         if ("Initialized".equals(callbackType))
         {
-            SensorActuatorRegistry.get().register(new DigitalSourceWrapper(port), port);
+            SensorActuatorRegistry.get().register(new DigitalSourceWrapper(port, new StateSetterHelper()
+            {
+
+                @Override
+                public void setState(boolean aState)
+                {
+                    System.out.println("Trying to set");
+                    SensorFeedbackJni.setDigitalInput(port, aState);
+                }
+            }), port);
+        }
+        else if ("Value".equals(callbackType))
+        {
+            SensorActuatorRegistry.get().getDigitalSources().get(port).set(halValue.mBoolean);
         }
         else
         {
@@ -110,7 +158,15 @@ public class RegisterCallbacksJni
     {
         if ("Initialized".equals(callbackType))
         {
-            SensorActuatorRegistry.get().register(new EncoderWrapper(port), port);
+            SensorActuatorRegistry.get().register(new EncoderWrapper(port, new DistanceSetterHelper()
+            {
+
+                @Override
+                public void setDistance(double aDistance)
+                {
+                    SensorFeedbackJni.setEncoderDistance(port, aDistance);
+                }
+            }), port);
         }
         else
         {
@@ -152,7 +208,7 @@ public class RegisterCallbacksJni
     {
         if ("Initialized".equals(callbackType))
         {
-            SensorActuatorRegistry.get().register(new SpeedControllerWrapper(port), port);
+            SensorActuatorRegistry.get().register(new PwmWrapper(port), port);
         }
         else if ("Speed".equals(callbackType))
         {

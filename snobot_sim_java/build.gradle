@@ -109,6 +109,7 @@ dependencies {
 
 def jniClasses = [
     'com.snobot.simulator.jni.RegisterCallbacksJni',
+    'com.snobot.simulator.jni.SensorFeedbackJni',
 ]
     
 model {

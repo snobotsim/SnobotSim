@@ -3,10 +3,10 @@ package com.snobot.simulator.wrapper_accessors.java;
 import java.util.Map;
 
 import com.snobot.simulator.SensorActuatorRegistry;
-import com.snobot.simulator.module_wrapper.SpeedControllerWrapper;
+import com.snobot.simulator.module_wrapper.PwmWrapper;
 import com.snobot.simulator.wrapper_accessors.GyroWrapperAccessor;
 
-public class JavaGyroWrapperAccessor extends BaseWrapperAccessor<SpeedControllerWrapper> implements GyroWrapperAccessor
+public class JavaGyroWrapperAccessor extends BaseWrapperAccessor<PwmWrapper> implements GyroWrapperAccessor
 {
 
     @Override
@@ -28,7 +28,7 @@ public class JavaGyroWrapperAccessor extends BaseWrapperAccessor<SpeedController
     }
 
     @Override
-    protected Map<Integer, SpeedControllerWrapper> getMap()
+    protected Map<Integer, PwmWrapper> getMap()
     {
         return SensorActuatorRegistry.get().getSpeedControllers();
     }

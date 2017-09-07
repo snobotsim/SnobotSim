@@ -1,5 +1,6 @@
 package com.snobot.simulator.simulator_components;
 
+import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.EncoderWrapper;
 import com.snobot.simulator.simulator_components.gyro.GyroWrapper;
 
@@ -34,6 +35,8 @@ public class TankDriveGyroSimulator implements ISimulatorUpdater
         {
             System.err.println("Can't simulate gyro, some inputs are null");
         }
+
+        SensorActuatorRegistry.get().register(this);
     }
 
     public void setTurnKp(double aKp)
@@ -54,8 +57,8 @@ public class TankDriveGyroSimulator implements ISimulatorUpdater
         if (mIsSetup)
         {
 
-            double rightDist = mRightEncoder.getDistance();
-            double leftDist = mLeftEncoder.getDistance();
+            double rightDist = mRightEncoder.getPosition();
+            double leftDist = mLeftEncoder.getPosition();
 
             if (mIsLeftReversed == true)
             {
@@ -66,11 +69,16 @@ public class TankDriveGyroSimulator implements ISimulatorUpdater
                 rightDist *= -1;
             }
 
-            mAngle = (leftDist - rightDist) / (3.14159 * mKP) * (180.0);
+            mAngle = (leftDist - rightDist) / (Math.PI * mKP) * (180.0);
 
             mGyroWrapper.setAngle(mAngle);
             // System.out.println("SIMULATOR : angle=" + mAngle + ", right=" +
             // rightDist + ", left=" + leftDist);
         }
+    }
+
+    public boolean isSetup()
+    {
+        return mIsSetup;
     }
 }

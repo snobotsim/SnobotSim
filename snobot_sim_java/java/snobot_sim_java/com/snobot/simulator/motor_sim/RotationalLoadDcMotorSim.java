@@ -1,12 +1,12 @@
 package com.snobot.simulator.motor_sim;
 
-import com.snobot.simulator.module_wrapper.SpeedControllerWrapper;
+import com.snobot.simulator.module_wrapper.PwmWrapper;
 
 public class RotationalLoadDcMotorSim extends BaseDcMotorSimulator
 {
     protected final static double sGRAVITY = 9.8;
 
-    protected final SpeedControllerWrapper mSpeedController;
+    protected final PwmWrapper mSpeedController;
     protected final double mArmInertia;
     protected final double mGravityBasedTorqueFactor;
     
@@ -27,7 +27,7 @@ public class RotationalLoadDcMotorSim extends BaseDcMotorSimulator
      */
     public RotationalLoadDcMotorSim(
             DcMotorModel aModel,
-            SpeedControllerWrapper aSpeedController,
+            PwmWrapper aSpeedController,
             double aArmCenterOfMass,
             double aArmMass)
     {
@@ -53,7 +53,7 @@ public class RotationalLoadDcMotorSim extends BaseDcMotorSimulator
      */
     public RotationalLoadDcMotorSim(
             DcMotorModel aModel,
-            SpeedControllerWrapper aSpeedController,
+            PwmWrapper aSpeedController,
             double aArmCenterOfMass,
             double aArmMass,
             double aConstantAssistTorque,
