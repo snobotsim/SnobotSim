@@ -14,6 +14,7 @@ apply plugin: 'java'
 apply plugin: 'jacoco'
 
 apply from: '../config.gradle'
+apply from: "$rootDir/extract_hal_headers.gradle"
 
 sourceSets {
     main {
@@ -109,24 +110,6 @@ dependencies {
 def jniClasses = [
     'com.snobot.simulator.jni.RegisterCallbacksJni',
 ]
-
-///////////////////////////////////////////////////
-configurations {
-    halHeaders
-}
-
-
-dependencies {
-    halHeaders getHalHeadersVersion()
-}
-
-  // Task to explode the zipped library into a temporary dir
-task extractHalHeadersZip(type: Copy) {
-    ext.libsdir = "${rootProject.buildDir}/dependencies/hal"
-    from { configurations.halHeaders.collect { zipTree(it) } }
-    into libsdir
-}
-///////////////////////////////////////////////////
     
 model {
     jniConfigs {

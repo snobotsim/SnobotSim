@@ -1,0 +1,15 @@
+
+configurations {
+    halHeaders
+}
+
+
+dependencies {
+    halHeaders getHalHeadersVersion()
+}
+
+task extractHalHeadersZip(type: Copy) {
+    ext.libsdir = "${rootProject.buildDir}/dependencies/hal"
+    from { configurations.halHeaders.collect { zipTree(it) } }
+    into libsdir
+}

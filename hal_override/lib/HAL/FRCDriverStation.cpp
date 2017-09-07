@@ -97,9 +97,9 @@ int32_t HAL_SendError(HAL_Bool isError, int32_t errorCode, HAL_Bool isLVCode,
 
 int32_t HAL_GetControlWord(HAL_ControlWord* controlWord) {
 
-    controlWord->enabled = !RobotStateSingleton::Get().GetDisabled();
-    controlWord->autonomous = RobotStateSingleton::Get().GetAutonomous();
-    controlWord->test = RobotStateSingleton::Get().GetTest();
+//    controlWord->enabled = !RobotStateSingleton::Get().GetDisabled();
+//    controlWord->autonomous = RobotStateSingleton::Get().GetAutonomous();
+//    controlWord->test = RobotStateSingleton::Get().GetTest();
     controlWord->eStop = false;
     controlWord->fmsAttached = false;
     controlWord->dsAttached = true;
@@ -225,7 +225,7 @@ double HAL_GetMatchTime(int32_t* status) {
 }
 
 void HAL_ObserveUserProgramStarting(void) {
-	RobotStateSingleton::Get().HandleRobotInitialized();
+//	RobotStateSingleton::Get().HandleRobotInitialized();
 }
 
 void HAL_ObserveUserProgramDisabled(void) {
