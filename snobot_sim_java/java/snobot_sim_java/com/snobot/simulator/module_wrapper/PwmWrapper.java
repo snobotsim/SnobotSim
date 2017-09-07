@@ -47,6 +47,11 @@ public class PwmWrapper extends ASensorWrapper
         return mMotorSimulator.getVelocity();
     }
 
+    public double getCurrent()
+    {
+        return mMotorSimulator.getCurrent();
+    }
+
     public void reset()
     {
         mMotorSimulator.reset();

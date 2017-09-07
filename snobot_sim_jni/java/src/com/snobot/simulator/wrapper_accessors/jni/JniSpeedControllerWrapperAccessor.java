@@ -75,4 +75,25 @@ public class JniSpeedControllerWrapperAccessor implements SpeedControllerWrapper
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public double getPosition(int i)
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public double getVelocity(int i)
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public double getCurrent(int i)
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 }

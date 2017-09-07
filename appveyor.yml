@@ -9,6 +9,7 @@ after_build:
 - cmd: pip install codecov
 - cmd: codecov -f "snobot_sim_gui/build/reports/jacoco/test/jacocoTestReport.xml"
 - cmd: codecov -f "snobot_sim_java/build/reports/jacoco/test/jacocoTestReport.xml"
+- cmd: codecov -f "snobot_sim_jni/build/reports/jacoco/test/jacocoTestReport.xml"
 
 artifacts:
 

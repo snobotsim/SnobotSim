@@ -63,4 +63,22 @@ public class JavaSpeedControllerWrapperAccessor extends BaseWrapperAccessor<PwmW
         return null;
     }
 
+    @Override
+    public double getPosition(int aPort)
+    {
+        return SensorActuatorRegistry.get().getSpeedControllers().get(aPort).getPosition();
+    }
+
+    @Override
+    public double getVelocity(int aPort)
+    {
+        return SensorActuatorRegistry.get().getSpeedControllers().get(aPort).getVelocity();
+    }
+
+    @Override
+    public double getCurrent(int aPort)
+    {
+        return SensorActuatorRegistry.get().getSpeedControllers().get(aPort).getCurrent();
+    }
+
 }

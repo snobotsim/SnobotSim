@@ -57,11 +57,4 @@ public class TestTankDriveSimulator extends BaseSimulatorTest
         Assert.assertEquals(45, rightEnc.getDistance(), DOUBLE_EPSILON);
         Assert.assertEquals(-45, leftEnc.getDistance(), DOUBLE_EPSILON);
     }
-
-    @Test
-    public void testInvalidSetup()
-    {
-        TankDriveGyroSimulator tankDriveSimulator = new TankDriveGyroSimulator(null, null, null);
-        Assert.assertFalse(tankDriveSimulator.isSetup());
-    }
 }

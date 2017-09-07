@@ -15,7 +15,7 @@ public interface SimulatorDataAccessor
 
     void reset();
 
-    void connectTankDriveSimulator(int leftEncHandle, int rightEncHandle, int scHandle, double turnKp);
+    void connectTankDriveSimulator(int leftEncHandle, int rightEncHandle, int gyroHandle, double turnKp);
 
     DcMotorModelConfig createMotor(String selectedMotor, int numMotors, double gearReduction, double efficiency);
 
@@ -44,5 +44,7 @@ public interface SimulatorDataAccessor
     void waitForNextUpdateLoop();
 
     void setJoystickInformation(int i, float[] axisValues, short[] povValues, int buttonCount, int buttonMask);
+
+    void setUpdateRate(double aUpdatePeriod);
 
 }

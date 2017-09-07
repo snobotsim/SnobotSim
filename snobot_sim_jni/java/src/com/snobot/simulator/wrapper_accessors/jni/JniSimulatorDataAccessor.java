@@ -1,6 +1,7 @@
 package com.snobot.simulator.wrapper_accessors.jni;
 
 import com.snobot.simulator.DcMotorModelConfig;
+import com.snobot.simulator.jni.SimulationConnectorJni;
 import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor;
 
 public class JniSimulatorDataAccessor implements SimulatorDataAccessor
@@ -25,9 +26,9 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
     }
 
     @Override
-    public void connectTankDriveSimulator(int leftEncHandle, int rightEncHandle, int scHandle, double turnKp)
+    public void connectTankDriveSimulator(int leftEncHandle, int rightEncHandle, int aGyroHandle, double turnKp)
     {
-        throw new UnsupportedOperationException();
+        SimulationConnectorJni.connectTankDriveSimulator(leftEncHandle, rightEncHandle, aGyroHandle, turnKp);
     }
 
     @Override
@@ -45,7 +46,7 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
     @Override
     public void setSpeedControllerModel_Simple(int aScHandle, double maxSpeed)
     {
-        throw new UnsupportedOperationException();
+        SimulationConnectorJni.setSpeedControllerModel_Simple(aScHandle, maxSpeed);
     }
 
     @Override
@@ -99,7 +100,7 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
     @Override
     public void updateLoop()
     {
-        throw new UnsupportedOperationException();
+
     }
 
     @Override
@@ -112,6 +113,13 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
     public void setJoystickInformation(int i, float[] axisValues, short[] povValues, int buttonCount, int buttonMask)
     {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setUpdateRate(double aUpdatePeriod)
+    {
+        // TODO Auto-generated method stub
+
     }
 
 }

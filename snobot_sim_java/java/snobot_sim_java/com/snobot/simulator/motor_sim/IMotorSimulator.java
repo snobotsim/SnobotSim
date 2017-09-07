@@ -11,6 +11,8 @@ public interface IMotorSimulator
 
     double getVelocity();
 
+    double getCurrent();
+
     double getPosition();
 
     void reset();
@@ -49,6 +51,12 @@ public interface IMotorSimulator
 
         @Override
         public double getPosition()
+        {
+            return 0;
+        }
+
+        @Override
+        public double getCurrent()
         {
             return 0;
         }

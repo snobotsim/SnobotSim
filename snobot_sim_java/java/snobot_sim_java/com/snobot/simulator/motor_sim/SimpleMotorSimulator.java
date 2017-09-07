@@ -45,6 +45,12 @@ public class SimpleMotorSimulator implements IMotorSimulator
     }
 
     @Override
+    public double getCurrent()
+    {
+        return 0;
+    }
+
+    @Override
     public void reset()
     {
         reset(0, 0, 0);

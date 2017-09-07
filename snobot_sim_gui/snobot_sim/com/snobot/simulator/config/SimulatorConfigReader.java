@@ -202,13 +202,13 @@ public class SimulatorConfigReader
     {
         for (Map<String, Object> tankDriveConfig : aTankDriveConfig)
         {
-            int scHandle = getIntHandle(tankDriveConfig.get("gyro_handle"));
+            int gyroHandle = getIntHandle(tankDriveConfig.get("gyro_handle"));
             double turnKp = ((Number) tankDriveConfig.get("turn_kp")).doubleValue();
 
             int leftEncHandle = getEncoderHandle(tankDriveConfig, "left_enc_handle_a", "left_enc_handle_b", "left_single_handle");
             int rightEncHandle = getEncoderHandle(tankDriveConfig, "right_enc_handle_a", "right_enc_handle_b", "right_single_handle");
 
-            DataAccessorFactory.getInstance().getSimulatorDataAccessor().connectTankDriveSimulator(leftEncHandle, rightEncHandle, scHandle, turnKp);
+            DataAccessorFactory.getInstance().getSimulatorDataAccessor().connectTankDriveSimulator(leftEncHandle, rightEncHandle, gyroHandle, turnKp);
         }
     }
 

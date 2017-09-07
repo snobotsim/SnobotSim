@@ -2,18 +2,14 @@ package com.snobot.simulator.motor_sim;
 
 import org.junit.Test;
 
-import com.snobot.simulator.module_wrapper.PwmWrapper;
-import com.snobot.simulator.motor_sim.motor_factory.MakeTransmission;
-import com.snobot.simulator.motor_sim.motor_factory.PublishedMotorFactory;
+import com.snobot.simulator.DcMotorModelConfig;
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
+import com.snobot.test.utilities.BaseSimulatorTest;
 
-public class GravityLoadDcMotorSimTest
+import edu.wpi.first.wpilibj.Talon;
+
+public class GravityLoadDcMotorSimTest extends BaseSimulatorTest
 {
-
-    private DcMotorModel getSingle775WithTransmission(int numMotors, double effiecency)
-    {
-        return MakeTransmission.makeTransmission(PublishedMotorFactory.makeRS775(), numMotors, 10.0, effiecency);
-    }
-
     @Test
     public void testMotor()
     {
@@ -21,11 +17,9 @@ public class GravityLoadDcMotorSimTest
         double efficiency = 1;
         double load = .01;
 
-        PwmWrapper wrapper = new PwmWrapper(0);
-        IMotorSimulator motorSim = new GravityLoadDcMotorSim(getSingle775WithTransmission(motors, efficiency), load);
-        wrapper.setMotorSimulator(motorSim);
-
-        System.out.println(motorSim);
+        new Talon(0);
+        DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("CIM", motors, 1.0, efficiency);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Gravitational(0, motorConfig, load);
     }
 
 }

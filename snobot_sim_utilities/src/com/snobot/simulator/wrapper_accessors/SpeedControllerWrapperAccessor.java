@@ -45,4 +45,10 @@ public interface SpeedControllerWrapperAccessor
     public double getMotorSimGravitationalModelConfig(int aPort);
 
     public MotorSimType getMotorSimType(int aHandle);
+
+    public double getPosition(int i);
+
+    public double getVelocity(int i);
+
+    public double getCurrent(int i);
 }
