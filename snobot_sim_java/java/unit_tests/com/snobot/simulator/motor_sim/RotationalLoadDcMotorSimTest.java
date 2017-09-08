@@ -2,6 +2,7 @@ package com.snobot.simulator.motor_sim;
 
 import java.io.IOException;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.snobot.simulator.DcMotorModelConfig;
@@ -22,7 +23,7 @@ public class RotationalLoadDcMotorSimTest extends BaseSimulatorTest
 
         new Talon(0);
         DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("CIM");
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Rotational(0, motorConfig, armCenterOfMass, armMass);
+        Assert.assertTrue(DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Rotational(0, motorConfig, armCenterOfMass, armMass));
 
         // PwmWrapper wrapper = new PwmWrapper(0);
         //
@@ -44,6 +45,13 @@ public class RotationalLoadDcMotorSimTest extends BaseSimulatorTest
         // }
         //
         // bw.close();
+    }
+
+    @Test
+    public void testInvalidMotor()
+    {
+        DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("CIM");
+        Assert.assertFalse(DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Gravitational(0, motorConfig, 0));
     }
 
 }

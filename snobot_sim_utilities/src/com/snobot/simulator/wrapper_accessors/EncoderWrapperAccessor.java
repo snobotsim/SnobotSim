@@ -14,7 +14,7 @@ public interface EncoderWrapperAccessor
 
     public boolean getWantsHidden(int aPort);
     
-    public void connectSpeedController(int aEncoderHandle, int aSpeedControllerHandle);
+    public boolean connectSpeedController(int aEncoderHandle, int aSpeedControllerHandle);
 
     public boolean isHookedUp(int aPort);
     

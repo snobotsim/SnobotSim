@@ -22,18 +22,23 @@ public class JavaEncoderWrapperAccessor extends BaseWrapperAccessor<EncoderWrapp
     }
 
     @Override
-    public void connectSpeedController(int aEncoderHandle, int aSpeedControllerHandle)
+    public boolean connectSpeedController(int aEncoderHandle, int aSpeedControllerHandle)
     {
+        boolean success = false;
+
         EncoderWrapper encoder = SensorActuatorRegistry.get().getEncoders().get(aEncoderHandle);
         PwmWrapper speedController = SensorActuatorRegistry.get().getSpeedControllers().get(aSpeedControllerHandle);
         if (encoder != null && speedController != null)
         {
             speedController.setFeedbackSensor(encoder);
+            success = true;
         }
         else
         {
             System.err.println("Could not conenct SC to ENC... " + aEncoderHandle + ", " + aSpeedControllerHandle);
         }
+
+        return success;
     }
 
     @Override

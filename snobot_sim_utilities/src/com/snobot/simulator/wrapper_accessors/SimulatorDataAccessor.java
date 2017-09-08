@@ -15,21 +15,21 @@ public interface SimulatorDataAccessor
 
     void reset();
 
-    void connectTankDriveSimulator(int leftEncHandle, int rightEncHandle, int gyroHandle, double turnKp);
+    boolean connectTankDriveSimulator(int leftEncHandle, int rightEncHandle, int gyroHandle, double turnKp);
 
     DcMotorModelConfig createMotor(String selectedMotor, int numMotors, double gearReduction, double efficiency);
 
     DcMotorModelConfig createMotor(String motorType);
 
-    void setSpeedControllerModel_Simple(int aScHandle, double maxSpeed);
+    boolean setSpeedControllerModel_Simple(int aScHandle, double maxSpeed);
 
-    void setSpeedControllerModel_Static(int mHandle, DcMotorModelConfig motorConfig, double load);
+    boolean setSpeedControllerModel_Static(int mHandle, DcMotorModelConfig motorConfig, double load);
 
-    void setSpeedControllerModel_Static(int aScHandle, DcMotorModelConfig motorConfig, double load, double conversionFactor);
+    boolean setSpeedControllerModel_Static(int aScHandle, DcMotorModelConfig motorConfig, double load, double conversionFactor);
 
-    void setSpeedControllerModel_Gravitational(int aScHandle, DcMotorModelConfig motorConfig, double load);
+    boolean setSpeedControllerModel_Gravitational(int aScHandle, DcMotorModelConfig motorConfig, double load);
 
-    void setSpeedControllerModel_Rotational(int aScHandle, DcMotorModelConfig motorConfig, double armCenterOfMass, double armMass);
+    boolean setSpeedControllerModel_Rotational(int aScHandle, DcMotorModelConfig motorConfig, double armCenterOfMass, double armMass);
 
     void setDisabled(boolean b);
 

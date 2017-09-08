@@ -10,31 +10,37 @@ import com.snobot.simulator.wrapper_accessors.RelayWrapperAccessor;
 
 public class JniRelayWrapperAccessor implements RelayWrapperAccessor
 {
+    @Override
     public void setName(int aPort, String aName)
     {
         RelayWrapperJni.setName(aPort, aName);
     }
     
+    @Override
     public String getName(int aPort)
     {
         return RelayWrapperJni.getName(aPort);
     }
 
+    @Override
     public boolean getWantsHidden(int aPort)
     {
         return RelayWrapperJni.getWantsHidden(aPort);
     }
 
+    @Override
     public boolean getFowardValue(int aPort)
     {
         return RelayWrapperJni.getFowardValue(aPort);
     }
     
+    @Override
     public boolean getReverseValue(int aPort)
     {
         return RelayWrapperJni.getReverseValue(aPort);
     }
     
+    @Override
     public List<Integer> getPortList()
     {
         return IntStream.of(RelayWrapperJni.getPortList()).boxed().collect(Collectors.toList());

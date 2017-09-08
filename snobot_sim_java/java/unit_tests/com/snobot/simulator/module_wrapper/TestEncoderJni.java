@@ -45,16 +45,22 @@ public class TestEncoderJni extends BaseSimulatorTest
         SpeedController sc = new Talon(0);
         Encoder encoder = new Encoder(1, 2);
 
-        DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(0, 0);
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(0, 12);
+        Assert.assertTrue(DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(0, 0));
+        Assert.assertTrue(DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(0, 12));
 
-        for (int i = 0; i < 50; ++i)
+        simulateForTime(1, () ->
         {
             sc.set(1);
-            DataAccessorFactory.getInstance().getSpeedControllerAccessor().updateAllSpeedControllers(.02);
-        }
+        });
 
         Assert.assertEquals(12.0, encoder.getDistance(), DOUBLE_EPSILON);
         Assert.assertEquals(12.0, DataAccessorFactory.getInstance().getEncoderAccessor().getDistance(0), DOUBLE_EPSILON);
+    }
+
+    @Test
+    public void testInvalidSpeedControllerFeedback()
+    {
+        new Encoder(1, 2);
+        Assert.assertFalse(DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(0, 0));
     }
 }

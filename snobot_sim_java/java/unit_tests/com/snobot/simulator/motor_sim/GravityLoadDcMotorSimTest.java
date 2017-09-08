@@ -1,5 +1,6 @@
 package com.snobot.simulator.motor_sim;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.snobot.simulator.DcMotorModelConfig;
@@ -19,7 +20,14 @@ public class GravityLoadDcMotorSimTest extends BaseSimulatorTest
 
         new Talon(0);
         DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("CIM", motors, 1.0, efficiency);
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Gravitational(0, motorConfig, load);
+        Assert.assertTrue(DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Gravitational(0, motorConfig, load));
+    }
+
+    @Test
+    public void testInvalidMotor()
+    {
+        DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("CIM", 0, 1.0, 0);
+        Assert.assertFalse(DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Gravitational(0, motorConfig, 0));
     }
 
 }

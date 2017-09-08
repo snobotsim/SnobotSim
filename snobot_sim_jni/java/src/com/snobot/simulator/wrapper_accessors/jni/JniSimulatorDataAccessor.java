@@ -26,9 +26,10 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
     }
 
     @Override
-    public void connectTankDriveSimulator(int leftEncHandle, int rightEncHandle, int aGyroHandle, double turnKp)
+    public boolean connectTankDriveSimulator(int leftEncHandle, int rightEncHandle, int aGyroHandle, double turnKp)
     {
         SimulationConnectorJni.connectTankDriveSimulator(leftEncHandle, rightEncHandle, aGyroHandle, turnKp);
+        return true;
     }
 
     @Override
@@ -44,31 +45,32 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
     }
 
     @Override
-    public void setSpeedControllerModel_Simple(int aScHandle, double maxSpeed)
+    public boolean setSpeedControllerModel_Simple(int aScHandle, double maxSpeed)
     {
         SimulationConnectorJni.setSpeedControllerModel_Simple(aScHandle, maxSpeed);
+        return true;
     }
 
     @Override
-    public void setSpeedControllerModel_Static(int mHandle, DcMotorModelConfig motorConfig, double load)
+    public boolean setSpeedControllerModel_Static(int mHandle, DcMotorModelConfig motorConfig, double load)
     {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void setSpeedControllerModel_Static(int aScHandle, DcMotorModelConfig motorConfig, double load, double conversionFactor)
+    public boolean setSpeedControllerModel_Static(int aScHandle, DcMotorModelConfig motorConfig, double load, double conversionFactor)
     {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void setSpeedControllerModel_Gravitational(int aScHandle, DcMotorModelConfig motorConfig, double load)
+    public boolean setSpeedControllerModel_Gravitational(int aScHandle, DcMotorModelConfig motorConfig, double load)
     {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void setSpeedControllerModel_Rotational(int aScHandle, DcMotorModelConfig motorConfig, double armCenterOfMass, double armMass)
+    public boolean setSpeedControllerModel_Rotational(int aScHandle, DcMotorModelConfig motorConfig, double armCenterOfMass, double armMass)
     {
         throw new UnsupportedOperationException();
     }

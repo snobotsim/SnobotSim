@@ -19,7 +19,10 @@ public class TestPotentiometerSimulator extends BaseSimulatorTest
     @Test
     public void testPotentiometer()
     {
-        Potentiometer potentiometer = new AnalogPotentiometer(0);
+        double range = 83;
+        double offset = 0;
+
+        Potentiometer potentiometer = new AnalogPotentiometer(0, range, offset);
         SpeedController sc = new Talon(0);
 
         AnalogWrapper analogWrapper = SensorActuatorRegistry.get().getAnalog().get(0);
@@ -28,20 +31,23 @@ public class TestPotentiometerSimulator extends BaseSimulatorTest
 
         PotentiometerSimulator potSim = new PotentiometerSimulator(analogWrapper, pwmWrapper);
         Assert.assertTrue(potSim.isSetup());
-        potSim.setParameters(5, 0, 5);
+        potSim.setParameters(range, 0, 5);
 
-        double update_rate = 50;
-
-        // Turn Left
-        for (int i = 0; i < update_rate * 5; ++i)
+        // Bring Up
+        simulateForTime(83, () ->
         {
             sc.set(1);
+        });
 
-            DataAccessorFactory.getInstance().getSimulatorDataAccessor().updateLoop();
-        }
+        // Back down
+        simulateForTime(10, () ->
+        {
+            sc.set(-1);
+        });
 
-        Assert.assertEquals(1, potentiometer.get(), DOUBLE_EPSILON);
-        Assert.assertEquals(5, pwmWrapper.getPosition(), DOUBLE_EPSILON);
+        Assert.assertEquals(73, potentiometer.get(), DOUBLE_EPSILON);
+        Assert.assertEquals(73, pwmWrapper.getPosition(), DOUBLE_EPSILON);
+        Assert.assertEquals(4.39759, DataAccessorFactory.getInstance().getAnalogAccessor().getVoltage(0), DOUBLE_EPSILON);
     }
 
     @Test

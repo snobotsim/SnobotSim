@@ -3,22 +3,16 @@ package com.snobot.simulator.wrapper_accessors.java;
 import java.util.Map;
 
 import com.snobot.simulator.SensorActuatorRegistry;
-import com.snobot.simulator.module_wrapper.PwmWrapper;
+import com.snobot.simulator.simulator_components.gyro.GyroWrapper;
 import com.snobot.simulator.wrapper_accessors.GyroWrapperAccessor;
 
-public class JavaGyroWrapperAccessor extends BaseWrapperAccessor<PwmWrapper> implements GyroWrapperAccessor
+public class JavaGyroWrapperAccessor extends BaseWrapperAccessor<GyroWrapper> implements GyroWrapperAccessor
 {
-
-    @Override
-    public void register(int aPort, String aName)
-    {
-
-    }
 
     @Override
     public double getAngle(int aPort)
     {
-        return 0;
+        return getValue(aPort).getAngle();
     }
 
     @Override
@@ -28,9 +22,16 @@ public class JavaGyroWrapperAccessor extends BaseWrapperAccessor<PwmWrapper> imp
     }
 
     @Override
-    protected Map<Integer, PwmWrapper> getMap()
+    protected Map<Integer, GyroWrapper> getMap()
     {
-        return SensorActuatorRegistry.get().getSpeedControllers();
+        return SensorActuatorRegistry.get().getGyros();
+    }
+
+    @Override
+    public void register(int aPort, String aName)
+    {
+        // TODO Auto-generated method stub
+
     }
 
 }

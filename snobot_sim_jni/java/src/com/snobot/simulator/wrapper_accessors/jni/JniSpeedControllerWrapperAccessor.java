@@ -11,31 +11,37 @@ import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor;
 
 public class JniSpeedControllerWrapperAccessor implements SpeedControllerWrapperAccessor
 {
+    @Override
     public void setName(int aPort, String aName)
     {
         SpeedControllerWrapperJni.setName(aPort, aName);
     }
     
+    @Override
     public String getName(int aPort)
     {
         return SpeedControllerWrapperJni.getName(aPort);
     }
 
+    @Override
     public boolean getWantsHidden(int aPort)
     {
         return SpeedControllerWrapperJni.getWantsHidden(aPort);
     }
     
+    @Override
     public double getVoltagePercentage(int aPort)
     {
         return SpeedControllerWrapperJni.getVoltagePercentage(aPort);
     }
     
+    @Override
     public void updateAllSpeedControllers(double aUpdatePeriod)
     {
         SpeedControllerWrapperJni.updateAllSpeedControllers(aUpdatePeriod);
     }
     
+    @Override
     public List<Integer> getPortList()
     {
         return IntStream.of(SpeedControllerWrapperJni.getPortList()).boxed().collect(Collectors.toList());

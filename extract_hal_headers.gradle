@@ -1,4 +1,6 @@
 
+ext.useLocalHal = true
+
 configurations {
     halHeaders
 }
@@ -9,7 +11,17 @@ dependencies {
 }
 
 task extractHalHeadersZip(type: Copy) {
+
     ext.libsdir = "${rootProject.buildDir}/dependencies/hal"
-    from { configurations.halHeaders.collect { zipTree(it) } }
-    into libsdir
+        
+    if(useLocalHal)
+    {
+        from { zipTree("${projectDir}/../temp_libs/hal-ABCD-headers.zip") }
+        into libsdir
+    }
+    else
+    {
+        from { configurations.halHeaders.collect { zipTree(it) } }
+        into libsdir
+    }
 }

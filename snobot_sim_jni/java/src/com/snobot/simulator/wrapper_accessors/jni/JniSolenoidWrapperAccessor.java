@@ -10,26 +10,31 @@ import com.snobot.simulator.wrapper_accessors.SolenoidWrapperAccessor;
 
 public class JniSolenoidWrapperAccessor implements SolenoidWrapperAccessor
 {
+    @Override
     public void setName(int aPort, String aName)
     {
         SolenoidWrapperJni.setName(aPort, aName);
     }
     
+    @Override
     public String getName(int aPort)
     {
         return SolenoidWrapperJni.getName(aPort);
     }
 
+    @Override
     public boolean getWantsHidden(int aPort)
     {
         return SolenoidWrapperJni.getWantsHidden(aPort);
     }
     
+    @Override
     public boolean get(int aPort)
     {
         return SolenoidWrapperJni.get(aPort);
     }
     
+    @Override
     public List<Integer> getPortList()
     {
         return IntStream.of(SolenoidWrapperJni.getPortList()).boxed().collect(Collectors.toList());

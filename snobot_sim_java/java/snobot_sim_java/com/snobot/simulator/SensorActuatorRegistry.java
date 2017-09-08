@@ -40,12 +40,7 @@ public class SensorActuatorRegistry
 
     public <ItemType> boolean registerItem(ItemType aItem, int aPort, Map<Integer, ItemType> aMap, String aMessage)
     {
-        if (aMap.containsKey(aPort) || aPort < 0)
-        {
-            return false;
-        }
         aMap.put(aPort, aItem);
-
         return true;
     }
 

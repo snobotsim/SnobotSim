@@ -3,6 +3,7 @@ package com.snobot.simulator.wrapper_accessors.java;
 import com.snobot.simulator.DcMotorModelConfig;
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.RegisterCallbacksJni;
+import com.snobot.simulator.jni.SensorFeedbackJni;
 import com.snobot.simulator.module_wrapper.EncoderWrapper;
 import com.snobot.simulator.module_wrapper.PwmWrapper;
 import com.snobot.simulator.motor_sim.DcMotorModel;
@@ -43,7 +44,7 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     }
 
     @Override
-    public void connectTankDriveSimulator(int leftEncHandle, int rightEncHandle, int gyroHandle, double turnKp)
+    public boolean connectTankDriveSimulator(int leftEncHandle, int rightEncHandle, int gyroHandle, double turnKp)
     {
         EncoderWrapper rightEncWrapper = SensorActuatorRegistry.get().getEncoders().get(rightEncHandle);
         EncoderWrapper leftEncWrapper = SensorActuatorRegistry.get().getEncoders().get(leftEncHandle);
@@ -51,6 +52,8 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
 
         TankDriveGyroSimulator simulator = new TankDriveGyroSimulator(leftEncWrapper, rightEncWrapper, gyroWrapper);
         simulator.setTurnKp(turnKp);
+
+        return simulator.isSetup();
     }
 
     private DcMotorModel getModelConfig(String motorType)
@@ -83,91 +86,102 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     }
 
     @Override
-    public void setSpeedControllerModel_Simple(int aScHandle, double maxSpeed)
+    public boolean setSpeedControllerModel_Simple(int aScHandle, double maxSpeed)
     {
+        boolean success = false;
+
         PwmWrapper speedController = SensorActuatorRegistry.get().getSpeedControllers().get(aScHandle);
         if (speedController != null)
         {
             speedController.setMotorSimulator(new SimpleMotorSimulator(maxSpeed));
+            success = true;
         }
         else
         {
             System.err.println("Unknown speed controller " + aScHandle);
         }
+
+        return success;
     }
 
     private DcMotorModel convert(DcMotorModelConfig aIn)
     {
-        return new DcMotorModel(
-                aIn.NOMINAL_VOLTAGE, 
-                aIn.FREE_SPEED_RPM, 
-                aIn.FREE_CURRENT, 
-                aIn.STALL_TORQUE, 
-                aIn.STALL_CURRENT, 
-                aIn.mMotorInertia);
+        return new DcMotorModel(aIn.NOMINAL_VOLTAGE, aIn.FREE_SPEED_RPM, aIn.FREE_CURRENT, aIn.STALL_TORQUE, aIn.STALL_CURRENT, aIn.mMotorInertia);
     }
 
     @Override
-    public void setSpeedControllerModel_Static(int aScHandle, DcMotorModelConfig motorConfig, double load)
+    public boolean setSpeedControllerModel_Static(int aScHandle, DcMotorModelConfig motorConfig, double load)
     {
-        setSpeedControllerModel_Static(aScHandle, motorConfig, load, 1.0);
+        return setSpeedControllerModel_Static(aScHandle, motorConfig, load, 1.0);
     }
 
     @Override
-    public void setSpeedControllerModel_Static(int aScHandle, DcMotorModelConfig motorConfig, double load, double conversionFactor)
+    public boolean setSpeedControllerModel_Static(int aScHandle, DcMotorModelConfig motorConfig, double load, double conversionFactor)
     {
+        boolean success = false;
         PwmWrapper wrapper = SensorActuatorRegistry.get().getSpeedControllers().get(aScHandle);
         IMotorSimulator motorModel = new StaticLoadDcMotorSim(convert(motorConfig), load);
         if (wrapper != null)
         {
             wrapper.setMotorSimulator(motorModel);
+            success = true;
         }
         else
         {
             System.err.println("Unknown speed controller " + aScHandle);
         }
+
+        return success;
     }
 
     @Override
-    public void setSpeedControllerModel_Gravitational(int aScHandle, DcMotorModelConfig motorConfig, double load)
+    public boolean setSpeedControllerModel_Gravitational(int aScHandle, DcMotorModelConfig motorConfig, double load)
     {
+        boolean success = false;
         PwmWrapper wrapper = SensorActuatorRegistry.get().getSpeedControllers().get(aScHandle);
         IMotorSimulator motorModel = new GravityLoadDcMotorSim(convert(motorConfig), load);
         if (wrapper != null)
         {
             wrapper.setMotorSimulator(motorModel);
+            success = true;
         }
         else
         {
             System.err.println("Unknown speed controller " + aScHandle);
         }
+
+        return success;
     }
 
     @Override
-    public void setSpeedControllerModel_Rotational(int aScHandle, DcMotorModelConfig motorConfig, double armCenterOfMass, double armMass)
+    public boolean setSpeedControllerModel_Rotational(int aScHandle, DcMotorModelConfig motorConfig, double armCenterOfMass, double armMass)
     {
+        boolean success = false;
         PwmWrapper wrapper = SensorActuatorRegistry.get().getSpeedControllers().get(aScHandle);
         IMotorSimulator motorModel = new RotationalLoadDcMotorSim(convert(motorConfig), wrapper, armCenterOfMass, armMass);
         if (wrapper != null)
         {
             wrapper.setMotorSimulator(motorModel);
+            success = true;
         }
         else
         {
             System.err.println("Unknown speed controller " + aScHandle);
         }
+
+        return success;
     }
 
     @Override
-    public void setDisabled(boolean b)
+    public void setDisabled(boolean aDisabled)
     {
-        // throw new UnsupportedOperationException();
+        SensorFeedbackJni.setEnabled(!aDisabled);
     }
 
     @Override
-    public void setAutonomous(boolean b)
+    public void setAutonomous(boolean aAuton)
     {
-        // throw new UnsupportedOperationException();
+        SensorFeedbackJni.setAutonomous(aAuton);
     }
 
     @Override
@@ -213,19 +227,18 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
         try
         {
             Thread.sleep(20);
+            SensorFeedbackJni.notifyDsOfData();
         }
         catch (InterruptedException e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        // throw new UnsupportedOperationException();
     }
 
     @Override
-    public void setJoystickInformation(int i, float[] axisValues, short[] povValues, int buttonCount, int buttonMask)
+    public void setJoystickInformation(int aJoystickHandle, float[] aAxesArray, short[] aPovsArray, int aButtonCount, int aButtonMask)
     {
-        // throw new UnsupportedOperationException();
+        SensorFeedbackJni.setJoystickInformation(aJoystickHandle, aAxesArray, aPovsArray, aButtonCount, aButtonMask);
     }
 
     @Override
