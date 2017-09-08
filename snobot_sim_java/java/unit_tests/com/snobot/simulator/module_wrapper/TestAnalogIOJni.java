@@ -3,6 +3,7 @@ package com.snobot.simulator.module_wrapper;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
@@ -19,10 +20,15 @@ public class TestAnalogIOJni extends BaseSimulatorTest
         new AnalogInput(0);
         Assert.assertEquals(1, DataAccessorFactory.getInstance().getAnalogAccessor().getPortList().size());
         Assert.assertEquals("Analog 0", DataAccessorFactory.getInstance().getAnalogAccessor().getName(0));
+        Assert.assertFalse(DataAccessorFactory.getInstance().getAnalogAccessor().getWantsHidden(0));
 
         new AnalogInput(3);
         Assert.assertEquals(2, DataAccessorFactory.getInstance().getAnalogAccessor().getPortList().size());
         Assert.assertEquals("Analog 3", DataAccessorFactory.getInstance().getAnalogAccessor().getName(3));
+        Assert.assertFalse(DataAccessorFactory.getInstance().getAnalogAccessor().getWantsHidden(3));
+        
+        DataAccessorFactory.getInstance().getAnalogAccessor().setName(3, "NewNameFor3");
+        Assert.assertEquals("NewNameFor3", DataAccessorFactory.getInstance().getAnalogAccessor().getName(3));
     }
 
     @Test
@@ -68,5 +74,14 @@ public class TestAnalogIOJni extends BaseSimulatorTest
 
         Assert.assertEquals(0, input.getVoltage(), DOUBLE_EPSILON);
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getAnalogAccessor().getVoltage(0), DOUBLE_EPSILON);
+    }
+
+    @Test
+    public void testSimulatorFeedbackNoUpdate()
+    {
+        new AnalogInput(5);
+        AnalogWrapper wrapper = SensorActuatorRegistry.get().getAnalog().get(5);
+        wrapper.setVoltage(5);
+        wrapper.setVoltage(5);
     }
 }

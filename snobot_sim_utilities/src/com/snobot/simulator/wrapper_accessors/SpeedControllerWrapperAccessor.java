@@ -51,4 +51,6 @@ public interface SpeedControllerWrapperAccessor
     public double getVelocity(int i);
 
     public double getCurrent(int i);
+
+    public double getAcceleration(int i);
 }

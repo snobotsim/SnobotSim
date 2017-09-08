@@ -5,6 +5,7 @@ package com.snobot.simulator.module_wrapper;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
@@ -22,10 +23,15 @@ public class TestEncoderJni extends BaseSimulatorTest
         new Encoder(0, 1);
         Assert.assertEquals(1, DataAccessorFactory.getInstance().getEncoderAccessor().getPortList().size());
         Assert.assertEquals("Encoder 0", DataAccessorFactory.getInstance().getEncoderAccessor().getName(0));
+        Assert.assertFalse(DataAccessorFactory.getInstance().getEncoderAccessor().getWantsHidden(0));
 
         new Encoder(2, 3);
         Assert.assertEquals(2, DataAccessorFactory.getInstance().getEncoderAccessor().getPortList().size());
-        // Assert.assertEquals("Encoder (0, 0)", EncoderWrapperJni.getName(1));
+        Assert.assertEquals("Encoder 1", DataAccessorFactory.getInstance().getEncoderAccessor().getName(1));
+        Assert.assertFalse(DataAccessorFactory.getInstance().getEncoderAccessor().getWantsHidden(0));
+
+        DataAccessorFactory.getInstance().getEncoderAccessor().setName(1, "NewNameFor1");
+        Assert.assertEquals("NewNameFor1", DataAccessorFactory.getInstance().getEncoderAccessor().getName(1));
     }
 
     @Test(expected = RuntimeException.class)
@@ -55,6 +61,16 @@ public class TestEncoderJni extends BaseSimulatorTest
 
         Assert.assertEquals(12.0, encoder.getDistance(), DOUBLE_EPSILON);
         Assert.assertEquals(12.0, DataAccessorFactory.getInstance().getEncoderAccessor().getDistance(0), DOUBLE_EPSILON);
+        Assert.assertEquals(12.0 / 4, DataAccessorFactory.getInstance().getEncoderAccessor().getRaw(0), DOUBLE_EPSILON);
+    }
+
+    @Test
+    public void testSimulatorFeedbackNoUpdate()
+    {
+        new Encoder(1, 2);
+        EncoderWrapper wrapper = SensorActuatorRegistry.get().getEncoders().get(0);
+        wrapper.setPosition(5);
+        wrapper.setPosition(5);
     }
 
     @Test

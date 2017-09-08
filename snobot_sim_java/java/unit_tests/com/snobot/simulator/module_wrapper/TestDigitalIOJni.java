@@ -19,10 +19,15 @@ public class TestDigitalIOJni extends BaseSimulatorTest
         new DigitalInput(0);
         Assert.assertEquals(1, DataAccessorFactory.getInstance().getDigitalAccessor().getPortList().size());
         Assert.assertEquals("Digital Source0", DataAccessorFactory.getInstance().getDigitalAccessor().getName(0));
+        Assert.assertFalse(DataAccessorFactory.getInstance().getDigitalAccessor().getWantsHidden(0));
 
         new DigitalInput(3);
         Assert.assertEquals(2, DataAccessorFactory.getInstance().getDigitalAccessor().getPortList().size());
         Assert.assertEquals("Digital Source3", DataAccessorFactory.getInstance().getDigitalAccessor().getName(3));
+        Assert.assertFalse(DataAccessorFactory.getInstance().getDigitalAccessor().getWantsHidden(3));
+
+        DataAccessorFactory.getInstance().getDigitalAccessor().setName(3, "NewNameFor3");
+        Assert.assertEquals("NewNameFor3", DataAccessorFactory.getInstance().getDigitalAccessor().getName(3));
     }
 
     @Test

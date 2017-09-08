@@ -19,10 +19,15 @@ public class TestRelayJni extends BaseSimulatorTest
         new Relay(0);
         Assert.assertEquals(1, DataAccessorFactory.getInstance().getRelayAccessor().getPortList().size());
         Assert.assertEquals("Relay 0", DataAccessorFactory.getInstance().getRelayAccessor().getName(0));
+        Assert.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getWantsHidden(0));
 
         new Relay(1);
         Assert.assertEquals(2, DataAccessorFactory.getInstance().getRelayAccessor().getPortList().size());
         Assert.assertEquals("Relay 1", DataAccessorFactory.getInstance().getRelayAccessor().getName(1));
+        Assert.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getWantsHidden(1));
+
+        DataAccessorFactory.getInstance().getRelayAccessor().setName(0, "NewNameFor0");
+        Assert.assertEquals("NewNameFor0", DataAccessorFactory.getInstance().getRelayAccessor().getName(0));
     }
 
     @Test(expected = RuntimeException.class)

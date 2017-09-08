@@ -26,6 +26,7 @@ public class EncoderWrapper extends ASensorWrapper implements IMotorFeedbackSens
         mSetterHelper = aSetterHelper;
         mPosition = 0;
         mDistancePerTick = 1;
+        mEncodingFactor = 4;
     }
 
     public int getRaw()

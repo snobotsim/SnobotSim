@@ -87,6 +87,7 @@ public class DcMotorModel
         mPosition = position;
         mVelocity = velocity;
         mCurrent = current;
+        mAcceleration = 0;
     }
 
     /**

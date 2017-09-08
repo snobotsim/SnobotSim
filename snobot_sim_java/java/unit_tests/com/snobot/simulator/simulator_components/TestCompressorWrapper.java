@@ -13,17 +13,29 @@ public class TestCompressorWrapper extends BaseSimulatorTest
     public void testCompressorWrapper()
     {
         CompressorWrapper compressor = new CompressorWrapper();
+        compressor.setChargeRate(.1);
 
         Assert.assertEquals(120, compressor.getAirPressure(), DOUBLE_EPSILON);
 
         compressor.solenoidFired(60);
         Assert.assertEquals(60, compressor.getAirPressure(), DOUBLE_EPSILON);
 
-        for (int i = 0; i < 100; ++i)
+        simulateForTime(2, () ->
         {
             compressor.update();
-        }
-        Assert.assertEquals(85, compressor.getAirPressure(), DOUBLE_EPSILON);
+        });
+        Assert.assertEquals(70, compressor.getAirPressure(), DOUBLE_EPSILON);
+
+        // Get it down past 0
+        compressor.solenoidFired(90);
+        Assert.assertEquals(0, compressor.getAirPressure(), DOUBLE_EPSILON);
+
+        // Let it charge back up
+        simulateForTime(30, () ->
+        {
+            compressor.update();
+        });
+        Assert.assertEquals(120, compressor.getAirPressure(), DOUBLE_EPSILON);
 
     }
 }

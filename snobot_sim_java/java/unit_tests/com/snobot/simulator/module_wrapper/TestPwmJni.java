@@ -19,10 +19,15 @@ public class TestPwmJni extends BaseSimulatorTest
         new Jaguar(0);
         Assert.assertEquals(1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
         Assert.assertEquals("Speed Controller 0", DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(0));
+        Assert.assertFalse(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getWantsHidden(0));
 
         new Talon(3);
         Assert.assertEquals(2, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
         Assert.assertEquals("Speed Controller 3", DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(3));
+        Assert.assertFalse(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getWantsHidden(3));
+
+        DataAccessorFactory.getInstance().getSpeedControllerAccessor().setName(0, "NewNameFor0");
+        Assert.assertEquals("NewNameFor0", DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(0));
     }
 
     @Test(expected = RuntimeException.class)

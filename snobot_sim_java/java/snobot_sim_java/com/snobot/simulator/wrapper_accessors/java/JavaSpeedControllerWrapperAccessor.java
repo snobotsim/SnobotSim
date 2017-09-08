@@ -81,4 +81,10 @@ public class JavaSpeedControllerWrapperAccessor extends BaseWrapperAccessor<PwmW
         return SensorActuatorRegistry.get().getSpeedControllers().get(aPort).getCurrent();
     }
 
+    @Override
+    public double getAcceleration(int aPort)
+    {
+        return SensorActuatorRegistry.get().getSpeedControllers().get(aPort).getAcceleration();
+    }
+
 }

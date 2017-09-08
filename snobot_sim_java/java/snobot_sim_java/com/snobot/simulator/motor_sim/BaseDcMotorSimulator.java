@@ -56,7 +56,7 @@ public abstract class BaseDcMotorSimulator implements IMotorSimulator
     @Override
     public void reset(double aPosition, double aVelocity, double aCurrent)
     {
-        mMotorModel.reset(0, 0, 0);
+        mMotorModel.reset(aPosition, aVelocity, aCurrent);
     }
 
     public double getCurrent()

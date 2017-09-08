@@ -13,6 +13,7 @@
 #include "MockData/DIOData.h"
 #include "MockData/EncoderData.h"
 #include "MockData/PCMData.h"
+#include "MockData/PDPData.h"
 #include "MockData/PWMData.h"
 #include "MockData/RelayData.h"
 
@@ -31,6 +32,7 @@ namespace SnobotSimJava
     int gDigitalOutArrayIndices[26];
     int gEncoderArrayIndices[26];
     int gRelayArrayIndices[20];
+    int gPdpArrayIndices[64];
     int gSolenoidArrayIndices[20];
 
 
@@ -126,6 +128,10 @@ namespace SnobotSimJava
     {
         CallJavaCallback(gEncoderCallbackContainer, name, param, value);
     }
+    void PdpCallback(const char* name, void* param, const struct HAL_Value* value)
+    {
+        CallJavaCallback(gPdpCallbackContainer, name, param, value);
+    }
     void PwmCallback(const char* name, void* param, const struct HAL_Value* value)
     {
         CallJavaCallback(gPwmCallbackContainer, name, param, value);
@@ -138,6 +144,8 @@ namespace SnobotSimJava
     {
         CallJavaCallback(gRelayCallbackContainer, name, param, value);
     }
+
+
 
     //////////////////////////////////////////////
     // Connect Callbacks
@@ -201,6 +209,12 @@ namespace SnobotSimJava
             HALSIM_RegisterRelayForwardCallback(i, &RelayCallback, &gRelayArrayIndices[i], false);
             HALSIM_RegisterRelayReverseCallback(i, &RelayCallback, &gRelayArrayIndices[i], false);
         }
+
+        for(int i = 0; i < HAL_GetNumPDPModules(); ++i)
+        {
+            gPdpArrayIndices[i] = i;
+            HALSIM_RegisterPDPInitializedCallback(i, &PdpCallback, &gPdpArrayIndices[i], false);
+        }
     }
 
     void ResetMockData()
@@ -235,7 +249,11 @@ namespace SnobotSimJava
         }
         for(int i = 0; i < HAL_GetNumSolenoidChannels(); ++i)
         {
-            HALSIM_ResetPCMData(0);
+            HALSIM_ResetPCMData(i);
+        }
+        for(int i = 0; i < HAL_GetNumPDPModules(); ++i)
+        {
+            HALSIM_ResetPDPData(i);
         }
 
         InitializeSnobotCallbacks();

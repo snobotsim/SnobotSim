@@ -21,10 +21,15 @@ public class TestSolenoidJni extends BaseSimulatorTest
         new Solenoid(0);
         Assert.assertEquals(1, DataAccessorFactory.getInstance().getSolenoidAccessor().getPortList().size());
         Assert.assertEquals("Solenoid 0", DataAccessorFactory.getInstance().getSolenoidAccessor().getName(0));
+        Assert.assertFalse(DataAccessorFactory.getInstance().getSolenoidAccessor().getWantsHidden(0));
 
         new Solenoid(3);
         Assert.assertEquals(2, DataAccessorFactory.getInstance().getSolenoidAccessor().getPortList().size());
         Assert.assertEquals("Solenoid 3", DataAccessorFactory.getInstance().getSolenoidAccessor().getName(3));
+        Assert.assertFalse(DataAccessorFactory.getInstance().getSolenoidAccessor().getWantsHidden(3));
+
+        DataAccessorFactory.getInstance().getSolenoidAccessor().setName(0, "NewNameFor0");
+        Assert.assertEquals("NewNameFor0", DataAccessorFactory.getInstance().getSolenoidAccessor().getName(0));
     }
 
     @Test(expected = RuntimeException.class)

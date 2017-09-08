@@ -192,8 +192,6 @@ public class RegisterCallbacksJni extends BaseSnobotJni
 
     public static void pdpCallback(String callbackType, int port, HalCallbackValue halValue)
     {
-        System.out.println("PDP Callback " + callbackType + " " + port);
-
         if ("Initialized".equals(callbackType))
         {
 
