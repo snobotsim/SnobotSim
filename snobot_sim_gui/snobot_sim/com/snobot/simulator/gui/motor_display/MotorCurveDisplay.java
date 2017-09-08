@@ -71,7 +71,8 @@ public class MotorCurveDisplay extends JPanel
 
     public void setCurveParams(DcMotorModelConfig aModel)
     {
-        setCurveParams(aModel.mMotorType, aModel.NOMINAL_VOLTAGE, aModel.FREE_SPEED_RPM, aModel.STALL_CURRENT, aModel.FREE_CURRENT, aModel.STALL_TORQUE);
+        setCurveParams(aModel.mFactoryParams.mMotorType, aModel.mMotorParams.NOMINAL_VOLTAGE, aModel.mMotorParams.FREE_SPEED_RPM,
+                aModel.mMotorParams.STALL_CURRENT, aModel.mMotorParams.FREE_CURRENT, aModel.mMotorParams.STALL_TORQUE);
     }
 
     public void setCurveParams(String motorName, double aNominalVoltage, double aFreeSpeedRpm, double aStallCurrent, double aFreeCurrent, double aStallTorque)

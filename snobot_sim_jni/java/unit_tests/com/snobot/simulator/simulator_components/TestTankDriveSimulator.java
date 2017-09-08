@@ -39,7 +39,7 @@ public class TestTankDriveSimulator extends BaseSimulatorTest
             rightSC.set(1);
             leftSC.set(-1);
 
-            DataAccessorFactory.getInstance().getSimulatorDataAccessor().updateLoop();
+            DataAccessorFactory.getInstance().getSimulatorDataAccessor().updateSimulatorComponents(update_period);
         }
         Assert.assertEquals(-180, gyro.getAngle(), DOUBLE_EPSILON);
         Assert.assertEquals(89, rightEnc.getDistance(), DOUBLE_EPSILON);
@@ -51,7 +51,7 @@ public class TestTankDriveSimulator extends BaseSimulatorTest
             rightSC.set(-1);
             leftSC.set(1);
 
-            DataAccessorFactory.getInstance().getSimulatorDataAccessor().updateLoop();
+            DataAccessorFactory.getInstance().getSimulatorDataAccessor().updateSimulatorComponents(update_period);
         }
         Assert.assertEquals(-90, gyro.getAngle(), DOUBLE_EPSILON);
         Assert.assertEquals(45, rightEnc.getDistance(), DOUBLE_EPSILON);

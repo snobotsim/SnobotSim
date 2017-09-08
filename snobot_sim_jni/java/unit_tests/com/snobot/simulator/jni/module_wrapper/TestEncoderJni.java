@@ -51,7 +51,7 @@ public class TestEncoderJni extends BaseSimulatorTest
         for (int i = 0; i < 50; ++i)
         {
             sc.set(1);
-            DataAccessorFactory.getInstance().getSpeedControllerAccessor().updateAllSpeedControllers(.02);
+            DataAccessorFactory.getInstance().getSimulatorDataAccessor().updateSimulatorComponents(.02);
         }
 
         // Assert.assertEquals(12.0, encoder.getDistance(), DOUBLE_EPSILON);

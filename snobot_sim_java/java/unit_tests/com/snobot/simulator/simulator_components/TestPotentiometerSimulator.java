@@ -9,6 +9,7 @@ import com.snobot.simulator.module_wrapper.PwmWrapper;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
@@ -54,6 +55,10 @@ public class TestPotentiometerSimulator extends BaseSimulatorTest
     public void testIncompletePotSim()
     {
         PotentiometerSimulator pot = new PotentiometerSimulator(null, null);
+        Assert.assertFalse(pot.isSetup());
+
+        new AnalogInput(0);
+        pot = new PotentiometerSimulator(SensorActuatorRegistry.get().getAnalog().get(0), null);
         Assert.assertFalse(pot.isSetup());
     }
 }

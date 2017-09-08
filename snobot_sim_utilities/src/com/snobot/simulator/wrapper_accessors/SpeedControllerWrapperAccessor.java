@@ -32,8 +32,6 @@ public interface SpeedControllerWrapperAccessor
     
     public double getVoltagePercentage(int aPort);
     
-    public void updateAllSpeedControllers(double aUpdatePeriod);
-    
     public List<Integer> getPortList();
 
     public DcMotorModelConfig getMotorConfig(int aPort);

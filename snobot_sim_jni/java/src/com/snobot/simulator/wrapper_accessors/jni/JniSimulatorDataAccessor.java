@@ -100,13 +100,13 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
     }
 
     @Override
-    public void updateLoop()
+    public void updateSimulatorComponents(double aUpdatePeriod)
     {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public void waitForNextUpdateLoop()
+    public void waitForNextUpdateLoop(double aUpdatePeriod)
     {
         throw new UnsupportedOperationException();
     }
@@ -115,13 +115,6 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
     public void setJoystickInformation(int i, float[] axisValues, short[] povValues, int buttonCount, int buttonMask)
     {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void setUpdateRate(double aUpdatePeriod)
-    {
-        // TODO Auto-generated method stub
-
     }
 
 }

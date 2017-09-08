@@ -57,7 +57,7 @@ public class RotationalLoadDcMotorSimTest extends BaseSimulatorTest
     public void testInvalidMotor()
     {
         DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("CIM");
-        Assert.assertFalse(DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Gravitational(0, motorConfig, 0));
+        Assert.assertFalse(DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Rotational(0, motorConfig, 0, 0));
     }
 
 }

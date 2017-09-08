@@ -15,7 +15,7 @@ public class BaseSimulatorTest
     private static boolean INITIALIZED = false;
     protected static final double DOUBLE_EPSILON = .00001;
 
-    private void delete(File path)
+    protected final void delete(File path)
     {
         File[] l = path.listFiles();
         for (File f : l)

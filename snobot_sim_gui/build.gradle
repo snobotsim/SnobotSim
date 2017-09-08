@@ -28,6 +28,17 @@ jacocoTestReport {
         xml.enabled true
         html.enabled true
     }
+    
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it, 
+                     exclude: [
+                               'com/snobot/simulator/Main.class',
+                               //'com/snobot/simulator/joysticks/**',
+                               //'com/snobot/simulator/gui/**'
+                               ])
+        })
+    }
 }
 
 configurations {
@@ -39,7 +50,7 @@ dependencies {
     
     // WPILib
     compile 'edu.wpi.first.ntcore:ntcore-java:' + getNtCoreVersion()
-    compile 'edu.wpi.first.wpilibj:wpilibj-java:' + getWpilibjVersion()
+    compile 'edu.wpi.first.wpilibj:wpilibj-java:' + getWpilibjVersion() + ':javaArtifact'
     compile 'edu.wpi.first.wpiutil:wpiutil-java:' + getWpiUtilVersion()
     compile 'org.opencv:opencv-java:3.2.0'
     

@@ -52,4 +52,17 @@ public class TestRegisterJavaCallback extends BaseSimulatorTest
         checkSizes(1, 3, 1, 1, 0, 4);
 
     }
+
+    @Test
+    public void testUnsupportedOptions()
+    {
+        RegisterCallbacksJni.analogCallback("DoesntExist", 0, null);
+        RegisterCallbacksJni.analogGyroCallback("DoesntExist", 0, null);
+        RegisterCallbacksJni.digitalCallback("DoesntExist", 0, null);
+        RegisterCallbacksJni.encoderCallback("DoesntExist", 0, null);
+        RegisterCallbacksJni.pcmCallback("DoesntExist", 0, null);
+        RegisterCallbacksJni.pdpCallback("DoesntExist", 0, null);
+        RegisterCallbacksJni.pwmCallback("DoesntExist", 0, null);
+        RegisterCallbacksJni.relayCallback("DoesntExist", 0, null);
+    }
 }

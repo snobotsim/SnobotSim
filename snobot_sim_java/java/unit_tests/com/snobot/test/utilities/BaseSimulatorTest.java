@@ -53,20 +53,17 @@ public class BaseSimulatorTest
 
     protected void simulateForTime(double aSeconds, Runnable task)
     {
-        simulateForTime(aSeconds, 50, task);
+        simulateForTime(aSeconds, .02, task);
     }
 
-    protected void simulateForTime(double aSeconds, double aUpdateFrequency, Runnable aTask)
+    protected void simulateForTime(double aSeconds, double aUpdatePeriod, Runnable aTask)
     {
-        double update_period = 1 / aUpdateFrequency;
-        System.out.println(update_period);
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setUpdateRate(update_period);
+        double update_frequency = 1 / aUpdatePeriod;
 
-        System.out.println(aUpdateFrequency * aSeconds);
-        for (int i = 0; i < aUpdateFrequency * aSeconds; ++i)
+        for (int i = 0; i < update_frequency * aSeconds; ++i)
         {
             aTask.run();
-            DataAccessorFactory.getInstance().getSimulatorDataAccessor().updateLoop();
+            DataAccessorFactory.getInstance().getSimulatorDataAccessor().updateSimulatorComponents(aUpdatePeriod);
         }
     }
 }

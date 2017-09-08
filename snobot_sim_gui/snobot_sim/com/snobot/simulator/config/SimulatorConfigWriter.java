@@ -224,14 +224,14 @@ public class SimulatorConfigWriter
     {
         Map<String, Object> output = new LinkedHashMap<>();
 
-        output.put("motor_type", aConfig.mMotorType);
+        output.put("motor_type", aConfig.mFactoryParams.mMotorType);
         output.put("inverted", aConfig.mInverted);
         output.put("has_brake", aConfig.mHasBrake);
 
         Map<String, Object> transmissionConfig = new LinkedHashMap<>();
-        transmissionConfig.put("num_motors", aConfig.mNumMotors);
-        transmissionConfig.put("gear_reduction", aConfig.mGearReduction);
-        transmissionConfig.put("efficiency", aConfig.mGearboxEfficiency);
+        transmissionConfig.put("num_motors", aConfig.mFactoryParams.mNumMotors);
+        transmissionConfig.put("gear_reduction", aConfig.mFactoryParams.mGearReduction);
+        transmissionConfig.put("efficiency", aConfig.mFactoryParams.mGearboxEfficiency);
         output.put("transmission", transmissionConfig);
 
         return output;

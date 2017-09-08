@@ -101,7 +101,7 @@ public class TestTankDriveSimulator extends BaseSimulatorTest
         // Everything null
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().connectTankDriveSimulator(0, 1, 0, 180 / Math.PI);
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().updateLoop(); // shouldn't do anything
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().updateSimulatorComponents(0); // shouldn't do anything
 
         // First thing not null
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();

@@ -22,8 +22,6 @@ import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor;
 
 public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
 {
-    private double mUpdatePeriod = .02;
-
     @Override
     public void setLogLevel(SnobotLogLevel logLevel)
     {
@@ -56,33 +54,23 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
         return simulator.isSetup();
     }
 
-    private DcMotorModel getModelConfig(String motorType)
-    {
-        DcMotorModel modelConfig;
-        if ("rs775".equals(motorType))
-        {
-            modelConfig = PublishedMotorFactory.makeRS775();
-        }
-        else
-        {
-            modelConfig = VexMotorFactory.createMotor(motorType);
-        }
-
-        return modelConfig;
-    }
-
     @Override
     public DcMotorModelConfig createMotor(String motorType)
     {
-        return DcMotorModel.convert(motorType, getModelConfig(motorType));
+        if ("rs775".equals(motorType))
+        {
+            return PublishedMotorFactory.makeRS775();
+        }
+        else
+        {
+            return VexMotorFactory.createMotor(motorType);
+        }
     }
 
     @Override
     public DcMotorModelConfig createMotor(String motorType, int numMotors, double gearReduction, double efficiency)
     {
-        DcMotorModel throughTranny = MakeTransmission.makeTransmission(getModelConfig(motorType), numMotors, gearReduction, efficiency);
-
-        return DcMotorModel.convert(motorType, throughTranny);
+        return MakeTransmission.makeTransmission(createMotor(motorType), numMotors, gearReduction, efficiency);
     }
 
     @Override
@@ -104,11 +92,6 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
         return success;
     }
 
-    private DcMotorModel convert(DcMotorModelConfig aIn)
-    {
-        return new DcMotorModel(aIn.NOMINAL_VOLTAGE, aIn.FREE_SPEED_RPM, aIn.FREE_CURRENT, aIn.STALL_TORQUE, aIn.STALL_CURRENT, aIn.mMotorInertia);
-    }
-
     @Override
     public boolean setSpeedControllerModel_Static(int aScHandle, DcMotorModelConfig motorConfig, double load)
     {
@@ -120,7 +103,7 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     {
         boolean success = false;
         PwmWrapper wrapper = SensorActuatorRegistry.get().getSpeedControllers().get(aScHandle);
-        IMotorSimulator motorModel = new StaticLoadDcMotorSim(convert(motorConfig), load);
+        IMotorSimulator motorModel = new StaticLoadDcMotorSim(new DcMotorModel(motorConfig), load);
         if (wrapper != null)
         {
             wrapper.setMotorSimulator(motorModel);
@@ -139,7 +122,7 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     {
         boolean success = false;
         PwmWrapper wrapper = SensorActuatorRegistry.get().getSpeedControllers().get(aScHandle);
-        IMotorSimulator motorModel = new GravityLoadDcMotorSim(convert(motorConfig), load);
+        IMotorSimulator motorModel = new GravityLoadDcMotorSim(new DcMotorModel(motorConfig), load);
         if (wrapper != null)
         {
             wrapper.setMotorSimulator(motorModel);
@@ -158,7 +141,7 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     {
         boolean success = false;
         PwmWrapper wrapper = SensorActuatorRegistry.get().getSpeedControllers().get(aScHandle);
-        IMotorSimulator motorModel = new RotationalLoadDcMotorSim(convert(motorConfig), wrapper, armCenterOfMass, armMass);
+        IMotorSimulator motorModel = new RotationalLoadDcMotorSim(new DcMotorModel(motorConfig), wrapper, armCenterOfMass, armMass);
         if (wrapper != null)
         {
             wrapper.setMotorSimulator(motorModel);
@@ -187,18 +170,15 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     @Override
     public double getMatchTime()
     {
-        return 1;
-        // throw new UnsupportedOperationException();
+        return SensorFeedbackJni.getMatchTime();
     }
 
     @Override
     public void waitForProgramToStart()
     {
-        // throw new UnsupportedOperationException();
-
         try
         {
-            Thread.sleep(1500);
+            Thread.sleep(2000);
         }
         catch (InterruptedException e)
         {
@@ -207,11 +187,11 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     }
 
     @Override
-    public void updateLoop()
+    public void updateSimulatorComponents(double aUpdatePeriod)
     {
         for (PwmWrapper wrapper : SensorActuatorRegistry.get().getSpeedControllers().values())
         {
-            wrapper.update(mUpdatePeriod);
+            wrapper.update(aUpdatePeriod);
             // tankDriveSimulator.update();
         }
 
@@ -222,29 +202,27 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     }
 
     @Override
-    public void waitForNextUpdateLoop()
+    public void waitForNextUpdateLoop(double aUpdatePeriod)
     {
-        try
+        if (aUpdatePeriod != 0)
         {
-            Thread.sleep(20);
-            SensorFeedbackJni.notifyDsOfData();
+            try
+            {
+                Thread.sleep((long) (aUpdatePeriod * 1000));
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
         }
-        catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
+
+        SensorFeedbackJni.notifyDsOfData();
     }
 
     @Override
     public void setJoystickInformation(int aJoystickHandle, float[] aAxesArray, short[] aPovsArray, int aButtonCount, int aButtonMask)
     {
         SensorFeedbackJni.setJoystickInformation(aJoystickHandle, aAxesArray, aPovsArray, aButtonCount, aButtonMask);
-    }
-
-    @Override
-    public void setUpdateRate(double aUpdatePeriod)
-    {
-        mUpdatePeriod = aUpdatePeriod;
     }
 
 }

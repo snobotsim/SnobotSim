@@ -139,7 +139,6 @@ public class RegisterCallbacksJni extends BaseSnobotJni
                 @Override
                 public void setState(boolean aState)
                 {
-                    System.out.println("Trying to set");
                     SensorFeedbackJni.setDigitalInput(port, aState);
                 }
             }), port);

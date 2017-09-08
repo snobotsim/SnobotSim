@@ -95,7 +95,20 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setAutono
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_notifyDsOfData
   (JNIEnv *, jclass)
 {
+    static double UPDATE_PERIOD = .02;
+    HALSIM_SetDriverStationMatchTime(HALSIM_GetDriverStationMatchTime() + UPDATE_PERIOD);
     HALSIM_NotifyDriverStationNewData();
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_SensorFeedbackJni
+ * Method:    getMatchTime
+ * Signature: ()D
+ */
+JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_getMatchTime
+  (JNIEnv *, jclass)
+{
+    return HALSIM_GetDriverStationMatchTime();
 }
 
 

@@ -36,12 +36,6 @@ public class JniSpeedControllerWrapperAccessor implements SpeedControllerWrapper
     }
     
     @Override
-    public void updateAllSpeedControllers(double aUpdatePeriod)
-    {
-        SpeedControllerWrapperJni.updateAllSpeedControllers(aUpdatePeriod);
-    }
-    
-    @Override
     public List<Integer> getPortList()
     {
         return IntStream.of(SpeedControllerWrapperJni.getPortList()).boxed().collect(Collectors.toList());

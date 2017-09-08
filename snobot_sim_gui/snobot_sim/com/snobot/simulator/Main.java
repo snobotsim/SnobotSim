@@ -1,5 +1,6 @@
 package com.snobot.simulator;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -11,6 +12,9 @@ import edu.wpi.first.wpilibj.util.WPILibVersion;
 
 public class Main
 {
+    private static final File DEFAULT_PLUGIN_DIR = new File("user_libs");
+    private static final String sUSER_CONFIG_DIR = "user_config/";
+
     public static void main(String[] args)
     {
         DefaultDataAccessorFactory.initalize();
@@ -30,7 +34,7 @@ public class Main
 
         try
         {
-            Simulator simulator = new Simulator(parseLogLevel(argList));
+            Simulator simulator = new Simulator(parseLogLevel(argList), DEFAULT_PLUGIN_DIR, sUSER_CONFIG_DIR);
             simulator.startSimulation();
         }
         catch (ClassNotFoundException e)
@@ -89,7 +93,7 @@ public class Main
         {
             RobotBase.initializeHardwareConfiguration();
             PluginSniffer sniffer = new PluginSniffer();
-            sniffer.loadPlugins();
+            sniffer.loadPlugins(DEFAULT_PLUGIN_DIR);
             sniffer.findRobots();
 
             StringBuilder output = new StringBuilder();

@@ -1,8 +1,5 @@
 package com.snobot.simulator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.snobot.simulator.config.SimulatorConfigReader;
 import com.snobot.simulator.robot_container.IRobotClassContainer;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
@@ -13,11 +10,8 @@ public class ASimulator implements ISimulatorUpdater
 
     private static final double sMOTOR_UPDATE_FREQUENCY = .02;
 
-    protected List<ISimulatorUpdater> mSimulatorComponenets;
-
     protected ASimulator()
     {
-        mSimulatorComponenets = new ArrayList<>();
         updateMotorsThread.start();
     }
 
@@ -29,22 +23,13 @@ public class ASimulator implements ISimulatorUpdater
     @Override
     public void update()
     {
-        synchronized (sUPDATE_MUTEX)
-        {
-            for (ISimulatorUpdater simulator : mSimulatorComponenets)
-            {
-                simulator.update();
-            }
-        }
+
     }
 
     @Override
     public void setRobot(IRobotClassContainer aRobot)
     {
-        for (ISimulatorUpdater simulator : mSimulatorComponenets)
-        {
-            simulator.setRobot(aRobot);
-        }
+
     }
 
     protected Thread updateMotorsThread = new Thread(new Runnable()
@@ -57,7 +42,7 @@ public class ASimulator implements ISimulatorUpdater
             {
                 synchronized (sUPDATE_MUTEX)
                 {
-                    DataAccessorFactory.getInstance().getSpeedControllerAccessor().updateAllSpeedControllers(sMOTOR_UPDATE_FREQUENCY);
+                    DataAccessorFactory.getInstance().getSimulatorDataAccessor().updateSimulatorComponents(sMOTOR_UPDATE_FREQUENCY);
                 }
 
                 try

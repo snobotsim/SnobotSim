@@ -1,7 +1,5 @@
 package com.snobot.simulator;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -25,8 +23,8 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class Simulator
 {
-    private static final String sUSER_CONFIG_DIR = "user_config/";
-    private static final String sPROPERTIES_FILE = sUSER_CONFIG_DIR + "simulator_config.properties";
+    private final String USER_CONFIG_DIRECTORY;
+    private final String PROPERTIES_FILE;
 
     private String mSimulatorClassName; // The name of the class that represents the simulator
     private String mSimulatorConfig;
@@ -34,14 +32,17 @@ public class Simulator
     private IRobotClassContainer mRobot; // The robot code to run
     private ASimulator mSimulator; // The robot code to run
 
-    public Simulator(SnobotLogLevel aLogLevel) throws Exception
+    public Simulator(SnobotLogLevel aLogLevel, File aPluginDirectory, String aUserConfigDir) throws Exception
     {
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setLogLevel(aLogLevel);
 
         PluginSniffer sniffer = new PluginSniffer();
-        sniffer.loadPlugins();
+        sniffer.loadPlugins(aPluginDirectory);
 
-        File config_dir = new File(sUSER_CONFIG_DIR);
+        USER_CONFIG_DIRECTORY = aUserConfigDir;
+        PROPERTIES_FILE = USER_CONFIG_DIRECTORY + "simulator_config.properties";
+
+        File config_dir = new File(aUserConfigDir);
         if (!Files.exists(config_dir.toPath()))
         {
             config_dir.mkdir();
@@ -58,7 +59,7 @@ public class Simulator
                 System.err.println("Could not read properties file, will use defaults and will overwrite the file if it exists");
 
                 if (!JniLibraryResourceLoader.copyResourceFromJar("/com/snobot/simulator/config/default_properties.properties",
-                        new File(sPROPERTIES_FILE), false))
+                        new File(PROPERTIES_FILE), false))
             	{
             		throw new RuntimeException("Could not copy properties file!  Have to exit!");
             	}
@@ -89,7 +90,7 @@ public class Simulator
                 throw new RuntimeException("Unsuppored robot type " + robotType);
             }
 
-            NetworkTable.setPersistentFilename(sUSER_CONFIG_DIR + robotClassName + ".preferences.ini");
+            NetworkTable.setPersistentFilename(USER_CONFIG_DIRECTORY + robotClassName + ".preferences.ini");
         }
         catch (Exception e)
         {
@@ -112,73 +113,28 @@ public class Simulator
             throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, SecurityException,
             IllegalArgumentException, InvocationTargetException
     {
-        loadConfig(sPROPERTIES_FILE);
+        loadConfig(PROPERTIES_FILE);
 
         sendJoystickUpdate();
         createSimulator();
         createRobot();
 
         Thread robotThread = new Thread(createRobotThread(), "RobotThread");
+        Thread simulation_thread = new Thread(createSimulationThread(), "SimulatorThread");
 
-
-        Thread t = new Thread(new Runnable()
-        {
-
-            @Override
-            public void run()
-            {
-            	try
-            	{
-                    DataAccessorFactory.getInstance().getSimulatorDataAccessor().waitForProgramToStart();
-	
-	                if (mSimulator != null)
-	                {
-	                    mSimulator.createSimulatorComponents(mSimulatorConfig);
-	                    mSimulator.setRobot(mRobot);
-	                    System.out.println("Created simulator : " + mSimulatorClassName);
-	                }
-	
-                    SimulatorFrame frame = new SimulatorFrame(mSimulatorConfig);
-	                frame.pack();
-	                frame.setVisible(true);
-	                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	                frame.addWindowListener(new WindowAdapter()
-	                {
-	                    /**
-	                     * Invoked when a window has been closed.
-	                     */
-	                    public void windowClosing(WindowEvent e)
-	                    {
-	                        // SnobotSimulatorJni.shutdown();
-	                    }
-	                });
-	
-	                while (true)
-	                {
-                        DataAccessorFactory.getInstance().getSimulatorDataAccessor().waitForNextUpdateLoop();
-	 
-	                    mSimulator.update();
-	                    frame.updateLoop();
-	                    sendJoystickUpdate();
-	
-                        DataAccessorFactory.getInstance().getSimulatorDataAccessor().updateLoop();
-	                }
-	            }
-                catch(Throwable e)
-                {
-                	System.err.println("Encountered fatal error, will exit.  Error: " + e.getMessage());
-                	e.printStackTrace();
-                	System.exit(1);
-                }
-            }
-        }, "SimulatorThread");
-        t.start();
+        simulation_thread.start();
         robotThread.start();
+    }
+
+    protected void setFrameVisible(SimulatorFrame frame)
+    {
+        frame.pack();
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     private void sendJoystickUpdate()
     {
-
         IMockJoystick[] joysticks = JoystickFactory.get().getAll();
         for (int i = 0; i < joysticks.length; ++i)
         {
@@ -207,6 +163,47 @@ public class Simulator
         {
             throw new RuntimeException("Could not find simulator class " + mSimulatorClassName);
         }
+    }
+
+    private Runnable createSimulationThread()
+    {
+        return new Runnable()
+        {
+
+            @Override
+            public void run()
+            {
+                try
+                {
+                    DataAccessorFactory.getInstance().getSimulatorDataAccessor().waitForProgramToStart();
+
+                    if (mSimulator != null)
+                    {
+                        mSimulator.createSimulatorComponents(mSimulatorConfig);
+                        mSimulator.setRobot(mRobot);
+                        System.out.println("Created simulator : " + mSimulatorClassName);
+                    }
+
+                    SimulatorFrame frame = new SimulatorFrame(mSimulatorConfig);
+                    setFrameVisible(frame);
+
+                    while (true)
+                    {
+                        DataAccessorFactory.getInstance().getSimulatorDataAccessor().waitForNextUpdateLoop();
+
+                        mSimulator.update();
+                        frame.updateLoop();
+                        sendJoystickUpdate();
+                    }
+                }
+                catch (Throwable e)
+                {
+                    System.err.println("Encountered fatal error, will exit.  Error: " + e.getMessage());
+                    e.printStackTrace();
+                    System.exit(1);
+                }
+            }
+        };
     }
 
     private Runnable createRobotThread()

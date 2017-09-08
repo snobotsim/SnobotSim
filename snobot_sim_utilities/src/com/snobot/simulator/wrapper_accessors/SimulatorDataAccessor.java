@@ -39,12 +39,39 @@ public interface SimulatorDataAccessor
 
     void waitForProgramToStart();
 
-    void updateLoop();
+    /**
+     * Updates the simulator components and speed controllers, moving them
+     * forward aUpdateTime seconds in time. This function does not delay any
+     * time
+     * 
+     * @param aUpdatePeriod
+     *            The time to move the components forward
+     */
+    void updateSimulatorComponents(double aUpdatePeriod);
 
-    void waitForNextUpdateLoop();
+    /**
+     * Simulates waiting for a DS packet to come in. Actually waits the amount
+     * of time. Uses default tactical timing of 20ms/50hz
+     * 
+     * @param aUpdatePeriod
+     *            The time, in seconds, to pause before notifying the DS it has
+     *            received data
+     */
+    default void waitForNextUpdateLoop()
+    {
+        waitForNextUpdateLoop(.002);
+    }
+
+    /**
+     * Simulates waiting for a DS packet to come in. Actually waits the amount
+     * of time
+     * 
+     * @param aUpdatePeriod
+     *            The time, in seconds, to pause before notifying the DS it has
+     *            received data
+     */
+    void waitForNextUpdateLoop(double aUpdatePeriod);
 
     void setJoystickInformation(int i, float[] axisValues, short[] povValues, int buttonCount, int buttonMask);
-
-    void setUpdateRate(double aUpdatePeriod);
 
 }

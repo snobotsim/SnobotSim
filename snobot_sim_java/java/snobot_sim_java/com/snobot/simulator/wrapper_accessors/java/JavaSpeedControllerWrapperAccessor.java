@@ -22,16 +22,6 @@ public class JavaSpeedControllerWrapperAccessor extends BaseWrapperAccessor<PwmW
     }
 
     @Override
-    public void updateAllSpeedControllers(double aUpdatePeriod)
-    {
-        for (PwmWrapper wrapper : getMap().values())
-        {
-            wrapper.update(aUpdatePeriod);
-        }
-
-    }
-
-    @Override
     public double getMotorSimSimpleModelConfig(int aPort)
     {
         // TODO Auto-generated method stub
