@@ -65,7 +65,7 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
         }
         else
         {
-            modelConfig = VexMotorFactory.make775Pro();
+            modelConfig = VexMotorFactory.createMotor(motorType);
         }
 
         return modelConfig;
