@@ -6,6 +6,8 @@ public class RotationalLoadDcMotorSim extends BaseDcMotorSimulator
 {
     protected final static double sGRAVITY = 9.8;
 
+    protected final RotationalLoadMotorSimulationConfig mConfig;
+
     protected final PwmWrapper mSpeedController;
     protected final double mArmInertia;
     protected final double mGravityBasedTorqueFactor;
@@ -20,52 +22,21 @@ public class RotationalLoadDcMotorSim extends BaseDcMotorSimulator
      *            The motor model
      * @param aSpeedController
      *            The speed controller that is wrapped
-     * @param aArmCenterOfMass
-     *            The location of the center of mass, in meters
-     * @param aArmMass
-     *            The mass of the arm, in kg
      */
     public RotationalLoadDcMotorSim(
             DcMotorModel aModel,
             PwmWrapper aSpeedController,
-            double aArmCenterOfMass,
-            double aArmMass)
-    {
-        this(aModel, aSpeedController, aArmCenterOfMass, aArmMass, 0, 0);
-    }
-
-    /**
-     * 
-     * @param aModel
-     *            The motor model
-     * @param aSpeedController
-     *            The speed controller that is wrapped
-     * @param aArmCenterOfMass
-     *            The location of the center of mass, in meters
-     * @param aArmMass
-     *            The mass of the arm, in kg
-     * @param aConstantAssistTorque
-     *            torque provided constantly over the entire range of motion, in
-     *            N*m
-     * @param aOverCenterAssistTorque
-     *            torque provided varying with sin of angle (same effect as
-     *            gravity) due to over-center, in N*m
-     */
-    public RotationalLoadDcMotorSim(
-            DcMotorModel aModel,
-            PwmWrapper aSpeedController,
-            double aArmCenterOfMass,
-            double aArmMass,
-            double aConstantAssistTorque,
-            double aOverCenterAssistTorque)
+            RotationalLoadMotorSimulationConfig aConfig)
     {
         super(aModel);
 
+        mConfig = aConfig;
+
         mSpeedController = aSpeedController;
-        mArmInertia = aArmMass * aArmCenterOfMass * aArmCenterOfMass;
-        mGravityBasedTorqueFactor = aArmMass * aArmCenterOfMass * sGRAVITY;
-        mConstantAssistTorque = aConstantAssistTorque;
-        mOverCenterAssistTorque = aOverCenterAssistTorque;
+        mArmInertia = mConfig.mArmMass * mConfig.mArmCenterOfMass * mConfig.mArmCenterOfMass;
+        mGravityBasedTorqueFactor = mConfig.mArmMass * mConfig.mArmCenterOfMass * sGRAVITY;
+        mConstantAssistTorque = mConfig.mConstantAssistTorque;
+        mOverCenterAssistTorque = mConfig.mOverCenterAssistTorque;
     }
 
 
@@ -80,5 +51,10 @@ public class RotationalLoadDcMotorSim extends BaseDcMotorSimulator
         double inVolts = mVoltagePercentage * 12;
 
         mMotorModel.step(inVolts, mArmInertia, gravityTorque, cycleTime);
+    }
+
+    public RotationalLoadMotorSimulationConfig getConfig()
+    {
+        return mConfig;
     }
 }

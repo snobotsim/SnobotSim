@@ -5,6 +5,7 @@ package com.snobot.simulator.jni.module_wrapper;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
@@ -46,7 +47,7 @@ public class TestEncoderJni extends BaseSimulatorTest
         Encoder encoder = new Encoder(1, 2);
 
         DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(0, 0);
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(0, 12);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(0, new SimpleMotorSimulationConfig(12));
 
         for (int i = 0; i < 50; ++i)
         {

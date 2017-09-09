@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.snobot.simulator.SensorActuatorRegistry;
+import com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
@@ -49,10 +50,18 @@ public class TestEncoderJni extends BaseSimulatorTest
     public void testSpeedControllerFeedback()
     {
         SpeedController sc = new Talon(0);
+        Assert.assertFalse(DataAccessorFactory.getInstance().getEncoderAccessor().isHookedUp(0));
+        Assert.assertEquals(-1, DataAccessorFactory.getInstance().getEncoderAccessor().getHookedUpId(0));
+
         Encoder encoder = new Encoder(1, 2);
+        Assert.assertFalse(DataAccessorFactory.getInstance().getEncoderAccessor().isHookedUp(0));
+        Assert.assertEquals(-1, DataAccessorFactory.getInstance().getEncoderAccessor().getHookedUpId(0));
 
         Assert.assertTrue(DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(0, 0));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(0, 12));
+        Assert.assertTrue(
+                DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(0, new SimpleMotorSimulationConfig(12)));
+        Assert.assertTrue(DataAccessorFactory.getInstance().getEncoderAccessor().isHookedUp(0));
+        Assert.assertEquals(0, DataAccessorFactory.getInstance().getEncoderAccessor().getHookedUpId(0));
 
         simulateForTime(1, () ->
         {
@@ -76,6 +85,8 @@ public class TestEncoderJni extends BaseSimulatorTest
     @Test
     public void testInvalidSpeedControllerFeedback()
     {
+        Assert.assertFalse(DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(0, 0));
+
         new Encoder(1, 2);
         Assert.assertFalse(DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(0, 0));
     }

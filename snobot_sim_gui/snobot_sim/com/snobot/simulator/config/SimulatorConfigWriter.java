@@ -11,7 +11,7 @@ import java.util.Map;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
-import com.snobot.simulator.DcMotorModelConfig;
+import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor.MotorSimType;
 

@@ -5,8 +5,6 @@ import java.util.List;
 
 public interface EncoderWrapperAccessor
 {
-	
-    public int getHandle(int aPortA, int aPortB);
     
     public void setName(int aPort, String aName);
     
@@ -19,10 +17,6 @@ public interface EncoderWrapperAccessor
     public boolean isHookedUp(int aPort);
     
     public int getHookedUpId(int aPort);
-
-    public void setDistancePerTick(int aPort, double aDistancePerTick);
-
-    public double getDistancePerTick(int aPort);
 
     public double getRaw(int aPort);
     

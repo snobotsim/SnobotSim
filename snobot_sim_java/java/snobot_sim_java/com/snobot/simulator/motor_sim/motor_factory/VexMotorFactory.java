@@ -3,7 +3,7 @@ package com.snobot.simulator.motor_sim.motor_factory;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.snobot.simulator.DcMotorModelConfig;
+import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 
 public class VexMotorFactory
 {

@@ -16,7 +16,7 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import com.snobot.simulator.DcMotorModelConfig;
+import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 
 
 public class MotorCurveDisplay extends JPanel

@@ -3,6 +3,7 @@ package com.snobot.simulator.simulator_components;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
@@ -26,8 +27,8 @@ public class TestTankDriveSimulator extends BaseSimulatorTest
 
         DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(0, 0);
         DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(1, 1);
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(0, 1);
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(1, 1);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(0, new SimpleMotorSimulationConfig(1));
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(1, new SimpleMotorSimulationConfig(1));
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().connectTankDriveSimulator(1, 0, 0, 180 / Math.PI);
 
         double update_rate = 50;

@@ -3,15 +3,15 @@ package com.snobot.simulator.motor_sim;
 public class SimpleMotorSimulator implements IMotorSimulator
 {
 
-    private double mMaxSpeed;
+    private SimpleMotorSimulationConfig mConfig;
 
     private double mVoltagePercent;
     private double mVelocity;
     private double mPosition;
 
-    public SimpleMotorSimulator(double aMaxSpeed)
+    public SimpleMotorSimulator(SimpleMotorSimulationConfig aConfig)
     {
-        mMaxSpeed = aMaxSpeed;
+        mConfig = aConfig;
     }
 
     @Override
@@ -66,7 +66,12 @@ public class SimpleMotorSimulator implements IMotorSimulator
     @Override
     public void update(double aUpdateTime)
     {
-        mVelocity = mMaxSpeed * mVoltagePercent;
+        mVelocity = mConfig.mMaxSpeed * mVoltagePercent;
         mPosition += mVelocity * aUpdateTime;
+    }
+
+    public SimpleMotorSimulationConfig getConfig()
+    {
+        return mConfig;
     }
 }

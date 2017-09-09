@@ -16,8 +16,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import com.snobot.simulator.DcMotorModelConfig;
 import com.snobot.simulator.gui.motor_display.MotorCurveDisplay;
+import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 import net.miginfocom.swing.MigLayout;

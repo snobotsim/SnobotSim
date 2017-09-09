@@ -59,10 +59,10 @@ speed_controllers:
     
 quad_encoders:
 - name: Encoder (0, 0)
-  single_handle: 0
+  handle: 0
   speed_controller_handle : 0
   
-- single_handle: 1
+- handle: 1
   speed_controller_handle : 1
   
 digital:
@@ -82,8 +82,8 @@ solenoids:
   
   
 tank_drives:
-- left_single_handle   : 0
-  right_single_handle  : 1
-  gyro_handle          : 1
-  turn_kp              : 33
+- left_encoder_handle   : 0
+  right_encoder_handle  : 1
+  gyro_handle   : 1
+  turn_kp       : 33
   

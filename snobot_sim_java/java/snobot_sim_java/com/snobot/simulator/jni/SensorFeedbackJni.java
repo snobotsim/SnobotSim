@@ -15,7 +15,9 @@ public class SensorFeedbackJni extends BaseSnobotJni
 
     public static native void setAutonomous(boolean aAuton);
 
-    public static native void notifyDsOfData();
+    public static native void waitForProgramToStart();
+
+    public static native void delayForNextUpdateLoop(double aWaitPeriod);
 
     public static native double getMatchTime();
 

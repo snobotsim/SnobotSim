@@ -64,4 +64,9 @@ public abstract class BaseDcMotorSimulator implements IMotorSimulator
         return mMotorModel.getCurrent();
     }
 
+    public DcMotorModelConfig getMotorConfig()
+    {
+        return mMotorModel.getMotorConfig();
+    }
+
 }

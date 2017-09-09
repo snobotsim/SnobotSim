@@ -1,17 +1,21 @@
 package com.snobot.simulator.wrapper_accessors.java;
 
-import com.snobot.simulator.DcMotorModelConfig;
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.RegisterCallbacksJni;
 import com.snobot.simulator.jni.SensorFeedbackJni;
 import com.snobot.simulator.module_wrapper.EncoderWrapper;
 import com.snobot.simulator.module_wrapper.PwmWrapper;
 import com.snobot.simulator.motor_sim.DcMotorModel;
+import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.GravityLoadDcMotorSim;
+import com.snobot.simulator.motor_sim.GravityLoadMotorSimulationConfig;
 import com.snobot.simulator.motor_sim.IMotorSimulator;
 import com.snobot.simulator.motor_sim.RotationalLoadDcMotorSim;
+import com.snobot.simulator.motor_sim.RotationalLoadMotorSimulationConfig;
+import com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig;
 import com.snobot.simulator.motor_sim.SimpleMotorSimulator;
 import com.snobot.simulator.motor_sim.StaticLoadDcMotorSim;
+import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
 import com.snobot.simulator.motor_sim.motor_factory.MakeTransmission;
 import com.snobot.simulator.motor_sim.motor_factory.PublishedMotorFactory;
 import com.snobot.simulator.motor_sim.motor_factory.VexMotorFactory;
@@ -74,14 +78,14 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     }
 
     @Override
-    public boolean setSpeedControllerModel_Simple(int aScHandle, double maxSpeed)
+    public boolean setSpeedControllerModel_Simple(int aScHandle, SimpleMotorSimulationConfig aConfig)
     {
         boolean success = false;
 
         PwmWrapper speedController = SensorActuatorRegistry.get().getSpeedControllers().get(aScHandle);
         if (speedController != null)
         {
-            speedController.setMotorSimulator(new SimpleMotorSimulator(maxSpeed));
+            speedController.setMotorSimulator(new SimpleMotorSimulator(aConfig));
             success = true;
         }
         else
@@ -93,17 +97,11 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     }
 
     @Override
-    public boolean setSpeedControllerModel_Static(int aScHandle, DcMotorModelConfig motorConfig, double load)
-    {
-        return setSpeedControllerModel_Static(aScHandle, motorConfig, load, 1.0);
-    }
-
-    @Override
-    public boolean setSpeedControllerModel_Static(int aScHandle, DcMotorModelConfig motorConfig, double load, double conversionFactor)
+    public boolean setSpeedControllerModel_Static(int aScHandle, DcMotorModelConfig motorConfig, StaticLoadMotorSimulationConfig aConfig)
     {
         boolean success = false;
         PwmWrapper wrapper = SensorActuatorRegistry.get().getSpeedControllers().get(aScHandle);
-        IMotorSimulator motorModel = new StaticLoadDcMotorSim(new DcMotorModel(motorConfig), load);
+        IMotorSimulator motorModel = new StaticLoadDcMotorSim(new DcMotorModel(motorConfig), aConfig);
         if (wrapper != null)
         {
             wrapper.setMotorSimulator(motorModel);
@@ -118,11 +116,11 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     }
 
     @Override
-    public boolean setSpeedControllerModel_Gravitational(int aScHandle, DcMotorModelConfig motorConfig, double load)
+    public boolean setSpeedControllerModel_Gravitational(int aScHandle, DcMotorModelConfig motorConfig, GravityLoadMotorSimulationConfig aConfig)
     {
         boolean success = false;
         PwmWrapper wrapper = SensorActuatorRegistry.get().getSpeedControllers().get(aScHandle);
-        IMotorSimulator motorModel = new GravityLoadDcMotorSim(new DcMotorModel(motorConfig), load);
+        IMotorSimulator motorModel = new GravityLoadDcMotorSim(new DcMotorModel(motorConfig), aConfig);
         if (wrapper != null)
         {
             wrapper.setMotorSimulator(motorModel);
@@ -137,11 +135,11 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     }
 
     @Override
-    public boolean setSpeedControllerModel_Rotational(int aScHandle, DcMotorModelConfig motorConfig, double armCenterOfMass, double armMass)
+    public boolean setSpeedControllerModel_Rotational(int aScHandle, DcMotorModelConfig motorConfig, RotationalLoadMotorSimulationConfig aConfig)
     {
         boolean success = false;
         PwmWrapper wrapper = SensorActuatorRegistry.get().getSpeedControllers().get(aScHandle);
-        IMotorSimulator motorModel = new RotationalLoadDcMotorSim(new DcMotorModel(motorConfig), wrapper, armCenterOfMass, armMass);
+        IMotorSimulator motorModel = new RotationalLoadDcMotorSim(new DcMotorModel(motorConfig), wrapper, aConfig);
         if (wrapper != null)
         {
             wrapper.setMotorSimulator(motorModel);
@@ -176,14 +174,7 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     @Override
     public void waitForProgramToStart()
     {
-        try
-        {
-            Thread.sleep(2000);
-        }
-        catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
+        SensorFeedbackJni.waitForProgramToStart();
     }
 
     @Override
@@ -204,19 +195,7 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     @Override
     public void waitForNextUpdateLoop(double aUpdatePeriod)
     {
-        if (aUpdatePeriod != 0)
-        {
-            try
-            {
-                Thread.sleep((long) (aUpdatePeriod * 1000));
-            }
-            catch (InterruptedException e)
-            {
-                e.printStackTrace();
-            }
-        }
-
-        SensorFeedbackJni.notifyDsOfData();
+        SensorFeedbackJni.delayForNextUpdateLoop(aUpdatePeriod);
     }
 
     @Override

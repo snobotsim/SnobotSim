@@ -11,7 +11,6 @@ public class EncoderWrapper extends ASensorWrapper implements IMotorFeedbackSens
 
     private final DistanceSetterHelper mSetterHelper;
     private double mEncodingFactor;
-    private double mDistancePerTick;
     private double mPosition;
 
     public EncoderWrapper(int aIndex, DistanceSetterHelper aSetterHelper)
@@ -25,18 +24,12 @@ public class EncoderWrapper extends ASensorWrapper implements IMotorFeedbackSens
 
         mSetterHelper = aSetterHelper;
         mPosition = 0;
-        mDistancePerTick = 1;
         mEncodingFactor = 4;
     }
 
     public int getRaw()
     {
-        return (int) (getPosition() / (mEncodingFactor * mDistancePerTick));
-    }
-
-    public void setDistancePerTick(double aDistancePerTick)
-    {
-        mDistancePerTick = aDistancePerTick;
+        return (int) (getPosition() / (mEncodingFactor));
     }
 
     @Override

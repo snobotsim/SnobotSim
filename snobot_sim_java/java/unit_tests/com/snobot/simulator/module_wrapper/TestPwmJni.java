@@ -3,6 +3,7 @@ package com.snobot.simulator.module_wrapper;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.snobot.simulator.simulator_components.IMotorFeedbackSensor;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
@@ -65,5 +66,14 @@ public class TestPwmJni extends BaseSimulatorTest
         talon.set(-2.1);
         Assert.assertEquals(-1.0, talon.get(), DOUBLE_EPSILON);
         Assert.assertEquals(-1.0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(1), DOUBLE_EPSILON);
+    }
+
+    @Test
+    public void testNullFeedbackDevice()
+    {
+        IMotorFeedbackSensor feedbackSensor = new IMotorFeedbackSensor.NullFeedbackSensor();
+
+        feedbackSensor.setPosition(10);
+        Assert.assertEquals(0, feedbackSensor.getPosition(), DOUBLE_EPSILON);
     }
 }

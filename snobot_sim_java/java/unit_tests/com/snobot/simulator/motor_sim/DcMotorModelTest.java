@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.snobot.simulator.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.motor_factory.MakeTransmission;
 import com.snobot.simulator.motor_sim.motor_factory.PublishedMotorFactory;
 

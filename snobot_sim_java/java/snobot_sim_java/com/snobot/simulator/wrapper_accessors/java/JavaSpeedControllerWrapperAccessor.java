@@ -2,9 +2,19 @@ package com.snobot.simulator.wrapper_accessors.java;
 
 import java.util.Map;
 
-import com.snobot.simulator.DcMotorModelConfig;
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.PwmWrapper;
+import com.snobot.simulator.motor_sim.BaseDcMotorSimulator;
+import com.snobot.simulator.motor_sim.DcMotorModelConfig;
+import com.snobot.simulator.motor_sim.GravityLoadDcMotorSim;
+import com.snobot.simulator.motor_sim.GravityLoadMotorSimulationConfig;
+import com.snobot.simulator.motor_sim.IMotorSimulator;
+import com.snobot.simulator.motor_sim.RotationalLoadDcMotorSim;
+import com.snobot.simulator.motor_sim.RotationalLoadMotorSimulationConfig;
+import com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig;
+import com.snobot.simulator.motor_sim.SimpleMotorSimulator;
+import com.snobot.simulator.motor_sim.StaticLoadDcMotorSim;
+import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
 import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor;
 
 public class JavaSpeedControllerWrapperAccessor extends BaseWrapperAccessor<PwmWrapper> implements SpeedControllerWrapperAccessor
@@ -22,34 +32,66 @@ public class JavaSpeedControllerWrapperAccessor extends BaseWrapperAccessor<PwmW
     }
 
     @Override
-    public double getMotorSimSimpleModelConfig(int aPort)
+    public SimpleMotorSimulationConfig getMotorSimSimpleModelConfig(int aPort)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        SimpleMotorSimulator simulator = (SimpleMotorSimulator) getValue(aPort).getMotorSimulator();
+        return simulator.getConfig();
     }
 
     @Override
-    public double getMotorSimStaticModelConfig(int aPort)
+    public StaticLoadMotorSimulationConfig getMotorSimStaticModelConfig(int aPort)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        StaticLoadDcMotorSim simulator = (StaticLoadDcMotorSim) getValue(aPort).getMotorSimulator();
+        return simulator.getConfig();
     }
 
     @Override
-    public double getMotorSimGravitationalModelConfig(int aPort)
+    public GravityLoadMotorSimulationConfig getMotorSimGravitationalModelConfig(int aPort)
     {
-        return 0;
+        GravityLoadDcMotorSim simulator = (GravityLoadDcMotorSim) getValue(aPort).getMotorSimulator();
+        return simulator.getConfig();
+    }
+
+    @Override
+    public RotationalLoadMotorSimulationConfig getMotorSimRotationalModelConfig(int aPort)
+    {
+        RotationalLoadDcMotorSim simulator = (RotationalLoadDcMotorSim) getValue(aPort).getMotorSimulator();
+        return simulator.getConfig();
     }
 
     @Override
     public MotorSimType getMotorSimType(int aHandle)
     {
-        return MotorSimType.GravitationalLoad;
+        IMotorSimulator simulator = getValue(aHandle).getMotorSimulator();
+
+        if (simulator instanceof SimpleMotorSimulator)
+        {
+            return MotorSimType.Simple;
+        }
+        if (simulator instanceof StaticLoadDcMotorSim)
+        {
+            return MotorSimType.StaticLoad;
+        }
+        if (simulator instanceof GravityLoadDcMotorSim)
+        {
+            return MotorSimType.GravitationalLoad;
+        }
+        if (simulator instanceof RotationalLoadDcMotorSim)
+        {
+            return MotorSimType.RotationalLoad;
+        }
+        return MotorSimType.None;
     }
 
     @Override
     public DcMotorModelConfig getMotorConfig(int aPort)
     {
+        IMotorSimulator simulator = getValue(aPort).getMotorSimulator();
+        if (simulator instanceof BaseDcMotorSimulator)
+        {
+            BaseDcMotorSimulator castSim = (BaseDcMotorSimulator) simulator;
+            return castSim.getMotorConfig();
+        }
         return null;
     }
 

@@ -10,12 +10,6 @@ import com.snobot.simulator.wrapper_accessors.EncoderWrapperAccessor;
 
 public class JniEncoderWrapperAccessor implements EncoderWrapperAccessor
 {
-	
-    @Override
-    public int getHandle(int aPortA, int aPortB)
-    {
-        return -1;
-    }
     
     @Override
     public void setName(int aPort, String aName)
@@ -52,18 +46,6 @@ public class JniEncoderWrapperAccessor implements EncoderWrapperAccessor
     public int getHookedUpId(int aPort)
     {
         return EncoderWrapperJni.getHookedUpId(aPort);
-    }
-
-    @Override
-    public void setDistancePerTick(int aPort, double aDistancePerTick)
-    {
-        EncoderWrapperJni.setDistancePerTick(aPort, aDistancePerTick);
-    }
-
-    @Override
-    public double getDistancePerTick(int aPort)
-    {
-        return EncoderWrapperJni.getDistancePerTick(aPort);
     }
 
     @Override

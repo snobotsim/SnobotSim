@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.EncoderWrapper;
+import com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig;
 import com.snobot.simulator.simulator_components.gyro.GyroWrapper;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
@@ -29,8 +30,8 @@ public class TestTankDriveSimulator extends BaseSimulatorTest
 
         DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(0, 0);
         DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(1, 1);
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(0, 1);
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(1, 1);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(0, new SimpleMotorSimulationConfig(1));
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(1, new SimpleMotorSimulationConfig(1));
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().connectTankDriveSimulator(1, 0, 0, 180 / Math.PI);
 
         // Turn Left
@@ -71,8 +72,8 @@ public class TestTankDriveSimulator extends BaseSimulatorTest
 
         DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(0, 0);
         DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(1, 1);
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(0, 1);
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(1, 1);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(0, new SimpleMotorSimulationConfig(1));
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(1, new SimpleMotorSimulationConfig(1));
 
         EncoderWrapper rightEncWrapper = SensorActuatorRegistry.get().getEncoders().get(0);
         EncoderWrapper leftEncWrapper = SensorActuatorRegistry.get().getEncoders().get(1);

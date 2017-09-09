@@ -3,7 +3,11 @@ package com.snobot.simulator.wrapper_accessors;
 
 import java.util.List;
 
-import com.snobot.simulator.DcMotorModelConfig;
+import com.snobot.simulator.motor_sim.DcMotorModelConfig;
+import com.snobot.simulator.motor_sim.GravityLoadMotorSimulationConfig;
+import com.snobot.simulator.motor_sim.RotationalLoadMotorSimulationConfig;
+import com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig;
+import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
 
 public interface SpeedControllerWrapperAccessor
 {
@@ -36,11 +40,13 @@ public interface SpeedControllerWrapperAccessor
 
     public DcMotorModelConfig getMotorConfig(int aPort);
 
-    public double getMotorSimSimpleModelConfig(int aPort);
+    public SimpleMotorSimulationConfig getMotorSimSimpleModelConfig(int aPort);
 
-    public double getMotorSimStaticModelConfig(int aPort);
+    public StaticLoadMotorSimulationConfig getMotorSimStaticModelConfig(int aPort);
 
-    public double getMotorSimGravitationalModelConfig(int aPort);
+    public GravityLoadMotorSimulationConfig getMotorSimGravitationalModelConfig(int aPort);
+
+    public RotationalLoadMotorSimulationConfig getMotorSimRotationalModelConfig(int aPort);
 
     public MotorSimType getMotorSimType(int aHandle);
 

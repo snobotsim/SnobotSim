@@ -5,6 +5,7 @@ import com.snobot.simulator.simulator_components.IMotorFeedbackSensor;
 
 public class PwmWrapper extends ASensorWrapper
 {
+    private final int mHandle;
     private IMotorSimulator mMotorSimulator;
     private IMotorFeedbackSensor mFeedbackSensor;
 
@@ -12,6 +13,7 @@ public class PwmWrapper extends ASensorWrapper
     {
         super("Speed Controller " + index);
 
+        mHandle = index;
         mMotorSimulator = new IMotorSimulator.NullMotorSimulator();
         mFeedbackSensor = new IMotorFeedbackSensor.NullFeedbackSensor();
     }
@@ -19,6 +21,11 @@ public class PwmWrapper extends ASensorWrapper
     public void setMotorSimulator(IMotorSimulator aSimulator)
     {
         mMotorSimulator = aSimulator;
+    }
+
+    public IMotorSimulator getMotorSimulator()
+    {
+        return mMotorSimulator;
     }
 
     public double get()
@@ -67,13 +74,18 @@ public class PwmWrapper extends ASensorWrapper
         mMotorSimulator.reset(aPosition, aVelocity, aCurrent);
     }
 
-    public boolean hasFeedbackSensor()
-    {
-        return mFeedbackSensor != null;
-    }
-
-    public void setFeedbackSensor(EncoderWrapper aFeedbackSensor)
+    public void setFeedbackSensor(IMotorFeedbackSensor aFeedbackSensor)
     {
         mFeedbackSensor = aFeedbackSensor;
+    }
+
+    public IMotorFeedbackSensor getFeedbackSensor()
+    {
+        return mFeedbackSensor;
+    }
+
+    public int getHandle()
+    {
+        return mHandle;
     }
 }

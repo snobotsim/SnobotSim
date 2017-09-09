@@ -6,6 +6,7 @@ import org.junit.Test;
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.AnalogWrapper;
 import com.snobot.simulator.module_wrapper.PwmWrapper;
+import com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
@@ -28,7 +29,7 @@ public class TestPotentiometerSimulator extends BaseSimulatorTest
 
         AnalogWrapper analogWrapper = SensorActuatorRegistry.get().getAnalog().get(0);
         PwmWrapper pwmWrapper = SensorActuatorRegistry.get().getSpeedControllers().get(0);
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(0, 1);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(0, new SimpleMotorSimulationConfig(1));
 
         PotentiometerSimulator potSim = new PotentiometerSimulator(analogWrapper, pwmWrapper);
         Assert.assertTrue(potSim.isSetup());

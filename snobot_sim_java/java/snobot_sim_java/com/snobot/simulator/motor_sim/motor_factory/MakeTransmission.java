@@ -1,6 +1,6 @@
 package com.snobot.simulator.motor_sim.motor_factory;
 
-import com.snobot.simulator.DcMotorModelConfig;
+import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 
 public class MakeTransmission
 {

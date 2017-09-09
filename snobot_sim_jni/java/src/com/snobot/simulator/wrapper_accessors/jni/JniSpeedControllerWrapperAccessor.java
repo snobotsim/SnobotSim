@@ -5,8 +5,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import com.snobot.simulator.DcMotorModelConfig;
 import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni;
+import com.snobot.simulator.motor_sim.DcMotorModelConfig;
+import com.snobot.simulator.motor_sim.GravityLoadMotorSimulationConfig;
+import com.snobot.simulator.motor_sim.RotationalLoadMotorSimulationConfig;
+import com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig;
+import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
 import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor;
 
 public class JniSpeedControllerWrapperAccessor implements SpeedControllerWrapperAccessor
@@ -49,24 +53,27 @@ public class JniSpeedControllerWrapperAccessor implements SpeedControllerWrapper
     }
 
     @Override
-    public double getMotorSimSimpleModelConfig(int aPort)
+    public SimpleMotorSimulationConfig getMotorSimSimpleModelConfig(int aPort)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        return new SimpleMotorSimulationConfig(0);
     }
 
     @Override
-    public double getMotorSimStaticModelConfig(int aPort)
+    public StaticLoadMotorSimulationConfig getMotorSimStaticModelConfig(int aPort)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        return new StaticLoadMotorSimulationConfig(0);
     }
 
     @Override
-    public double getMotorSimGravitationalModelConfig(int aPort)
+    public GravityLoadMotorSimulationConfig getMotorSimGravitationalModelConfig(int aPort)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        return new GravityLoadMotorSimulationConfig(0);
+    }
+
+    @Override
+    public RotationalLoadMotorSimulationConfig getMotorSimRotationalModelConfig(int aPort)
+    {
+        return new RotationalLoadMotorSimulationConfig(0, 0);
     }
 
     @Override

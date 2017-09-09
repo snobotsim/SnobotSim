@@ -29,6 +29,9 @@ public class TestAnalogIOJni extends BaseSimulatorTest
         
         DataAccessorFactory.getInstance().getAnalogAccessor().setName(3, "NewNameFor3");
         Assert.assertEquals("NewNameFor3", DataAccessorFactory.getInstance().getAnalogAccessor().getName(3));
+
+        // Set name for non-existing sensor
+        DataAccessorFactory.getInstance().getAnalogAccessor().setName(4, "NewNameFor4");
     }
 
     @Test

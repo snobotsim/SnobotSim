@@ -6,6 +6,7 @@ import org.junit.Test;
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.PwmWrapper;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
+import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor.MotorSimType;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
 import edu.wpi.first.wpilibj.SpeedController;
@@ -39,5 +40,7 @@ public class NullMotorSimTest extends BaseSimulatorTest
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPosition(0), DOUBLE_EPSILON);
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVelocity(0), DOUBLE_EPSILON);
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getCurrent(0), DOUBLE_EPSILON);
+
+        Assert.assertEquals(MotorSimType.None, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimType(0));
     }
 }

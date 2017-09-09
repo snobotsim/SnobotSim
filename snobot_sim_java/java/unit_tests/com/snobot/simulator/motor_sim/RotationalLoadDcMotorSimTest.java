@@ -5,10 +5,10 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.snobot.simulator.DcMotorModelConfig;
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.PwmWrapper;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
+import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor.MotorSimType;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
 import edu.wpi.first.wpilibj.SpeedController;
@@ -26,12 +26,14 @@ public class RotationalLoadDcMotorSimTest extends BaseSimulatorTest
 
         SpeedController sc = new Talon(0);
         DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("CIM");
-        Assert.assertTrue(DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Rotational(0, motorConfig, armCenterOfMass, armMass));
+        Assert.assertTrue(DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Rotational(0, motorConfig,
+                new RotationalLoadMotorSimulationConfig(armCenterOfMass, armMass)));
 
         simulateForTime(5, () ->
         {
             sc.set(1);
         });
+        Assert.assertEquals(1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(0), DOUBLE_EPSILON);
 
         PwmWrapper wrapper = SensorActuatorRegistry.get().getSpeedControllers().get(0);
 
@@ -51,13 +53,20 @@ public class RotationalLoadDcMotorSimTest extends BaseSimulatorTest
         Assert.assertEquals(2, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVelocity(0), DOUBLE_EPSILON);
         Assert.assertEquals(3, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getCurrent(0), DOUBLE_EPSILON);
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getAcceleration(0), DOUBLE_EPSILON);
+
+        Assert.assertEquals(MotorSimType.RotationalLoad, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimType(0));
+        RotationalLoadMotorSimulationConfig simConfig = DataAccessorFactory.getInstance().getSpeedControllerAccessor()
+                .getMotorSimRotationalModelConfig(0);
+        Assert.assertEquals(.82, simConfig.mArmCenterOfMass, DOUBLE_EPSILON);
+        Assert.assertEquals(.2, simConfig.mArmMass, DOUBLE_EPSILON);
     }
 
     @Test
     public void testInvalidMotor()
     {
         DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("CIM");
-        Assert.assertFalse(DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Rotational(0, motorConfig, 0, 0));
+        Assert.assertFalse(DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Rotational(0, motorConfig,
+                new RotationalLoadMotorSimulationConfig(0, 0)));
     }
 
 }

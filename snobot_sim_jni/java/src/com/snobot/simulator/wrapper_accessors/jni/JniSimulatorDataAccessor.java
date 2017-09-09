@@ -1,7 +1,11 @@
 package com.snobot.simulator.wrapper_accessors.jni;
 
-import com.snobot.simulator.DcMotorModelConfig;
 import com.snobot.simulator.jni.SimulationConnectorJni;
+import com.snobot.simulator.motor_sim.DcMotorModelConfig;
+import com.snobot.simulator.motor_sim.GravityLoadMotorSimulationConfig;
+import com.snobot.simulator.motor_sim.RotationalLoadMotorSimulationConfig;
+import com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig;
+import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
 import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor;
 
 public class JniSimulatorDataAccessor implements SimulatorDataAccessor
@@ -45,32 +49,26 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
     }
 
     @Override
-    public boolean setSpeedControllerModel_Simple(int aScHandle, double maxSpeed)
+    public boolean setSpeedControllerModel_Simple(int aScHandle, SimpleMotorSimulationConfig aConfig)
     {
-        SimulationConnectorJni.setSpeedControllerModel_Simple(aScHandle, maxSpeed);
+        SimulationConnectorJni.setSpeedControllerModel_Simple(aScHandle, aConfig.mMaxSpeed);
         return true;
     }
 
     @Override
-    public boolean setSpeedControllerModel_Static(int mHandle, DcMotorModelConfig motorConfig, double load)
+    public boolean setSpeedControllerModel_Static(int mHandle, DcMotorModelConfig motorConfig, StaticLoadMotorSimulationConfig aConfig)
     {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean setSpeedControllerModel_Static(int aScHandle, DcMotorModelConfig motorConfig, double load, double conversionFactor)
+    public boolean setSpeedControllerModel_Gravitational(int aScHandle, DcMotorModelConfig aMotorConfig, GravityLoadMotorSimulationConfig aConfig)
     {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean setSpeedControllerModel_Gravitational(int aScHandle, DcMotorModelConfig motorConfig, double load)
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean setSpeedControllerModel_Rotational(int aScHandle, DcMotorModelConfig motorConfig, double armCenterOfMass, double armMass)
+    public boolean setSpeedControllerModel_Rotational(int aScHandle, DcMotorModelConfig motorConfig, RotationalLoadMotorSimulationConfig aConfig)
     {
         throw new UnsupportedOperationException();
     }

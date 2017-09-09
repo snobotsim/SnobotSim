@@ -26,15 +26,15 @@ ext.build_simulator_java = true
 /////////////////////////////////////////
 // Specify WPI Versions
 ext.getHalHeadersVersion = {
-    return 'edu.wpi.first.hal:hal:+:headers@zip'
+    return 'edu.wpi.first.hal:hal:2017.3.1-20170908015814-103-g57ba589:headers@zip'
+}
+ext.getWpilibjVersion = {
+    return '2017.3.1-20170908015815-103-g57ba589'
 }
 ext.getWpiUtilVersion = {
     return '+'
 }
 ext.getNtCoreVersion = {
-    return '+'
-}
-ext.getWpilibjVersion = {
     return '+'
 }
 ext.getWpilibcVersion = {

@@ -1,4 +1,4 @@
-package com.snobot.simulator;
+package com.snobot.simulator.motor_sim;
 
 public class DcMotorModelConfig
 {

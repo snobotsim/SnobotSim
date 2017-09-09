@@ -97,11 +97,14 @@ public class TestControllerLoop extends BaseSimulatorTest
 
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setJoystickInformation(0, joystickAxes, joystickPov, joystickButtonCount, 0);
 
+        Assert.assertEquals(0, DataAccessorFactory.getInstance().getSimulatorDataAccessor().getMatchTime(), DOUBLE_EPSILON);
+
         // Startup in disabled
         simulateForTime(.5, () ->
         {
             DataAccessorFactory.getInstance().getSimulatorDataAccessor().waitForNextUpdateLoop(waitForDataPeriod);
         });
+        Assert.assertEquals(.5, DataAccessorFactory.getInstance().getSimulatorDataAccessor().getMatchTime(), DOUBLE_EPSILON);
         Assert.assertTrue(robot.disabledCtr > 0);
         Assert.assertEquals(Relay.Value.kOff, robot.mRelay.get());
         Assert.assertEquals(0, robot.mSpeedController0.get(), DOUBLE_EPSILON);
@@ -117,6 +120,7 @@ public class TestControllerLoop extends BaseSimulatorTest
         {
             DataAccessorFactory.getInstance().getSimulatorDataAccessor().waitForNextUpdateLoop(waitForDataPeriod);
         });
+        Assert.assertEquals(1, DataAccessorFactory.getInstance().getSimulatorDataAccessor().getMatchTime(), DOUBLE_EPSILON);
         Assert.assertTrue(robot.enabledCtr > 0);
         Assert.assertEquals(Relay.Value.kForward, robot.mRelay.get());
         Assert.assertEquals(0, robot.mSpeedController0.get(), DOUBLE_EPSILON);
@@ -132,6 +136,7 @@ public class TestControllerLoop extends BaseSimulatorTest
         {
             DataAccessorFactory.getInstance().getSimulatorDataAccessor().waitForNextUpdateLoop(waitForDataPeriod);
         });
+        Assert.assertEquals(1.5, DataAccessorFactory.getInstance().getSimulatorDataAccessor().getMatchTime(), DOUBLE_EPSILON);
         Assert.assertTrue(robot.autonCtr > 0);
         Assert.assertEquals(Relay.Value.kOff, robot.mRelay.get());
         Assert.assertEquals(1, robot.mSpeedController0.get(), DOUBLE_EPSILON);
@@ -149,6 +154,7 @@ public class TestControllerLoop extends BaseSimulatorTest
             DataAccessorFactory.getInstance().getSimulatorDataAccessor().setJoystickInformation(0, joystickAxes, joystickPov, joystickButtonCount, 1);
             DataAccessorFactory.getInstance().getSimulatorDataAccessor().waitForNextUpdateLoop(waitForDataPeriod);
         });
+        Assert.assertEquals(2, DataAccessorFactory.getInstance().getSimulatorDataAccessor().getMatchTime(), DOUBLE_EPSILON);
         Assert.assertEquals(1, robot.mSpeedController1.get(), DOUBLE_EPSILON);
         Assert.assertTrue(robot.mSolenoid.get());
 
@@ -158,8 +164,22 @@ public class TestControllerLoop extends BaseSimulatorTest
             DataAccessorFactory.getInstance().getSimulatorDataAccessor().setJoystickInformation(0, joystickAxes, joystickPov, joystickButtonCount, 0);
             DataAccessorFactory.getInstance().getSimulatorDataAccessor().waitForNextUpdateLoop(waitForDataPeriod);
         });
+        Assert.assertEquals(2.5, DataAccessorFactory.getInstance().getSimulatorDataAccessor().getMatchTime(), DOUBLE_EPSILON);
         Assert.assertEquals(0, robot.mSpeedController1.get(), DOUBLE_EPSILON);
         Assert.assertFalse(robot.mSolenoid.get());
+
+        // Back to disabled
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDisabled(true);
+        simulateForTime(.5, () ->
+        {
+            DataAccessorFactory.getInstance().getSimulatorDataAccessor().waitForNextUpdateLoop(waitForDataPeriod);
+        });
+        Assert.assertEquals(3, DataAccessorFactory.getInstance().getSimulatorDataAccessor().getMatchTime(), DOUBLE_EPSILON);
+        Assert.assertEquals(Relay.Value.kForward, robot.mRelay.get());
+        Assert.assertEquals(0, robot.mSpeedController0.get(), DOUBLE_EPSILON);
+        Assert.assertEquals(0, robot.mSpeedController1.get(), DOUBLE_EPSILON);
+        Assert.assertFalse(robot.mSolenoid.get());
+
 
         System.out.println(robot.disabledCtr);
         System.out.println(robot.enabledCtr);

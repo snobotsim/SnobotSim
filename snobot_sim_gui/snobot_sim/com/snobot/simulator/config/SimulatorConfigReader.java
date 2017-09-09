@@ -9,7 +9,11 @@ import java.util.Map;
 
 import org.yaml.snakeyaml.Yaml;
 
-import com.snobot.simulator.DcMotorModelConfig;
+import com.snobot.simulator.motor_sim.DcMotorModelConfig;
+import com.snobot.simulator.motor_sim.GravityLoadMotorSimulationConfig;
+import com.snobot.simulator.motor_sim.RotationalLoadMotorSimulationConfig;
+import com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig;
+import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 @SuppressWarnings("unchecked")
@@ -138,7 +142,7 @@ public class SimulatorConfigReader
     {
         for (Map<String, Object> encConfig : aEncoders)
         {
-            int handle = getEncoderHandle(encConfig, "handle_a", "handle_b", "single_handle");
+            int handle = getIntHandle(encConfig.get("handle"));
 
             if (encConfig.containsKey("name"))
             {
@@ -151,29 +155,6 @@ public class SimulatorConfigReader
                 DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(handle, speedControllerHandle);
             }
         }
-    }
-
-    protected int getEncoderHandle(Map<String, Object> aConfig, String aDoubleHandleAKey, String aDoubleHandleBKey, String aSingleHandleKey)
-    {
-        int handle = -1;
-
-        if (aConfig.containsKey(aDoubleHandleAKey) && aConfig.containsKey(aDoubleHandleBKey))
-        {
-            int handleA = getIntHandle(aConfig.get(aDoubleHandleAKey));
-            int handleB = getIntHandle(aConfig.get(aDoubleHandleBKey));
-
-            handle = DataAccessorFactory.getInstance().getEncoderAccessor().getHandle(handleA, handleB);
-        }
-        else if (aConfig.containsKey(aSingleHandleKey))
-        {
-            handle = getIntHandle(aConfig.get(aSingleHandleKey));
-        }
-        else
-        {
-            throw new RuntimeException("Could not load encoder config, will cause the program to crash");
-        }
-
-        return handle;
     }
 
     protected void parseMotorSimConfig(int aScHandle, Map<String, Object> motorSimConfig)
@@ -205,8 +186,8 @@ public class SimulatorConfigReader
             int gyroHandle = getIntHandle(tankDriveConfig.get("gyro_handle"));
             double turnKp = ((Number) tankDriveConfig.get("turn_kp")).doubleValue();
 
-            int leftEncHandle = getEncoderHandle(tankDriveConfig, "left_enc_handle_a", "left_enc_handle_b", "left_single_handle");
-            int rightEncHandle = getEncoderHandle(tankDriveConfig, "right_enc_handle_a", "right_enc_handle_b", "right_single_handle");
+            int leftEncHandle = getIntHandle(tankDriveConfig.get("left_encoder_handle"));
+            int rightEncHandle = getIntHandle(tankDriveConfig.get("right_encoder_handle"));
 
             DataAccessorFactory.getInstance().getSimulatorDataAccessor().connectTankDriveSimulator(leftEncHandle, rightEncHandle, gyroHandle, turnKp);
         }
@@ -215,7 +196,8 @@ public class SimulatorConfigReader
     protected void loadMotorSimSimple(int aScHandle, Map<String, Object> motorSimConfig)
     {
         double maxSpeed = ((Number) motorSimConfig.get("max_speed")).doubleValue();
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(aScHandle, maxSpeed);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(aScHandle,
+                new SimpleMotorSimulationConfig(maxSpeed));
     }
 
     protected void loadMotorSimStaticLoad(int aScHandle, Map<String, Object> motorSimConfig)
@@ -228,7 +210,8 @@ public class SimulatorConfigReader
         {
             conversionFactor = ((Number) motorSimConfig.get("conversion_factor")).doubleValue();
         }
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(aScHandle, motorConfig, load, conversionFactor);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(aScHandle, motorConfig,
+                new StaticLoadMotorSimulationConfig(load, conversionFactor));
     }
 
     protected void loadMotorSimGravityLoad(int aScHandle, Map<String, Object> motorSimConfig)
@@ -236,7 +219,8 @@ public class SimulatorConfigReader
         double load = ((Number) motorSimConfig.get("load")).doubleValue();
         DcMotorModelConfig motorConfig = createDcMotorModel((Map<String, Object>) motorSimConfig.get("motor_model"));
 
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Gravitational(aScHandle, motorConfig, load);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Gravitational(aScHandle, motorConfig,
+                new GravityLoadMotorSimulationConfig(load));
     }
 
     protected void loadMotorSimRotationalLoad(int aScHandle, Map<String, Object> motorSimConfig)
@@ -245,8 +229,8 @@ public class SimulatorConfigReader
         double armMass = ((Number) motorSimConfig.get("arm_mass")).doubleValue();
         DcMotorModelConfig motorConfig = createDcMotorModel((Map<String, Object>) motorSimConfig.get("motor_model"));
 
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Rotational(aScHandle, motorConfig, armCenterOfMass,
-                armMass);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Rotational(aScHandle, motorConfig, 
+                new RotationalLoadMotorSimulationConfig(armCenterOfMass, armMass));
     }
 
     protected DcMotorModelConfig createDcMotorModel(Map<String, Object> modelConfig)

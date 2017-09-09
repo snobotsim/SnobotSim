@@ -5,8 +5,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.snobot.simulator.DcMotorModelConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
+import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor.MotorSimType;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
 import edu.wpi.first.wpilibj.SpeedController;
@@ -19,18 +19,25 @@ public class StaticLoadDcMotorSimTest extends BaseSimulatorTest
     {
         SpeedController rs775 = new Talon(0);
         DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("rs775", 1, 10, 1);
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(0, motorConfig, .01);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(0, motorConfig,
+                new StaticLoadMotorSimulationConfig(0.01));
 
         simulateForTime(10, 0.01, () ->
         {
             rs775.set(.5);
         });
+        Assert.assertEquals(.5, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(0), DOUBLE_EPSILON);
 
         // We expect negligible final current, and a final velocity of ~68.04
         // rad/sec.
         assertEquals(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getCurrent(0), 0.0, 1E-3);
         assertEquals(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVelocity(0), 68.06, 1E-2);
 
+        Assert.assertEquals(MotorSimType.StaticLoad, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimType(0));
+        StaticLoadMotorSimulationConfig  simConfig = DataAccessorFactory.getInstance().getSpeedControllerAccessor()
+                .getMotorSimStaticModelConfig(0);
+        Assert.assertEquals(.01, simConfig.mLoad, DOUBLE_EPSILON);
+        Assert.assertEquals(1, simConfig.mConversionFactor, DOUBLE_EPSILON);
     }
 
     @Test
@@ -38,13 +45,15 @@ public class StaticLoadDcMotorSimTest extends BaseSimulatorTest
     {
         SpeedController rs775 = new Talon(0);
         DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("rs775", 1, 10, 1);
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(0, motorConfig, .01);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(0, motorConfig,
+                new StaticLoadMotorSimulationConfig(0.01));
 
         // Apply a larger voltage.
         simulateForTime(10, 0.01, () ->
         {
             rs775.set(1);
         });
+        Assert.assertEquals(1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(0), DOUBLE_EPSILON);
 
         // We expect negligible final current, and a final velocity of ~2 *
         // 68.04 rad/sec.
@@ -58,12 +67,14 @@ public class StaticLoadDcMotorSimTest extends BaseSimulatorTest
     {
         SpeedController rs775 = new Talon(0);
         DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("rs775", 1, 10, 1);
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(0, motorConfig, 1);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(0, motorConfig,
+                new StaticLoadMotorSimulationConfig(1));
 
         simulateForTime(10, 0.01, () ->
         {
             rs775.set(1);
         });
+        Assert.assertEquals(1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(0), DOUBLE_EPSILON);
 
         // This is slower, so 1000 iterations isn't enough to get to steady
         // state
@@ -76,12 +87,14 @@ public class StaticLoadDcMotorSimTest extends BaseSimulatorTest
     {
         SpeedController rs775 = new Talon(0);
         DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("rs775", 2, 10, 1);
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(0, motorConfig, 1);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(0, motorConfig,
+                new StaticLoadMotorSimulationConfig(1));
 
         simulateForTime(10, 0.01, () ->
         {
             rs775.set(1);
         });
+        Assert.assertEquals(1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(0), DOUBLE_EPSILON);
 
         // We expect the two motor version to move faster than the single motor
         // version.
@@ -94,13 +107,15 @@ public class StaticLoadDcMotorSimTest extends BaseSimulatorTest
     {
         SpeedController rs775 = new Talon(0);
         DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("rs775", 2, 10, .8);
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(0, motorConfig, 1);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(0, motorConfig,
+                new StaticLoadMotorSimulationConfig(1));
 
         // Make it less efficient.
         simulateForTime(10, 0.01, () ->
         {
             rs775.set(1);
         });
+        Assert.assertEquals(1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(0), DOUBLE_EPSILON);
 
         assertEquals(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getCurrent(0), 27.540, 1E-3);
         assertEquals(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVelocity(0), 114.545, 1E-1);
@@ -111,13 +126,16 @@ public class StaticLoadDcMotorSimTest extends BaseSimulatorTest
     {
         SpeedController rs775 = new Talon(0);
         DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("rs775", 1, 10, 1);
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(0, motorConfig, 1);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(0, motorConfig,
+                new StaticLoadMotorSimulationConfig(1));
 
         // Go in reverse.
         simulateForTime(10, 0.01, () ->
         {
             rs775.set(-1);
         });
+        Assert.assertEquals(-1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(0), DOUBLE_EPSILON);
+
         assertEquals(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getCurrent(0), 48.758, 1E-3);
         assertEquals(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVelocity(0), -59.590, 1E-1);
         Assert.assertTrue(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPosition(0) < 0);
@@ -130,13 +148,16 @@ public class StaticLoadDcMotorSimTest extends BaseSimulatorTest
         SpeedController rs775 = new Talon(0);
         DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("rs775", 1, 10, 1);
         motorConfig.setInverted(true);
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(0, motorConfig, 1);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(0, motorConfig,
+                new StaticLoadMotorSimulationConfig(1));
 
         // Go in reverse.
         simulateForTime(10, 0.01, () ->
         {
             rs775.set(-1);
         });
+        Assert.assertEquals(-1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(0), DOUBLE_EPSILON);
+
         assertEquals(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getCurrent(0), 48.758, 1E-3);
         assertEquals(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVelocity(0), 59.590, 1E-1);
         Assert.assertTrue(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPosition(0) > 0);
@@ -148,13 +169,16 @@ public class StaticLoadDcMotorSimTest extends BaseSimulatorTest
         SpeedController rs775 = new Talon(0);
         DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("rs775", 1, 10, 1);
         motorConfig.setHasBrake(true);
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(0, motorConfig, 1);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(0, motorConfig,
+                new StaticLoadMotorSimulationConfig(1));
 
         // Go in reverse.
         simulateForTime(2, 0.01, () ->
         {
             rs775.set(-1);
         });
+        Assert.assertEquals(-1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(0), DOUBLE_EPSILON);
+
         assertEquals(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getCurrent(0), 77.284, 1E-3);
         assertEquals(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPosition(0), -15.23, 1E-1);
         assertEquals(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVelocity(0), -14.807, 1E-1);
@@ -165,6 +189,8 @@ public class StaticLoadDcMotorSimTest extends BaseSimulatorTest
         {
             rs775.set(0);
         });
+        Assert.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(0), DOUBLE_EPSILON);
+
         assertEquals(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getCurrent(0), 0, 1E-3);
         assertEquals(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPosition(0), -15.23, 1E-1);
         assertEquals(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVelocity(0), 0, 1E-1);
@@ -175,6 +201,7 @@ public class StaticLoadDcMotorSimTest extends BaseSimulatorTest
     public void testInvalidMotor()
     {
         DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("CIM");
-        Assert.assertFalse(DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(0, motorConfig, 0));
+        Assert.assertFalse(DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(0, motorConfig,
+                new StaticLoadMotorSimulationConfig(0)));
     }
 }

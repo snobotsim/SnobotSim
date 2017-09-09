@@ -16,12 +16,6 @@ public class JavaEncoderWrapperAccessor extends BaseWrapperAccessor<EncoderWrapp
     }
 
     @Override
-    public int getHandle(int aPortA, int aPortB)
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public boolean connectSpeedController(int aEncoderHandle, int aSpeedControllerHandle)
     {
         boolean success = false;
@@ -41,29 +35,34 @@ public class JavaEncoderWrapperAccessor extends BaseWrapperAccessor<EncoderWrapp
         return success;
     }
 
+    private PwmWrapper getConnectedPwm(int aPort)
+    {
+        EncoderWrapper encWrapper = getValue(aPort);
+        for (PwmWrapper pwmWrapper : SensorActuatorRegistry.get().getSpeedControllers().values())
+        {
+            if (pwmWrapper.getFeedbackSensor().equals(encWrapper))
+            {
+                return pwmWrapper;
+            }
+        }
+        return null;
+    }
+
     @Override
     public boolean isHookedUp(int aPort)
     {
-        // return getValue(aPort).isHookedUp();
-        return false;
+        return getConnectedPwm(aPort) != null;
     }
 
     @Override
     public int getHookedUpId(int aPort)
     {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void setDistancePerTick(int aPort, double aDistancePerTick)
-    {
-        getValue(aPort).setDistancePerTick(aDistancePerTick);
-    }
-
-    @Override
-    public double getDistancePerTick(int aPort)
-    {
-        throw new UnsupportedOperationException();
+        PwmWrapper wrapper = getConnectedPwm(aPort);
+        if (wrapper != null)
+        {
+            return wrapper.getHandle();
+        }
+        return -1;
     }
 
     @Override

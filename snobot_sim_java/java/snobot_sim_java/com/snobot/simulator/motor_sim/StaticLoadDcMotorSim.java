@@ -2,25 +2,24 @@ package com.snobot.simulator.motor_sim;
 
 public class StaticLoadDcMotorSim extends BaseDcMotorSimulator
 {
-    protected double mLoad;
-    protected double mConversionFactor;
+    protected final StaticLoadMotorSimulationConfig mConfig;
 
-    public StaticLoadDcMotorSim(DcMotorModel aModel, double aLoad)
+    public StaticLoadDcMotorSim(DcMotorModel aModel, StaticLoadMotorSimulationConfig aConfig)
     {
-        this(aModel, aLoad, 1);
-    }
+        super(aModel, aConfig.mConversionFactor);
 
-    public StaticLoadDcMotorSim(DcMotorModel aModel, double aLoad, double aConversionFactor)
-    {
-        super(aModel, aConversionFactor);
-
-        mLoad = aLoad;
+        mConfig = aConfig;
     }
 
     @Override
     public void update(double cycleTime)
     {
-        mMotorModel.step(mVoltagePercentage * 12, mLoad, 0, cycleTime);
+        mMotorModel.step(mVoltagePercentage * 12, mConfig.mLoad, 0, cycleTime);
+    }
+
+    public StaticLoadMotorSimulationConfig getConfig()
+    {
+        return mConfig;
     }
 
 }

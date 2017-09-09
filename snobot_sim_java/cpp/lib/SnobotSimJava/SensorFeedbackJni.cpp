@@ -3,6 +3,8 @@
 #include <jni.h>
 #include "support/jni_util.h"
 
+#include <chrono>
+
 #include "com_snobot_simulator_jni_SensorFeedbackJni.h"
 
 #include "MockData/AnalogInData.h"
@@ -10,6 +12,7 @@
 #include "MockData/DIOData.h"
 #include "MockData/DriverStationData.h"
 #include "MockData/EncoderData.h"
+#include "MockData/MockHooks.h"
 
 #include <iostream>
 
@@ -89,15 +92,33 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setAutono
 
 /*
  * Class:     com_snobot_simulator_jni_SensorFeedbackJni
- * Method:    notifyDsOfData
+ * Method:    waitForProgramToStart
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_notifyDsOfData
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_waitForProgramToStart
   (JNIEnv *, jclass)
 {
-    static double UPDATE_PERIOD = .02;
-    HALSIM_SetDriverStationMatchTime(HALSIM_GetDriverStationMatchTime() + UPDATE_PERIOD);
-    HALSIM_NotifyDriverStationNewData();
+    HALSIM_WaitForProgramStart();
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_SensorFeedbackJni
+ * Method:    delayForNextUpdateLoop
+ * Signature: (D)V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_delayForNextUpdateLoop
+  (JNIEnv *, jclass, jdouble aDelayPeriod)
+{
+    if(aDelayPeriod > 0)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds((int) (aDelayPeriod * 1000)));
+        HALSIM_SetDriverStationMatchTime(HALSIM_GetDriverStationMatchTime() + aDelayPeriod);
+        HALSIM_NotifyDriverStationNewData();
+    }
+    else
+    {
+        std::cerr << "Unsupported... Cannot delay 0 at the moment" << std::endl;
+    }
 }
 
 /*

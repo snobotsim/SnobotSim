@@ -1,6 +1,10 @@
 package com.snobot.simulator.wrapper_accessors;
 
-import com.snobot.simulator.DcMotorModelConfig;
+import com.snobot.simulator.motor_sim.DcMotorModelConfig;
+import com.snobot.simulator.motor_sim.GravityLoadMotorSimulationConfig;
+import com.snobot.simulator.motor_sim.RotationalLoadMotorSimulationConfig;
+import com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig;
+import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
 
 public interface SimulatorDataAccessor
 {
@@ -21,15 +25,13 @@ public interface SimulatorDataAccessor
 
     DcMotorModelConfig createMotor(String motorType);
 
-    boolean setSpeedControllerModel_Simple(int aScHandle, double maxSpeed);
+    boolean setSpeedControllerModel_Simple(int aScHandle, SimpleMotorSimulationConfig aConfig);
 
-    boolean setSpeedControllerModel_Static(int mHandle, DcMotorModelConfig motorConfig, double load);
+    boolean setSpeedControllerModel_Static(int aScHandle, DcMotorModelConfig aMotorConfig, StaticLoadMotorSimulationConfig aConfig);
 
-    boolean setSpeedControllerModel_Static(int aScHandle, DcMotorModelConfig motorConfig, double load, double conversionFactor);
+    boolean setSpeedControllerModel_Gravitational(int aScHandle, DcMotorModelConfig aMotorConfig, GravityLoadMotorSimulationConfig aConfig);
 
-    boolean setSpeedControllerModel_Gravitational(int aScHandle, DcMotorModelConfig motorConfig, double load);
-
-    boolean setSpeedControllerModel_Rotational(int aScHandle, DcMotorModelConfig motorConfig, double armCenterOfMass, double armMass);
+    boolean setSpeedControllerModel_Rotational(int aScHandle, DcMotorModelConfig aMotorConfig, RotationalLoadMotorSimulationConfig aConfig);
 
     void setDisabled(boolean b);
 

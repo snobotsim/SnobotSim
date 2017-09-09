@@ -1,7 +1,7 @@
 
 package com.snobot.simulator.jni;
 
-import com.snobot.simulator.DcMotorModelConfig;
+import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 
 public class SimulationConnectorJni extends BaseSimulatorJni
 {

@@ -1,7 +1,5 @@
 package com.snobot.simulator.motor_sim;
 
-import com.snobot.simulator.DcMotorModelConfig;
-
 //https://github.com/Team254/Sim-FRC-2015/blob/master/src/com/team254/frc2015/sim/DCMotor.java
 public class DcMotorModel
 {
@@ -94,5 +92,10 @@ public class DcMotorModel
     public double getAcceleration()
     {
         return mAcceleration;
+    }
+
+    public DcMotorModelConfig getMotorConfig()
+    {
+        return mConfig;
     }
 }
