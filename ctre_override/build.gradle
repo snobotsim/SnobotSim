@@ -4,6 +4,10 @@ import org.gradle.internal.os.OperatingSystem
 
 repositories {
     mavenCentral()
+    
+    maven {
+        url "http://dev.imjac.in/maven/"
+    }
 }
 
 apply plugin: 'cpp'
@@ -12,12 +16,13 @@ apply plugin: 'visual-studio'
 apply plugin: 'edu.wpi.first.NativeUtils'
 
 apply from: '../config.gradle'
+apply from: "$rootDir/extract_hal_headers.gradle"
 
 
 sourceSets {
     main {
         java {
-            srcDirs = ["java/src"]
+            srcDirs = ["ctre_source/java/src"]
         }
     }
     test {
@@ -31,7 +36,7 @@ test {
 }
 
 
-ext.addHalSimToLinker = { linker->
+ext.addWpilibcToLinker = { linker->
 
     if (OperatingSystem.current().isWindows())
     {
@@ -41,6 +46,22 @@ ext.addHalSimToLinker = { linker->
     {
         linker.args extractWplibcLibraryZip.libsdir + "/linux/" + it.targetPlatform.architecture.name + "/shared/libwpilibc.so"
     }
+}
+
+ext.addHalSimToLinker = { linker->
+    def os_name = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
+    def hal_path = 'temp_libs/hal/' + os_name + '/x86-64'
+    if (OperatingSystem.current().isWindows())
+    {
+        hal_path += "/wpiHal.lib"
+    }
+    else if (OperatingSystem.current().isLinux())
+    {
+        hal_path += "/libwpiHal.so"
+    }
+    hal_path = new File(hal_path).getAbsolutePath()
+    println hal_path
+    linker.args hal_path
 }
 
 task packageNativeFilesInJar(type: Jar) {
@@ -102,9 +123,11 @@ dependencies {
     
     testCompile 'junit:junit:4.12'
     testRuntime combineNativeLibrariesIntoOne.outputs.files
-    testCompile files(System.getProperty("user.home") + "/wpilib/user/java/lib/CTRLib.jar")
+    //testCompile files(System.getProperty("user.home") + "/wpilib/user/java/lib/CTRLib.jar")
     testCompile 'edu.wpi.first.wpilibj:wpilibj-java:' + getWpilibjVersion() + ':javaArtifact'
     testRuntime jar.outputs.files // Necessary for having resources in jar 
+    
+    testCompile "thirdparty.frc.ctre:Toolsuite-Java:+"
 }
 
   // Task to explode the zipped library into a temporary dir
@@ -190,8 +213,7 @@ model {
                 sources {
                     cpp {
                         source {
-                            srcDirs = [ 
-                                        'snobot_sim/shared/lib', 
+                            srcDirs = [ 'snobot_sim/shared/lib', 
                                         'snobot_sim/cpp_simulator/lib' ]
                             includes = ["**/*.cpp"]
                         }
@@ -210,17 +232,25 @@ model {
         {
             SnobotSimJavaCtre(NativeLibrarySpec) {
                 baseName = 'SnobotSimJavaCtre'
+                
+                binaries {
+                    withType(NativeBinarySpec) {
+                        addHalSimToLinker(linker)
+                    }
+                }
+            
                 sources {
                     cpp {
                         source {
-                            srcDirs = [ 
-                                        'snobot_sim/shared/lib', 
+                            srcDirs = [ 'snobot_sim/shared/lib', 
                                         'snobot_sim/java_simulator/lib' ]
                             includes = ["**/*.cpp"]
                         }
                         exportedHeaders {
-                            srcDirs = ["snobot_sim/shared/include", 
-                                       "snobot_sim/java_simulator/include",]
+                            srcDirs = [
+                                       "ctre_source/cpp/shared/include",
+                                       "snobot_sim/java_simulator/include", 
+                                       "${extractHalHeadersZip.libsdir}"]
                             println srcDirs
                         }
                     }
@@ -230,22 +260,24 @@ model {
         }
         CTRLibDriverShared(NativeLibrarySpec) {
             baseName = 'CTRLibDriver'
+                
             binaries {
                 all {
                    it.lib project: ':ctre_override', library: 'SnobotSimJavaCtre', linkage: 'static'
                 }
-                withType(StaticLibraryBinarySpec) {
-                    //buildable = false
+                withType(NativeBinarySpec) {
+                    addHalSimToLinker(linker)
                 }
             }
             sources {
                 cpp {
                     source {
-                        srcDirs = [ 'java/jni', "snobot_sim/shared/lib"]
+                        srcDirs = [ 'java/jni', 
+                                    "ctre_source/java/jni/cpp"]
                         includes = ["**/*.cpp"]
                     }
                     exportedHeaders {
-                        srcDirs = ["cpp/include", "snobot_sim/shared/include"]
+                        srcDirs = []
                     }
                 }
             }
@@ -254,6 +286,7 @@ model {
     binaries {
         all {
             tasks.withType(CppCompile) {
+                dependsOn extractHalHeadersZip
                 dependsOn extractWplibcHeadersZip
                 dependsOn extractWplibcLibraryZip
             }

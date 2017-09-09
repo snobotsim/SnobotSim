@@ -10,7 +10,6 @@
 
 //#include "SnobotSim/ModuleWrapper/SpeedControllerWrapper.h"
 #include <vector>
-#include <memory>
 
 class CanTalonSpeedController//: public SpeedControllerWrapper
 {
@@ -42,7 +41,7 @@ public:
 
     void AddFollower(const std::shared_ptr<CanTalonSpeedController>& aFollower);
 
-    void Update(double aWaitTime);
+    void Update(double aWaitTime) override;
 
     double GetLastSetValue() const;
 

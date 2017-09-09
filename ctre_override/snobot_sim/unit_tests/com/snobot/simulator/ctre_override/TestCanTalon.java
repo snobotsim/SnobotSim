@@ -11,6 +11,9 @@ public class TestCanTalon extends BaseSimulatorTest
     public void testSetup()
     {
 
-        new CANTalon(0);
+        CANTalon talon = new CANTalon(0);
+        talon.set(5);
+
+        System.out.println(talon.get());
     }
 }

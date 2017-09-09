@@ -57,7 +57,8 @@ JNIEXPORT jlong JNICALL Java_com_ctre_CanTalonJNI_new_1CanTalonSRX__II
 JNIEXPORT jlong JNICALL Java_com_ctre_CanTalonJNI_new_1CanTalonSRX__I
   (JNIEnv *env, jclass, jint deviceNumber)
 {
-    return (jlong)(new CanTalonSRX((int)deviceNumber));
+    jlong xxx = (jlong)(new CanTalonSRX((int)deviceNumber));
+    return xxx;
 }
 
 /*
