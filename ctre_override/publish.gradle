@@ -2,9 +2,15 @@
 apply plugin: 'maven-publish'
 
 
-task xxxxx(type: Zip) {
+task cppSourcesZip(type: Zip) {
+    destinationDir = project.buildDir
+    
+    classifier = "sources"
+    
+    from('cpp') {
+        into 'SnobotSimCtreOverride'
+    }
 }
-
 
 model {
 publishing {
@@ -21,10 +27,8 @@ publishing {
             artifactId 'ctre_override'
             version maven_version
             
-            FileTree tree = fileTree(project(':ctre_override').buildDir).include('*.jar')
-            tree.each { 
-                artifact it
-            }
+            artifact jar
+            artifact combineNativeLibrariesIntoOne
         }
     }
 

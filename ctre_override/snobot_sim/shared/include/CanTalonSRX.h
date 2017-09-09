@@ -116,8 +116,6 @@
 #include <deque>
 #include <mutex>
 
-#include "SnobotSim/Logging/SnobotLogger.h"
-
 class CanTalonSRX  {
 
 	int mDeviceNumber;

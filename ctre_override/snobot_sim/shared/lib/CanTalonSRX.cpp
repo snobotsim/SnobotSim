@@ -1,16 +1,18 @@
 #include "CanTalonSRX.h"
 
 #include "CanTalonSpeedController.h"
-#include "SnobotSim/ModuleWrapper/EncoderWrapper.h"
-#include "SnobotSim/SensorActuatorRegistry.h"
+#include "CanTalonCallbacks.h"
+//#include "SnobotSim/ModuleWrapper/EncoderWrapper.h"
+//#include "SnobotSim/SensorActuatorRegistry.h"
 
 
 std::shared_ptr<CanTalonSpeedController> GetCanTalon(int handle)
 {
-    std::shared_ptr<SpeedControllerWrapper> speedController =
-            SensorActuatorRegistry::Get().GetSpeedControllerWrapper(handle);
-
-    return std::dynamic_pointer_cast<CanTalonSpeedController>(speedController);
+//    std::shared_ptr<SpeedControllerWrapper> speedController =
+//            SensorActuatorRegistry::Get().GetSpeedControllerWrapper(handle);
+//
+//    return std::dynamic_pointer_cast<CanTalonSpeedController>(speedController);
+    return std::shared_ptr<CanTalonSpeedController>();
 }
 
 
@@ -18,8 +20,8 @@ CanTalonSRX::CanTalonSRX(int deviceNumber, int controlPeriodMs,
                          int enablePeriodMs):
 	 mDeviceNumber(deviceNumber)
 {
-    std::shared_ptr<SpeedControllerWrapper> speedController(new CanTalonSpeedController(deviceNumber));
-    SensorActuatorRegistry::Get().Register(deviceNumber, speedController);
+//    std::shared_ptr<SpeedControllerWrapper> speedController(new CanTalonSpeedController(deviceNumber));
+//    SensorActuatorRegistry::Get().Register(deviceNumber, speedController);
 }
 /* CanTalonSRX D'tor
  */
@@ -78,14 +80,14 @@ void CanTalonSRX::Set(double value) {
  * GetParamResponse will catch the latest value after a couple ms.
  */
 CTR_Code CanTalonSRX::SetParamRaw(unsigned paramEnum, int rawBits) {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 /**
  * Checks cached CAN frames and updating solicited signals.
  */
 CTR_Code CanTalonSRX::GetParamResponseRaw(unsigned paramEnum, int &rawBits) {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 /**
@@ -96,7 +98,7 @@ CTR_Code CanTalonSRX::GetParamResponseRaw(unsigned paramEnum, int &rawBits) {
   * @param param to request.
  */
 CTR_Code CanTalonSRX::RequestParam(param_t paramEnum) {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 
@@ -110,16 +112,16 @@ CTR_Code CanTalonSRX::SetParam(param_t paramEnum, double value) {
 		GetCanTalon(mDeviceNumber)->SetEncoderTicksPerRotation(value);
 		break;
 	default:
-		LOG_UNSUPPORTED_WITH_MESSAGE(paramEnum << ", " << value);
+		SNOBOT_SIM_CAN_LOG_UNSUPPORTED_WITH_MESSAGE(paramEnum << ", " << value);
 	}
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetParamResponse(param_t paramEnum, double &value) {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetParamResponseInt32(param_t paramEnum, int &value) {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 /*----- getters and setters that use param request/response. These signals are
@@ -131,28 +133,28 @@ CTR_Code CanTalonSRX::GetParamResponseInt32(param_t paramEnum, int &value) {
 /*----- Getters don't block, so it may require several calls to get the latest
  * value. --------------------------*/
 CTR_Code CanTalonSRX::SetPgain(unsigned slotIdx, double gain) {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::SetIgain(unsigned slotIdx, double gain) {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::SetDgain(unsigned slotIdx, double gain) {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::SetFgain(unsigned slotIdx, double gain) {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::SetIzone(unsigned slotIdx, int zone) {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::SetCloseLoopRampRate(unsigned slotIdx,
                                            int closeLoopRampRate) {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::SetVoltageCompensationRate(double voltagePerMs) {
@@ -181,58 +183,58 @@ CTR_Code CanTalonSRX::GetIzone(unsigned slotIdx, int &zone) {
 }
 CTR_Code CanTalonSRX::GetCloseLoopRampRate(unsigned slotIdx,
                                            int &closeLoopRampRate) {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetVoltageCompensationRate(double &voltagePerMs) {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::SetSensorPosition(int pos) {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::SetForwardSoftLimit(int forwardLimit) {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::SetReverseSoftLimit(int reverseLimit) {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::SetForwardSoftEnable(int enable) {
-    LOG_UNSUPPORTED_WITH_MESSAGE("Enable: " << enable);
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED_WITH_MESSAGE("Enable: " << enable);
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::SetReverseSoftEnable(int enable) {
-    LOG_UNSUPPORTED_WITH_MESSAGE("Enable: " << enable);
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED_WITH_MESSAGE("Enable: " << enable);
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetForwardSoftLimit(int &forwardLimit) {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetReverseSoftLimit(int &reverseLimit) {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetForwardSoftEnable(int &enable) {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetReverseSoftEnable(int &enable) {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 /**
  * @param param [out] Rise to fall time period in microseconds.
  */
 CTR_Code CanTalonSRX::GetPulseWidthRiseToFallUs(int &param) {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::IsPulseWidthSensorPresent(int &param) {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 /**
@@ -257,7 +259,7 @@ CTR_Code CanTalonSRX::SetModeSelect(int modeSelect, int demand) {
         mode = CanTalonSpeedController::ControlMode_Disabled;
         break;
     default:
-        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unsupported control mode " << modeSelect);
+        SNOBOT_SIM_CAN_LOG_UNSUPPORTED_WITH_MESSAGE("Unsupported control mode " << modeSelect);
     }
 
     std::shared_ptr<CanTalonSpeedController> speedController = GetCanTalon(mDeviceNumber);
@@ -286,7 +288,7 @@ CTR_Code CanTalonSRX::SetStatusFrameRate(unsigned frameEnum,
  * Clear all sticky faults in TALON.
  */
 CTR_Code CanTalonSRX::ClearStickyFaults() {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 
@@ -356,7 +358,7 @@ CTR_Code CanTalonSRX::PushMotionProfileTrajectory(int targPos, int targVel,
                                                   int timeDurMs, int velOnly,
                                                   int isLastPoint,
                                                   int zeroPos) {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 void CanTalonSRX::CopyTrajPtIntoControl(
@@ -434,7 +436,7 @@ CTR_Code CanTalonSRX::GetMotionProfileStatus(
     uint32_t &flags, uint32_t &profileSlotSelect, int32_t &targPos,
     int32_t &targVel, uint32_t &topBufferRem, uint32_t &topBufferCnt,
     uint32_t &btmBufferCnt, uint32_t &outputEnable) {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 //------------------------ auto generated ------------------------------------//
@@ -443,105 +445,105 @@ CTR_Code CanTalonSRX::GetMotionProfileStatus(
  */
 CTR_Code CanTalonSRX::GetFault_OverTemp(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetFault_UnderVoltage(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetFault_ForLim(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetFault_RevLim(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetFault_HardwareFailure(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetFault_ForSoftLim(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetFault_RevSoftLim(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetStckyFault_OverTemp(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetStckyFault_UnderVoltage(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetStckyFault_ForLim(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetStckyFault_RevLim(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetStckyFault_ForSoftLim(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetStckyFault_RevSoftLim(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetAppliedThrottle(int &param)
 {
-    double voltagePercent = SensorActuatorRegistry::Get().GetSpeedControllerWrapper(mDeviceNumber)->GetVoltagePercentage();
-
-    param = (int) (voltagePercent * 1023);
+//    double voltagePercent = SensorActuatorRegistry::Get().GetSpeedControllerWrapper(mDeviceNumber)->GetVoltagePercentage();
+//
+//    param = (int) (voltagePercent * 1023);
 
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetCloseLoopErr(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetFeedbackDeviceSelect(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetModeSelect(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetLimitSwitchEn(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetLimitSwitchClosedFor(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetLimitSwitchClosedRev(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetSensorPosition(int &param)
@@ -558,13 +560,13 @@ CTR_Code CanTalonSRX::GetSensorVelocity(int &param)
 }
 CTR_Code CanTalonSRX::GetCurrent(double &param)
 {
-    std::shared_ptr<CanTalonSpeedController> speedController = GetCanTalon(mDeviceNumber);
-    param = speedController->GetCurrent();
+//    std::shared_ptr<CanTalonSpeedController> speedController = GetCanTalon(mDeviceNumber);
+//    param = speedController->GetCurrent();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetBrakeIsEnabled(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetEncPosition(int &param)
@@ -582,132 +584,132 @@ CTR_Code CanTalonSRX::GetEncVel(int &param)
 }
 CTR_Code CanTalonSRX::GetEncIndexRiseEvents(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetQuadApin(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetQuadBpin(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetQuadIdxpin(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetAnalogInWithOv(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetAnalogInVel(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetTemp(double &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetBatteryV(double &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetResetCount(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetResetFlags(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetFirmVers(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetPulseWidthPosition(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetPulseWidthVelocity(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetPulseWidthRiseToRiseUs(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetActTraj_IsValid(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetActTraj_ProfileSlotSelect(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetActTraj_VelOnly(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetActTraj_IsLast(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetOutputType(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetHasUnderrun(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetIsUnderrun(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetNextID(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetBufferIsFull(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetCount(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetActTraj_Velocity(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::GetActTraj_Position(int &param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::SetDemand(int param)
@@ -717,7 +719,7 @@ CTR_Code CanTalonSRX::SetDemand(int param)
 }
 CTR_Code CanTalonSRX::SetOverrideLimitSwitchEn(int param)
 {
-    LOG_UNSUPPORTED_WITH_MESSAGE("Param: " << param);
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED_WITH_MESSAGE("Param: " << param);
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::SetFeedbackDeviceSelect(int param)
@@ -732,7 +734,7 @@ CTR_Code CanTalonSRX::SetFeedbackDeviceSelect(int param)
     	break;
     }
     default:
-        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown feedback device " << param);
+        SNOBOT_SIM_CAN_LOG_UNSUPPORTED_WITH_MESSAGE("Unknown feedback device " << param);
     }
     std::shared_ptr<CanTalonSpeedController> speedController = GetCanTalon(mDeviceNumber);
     speedController->SetFeedbackDevice(sensor);
@@ -742,12 +744,12 @@ CTR_Code CanTalonSRX::SetFeedbackDeviceSelect(int param)
 
 CTR_Code CanTalonSRX::SetRevMotDuringCloseLoopEn(int param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::SetOverrideBrakeType(int param)
 {
-    LOG_UNSUPPORTED_WITH_LEVEL_AND_MSG(SnobotLogging::DEBUG, "Param: " << param);
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED_WITH_MESSAGE("Param: " << param);
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::SetModeSelect(int param)
@@ -766,7 +768,7 @@ CTR_Code CanTalonSRX::SetModeSelect(int param)
         mode = CanTalonSpeedController::ControlMode_Disabled;
         break;
     default:
-        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unsupported control mode " << param);
+        SNOBOT_SIM_CAN_LOG_UNSUPPORTED_WITH_MESSAGE("Unsupported control mode " << param);
     }
 
     std::shared_ptr<CanTalonSpeedController> speedController = GetCanTalon(mDeviceNumber);
@@ -788,13 +790,13 @@ CTR_Code CanTalonSRX::SetProfileSlotSelect(int param)
 }
 CTR_Code CanTalonSRX::SetRampThrottle(int param)
 {
-    LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
     return CTR_OKAY;
 }
 CTR_Code CanTalonSRX::SetRevFeedbackSensor(int param)
 {
-//    LOG_UNSUPPORTED();
-	SNOBOT_LOG(SnobotLogging::DEBUG, "Unsupported...");
+//    SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
+    SNOBOT_SIM_CAN_LOG_UNSUPPORTED_WITH_MESSAGE("Unsupported...");
     return CTR_OKAY;
 }
 

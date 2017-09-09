@@ -32,13 +32,13 @@ ext.getWpilibjVersion = {
     return '2017.3.1-20170908015815-103-g57ba589'
 }
 ext.getWpiUtilVersion = {
-    return '+'
+    return '2.0.0-20170907010827-33-gef85809'
 }
 ext.getNtCoreVersion = {
-    return '+'
+    return '4.0.0-alpha-1-20170907000421-20-g95bce5d'
 }
 ext.getWpilibcVersion = {
-    return '+'
+    return '2017.3.1-20170908015815-103-g57ba589'
 }
 /////////////////////////////////////////
 

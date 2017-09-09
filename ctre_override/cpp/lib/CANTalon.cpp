@@ -12,8 +12,10 @@
 #include <thread>
 
 #include "HAL/HAL.h"
-#include "LiveWindow/LiveWindow.h"
+//#include "LiveWindow/LiveWindow.h"
 #include "WPIErrors.h"
+
+#include <CanTalonCallbacks.h>
 
 using namespace frc;
 
@@ -72,7 +74,6 @@ CANTalon::CANTalon(int deviceNumber, int controlPeriodMs)
 }
 
 CANTalon::~CANTalon() {
-  if (m_table != nullptr) m_table->RemoveTableListener(this);
   if (m_hasBeenMoved) return;
   Disable();
 }
@@ -1531,7 +1532,7 @@ int CANTalon::ConfigSetParameter(uint32_t paramEnum, double value) {
     wpi_setErrorWithContext(status, HAL_GetErrorMessage(status));
   }
 
-  LOG_UNSUPPORTED();
+  SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
   return 0;
 }
 
@@ -1575,7 +1576,7 @@ void CANTalon::ConfigFaultTime(double faultTime) {
  * @see Set()
  */
 void CANTalon::ApplyControlMode(TalonControlMode mode) {
-	LOG_UNSUPPORTED();
+	SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
 //  m_controlMode = mode;
 //  HAL_Report(HALUsageReporting::kResourceType_CANTalonSRX, m_deviceNumber + 1,
 //             mode);
@@ -2066,46 +2067,39 @@ bool CANTalon::IsModePID(CANSpeedController::ControlMode mode) const {
 }
 
 void CANTalon::UpdateTable() {
-  if (m_table != nullptr) {
-    m_table->PutString("~TYPE~", "CANSpeedController");
-    m_table->PutString("Type", "CANTalon");
-    m_table->PutNumber("Mode", m_controlMode);
-    m_table->PutNumber("p", GetP());
-    m_table->PutNumber("i", GetI());
-    m_table->PutNumber("d", GetD());
-    m_table->PutNumber("f", GetF());
-    m_table->PutBoolean("Enabled", IsControlEnabled());
-    m_table->PutNumber("Value", Get());
-  }
+//  if (m_table != nullptr) {
+//    m_table->PutString("~TYPE~", "CANSpeedController");
+//    m_table->PutString("Type", "CANTalon");
+//    m_table->PutNumber("Mode", m_controlMode);
+//    m_table->PutNumber("p", GetP());
+//    m_table->PutNumber("i", GetI());
+//    m_table->PutNumber("d", GetD());
+//    m_table->PutNumber("f", GetF());
+//    m_table->PutBoolean("Enabled", IsControlEnabled());
+//    m_table->PutNumber("Value", Get());
+//  }
 }
 
 void CANTalon::StartLiveWindowMode() {
-  if (m_table != nullptr) {
-    m_table->AddTableListener(this, true);
-  }
+//  if (m_table != nullptr) {
+//    m_table->AddTableListener(this, true);
+//  }
 }
 
 void CANTalon::StopLiveWindowMode() {
-  if (m_table != nullptr) {
-    m_table->RemoveTableListener(this);
-  }
+//  if (m_table != nullptr) {
+//    m_table->RemoveTableListener(this);
+//  }
 }
 
 std::string CANTalon::GetSmartDashboardType() const {
   return "CANSpeedController";
 }
 
-void CANTalon::InitTable(std::shared_ptr<ITable> subTable) {
-  m_table = subTable;
-  UpdateTable();
-}
-
-std::shared_ptr<ITable> CANTalon::GetTable() const { return m_table; }
-
 
 int CANTalon::GetGadgeteerStatus(IGadgeteerUartClient::GadgeteerUartStatus & status)
 {
-	LOG_UNSUPPORTED();
+	SNOBOT_SIM_CAN_LOG_UNSUPPORTED();
 	return 0;
 }
 

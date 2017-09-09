@@ -24,7 +24,7 @@
 /**
  * CTRE Talon SRX Speed Controller with CAN Control
  */
- class EXPORT_ CANTalon : public frc::MotorSafety,
+ class CANTalon : public frc::MotorSafety,
                  public frc::CANSpeedController,
                  public frc::ErrorBase,
                  public frc::LiveWindowSendable,
@@ -588,8 +588,6 @@
   void StartLiveWindowMode() override;
   void StopLiveWindowMode() override;
   std::string GetSmartDashboardType() const override;
-  void InitTable(std::shared_ptr<ITable> subTable) override;
-  std::shared_ptr<ITable> GetTable() const override;
 
   // SpeedController overrides
   void SetInverted(bool isInverted) override;
@@ -744,9 +742,6 @@
   CANSpeedController::ControlMode AdaptCm(TalonControlMode talonControlMode);
 
   TalonControlMode AdaptCm(CANSpeedController::ControlMode controlMode);
-	
-  // LiveWindow stuff.
-  std::shared_ptr<ITable> m_table;
   /**
    * Flips the output direction during open-loop modes like percent
    * voltage, or certain closed loop modes like speed/current mode.

@@ -14,6 +14,8 @@
 
 #include <iostream>
 
+#define CAN_LOG_UNSUPPORTED(x) std::cout << "Unsupported" << std::endl;
+
 extern "C" {
 
 
@@ -83,7 +85,7 @@ JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_delete_1CanTalonSRX
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetLastError
   (JNIEnv *env, jclass, jlong)
 {
-    LOG_UNSUPPORTED();
+    CAN_LOG_UNSUPPORTED();
     return 0;
 }
 
@@ -650,21 +652,21 @@ JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetBatteryV
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetClearPosOnIdx
   (JNIEnv *env, jclass, jlong)
 {
-    LOG_UNSUPPORTED();
+    CAN_LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetClearPosOnLimR
   (JNIEnv *env, jclass, jlong)
 {
-    LOG_UNSUPPORTED();
+    CAN_LOG_UNSUPPORTED();
     return 0;
 }
 
 JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetClearPosOnLimF
   (JNIEnv *env, jclass, jlong)
 {
-    LOG_UNSUPPORTED();
+    CAN_LOG_UNSUPPORTED();
     return 0;
 }
 
@@ -870,7 +872,7 @@ JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetRevFeedbackSensor
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetCurrentLimEnable
   (JNIEnv *env, jclass, jlong, jboolean)
 {
-    LOG_UNSUPPORTED();
+    CAN_LOG_UNSUPPORTED();
 }
 
 

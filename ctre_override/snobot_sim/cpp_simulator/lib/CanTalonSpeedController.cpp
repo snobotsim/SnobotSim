@@ -11,10 +11,10 @@
 #include "SnobotSim/Logging/SnobotLogger.h"
 
 CanTalonSpeedController::CanTalonSpeedController(int aHandle) :
-    SpeedControllerWrapper(aHandle),
+//    SpeedControllerWrapper(aHandle),
     mLastSetValue(0)
 {
-    SetName("CAN " + GetName());
+//    SetName("CAN " + GetName());
 
     mControlMode = ControlMode_Unknown;
     mFeedbackDevice = ConnectedSensor_Encoder; // TODO maybe change to unknown
@@ -42,7 +42,8 @@ double CanTalonSpeedController::GetSensorPosition()
 	{
 
 	}
-	return GetPosition();
+//	return GetPosition();
+	return 0;
 }
 
 double CanTalonSpeedController::GetSensorVelocity()
@@ -51,14 +52,15 @@ double CanTalonSpeedController::GetSensorVelocity()
 	{
 		LOG_UNSUPPORTED_WITH_MESSAGE("Feedback device not supported");
 	}
-	return GetVelocity();
+//	return GetVelocity();
+    return 0;
 }
 
 double CanTalonSpeedController::GetEncoderPosition()
 {
 	if(mFeedbackDevice == ConnectedSensor_Encoder)
 	{
-		return GetPosition();
+//		return GetPosition();
 	}
 
 	SNOBOT_LOG(SnobotLogging::WARN, "Feedback device is not an encoder");
@@ -69,7 +71,7 @@ double CanTalonSpeedController::GetEncoderVelocity()
 {
 	if(mFeedbackDevice == ConnectedSensor_Encoder)
 	{
-		return GetVelocity();
+//		return GetVelocity();
 	}
 
 	SNOBOT_LOG(SnobotLogging::WARN, "Feedback device is not an encoder");
@@ -80,7 +82,7 @@ void CanTalonSpeedController::SetEncoderPosition(double aPosition)
 {
 	if(mFeedbackDevice == ConnectedSensor_Encoder)
 	{
-		Reset(aPosition, 0, 0);
+//		Reset(aPosition, 0, 0);
 	}
 	else
 	{
@@ -113,7 +115,7 @@ void CanTalonSpeedController::SetControlMode(ControlMode aControlMode)
     }
     case ControlMode_ThrottleMode:
     {
-        SetVoltagePercentage(mLastSetValue);
+//        SetVoltagePercentage(mLastSetValue);
         break;
     }
     case ControlMode_Follower:
@@ -135,13 +137,13 @@ void CanTalonSpeedController::SetFeedbackDevice(ConnectedSensor aSensor)
     case ConnectedSensor_Encoder:
     {
         int encoderHandle = GetFeedbackSensorHandle();
-        std::string encoderName = "CAN Encoder " + std::to_string(mId);
+        std::string encoderName = "CAN Encoder ";// + std::to_string(mId);
         SensorActuatorRegistry::Get().Register(encoderHandle, std::shared_ptr<EncoderWrapper>(new EncoderWrapper(encoderName)));
         break;
     }
     case ConnectedSensor_Unknown:
     {
-        SetVoltagePercentage(mLastSetValue);
+//        SetVoltagePercentage(mLastSetValue);
         break;
     }
     default:
@@ -156,17 +158,18 @@ void CanTalonSpeedController::AddFollower(const std::shared_ptr<CanTalonSpeedCon
 
 void CanTalonSpeedController::Update(double aWaitTime)
 {
-    SpeedControllerWrapper::Update(aWaitTime);
+//    SpeedControllerWrapper::Update(aWaitTime);
 
     for(unsigned int i = 0; i < mFollowers.size(); ++i)
     {
-        mFollowers[i]->SetVoltagePercentage(GetVoltagePercentage());
+//        mFollowers[i]->SetVoltagePercentage(GetVoltagePercentage());
     }
 }
 
 int CanTalonSpeedController::GetFeedbackSensorHandle()
 {
-	return mId | 0xF0000000;
+//	return mId | 0xF0000000;
+	return 0;
 }
 
 

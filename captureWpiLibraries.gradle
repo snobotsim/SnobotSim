@@ -9,14 +9,14 @@ task captureWpiLibraries(type: Jar) {
     
     from(zipTree('../temp_libs/wpilibj-jni-ABCD-all.jar'))
     
-    def wpiutil_path = "../build/dependencies/wpiutil-cpp/" + os_name + "x86-64/" + os_name + "/x86-64/shared"
+    def wpiutil_path = "$rootDir/build/dependencies/wpiutil-cpp/" + os_name + "x86-64/" + os_name + "/x86-64/shared"
     from(wpiutil_path) {
         into output_path
         include "*.dll"
         include "*.so"
     }
     
-    def wpilibc_path = 'build/dependencies/wpilibc/lib/' + os_name + '/x86-64/shared'
+    def wpilibc_path = "$rootDir/build/dependencies/wpilibc/lib/" + os_name + '/x86-64/shared'
     from(wpilibc_path) {
         into output_path
         include "*.dll"
