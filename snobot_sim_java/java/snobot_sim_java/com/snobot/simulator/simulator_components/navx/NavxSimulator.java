@@ -47,7 +47,7 @@ public class NavxSimulator
         output.put((byte) 10);
         output.putShort((short) 0xDEAD);
         output.putInt(0);
-        output.putShort((short) 0xBEEF);
+        // output.putShort((short) 0xBEEF);
 
         return output;
     }

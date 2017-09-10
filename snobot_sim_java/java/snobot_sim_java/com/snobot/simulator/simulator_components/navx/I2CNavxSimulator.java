@@ -21,7 +21,6 @@ public class I2CNavxSimulator extends NavxSimulator implements II2CWrapper
         SensorFeedbackJni.getI2CLastWrite(mNativePort, lastWriteValue, 4);
         lastWriteValue.rewind();
         int lastWrittenAddress = lastWriteValue.get();
-        lastWrittenAddress = 4;
 
         ByteBuffer toSend = null;
 
