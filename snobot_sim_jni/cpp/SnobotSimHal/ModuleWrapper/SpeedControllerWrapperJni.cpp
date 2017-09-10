@@ -14,6 +14,7 @@
 #include "SnobotSim/MotorSim/RotationalLoadDcMotorSim.h"
 #include "SnobotSim/MotorSim/StaticLoadDcMotorSim.h"
 #include "SnobotSim/MotorSim/SimpleMotorSimulator.h"
+#include <iostream>
 
 using namespace wpi::java;
 
@@ -98,7 +99,7 @@ JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedCon
 JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_getAcceleration
   (JNIEnv *, jclass, jint portHandle)
 {
-    return 0;
+    return SensorActuatorRegistry::Get().GetSpeedControllerWrapper(portHandle)->GetAcceleration();
 }
 
 /*
@@ -214,6 +215,8 @@ JNIEXPORT jobject JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedCon
     {
         SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown motor sim type " << type);
     }
+
+    std::cout << "Returning " << output << std::endl;
 
     return output;
 }

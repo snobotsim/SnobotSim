@@ -2,6 +2,7 @@
 package com.snobot.simulator.jni.module_wrapper;
 
 import com.snobot.simulator.jni.BaseSimulatorJni;
+import com.snobot.simulator.jni.LocalDcMotorModelConfig;
 
 public class SpeedControllerWrapperJni extends BaseSimulatorJni
 {
@@ -28,5 +29,13 @@ public class SpeedControllerWrapperJni extends BaseSimulatorJni
     public static native int[] getPortList();
 
     public static native void reset(int aHandle, double aPosition, double aVelocity, double aCurrent);
+
+    public static native LocalDcMotorModelConfig getMotorConfig(int aPort);
+
+    public static native double getMotorSimSimpleModelConfig(int aPort);
+
+    public static native double getMotorSimStaticModelConfig(int aPort);
+
+    public static native double getMotorSimGravitationalModelConfig(int aPort);
 
 }

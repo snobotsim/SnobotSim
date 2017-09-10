@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import com.snobot.simulator.jni.LocalDcMotorModelConfig;
 import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni;
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.GravityLoadMotorSimulationConfig;
@@ -48,25 +49,29 @@ public class JniSpeedControllerWrapperAccessor implements SpeedControllerWrapper
     @Override
     public DcMotorModelConfig getMotorConfig(int aPort)
     {
-        throw new UnsupportedOperationException();
+        LocalDcMotorModelConfig config = SpeedControllerWrapperJni.getMotorConfig(aPort);
+        return config == null ? null : config.getConfig();
     }
 
     @Override
     public SimpleMotorSimulationConfig getMotorSimSimpleModelConfig(int aPort)
     {
-        return new SimpleMotorSimulationConfig(0);
+        double maxSpeed = SpeedControllerWrapperJni.getMotorSimSimpleModelConfig(aPort);
+        return new SimpleMotorSimulationConfig(maxSpeed);
     }
 
     @Override
     public StaticLoadMotorSimulationConfig getMotorSimStaticModelConfig(int aPort)
     {
-        return new StaticLoadMotorSimulationConfig(0);
+        double load = SpeedControllerWrapperJni.getMotorSimSimpleModelConfig(aPort);
+        return new StaticLoadMotorSimulationConfig(load);
     }
 
     @Override
     public GravityLoadMotorSimulationConfig getMotorSimGravitationalModelConfig(int aPort)
     {
-        return new GravityLoadMotorSimulationConfig(0);
+        double load = SpeedControllerWrapperJni.getMotorSimSimpleModelConfig(aPort);
+        return new GravityLoadMotorSimulationConfig(load);
     }
 
     @Override

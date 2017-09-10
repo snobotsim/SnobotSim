@@ -6,6 +6,7 @@ import com.snobot.simulator.jni.MotorConfigFactoryJni;
 import com.snobot.simulator.jni.RobotStateSingletonJni;
 import com.snobot.simulator.jni.SimulationConnectorJni;
 import com.snobot.simulator.jni.SnobotSimulatorJni;
+import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni;
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.GravityLoadMotorSimulationConfig;
 import com.snobot.simulator.motor_sim.RotationalLoadMotorSimulationConfig;
@@ -109,6 +110,7 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
     @Override
     public void updateSimulatorComponents(double aUpdatePeriod)
     {
+        SpeedControllerWrapperJni.updateAllSpeedControllers(aUpdatePeriod);
         SimulationConnectorJni.updateLoop();
     }
 
