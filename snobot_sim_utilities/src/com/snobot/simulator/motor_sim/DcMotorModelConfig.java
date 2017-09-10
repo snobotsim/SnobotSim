@@ -106,32 +106,6 @@ public class DcMotorModelConfig
     public boolean mHasBrake;
 
     public DcMotorModelConfig(
-            String aMotorType,
-            int aNumMotors,
-            double aGearReduction,
-            double aGearboxEfficiency,
-            
-            double aNominalVoltage, 
-            double aFreeSpeedRpm, 
-            double aFreeCurrent, 
-            double aStallTorque, 
-            double aStallCurrent,
-            double aMotorInertia,
-            boolean aHasBrake,
-            boolean aInverted)
-    {
-        this(
-                new FactoryParams(aMotorType, aNumMotors, aGearReduction, aGearboxEfficiency),
-                new MotorParams(aNominalVoltage, aFreeSpeedRpm, aFreeCurrent, aStallTorque, aStallCurrent, 
-                        aMotorInertia,
-                        aStallTorque / aStallCurrent, 
-                        (aFreeSpeedRpm / aNominalVoltage) * (Math.PI * 2.0) / 60.0,
-                        aNominalVoltage / aStallCurrent),
-                aHasBrake, 
-                aInverted);
-    }
-
-    public DcMotorModelConfig(
             FactoryParams aFactoryParams,
             MotorParams aMotorParams,
             boolean aHasBrake, 

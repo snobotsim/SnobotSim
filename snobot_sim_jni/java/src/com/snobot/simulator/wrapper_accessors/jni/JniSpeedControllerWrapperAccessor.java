@@ -78,30 +78,37 @@ public class JniSpeedControllerWrapperAccessor implements SpeedControllerWrapper
     @Override
     public MotorSimType getMotorSimType(int aHandle)
     {
-        throw new UnsupportedOperationException();
+        int rawType = SpeedControllerWrapperJni.getMotorSimTypeNative(aHandle);
+        return MotorSimType.values()[rawType];
     }
 
     @Override
-    public double getPosition(int i)
+    public double getPosition(int aHandle)
     {
-        throw new UnsupportedOperationException();
+        return SpeedControllerWrapperJni.getPosition(aHandle);
     }
 
     @Override
-    public double getVelocity(int i)
+    public double getVelocity(int aHandle)
     {
-        throw new UnsupportedOperationException();
+        return SpeedControllerWrapperJni.getVelocity(aHandle);
     }
 
     @Override
-    public double getCurrent(int i)
+    public double getCurrent(int aHandle)
     {
-        throw new UnsupportedOperationException();
+        return SpeedControllerWrapperJni.getCurrent(aHandle);
     }
 
     @Override
-    public double getAcceleration(int i)
+    public double getAcceleration(int aHandle)
     {
-        throw new UnsupportedOperationException();
+        return SpeedControllerWrapperJni.getAcceleration(aHandle);
+    }
+
+    @Override
+    public void reset(int aHandle, double aPosition, double aVelocity, double aCurrent)
+    {
+        SpeedControllerWrapperJni.reset(aHandle, aPosition, aVelocity, aCurrent);
     }
 }

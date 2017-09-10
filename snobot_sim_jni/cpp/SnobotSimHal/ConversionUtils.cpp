@@ -14,29 +14,33 @@ namespace ConversionUtils
 
     DcMotorModelConfig ConvertDcMotorModelConfig(JNIEnv * env, jobject& aJavaModelConfig)
     {
-        jstring motorType = (jstring) env->GetObjectField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mMotorType", "Ljava/lang/String;"));
+        jobject configObj = env->GetObjectField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mConfig", "Lcom/snobot/simulator/motor_sim/DcMotorModelConfig;"));
+        jobject factoryParamsObj = env->GetObjectField(configObj, env->GetFieldID(env->GetObjectClass(configObj), "mFactoryParams", "Lcom/snobot/simulator/motor_sim/DcMotorModelConfig$FactoryParams;"));
+        jobject motorParamsObj = env->GetObjectField(configObj, env->GetFieldID(env->GetObjectClass(configObj), "mMotorParams", "Lcom/snobot/simulator/motor_sim/DcMotorModelConfig$MotorParams;"));
+
+        jstring motorType = (jstring) env->GetObjectField(factoryParamsObj, env->GetFieldID(env->GetObjectClass(factoryParamsObj), "mMotorType", "Ljava/lang/String;"));
 
         DcMotorModelConfig::FactoryParams factoryParams;
         factoryParams.mMotorName              = env->GetStringUTFChars(motorType, NULL);
-        factoryParams.mNumMotors              = env->GetIntField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mNumMotors", "I"));
-        factoryParams.mGearReduction          = env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mGearReduction", "D"));
-        factoryParams.mTransmissionEfficiency = env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mGearboxEfficiency", "D"));
+        factoryParams.mNumMotors              = env->GetIntField(factoryParamsObj, env->GetFieldID(env->GetObjectClass(factoryParamsObj), "mNumMotors", "I"));
+        factoryParams.mGearReduction          = env->GetDoubleField(factoryParamsObj, env->GetFieldID(env->GetObjectClass(factoryParamsObj), "mGearReduction", "D"));
+        factoryParams.mTransmissionEfficiency = env->GetDoubleField(factoryParamsObj, env->GetFieldID(env->GetObjectClass(factoryParamsObj), "mGearboxEfficiency", "D"));
 
         DcMotorModelConfig config(
                 factoryParams,
-                env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "NOMINAL_VOLTAGE", "D")),
-                env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "FREE_SPEED_RPM", "D")),
-                env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "FREE_CURRENT", "D")),
-                env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "STALL_TORQUE", "D")),
-                env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "STALL_CURRENT", "D")),
-                env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mMotorInertia", "D")),
+                env->GetDoubleField(motorParamsObj, env->GetFieldID(env->GetObjectClass(motorParamsObj), "NOMINAL_VOLTAGE", "D")),
+                env->GetDoubleField(motorParamsObj, env->GetFieldID(env->GetObjectClass(motorParamsObj), "FREE_SPEED_RPM", "D")),
+                env->GetDoubleField(motorParamsObj, env->GetFieldID(env->GetObjectClass(motorParamsObj), "FREE_CURRENT", "D")),
+                env->GetDoubleField(motorParamsObj, env->GetFieldID(env->GetObjectClass(motorParamsObj), "STALL_TORQUE", "D")),
+                env->GetDoubleField(motorParamsObj, env->GetFieldID(env->GetObjectClass(motorParamsObj), "STALL_CURRENT", "D")),
+                env->GetDoubleField(motorParamsObj, env->GetFieldID(env->GetObjectClass(motorParamsObj), "MOTOR_INERTIA", "D")),
 
-                env->GetBooleanField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mHasBrake", "Z")),
-                env->GetBooleanField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mInverted", "Z")),
+                env->GetBooleanField(configObj, env->GetFieldID(env->GetObjectClass(configObj), "mHasBrake", "Z")),
+                env->GetBooleanField(configObj, env->GetFieldID(env->GetObjectClass(configObj), "mInverted", "Z")),
 
-                env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mKT", "D")),
-                env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mKV", "D")),
-                env->GetDoubleField(aJavaModelConfig, env->GetFieldID(env->GetObjectClass(aJavaModelConfig), "mResistance", "D"))
+                env->GetDoubleField(motorParamsObj, env->GetFieldID(env->GetObjectClass(motorParamsObj), "mKT", "D")),
+                env->GetDoubleField(motorParamsObj, env->GetFieldID(env->GetObjectClass(motorParamsObj), "mKV", "D")),
+                env->GetDoubleField(motorParamsObj, env->GetFieldID(env->GetObjectClass(motorParamsObj), "mResistance", "D"))
         );
 
         return config;
@@ -46,7 +50,7 @@ namespace ConversionUtils
             JNIEnv *env,
             const DcMotorModelConfig& aConfig)
     {
-        static JClass theClazz = JClass(env, "com/snobot/simulator/DcMotorModelConfig");
+        static JClass theClazz = JClass(env, "com/snobot/simulator/jni/LocalDcMotorModelConfig");
         static jmethodID constructor =
                 env->GetMethodID(theClazz, "<init>", "(Ljava/lang/String;IDDDDDDDDZZDDD)V");
 

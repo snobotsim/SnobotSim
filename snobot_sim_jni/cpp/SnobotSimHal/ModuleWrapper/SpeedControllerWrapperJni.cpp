@@ -70,6 +70,50 @@ JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedCon
 
 /*
  * Class:     com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni
+ * Method:    getPosition
+ * Signature: (I)D
+ */
+JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_getPosition
+  (JNIEnv *, jclass, jint portHandle)
+{
+    return SensorActuatorRegistry::Get().GetSpeedControllerWrapper(portHandle)->GetPosition();
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni
+ * Method:    getVelocity
+ * Signature: (I)D
+ */
+JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_getVelocity
+  (JNIEnv *, jclass, jint portHandle)
+{
+    return SensorActuatorRegistry::Get().GetSpeedControllerWrapper(portHandle)->GetVelocity();
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni
+ * Method:    getAcceleration
+ * Signature: (I)D
+ */
+JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_getAcceleration
+  (JNIEnv *, jclass, jint portHandle)
+{
+    return 0;
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni
+ * Method:    getCurrent
+ * Signature: (I)D
+ */
+JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_getCurrent
+  (JNIEnv *, jclass, jint portHandle)
+{
+    return SensorActuatorRegistry::Get().GetSpeedControllerWrapper(portHandle)->GetCurrent();
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni
  * Method:    updateAllSpeedControllers
  * Signature: ()V
  */
@@ -242,6 +286,17 @@ JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedCon
     }
 
     return 0;
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni
+ * Method:    reset
+ * Signature: (IDDD)V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_reset
+  (JNIEnv *, jclass, jint portHandle, jdouble aPosition, jdouble aVelocity, jdouble aCurrent)
+{
+    return SensorActuatorRegistry::Get().GetSpeedControllerWrapper(portHandle)->Reset(aPosition, aVelocity, aCurrent);
 }
 
 

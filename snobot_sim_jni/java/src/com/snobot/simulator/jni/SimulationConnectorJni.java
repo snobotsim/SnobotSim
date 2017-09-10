@@ -1,8 +1,6 @@
 
 package com.snobot.simulator.jni;
 
-import com.snobot.simulator.motor_sim.DcMotorModelConfig;
-
 public class SimulationConnectorJni extends BaseSimulatorJni
 {
     
@@ -14,18 +12,18 @@ public class SimulationConnectorJni extends BaseSimulatorJni
 
     public static native boolean setSpeedControllerModel_Static(
             int aSpeedControllerHandle, 
-            DcMotorModelConfig aConfig,
+            LocalDcMotorModelConfig aConfig,
             double aLoad,
             double aConversionFactor);
 
     public static native boolean setSpeedControllerModel_Gravitational(
             int aSpeedControllerHandle, 
-            DcMotorModelConfig aConfig,
+            LocalDcMotorModelConfig aConfig,
             double aLoad);
 
     public static native boolean setSpeedControllerModel_Rotational(
             int aSpeedControllerHandle, 
-            DcMotorModelConfig aConfig,
+            LocalDcMotorModelConfig aConfig,
             double aArmCenterOfMass,
             double aArmMass,
             double aConstantAssistTorque,

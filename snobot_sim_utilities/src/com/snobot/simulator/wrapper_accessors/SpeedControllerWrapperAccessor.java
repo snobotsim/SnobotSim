@@ -50,11 +50,18 @@ public interface SpeedControllerWrapperAccessor
 
     public MotorSimType getMotorSimType(int aHandle);
 
-    public double getPosition(int i);
+    public double getPosition(int aHandle);
 
-    public double getVelocity(int i);
+    public double getVelocity(int aHandle);
 
-    public double getCurrent(int i);
+    public double getCurrent(int aHandle);
 
-    public double getAcceleration(int i);
+    public double getAcceleration(int aHandle);
+
+    default public void reset(int aHandle)
+    {
+        reset(aHandle, 0, 0, 0);
+    }
+
+    public void reset(int aHandle, double aPosition, double aVelocity, double aCurrent);
 }

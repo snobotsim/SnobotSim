@@ -39,14 +39,17 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_upda
  * Method:    setSpeedControllerModel_Simple
  * Signature: (ID)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setSpeedControllerModel_1Simple
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setSpeedControllerModel_1Simple
   (JNIEnv *, jclass, jint aHandle, jdouble aMaxSpeed)
 {
 	std::shared_ptr<SpeedControllerWrapper> speedController = GetSpeedControllerWrapper(aHandle);
 	if(speedController)
 	{
     	speedController->SetMotorSimulator(std::shared_ptr < IMotorSimulator > (new SimpleMotorSimulator(aMaxSpeed)));
+    	return true;
 	}
+
+    return false;
 }
 
 /*
@@ -54,7 +57,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setS
  * Method:    setSpeedControllerModel_Static
  * Signature: (ILcom/snobot/simulator/DcMotorModelConfigJni;DD)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setSpeedControllerModel_1Static
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setSpeedControllerModel_1Static
   (JNIEnv * env, jclass, jint aSpeedControllerHandle,
         jobject aConfig, jdouble aLoad, jdouble aConversionFactor)
 {
@@ -64,7 +67,10 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setS
 	if(speedController)
 	{
 	    speedController->SetMotorSimulator(std::shared_ptr < IMotorSimulator > (new StaticLoadDcMotorSim(motorModel, aLoad, aConversionFactor)));
+        return true;
 	}
+
+    return false;
 }
 
 /*
@@ -72,7 +78,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setS
  * Method:    setSpeedControllerModel_Gravitational
  * Signature: (ILcom/snobot/simulator/DcMotorModelConfigJni;D)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setSpeedControllerModel_1Gravitational
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setSpeedControllerModel_1Gravitational
   (JNIEnv * env, jclass,
         jint aSpeedControllerHandle, jobject aConfig, jdouble aLoad)
 {
@@ -82,7 +88,10 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setS
 	if(speedController)
 	{
 	    speedController->SetMotorSimulator(std::shared_ptr < IMotorSimulator > (new GravityLoadDcMotorSim(motorModel, aLoad)));
+        return true;
 	}
+
+    return false;
 }
 
 /*
@@ -90,11 +99,13 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setS
  * Method:    setSpeedControllerModel_Rotational
  * Signature: (ILcom/snobot/simulator/DcMotorModelConfigJni;DDDD)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setSpeedControllerModel_1Rotational
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setSpeedControllerModel_1Rotational
   (JNIEnv * env, jclass, jint aSpeedControllerHandle,
         jobject aConfig, jdouble aArmCenterOfMass, jdouble aArmMass, jdouble aConstantAssistTorque, jdouble aOverCenterAssistTorque)
 {
     LOG_UNSUPPORTED();
+
+    return false;
 //    DcMotorModel motorModel = ConvertDcMotorModel(aConfig);
 //    std::shared_ptr<SpeedControllerWrapper> speedController = SensorActuatorRegistry::Get().GetSpeedControllerWrapper(aSpeedControllerHandle);
 //    speedController->SetMotorSimulator(std::shared_ptr < IMotorSimulator > (new StaticLoadDcMotorSimulator(aLoad, aConversionFactor)));
@@ -105,7 +116,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setS
  * Method:    connectTankDriveSimulator
  * Signature: (IIID)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_connectTankDriveSimulator
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_connectTankDriveSimulator
   (JNIEnv *, jclass,
           jint aLeftEncHandle,
           jint aRightEncHandle,
@@ -118,6 +129,8 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_conn
     std::shared_ptr<TankDriveSimulator> simulator(new TankDriveSimulator(leftEncoder, rightEncoder, gyro, aTurnKp));
 
     SensorActuatorRegistry::Get().AddSimulatorComponent(simulator);
+
+    return false;
 }
 
 }

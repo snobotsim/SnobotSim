@@ -119,4 +119,12 @@ public class JavaSpeedControllerWrapperAccessor extends BaseWrapperAccessor<PwmW
         return SensorActuatorRegistry.get().getSpeedControllers().get(aPort).getAcceleration();
     }
 
+    @Override
+    public void reset(int aHandle, double aPosition, double aVelocity, double aCurrent)
+    {
+        PwmWrapper wrapper = SensorActuatorRegistry.get().getSpeedControllers().get(aHandle);
+        wrapper.reset(aPosition, aVelocity, aCurrent);
+
+    }
+
 }

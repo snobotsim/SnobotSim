@@ -100,9 +100,9 @@ dependencies {
 
 def jniClasses = [
     'com.snobot.simulator.jni.JoystickJni',
-    //'com.snobot.simulator.jni.MotorConfigFactoryJni',
+    'com.snobot.simulator.jni.MotorConfigFactoryJni',
     'com.snobot.simulator.jni.RobotStateSingletonJni',
-    //'com.snobot.simulator.jni.SimulationConnectorJni',
+    'com.snobot.simulator.jni.SimulationConnectorJni',
     'com.snobot.simulator.jni.SnobotSimulatorJni',
     'com.snobot.simulator.jni.module_wrapper.AccelerometerWrapperJni',
     'com.snobot.simulator.jni.module_wrapper.AnalogSourceWrapperJni',

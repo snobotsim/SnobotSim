@@ -1,6 +1,7 @@
 package com.snobot.simulator.wrapper_accessors.jni;
 
 import com.snobot.simulator.jni.JoystickJni;
+import com.snobot.simulator.jni.LocalDcMotorModelConfig;
 import com.snobot.simulator.jni.MotorConfigFactoryJni;
 import com.snobot.simulator.jni.RobotStateSingletonJni;
 import com.snobot.simulator.jni.SimulationConnectorJni;
@@ -42,13 +43,15 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
     @Override
     public DcMotorModelConfig createMotor(String motorType, int numMotors, double gearReduction, double efficiency)
     {
-        return MotorConfigFactoryJni.createMotor(motorType, numMotors, gearReduction, efficiency);
+        LocalDcMotorModelConfig config = MotorConfigFactoryJni.createMotor(motorType, numMotors, gearReduction, efficiency);
+        return config.getConfig();
     }
 
     @Override
     public DcMotorModelConfig createMotor(String motorType)
     {
-        return MotorConfigFactoryJni.createMotor(motorType);
+        LocalDcMotorModelConfig config = MotorConfigFactoryJni.createMotor(motorType);
+        return config.getConfig();
     }
 
     @Override
@@ -60,19 +63,22 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
     @Override
     public boolean setSpeedControllerModel_Static(int aScHandle, DcMotorModelConfig aMotorConfig, StaticLoadMotorSimulationConfig aConfig)
     {
-        return SimulationConnectorJni.setSpeedControllerModel_Static(aScHandle, aMotorConfig, aConfig.mLoad, aConfig.mConversionFactor);
+        LocalDcMotorModelConfig config = new LocalDcMotorModelConfig(aMotorConfig);
+        return SimulationConnectorJni.setSpeedControllerModel_Static(aScHandle, config, aConfig.mLoad, aConfig.mConversionFactor);
     }
 
     @Override
     public boolean setSpeedControllerModel_Gravitational(int aScHandle, DcMotorModelConfig aMotorConfig, GravityLoadMotorSimulationConfig aConfig)
     {
-        return SimulationConnectorJni.setSpeedControllerModel_Gravitational(aScHandle, aMotorConfig, aConfig.mLoad);
+        LocalDcMotorModelConfig config = new LocalDcMotorModelConfig(aMotorConfig);
+        return SimulationConnectorJni.setSpeedControllerModel_Gravitational(aScHandle, config, aConfig.mLoad);
     }
 
     @Override
     public boolean setSpeedControllerModel_Rotational(int aScHandle, DcMotorModelConfig aMotorConfig, RotationalLoadMotorSimulationConfig aConfig)
     {
-        return SimulationConnectorJni.setSpeedControllerModel_Rotational(aScHandle, aMotorConfig, aConfig.mArmCenterOfMass, aConfig.mArmMass,
+        LocalDcMotorModelConfig config = new LocalDcMotorModelConfig(aMotorConfig);
+        return SimulationConnectorJni.setSpeedControllerModel_Rotational(aScHandle, config, aConfig.mArmCenterOfMass, aConfig.mArmMass,
                 aConfig.mConstantAssistTorque, aConfig.mOverCenterAssistTorque);
     }
 
