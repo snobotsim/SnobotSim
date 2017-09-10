@@ -240,7 +240,7 @@ namespace SnobotSimJava
         {
             gSpiInArrayIndices[i] = i;
             HALSIM_RegisterSPIInitializedCallback(i, &SpiCallback, &gSpiInArrayIndices[i], false);
-            HALSIM_RegisterSPIWriteCallback(i, &SpiCallback, &gSpiInArrayIndices[i], false);
+            HALSIM_RegisterSPIReadCallback(i, &SpiCallback, &gSpiInArrayIndices[i], false);
         }
     }
 

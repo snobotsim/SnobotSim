@@ -289,9 +289,9 @@ public class RegisterCallbacksJni extends BaseSnobotJni
             ISpiWrapper wrapper = sSPI_FACTORY.createSpiWrapper(port);
             SensorActuatorRegistry.get().register(wrapper, port);
         }
-        else if ("Write".equals(callbackType))
+        else if ("Read".equals(callbackType))
         {
-            SensorActuatorRegistry.get().getSpiWrappers().get(port).handleWrite();
+            SensorActuatorRegistry.get().getSpiWrappers().get(port).handleRead();
         }
         else
         {

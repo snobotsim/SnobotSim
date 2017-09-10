@@ -55,24 +55,17 @@ public class SpiNavxSimulator extends NavxSimulator implements ISpiWrapper
     }
 
     @Override
-    public void handleWrite()
+    public void handleRead()
     {
+
         ByteBuffer lastWriteValue = ByteBuffer.allocateDirect(4);
         SensorFeedbackJni.getSpiLastWrite(mSpiPort, lastWriteValue, 4);
         lastWriteValue.rewind();
         mLastAddress = lastWriteValue.get();
         mLastAddress = 4;
-        // System.out.println(Integer.toHexString(lastWriteValue.getInt(0)));
 
-    }
-
-    @Override
-    public void handleRead()
-    {
         ByteBuffer temp = null;
 
-        // System.out.println(Integer.toHexString(lastWriteValue.getInt(0)));
-        System.out.println(Integer.toHexString(mLastAddress));
         if (mLastAddress == 0x00)
         {
             temp = ByteBuffer.allocate(18);

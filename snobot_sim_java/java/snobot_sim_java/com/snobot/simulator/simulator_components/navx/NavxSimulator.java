@@ -53,8 +53,6 @@ public class NavxSimulator
         aBuffer.put(0x09 - aFirstAddress, (byte) 3); // Cal Status
         aBuffer.put(0x10 - aFirstAddress, (byte) 4); // Sensor Status
 
-        System.out.println(mYawGyro.getAngle());
-
         aBuffer.putShort(0x16 - aFirstAddress, (short) (boundBetweenNeg180Pos180(mYawGyro.getAngle()) * 100)); // Yaw
         aBuffer.putShort(0x1A - aFirstAddress, (short) (boundBetweenNeg180Pos180(mPitchGyro.getAngle()) * 100)); // Pitch
         aBuffer.putShort(0x18 - aFirstAddress, (short) (boundBetweenNeg180Pos180(mRollGyro.getAngle()) * 100)); // Roll

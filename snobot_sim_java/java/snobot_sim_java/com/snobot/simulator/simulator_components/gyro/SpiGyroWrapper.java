@@ -32,23 +32,10 @@ public class SpiGyroWrapper extends GyroWrapper implements ISpiWrapper
     }
 
     @Override
-    public void handleWrite()
+    public void handleRead()
     {
         ByteBuffer buf = ByteBuffer.allocateDirect(4);
         buf.putInt(0xe00a4000);
         SensorFeedbackJni.setSpiValueForRead(mSpiPort, buf, 4);
     }
-
-    @Override
-    public void handleRead()
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    // @Override
-    // public int getHandle()
-    // {
-    // return mPort;
-    // }
 }
