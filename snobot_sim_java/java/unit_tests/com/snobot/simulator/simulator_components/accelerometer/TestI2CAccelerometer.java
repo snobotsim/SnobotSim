@@ -3,7 +3,6 @@ package com.snobot.simulator.simulator_components.accelerometer;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.RegisterCallbacksJni;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
@@ -26,8 +25,7 @@ public class TestI2CAccelerometer extends BaseSimulatorTest
         int pitchHandle = 1;
         int rollHandle = 2;
 
-        Assert.assertEquals(3, SensorActuatorRegistry.get().getAccelerometers().size());
-        System.out.println(SensorActuatorRegistry.get().getAccelerometers());
+        Assert.assertEquals(3, DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().size());
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(yawHandle));
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(pitchHandle));
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(rollHandle));

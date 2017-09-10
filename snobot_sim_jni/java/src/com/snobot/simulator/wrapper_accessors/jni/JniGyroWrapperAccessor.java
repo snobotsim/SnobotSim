@@ -44,8 +44,7 @@ public class JniGyroWrapperAccessor implements GyroWrapperAccessor
     @Override
     public void setAngle(int aPort, double aAngle)
     {
-        // TODO Auto-generated method stub
-
+        throw new UnsupportedOperationException();
     }
     
     @Override

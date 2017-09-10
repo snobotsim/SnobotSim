@@ -43,8 +43,7 @@ public class JniAccelerometerWrapperAccessor implements AccelerometerWrapperAcce
     @Override
     public void setAcceleration(int aPort, double aAcceleration)
     {
-        // TODO Auto-generated method stub
-
+        throw new UnsupportedOperationException();
     }
     
     @Override

@@ -111,8 +111,8 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_conn
           jint aRightEncHandle,
           jint aGyroHandle, jdouble aTurnKp)
 {    
-    std::shared_ptr<EncoderWrapper> leftEncoder = SensorActuatorRegistry::Get().GetEncoderWrapper(aLeftEncHandle);
-    std::shared_ptr<EncoderWrapper> rightEncoder = SensorActuatorRegistry::Get().GetEncoderWrapper(aRightEncHandle);
+    std::shared_ptr<EncoderWrapper> leftEncoder = GetEncoderWrapper(aLeftEncHandle);
+    std::shared_ptr<EncoderWrapper> rightEncoder = GetEncoderWrapper(aRightEncHandle);
     std::shared_ptr<GyroWrapper> gyro = GetGyroWrapper(aGyroHandle);
 
     std::shared_ptr<TankDriveSimulator> simulator(new TankDriveSimulator(leftEncoder, rightEncoder, gyro, aTurnKp));

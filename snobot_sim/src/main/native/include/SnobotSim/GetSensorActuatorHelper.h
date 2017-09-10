@@ -18,7 +18,7 @@ namespace GetSensorActuatorHelper
     EXPORT_ std::shared_ptr<AnalogSourceWrapper> GetAnalogSourceWrapper(int aHandle);
     EXPORT_ std::shared_ptr<RelayWrapper> GetRelayWrapper(int aHandle);
     EXPORT_ std::shared_ptr<SolenoidWrapper> GetSolenoidWrapper(int aHandle);
-    EXPORT_ std::shared_ptr<SpeedControllerWrapper> GetSpeedControllerWrapper(int aHandle);
+    EXPORT_ std::shared_ptr<EncoderWrapper> GetEncoderWrapper(int aHandle);
 }
 
 #endif /* SRC_GETSENSORACTUATORHELPER_H_ */

@@ -19,7 +19,6 @@ public class TestSpiGyro extends BaseSimulatorTest
         int gyroHandle = 0;
         Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(gyroHandle));
 
-        DataAccessorFactory.getInstance().getGyroAccessor().getAngle(gyroHandle);
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(gyroHandle), DOUBLE_EPSILON);
         Assert.assertEquals(0, gyro.getAngle(), DOUBLE_EPSILON);
 

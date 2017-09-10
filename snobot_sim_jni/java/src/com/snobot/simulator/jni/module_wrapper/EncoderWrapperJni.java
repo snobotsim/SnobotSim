@@ -14,7 +14,7 @@ public class EncoderWrapperJni extends BaseSimulatorJni
 
     public static native boolean getWantsHidden(int aPort);
     
-    public static native void connectSpeedController(int aEncoderHandle, int aSpeedControllerHandle);
+    public static native boolean connectSpeedController(int aEncoderHandle, int aSpeedControllerHandle);
 
     public static native boolean isHookedUp(int aPort);
     

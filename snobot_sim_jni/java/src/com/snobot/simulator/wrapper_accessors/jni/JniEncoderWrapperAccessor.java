@@ -32,8 +32,7 @@ public class JniEncoderWrapperAccessor implements EncoderWrapperAccessor
     @Override
     public boolean connectSpeedController(int aEncoderHandle, int aSpeedControllerHandle)
     {
-        EncoderWrapperJni.connectSpeedController(aEncoderHandle, aSpeedControllerHandle);
-        return true;
+        return EncoderWrapperJni.connectSpeedController(aEncoderHandle, aSpeedControllerHandle);
     }
 
     @Override

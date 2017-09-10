@@ -17,7 +17,7 @@ public class TestSimulator extends BaseSimulatorTest
     {
         public MockSimulator() throws Exception
         {
-            super(SnobotLogLevel.DEBUG, new File("test_files/plugins"), "test_output");
+            super(SnobotLogLevel.DEBUG, new File("test_files/plugins"), "test_output/");
         }
 
         @Override

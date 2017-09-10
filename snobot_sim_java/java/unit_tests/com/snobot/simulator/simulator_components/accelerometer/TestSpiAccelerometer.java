@@ -3,7 +3,6 @@ package com.snobot.simulator.simulator_components.accelerometer;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.RegisterCallbacksJni;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
@@ -26,8 +25,7 @@ public class TestSpiAccelerometer extends BaseSimulatorTest
         int yHandle = 1;
         int zHandle = 2;
 
-        Assert.assertEquals(3, SensorActuatorRegistry.get().getAccelerometers().size());
-        System.out.println(SensorActuatorRegistry.get().getAccelerometers());
+        Assert.assertEquals(3, DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().size());
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(xHandle));
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(yHandle));
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(zHandle));

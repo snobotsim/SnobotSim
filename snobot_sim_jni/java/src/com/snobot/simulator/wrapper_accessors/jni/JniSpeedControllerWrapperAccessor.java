@@ -48,8 +48,7 @@ public class JniSpeedControllerWrapperAccessor implements SpeedControllerWrapper
     @Override
     public DcMotorModelConfig getMotorConfig(int aPort)
     {
-        // TODO Auto-generated method stub
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -79,35 +78,30 @@ public class JniSpeedControllerWrapperAccessor implements SpeedControllerWrapper
     @Override
     public MotorSimType getMotorSimType(int aHandle)
     {
-        // TODO Auto-generated method stub
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public double getPosition(int i)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public double getVelocity(int i)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public double getCurrent(int i)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public double getAcceleration(int i)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        throw new UnsupportedOperationException();
     }
 }

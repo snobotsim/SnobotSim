@@ -8,39 +8,22 @@ public class SimulationConnectorJni extends BaseSimulatorJni
     
     public static native void updateLoop();
 
-    public static native void setSpeedControllerModel_Simple(
+    public static native boolean setSpeedControllerModel_Simple(
             int aSpeedControllerHandle, 
             double aMaxSpeed);
 
-    public static void setSpeedControllerModel_Static(
-            int aSpeedControllerHandle, 
-            DcMotorModelConfig aConfig,
-            double aLoad)
-    {
-    	setSpeedControllerModel_Static(aSpeedControllerHandle, aConfig, aLoad, 1.0);
-    }
-
-    public static native void setSpeedControllerModel_Static(
+    public static native boolean setSpeedControllerModel_Static(
             int aSpeedControllerHandle, 
             DcMotorModelConfig aConfig,
             double aLoad,
             double aConversionFactor);
 
-    public static native void setSpeedControllerModel_Gravitational(
+    public static native boolean setSpeedControllerModel_Gravitational(
             int aSpeedControllerHandle, 
             DcMotorModelConfig aConfig,
             double aLoad);
 
-    public static void setSpeedControllerModel_Rotational(
-            int aSpeedControllerHandle, 
-            DcMotorModelConfig aConfig,
-            double aArmCenterOfMass,
-            double aArmMass)
-    {
-    	setSpeedControllerModel_Rotational(aSpeedControllerHandle, aConfig, aArmCenterOfMass, aArmMass, 0, 0);
-    }
-
-    public static native void setSpeedControllerModel_Rotational(
+    public static native boolean setSpeedControllerModel_Rotational(
             int aSpeedControllerHandle, 
             DcMotorModelConfig aConfig,
             double aArmCenterOfMass,
@@ -48,7 +31,7 @@ public class SimulationConnectorJni extends BaseSimulatorJni
             double aConstantAssistTorque,
             double aOverCenterAssistTorque);
 
-    public static native void connectTankDriveSimulator(
+    public static native boolean connectTankDriveSimulator(
             int aLeftEncoderHandle, 
             int aRightEncoderHandle, 
             int aGyroHandle, 

@@ -7,6 +7,7 @@ task gatherWpiLibs(type: Zip) {
     def os_name = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
 
     classifier = "wpi_native-" + os_name;
+    destinationDir = file("build")
     
     from('build/dependencies/wpiutil-cpp/' + os_name + 'x86-64/' + os_name + '/x86-64/shared') {
         into "lib"
@@ -34,6 +35,7 @@ task gatherWpiLibs(type: Zip) {
 task gatherWpiHeaders(type: Zip) {
 
     classifier = "wpi_headers";
+    destinationDir = file("build")
     
     from('build/dependencies/wpiutil-cpp/headers') {
         into "include"

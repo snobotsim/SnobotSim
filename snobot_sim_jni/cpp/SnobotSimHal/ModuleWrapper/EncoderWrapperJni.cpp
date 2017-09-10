@@ -87,10 +87,11 @@ JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_Encoder
  * Method:    connectSpeedController
  * Signature: (II)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_connectSpeedController
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_connectSpeedController
   (JNIEnv *, jclass, jint aEncoderhandle, jint aScHandle)
 {
-    std::shared_ptr<EncoderWrapper> encoder = SensorActuatorRegistry::Get().GetEncoderWrapper(aEncoderhandle);
+    bool success = false;
+    std::shared_ptr<EncoderWrapper> encoder = GetSensorActuatorHelper::GetEncoderWrapper(aEncoderhandle);
 
     if(encoder)
     {
@@ -100,8 +101,14 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrap
             speedController = GetSensorActuatorHelper::GetSpeedControllerWrapper(aScHandle);
         }
 
-        encoder->SetSpeedController(speedController);
+        if(speedController)
+        {
+            encoder->SetSpeedController(speedController);
+            success = true;
+        }
     }
+
+    return success;
 }
 
 /*
@@ -111,7 +118,12 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrap
  */
 JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_isHookedUp(JNIEnv *, jclass, jint portHandle)
 {
-    return SensorActuatorRegistry::Get().GetEncoderWrapper(portHandle)->IsHookedUp();
+    std::shared_ptr<EncoderWrapper> encoder = GetSensorActuatorHelper::GetEncoderWrapper(portHandle);
+    if(encoder)
+    {
+        encoder->IsHookedUp();
+    }
+    return false;
 }
 
 /*
@@ -122,11 +134,16 @@ JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_Encoder
 JNIEXPORT jint JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_getHookedUpId
   (JNIEnv *, jclass, jint portHandle)
 {
-    std::shared_ptr<SpeedControllerWrapper> sc = SensorActuatorRegistry::Get().GetEncoderWrapper(portHandle)->GetSpeedController();
+    std::shared_ptr<EncoderWrapper> encoder = GetSensorActuatorHelper::GetEncoderWrapper(portHandle);
     int output = -1;
-    if(sc)
+
+    if(encoder)
     {
-        output = sc->GetId();
+        std::shared_ptr<SpeedControllerWrapper> sc = encoder->GetSpeedController();
+        if(sc)
+        {
+            output = sc->GetId();
+        }
     }
 
     return output;
