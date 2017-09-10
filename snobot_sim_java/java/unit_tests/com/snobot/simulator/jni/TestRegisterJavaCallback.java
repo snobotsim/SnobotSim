@@ -60,9 +60,11 @@ public class TestRegisterJavaCallback extends BaseSimulatorTest
         RegisterCallbacksJni.analogGyroCallback("DoesntExist", 0, null);
         RegisterCallbacksJni.digitalCallback("DoesntExist", 0, null);
         RegisterCallbacksJni.encoderCallback("DoesntExist", 0, null);
+        RegisterCallbacksJni.i2cCallback("DoesntExist", 0, null);
         RegisterCallbacksJni.pcmCallback("DoesntExist", 0, null);
         RegisterCallbacksJni.pdpCallback("DoesntExist", 0, null);
         RegisterCallbacksJni.pwmCallback("DoesntExist", 0, null);
         RegisterCallbacksJni.relayCallback("DoesntExist", 0, null);
+        RegisterCallbacksJni.spiCallback("DoesntExist", 0, null);
     }
 }

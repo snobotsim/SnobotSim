@@ -32,10 +32,12 @@ namespace SnobotSimJava
     CallbackHelperContainer& GetAnalogGyroCallback();
     CallbackHelperContainer& GetDigitalCallback();
     CallbackHelperContainer& GetEncoderCallback();
+    CallbackHelperContainer& GetI2CCallback();
     CallbackHelperContainer& GetPCMCallback();
     CallbackHelperContainer& GetPDPCallback();
     CallbackHelperContainer& GetPWMCallback();
     CallbackHelperContainer& GetRelayCallback();
+    CallbackHelperContainer& GetSpiCallback();
 
     void InitializeSnobotCallbacks();
     void ResetMockData();

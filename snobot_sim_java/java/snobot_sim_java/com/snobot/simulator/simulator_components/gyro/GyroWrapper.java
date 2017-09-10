@@ -6,7 +6,7 @@ public class GyroWrapper extends ASensorWrapper
 {
     public static interface AngleSetterHelper
     {
-        public void setAngle(double aAngle);
+        public void updateAngle(double aAngle);
     }
 
     protected final AngleSetterHelper mAngleSetterHelper;
@@ -25,7 +25,7 @@ public class GyroWrapper extends ASensorWrapper
         mAngle = aAngle;
         if (isUpdate)
         {
-            mAngleSetterHelper.setAngle(aAngle);
+            mAngleSetterHelper.updateAngle(aAngle);
         }
     }
 

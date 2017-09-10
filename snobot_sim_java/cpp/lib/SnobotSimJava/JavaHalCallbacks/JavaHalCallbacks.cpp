@@ -12,10 +12,12 @@
 #include "MockData/AnalogGyroData.h"
 #include "MockData/DIOData.h"
 #include "MockData/EncoderData.h"
+#include "MockData/I2CData.h"
 #include "MockData/PCMData.h"
 #include "MockData/PDPData.h"
 #include "MockData/PWMData.h"
 #include "MockData/RelayData.h"
+#include "MockData/SPIData.h"
 
 #include "support/jni_util.h"
 #include <iostream>
@@ -31,9 +33,11 @@ namespace SnobotSimJava
     int gDigitalInArrayIndices[26];
     int gDigitalOutArrayIndices[26];
     int gEncoderArrayIndices[26];
+    int gI2CInArrayIndices[2];
     int gRelayArrayIndices[20];
     int gPdpArrayIndices[64];
     int gSolenoidArrayIndices[20];
+    int gSpiInArrayIndices[5];
 
 
     JavaVM* gJvm;
@@ -95,19 +99,23 @@ namespace SnobotSimJava
     CallbackHelperContainer gAnalogGyroCallbackContainer;
     CallbackHelperContainer gDigitalCallbackContainer;
     CallbackHelperContainer gEncoderCallbackContainer;
+    CallbackHelperContainer gI2CCallbackContainer;
     CallbackHelperContainer gPcmCallbackContainer;
     CallbackHelperContainer gPdpCallbackContainer;
     CallbackHelperContainer gPwmCallbackContainer;
     CallbackHelperContainer gRelayCallbackContainer;
+    CallbackHelperContainer gSpiCallbackContainer;
 
     CallbackHelperContainer& GetAnalogCallback()     { return gAnalogCallbackContainer; }
     CallbackHelperContainer& GetAnalogGyroCallback() { return gAnalogGyroCallbackContainer; }
     CallbackHelperContainer& GetDigitalCallback()    { return gDigitalCallbackContainer; }
     CallbackHelperContainer& GetEncoderCallback()    { return gEncoderCallbackContainer; }
+    CallbackHelperContainer& GetI2CCallback()        { return gI2CCallbackContainer; }
     CallbackHelperContainer& GetPCMCallback()        { return gPcmCallbackContainer; }
     CallbackHelperContainer& GetPDPCallback()        { return gPdpCallbackContainer; }
     CallbackHelperContainer& GetPWMCallback()        { return gPwmCallbackContainer; }
     CallbackHelperContainer& GetRelayCallback()      { return gRelayCallbackContainer; }
+    CallbackHelperContainer& GetSpiCallback()        { return gSpiCallbackContainer; }
 
     //////////////////////////////////////////////
     // Callbacks
@@ -128,6 +136,10 @@ namespace SnobotSimJava
     {
         CallJavaCallback(gEncoderCallbackContainer, name, param, value);
     }
+    void I2CCallback(const char* name, void* param, const struct HAL_Value* value)
+    {
+        CallJavaCallback(gI2CCallbackContainer, name, param, value);
+    }
     void PdpCallback(const char* name, void* param, const struct HAL_Value* value)
     {
         CallJavaCallback(gPdpCallbackContainer, name, param, value);
@@ -143,6 +155,10 @@ namespace SnobotSimJava
     void RelayCallback(const char* name, void* param, const struct HAL_Value* value)
     {
         CallJavaCallback(gRelayCallbackContainer, name, param, value);
+    }
+    void SpiCallback(const char* name, void* param, const struct HAL_Value* value)
+    {
+        CallJavaCallback(gSpiCallbackContainer, name, param, value);
     }
 
 
@@ -184,6 +200,11 @@ namespace SnobotSimJava
             gEncoderArrayIndices[i] = i;
             HALSIM_RegisterEncoderInitializedCallback(i, &EncoderCallback, &gEncoderArrayIndices[i], false);
         }
+        for(int i = 0; i < 2; ++i)
+        {
+            gI2CInArrayIndices[i] = i;
+            HALSIM_RegisterI2CInitializedCallback(i, &I2CCallback, &gI2CInArrayIndices[i], false);
+        }
 
         for(int i = 0; i < HAL_GetNumPWMChannels(); ++i)
         {
@@ -215,6 +236,12 @@ namespace SnobotSimJava
             gPdpArrayIndices[i] = i;
             HALSIM_RegisterPDPInitializedCallback(i, &PdpCallback, &gPdpArrayIndices[i], false);
         }
+        for(int i = 0; i < 5; ++i)
+        {
+            gSpiInArrayIndices[i] = i;
+            HALSIM_RegisterSPIInitializedCallback(i, &SpiCallback, &gSpiInArrayIndices[i], false);
+            HALSIM_RegisterSPIWriteCallback(i, &SpiCallback, &gSpiInArrayIndices[i], false);
+        }
     }
 
     void ResetMockData()
@@ -239,6 +266,10 @@ namespace SnobotSimJava
         {
             HALSIM_ResetEncoderData(i);
         }
+        for(int i = 0; i < 2; ++i)
+        {
+            HALSIM_ResetI2CData(i);
+        }
         for(int i = 0; i < HAL_GetNumPWMChannels(); ++i)
         {
             HALSIM_ResetPWMData(i);
@@ -254,6 +285,10 @@ namespace SnobotSimJava
         for(int i = 0; i < HAL_GetNumPDPModules(); ++i)
         {
             HALSIM_ResetPDPData(i);
+        }
+        for(int i = 0; i < 5; ++i)
+        {
+            HALSIM_ResetSPIData(i);
         }
 
         InitializeSnobotCallbacks();

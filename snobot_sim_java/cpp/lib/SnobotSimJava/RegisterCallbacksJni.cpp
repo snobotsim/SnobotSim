@@ -91,6 +91,19 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RegisterCallbacksJni_regist
 
 /*
  * Class:     com_snobot_simulator_jni_RegisterCallbacksJni
+ * Method:    registerI2CCallback
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RegisterCallbacksJni_registerI2CCallback
+  (JNIEnv * env, jclass clz, jstring aFunctionName)
+{
+    SnobotSimJava::SetGlobalEnvironment(env);
+    std::string functionName = env->GetStringUTFChars(aFunctionName, NULL);
+    SetCallbackContainerInfo(env, clz, functionName, SnobotSimJava::GetI2CCallback());
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_RegisterCallbacksJni
  * Method:    registerPcmCallback
  * Signature: (Ljava/lang/String;)V
  */
@@ -139,6 +152,19 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RegisterCallbacksJni_regist
     SnobotSimJava::SetGlobalEnvironment(env);
     std::string functionName = env->GetStringUTFChars(aFunctionName, NULL);
     SetCallbackContainerInfo(env, clz, functionName, SnobotSimJava::GetRelayCallback());
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_RegisterCallbacksJni
+ * Method:    registerSpiCallback
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RegisterCallbacksJni_registerSpiCallback
+  (JNIEnv * env, jclass clz, jstring aFunctionName)
+{
+    SnobotSimJava::SetGlobalEnvironment(env);
+    std::string functionName = env->GetStringUTFChars(aFunctionName, NULL);
+    SetCallbackContainerInfo(env, clz, functionName, SnobotSimJava::GetSpiCallback());
 }
 
 

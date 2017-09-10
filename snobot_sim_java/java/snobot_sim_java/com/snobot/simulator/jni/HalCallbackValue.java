@@ -22,4 +22,12 @@ public class HalCallbackValue
         this.mLong = aLong;
         this.mDouble = aDouble;
     }
+
+    @Override
+    public String toString()
+    {
+        return "HalCallbackValue [mType=" + mType + ", mBoolean=" + mBoolean + ", mInt=" + mInt + ", mLong=" + mLong + ", mDouble=" + mDouble + "]";
+    }
+    
+    
 }

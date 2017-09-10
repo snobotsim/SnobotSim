@@ -11,7 +11,10 @@ import com.snobot.simulator.module_wrapper.EncoderWrapper;
 import com.snobot.simulator.module_wrapper.PwmWrapper;
 import com.snobot.simulator.module_wrapper.RelayWrapper;
 import com.snobot.simulator.module_wrapper.SolenoidWrapper;
+import com.snobot.simulator.simulator_components.II2CWrapper;
 import com.snobot.simulator.simulator_components.ISimulatorUpdater;
+import com.snobot.simulator.simulator_components.ISpiWrapper;
+import com.snobot.simulator.simulator_components.accelerometer.AccelerometerWrapper;
 import com.snobot.simulator.simulator_components.gyro.GyroWrapper;
 
 public class SensorActuatorRegistry
@@ -24,9 +27,13 @@ public class SensorActuatorRegistry
     private Map<Integer, AnalogWrapper> mAnalogSourceWrapperMap = new HashMap<>();
     private Map<Integer, SolenoidWrapper> mSolenoidWrapperMap = new HashMap<>();
     private Map<Integer, EncoderWrapper> mEncoderWrapperMap = new HashMap<>();
-    private Map<Integer, GyroWrapper> mGyroWrapperMap = new HashMap<>();
 
-    Collection<ISimulatorUpdater> mSimulatorComponents = new ArrayList<>();
+    private Map<Integer, GyroWrapper> mGyroWrapperMap = new HashMap<>();
+    private Map<Integer, AccelerometerWrapper> mAccelerometerWrapperMap = new HashMap<>();
+    private Map<Integer, II2CWrapper> mI2CWrapperMap = new HashMap<>();
+    private Map<Integer, ISpiWrapper> mSpiWrapperMap = new HashMap<>();
+
+    private Collection<ISimulatorUpdater> mSimulatorComponents = new ArrayList<>();
 
     private SensorActuatorRegistry()
     {
@@ -74,9 +81,24 @@ public class SensorActuatorRegistry
         return registerItem(aEncoder, aPort, mEncoderWrapperMap, "Encoder");
     }
 
+    public boolean register(AccelerometerWrapper aSensor, Integer aPort)
+    {
+        return registerItem(aSensor, aPort, mAccelerometerWrapperMap, "Accelerometer");
+    }
+
     public boolean register(GyroWrapper aSensor, Integer aPort)
     {
         return registerItem(aSensor, aPort, mGyroWrapperMap, "Gyro");
+    }
+
+    public boolean register(II2CWrapper aSensor, Integer aPort)
+    {
+        return registerItem(aSensor, aPort, mI2CWrapperMap, "I2C");
+    }
+
+    public boolean register(ISpiWrapper aSensor, Integer aPort)
+    {
+        return registerItem(aSensor, aPort, mSpiWrapperMap, "SPI");
     }
 
     public boolean register(ISimulatorUpdater aUpdater)
@@ -115,9 +137,24 @@ public class SensorActuatorRegistry
         return mEncoderWrapperMap;
     }
 
+    public Map<Integer, AccelerometerWrapper> getAccelerometers()
+    {
+        return mAccelerometerWrapperMap;
+    }
+
     public Map<Integer, GyroWrapper> getGyros()
     {
         return mGyroWrapperMap;
+    }
+
+    public Map<Integer, II2CWrapper> getI2CWrapperss()
+    {
+        return mI2CWrapperMap;
+    }
+
+    public Map<Integer, ISpiWrapper> getSpiWrappers()
+    {
+        return mSpiWrapperMap;
     }
 
     public Collection<ISimulatorUpdater> getSimulatorComponents()

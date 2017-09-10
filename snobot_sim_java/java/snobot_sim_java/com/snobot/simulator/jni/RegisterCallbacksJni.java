@@ -10,6 +10,9 @@ import com.snobot.simulator.module_wrapper.EncoderWrapper.DistanceSetterHelper;
 import com.snobot.simulator.module_wrapper.PwmWrapper;
 import com.snobot.simulator.module_wrapper.RelayWrapper;
 import com.snobot.simulator.module_wrapper.SolenoidWrapper;
+import com.snobot.simulator.simulator_components.ISpiWrapper;
+import com.snobot.simulator.simulator_components.components_factory.DefaultSpiSimulatorFactory;
+import com.snobot.simulator.simulator_components.components_factory.ISpiSimulatorFactory;
 import com.snobot.simulator.simulator_components.gyro.GyroWrapper;
 import com.snobot.simulator.simulator_components.gyro.GyroWrapper.AngleSetterHelper;
 
@@ -25,6 +28,8 @@ public class RegisterCallbacksJni extends BaseSnobotJni
 
     public static native void registerEncoderCallback(String functionName);
 
+    public static native void registerI2CCallback(String functionName);
+
     public static native void registerPcmCallback(String functionName);
 
     public static native void registerPdpCallback(String functionName);
@@ -33,16 +38,20 @@ public class RegisterCallbacksJni extends BaseSnobotJni
 
     public static native void registerRelayCallback(String functionName);
 
+    public static native void registerSpiCallback(String functionName);
+
     public static void registerAllCallbacks()
     {
         registerAnalogCallback();
         registerAnalogGyroCallback();
         registerDigitalCallback();
         registerEncoderCallback();
+        registerI2CCallback();
         registerPcmCallback();
         registerPdpCallback();
         registerPwmCallback();
         registerRelayCallback();
+        registerSpiCallback();
     }
 
     public static void registerAnalogCallback()
@@ -65,6 +74,11 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         registerEncoderCallback("encoderCallback");
     }
 
+    public static void registerI2CCallback()
+    {
+        registerI2CCallback("i2cCallback");
+    }
+
     public static void registerPcmCallback()
     {
         registerPcmCallback("pcmCallback");
@@ -85,6 +99,11 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         registerRelayCallback("relayCallback");
     }
 
+    public static void registerSpiCallback()
+    {
+        registerSpiCallback("spiCallback");
+    }
+
     public static void analogCallback(String callbackType, int port, HalCallbackValue halValue)
     {
         if ("Initialized".equals(callbackType))
@@ -101,7 +120,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown Analog callback " + callbackType);
+            System.out.println("Unknown Analog callback " + callbackType + " - " + halValue);
         }
     }
 
@@ -112,7 +131,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
             GyroWrapper wrapper = new GyroWrapper("Analog Gyro", new AngleSetterHelper()
             {
                 @Override
-                public void setAngle(double aAngle)
+                public void updateAngle(double aAngle)
                 {
                     SensorFeedbackJni.setAnalogGyroAngle(port, aAngle);
                 }
@@ -125,7 +144,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown AnalogGyro callback " + callbackType);
+            System.out.println("Unknown AnalogGyro callback " + callbackType + " - " + halValue);
         }
     }
 
@@ -149,7 +168,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown Digital callback " + callbackType);
+            System.out.println("Unknown Digital callback " + callbackType + " - " + halValue);
         }
     }
 
@@ -169,7 +188,27 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown Encoder callback " + callbackType);
+            System.out.println("Unknown Encoder callback " + callbackType + " - " + halValue);
+        }
+    }
+
+    public static void i2cCallback(String callbackType, int port, HalCallbackValue halValue)
+    {
+        if (false)
+        {
+            SensorActuatorRegistry.get().register(new EncoderWrapper(port, new DistanceSetterHelper()
+            {
+
+                @Override
+                public void setDistance(double aDistance)
+                {
+                    SensorFeedbackJni.setEncoderDistance(port, aDistance);
+                }
+            }), port);
+        }
+        else
+        {
+            System.out.println("Unknown I2C callback " + callbackType + " - " + halValue);
         }
     }
 
@@ -185,7 +224,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown PCM callback " + callbackType);
+            System.out.println("Unknown PCM callback " + callbackType + " - " + halValue);
         }
     }
 
@@ -197,7 +236,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown PDP callback " + callbackType);
+            System.out.println("Unknown PDP callback " + callbackType + " - " + halValue);
         }
     }
 
@@ -213,7 +252,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown PWM callback " + callbackType);
+            System.out.println("Unknown PWM callback " + callbackType + " - " + halValue);
         }
     }
 
@@ -237,7 +276,26 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown Relay callback " + callbackType);
+            System.out.println("Unknown Relay callback " + callbackType + " - " + halValue);
+        }
+    }
+
+    private static final ISpiSimulatorFactory sSPI_FACTORY = new DefaultSpiSimulatorFactory();
+
+    public static void spiCallback(String callbackType, int port, HalCallbackValue halValue)
+    {
+        if ("Initialized".equals(callbackType))
+        {
+            ISpiWrapper wrapper = sSPI_FACTORY.createSpiWrapper(port);
+            SensorActuatorRegistry.get().register(wrapper, port);
+        }
+        else if ("Write".equals(callbackType))
+        {
+            SensorActuatorRegistry.get().getSpiWrappers().get(port).handleWrite();
+        }
+        else
+        {
+            System.out.println("Unknown SPI callback " + callbackType + " - " + halValue);
         }
     }
 }
