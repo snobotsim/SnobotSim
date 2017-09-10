@@ -8,9 +8,11 @@ import com.snobot.simulator.simulator_components.ISpiWrapper;
 
 public class SpiGyroWrapper extends GyroWrapper implements ISpiWrapper
 {
+    public static final int SPI_GYRO_OFFSET = 100;
+
     protected final int mSpiPort;
 
-    public SpiGyroWrapper(int aSpiPort, int aGyroPort)
+    public SpiGyroWrapper(int aSpiPort)
     {
         super("SPI Gyro " + aSpiPort, new AngleSetterHelper()
         {
@@ -26,7 +28,7 @@ public class SpiGyroWrapper extends GyroWrapper implements ISpiWrapper
             }
         });
 
-        SensorActuatorRegistry.get().register((GyroWrapper) this, aGyroPort);
+        SensorActuatorRegistry.get().register((GyroWrapper) this, aSpiPort + SPI_GYRO_OFFSET);
 
         mSpiPort = aSpiPort;
     }

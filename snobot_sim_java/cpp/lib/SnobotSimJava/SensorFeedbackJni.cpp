@@ -12,6 +12,7 @@
 #include "MockData/DIOData.h"
 #include "MockData/DriverStationData.h"
 #include "MockData/EncoderData.h"
+#include "MockData/I2CData.h"
 #include "MockData/MockHooks.h"
 #include "MockData/SPIData.h"
 
@@ -76,7 +77,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setAnalog
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setSpiAccumulatorValue
   (JNIEnv *, jclass, jint aHandle, jlong aValue)
 {
-    HALSIM_SetSPIAccumulatorValue(aHandle, aValue);
+    HALSIM_SetSPIGetAccumulatorValue(aHandle, aValue);
 }
 
 
@@ -109,7 +110,40 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_getSpiLas
         dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
     }
 
-    HALSIM_GetSPIWriteBuffer(aHandle, dataPtr, size);
+    HALSIM_GetSPIGetWriteBuffer(aHandle, dataPtr, size);
+}
+
+
+/*
+ * Class:     com_snobot_simulator_jni_SensorFeedbackJni
+ * Method:    setI2CValueForRead
+ * Signature: ([BI)V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setI2CValueForRead
+  (JNIEnv * env, jclass, jint aHandle, jobject data, jint size)
+{
+    uint8_t *dataPtr = nullptr;
+    if (data != 0) {
+        dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
+    }
+
+    HALSIM_SetI2CSetValueForRead(aHandle, dataPtr, size);
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_SensorFeedbackJni
+ * Method:    setI2CLastWrite
+ * Signature: (ILjava/nio/ByteBuffer;I)V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_getI2CLastWrite
+  (JNIEnv * env, jclass, jint aHandle, jobject data, jint size)
+{
+    uint8_t *dataPtr = nullptr;
+    if (data != 0) {
+        dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
+    }
+
+    HALSIM_GetI2CGetWriteBuffer(aHandle, dataPtr, size);
 }
 
 /*

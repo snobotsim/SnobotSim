@@ -10,14 +10,20 @@ import com.snobot.simulator.module_wrapper.EncoderWrapper.DistanceSetterHelper;
 import com.snobot.simulator.module_wrapper.PwmWrapper;
 import com.snobot.simulator.module_wrapper.RelayWrapper;
 import com.snobot.simulator.module_wrapper.SolenoidWrapper;
+import com.snobot.simulator.simulator_components.II2CWrapper;
 import com.snobot.simulator.simulator_components.ISpiWrapper;
+import com.snobot.simulator.simulator_components.components_factory.DefaultI2CSimulatorFactory;
 import com.snobot.simulator.simulator_components.components_factory.DefaultSpiSimulatorFactory;
+import com.snobot.simulator.simulator_components.components_factory.II2cSimulatorFactory;
 import com.snobot.simulator.simulator_components.components_factory.ISpiSimulatorFactory;
 import com.snobot.simulator.simulator_components.gyro.GyroWrapper;
 import com.snobot.simulator.simulator_components.gyro.GyroWrapper.AngleSetterHelper;
 
 public class RegisterCallbacksJni extends BaseSnobotJni
 {
+    public static final ISpiSimulatorFactory sSPI_FACTORY = new DefaultSpiSimulatorFactory();
+    public static final II2cSimulatorFactory sI2C_FACTORY = new DefaultI2CSimulatorFactory();
+
     public static native void reset();
 
     public static native void registerAnalogCallback(String functionName);
@@ -194,17 +200,14 @@ public class RegisterCallbacksJni extends BaseSnobotJni
 
     public static void i2cCallback(String callbackType, int port, HalCallbackValue halValue)
     {
-        if (false)
+        if ("Initialized".equals(callbackType))
         {
-            SensorActuatorRegistry.get().register(new EncoderWrapper(port, new DistanceSetterHelper()
-            {
-
-                @Override
-                public void setDistance(double aDistance)
-                {
-                    SensorFeedbackJni.setEncoderDistance(port, aDistance);
-                }
-            }), port);
+            II2CWrapper wrapper = sI2C_FACTORY.createI2CWrapper(port);
+            SensorActuatorRegistry.get().register(wrapper, port);
+        }
+        else if ("Read".equals(callbackType))
+        {
+            SensorActuatorRegistry.get().getI2CWrapperss().get(port).handleRead();
         }
         else
         {
@@ -279,8 +282,6 @@ public class RegisterCallbacksJni extends BaseSnobotJni
             System.out.println("Unknown Relay callback " + callbackType + " - " + halValue);
         }
     }
-
-    private static final ISpiSimulatorFactory sSPI_FACTORY = new DefaultSpiSimulatorFactory();
 
     public static void spiCallback(String callbackType, int port, HalCallbackValue halValue)
     {

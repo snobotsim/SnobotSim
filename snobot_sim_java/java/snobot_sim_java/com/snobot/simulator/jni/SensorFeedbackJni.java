@@ -19,6 +19,10 @@ public class SensorFeedbackJni extends BaseSnobotJni
 
     public static native void getSpiLastWrite(int aHandle, ByteBuffer aOutputBuffer, int aCopyCount);
 
+    public static native void setI2CValueForRead(int aHandle, ByteBuffer aReadArray, int aCount);
+
+    public static native void getI2CLastWrite(int aHandle, ByteBuffer aOutputBuffer, int aCopyCount);
+
     public static native void setEnabled(boolean aEnabled);
 
     public static native void setAutonomous(boolean aAuton);

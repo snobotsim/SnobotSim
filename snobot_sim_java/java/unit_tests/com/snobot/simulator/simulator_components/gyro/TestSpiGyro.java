@@ -1,20 +1,22 @@
-package com.snobot.simulator.simulator_components;
+package com.snobot.simulator.simulator_components.gyro;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.snobot.simulator.SensorActuatorRegistry;
-import com.snobot.simulator.simulator_components.gyro.GyroWrapper;
+import com.snobot.simulator.jni.RegisterCallbacksJni;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
-public class TestSpiJni extends BaseSimulatorTest
+public class TestSpiGyro extends BaseSimulatorTest
 {
 
     @Test
     public void testSpiGyro()
     {
+        RegisterCallbacksJni.sSPI_FACTORY.setDefaultWrapper(0, SpiGyroWrapper.class);
+
         ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
         GyroWrapper wrapper = SensorActuatorRegistry.get().getGyros().get(100);

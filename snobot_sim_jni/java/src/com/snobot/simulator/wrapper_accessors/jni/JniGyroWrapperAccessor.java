@@ -40,6 +40,13 @@ public class JniGyroWrapperAccessor implements GyroWrapperAccessor
     {
         return GyroWrapperJni.getAngle(aPort);
     }
+
+    @Override
+    public void setAngle(int aPort, double aAngle)
+    {
+        // TODO Auto-generated method stub
+
+    }
     
     @Override
     public void reset(int aPort)

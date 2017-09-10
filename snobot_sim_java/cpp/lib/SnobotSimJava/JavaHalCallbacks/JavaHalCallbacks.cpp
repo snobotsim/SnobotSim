@@ -204,6 +204,7 @@ namespace SnobotSimJava
         {
             gI2CInArrayIndices[i] = i;
             HALSIM_RegisterI2CInitializedCallback(i, &I2CCallback, &gI2CInArrayIndices[i], false);
+            HALSIM_RegisterI2CReadCallback(i, &I2CCallback, &gI2CInArrayIndices[i], false);
         }
 
         for(int i = 0; i < HAL_GetNumPWMChannels(); ++i)

@@ -16,6 +16,12 @@ public class JavaGyroWrapperAccessor extends BaseWrapperAccessor<GyroWrapper> im
     }
 
     @Override
+    public void setAngle(int aPort, double aValue)
+    {
+        getValue(aPort).setAngle(aValue);
+    }
+
+    @Override
     public void reset(int aPort)
     {
 

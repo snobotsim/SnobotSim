@@ -15,5 +15,8 @@ public interface AccelerometerWrapperAccessor
     
     public double getAcceleration(int aPort);
     
+    public void setAcceleration(int aPort, double aAcceleration);
+
     public List<Integer> getPortList();
+
 }

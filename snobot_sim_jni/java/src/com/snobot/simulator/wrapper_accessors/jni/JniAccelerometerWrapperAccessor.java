@@ -39,6 +39,13 @@ public class JniAccelerometerWrapperAccessor implements AccelerometerWrapperAcce
     {
         return AccelerometerWrapperJni.getAcceleration(aPort);
     }
+
+    @Override
+    public void setAcceleration(int aPort, double aAcceleration)
+    {
+        // TODO Auto-generated method stub
+
+    }
     
     @Override
     public List<Integer> getPortList()

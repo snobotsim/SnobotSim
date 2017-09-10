@@ -9,86 +9,54 @@ import com.snobot.simulator.jni.RegisterCallbacksJni;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
-import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.I2C;;
 
-public class TestSpiNavx extends BaseSimulatorTest
+public class TestI2CNavx extends BaseSimulatorTest
 {
 
     @Test
     public void testConstruction() throws InterruptedException
     {
-        for (SPI.Port port : SPI.Port.values())
+        for (I2C.Port port : I2C.Port.values())
         {
-            RegisterCallbacksJni.sSPI_FACTORY.setDefaultWrapper(port.ordinal(), SpiNavxSimulator.class);
+            RegisterCallbacksJni.sI2C_FACTORY.setDefaultWrapper(port.ordinal(), I2CNavxSimulator.class);
         }
 
         // Port = 0
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
         Assert.assertEquals(0, SensorActuatorRegistry.get().getGyros().size());
 
-        new AHRS(SPI.Port.kOnboardCS0);
+        new AHRS(I2C.Port.kOnboard);
         Assert.assertEquals(3, SensorActuatorRegistry.get().getGyros().size());
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(200));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(201));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(202));
+        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(250));
+        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(251));
+        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(252));
 
         // Port = 1
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
         Assert.assertEquals(0, SensorActuatorRegistry.get().getGyros().size());
 
-        new AHRS(SPI.Port.kOnboardCS1);
+        new AHRS(I2C.Port.kMXP);
         Assert.assertEquals(3, SensorActuatorRegistry.get().getGyros().size());
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(203));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(204));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(205));
-
-        // Port = 2
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
-        Assert.assertEquals(0, SensorActuatorRegistry.get().getGyros().size());
-
-        new AHRS(SPI.Port.kOnboardCS2);
-        Assert.assertEquals(3, SensorActuatorRegistry.get().getGyros().size());
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(206));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(207));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(208));
-
-        // Port = 3
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
-        Assert.assertEquals(0, SensorActuatorRegistry.get().getGyros().size());
-
-        new AHRS(SPI.Port.kOnboardCS3);
-        Assert.assertEquals(3, SensorActuatorRegistry.get().getGyros().size());
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(209));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(210));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(211));
-
-        // Port = 4
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
-        Assert.assertEquals(0, SensorActuatorRegistry.get().getGyros().size());
-
-        new AHRS(SPI.Port.kMXP);
-        Assert.assertEquals(3, SensorActuatorRegistry.get().getGyros().size());
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(212));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(213));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(214));
+        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(253));
+        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(254));
+        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(255));
     }
 
     @Test
-    public void testSpiNavx() throws InterruptedException
+    public void testI2CNavx() throws InterruptedException
     {
-        RegisterCallbacksJni.sSPI_FACTORY.setDefaultWrapper(1, SpiNavxSimulator.class);
+        RegisterCallbacksJni.sI2C_FACTORY.setDefaultWrapper(0, I2CNavxSimulator.class);
 
         final int sleepTime = 100;
-        AHRS navx = new AHRS(SPI.Port.kOnboardCS1);
+        AHRS navx = new AHRS(I2C.Port.kOnboard);
         navx.enableLogging(true);
 
-        int yawHandle = 203;
-        int pitchHandle = 204;
-        int rollHandle = 205;
+        int yawHandle = 250;
+        int pitchHandle = 251;
+        int rollHandle = 252;
 
         Assert.assertEquals(3, SensorActuatorRegistry.get().getGyros().size());
-
-        // Thread.sleep(100000);
 
         Thread.sleep(500);
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(yawHandle), DOUBLE_EPSILON);
@@ -102,6 +70,7 @@ public class TestSpiNavx extends BaseSimulatorTest
         DataAccessorFactory.getInstance().getGyroAccessor().setAngle(pitchHandle, -180);
         DataAccessorFactory.getInstance().getGyroAccessor().setAngle(rollHandle, 30);
         Thread.sleep(sleepTime);
+
         Assert.assertEquals(180, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(yawHandle), DOUBLE_EPSILON);
         Assert.assertEquals(-180, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(pitchHandle), DOUBLE_EPSILON);
         Assert.assertEquals(30, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(rollHandle), DOUBLE_EPSILON);
@@ -120,12 +89,5 @@ public class TestSpiNavx extends BaseSimulatorTest
         Assert.assertEquals(179, navx.getYaw(), DOUBLE_EPSILON);
         Assert.assertEquals(-20, navx.getPitch(), DOUBLE_EPSILON);
         Assert.assertEquals(-110, navx.getRoll(), DOUBLE_EPSILON);
-    }
-
-    @Test
-    public void testInvalidAddress()
-    {
-        SpiNavxSimulator sim = new SpiNavxSimulator(0);
-        sim.handleRead();
     }
 }

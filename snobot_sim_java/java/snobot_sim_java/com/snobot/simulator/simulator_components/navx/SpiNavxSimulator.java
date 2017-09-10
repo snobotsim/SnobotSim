@@ -4,33 +4,14 @@ import java.nio.ByteBuffer;
 
 import com.snobot.simulator.jni.SensorFeedbackJni;
 import com.snobot.simulator.simulator_components.ISpiWrapper;
-import com.snobot.simulator.simulator_components.gyro.GyroWrapper;
-import com.snobot.simulator.simulator_components.gyro.GyroWrapper.AngleSetterHelper;
 
 public class SpiNavxSimulator extends NavxSimulator implements ISpiWrapper
 {
-    protected final int mSpiPort;
-    protected byte mLastAddress;
+    public static final int SPI_NAVX_OFFSET = 200;
 
-    private static final GyroWrapper.AngleSetterHelper NULL_ANGLE_SETTER = new AngleSetterHelper()
+    public SpiNavxSimulator(int aSpiPort)
     {
-
-        @Override
-        public void updateAngle(double aAngle)
-        {
-            // Nothing to do, handled by read/write transactions
-        }
-    };
-
-    public SpiNavxSimulator(int aPort)
-    {
-        super(aPort, 
-                new GyroWrapper("NavX Yaw", NULL_ANGLE_SETTER), 
-                new GyroWrapper("NavX Pitch", NULL_ANGLE_SETTER),
-                new GyroWrapper("NavX Roll", NULL_ANGLE_SETTER));
-
-        this.mSpiPort = aPort;
-        mLastAddress = -1;
+        super(aSpiPort, SPI_NAVX_OFFSET);
     }
 
     static final int CRC7_POLY = 0x0091;
@@ -59,39 +40,38 @@ public class SpiNavxSimulator extends NavxSimulator implements ISpiWrapper
     {
 
         ByteBuffer lastWriteValue = ByteBuffer.allocateDirect(4);
-        SensorFeedbackJni.getSpiLastWrite(mSpiPort, lastWriteValue, 4);
+        SensorFeedbackJni.getSpiLastWrite(mNativePort, lastWriteValue, 4);
         lastWriteValue.rewind();
-        mLastAddress = lastWriteValue.get();
-        mLastAddress = 4;
+        int lastWrittenAddress = lastWriteValue.get();
+        lastWrittenAddress = 4;
 
-        ByteBuffer temp = null;
+        ByteBuffer withoutCrc = null;
 
-        if (mLastAddress == 0x00)
+        if (lastWrittenAddress == 0x00)
         {
-            temp = ByteBuffer.allocate(18);
-            putConfig(temp);
-            temp.put(17, getCRC(temp.array(), 17));
+            withoutCrc = createConfigBuffer();
         }
-        else if (mLastAddress == 0x04)
+        else if (lastWrittenAddress == 0x04)
         {
-            temp = ByteBuffer.allocate(85 + 1 - mLastAddress);
-            putData(temp, mLastAddress);
+            withoutCrc = createDataBuffer(lastWrittenAddress);
         }
         else
         {
-            System.err.println("Unknown last write address " + mLastAddress);
+            System.err.println("Unknown last write address " + lastWrittenAddress);
         }
 
-        if (temp != null)
+        if (withoutCrc != null)
         {
-            temp.put(temp.capacity() - 1, getCRC(temp.array(), temp.capacity() - 1));
+            byte[] raw_bytes = new byte[withoutCrc.capacity() + 1];
+            withoutCrc.get(raw_bytes, 0, withoutCrc.capacity());
 
-            // System.out.println("Sending " + Arrays.toString(temp.array()));
-            ByteBuffer toSend = ByteBuffer.allocateDirect(temp.capacity());
-            temp.rewind();
-            toSend.put(temp);
+            byte crc = getCRC(raw_bytes, withoutCrc.capacity());
+            raw_bytes[raw_bytes.length - 1] = crc;
+
+            ByteBuffer toSend = ByteBuffer.allocateDirect(withoutCrc.capacity() + 1);
+            toSend.put(raw_bytes);
             toSend.rewind();
-            SensorFeedbackJni.setSpiValueForRead(mSpiPort, toSend, temp.capacity());
+            SensorFeedbackJni.setSpiValueForRead(mNativePort, toSend, withoutCrc.capacity() + 1);
         }
     }
 }
