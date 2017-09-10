@@ -9,7 +9,7 @@
 #include "SnobotSim/PortUnwrapper.h"
 
 AnalogSourceWrapper::AnalogSourceWrapper(int aPort) :
-        AModuleWrapper("Analog Source" + std::to_string(UnwrapPort(aPort))), mVoltage(0)
+        AModuleWrapper("Analog " + std::to_string(UnwrapPort(aPort))), mVoltage(0)
 {
 
 }

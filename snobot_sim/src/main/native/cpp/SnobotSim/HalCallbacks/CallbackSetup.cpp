@@ -1,6 +1,7 @@
 
 #include "SnobotSim/HalCallbacks/CallbackSetup.h"
 
+#include "SnobotSim/HalCallbacks/AnalogGyroCallbacks.h"
 #include "SnobotSim/HalCallbacks/AnalogIOCallbacks.h"
 #include "SnobotSim/HalCallbacks/DigitalIOCallbacks.h"
 #include "SnobotSim/HalCallbacks/EncoderCallbacks.h"
@@ -12,6 +13,7 @@
 
 void SnobotSim::InitializeSnobotCallbacks()
 {
+    InitializeAnalogGyroCallbacks();
     InitializeAnalogIOCallbacks();
     InitializeDigitalIOCallbacks();
     InitializeEncoderCallbacks();
@@ -22,6 +24,7 @@ void SnobotSim::InitializeSnobotCallbacks()
 
 void SnobotSim::ResetSnobotCallbacks()
 {
+    ResetAnalogGyroCallbacks();
     ResetAnalogIOCallbacks();
     ResetDigitalIOCallbacks();
     ResetEncoderCallbacks();

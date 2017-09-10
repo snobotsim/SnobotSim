@@ -38,7 +38,7 @@ public class BaseSimulatorTest
         if (!INITIALIZED)
         {
             DataAccessorFactory.setAccessor(new JniDataAccessor());
-            SnobotSimulatorJni.initializeLogging(1);
+            SnobotSimulatorJni.initializeLogging(0);
 
             File directory = new File("test_output");
             if (directory.exists())
@@ -50,5 +50,21 @@ public class BaseSimulatorTest
 
         SnobotSimulatorJni.reset();
         RobotBase.initializeHardwareConfiguration();
+    }
+
+    protected void simulateForTime(double aSeconds, Runnable task)
+    {
+        simulateForTime(aSeconds, .02, task);
+    }
+
+    protected void simulateForTime(double aSeconds, double aUpdatePeriod, Runnable aTask)
+    {
+        double update_frequency = 1 / aUpdatePeriod;
+
+        for (int i = 0; i < update_frequency * aSeconds; ++i)
+        {
+            aTask.run();
+            DataAccessorFactory.getInstance().getSimulatorDataAccessor().updateSimulatorComponents(aUpdatePeriod);
+        }
     }
 }

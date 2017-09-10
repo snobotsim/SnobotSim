@@ -5,6 +5,9 @@ import org.gradle.internal.os.OperatingSystem
 
 repositories {
     mavenCentral()
+    maven {
+        url "http://dev.imjac.in/maven/"
+    }
 }
 
 apply plugin: 'cpp'
@@ -91,6 +94,8 @@ dependencies {
     compile 'edu.wpi.first.ntcore:ntcore-java:' + getNtCoreVersion()
     testRuntime 'edu.wpi.first.ntcore:ntcore-jni:' + getNtCoreVersion() + ':all'
     testRuntime combineNativeLibrariesIntoOne.outputs.files
+    
+    testCompile "thirdparty.frc.kauai:Navx-Java:+"
 }
 
 def jniClasses = [
