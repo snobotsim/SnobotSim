@@ -121,7 +121,7 @@ JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_Encoder
     std::shared_ptr<EncoderWrapper> encoder = GetSensorActuatorHelper::GetEncoderWrapper(portHandle);
     if(encoder)
     {
-        encoder->IsHookedUp();
+        return encoder->IsHookedUp();
     }
     return false;
 }

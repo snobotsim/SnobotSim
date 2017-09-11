@@ -62,7 +62,7 @@ void BaseDcMotorSimulator::Reset()
 
 void BaseDcMotorSimulator::Reset(double aPosition, double aVelocity, double aCurrent)
 {
-    mMotorModel.Reset(0, 0, 0);
+    mMotorModel.Reset(aPosition, aVelocity, aCurrent);
 }
 
 double BaseDcMotorSimulator::GetCurrent()

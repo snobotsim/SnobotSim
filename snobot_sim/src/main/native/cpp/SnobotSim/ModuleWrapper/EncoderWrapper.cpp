@@ -7,17 +7,19 @@
 
 #include "SnobotSim/ModuleWrapper/EncoderWrapper.h"
 #include "SnobotSim/PortUnwrapper.h"
+#include "MockData/EncoderData.h"
 
 EncoderWrapper::EncoderWrapper(int aPortA, int aPortB) :
-        EncoderWrapper("Encoder (" + std::to_string(UnwrapPort(aPortA)) + ", " + std::to_string(UnwrapPort(aPortB)) + ")")
+        EncoderWrapper(aPortA, "Encoder (" + std::to_string(UnwrapPort(aPortA)) + ", " + std::to_string(UnwrapPort(aPortB)) + ")")
 {
 
 }
 
-EncoderWrapper::EncoderWrapper(const std::string& aName) :
+EncoderWrapper::EncoderWrapper(int aHandle, const std::string& aName) :
         AModuleWrapper(aName),
         mEncodingFactor(4),
-        mDistancePerTick(1)
+        mDistancePerTick(1),
+        mHandle(aHandle)
 {
 
 }
@@ -54,6 +56,17 @@ double EncoderWrapper::GetDistance()
 }
 
 
+double EncoderWrapper::GetPosition()
+{
+    return GetDistance();
+}
+
+void EncoderWrapper::SetPosition(double aPosition)
+{
+    HALSIM_SetEncoderCount(mHandle, (int) aPosition);
+}
+
+
 double EncoderWrapper::GetVelocity()
 {
     if (mMotorWrapper)
@@ -78,6 +91,7 @@ bool EncoderWrapper::IsHookedUp()
 void EncoderWrapper::SetSpeedController(const std::shared_ptr<SpeedControllerWrapper>& aMotorWrapper)
 {
     mMotorWrapper = aMotorWrapper;
+    mMotorWrapper->SetFeedbackSensor(shared_from_this());
 }
 
 

@@ -7,11 +7,13 @@
 
 #include "SnobotSim/ModuleWrapper/SpeedControllerWrapper.h"
 #include "SnobotSim/PortUnwrapper.h"
+#include <iostream>
 
 SpeedControllerWrapper::SpeedControllerWrapper(int aPort) :
         AModuleWrapper("Speed Controller " + std::to_string(UnwrapPort(aPort))),
         mId(aPort),
-        mMotorSimulator(new NullMotorSimulator)
+        mMotorSimulator(new NullMotorSimulator),
+        mFeedbackSensor(new NullFeedbackSensor)
 {
 
 }
@@ -39,6 +41,17 @@ const std::shared_ptr<IMotorSimulator>& SpeedControllerWrapper::GetMotorSimulato
     return mMotorSimulator;
 }
 
+
+void SpeedControllerWrapper::SetFeedbackSensor(const std::shared_ptr<IFeedbackSensor>& aFeedbackSensor)
+{
+    mFeedbackSensor = aFeedbackSensor;
+}
+
+const std::shared_ptr<IFeedbackSensor>& SpeedControllerWrapper::GetFeedbackSensor()
+{
+    return mFeedbackSensor;
+}
+
 double SpeedControllerWrapper::GetVoltagePercentage()
 {
     return mMotorSimulator->GetVoltagePercentage();
@@ -52,6 +65,8 @@ void SpeedControllerWrapper::SetVoltagePercentage(double aSpeed)
 void SpeedControllerWrapper::Update(double aWaitTime)
 {
     mMotorSimulator->Update(aWaitTime);
+    mFeedbackSensor->SetPosition(GetPosition());
+    std::cout << "Updating... " << aWaitTime << std::endl;
 }
 
 double SpeedControllerWrapper::GetPosition()
@@ -71,7 +86,7 @@ double SpeedControllerWrapper::GetCurrent()
 
 double SpeedControllerWrapper::GetAcceleration()
 {
-    return mMotorSimulator->GetCurrent();
+    return mMotorSimulator->GetAcceleration();
 }
 
 void SpeedControllerWrapper::Reset()

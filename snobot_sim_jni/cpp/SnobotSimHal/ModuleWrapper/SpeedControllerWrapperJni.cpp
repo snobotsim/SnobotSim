@@ -154,6 +154,14 @@ JNIEXPORT jint JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedContro
     {
         return 2;
     }
+    else if(type == "Rotational Load")
+    {
+        return 3;
+    }
+    else if(type == "Gravity Load")
+    {
+        return 4;
+    }
     else
     {
         SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown motor sim type " << type);
@@ -299,6 +307,7 @@ JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedCon
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_reset
   (JNIEnv *, jclass, jint portHandle, jdouble aPosition, jdouble aVelocity, jdouble aCurrent)
 {
+    SNOBOT_LOG(SnobotLogging::WARN, "Resetting... " << aPosition << ", " << aVelocity << ", " << aCurrent)
     return SensorActuatorRegistry::Get().GetSpeedControllerWrapper(portHandle)->Reset(aPosition, aVelocity, aCurrent);
 }
 

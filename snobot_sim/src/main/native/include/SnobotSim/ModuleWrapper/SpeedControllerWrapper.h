@@ -10,6 +10,7 @@
 
 #include <memory>
 #include "SnobotSim/MotorSim/IMotorSimulator.h"
+#include "SnobotSim/SimulatorComponents/IFeedbackSensor.h"
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 
 class EXPORT_ SpeedControllerWrapper: public AModuleWrapper
@@ -23,6 +24,10 @@ public:
     virtual void SetMotorSimulator(const std::shared_ptr<IMotorSimulator>& aSimulator);
 
     virtual const std::shared_ptr<IMotorSimulator>& GetMotorSimulator();
+
+    virtual void SetFeedbackSensor(const std::shared_ptr<IFeedbackSensor>& aSimulator);
+
+    virtual const std::shared_ptr<IFeedbackSensor>& GetFeedbackSensor();
 
     virtual double GetVoltagePercentage();
 
@@ -46,6 +51,7 @@ protected:
 
     int mId;
     std::shared_ptr<IMotorSimulator> mMotorSimulator;
+    std::shared_ptr<IFeedbackSensor> mFeedbackSensor;
 
 };
 

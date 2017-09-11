@@ -130,7 +130,7 @@ JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_
 
     SensorActuatorRegistry::Get().AddSimulatorComponent(simulator);
 
-    return false;
+    return leftEncoder && rightEncoder && gyro;
 }
 
 }

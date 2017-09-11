@@ -33,6 +33,7 @@ void DcMotorModel::Reset(double aPosition, double aVelocity, double aCurrent)
     mPosition = aPosition;
     mVelocity = aVelocity;
     mCurrent = aCurrent;
+    mAcceleration = 0;
 }
 
 void DcMotorModel::Step(double aAppliedVoltage, double aLoad, double aExternalTorque, double aTimestep)
