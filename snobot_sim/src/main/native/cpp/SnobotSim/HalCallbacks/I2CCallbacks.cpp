@@ -6,37 +6,31 @@
  */
 
 #include "SnobotSim/HalCallbacks/I2CCallbacks.h"
-#include "SnobotSim/SimulatorComponents/II2CWrapper.h"
-#include "SnobotSim/SimulatorComponents/navx/I2CNavxSimulator.h"
+#include "SnobotSim/SimulatorComponents/I2C/II2CWrapper.h"
+#include "SnobotSim/SimulatorComponents/I2C/I2CWrapperFactory.h"
 #include "MockData/I2CData.h"
 
 #include "SnobotSim/SensorActuatorRegistry.h"
-#include "SnobotSim/GetSensorActuatorHelper.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
+
 
 
 void I2CCallback(const char* name, void* param, const struct HAL_Value* value)
 {
+    static I2CWrapperFactory gI2CWrapperFactory;
+
     std::string nameStr = name;
     int port = *((int*) param);
 
     if ("Initialized" == nameStr)
     {
-//        std::shared_ptr<II2CWrapper> i2cWrapper(new NullI2CWrapper);
-        std::shared_ptr<II2CWrapper> i2cWrapper(new I2CNavxSimulator(port));
+        std::shared_ptr<II2CWrapper> i2cWrapper = gI2CWrapperFactory.GetI2CWrapper(port);
         SensorActuatorRegistry::Get().Register(port, i2cWrapper);
     }
     else if ("Read" == nameStr)
     {
-        std::shared_ptr<II2CWrapper> i2cWrapper = GetSensorActuatorHelper::GetII2CWrapper(port);
-        if(i2cWrapper)
-        {
-            i2cWrapper->HandleRead();
-        }
-        else
-        {
-//            SNOBOT_LOG(SnobotLogging::WARN, "I2C not set up on " << port);
-        }
+        std::shared_ptr<II2CWrapper> i2cWrapper = gI2CWrapperFactory.GetI2CWrapper(port);
+        i2cWrapper->HandleRead();
     }
     else
     {

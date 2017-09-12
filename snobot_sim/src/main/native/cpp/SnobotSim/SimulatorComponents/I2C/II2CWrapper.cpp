@@ -5,7 +5,7 @@
  *      Author: preiniger
  */
 
-#include "SnobotSim/SimulatorComponents/II2CWrapper.h"
+#include "SnobotSim/SimulatorComponents/I2C/II2CWrapper.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
 
 

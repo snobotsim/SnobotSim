@@ -26,7 +26,8 @@ public class LocalDcMotorModelConfig
             double aKt, double aKv, double aResistance)
     {
         DcMotorModelConfig.FactoryParams factoryParams = new FactoryParams(aMotorType, aNumMotors, aGearReduction, aGearboxEfficiency);
-        DcMotorModelConfig.MotorParams motorParams = new MotorParams(aNominalVoltage, aFreeSpeedRpm, aFreeCurrent, aStallTorque, aStallCurrent);
+        DcMotorModelConfig.MotorParams motorParams = new MotorParams(aNominalVoltage, aFreeSpeedRpm, aFreeCurrent, aStallTorque, aStallCurrent,
+                aMotorInertia, aKt, aKv, aResistance);
 
         mConfig = new DcMotorModelConfig(factoryParams, motorParams, aHasBrake, aInverted);
     }
@@ -39,6 +40,12 @@ public class LocalDcMotorModelConfig
     public DcMotorModelConfig getConfig()
     {
         return mConfig;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "LocalDcMotorModelConfig [mConfig=" + mConfig + "]";
     }
 
 }

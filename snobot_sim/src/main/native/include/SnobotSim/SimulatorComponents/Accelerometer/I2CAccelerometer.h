@@ -9,7 +9,7 @@
 #define SRC_I2CAccelerometer_H_
 
 #include "SnobotSim/SimulatorComponents/Accelerometer/ThreeAxisAccelerometer.h"
-#include "SnobotSim/SimulatorComponents/II2CWrapper.h"
+#include "SnobotSim/SimulatorComponents/I2C/II2CWrapper.h"
 
 class EXPORT_ I2CAccelerometer : public II2CWrapper
 {

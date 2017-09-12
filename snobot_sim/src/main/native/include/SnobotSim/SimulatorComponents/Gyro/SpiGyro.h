@@ -10,7 +10,7 @@
 
 #include "SnobotSim/ExportHelper.h"
 #include "SnobotSim/SimulatorComponents/Gyro/GyroWrapper.h"
-#include "SnobotSim/SimulatorComponents/ISpiWrapper.h"
+#include "SnobotSim/SimulatorComponents/Spi/ISpiWrapper.h"
 #include <memory>
 
 class EXPORT_ SpiGyro: public GyroWrapper, public ISpiWrapper

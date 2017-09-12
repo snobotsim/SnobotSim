@@ -50,6 +50,7 @@ public class JniSpeedControllerWrapperAccessor implements SpeedControllerWrapper
     public DcMotorModelConfig getMotorConfig(int aPort)
     {
         LocalDcMotorModelConfig config = SpeedControllerWrapperJni.getMotorConfig(aPort);
+        System.out.println(config);
         return config == null ? null : config.getConfig();
     }
 

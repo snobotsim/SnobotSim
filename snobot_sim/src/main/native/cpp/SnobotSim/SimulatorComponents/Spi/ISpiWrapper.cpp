@@ -5,7 +5,7 @@
  *      Author: preiniger
  */
 
-#include "SnobotSim/SimulatorComponents/ISpiWrapper.h"
+#include "SnobotSim/SimulatorComponents/Spi/ISpiWrapper.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
 
 void NullSpiWrapper::HandleRead()

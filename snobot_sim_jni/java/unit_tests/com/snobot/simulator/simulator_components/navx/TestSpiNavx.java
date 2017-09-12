@@ -12,59 +12,69 @@ import edu.wpi.first.wpilibj.SPI;
 public class TestSpiNavx extends BaseSimulatorTest
 {
 
-    @Test
-    public void testConstruction() throws InterruptedException
-    {
-        // Port = 0
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
-        Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
-
-        new AHRS(SPI.Port.kOnboardCS0);
-        Assert.assertEquals(3, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(200));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(201));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(202));
-
-        // Port = 1
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
-        Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
-
-        new AHRS(SPI.Port.kOnboardCS1);
-        Assert.assertEquals(3, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(203));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(204));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(205));
-
-        // Port = 2
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
-        Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
-
-        new AHRS(SPI.Port.kOnboardCS2);
-        Assert.assertEquals(3, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(206));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(207));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(208));
-
-        // Port = 3
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
-        Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
-
-        new AHRS(SPI.Port.kOnboardCS3);
-        Assert.assertEquals(3, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(209));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(210));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(211));
-
-        // Port = 4
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
-        Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
-
-        new AHRS(SPI.Port.kMXP);
-        Assert.assertEquals(3, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(212));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(213));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(214));
-    }
+    // @Test
+    // public void testConstruction() throws InterruptedException
+    // {
+    // // Port = 0
+    // DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
+    // Assert.assertEquals(0,
+    // DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
+    //
+    // new AHRS(SPI.Port.kOnboardCS0);
+    // Assert.assertEquals(3,
+    // DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
+    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(200));
+    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(201));
+    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(202));
+    //
+    // // Port = 1
+    // DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
+    // Assert.assertEquals(0,
+    // DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
+    //
+    // new AHRS(SPI.Port.kOnboardCS1);
+    // Assert.assertEquals(3,
+    // DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
+    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(203));
+    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(204));
+    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(205));
+    //
+    // // Port = 2
+    // DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
+    // Assert.assertEquals(0,
+    // DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
+    //
+    // new AHRS(SPI.Port.kOnboardCS2);
+    // Assert.assertEquals(3,
+    // DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
+    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(206));
+    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(207));
+    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(208));
+    //
+    // // Port = 3
+    // DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
+    // Assert.assertEquals(0,
+    // DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
+    //
+    // new AHRS(SPI.Port.kOnboardCS3);
+    // Assert.assertEquals(3,
+    // DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
+    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(209));
+    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(210));
+    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(211));
+    //
+    // // Port = 4
+    // DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
+    // Assert.assertEquals(0,
+    // DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
+    //
+    // new AHRS(SPI.Port.kMXP);
+    // Assert.assertEquals(3,
+    // DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
+    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(212));
+    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(213));
+    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(214));
+    // }
 
     @Test
     public void testSpiNavx() throws InterruptedException

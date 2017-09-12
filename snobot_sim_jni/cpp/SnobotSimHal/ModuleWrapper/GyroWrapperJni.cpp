@@ -76,6 +76,17 @@ JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrap
 
 /*
  * Class:     com_snobot_simulator_jni_module_wrapper_GyroWrapperJni
+ * Method:    setAngle
+ * Signature: (ID)V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_setAngle
+  (JNIEnv *, jclass, jint aPortHandle, jdouble aAngle)
+{
+    SensorActuatorRegistry::Get().GetGyroWrapper(aPortHandle)->SetAngle(aAngle);
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_module_wrapper_GyroWrapperJni
  * Method:    reset
  * Signature: (I)D
  */

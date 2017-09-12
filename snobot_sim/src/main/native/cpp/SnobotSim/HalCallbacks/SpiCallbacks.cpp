@@ -6,10 +6,8 @@
  */
 
 #include "SnobotSim/HalCallbacks/SpiCallbacks.h"
-#include "SnobotSim/SimulatorComponents/ISpiWrapper.h"
-#include "SnobotSim/SimulatorComponents/Gyro/SpiGyro.h"
-#include "SnobotSim/SimulatorComponents/Accelerometer/SpiAccelerometer.h"
-#include "SnobotSim/SimulatorComponents/navx/SpiNavxSimulator.h"
+#include "SnobotSim/SimulatorComponents/Spi/ISpiWrapper.h"
+#include "SnobotSim/SimulatorComponents/Spi/SpiWrapperFactory.h"
 #include "MockData/SPIData.h"
 
 #include "SnobotSim/SensorActuatorRegistry.h"
@@ -19,31 +17,20 @@
 
 void SpiCallback(const char* name, void* param, const struct HAL_Value* value)
 {
+    static SpiWrapperFactory gSpiWrapperFactory;
+
     std::string nameStr = name;
     int port = *((int*) param);
 
     if ("Initialized" == nameStr)
     {
-        SNOBOT_LOG(SnobotLogging::WARN, "Initializing name " << nameStr);
-//        std::shared_ptr<ISpiWrapper> spiWrapper(new NullSpiWrapper);
-//        std::shared_ptr<ISpiWrapper> spiWrapper(new SpiNavxSimulator(port));
-//        SensorActuatorRegistry::Get().Register(port, spiWrapper);
-
-        std::shared_ptr<SpiGyro> spiGyro(new SpiGyro(port));
-        SensorActuatorRegistry::Get().Register(port + 100, std::shared_ptr<GyroWrapper>(spiGyro));
-        SensorActuatorRegistry::Get().Register(port, std::shared_ptr<ISpiWrapper>(spiGyro));
+        std::shared_ptr<ISpiWrapper> spiWrapper = gSpiWrapperFactory.GetSpiWrapper(port);
+        SensorActuatorRegistry::Get().Register(port, spiWrapper);
     }
     else if ("Read" == nameStr)
     {
-        std::shared_ptr<ISpiWrapper> spiWrapper = GetSensorActuatorHelper::GetISpiWrapper(port);
-        if(spiWrapper)
-        {
-            spiWrapper->HandleRead();
-        }
-        else
-        {
-//            SNOBOT_LOG(SnobotLogging::WARN, "SPI not set up on " << port);
-        }
+        std::shared_ptr<ISpiWrapper> spiWrapper = gSpiWrapperFactory.GetSpiWrapper(port);
+        spiWrapper->HandleRead();
     }
     else
     {

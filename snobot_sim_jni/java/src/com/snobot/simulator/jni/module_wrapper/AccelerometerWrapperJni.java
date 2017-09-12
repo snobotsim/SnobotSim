@@ -20,6 +20,9 @@ public class AccelerometerWrapperJni extends BaseSimulatorJni
     public static native boolean getWantsHidden(int aPort);
     
     public static native double getAcceleration(int aPort);
+
+    public static native void setAcceleration(int aPort, double aAcceleration);
     
     public static native int[] getPortList();
+
 }

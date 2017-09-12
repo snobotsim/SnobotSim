@@ -14,16 +14,17 @@ import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
 public class TestSpiAccelerometer extends BaseSimulatorTest
 {
     @Test
-    public void testADXL345_I2C()
+    public void testADXL345_SPI()
     {
-        ADXL345_SPI accel = new ADXL345_SPI(SPI.Port.kOnboardCS0, Range.k2G);
+        ADXL345_SPI accel = new ADXL345_SPI(SPI.Port.kOnboardCS2, Range.k2G);
         AllAxes axes = null;
 
-        int xHandle = 0;
-        int yHandle = 1;
-        int zHandle = 2;
+        int xHandle = 151;
+        int yHandle = 152;
+        int zHandle = 153;
 
         Assert.assertEquals(3, DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().size());
+        System.out.println(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList());
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(xHandle));
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(yHandle));
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(zHandle));

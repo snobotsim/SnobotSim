@@ -12,29 +12,33 @@ import edu.wpi.first.wpilibj.I2C;;
 public class TestI2CNavx extends BaseSimulatorTest
 {
 
-    @Test
-    public void testConstruction() throws InterruptedException
-    {
-        // Port = 0
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
-        Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
-
-        new AHRS(I2C.Port.kOnboard);
-        Assert.assertEquals(3, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(250));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(251));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(252));
-
-        // Port = 1
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
-        Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
-
-        new AHRS(I2C.Port.kMXP);
-        Assert.assertEquals(3, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(253));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(254));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(255));
-    }
+    // @Test
+    // public void testConstruction() throws InterruptedException
+    // {
+    // // Port = 0
+    // DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
+    // Assert.assertEquals(0,
+    // DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
+    //
+    // new AHRS(I2C.Port.kOnboard);
+    // Assert.assertEquals(3,
+    // DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
+    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(250));
+    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(251));
+    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(252));
+    //
+    // // Port = 1
+    // DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
+    // Assert.assertEquals(0,
+    // DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
+    //
+    // new AHRS(I2C.Port.kMXP);
+    // Assert.assertEquals(3,
+    // DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
+    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(253));
+    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(254));
+    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(255));
+    // }
 
     @Test
     public void testI2CNavx() throws InterruptedException

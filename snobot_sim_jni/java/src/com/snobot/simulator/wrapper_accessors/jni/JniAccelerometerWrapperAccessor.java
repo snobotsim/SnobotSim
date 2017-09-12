@@ -43,7 +43,7 @@ public class JniAccelerometerWrapperAccessor implements AccelerometerWrapperAcce
     @Override
     public void setAcceleration(int aPort, double aAcceleration)
     {
-        throw new UnsupportedOperationException();
+        AccelerometerWrapperJni.setAcceleration(aPort, aAcceleration);
     }
     
     @Override

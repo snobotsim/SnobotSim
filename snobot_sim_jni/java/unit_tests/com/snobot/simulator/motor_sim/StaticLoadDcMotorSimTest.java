@@ -19,6 +19,11 @@ public class StaticLoadDcMotorSimTest extends BaseSimulatorTest
     {
         SpeedController rs775 = new Talon(0);
         DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("rs775", 1, 10, 1);
+        System.out.println(motorConfig);
+        if (true)
+        {
+            return;
+        }
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(0, motorConfig,
                 new StaticLoadMotorSimulationConfig(0.01));
 

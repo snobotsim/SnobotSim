@@ -8,7 +8,7 @@
 #ifndef SPINAVXSIMULATOR_H_
 #define SPINAVXSIMULATOR_H_
 
-#include "SnobotSim/SimulatorComponents/ISpiWrapper.h"
+#include "SnobotSim/SimulatorComponents/Spi/ISpiWrapper.h"
 #include "SnobotSim/SimulatorComponents/navx/NavxSimulator.h"
 
 class EXPORT_ SpiNavxSimulator : public ISpiWrapper, public NavxSimulator

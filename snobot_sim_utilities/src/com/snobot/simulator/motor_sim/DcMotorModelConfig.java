@@ -16,6 +16,14 @@ public class DcMotorModelConfig
             mGearReduction = aGearReduction;
             mGearboxEfficiency = aGearboxEfficiency;
         }
+
+        @Override
+        public String toString()
+        {
+            return "FactoryParams [mMotorType=" + mMotorType + ", mNumMotors=" + mNumMotors + ", mGearReduction=" + mGearReduction
+                    + ", mGearboxEfficiency=" + mGearboxEfficiency + "]";
+        }
+
     }
 
     public static class MotorParams
@@ -94,6 +102,15 @@ public class DcMotorModelConfig
         {
             return NOMINAL_VOLTAGE / STALL_CURRENT;
         }
+
+        @Override
+        public String toString()
+        {
+            return "MotorParams [NOMINAL_VOLTAGE=" + NOMINAL_VOLTAGE + ", FREE_SPEED_RPM=" + FREE_SPEED_RPM + ", FREE_CURRENT=" + FREE_CURRENT
+                    + ", STALL_TORQUE=" + STALL_TORQUE + ", STALL_CURRENT=" + STALL_CURRENT + ", MOTOR_INERTIA=" + MOTOR_INERTIA + ", mKT=" + mKT
+                    + ", mKV=" + mKV + ", mResistance=" + mResistance + "]";
+        }
+
     }
 
     public final FactoryParams mFactoryParams;
@@ -127,4 +144,12 @@ public class DcMotorModelConfig
     {
         mHasBrake = aHasBrake;
     }
+
+    @Override
+    public String toString()
+    {
+        return "DcMotorModelConfig [mFactoryParams=" + mFactoryParams + ", mMotorParams=" + mMotorParams + ", mInverted=" + mInverted + ", mHasBrake="
+                + mHasBrake + "]";
+    }
+
 }

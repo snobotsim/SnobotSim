@@ -8,7 +8,7 @@
 #ifndef I2CNAVXSIMULATOR_H_
 #define I2CNAVXSIMULATOR_H_
 
-#include "SnobotSim/SimulatorComponents/II2CWrapper.h"
+#include "SnobotSim/SimulatorComponents/I2C/II2CWrapper.h"
 #include "SnobotSim/SimulatorComponents/navx/NavxSimulator.h"
 
 class EXPORT_ I2CNavxSimulator : public II2CWrapper, public NavxSimulator

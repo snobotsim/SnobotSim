@@ -71,6 +71,17 @@ JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_Accelero
 
 /*
  * Class:     com_snobot_simulator_jni_module_wrapper_AccelerometerWrapperJni
+ * Method:    setAcceleration
+ * Signature: (ID)V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_AccelerometerWrapperJni_setAcceleration
+  (JNIEnv *, jclass, jint aPortHandle, jdouble aAccel)
+{
+    return SensorActuatorRegistry::Get().GetAccelerometerWrapper(aPortHandle)->SetAcceleration(aAccel);
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_module_wrapper_AccelerometerWrapperJni
  * Method:    getPortList
  * Signature: ()[I
  */
