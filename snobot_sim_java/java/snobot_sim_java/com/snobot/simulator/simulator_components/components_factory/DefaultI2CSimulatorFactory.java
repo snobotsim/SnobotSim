@@ -1,16 +1,17 @@
 package com.snobot.simulator.simulator_components.components_factory;
 
-import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.snobot.simulator.simulator_components.II2CWrapper;
+import com.snobot.simulator.simulator_components.accelerometer.ADXL345_I2CAcceleratometer;
+import com.snobot.simulator.simulator_components.navx.I2CNavxSimulator;
 
 public class DefaultI2CSimulatorFactory implements II2cSimulatorFactory
 {
-    protected Map<Integer, Class<? extends II2CWrapper>> mDefaults;
+    protected Map<Integer, String> mDefaults;
 
     public DefaultI2CSimulatorFactory()
     {
@@ -24,16 +25,7 @@ public class DefaultI2CSimulatorFactory implements II2cSimulatorFactory
 
         if (mDefaults.containsKey(aPort))
         {
-            try
-            {
-                Class<? extends II2CWrapper> clazz = mDefaults.get(aPort);
-                Constructor<? extends II2CWrapper> constr = clazz.getConstructor(int.class);
-                output = constr.newInstance(aPort);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
+            output = createWrapper(aPort, mDefaults.get(aPort));
         }
 
         if (output == null)
@@ -45,15 +37,30 @@ public class DefaultI2CSimulatorFactory implements II2cSimulatorFactory
     }
 
     @Override
-    public void setDefaultWrapper(int aPort, Class<? extends II2CWrapper> aClass)
+    public void setDefaultWrapper(int aPort, String aType)
     {
-        mDefaults.put(aPort, aClass);
+        System.out.println("Setting I2C default for port " + aPort + " to " + aType);
+        mDefaults.put(aPort, aType);
     }
 
     @Override
-    public Collection<Class<? extends II2CWrapper>> getAvailableClassTypes()
+    public Collection<String> getAvailableClassTypes()
     {
-        return Arrays.asList();
+        return Arrays.asList("NavX", "ADXL345");
+    }
+
+    private II2CWrapper createWrapper(int aPort, String aType)
+    {
+        if ("NavX".equals(aType))
+        {
+            return new I2CNavxSimulator(aPort);
+        }
+        if ("ADXL345".equals(aType))
+        {
+            return new ADXL345_I2CAcceleratometer(aPort);
+        }
+
+        return null;
     }
 
 }

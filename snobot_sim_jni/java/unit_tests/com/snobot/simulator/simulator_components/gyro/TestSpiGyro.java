@@ -14,6 +14,7 @@ public class TestSpiGyro extends BaseSimulatorTest
     @Test
     public void testSpiGyro()
     {
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(0, "ADXRS450");
         ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
         int gyroHandle = 100;

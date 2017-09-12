@@ -7,23 +7,38 @@
 
 #include "SnobotSim/SimulatorComponents/I2C/I2CWrapperFactory.h"
 #include "SnobotSim/SimulatorComponents/navx/I2CNavxSimulator.h"
-#include "SnobotSim/SimulatorComponents/Accelerometer/I2CAccelerometer.h"
+#include "SnobotSim/SimulatorComponents/Accelerometer/ADXL345_I2CAccelerometer.h"
 #include "SnobotSim/GetSensorActuatorHelper.h"
 
-#include <iostream>
+const std::string I2CWrapperFactory::I2C_ACCELEROMETER_NAME = "ADXL345";
+const std::string I2CWrapperFactory::NAVX = "NavX";
 
-const std::string I2CWrapperFactory::I2C_ACCELEROMETER_NAME = "I2C Accelerometer";
-const std::string I2CWrapperFactory::NAVX = "I2C NavX";
+I2CWrapperFactory I2CWrapperFactory::sINSTANCE;
 
 I2CWrapperFactory::I2CWrapperFactory()
 {
-    mDefaultsMap[0] = NAVX;
-    mDefaultsMap[1] = I2C_ACCELEROMETER_NAME;
+
 }
 
 I2CWrapperFactory::~I2CWrapperFactory()
 {
 
+}
+
+I2CWrapperFactory& I2CWrapperFactory::Get()
+{
+    return sINSTANCE;
+}
+
+void I2CWrapperFactory::RegisterDefaultWrapperType(int aPort, const std::string& aWrapperType)
+{
+    SNOBOT_LOG(SnobotLogging::DEBUG, "Setting default for port " << aPort << " to '" << aWrapperType);
+    mDefaultsMap[aPort] = aWrapperType;
+}
+
+void I2CWrapperFactory::ResetDefaults()
+{
+    mDefaultsMap.clear();
 }
 
 std::shared_ptr<II2CWrapper> I2CWrapperFactory::GetI2CWrapper(int aPort)
@@ -44,7 +59,7 @@ std::shared_ptr<II2CWrapper> I2CWrapperFactory::GetI2CWrapper(int aPort)
         }
         else
         {
-            SNOBOT_LOG(SnobotLogging::CRITICAL, "No default specified, using null wrapper");
+            SNOBOT_LOG(SnobotLogging::CRITICAL, "No default specified for " << aPort << " using null wrapper");
             i2cWrapper = std::shared_ptr<II2CWrapper>(new NullI2CWrapper);
         }
     }
@@ -61,7 +76,7 @@ std::shared_ptr<II2CWrapper> I2CWrapperFactory::CreateWrapper(int aPort, const s
 
     if(aType == I2C_ACCELEROMETER_NAME)
     {
-        return std::shared_ptr<II2CWrapper>(new I2CAccelerometer(aPort, ""));
+        return std::shared_ptr<II2CWrapper>(new ADXL345_I2CAccelerometer(aPort, ""));
     }
 
     SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown simulator type '" << aType << "', defaulting to null");

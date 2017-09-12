@@ -13,11 +13,11 @@
 #include "SnobotSim/SimulatorComponents/Spi/ISpiWrapper.h"
 #include <memory>
 
-class EXPORT_ SpiGyro: public GyroWrapper, public ISpiWrapper
+class EXPORT_ ADXRS450_SpiGyro: public GyroWrapper, public ISpiWrapper
 {
 public:
-    SpiGyro(int aSpiPort);
-    virtual ~SpiGyro();
+    ADXRS450_SpiGyro(int aSpiPort);
+    virtual ~ADXRS450_SpiGyro();
 
     void HandleRead() override;
 

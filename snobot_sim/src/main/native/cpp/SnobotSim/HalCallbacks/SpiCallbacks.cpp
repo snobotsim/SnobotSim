@@ -17,19 +17,17 @@
 
 void SpiCallback(const char* name, void* param, const struct HAL_Value* value)
 {
-    static SpiWrapperFactory gSpiWrapperFactory;
-
     std::string nameStr = name;
     int port = *((int*) param);
 
     if ("Initialized" == nameStr)
     {
-        std::shared_ptr<ISpiWrapper> spiWrapper = gSpiWrapperFactory.GetSpiWrapper(port);
+        std::shared_ptr<ISpiWrapper> spiWrapper = SpiWrapperFactory::Get().GetSpiWrapper(port);
         SensorActuatorRegistry::Get().Register(port, spiWrapper);
     }
     else if ("Read" == nameStr)
     {
-        std::shared_ptr<ISpiWrapper> spiWrapper = gSpiWrapperFactory.GetSpiWrapper(port);
+        std::shared_ptr<ISpiWrapper> spiWrapper = SpiWrapperFactory::Get().GetSpiWrapper(port);
         spiWrapper->HandleRead();
     }
     else

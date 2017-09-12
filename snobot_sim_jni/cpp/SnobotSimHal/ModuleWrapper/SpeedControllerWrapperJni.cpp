@@ -301,6 +301,53 @@ JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedCon
 
 /*
  * Class:     com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni
+ * Method:    getMotorSimRotationalModelConfig_armCenterOfMass
+ * Signature: (I)D
+ */
+JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_getMotorSimRotationalModelConfig_1armCenterOfMass
+  (JNIEnv *, jclass, jint aPortHandle)
+{
+    const std::shared_ptr<IMotorSimulator>& motorSim =
+            SensorActuatorRegistry::Get().GetSpeedControllerWrapper(aPortHandle)->GetMotorSimulator();
+    const std::shared_ptr<RotationalLoadDcMotorSim>& castMotorSim = std::dynamic_pointer_cast<RotationalLoadDcMotorSim>(motorSim);
+    if(castMotorSim)
+    {
+        return castMotorSim->GetArmCenterOfMass();
+    }
+    else
+    {
+        SNOBOT_LOG(SnobotLogging::DEBUG, "Could not cast motor sim to desired type ");
+    }
+
+    return 0;
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni
+ * Method:    getMotorSimRotationalModelConfig_armMass
+ * Signature: (I)D
+ */
+JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_getMotorSimRotationalModelConfig_1armMass
+  (JNIEnv *, jclass, jint aPortHandle)
+{
+    const std::shared_ptr<IMotorSimulator>& motorSim =
+            SensorActuatorRegistry::Get().GetSpeedControllerWrapper(aPortHandle)->GetMotorSimulator();
+    const std::shared_ptr<RotationalLoadDcMotorSim>& castMotorSim = std::dynamic_pointer_cast<RotationalLoadDcMotorSim>(motorSim);
+    if(castMotorSim)
+    {
+        return castMotorSim->GetArmMass();
+    }
+    else
+    {
+        SNOBOT_LOG(SnobotLogging::DEBUG, "Could not cast motor sim to desired type ");
+    }
+
+    return 0;
+}
+
+
+/*
+ * Class:     com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni
  * Method:    reset
  * Signature: (IDDD)V
  */

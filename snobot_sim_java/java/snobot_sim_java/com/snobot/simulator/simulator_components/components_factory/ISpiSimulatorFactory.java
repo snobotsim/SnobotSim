@@ -8,7 +8,7 @@ public interface ISpiSimulatorFactory
 {
     public ISpiWrapper createSpiWrapper(int aPort);
 
-    public void setDefaultWrapper(int aPort, Class<? extends ISpiWrapper> aClass);
+    public void setDefaultWrapper(int aPort, String aType);
 
-    public Collection<Class<? extends ISpiWrapper>> getAvailableClassTypes();
+    public Collection<String> getAvailableClassTypes();
 }

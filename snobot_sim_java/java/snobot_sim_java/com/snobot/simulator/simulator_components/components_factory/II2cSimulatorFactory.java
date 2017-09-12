@@ -8,7 +8,7 @@ public interface II2cSimulatorFactory
 {
     public II2CWrapper createI2CWrapper(int aPort);
 
-    public void setDefaultWrapper(int aPort, Class<? extends II2CWrapper> aClass);
+    public void setDefaultWrapper(int aPort, String aType);
 
-    public Collection<Class<? extends II2CWrapper>> getAvailableClassTypes();
+    public Collection<String> getAvailableClassTypes();
 }

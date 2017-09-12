@@ -1,21 +1,21 @@
 /*
- * SpiAccelerometer.h
+ * ADXL362_SpiAccelerometer.h
  *
  *  Created on: Jul 12, 2017
  *      Author: preiniger
  */
 
-#ifndef SRC_SPIACCELEROMETER_H_
-#define SRC_SPIACCELEROMETER_H_
+#ifndef SRC_ADXL362_SPIACCELEROMETER_H_
+#define SRC_ADXL362_SPIACCELEROMETER_H_
 
 #include "SnobotSim/SimulatorComponents/Accelerometer/ThreeAxisAccelerometer.h"
 #include "SnobotSim/SimulatorComponents/Spi/ISpiWrapper.h"
 
-class EXPORT_ SpiAccelerometer: public ISpiWrapper
+class EXPORT_ ADXL362_SpiAccelerometer: public ISpiWrapper
 {
 public:
-    SpiAccelerometer(int aPort, const std::string& aBaseName);
-    virtual ~SpiAccelerometer();
+    ADXL362_SpiAccelerometer(int aPort, const std::string& aBaseName);
+    virtual ~ADXL362_SpiAccelerometer();
 
     virtual void HandleRead() override;
 
@@ -24,7 +24,6 @@ protected:
     ThreeAxisAccelerometer mThreeAxisAccelerometer;
 
     const int mSpiPort;
-    int mLastRegisterRequest;
 };
 
-#endif /* SRC_SPIACCELEROMETER_H_ */
+#endif /* SRC_ADXL362_SpiAccelerometer_H_ */

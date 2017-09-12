@@ -1,26 +1,26 @@
 /*
- * SpiGyro.cpp
+ * ADXRS450_SpiGyro.cpp
  *
  *  Created on: May 7, 2017
  *      Author: PJ
  */
 
-#include "SnobotSim/SimulatorComponents/Gyro/SpiGyro.h"
+#include "SnobotSim/SimulatorComponents/Gyro/ADXRS450_SpiGyro.h"
 #include "MockData/SPIData.h"
 
-SpiGyro::SpiGyro(int aSpiPort):
+ADXRS450_SpiGyro::ADXRS450_SpiGyro(int aSpiPort):
     GyroWrapper("Spi Gyro"),
     mSpiPort(aSpiPort)
 {
 }
 
-SpiGyro::~SpiGyro()
+ADXRS450_SpiGyro::~ADXRS450_SpiGyro()
 {
 
 }
 
 
-void SpiGyro::HandleRead()
+void ADXRS450_SpiGyro::HandleRead()
 {
     uint8_t buffer[4];
     uint32_t numToPut = 0x00400AE0;
@@ -29,7 +29,7 @@ void SpiGyro::HandleRead()
     HALSIM_SetSPISetValueForRead(mSpiPort, buffer, sizeof(numToPut));
 }
 
-void SpiGyro::SetAngle(double aAngle)
+void ADXRS450_SpiGyro::SetAngle(double aAngle)
 {
     GyroWrapper::SetAngle(aAngle);
 

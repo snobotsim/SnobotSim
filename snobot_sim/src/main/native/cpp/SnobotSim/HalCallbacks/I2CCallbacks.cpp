@@ -17,19 +17,17 @@
 
 void I2CCallback(const char* name, void* param, const struct HAL_Value* value)
 {
-    static I2CWrapperFactory gI2CWrapperFactory;
-
     std::string nameStr = name;
     int port = *((int*) param);
 
     if ("Initialized" == nameStr)
     {
-        std::shared_ptr<II2CWrapper> i2cWrapper = gI2CWrapperFactory.GetI2CWrapper(port);
+        std::shared_ptr<II2CWrapper> i2cWrapper = I2CWrapperFactory::Get().GetI2CWrapper(port);
         SensorActuatorRegistry::Get().Register(port, i2cWrapper);
     }
     else if ("Read" == nameStr)
     {
-        std::shared_ptr<II2CWrapper> i2cWrapper = gI2CWrapperFactory.GetI2CWrapper(port);
+        std::shared_ptr<II2CWrapper> i2cWrapper = I2CWrapperFactory::Get().GetI2CWrapper(port);
         i2cWrapper->HandleRead();
     }
     else

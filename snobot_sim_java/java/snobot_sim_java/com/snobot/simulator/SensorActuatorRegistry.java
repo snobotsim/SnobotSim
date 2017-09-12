@@ -170,7 +170,11 @@ public class SensorActuatorRegistry
         mAnalogSourceWrapperMap.clear();
         mSolenoidWrapperMap.clear();
         mEncoderWrapperMap.clear();
+
         mGyroWrapperMap.clear();
+        mAccelerometerWrapperMap.clear();
+        mI2CWrapperMap.clear();
+        mSpiWrapperMap.clear();
 
         mSimulatorComponents.clear();
     }

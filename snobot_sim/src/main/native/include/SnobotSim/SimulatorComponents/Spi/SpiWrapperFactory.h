@@ -14,23 +14,35 @@
 #include <map>
 
 
-class SpiWrapperFactory {
-public:
+class EXPORT_ SpiWrapperFactory
+{
+
+private:
     SpiWrapperFactory();
     virtual ~SpiWrapperFactory();
 
+public:
+    static const std::string AUTO_DISCOVER_NAME;
+    static const std::string ADXRS450_GYRO_NAME;
+    static const std::string ADXL345_ACCELEROMETER_NAME;
+    static const std::string ADXL362_ACCELEROMETER_NAME;
+    static const std::string NAVX;
+
+    static SpiWrapperFactory& Get();
+
     std::shared_ptr<ISpiWrapper> GetSpiWrapper(int aPort);
 
+    void RegisterDefaultWrapperType(int aPort, const std::string& aWrapperType);
+    void ResetDefaults();
+
 protected:
-    static const std::string AUTO_DISCOVER_NAME;
-    static const std::string SPI_GYRO_NAME;
-    static const std::string SPI_ACCELEROMETER_NAME;
-    static const std::string NAVX;
 
 
     std::shared_ptr<ISpiWrapper> CreateWrapper(int aPort, const std::string& aType);
 
     std::map<int, std::string> mDefaultsMap;
+
+    static SpiWrapperFactory sINSTANCE;
 };
 
 #endif /* SPIWRAPPERFACTORY_H_ */

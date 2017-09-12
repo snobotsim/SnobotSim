@@ -126,4 +126,16 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
         JoystickJni.setJoystickInformation(i, axisValues, povValues, buttonCount, buttonMask);
     }
 
+    @Override
+    public void setDefaultSpiSimulator(int aPort, String aType)
+    {
+        SimulationConnectorJni.setSpiDefault(aPort, aType);
+    }
+
+    @Override
+    public void setDefaultI2CSimulator(int aPort, String aType)
+    {
+        SimulationConnectorJni.setI2CDefault(aPort, aType);
+    }
+
 }

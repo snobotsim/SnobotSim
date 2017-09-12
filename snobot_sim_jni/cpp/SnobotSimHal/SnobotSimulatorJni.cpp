@@ -5,6 +5,8 @@
 
 #include "com_snobot_simulator_jni_SnobotSimulatorJni.h"
 #include "SnobotSim/HalCallbacks/CallbackSetup.h"
+#include "SnobotSim/SimulatorComponents/I2C/I2CWrapperFactory.h"
+#include "SnobotSim/SimulatorComponents/Spi/SpiWrapperFactory.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/RobotStateSingleton.h"
@@ -40,6 +42,8 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SnobotSimulatorJni_reset
 {
     SensorActuatorRegistry::Get().Reset();
 	SnobotSim::ResetSnobotCallbacks();
+    I2CWrapperFactory::Get().ResetDefaults();
+    SpiWrapperFactory::Get().ResetDefaults();
 }
 
 /*
@@ -91,6 +95,30 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SnobotSimulatorJni_initiali
     sSnobotLogger->SetLogLevel(logLevel);
 
     SnobotLogging::SetLogger(sSnobotLogger);
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_SimulationConnectorJni
+ * Method:    setI2CDefault
+ * Signature: (ILjava/lang/String;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setI2CDefault
+  (JNIEnv * env, jclass, jint aPort, jstring aType)
+{
+    I2CWrapperFactory::Get().RegisterDefaultWrapperType(aPort, env->GetStringUTFChars(aType, NULL));
+    return true;
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_SimulationConnectorJni
+ * Method:    setSpiDefault
+ * Signature: (ILjava/lang/String;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setSpiDefault
+  (JNIEnv * env, jclass, jint aPort, jstring aType)
+{
+    SpiWrapperFactory::Get().RegisterDefaultWrapperType(aPort, env->GetStringUTFChars(aType, NULL));
+    return true;
 }
 
 }

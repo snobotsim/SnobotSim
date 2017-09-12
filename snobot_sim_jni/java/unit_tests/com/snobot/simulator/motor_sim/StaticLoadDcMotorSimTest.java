@@ -19,11 +19,7 @@ public class StaticLoadDcMotorSimTest extends BaseSimulatorTest
     {
         SpeedController rs775 = new Talon(0);
         DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("rs775", 1, 10, 1);
-        System.out.println(motorConfig);
-        if (true)
-        {
-            return;
-        }
+
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(0, motorConfig,
                 new StaticLoadMotorSimulationConfig(0.01));
 
@@ -43,6 +39,9 @@ public class StaticLoadDcMotorSimTest extends BaseSimulatorTest
                 .getMotorSimStaticModelConfig(0);
         Assert.assertEquals(.01, simConfig.mLoad, DOUBLE_EPSILON);
         Assert.assertEquals(1, simConfig.mConversionFactor, DOUBLE_EPSILON);
+
+        DcMotorModelConfig createdConfig = DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorConfig(0);
+        Assert.assertEquals(motorConfig, createdConfig);
     }
 
     @Test

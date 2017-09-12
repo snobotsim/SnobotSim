@@ -6,13 +6,13 @@ import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.SensorFeedbackJni;
 import com.snobot.simulator.simulator_components.ISpiWrapper;
 
-public class SpiGyroWrapper extends GyroWrapper implements ISpiWrapper
+public class ADXRS450_SpiGyroWrapper extends GyroWrapper implements ISpiWrapper
 {
     public static final int SPI_GYRO_OFFSET = 100;
 
     protected final int mSpiPort;
 
-    public SpiGyroWrapper(int aSpiPort)
+    public ADXRS450_SpiGyroWrapper(int aSpiPort)
     {
         super("SPI Gyro " + aSpiPort, new AngleSetterHelper()
         {

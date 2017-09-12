@@ -74,6 +74,10 @@ public interface SimulatorDataAccessor
      */
     void waitForNextUpdateLoop(double aUpdatePeriod);
 
-    void setJoystickInformation(int i, float[] axisValues, short[] povValues, int buttonCount, int buttonMask);
+    void setJoystickInformation(int aJoystick, float[] axisValues, short[] povValues, int buttonCount, int buttonMask);
+
+    void setDefaultSpiSimulator(int aPort, String aType);
+
+    void setDefaultI2CSimulator(int aPort, String aType);
 
 }

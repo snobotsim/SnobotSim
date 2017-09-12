@@ -4,18 +4,18 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 import com.snobot.simulator.jni.SensorFeedbackJni;
-import com.snobot.simulator.simulator_components.ISpiWrapper;
+import com.snobot.simulator.simulator_components.II2CWrapper;
 
-public class SpiAccelerometer implements ISpiWrapper
+public class ADXL345_I2CAcceleratometer implements II2CWrapper
 {
     private static double sLSB = 0.00390625;
 
     protected final ThreeAxisAccelerometer mDataContainer;
     protected final int mNativePort;
 
-    public SpiAccelerometer(int aPort)
+    public ADXL345_I2CAcceleratometer(int aPort)
     {
-        mDataContainer = new ThreeAxisAccelerometer(aPort, "SPI Accel ");
+        mDataContainer = new ThreeAxisAccelerometer(aPort, "I2C Accel ");
         mNativePort = aPort;
     }
 
@@ -23,33 +23,32 @@ public class SpiAccelerometer implements ISpiWrapper
     public void handleRead()
     {
         ByteBuffer lastWriteValue = ByteBuffer.allocateDirect(4);
-        SensorFeedbackJni.getSpiLastWrite(mNativePort, lastWriteValue, 4);
+        SensorFeedbackJni.getI2CLastWrite(mNativePort, lastWriteValue, 4);
         lastWriteValue.rewind();
-        int lastWrittenAddress = lastWriteValue.get() & 0xF;
-        ByteBuffer buffer = ByteBuffer.allocateDirect(3);
-        buffer.put((byte) 0);
+        int lastWrittenAddress = lastWriteValue.get();
+
+        ByteBuffer buffer = ByteBuffer.allocateDirect(2);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
 
-        if (lastWrittenAddress == 0x02)
+        if (lastWrittenAddress == 0x32)
         {
             short value = (short) (mDataContainer.getX() / sLSB);
             buffer.putShort(value);
         }
 
-        if (lastWrittenAddress == 0x04)
+        if (lastWrittenAddress == 0x34)
         {
             short value = (short) (mDataContainer.getY() / sLSB);
             buffer.putShort(value);
         }
 
-        if (lastWrittenAddress == 0x06)
+        if (lastWrittenAddress == 0x36)
         {
             short value = (short) (mDataContainer.getZ() / sLSB);
             buffer.putShort(value);
         }
-        SensorFeedbackJni.setSpiValueForRead(mNativePort, buffer, buffer.capacity());
 
-        System.out.println("Reading..." + lastWrittenAddress);
+        SensorFeedbackJni.setI2CValueForRead(mNativePort, buffer, buffer.capacity());
     }
 
 }

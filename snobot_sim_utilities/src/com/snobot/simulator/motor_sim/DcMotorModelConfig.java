@@ -24,6 +24,47 @@ public class DcMotorModelConfig
                     + ", mGearboxEfficiency=" + mGearboxEfficiency + "]";
         }
 
+        @Override
+        public int hashCode()
+        {
+            final int prime = 31;
+            int result = 1;
+            long temp;
+            temp = Double.doubleToLongBits(mGearReduction);
+            result = prime * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(mGearboxEfficiency);
+            result = prime * result + (int) (temp ^ (temp >>> 32));
+            result = prime * result + ((mMotorType == null) ? 0 : mMotorType.hashCode());
+            result = prime * result + mNumMotors;
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj)
+        {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            FactoryParams other = (FactoryParams) obj;
+            if (Double.doubleToLongBits(mGearReduction) != Double.doubleToLongBits(other.mGearReduction))
+                return false;
+            if (Double.doubleToLongBits(mGearboxEfficiency) != Double.doubleToLongBits(other.mGearboxEfficiency))
+                return false;
+            if (mMotorType == null)
+            {
+                if (other.mMotorType != null)
+                    return false;
+            }
+            else if (!mMotorType.equals(other.mMotorType))
+                return false;
+            if (mNumMotors != other.mNumMotors)
+                return false;
+            return true;
+        }
+
     }
 
     public static class MotorParams
@@ -111,6 +152,64 @@ public class DcMotorModelConfig
                     + ", mKV=" + mKV + ", mResistance=" + mResistance + "]";
         }
 
+        @Override
+        public int hashCode()
+        {
+            final int prime = 31;
+            int result = 1;
+            long temp;
+            temp = Double.doubleToLongBits(FREE_CURRENT);
+            result = prime * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(FREE_SPEED_RPM);
+            result = prime * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(MOTOR_INERTIA);
+            result = prime * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(NOMINAL_VOLTAGE);
+            result = prime * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(STALL_CURRENT);
+            result = prime * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(STALL_TORQUE);
+            result = prime * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(mKT);
+            result = prime * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(mKV);
+            result = prime * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(mResistance);
+            result = prime * result + (int) (temp ^ (temp >>> 32));
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj)
+        {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            MotorParams other = (MotorParams) obj;
+            if (Double.doubleToLongBits(FREE_CURRENT) != Double.doubleToLongBits(other.FREE_CURRENT))
+                return false;
+            if (Double.doubleToLongBits(FREE_SPEED_RPM) != Double.doubleToLongBits(other.FREE_SPEED_RPM))
+                return false;
+            if (Double.doubleToLongBits(MOTOR_INERTIA) != Double.doubleToLongBits(other.MOTOR_INERTIA))
+                return false;
+            if (Double.doubleToLongBits(NOMINAL_VOLTAGE) != Double.doubleToLongBits(other.NOMINAL_VOLTAGE))
+                return false;
+            if (Double.doubleToLongBits(STALL_CURRENT) != Double.doubleToLongBits(other.STALL_CURRENT))
+                return false;
+            if (Double.doubleToLongBits(STALL_TORQUE) != Double.doubleToLongBits(other.STALL_TORQUE))
+                return false;
+            if (Double.doubleToLongBits(mKT) != Double.doubleToLongBits(other.mKT))
+                return false;
+            if (Double.doubleToLongBits(mKV) != Double.doubleToLongBits(other.mKV))
+                return false;
+            if (Double.doubleToLongBits(mResistance) != Double.doubleToLongBits(other.mResistance))
+                return false;
+            return true;
+        }
+
     }
 
     public final FactoryParams mFactoryParams;
@@ -150,6 +249,49 @@ public class DcMotorModelConfig
     {
         return "DcMotorModelConfig [mFactoryParams=" + mFactoryParams + ", mMotorParams=" + mMotorParams + ", mInverted=" + mInverted + ", mHasBrake="
                 + mHasBrake + "]";
+    }
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((mFactoryParams == null) ? 0 : mFactoryParams.hashCode());
+        result = prime * result + (mHasBrake ? 1231 : 1237);
+        result = prime * result + (mInverted ? 1231 : 1237);
+        result = prime * result + ((mMotorParams == null) ? 0 : mMotorParams.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        DcMotorModelConfig other = (DcMotorModelConfig) obj;
+        if (mFactoryParams == null)
+        {
+            if (other.mFactoryParams != null)
+                return false;
+        }
+        else if (!mFactoryParams.equals(other.mFactoryParams))
+            return false;
+        if (mHasBrake != other.mHasBrake)
+            return false;
+        if (mInverted != other.mInverted)
+            return false;
+        if (mMotorParams == null)
+        {
+            if (other.mMotorParams != null)
+                return false;
+        }
+        else if (!mMotorParams.equals(other.mMotorParams))
+            return false;
+        return true;
     }
 
 }

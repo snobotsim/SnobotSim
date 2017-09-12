@@ -204,4 +204,16 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
         SensorFeedbackJni.setJoystickInformation(aJoystickHandle, aAxesArray, aPovsArray, aButtonCount, aButtonMask);
     }
 
+    @Override
+    public void setDefaultSpiSimulator(int aPort, String aType)
+    {
+        RegisterCallbacksJni.sSPI_FACTORY.setDefaultWrapper(aPort, aType);
+    }
+
+    @Override
+    public void setDefaultI2CSimulator(int aPort, String aType)
+    {
+        RegisterCallbacksJni.sI2C_FACTORY.setDefaultWrapper(aPort, aType);
+    }
+
 }

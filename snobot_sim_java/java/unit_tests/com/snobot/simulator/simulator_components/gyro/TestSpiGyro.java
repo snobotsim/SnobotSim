@@ -3,7 +3,6 @@ package com.snobot.simulator.simulator_components.gyro;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.snobot.simulator.jni.RegisterCallbacksJni;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
@@ -15,8 +14,7 @@ public class TestSpiGyro extends BaseSimulatorTest
     @Test
     public void testSpiGyro()
     {
-        RegisterCallbacksJni.sSPI_FACTORY.setDefaultWrapper(0, SpiGyroWrapper.class);
-
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(0, "ADXRS450");
         ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
         int gyroHandle = 100;

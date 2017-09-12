@@ -11,38 +11,45 @@ import edu.wpi.first.wpilibj.I2C;;
 
 public class TestI2CNavx extends BaseSimulatorTest
 {
+    private static final long SHUTDOWN_TIME = 50;
 
-    // @Test
-    // public void testConstruction() throws InterruptedException
-    // {
-    // // Port = 0
-    // DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
-    // Assert.assertEquals(0,
-    // DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
-    //
-    // new AHRS(I2C.Port.kOnboard);
-    // Assert.assertEquals(3,
-    // DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
-    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(250));
-    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(251));
-    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(252));
-    //
-    // // Port = 1
-    // DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
-    // Assert.assertEquals(0,
-    // DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
-    //
-    // new AHRS(I2C.Port.kMXP);
-    // Assert.assertEquals(3,
-    // DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
-    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(253));
-    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(254));
-    // Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(255));
-    // }
+    @Test
+    public void testConstruction() throws InterruptedException
+    {
+        AHRS navx;
+
+        // Port = 0
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultI2CSimulator(0, "NavX");
+        Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
+
+        navx = new AHRS(I2C.Port.kOnboard);
+        Assert.assertEquals(3, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
+        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(250));
+        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(251));
+        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(252));
+        navx.free();
+        Thread.sleep(SHUTDOWN_TIME);
+
+        // Port = 1
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultI2CSimulator(1, "NavX");
+        Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
+
+        navx = new AHRS(I2C.Port.kMXP);
+        Assert.assertEquals(3, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
+        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(253));
+        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(254));
+        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(255));
+        navx.free();
+        Thread.sleep(SHUTDOWN_TIME);
+    }
 
     @Test
     public void testI2CNavx() throws InterruptedException
     {
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultI2CSimulator(0, "NavX");
+
         final int sleepTime = 100;
         AHRS navx = new AHRS(I2C.Port.kOnboard);
         navx.enableLogging(true);
@@ -84,5 +91,8 @@ public class TestI2CNavx extends BaseSimulatorTest
         Assert.assertEquals(179, navx.getYaw(), DOUBLE_EPSILON);
         Assert.assertEquals(-20, navx.getPitch(), DOUBLE_EPSILON);
         Assert.assertEquals(-110, navx.getRoll(), DOUBLE_EPSILON);
+
+        navx.free();
+        Thread.sleep(SHUTDOWN_TIME);
     }
 }
