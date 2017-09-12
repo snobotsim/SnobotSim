@@ -78,6 +78,9 @@ public class TestSpiNavx extends BaseSimulatorTest
         int rollHandle = 205;
 
         Assert.assertEquals(3, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
+        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(yawHandle));
+        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(pitchHandle));
+        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(rollHandle));
 
         // Thread.sleep(100000);
 

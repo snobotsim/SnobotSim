@@ -6,6 +6,7 @@
  */
 
 #include "SnobotSim/SimulatorComponents/Gyro/AnalogGyroWrapper.h"
+#include "MockData/AnalogGyroData.h"
 
 AnalogGyroWrapper::AnalogGyroWrapper(const std::shared_ptr<AnalogSourceWrapper>& aAnalogWrapper):
     GyroWrapper("Analog Gyro"),
@@ -17,4 +18,11 @@ AnalogGyroWrapper::AnalogGyroWrapper(const std::shared_ptr<AnalogSourceWrapper>&
 
 AnalogGyroWrapper::~AnalogGyroWrapper() {
 
+}
+
+
+void AnalogGyroWrapper::SetAngle(double aAngle)
+{
+    HALSIM_SetAnalogGyroAngle(mAnalogWrapper->GetHandle(), aAngle);
+    GyroWrapper::SetAngle(aAngle);
 }

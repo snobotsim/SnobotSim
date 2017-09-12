@@ -17,29 +17,14 @@ public:
 
     virtual ~II2CWrapper() {}
 
-    virtual int32_t Transaction(
-            uint8_t* dataToSend, int32_t sendSize,
-            uint8_t* dataReceived, int32_t receiveSize) = 0;
-
-    virtual int32_t Read(
-            int32_t deviceAddress, uint8_t* buffer, int32_t count) = 0;
-
-    virtual int32_t Write(
-            int32_t deviceAddress, uint8_t* dataToSend, int32_t sendSize) = 0;
+    virtual void HandleRead() = 0;
 };
 
 class EXPORT_ NullI2CWrapper : public II2CWrapper
 {
 public:
-    virtual int Transaction(
-            uint8_t* dataToSend, int32_t sendSize,
-            uint8_t* dataReceived, int32_t receiveSize) override;
 
-    virtual int32_t Read(
-            int32_t deviceAddress, uint8_t* buffer, int32_t count) override;
-
-    virtual int32_t Write(
-            int32_t deviceAddress, uint8_t* dataToSend, int32_t sendSize) override;
+    virtual void HandleRead() override;
 };
 
 

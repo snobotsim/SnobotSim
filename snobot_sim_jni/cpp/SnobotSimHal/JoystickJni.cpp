@@ -2,30 +2,9 @@
 #include <assert.h>
 #include <jni.h>
 #include "com_snobot_simulator_jni_JoystickJni.h"
-#include "SnobotSim/JoystickManager.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
+#include "MockData/DriverStationData.h"
 
-
-std::ostream& operator<<(std::ostream& aStream, const JoystickInformation& aJoystickInfo)
-{
-    aStream << "Joystick: \n";
-
-    aStream << "  Buttons: " << aJoystickInfo.mButtons.count << "- " << aJoystickInfo.mButtons.buttons << "\n";
-
-    aStream << "  Axis: " << aJoystickInfo.mAxes.count << "\n";
-    for (int i = 0; i < aJoystickInfo.mAxes.count; ++i)
-    {
-        aStream << "    Axis: " << aJoystickInfo.mAxes.axes[i] << "\n";
-    }
-
-    aStream << "  POV: " << aJoystickInfo.mPovs.count << "\n";
-    for (int i = 0; i < aJoystickInfo.mPovs.count; ++i)
-    {
-        aStream << "    POV: " << aJoystickInfo.mPovs.povs[i] << "\n";
-    }
-
-    return aStream;
-}
 
 extern "C"
 {
@@ -38,32 +17,31 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_JoystickJni_setJoystickInfo
   (JNIEnv * env, jclass, 
    jint aHandle, jfloatArray aAxes, jshortArray aPovs, jint aButtonCount, jint aButtonMask)
 {
-    if (!JoystickManager::Get().HasJoystick(aHandle))
-    {
-        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unregistered joystick " << aHandle);
-        return;
-    }
+    HAL_JoystickAxes newAxes;
+    HAL_JoystickPOVs newPov;
+    HAL_JoystickButtons newButtons;
 
-    JoystickInformation& info = JoystickManager::Get().GetJoystick(aHandle);
-    
-
-    info.mButtons.count = aButtonCount;
-    info.mButtons.buttons = aButtonMask;
+    newButtons.count = aButtonCount;
+    newButtons.buttons = aButtonMask;
 
     float* axes = env->GetFloatArrayElements(aAxes, NULL);
-    info.mAxes.count = env->GetArrayLength(aAxes);
-    for (int i = 0; i < info.mAxes.count; ++i)
+    newAxes.count = env->GetArrayLength(aAxes);
+    for (int i = 0; i < newAxes.count; ++i)
     {
-        info.mAxes.axes[i] = axes[i];
+        newAxes.axes[i] = axes[i];
     }
     env->ReleaseFloatArrayElements(aAxes, axes, 0);
 
     short* povs = env->GetShortArrayElements(aPovs, NULL);
-    info.mPovs.count = env->GetArrayLength(aPovs);
-    for (int i = 0; i < info.mPovs.count; ++i)
+    newPov.count = env->GetArrayLength(aPovs);
+    for (int i = 0; i < newPov.count; ++i)
     {
-        info.mPovs.povs[i] = povs[i];
+        newPov.povs[i] = povs[i];
     }
     env->ReleaseShortArrayElements(aPovs, povs, 0);
+
+    HALSIM_SetJoystickAxes(aHandle, newAxes);
+    HALSIM_SetJoystickPOVs(aHandle, newPov);
+    HALSIM_SetJoystickButtons(aHandle, newButtons);
 }
 }

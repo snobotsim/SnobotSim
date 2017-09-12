@@ -8,7 +8,7 @@
 #include "SnobotSim/SimulatorComponents/navx/SerialNavxSimulator.h"
 
 SerialNavxSimulator::SerialNavxSimulator(int aPort)  :
-    NavxSimulator(aPort)
+    NavxSimulator(aPort, 270)
 {
 
 }

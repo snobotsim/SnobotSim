@@ -15,8 +15,7 @@
 
 RobotStateSingleton RobotStateSingleton::sINSTANCE;
 
-RobotStateSingleton::RobotStateSingleton() :
-        mRunning(false)
+RobotStateSingleton::RobotStateSingleton()
 {
 
 }
@@ -33,32 +32,13 @@ RobotStateSingleton& RobotStateSingleton::Get()
 
 void RobotStateSingleton::Reset()
 {
-    SNOBOT_LOG(SnobotLogging::INFO, "Resetting...");
-
-    if(mRunning)
-    {
-        mRunning = false;
-        mUpdateThread.join();
-    }
-
-    mRunning = false;
-
-    SNOBOT_LOG(SnobotLogging::INFO, "Reset complete!");
+    SNOBOT_LOG(SnobotLogging::INFO, "Resetting State Singleton");
 }
 
-void RobotStateSingleton::WaitForNextControlLoop()
+void RobotStateSingleton::WaitForNextControlLoop(double aWaitTime)
 {
-    std::unique_lock<std::mutex> lk(mControlLoopMutex);
-    mControlLoopCv.wait(lk);
-}
-
-void RobotStateSingleton::RunUpdateLoopThread()
-{
-    while (mRunning)
-    {
-        std::this_thread::sleep_for(std::chrono::milliseconds(20));
-        mControlLoopCv.notify_all();
-    }
+    std::this_thread::sleep_for(std::chrono::milliseconds((int) (aWaitTime * 1000)));
+    HALSIM_NotifyDriverStationNewData();
 }
 
 void RobotStateSingleton::UpdateLoop()

@@ -33,6 +33,8 @@ public:
     static const std::string MOTOR_NAME_BB_RS_775;
     static const std::string MOTOR_NAME_AM_9015;
     static const std::string MOTOR_NAME_BB_RS_550;
+
+    static const std::string MOTOR_NAME_RS775;
 };
 
 #endif /* SRC_VEXMOTORFACTORY_H_ */

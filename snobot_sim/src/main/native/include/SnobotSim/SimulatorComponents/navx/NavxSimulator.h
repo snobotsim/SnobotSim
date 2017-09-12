@@ -17,7 +17,7 @@
 class EXPORT_ NavxSimulator
 {
 public:
-    NavxSimulator(int aPort);
+    NavxSimulator(int aPort, int aPortOffset);
     virtual ~NavxSimulator();
 
 protected:
@@ -28,6 +28,22 @@ protected:
         std::memcpy(&aBuffer[aPosition], &value, aSize);
     }
 
+    template <typename Type>
+    Type BoundBetweenNeg180Pos180(Type input)
+    {
+        Type output = input;
+        while (output > 180)
+        {
+            output -= 360;
+        }
+        while (output < -180)
+        {
+            output += 360;
+        }
+
+        return output;
+    }
+
     void GetCurrentData(uint8_t* aBuffer, int aFirstAddress);
     void GetWriteConfig(uint8_t* aBuffer);
 
@@ -36,6 +52,8 @@ protected:
     std::shared_ptr<GyroWrapper> mRollGyro;
 
     ThreeAxisAccelerometer mThreeAxisAccelerometer;
+
+    int mNativePort;
 };
 
 #endif /* NAVXSIMULATOR_H_ */

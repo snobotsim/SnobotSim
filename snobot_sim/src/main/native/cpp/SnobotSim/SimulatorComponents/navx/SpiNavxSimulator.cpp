@@ -7,9 +7,10 @@
 
 #include "SnobotSim/SimulatorComponents/navx/SpiNavxSimulator.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
+#include "MockData/SPIData.h"
 
 SpiNavxSimulator::SpiNavxSimulator(int aPort) :
-    NavxSimulator(aPort)
+    NavxSimulator(aPort, 200)
 {
 
 }
@@ -20,32 +21,21 @@ SpiNavxSimulator::~SpiNavxSimulator()
 }
 
 
-
-double SpiNavxSimulator::GetAccumulatorValue()
+void SpiNavxSimulator::HandleRead()
 {
-    SNOBOT_LOG(SnobotLogging::WARN, "Shouldn't be called");
-    return 0;
-}
+    uint8_t buffer[199];
+    int count = 0;
 
-void SpiNavxSimulator::ResetAccumulatorValue()
-{
-    SNOBOT_LOG(SnobotLogging::WARN, "Shouldn't be called");
-}
-
-void SpiNavxSimulator::Write(uint8_t* dataToSend, int32_t sendSize)
-{
-    mLastWriteAddress = dataToSend[0];
-}
-
-int32_t SpiNavxSimulator::Read(uint8_t* buffer, int32_t count)
-{
+    mLastWriteAddress = 0x04;
     if(mLastWriteAddress == 0x00)
     {
         GetWriteConfig(buffer);
+        count = 17 + 1;
     }
     else if(mLastWriteAddress == 0x04)
     {
         GetCurrentData(buffer, 0x04);
+        count = 86 - 0x04 + 1;
     }
     else
     {
@@ -54,7 +44,7 @@ int32_t SpiNavxSimulator::Read(uint8_t* buffer, int32_t count)
 
     buffer[count - 1] = GetCRC(buffer, count - 1);
 
-    return count;
+    HALSIM_SetSPISetValueForRead(mNativePort, buffer, count);
 }
 
 uint8_t SpiNavxSimulator::GetCRC(uint8_t* buffer, int length)

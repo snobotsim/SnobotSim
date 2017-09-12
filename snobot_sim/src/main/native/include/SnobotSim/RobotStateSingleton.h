@@ -32,20 +32,11 @@ public:
 
     double GetMatchTime() const;
     
-    void WaitForNextControlLoop();
+    void WaitForNextControlLoop(double aWaitTime);
 
 protected:
 
-    void RunUpdateLoopThread();
-
-    bool mRunning;
-
     std::chrono::time_point<std::chrono::system_clock> mTimeEnabled;
-
-    std::condition_variable mControlLoopCv;
-    std::mutex mControlLoopMutex;
-
-    std::thread mUpdateThread;
 };
 
 #endif /* ROBOTSTATESINGLETON_H_ */

@@ -17,11 +17,11 @@ public:
     SpiAccelerometer(int aPort, const std::string& aBaseName);
     virtual ~SpiAccelerometer();
 
-    double GetAccumulatorValue() override;
-    void ResetAccumulatorValue() override;
-
-    int32_t Read(uint8_t* buffer, int32_t count) override;
-    void Write(uint8_t* dataToSend, int32_t sendSize) override;
+//    double GetAccumulatorValue() override;
+//    void ResetAccumulatorValue() override;
+//
+//    int32_t Read(uint8_t* buffer, int32_t count) override;
+//    void Write(uint8_t* dataToSend, int32_t sendSize) override;
 
 protected:
 

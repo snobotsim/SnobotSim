@@ -117,7 +117,7 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
     @Override
     public void waitForNextUpdateLoop(double aUpdatePeriod)
     {
-        RobotStateSingletonJni.waitForNextUpdateLoop();
+        RobotStateSingletonJni.waitForNextUpdateLoop(aUpdatePeriod);
     }
 
     @Override

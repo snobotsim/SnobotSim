@@ -38,4 +38,8 @@ public class SpeedControllerWrapperJni extends BaseSimulatorJni
 
     public static native double getMotorSimGravitationalModelConfig(int aPort);
 
+    public static native double getMotorSimRotationalModelConfig_armCenterOfMass(int aPort);
+
+    public static native double getMotorSimRotationalModelConfig_armMass(int aPort);
+
 }

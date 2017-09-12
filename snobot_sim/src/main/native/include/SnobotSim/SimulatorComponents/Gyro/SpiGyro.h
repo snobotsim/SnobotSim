@@ -16,17 +16,16 @@
 class EXPORT_ SpiGyro: public GyroWrapper, public ISpiWrapper
 {
 public:
-    SpiGyro();
+    SpiGyro(int aSpiPort);
     virtual ~SpiGyro();
 
-    double GetAccumulatorValue() override;
-    void ResetAccumulatorValue() override;
+    void HandleRead() override;
 
-    int32_t Read(uint8_t* buffer, int32_t count) override;
-    void Write(uint8_t* dataToSend, int32_t sendSize) override;
+    void SetAngle(double aAngle) override;
 
 protected:
 
+    const int mSpiPort;
     std::shared_ptr<ISpiWrapper> mSpiWrapper;
 };
 

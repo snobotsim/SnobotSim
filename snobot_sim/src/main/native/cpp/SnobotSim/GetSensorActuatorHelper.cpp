@@ -33,5 +33,7 @@ namespace GetSensorActuatorHelper
     FIND_MODULE_FUNC(RelayWrapper)
     FIND_MODULE_FUNC(SolenoidWrapper)
     FIND_MODULE_FUNC(EncoderWrapper)
+    FIND_MODULE_FUNC(ISpiWrapper)
+    FIND_MODULE_FUNC(II2CWrapper)
 }
 

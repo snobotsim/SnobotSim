@@ -18,6 +18,10 @@ const std::string VexMotorFactory::MOTOR_NAME_BB_RS_775      = "Banebots RS 775"
 const std::string VexMotorFactory::MOTOR_NAME_AM_9015        = "Andymark 9015";
 const std::string VexMotorFactory::MOTOR_NAME_BB_RS_550      = "Banebots RS 550";
 
+const std::string VexMotorFactory::MOTOR_NAME_RS775          = "rs775";
+
+#define OZIN_TO_NM 0.00706155183333
+
 VexMotorFactory::VexMotorFactory()
 {
 
@@ -137,6 +141,16 @@ DcMotorModelConfig VexMotorFactory::CreateMotor(
         const double STALL_CURRENT = 84;
 
         return DcMotorModelConfig(factoryParams, NOMINAL_VOLTAGE, FREE_SPEED_RPM, FREE_CURRENT, STALL_TORQUE, STALL_CURRENT, 0);
+    }
+    else if(aName == MOTOR_NAME_RS775)
+    {
+        const double FREE_SPEED_RPM = 19500;
+        const double FREE_CURRENT = 2.7;
+        const double STALL_TORQUE = 166.65 * OZIN_TO_NM;
+        const double STALL_CURRENT = 130;
+        const double MOTOR_INERTIA = 1.20348237E-5;
+
+        return DcMotorModelConfig(factoryParams, 18, FREE_SPEED_RPM, FREE_CURRENT, STALL_TORQUE, STALL_CURRENT, MOTOR_INERTIA);
     }
     else
     {

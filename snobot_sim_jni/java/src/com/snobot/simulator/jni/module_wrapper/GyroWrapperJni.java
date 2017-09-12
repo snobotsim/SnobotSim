@@ -21,6 +21,8 @@ public class GyroWrapperJni extends BaseSimulatorJni
     
     public static native double getAngle(int aPort);
     
+    public static native void setAngle(int aPort, double aAngle);
+
     public static native void reset(int aPort);
     
     public static native int[] getPortList();

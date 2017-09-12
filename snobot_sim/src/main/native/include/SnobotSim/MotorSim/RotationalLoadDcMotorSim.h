@@ -22,6 +22,9 @@ public:
 
     void Update(double cycleTime) override;
 
+    double GetArmCenterOfMass();
+    double GetArmMass();
+
 protected:
     static const double sGRAVITY;
 
@@ -32,6 +35,10 @@ protected:
     // Helper springs
     const double mConstantAssistTorque;
     const double mOverCenterAssistTorque;
+
+
+    const double mArmCenterOfMass;
+    const double mArmMass;
 };
 
 #endif /* ROTATIONALLOADDCMOTORSIM_H_ */

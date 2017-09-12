@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 public class BaseSimulatorTest
 {
     private static boolean INITIALIZED = false;
-    protected static final double DOUBLE_EPSILON = .00001;
+    protected static final double DOUBLE_EPSILON = .0002;
 
     private void delete(File path)
     {

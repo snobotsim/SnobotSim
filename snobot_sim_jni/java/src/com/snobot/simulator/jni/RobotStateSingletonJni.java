@@ -14,7 +14,7 @@ public class RobotStateSingletonJni extends BaseSimulatorJni
     
     public static native void waitForProgramToStart();
     
-    public static native void waitForNextUpdateLoop();
+    public static native void waitForNextUpdateLoop(double aUpdatePeriod);
     
     public static native double getCycleTime();
 }

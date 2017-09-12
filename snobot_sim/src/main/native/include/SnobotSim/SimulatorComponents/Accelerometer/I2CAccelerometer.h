@@ -17,15 +17,7 @@ public:
     I2CAccelerometer(int aPort, const std::string& aBaseName);
     virtual ~I2CAccelerometer();
 
-    virtual int Transaction(
-            uint8_t* dataToSend, int32_t sendSize,
-            uint8_t* dataReceived, int32_t receiveSize) override;
-
-    virtual int32_t Read(
-            int32_t deviceAddress, uint8_t* buffer, int32_t count) override;
-
-    virtual int32_t Write(
-            int32_t deviceAddress, uint8_t* dataToSend, int32_t sendSize) override;
+    virtual void HandleRead() override;
 
 protected:
 

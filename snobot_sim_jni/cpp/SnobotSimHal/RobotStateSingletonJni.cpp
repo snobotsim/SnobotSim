@@ -14,9 +14,10 @@ extern "C"
  * Method:    setDisabled
  * Signature: (Z)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RobotStateSingletonJni_setDisabled(JNIEnv *, jclass, jboolean aBool)
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RobotStateSingletonJni_setDisabled(JNIEnv *, jclass, jboolean aDisabled)
 {
-    HALSIM_SetDriverStationEnabled(!aBool);
+    HALSIM_SetDriverStationDsAttached(!aDisabled);
+    HALSIM_SetDriverStationEnabled(!aDisabled);
 }
 
 /*
@@ -66,9 +67,9 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RobotStateSingletonJni_wait
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RobotStateSingletonJni_waitForNextUpdateLoop
-  (JNIEnv *, jclass)
+  (JNIEnv *, jclass, jdouble aUpdatePeriod)
 {
-	RobotStateSingleton::Get().WaitForNextControlLoop();
+	RobotStateSingleton::Get().WaitForNextControlLoop(aUpdatePeriod);
 }
 
 /*

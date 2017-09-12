@@ -103,12 +103,17 @@ JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_
   (JNIEnv * env, jclass, jint aSpeedControllerHandle,
         jobject aConfig, jdouble aArmCenterOfMass, jdouble aArmMass, jdouble aConstantAssistTorque, jdouble aOverCenterAssistTorque)
 {
-    LOG_UNSUPPORTED();
+    DcMotorModel motorModel(ConversionUtils::ConvertDcMotorModelConfig(env, aConfig));
+
+    std::shared_ptr<SpeedControllerWrapper> speedController = GetSpeedControllerWrapper(aSpeedControllerHandle);
+    if(speedController)
+    {
+        speedController->SetMotorSimulator(std::shared_ptr < IMotorSimulator > (new RotationalLoadDcMotorSim(motorModel, speedController,
+                aArmCenterOfMass, aArmMass, aConstantAssistTorque, aOverCenterAssistTorque)));
+        return true;
+    }
 
     return false;
-//    DcMotorModel motorModel = ConvertDcMotorModel(aConfig);
-//    std::shared_ptr<SpeedControllerWrapper> speedController = SensorActuatorRegistry::Get().GetSpeedControllerWrapper(aSpeedControllerHandle);
-//    speedController->SetMotorSimulator(std::shared_ptr < IMotorSimulator > (new StaticLoadDcMotorSimulator(aLoad, aConversionFactor)));
 }
 
 /*

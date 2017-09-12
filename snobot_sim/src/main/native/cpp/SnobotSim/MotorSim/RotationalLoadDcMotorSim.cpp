@@ -17,7 +17,9 @@ RotationalLoadDcMotorSim::RotationalLoadDcMotorSim(const DcMotorModel& aMotorMod
     mArmInertia(aArmMass * aArmCenterOfMass * aArmCenterOfMass), 
     mGravityBasedTorqueFactor(aArmMass * aArmCenterOfMass * sGRAVITY),
     mConstantAssistTorque(aConstantAssistTorque), 
-    mOverCenterAssistTorque(aOverCenterAssistTorque)
+    mOverCenterAssistTorque(aOverCenterAssistTorque),
+    mArmCenterOfMass(aArmCenterOfMass),
+    mArmMass(aArmMass)
 {
 
 }
@@ -37,4 +39,15 @@ void RotationalLoadDcMotorSim::Update(double cycleTime)
     double inVolts = mVoltagePercentage * 12;
 
     mMotorModel.Step(inVolts, mArmInertia, gravityTorque, cycleTime);
+}
+
+
+double RotationalLoadDcMotorSim::GetArmCenterOfMass()
+{
+    return mArmCenterOfMass;
+}
+
+double RotationalLoadDcMotorSim::GetArmMass()
+{
+    return mArmMass;
 }

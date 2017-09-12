@@ -19,8 +19,11 @@ public:
     void SetVoltage(double aVoltage);
     double GetVoltage();
 
+    int GetHandle();
+
 protected:
 
+    int mPort;
     double mVoltage;
 };
 

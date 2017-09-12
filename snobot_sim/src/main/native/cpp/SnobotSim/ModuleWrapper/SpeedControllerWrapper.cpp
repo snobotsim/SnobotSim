@@ -66,7 +66,6 @@ void SpeedControllerWrapper::Update(double aWaitTime)
 {
     mMotorSimulator->Update(aWaitTime);
     mFeedbackSensor->SetPosition(GetPosition());
-    std::cout << "Updating... " << aWaitTime << std::endl;
 }
 
 double SpeedControllerWrapper::GetPosition()

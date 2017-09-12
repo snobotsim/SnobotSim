@@ -70,14 +70,16 @@ public class JniSpeedControllerWrapperAccessor implements SpeedControllerWrapper
     @Override
     public GravityLoadMotorSimulationConfig getMotorSimGravitationalModelConfig(int aPort)
     {
-        double load = SpeedControllerWrapperJni.getMotorSimSimpleModelConfig(aPort);
+        double load = SpeedControllerWrapperJni.getMotorSimGravitationalModelConfig(aPort);
         return new GravityLoadMotorSimulationConfig(load);
     }
 
     @Override
     public RotationalLoadMotorSimulationConfig getMotorSimRotationalModelConfig(int aPort)
     {
-        return new RotationalLoadMotorSimulationConfig(0, 0);
+        double armCOM = SpeedControllerWrapperJni.getMotorSimRotationalModelConfig_armCenterOfMass(aPort);
+        double armMass = SpeedControllerWrapperJni.getMotorSimRotationalModelConfig_armMass(aPort);
+        return new RotationalLoadMotorSimulationConfig(armCOM, armMass);
     }
 
     @Override

@@ -16,9 +16,9 @@ public:
     GyroWrapper(const std::string& aName);
     virtual ~GyroWrapper();
     
-    void SetAngle(double aAngle);
+    virtual void SetAngle(double aAngle);
     
-    double GetAngle();
+    virtual double GetAngle();
     
 protected:
     double mAngle;

@@ -19,6 +19,9 @@ public:
     AnalogGyroWrapper(const std::shared_ptr<AnalogSourceWrapper>& aAnalogWrapper);
     virtual ~AnalogGyroWrapper();
 
+
+    void SetAngle(double aAngle) override;
+
 protected:
 
     std::shared_ptr<AnalogSourceWrapper> mAnalogWrapper;

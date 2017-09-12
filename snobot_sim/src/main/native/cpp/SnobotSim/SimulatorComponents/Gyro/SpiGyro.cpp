@@ -6,12 +6,12 @@
  */
 
 #include "SnobotSim/SimulatorComponents/Gyro/SpiGyro.h"
-#include <cstring>
+#include "MockData/SPIData.h"
 
-SpiGyro::SpiGyro():
-    GyroWrapper("Spi Gyro")
+SpiGyro::SpiGyro(int aSpiPort):
+    GyroWrapper("Spi Gyro"),
+    mSpiPort(aSpiPort)
 {
-
 }
 
 SpiGyro::~SpiGyro()
@@ -20,31 +20,22 @@ SpiGyro::~SpiGyro()
 }
 
 
-double SpiGyro::GetAccumulatorValue()
+void SpiGyro::HandleRead()
 {
-    double accum = GetAngle();
+    uint8_t buffer[4];
+    uint32_t numToPut = 0x00400AE0;
+    std::memcpy(&buffer[0], &numToPut, sizeof(numToPut));
+
+    HALSIM_SetSPISetValueForRead(mSpiPort, buffer, sizeof(numToPut));
+}
+
+void SpiGyro::SetAngle(double aAngle)
+{
+    GyroWrapper::SetAngle(aAngle);
+
+    double accum = aAngle;
     accum = accum / 0.0125;
     accum = accum / 0.001;
 
-    return accum;
-}
-
-void SpiGyro::ResetAccumulatorValue()
-{
-    SetAngle(0);
-}
-
-
-int32_t SpiGyro::Read(uint8_t* buffer, int32_t count)
-{
-    uint32_t numToPut = 0x00400AE0;
-
-    std::memcpy(&buffer[0], &numToPut, sizeof(numToPut));
-
-    return 0xe;
-}
-
-void SpiGyro::Write(uint8_t* dataToSend, int32_t sendSize)
-{
-
+    HALSIM_SetSPIGetAccumulatorValue(mSpiPort, accum);
 }

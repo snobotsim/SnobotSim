@@ -7,9 +7,10 @@
 
 #include "SnobotSim/SimulatorComponents/navx/I2CNavxSimulator.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
+#include "MockData/I2CData.h"
 
 I2CNavxSimulator::I2CNavxSimulator(int aPort)  :
-    NavxSimulator(aPort)
+    NavxSimulator(aPort, 250)
 {
 
 }
@@ -19,40 +20,27 @@ I2CNavxSimulator::~I2CNavxSimulator()
 
 }
 
-int32_t I2CNavxSimulator::Transaction(
-        uint8_t* dataToSend, int32_t sendSize,
-        uint8_t* dataReceived, int32_t receiveSize)
+void I2CNavxSimulator::HandleRead()
 {
-    SNOBOT_LOG(SnobotLogging::WARN, "Shouldn't be called");
+    uint8_t buffer[199];
+    int count = 0;
 
-    return sendSize;
-}
+    mLastWriteAddress = 4;
 
-
-int32_t I2CNavxSimulator::Read(
-        int32_t deviceAddress, uint8_t* buffer, int32_t count)
-{
     if(mLastWriteAddress == 0x00)
     {
         GetWriteConfig(buffer);
+        count = 17;
     }
     else if(mLastWriteAddress == 0x04 && count < 127)
     {
         GetCurrentData(buffer, 0x04);
+        count = 86 - 0x04 ;
     }
     else
     {
         SNOBOT_LOG(SnobotLogging::CRITICAL,  "Unknown device address " << mLastWriteAddress);
     }
 
-    return count;
+    HALSIM_SetI2CSetValueForRead(mNativePort, buffer, count);
 }
-
-int32_t I2CNavxSimulator::Write(
-        int32_t deviceAddress, uint8_t* dataToSend, int32_t sendSize)
-{
-    mLastWriteAddress = dataToSend[0];
-
-    return 0;
-}
-

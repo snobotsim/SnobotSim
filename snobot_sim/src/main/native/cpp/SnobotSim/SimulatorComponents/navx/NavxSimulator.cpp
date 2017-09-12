@@ -8,15 +8,16 @@
 #include "SnobotSim/SimulatorComponents/navx/NavxSimulator.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 
-NavxSimulator::NavxSimulator(int aPort) :
+NavxSimulator::NavxSimulator(int aNativePort, int aPortOffset) :
     mYawGyro(new GyroWrapper("NavX Yaw")),
     mPitchGyro(new GyroWrapper("NavX Pitch")),
     mRollGyro(new GyroWrapper("NavX Roll")),
-    mThreeAxisAccelerometer((aPort + 1) * 150, "NavX")
+    mThreeAxisAccelerometer(aPortOffset + (aNativePort * 3) + 0, "NavX"),
+    mNativePort(aNativePort)
 {
-    SensorActuatorRegistry::Get().Register((aPort + 1) * 150 + 1, mYawGyro);
-    SensorActuatorRegistry::Get().Register((aPort + 1) * 150 + 2, mPitchGyro);
-    SensorActuatorRegistry::Get().Register((aPort + 1) * 150 + 3, mRollGyro);
+    SensorActuatorRegistry::Get().Register(aPortOffset + (aNativePort * 3) + 0, mYawGyro);
+    SensorActuatorRegistry::Get().Register(aPortOffset + (aNativePort * 3) + 1, mPitchGyro);
+    SensorActuatorRegistry::Get().Register(aPortOffset + (aNativePort * 3) + 2, mRollGyro);
 }
 
 NavxSimulator::~NavxSimulator()
@@ -55,9 +56,13 @@ void NavxSimulator::GetCurrentData(uint8_t* aBuffer, int aFirstAddress)
     PutTheValue(aBuffer, 0x09 - aFirstAddress, 3, 1); // Cal Status
     PutTheValue(aBuffer, 0x10 - aFirstAddress, 4, 1); // Sensor Status
 
-    PutTheValue(aBuffer, 0x16 - aFirstAddress, int16_t(mYawGyro->GetAngle() * 100), 2); // Yaw
-    PutTheValue(aBuffer, 0x1A - aFirstAddress, int16_t(mPitchGyro->GetAngle() * 100), 2); // Pitch
-    PutTheValue(aBuffer, 0x18 - aFirstAddress, int16_t(mRollGyro->GetAngle() * 100), 2); // Roll
+    double yaw = BoundBetweenNeg180Pos180(mYawGyro->GetAngle());
+    double pitch = BoundBetweenNeg180Pos180(mPitchGyro->GetAngle());
+    double roll = BoundBetweenNeg180Pos180(mRollGyro->GetAngle());
+
+    PutTheValue(aBuffer, 0x16 - aFirstAddress, int16_t(yaw * 100), 2); // Yaw
+    PutTheValue(aBuffer, 0x1A - aFirstAddress, int16_t(pitch * 100), 2); // Pitch
+    PutTheValue(aBuffer, 0x18 - aFirstAddress, int16_t(roll * 100), 2); // Roll
     PutTheValue(aBuffer, 0x1C - aFirstAddress, uint16_t(0 * 100), 2); // Heading
     PutTheValue(aBuffer, 0x32 - aFirstAddress, int16_t(0 * 100), 2); // Temperature
     PutTheValue(aBuffer, 0x24 - aFirstAddress, int16_t(0 * 1000), 2); // Linear Accel X

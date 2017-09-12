@@ -17,11 +17,7 @@ public:
     SpiNavxSimulator(int aPort);
     virtual ~SpiNavxSimulator();
 
-    double GetAccumulatorValue() override;
-    void ResetAccumulatorValue() override;
-
-    int32_t Read(uint8_t* buffer, int32_t count) override;
-    virtual void Write(uint8_t* dataToSend, int32_t sendSize) override;
+    void HandleRead() override;
 
 protected:
 

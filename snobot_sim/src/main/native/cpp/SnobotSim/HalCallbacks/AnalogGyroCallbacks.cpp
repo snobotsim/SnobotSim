@@ -26,6 +26,11 @@ void AnalogGyroCallback(const char* name, void* param, const struct HAL_Value* v
         std::shared_ptr<AnalogGyroWrapper> gyroWrapper(new AnalogGyroWrapper(analogWrapper));
         SensorActuatorRegistry::Get().Register(port, gyroWrapper);
     }
+    else if (nameStr == "Angle")
+    {
+        double angle = value->data.v_double;
+        SensorActuatorRegistry::Get().GetGyroWrapper(port)->SetAngle(angle);
+    }
     else
     {
         SNOBOT_LOG(SnobotLogging::WARN, "Unknown name " << nameStr);
