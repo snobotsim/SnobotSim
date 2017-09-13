@@ -15,7 +15,7 @@ public class ADXL345_I2CAcceleratometer implements II2CWrapper
 
     public ADXL345_I2CAcceleratometer(int aPort)
     {
-        mDataContainer = new ThreeAxisAccelerometer(aPort, "I2C Accel ");
+        mDataContainer = new ThreeAxisAccelerometer(aPort * 50, "I2C Accel ");
         mNativePort = aPort;
     }
 
@@ -27,8 +27,10 @@ public class ADXL345_I2CAcceleratometer implements II2CWrapper
         lastWriteValue.rewind();
         int lastWrittenAddress = lastWriteValue.get();
 
-        ByteBuffer buffer = ByteBuffer.allocateDirect(2);
+        ByteBuffer buffer = ByteBuffer.allocateDirect(10);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
+
+        boolean includeAll = lastWrittenAddress == 0x32;
 
         if (lastWrittenAddress == 0x32)
         {
@@ -36,13 +38,13 @@ public class ADXL345_I2CAcceleratometer implements II2CWrapper
             buffer.putShort(value);
         }
 
-        if (lastWrittenAddress == 0x34)
+        if (lastWrittenAddress == 0x34 || includeAll)
         {
             short value = (short) (mDataContainer.getY() / sLSB);
             buffer.putShort(value);
         }
 
-        if (lastWrittenAddress == 0x36)
+        if (lastWrittenAddress == 0x36 || includeAll)
         {
             short value = (short) (mDataContainer.getZ() / sLSB);
             buffer.putShort(value);

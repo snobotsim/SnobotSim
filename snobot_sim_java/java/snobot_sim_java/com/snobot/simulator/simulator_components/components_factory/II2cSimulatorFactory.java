@@ -10,5 +10,5 @@ public interface II2cSimulatorFactory
 
     public void setDefaultWrapper(int aPort, String aType);
 
-    public Collection<String> getAvailableClassTypes();
+    public Collection<String> getAvailableTypes();
 }

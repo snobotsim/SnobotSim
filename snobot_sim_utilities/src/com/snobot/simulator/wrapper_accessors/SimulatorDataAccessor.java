@@ -1,5 +1,7 @@
 package com.snobot.simulator.wrapper_accessors;
 
+import java.util.Collection;
+
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.GravityLoadMotorSimulationConfig;
 import com.snobot.simulator.motor_sim.RotationalLoadMotorSimulationConfig;
@@ -79,5 +81,9 @@ public interface SimulatorDataAccessor
     void setDefaultSpiSimulator(int aPort, String aType);
 
     void setDefaultI2CSimulator(int aPort, String aType);
+
+    Collection<String> getAvailableSpiSimulators();
+
+    Collection<String> getAvailableI2CSimulators();
 
 }

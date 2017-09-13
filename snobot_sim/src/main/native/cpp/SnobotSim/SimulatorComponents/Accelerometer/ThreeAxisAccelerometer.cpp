@@ -13,9 +13,9 @@ ThreeAxisAccelerometer::ThreeAxisAccelerometer(int aPort, const std::string& aBa
     mYWrapper(new AccelerometerWrapper(aBaseName + " Y")),
     mZWrapper(new AccelerometerWrapper(aBaseName + " Z"))
 {
-    SensorActuatorRegistry::Get().Register(aPort + 1, mXWrapper);
-    SensorActuatorRegistry::Get().Register(aPort + 2, mYWrapper);
-    SensorActuatorRegistry::Get().Register(aPort + 3, mZWrapper);
+    SensorActuatorRegistry::Get().Register(aPort + 0, mXWrapper);
+    SensorActuatorRegistry::Get().Register(aPort + 1, mYWrapper);
+    SensorActuatorRegistry::Get().Register(aPort + 2, mZWrapper);
 }
 
 ThreeAxisAccelerometer::~ThreeAxisAccelerometer()

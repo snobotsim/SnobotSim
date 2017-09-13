@@ -21,9 +21,9 @@ public class TestSpiAccelerometer extends BaseSimulatorTest
         ADXL362 accel = new ADXL362(SPI.Port.kOnboardCS2, Range.k2G);
         ADXL362.AllAxes axes = null;
 
-        int xHandle = 151;
-        int yHandle = 152;
-        int zHandle = 153;
+        int xHandle = 150;
+        int yHandle = 151;
+        int zHandle = 152;
 
         Assert.assertEquals(3, DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().size());
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(xHandle));
@@ -79,9 +79,9 @@ public class TestSpiAccelerometer extends BaseSimulatorTest
         ADXL345_SPI accel = new ADXL345_SPI(SPI.Port.kOnboardCS3, Range.k2G);
         ADXL345_SPI.AllAxes axes = null;
 
-        int xHandle = 226;
-        int yHandle = 227;
-        int zHandle = 228;
+        int xHandle = 225;
+        int yHandle = 226;
+        int zHandle = 227;
 
         Assert.assertEquals(3, DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().size());
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(xHandle));

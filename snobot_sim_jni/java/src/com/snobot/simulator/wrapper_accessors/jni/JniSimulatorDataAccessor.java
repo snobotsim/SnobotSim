@@ -1,5 +1,8 @@
 package com.snobot.simulator.wrapper_accessors.jni;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import com.snobot.simulator.jni.JoystickJni;
 import com.snobot.simulator.jni.LocalDcMotorModelConfig;
 import com.snobot.simulator.jni.MotorConfigFactoryJni;
@@ -136,6 +139,18 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
     public void setDefaultI2CSimulator(int aPort, String aType)
     {
         SimulationConnectorJni.setI2CDefault(aPort, aType);
+    }
+
+    @Override
+    public Collection<String> getAvailableSpiSimulators()
+    {
+        return Arrays.asList("NavX", "ADXRS450", "ADXL345", "ADXL362");
+    }
+
+    @Override
+    public Collection<String> getAvailableI2CSimulators()
+    {
+        return Arrays.asList("NavX", "ADXL345");
     }
 
 }

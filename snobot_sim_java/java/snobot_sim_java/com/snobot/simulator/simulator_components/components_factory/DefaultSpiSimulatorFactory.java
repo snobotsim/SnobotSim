@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.snobot.simulator.simulator_components.ISpiWrapper;
 import com.snobot.simulator.simulator_components.accelerometer.ADXL345_SpiAccelerometer;
+import com.snobot.simulator.simulator_components.accelerometer.ADXL362_SpiAccelerometer;
 import com.snobot.simulator.simulator_components.gyro.ADXRS450_SpiGyroWrapper;
 import com.snobot.simulator.simulator_components.navx.SpiNavxSimulator;
 
@@ -44,9 +45,9 @@ public class DefaultSpiSimulatorFactory implements ISpiSimulatorFactory
         mDefaults.put(aPort, aType);
     }
 
-    public Collection<String> getAvailableClassTypes()
+    public Collection<String> getAvailableTypes()
     {
-        return Arrays.asList("NavX", "ADXRS450");
+        return Arrays.asList("NavX", "ADXRS450", "ADXL345", "ADXL362");
     }
 
     protected ISpiWrapper createSimulator(int aPort, String aType)
@@ -62,6 +63,10 @@ public class DefaultSpiSimulatorFactory implements ISpiSimulatorFactory
         else if ("ADXL345".equals(aType))
         {
             return new ADXL345_SpiAccelerometer(aPort);
+        }
+        else if ("ADXL362".equals(aType))
+        {
+            return new ADXL362_SpiAccelerometer(aPort);
         }
 
         return null;

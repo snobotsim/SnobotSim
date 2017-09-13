@@ -21,11 +21,10 @@ public class TestI2CAccelerometer extends BaseSimulatorTest
         ADXL345_I2C accel = new ADXL345_I2C(I2C.Port.kMXP, Range.k2G);
         ADXL345_I2C.AllAxes axes = null;
 
-        int xHandle = 1;
-        int yHandle = 2;
-        int zHandle = 3;
+        int xHandle = 50;
+        int yHandle = 51;
+        int zHandle = 52;
 
-        System.out.println(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList());
         Assert.assertEquals(3, DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().size());
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(xHandle));
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(yHandle));
@@ -50,9 +49,9 @@ public class TestI2CAccelerometer extends BaseSimulatorTest
         Assert.assertEquals(0, accel.getX(), DOUBLE_EPSILON);
         Assert.assertEquals(1, accel.getY(), DOUBLE_EPSILON);
         Assert.assertEquals(2, accel.getZ(), DOUBLE_EPSILON);
-        // Assert.assertEquals(0, axes.XAxis, DOUBLE_EPSILON);
-        // Assert.assertEquals(1, axes.YAxis, DOUBLE_EPSILON);
-        // Assert.assertEquals(2, axes.ZAxis, DOUBLE_EPSILON);
+        Assert.assertEquals(0, axes.XAxis, DOUBLE_EPSILON);
+        Assert.assertEquals(1, axes.YAxis, DOUBLE_EPSILON);
+        Assert.assertEquals(2, axes.ZAxis, DOUBLE_EPSILON);
 
         // Set Negative accelerations
         DataAccessorFactory.getInstance().getAccelerometerAccessor().setAcceleration(xHandle, -0.3);
@@ -65,8 +64,15 @@ public class TestI2CAccelerometer extends BaseSimulatorTest
         Assert.assertEquals(-0.3, accel.getX(), DOUBLE_EPSILON);
         Assert.assertEquals(-1.3, accel.getY(), DOUBLE_EPSILON);
         Assert.assertEquals(-2.0, accel.getZ(), DOUBLE_EPSILON);
-        // Assert.assertEquals(-0.3, axes.XAxis, DOUBLE_EPSILON);
-        // Assert.assertEquals(-1.3, axes.YAxis, DOUBLE_EPSILON);
-        // Assert.assertEquals(-2.0, axes.ZAxis, DOUBLE_EPSILON);
+        Assert.assertEquals(-0.3, axes.XAxis, DOUBLE_EPSILON);
+        Assert.assertEquals(-1.3, axes.YAxis, DOUBLE_EPSILON);
+        Assert.assertEquals(-2.0, axes.ZAxis, DOUBLE_EPSILON);
+    }
+
+    @Test
+    public void testInvalidRead()
+    {
+        ADXL362_SpiAccelerometer accel = new ADXL362_SpiAccelerometer(0);
+        accel.handleRead();
     }
 }

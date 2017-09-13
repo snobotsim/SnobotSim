@@ -44,7 +44,7 @@ public class DefaultI2CSimulatorFactory implements II2cSimulatorFactory
     }
 
     @Override
-    public Collection<String> getAvailableClassTypes()
+    public Collection<String> getAvailableTypes()
     {
         return Arrays.asList("NavX", "ADXL345");
     }

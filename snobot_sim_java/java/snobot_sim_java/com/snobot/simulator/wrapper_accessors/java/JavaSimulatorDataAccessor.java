@@ -1,5 +1,7 @@
 package com.snobot.simulator.wrapper_accessors.java;
 
+import java.util.Collection;
+
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.RegisterCallbacksJni;
 import com.snobot.simulator.jni.SensorFeedbackJni;
@@ -214,6 +216,18 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     public void setDefaultI2CSimulator(int aPort, String aType)
     {
         RegisterCallbacksJni.sI2C_FACTORY.setDefaultWrapper(aPort, aType);
+    }
+
+    @Override
+    public Collection<String> getAvailableSpiSimulators()
+    {
+        return RegisterCallbacksJni.sSPI_FACTORY.getAvailableTypes();
+    }
+
+    @Override
+    public Collection<String> getAvailableI2CSimulators()
+    {
+        return RegisterCallbacksJni.sI2C_FACTORY.getAvailableTypes();
     }
 
 }

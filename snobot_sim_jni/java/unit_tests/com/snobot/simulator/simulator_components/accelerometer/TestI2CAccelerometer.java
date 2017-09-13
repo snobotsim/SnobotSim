@@ -21,9 +21,9 @@ public class TestI2CAccelerometer extends BaseSimulatorTest
         ADXL345_I2C accel = new ADXL345_I2C(I2C.Port.kMXP, Range.k2G);
         ADXL345_I2C.AllAxes axes = null;
 
-        int xHandle = 51;
-        int yHandle = 52;
-        int zHandle = 53;
+        int xHandle = 50;
+        int yHandle = 51;
+        int zHandle = 52;
 
         Assert.assertEquals(3, DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().size());
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(xHandle));

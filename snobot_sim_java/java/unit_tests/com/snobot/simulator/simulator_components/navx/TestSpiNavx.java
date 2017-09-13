@@ -134,6 +134,9 @@ public class TestSpiNavx extends BaseSimulatorTest
         Assert.assertEquals(179, navx.getYaw(), DOUBLE_EPSILON);
         Assert.assertEquals(-20, navx.getPitch(), DOUBLE_EPSILON);
         Assert.assertEquals(-110, navx.getRoll(), DOUBLE_EPSILON);
+
+        navx.free();
+        Thread.sleep(SHUTDOWN_TIME);
     }
 
     @Test

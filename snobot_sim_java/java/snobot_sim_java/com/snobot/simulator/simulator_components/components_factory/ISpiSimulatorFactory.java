@@ -10,5 +10,5 @@ public interface ISpiSimulatorFactory
 
     public void setDefaultWrapper(int aPort, String aType);
 
-    public Collection<String> getAvailableClassTypes();
+    public Collection<String> getAvailableTypes();
 }

@@ -14,4 +14,10 @@ public class TestLinking extends BaseSimulatorTest
 	{
 		Assert.assertTrue(HAL.initialize(0, 0));
 	}
+
+    @Test
+    public void testSnobotSimLinking()
+    {
+        RegisterCallbacksJni.reset();
+    }
 }
