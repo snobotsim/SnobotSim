@@ -116,9 +116,8 @@
 #include <deque>
 #include <mutex>
 
-class CanTalonSRX  {
+class CanTalonSRX : public CtreCanNode {
 
-	int mDeviceNumber;
  private:
   // Use this for determining whether the default move constructor has been
   // called; this prevents us from calling the destructor twice.

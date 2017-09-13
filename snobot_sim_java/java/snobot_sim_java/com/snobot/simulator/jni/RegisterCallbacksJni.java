@@ -16,6 +16,7 @@ import com.snobot.simulator.simulator_components.components_factory.DefaultI2CSi
 import com.snobot.simulator.simulator_components.components_factory.DefaultSpiSimulatorFactory;
 import com.snobot.simulator.simulator_components.components_factory.II2cSimulatorFactory;
 import com.snobot.simulator.simulator_components.components_factory.ISpiSimulatorFactory;
+import com.snobot.simulator.simulator_components.ctre.CanManager;
 import com.snobot.simulator.simulator_components.gyro.GyroWrapper;
 import com.snobot.simulator.simulator_components.gyro.GyroWrapper.AngleSetterHelper;
 
@@ -23,12 +24,15 @@ public class RegisterCallbacksJni extends BaseSnobotJni
 {
     public static final ISpiSimulatorFactory sSPI_FACTORY = new DefaultSpiSimulatorFactory();
     public static final II2cSimulatorFactory sI2C_FACTORY = new DefaultI2CSimulatorFactory();
+    public static final CanManager sCAN_MANAGER = new CanManager();
 
     public static native void reset();
 
     public static native void registerAnalogCallback(String functionName);
 
     public static native void registerAnalogGyroCallback(String functionName);
+
+    public static native void registerCanCallback(String functionName);
 
     public static native void registerDigitalCallback(String functionName);
 
@@ -50,6 +54,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
     {
         registerAnalogCallback();
         registerAnalogGyroCallback();
+        registerCanCallback();
         registerDigitalCallback();
         registerEncoderCallback();
         registerI2CCallback();
@@ -68,6 +73,11 @@ public class RegisterCallbacksJni extends BaseSnobotJni
     public static void registerAnalogGyroCallback()
     {
         registerAnalogGyroCallback("analogGyroCallback");
+    }
+
+    public static void registerCanCallback()
+    {
+        registerCanCallback("canCallback");
     }
 
     public static void registerDigitalCallback()
@@ -152,6 +162,11 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         {
             System.out.println("Unknown AnalogGyro callback " + callbackType + " - " + halValue);
         }
+    }
+
+    public static void canCallback(String callbackType, int port, HalCallbackValue halValue)
+    {
+        sCAN_MANAGER.handleIncomingMessage(callbackType, halValue.mInt);
     }
 
     public static void digitalCallback(String callbackType, int port, HalCallbackValue halValue)

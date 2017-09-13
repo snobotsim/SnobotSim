@@ -10,6 +10,7 @@
 #include "MockData/AnalogInData.h"
 #include "MockData/AnalogOutData.h"
 #include "MockData/AnalogGyroData.h"
+#include "MockData/CANData.h"
 #include "MockData/DIOData.h"
 #include "MockData/EncoderData.h"
 #include "MockData/I2CData.h"
@@ -97,6 +98,7 @@ namespace SnobotSimJava
     //////////////////////////////////////////////
     CallbackHelperContainer gAnalogCallbackContainer;
     CallbackHelperContainer gAnalogGyroCallbackContainer;
+    CallbackHelperContainer gCanCallbackContainer;
     CallbackHelperContainer gDigitalCallbackContainer;
     CallbackHelperContainer gEncoderCallbackContainer;
     CallbackHelperContainer gI2CCallbackContainer;
@@ -108,6 +110,7 @@ namespace SnobotSimJava
 
     CallbackHelperContainer& GetAnalogCallback()     { return gAnalogCallbackContainer; }
     CallbackHelperContainer& GetAnalogGyroCallback() { return gAnalogGyroCallbackContainer; }
+    CallbackHelperContainer& GetCanCallback()        { return gCanCallbackContainer; }
     CallbackHelperContainer& GetDigitalCallback()    { return gDigitalCallbackContainer; }
     CallbackHelperContainer& GetEncoderCallback()    { return gEncoderCallbackContainer; }
     CallbackHelperContainer& GetI2CCallback()        { return gI2CCallbackContainer; }
@@ -127,6 +130,10 @@ namespace SnobotSimJava
     void AnalogGyroCallback(const char* name, void* param, const struct HAL_Value* value)
     {
         CallJavaCallback(gAnalogGyroCallbackContainer, name, param, value);
+    }
+    void CanCallback(const char* name, void* param, const struct HAL_Value* value)
+    {
+        CallJavaCallback(gCanCallbackContainer, name, param, value);
     }
     void DigitalIOCallback(const char* name, void* param, const struct HAL_Value* value)
     {
@@ -186,6 +193,15 @@ namespace SnobotSimJava
             HALSIM_RegisterAnalogGyroInitializedCallback(i, &AnalogGyroCallback, &gAnalogGyroArrayIndices[i], false);
             HALSIM_RegisterAnalogGyroAngleCallback(i, &AnalogGyroCallback, &gAnalogGyroArrayIndices[i], false);
             HALSIM_RegisterAnalogGyroRateCallback(i, &AnalogGyroCallback, &gAnalogGyroArrayIndices[i], false);
+        }
+
+        {
+            HALSIM_RegisterCANSendMessageCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
+            HALSIM_RegisterCANReceiveMessageCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
+            HALSIM_RegisterCANOpenStreamSessionCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
+            HALSIM_RegisterCANCloseStreamSessionCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
+            HALSIM_RegisterCANReadStreamSessionCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
+            HALSIM_RegisterCANGetCANStatusCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
         }
 
         for(int i = 0; i < HAL_GetNumDigitalHeaders(); ++i)
@@ -263,6 +279,11 @@ namespace SnobotSimJava
         {
             HALSIM_ResetDIOData(i);
         }
+
+        {
+            HALSIM_ResetCAN();
+        }
+
         for(int i = 0; i < HAL_GetNumEncoders(); ++i)
         {
             HALSIM_ResetEncoderData(i);
