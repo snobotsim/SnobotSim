@@ -1,6 +1,6 @@
 package com.snobot.simulator.motor_sim;
 
-public class RotationalLoadMotorSimulationConfig
+public class RotationalLoadMotorSimulationConfig implements IMotorSimulatorConfig
 {
     public final double mArmCenterOfMass;
     public final double mArmMass;

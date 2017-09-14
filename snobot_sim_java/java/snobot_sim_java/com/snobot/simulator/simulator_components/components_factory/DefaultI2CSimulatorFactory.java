@@ -63,4 +63,10 @@ public class DefaultI2CSimulatorFactory implements II2cSimulatorFactory
         return null;
     }
 
+    @Override
+    public Map<Integer, String> getDefaults()
+    {
+        return mDefaults;
+    }
+
 }

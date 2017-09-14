@@ -1,7 +1,9 @@
 package com.snobot.simulator.wrapper_accessors.jni;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 
 import com.snobot.simulator.jni.JoystickJni;
 import com.snobot.simulator.jni.LocalDcMotorModelConfig;
@@ -42,6 +44,14 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
     public boolean connectTankDriveSimulator(int leftEncHandle, int rightEncHandle, int aGyroHandle, double turnKp)
     {
         return SimulationConnectorJni.connectTankDriveSimulator(leftEncHandle, rightEncHandle, aGyroHandle, turnKp);
+    }
+
+    @Override
+    public Collection<Object> getSimulatorComponentConfigs()
+    {
+        Collection<Object> output = new ArrayList<>();
+
+        return output;
     }
 
     @Override
@@ -151,6 +161,20 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
     public Collection<String> getAvailableI2CSimulators()
     {
         return Arrays.asList("NavX", "ADXL345");
+    }
+
+    @Override
+    public Map<Integer, String> getDefaultI2CWrappers()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<Integer, String> getDefaultSpiWrappers()
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

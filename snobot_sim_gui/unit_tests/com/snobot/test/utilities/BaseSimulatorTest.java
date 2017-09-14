@@ -2,12 +2,14 @@ package com.snobot.test.utilities;
 
 import java.io.File;
 
+import org.junit.After;
 import org.junit.Before;
 
 import com.snobot.simulator.DefaultDataAccessorFactory;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor.SnobotLogLevel;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.RobotBase;
 
 public class BaseSimulatorTest
@@ -50,5 +52,13 @@ public class BaseSimulatorTest
 
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
         RobotBase.initializeHardwareConfiguration();
+    }
+
+    @After
+    public void cleanup()
+    {
+        System.out.println("Starting to shutdown NetworkTables...");
+        NetworkTableInstance.getDefault().stopServer();
+        System.out.println("Shutdown");
     }
 }

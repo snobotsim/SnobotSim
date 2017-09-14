@@ -32,6 +32,9 @@ public class Simulator
     private IRobotClassContainer mRobot; // The robot code to run
     private ASimulator mSimulator; // The robot code to run
 
+    protected Thread mRobotThread;
+    protected Thread mSimulatorThread;
+
     public Simulator(SnobotLogLevel aLogLevel, File aPluginDirectory, String aUserConfigDir) throws Exception
     {
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setLogLevel(aLogLevel);
@@ -119,11 +122,11 @@ public class Simulator
         createSimulator();
         createRobot();
 
-        Thread robotThread = new Thread(createRobotThread(), "RobotThread");
-        Thread simulation_thread = new Thread(createSimulationThread(), "SimulatorThread");
+        mRobotThread = new Thread(createRobotThread(), "RobotThread");
+        mSimulatorThread = new Thread(createSimulationThread(), "SimulatorThread");
 
-        simulation_thread.start();
-        robotThread.start();
+        mSimulatorThread.start();
+        mRobotThread.start();
     }
 
     protected void setFrameVisible(SimulatorFrame frame)
@@ -152,16 +155,21 @@ public class Simulator
             if (mSimulatorClassName != null && !mSimulatorClassName.isEmpty())
             {
                 mSimulator = (ASimulator) Class.forName(mSimulatorClassName).newInstance();
+                mSimulator.loadConfig(mSimulatorConfig);
+                System.out.println("Created simulator : " + mSimulatorClassName);
             }
             else
             {
                 mSimulator = new ASimulator();
+                mSimulator.loadConfig(mSimulatorConfig);
+                System.out.println("Created default simulator");
             }
 
         }
         catch (ClassNotFoundException | InstantiationException | IllegalAccessError | IllegalAccessException e)
         {
-            throw new RuntimeException("Could not find simulator class " + mSimulatorClassName);
+            System.err.println("Could not find simulator class " + mSimulatorClassName);
+            exitWithError();
         }
     }
 
@@ -179,9 +187,8 @@ public class Simulator
 
                     if (mSimulator != null)
                     {
-                        mSimulator.createSimulatorComponents(mSimulatorConfig);
+                        mSimulator.createSimulatorComponents();
                         mSimulator.setRobot(mRobot);
-                        System.out.println("Created simulator : " + mSimulatorClassName);
                     }
 
                     SimulatorFrame frame = new SimulatorFrame(mSimulatorConfig);
@@ -200,7 +207,7 @@ public class Simulator
                 {
                     System.err.println("Encountered fatal error, will exit.  Error: " + e.getMessage());
                     e.printStackTrace();
-                    System.exit(1);
+                    exitWithError();
                 }
             }
         };
@@ -225,16 +232,32 @@ public class Simulator
                     System.err.println("\n\n\n\n");
                     System.err.println("Unsatisfied link error.  This likely means that there is a native "
                             + "call in WpiLib or the NetworkTables libraries.  Please tell PJ so he can mock it out.\n\nError Message: " + e);
-
-                    System.exit(-1);
+                    exitWithError();
                 }
                 catch (Exception e)
                 {
                     System.out.println("Unexpected exception, shutting down simulator");
                     e.printStackTrace();
-                    System.exit(-1);
+                    exitWithError();
                 }
             }
         };
+    }
+
+    protected void stop()
+    {
+        mRobotThread = null;
+        mSimulatorThread = null;
+    }
+
+    protected void exitWithError()
+    {
+        stop();
+        System.exit(-1);
+    }
+
+    public ASimulator getSimulator()
+    {
+        return mSimulator;
     }
 }

@@ -1,15 +1,13 @@
 
 package com.snobot.simulator.wrapper_accessors;
 
-import java.util.List;
-
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.GravityLoadMotorSimulationConfig;
 import com.snobot.simulator.motor_sim.RotationalLoadMotorSimulationConfig;
 import com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig;
 import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
 
-public interface SpeedControllerWrapperAccessor
+public interface SpeedControllerWrapperAccessor extends IBasicSensorActuatorWrapperAccessor
 {
     public enum MotorSimType
     {
@@ -22,21 +20,14 @@ public interface SpeedControllerWrapperAccessor
             mDisplayName = aDisplayName;
         }
 
+        @Override
         public String toString()
         {
             return mDisplayName;
         }
     }
     
-    public void setName(int aPort, String aName);
-    
-    public String getName(int aPort);
-
-    public boolean getWantsHidden(int aPort);
-    
     public double getVoltagePercentage(int aPort);
-    
-    public List<Integer> getPortList();
 
     public DcMotorModelConfig getMotorConfig(int aPort);
 

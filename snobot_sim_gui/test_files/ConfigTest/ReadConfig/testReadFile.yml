@@ -1,0 +1,125 @@
+!!com.snobot.simulator.config.SimulatorConfig
+mAccelerometers:
+- mHandle: 0
+  mName: I2C Accel X
+- mHandle: 1
+  mName: I2C Accel Y
+- mHandle: 2
+  mName: I2C Accel Z
+- mHandle: 150
+  mName: SPI Accel X
+- mHandle: 151
+  mName: SPI Accel Y
+- mHandle: 152
+  mName: SPI Accel Z
+- mHandle: 75
+  mName: SPI Accel X
+- mHandle: 76
+  mName: SPI Accel Y
+- mHandle: 77
+  mName: SPI Accel Z
+mAnalogIO:
+- mHandle: 0
+  mName: Analog 0
+- mHandle: 1
+  mName: Analog 1
+- mHandle: 2
+  mName: Analog 2
+mDefaultI2CWrappers:
+  0: ADXL345
+mDefaultSpiWrappers:
+  0: ADXRS450
+  1: ADXL345
+  2: ADXL362
+  3: ADXRS450
+mDigitalIO:
+- mHandle: 0
+  mName: Digital Source0
+- mHandle: 1
+  mName: Digital Source1
+- mHandle: 2
+  mName: Digital Source2
+- mHandle: 3
+  mName: Digital Source3
+- mHandle: 4
+  mName: Digital Source4
+- mHandle: 5
+  mName: Digital Source5
+- mHandle: 6
+  mName: Digital Source6
+- mHandle: 7
+  mName: Digital Source7
+- mHandle: 8
+  mName: Digital Source8
+- mHandle: 9
+  mName: Digital Source9
+mEncoders:
+- mConnectedSpeedControllerHandle: 1
+  mHandle: 0
+  mName: Encoder 0
+- mConnectedSpeedControllerHandle: -1
+  mHandle: 1
+  mName: Encoder 1
+- mConnectedSpeedControllerHandle: -1
+  mHandle: 2
+  mName: Encoder 2
+mGyros:
+- mHandle: 1
+  mName: Analog Gyro
+mPwm:
+- mHandle: 0
+  mMotorSimConfig: !!com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig
+    mMaxSpeed: 12.0
+  mName: Speed Controller 0
+- mHandle: 1
+  mMotorSimConfig: !!com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig
+    mConversionFactor: 6.28
+    mLoad: 0.5
+  mName: Speed Controller 1
+- mHandle: 2
+  mMotorSimConfig: null
+  mName: Speed Controller 2
+- mHandle: 3
+  mMotorSimConfig: null
+  mName: Speed Controller 3
+- mHandle: 4
+  mMotorSimConfig: null
+  mName: Speed Controller 4
+- mHandle: 5
+  mMotorSimConfig: null
+  mName: Speed Controller 5
+- mHandle: 6
+  mMotorSimConfig: null
+  mName: Speed Controller 6
+- mHandle: 7
+  mMotorSimConfig: null
+  mName: Speed Controller 7
+- mHandle: 8
+  mMotorSimConfig: null
+  mName: Speed Controller 8
+mRelays:
+- mHandle: 0
+  mName: Relay 0
+mSimulatorComponents:
+- !!com.snobot.simulator.simulator_components.TankDriveGyroSimulator$TankDriveConfig
+  mGyroHandle: 1
+  mLeftEncoderHandle: 0
+  mRightEncoderHandle: 1
+  mTurnKp: 0.5
+- !!com.snobot.simulator.simulator_components.TankDriveGyroSimulator$TankDriveConfig
+  mGyroHandle: 100
+  mLeftEncoderHandle: 0
+  mRightEncoderHandle: 1
+  mTurnKp: 1.0
+- !!com.snobot.simulator.simulator_components.TankDriveGyroSimulator$TankDriveConfig
+  mGyroHandle: 103
+  mLeftEncoderHandle: 0
+  mRightEncoderHandle: 1
+  mTurnKp: 2.0
+mSolenoids:
+- mHandle: 0
+  mName: Solenoid 0
+- mHandle: 1
+  mName: Solenoid 1
+- mHandle: 3
+  mName: Solenoid 3

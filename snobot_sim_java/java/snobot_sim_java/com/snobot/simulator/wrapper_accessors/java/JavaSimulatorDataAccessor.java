@@ -1,11 +1,12 @@
 package com.snobot.simulator.wrapper_accessors.java;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.RegisterCallbacksJni;
 import com.snobot.simulator.jni.SensorFeedbackJni;
-import com.snobot.simulator.module_wrapper.EncoderWrapper;
 import com.snobot.simulator.module_wrapper.PwmWrapper;
 import com.snobot.simulator.motor_sim.DcMotorModel;
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
@@ -23,7 +24,6 @@ import com.snobot.simulator.motor_sim.motor_factory.PublishedMotorFactory;
 import com.snobot.simulator.motor_sim.motor_factory.VexMotorFactory;
 import com.snobot.simulator.simulator_components.ISimulatorUpdater;
 import com.snobot.simulator.simulator_components.TankDriveGyroSimulator;
-import com.snobot.simulator.simulator_components.gyro.GyroWrapper;
 import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor;
 
 public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
@@ -50,14 +50,23 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     @Override
     public boolean connectTankDriveSimulator(int leftEncHandle, int rightEncHandle, int gyroHandle, double turnKp)
     {
-        EncoderWrapper rightEncWrapper = SensorActuatorRegistry.get().getEncoders().get(rightEncHandle);
-        EncoderWrapper leftEncWrapper = SensorActuatorRegistry.get().getEncoders().get(leftEncHandle);
-        GyroWrapper gyroWrapper = SensorActuatorRegistry.get().getGyros().get(gyroHandle);
-
-        TankDriveGyroSimulator simulator = new TankDriveGyroSimulator(leftEncWrapper, rightEncWrapper, gyroWrapper);
-        simulator.setTurnKp(turnKp);
+        TankDriveGyroSimulator simulator = new TankDriveGyroSimulator(
+                new TankDriveGyroSimulator.TankDriveConfig(leftEncHandle, rightEncHandle, gyroHandle, turnKp));
 
         return simulator.isSetup();
+    }
+
+    @Override
+    public Collection<Object> getSimulatorComponentConfigs()
+    {
+        Collection<Object> output = new ArrayList<>();
+
+        for (ISimulatorUpdater sim : SensorActuatorRegistry.get().getSimulatorComponents())
+        {
+            output.add(sim.getConfig());
+        }
+
+        return output;
     }
 
     @Override
@@ -228,6 +237,18 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     public Collection<String> getAvailableI2CSimulators()
     {
         return RegisterCallbacksJni.sI2C_FACTORY.getAvailableTypes();
+    }
+
+    @Override
+    public Map<Integer, String> getDefaultI2CWrappers()
+    {
+        return RegisterCallbacksJni.sI2C_FACTORY.getDefaults();
+    }
+
+    @Override
+    public Map<Integer, String> getDefaultSpiWrappers()
+    {
+        return RegisterCallbacksJni.sSPI_FACTORY.getDefaults();
     }
 
 }

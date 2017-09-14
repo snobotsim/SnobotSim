@@ -1,9 +1,14 @@
 package com.snobot.simulator.motor_sim;
 
-public class StaticLoadMotorSimulationConfig
+public class StaticLoadMotorSimulationConfig implements IMotorSimulatorConfig
 {
     public final double mLoad;
     public final double mConversionFactor;
+
+    private StaticLoadMotorSimulationConfig()
+    {
+        this(0, 0);
+    }
 
     public StaticLoadMotorSimulationConfig(double aLoad)
     {

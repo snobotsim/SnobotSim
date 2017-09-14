@@ -1,6 +1,6 @@
 package com.snobot.simulator.motor_sim;
 
-public class GravityLoadMotorSimulationConfig
+public class GravityLoadMotorSimulationConfig implements IMotorSimulatorConfig
 {
     public double mLoad;
 

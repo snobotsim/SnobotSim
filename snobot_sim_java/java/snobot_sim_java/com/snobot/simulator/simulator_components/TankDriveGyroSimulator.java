@@ -6,30 +6,29 @@ import com.snobot.simulator.simulator_components.gyro.GyroWrapper;
 
 public class TankDriveGyroSimulator implements ISimulatorUpdater
 {
-
-    private EncoderWrapper mLeftEncoder;
-    private EncoderWrapper mRightEncoder;
-    private GyroWrapper mGyroWrapper;
-
-    private double mAngle; // degrees
+    private final TankDriveConfig mConfig;
+    private final EncoderWrapper mLeftEncoder;
+    private final EncoderWrapper mRightEncoder;
+    private final GyroWrapper mGyroWrapper;
+    private double mKP;
     private boolean mIsSetup;
 
-    private boolean mIsLeftReversed;
-    private boolean mIsRightReversed;
+    private double mAngle; // degrees
 
-    private double mKP;
 
-    public TankDriveGyroSimulator(EncoderWrapper aLeftEncoder, EncoderWrapper aRightEncoder, GyroWrapper aGyroWrapper)
+    public TankDriveGyroSimulator(TankDriveConfig aConfig)
     {
-        mLeftEncoder = aLeftEncoder;
-        mRightEncoder = aRightEncoder;
-        mGyroWrapper = aGyroWrapper;
+        mConfig = aConfig;
+        mRightEncoder = SensorActuatorRegistry.get().getEncoders().get(aConfig.getmRightEncoderHandle());
+        mLeftEncoder = SensorActuatorRegistry.get().getEncoders().get(aConfig.getmLeftEncoderHandle());
+        mGyroWrapper = SensorActuatorRegistry.get().getGyros().get(aConfig.getmGyroHandle());
+        mKP = aConfig.mTurnKp;
 
         mIsSetup = mLeftEncoder != null && mRightEncoder != null && mGyroWrapper != null;
 
         // TODO I have no idea what this black magic number means
         // mKP = 22.0 / 12.0;
-        mKP = 110.0 / 12.0;
+        // mKP = 110.0 / 12.0;
 
         if (!mIsSetup)
         {
@@ -39,35 +38,14 @@ public class TankDriveGyroSimulator implements ISimulatorUpdater
         SensorActuatorRegistry.get().register(this);
     }
 
-    public void setTurnKp(double aKp)
-    {
-        mKP = aKp;
-    }
-
-    public void setIsReverse(boolean isLeftReversed, boolean isRightReversed)
-    {
-        mIsLeftReversed = isLeftReversed;
-        mIsRightReversed = isRightReversed;
-    }
-
     @Override
     public void update()
     {
-
         if (mIsSetup)
         {
 
             double rightDist = mRightEncoder.getPosition();
             double leftDist = mLeftEncoder.getPosition();
-
-            if (mIsLeftReversed == true)
-            {
-                leftDist *= -1;
-            }
-            if (mIsRightReversed == true)
-            {
-                rightDist *= -1;
-            }
 
             mAngle = (leftDist - rightDist) / (Math.PI * mKP) * (180.0);
 
@@ -81,4 +59,73 @@ public class TankDriveGyroSimulator implements ISimulatorUpdater
     {
         return mIsSetup;
     }
+    
+    public Object getConfig()
+    {
+        return mConfig;
+    }
+
+    public static class TankDriveConfig
+    {
+
+        private int mLeftEncoderHandle;
+        private int mRightEncoderHandle;
+        private int mGyroHandle;
+        private double mTurnKp;
+
+        public TankDriveConfig()
+        {
+            this(-1, -1, -1, 1);
+        }
+
+        public TankDriveConfig(int aLeftHandle, int aRightHandle, int aGyroHandle, double aTurnKp)
+        {
+            mLeftEncoderHandle = aLeftHandle;
+            mRightEncoderHandle = aRightHandle;
+            mGyroHandle = aGyroHandle;
+            mTurnKp = aTurnKp;
+        }
+
+        public int getmLeftEncoderHandle()
+        {
+            return mLeftEncoderHandle;
+        }
+
+        public void setmLeftEncoderHandle(int mLeftEncoderHandle)
+        {
+            this.mLeftEncoderHandle = mLeftEncoderHandle;
+        }
+
+        public int getmRightEncoderHandle()
+        {
+            return mRightEncoderHandle;
+        }
+
+        public void setmRightEncoderHandle(int mRightEncoderHandle)
+        {
+            this.mRightEncoderHandle = mRightEncoderHandle;
+        }
+
+        public int getmGyroHandle()
+        {
+            return mGyroHandle;
+        }
+
+        public void setmGyroHandle(int mGyroHandle)
+        {
+            this.mGyroHandle = mGyroHandle;
+        }
+
+        public double getmTurnKp()
+        {
+            return mTurnKp;
+        }
+
+        public void setmTurnKp(double mTurnKp)
+        {
+            this.mTurnKp = mTurnKp;
+        }
+
+    }
+
 }

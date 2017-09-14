@@ -72,4 +72,10 @@ public class DefaultSpiSimulatorFactory implements ISpiSimulatorFactory
         return null;
     }
 
+    @Override
+    public Map<Integer, String> getDefaults()
+    {
+        return mDefaults;
+    }
+
 }

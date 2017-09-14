@@ -1,6 +1,7 @@
 package com.snobot.simulator.wrapper_accessors;
 
 import java.util.Collection;
+import java.util.Map;
 
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.GravityLoadMotorSimulationConfig;
@@ -22,6 +23,8 @@ public interface SimulatorDataAccessor
     void reset();
 
     boolean connectTankDriveSimulator(int leftEncHandle, int rightEncHandle, int gyroHandle, double turnKp);
+
+    Collection<Object> getSimulatorComponentConfigs();
 
     DcMotorModelConfig createMotor(String selectedMotor, int numMotors, double gearReduction, double efficiency);
 
@@ -85,5 +88,9 @@ public interface SimulatorDataAccessor
     Collection<String> getAvailableSpiSimulators();
 
     Collection<String> getAvailableI2CSimulators();
+
+    Map<Integer, String> getDefaultI2CWrappers();
+
+    Map<Integer, String> getDefaultSpiWrappers();
 
 }

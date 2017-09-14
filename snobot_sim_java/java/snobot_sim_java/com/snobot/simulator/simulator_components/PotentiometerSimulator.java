@@ -44,4 +44,10 @@ public class PotentiometerSimulator implements ISimulatorUpdater
     {
         return isSetup;
     }
+
+    @Override
+    public Object getConfig()
+    {
+        return null;
+    }
 }

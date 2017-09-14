@@ -3,10 +3,7 @@ package com.snobot.simulator.simulator_components;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.snobot.simulator.SensorActuatorRegistry;
-import com.snobot.simulator.module_wrapper.EncoderWrapper;
 import com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig;
-import com.snobot.simulator.simulator_components.gyro.GyroWrapper;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
@@ -59,41 +56,6 @@ public class TestTankDriveSimulator extends BaseSimulatorTest
         Assert.assertEquals(-90, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(0), DOUBLE_EPSILON);
         Assert.assertEquals(45, DataAccessorFactory.getInstance().getEncoderAccessor().getDistance(0), DOUBLE_EPSILON);
         Assert.assertEquals(-45, DataAccessorFactory.getInstance().getEncoderAccessor().getDistance(1), DOUBLE_EPSILON);
-    }
-
-    @Test
-    public void testInvertedTankDrive()
-    {
-        SpeedController rightSC = new Talon(0);
-        SpeedController leftSC = new Talon(1);
-        Encoder rightEnc = new Encoder(0, 1);
-        Encoder leftEnc = new Encoder(2, 3);
-        Gyro gyro = new AnalogGyro(0);
-
-        DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(0, 0);
-        DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(1, 1);
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(0, new SimpleMotorSimulationConfig(1));
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(1, new SimpleMotorSimulationConfig(1));
-
-        EncoderWrapper rightEncWrapper = SensorActuatorRegistry.get().getEncoders().get(0);
-        EncoderWrapper leftEncWrapper = SensorActuatorRegistry.get().getEncoders().get(1);
-        GyroWrapper gyroWrapper = SensorActuatorRegistry.get().getGyros().get(0);
-        TankDriveGyroSimulator simulator = new TankDriveGyroSimulator(leftEncWrapper, rightEncWrapper, gyroWrapper);
-        simulator.setTurnKp(180 / Math.PI);
-        simulator.setIsReverse(true, true);
-
-        // Turn Left
-        simulateForTime(90, () ->
-        {
-            rightSC.set(1);
-            leftSC.set(-1);
-        });
-        Assert.assertEquals(180, gyro.getAngle(), DOUBLE_EPSILON);
-        Assert.assertEquals(89, rightEnc.getDistance(), DOUBLE_EPSILON);
-        Assert.assertEquals(-89, leftEnc.getDistance(), DOUBLE_EPSILON);
-        Assert.assertEquals(180, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(0), DOUBLE_EPSILON);
-        Assert.assertEquals(90, DataAccessorFactory.getInstance().getEncoderAccessor().getDistance(0), DOUBLE_EPSILON);
-        Assert.assertEquals(-90, DataAccessorFactory.getInstance().getEncoderAccessor().getDistance(1), DOUBLE_EPSILON);
     }
 
     @Test
