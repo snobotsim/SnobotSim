@@ -4,6 +4,7 @@
 #include "HAL/CAN.h"
 #include <string.h> // memset
 #include <iostream>
+#include <stdio.h>
 
 static const UINT32 kFullMessageIDMask = 0x1fffffff;
 
@@ -34,7 +35,7 @@ void CtreCanNode::RegisterTx(uint32_t arbId, uint32_t periodMs, uint32_t dlc, co
 	if(dlc > 8)
 		dlc = 8;
 	txJob_t job;
-	std::memset(&job, 0, sizeof(job));
+	memset(&job, 0, sizeof(job));
 	job.arbId = arbId;
 	job.periodMs = periodMs;
 	job.dlc = dlc;

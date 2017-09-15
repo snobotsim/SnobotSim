@@ -25,6 +25,8 @@ public class SensorFeedbackJni extends BaseSnobotJni
 
     public static native void setCanSetValueForRead(ByteBuffer aOutputBuffer, int aCopyCount);
 
+    public static native void setCanSetValueForReadStream(ByteBuffer aOutputBuffer, int aCopyCount);
+
     public static native void getCanLastSentMessageData(ByteBuffer aOutputBuffer, int aCopyCount);
 
     public static native void setEnabled(boolean aEnabled);
