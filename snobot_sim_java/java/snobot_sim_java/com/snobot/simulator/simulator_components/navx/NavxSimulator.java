@@ -46,7 +46,7 @@ public class NavxSimulator
         output.put((byte) 7);
         output.put((byte) 10);
         output.putShort((short) 0xDEAD);
-        output.putInt(0);
+        output.putInt(5);
         // output.putShort((short) 0xBEEF);
 
         return output;
@@ -64,6 +64,7 @@ public class NavxSimulator
         output.put(0x0A - aFirstAddress, (byte) 2); // Self Test
         output.put(0x09 - aFirstAddress, (byte) 3); // Cal Status
         output.put(0x10 - aFirstAddress, (byte) 4); // Sensor Status
+        output.put(0x04 - aFirstAddress, (byte) 60); // Update Rate
 
         output.putShort(0x16 - aFirstAddress, (short) (boundBetweenNeg180Pos180(mYawGyro.getAngle()) * 100)); // Yaw
         output.putShort(0x1A - aFirstAddress, (short) (boundBetweenNeg180Pos180(mPitchGyro.getAngle()) * 100)); // Pitch

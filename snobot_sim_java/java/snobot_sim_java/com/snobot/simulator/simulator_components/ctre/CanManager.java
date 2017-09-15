@@ -39,7 +39,7 @@ public class CanManager
     private void handleTx1(ByteBuffer aBuffer, int aPort)
     {
 
-        byte command = aBuffer.get(5);
+        byte command = (byte) (aBuffer.get(5) & 0xF0);
         if (command == 0x00)
         {
             CanTalonSpeedControllerSim wrapper = new CanTalonSpeedControllerSim(aPort);
@@ -85,6 +85,12 @@ public class CanManager
         {
             wrapper.setFGain(floatValue);
         }
+        // I Zone
+        else if (commandType == 5)
+        {
+            // System.out.println("IZone: " + rawValue + ", " + floatValue);
+            wrapper.setIZone(rawValue);
+        }
         else
         {
             System.err.println("Unknown SetParam command: " + commandType);
@@ -100,6 +106,7 @@ public class CanManager
         byte commandType = aBuffer.get(0);
 
         double floatValue = 0;
+        boolean isFloat = true;
 
         // P gain
         if (commandType == 1)
@@ -121,25 +128,36 @@ public class CanManager
         {
             floatValue = wrapper.getPidConstants().mF;
         }
+        // I Zone
+        else if (commandType == 5)
+        {
+            floatValue = wrapper.getPidConstants().mIZone;
+            isFloat = false;
+        }
         else
         {
-            System.err.println("Unknown SetParam command: " + commandType);
+            System.err.println("Unknown GetParam command: " + commandType);
         }
-        int rawValue = (int) (floatValue / 0.0000002384185791015625);
+        int rawValue;
+        if(isFloat)
+        {
+            rawValue = (int) (floatValue / 0.0000002384185791015625);
+        }
+        else
+        {
+            rawValue = (int) floatValue;
+        }
         // System.out.println("Raw value..." + rawValue + ", " + floatValue);
         
+        int messageId = 0x2041840;
+        messageId |= aPort;
+
         ByteBuffer outputBuffer = ByteBuffer.allocateDirect(40);
         outputBuffer.order(ByteOrder.LITTLE_ENDIAN);
-        outputBuffer.putInt(0x2041840); // Message ID
+        outputBuffer.putInt(messageId);
         outputBuffer.putInt(0xDEADBEEF); // Timestamp
         outputBuffer.put(commandType);
         outputBuffer.putInt(rawValue);
-
-        // unsigned ParamEnum:8;
-        // unsigned ParamValueL:8;
-        // unsigned ParamValueML:8;
-        // unsigned ParamValueMH:8;
-        // unsigned ParamValueH:8;
 
         SensorFeedbackJni.setCanSetValueForReadStream(outputBuffer, 1);
 
@@ -149,33 +167,38 @@ public class CanManager
     {
         byte commandType = (byte) ((aBuffer.get(6) >> 4) & 0xF);
         CanTalonSpeedControllerSim wrapper = getWrapperHelper(aPort);
-        short demand = aBuffer.getShort(3);
-        // System.out.println(String.format(" Demand: %d", demand));
+        int demand = (aBuffer.getInt(2)) >> 8;
+        // int demand2 =
+//        System.out.println(String.format(" Demand: %d, Command: %d", demand, commandType));
 
         if (commandType == 0x00)
         {
             double appliedVoltageDemand = demand / 1023.0;
+            wrapper.set(appliedVoltageDemand);
             // System.out.println(" Setting by applied throttle.. " +
             // appliedVoltageDemand);
-            wrapper.set(appliedVoltageDemand);
         }
         else if (commandType == (byte) 0x01)
         {
-            System.out.println("  Setting by position.");
+            double position = demand / 4096.0;
+            wrapper.setPositionGoal(position);
+            // System.out.println(" Setting by position." + position);
         }
         else if (commandType == (byte) 0x02)
         {
-            System.out.println("  Setting by speed.");
+            double speed = demand * 600.0 / 4096.0;
+            wrapper.setSpeedGoal(speed);
+            // System.out.println(" Setting by speed. " + speed);
         }
         else if (commandType == (byte) 0x03)
         {
-            System.out.println("  Setting by current.");
+            System.out.println("  Setting by current." + demand);
         }
         else if (commandType == (byte) 0x04)
         {
             double voltageDemand = demand / 256.0;
-            // System.out.println(" Setting by voltage. " + voltageDemand);
             wrapper.set(voltageDemand / 12.0);
+            // System.out.println(" Setting by voltage. " + voltageDemand);
         }
         else if (commandType == (byte) 0x05)
         {
@@ -209,6 +232,19 @@ public class CanManager
         SensorFeedbackJni.setCanSetValueForRead(buffer, 8);
     }
 
+    private void populateStatus2(int aPort)
+    {
+        CanTalonSpeedControllerSim wrapper = getWrapperHelper(aPort);
+        int binnedPosition = (int) (wrapper.getPosition() * 4096);
+        int binnedVelocity = (int) (wrapper.getVelocity() * 6.9);
+
+        ByteBuffer buffer = ByteBuffer.allocateDirect(19);
+        putNumber(buffer, binnedPosition, 3);
+        buffer.putShort((short) binnedVelocity);
+
+        SensorFeedbackJni.setCanSetValueForRead(buffer, 8);
+    }
+
     private void populateStatus3(int aPort)
     {
         CanTalonSpeedControllerSim wrapper = getWrapperHelper(aPort);
@@ -216,11 +252,6 @@ public class CanManager
         int binnedVelocity = (int) wrapper.getVelocity();
 
         ByteBuffer buffer = ByteBuffer.allocateDirect(19);
-        // buffer.put(0, (byte) ((binnedPosition & 0xFF0000) >> 16));
-        // buffer.put(1, (byte) ((binnedPosition & 0x00FF00) >> 8));
-        // buffer.put(2, (byte) ((binnedPosition & 0x0000FF) >> 0));
-        // buffer.put(3, (byte) ((binnedVelocity & 0xFF00) >> 8));
-        // buffer.put(4, (byte) ((binnedVelocity & 0x00FF) >> 0));
         putNumber(buffer, binnedPosition, 3);
         buffer.putShort((short) binnedVelocity);
 
@@ -237,11 +268,6 @@ public class CanManager
         int binnedVelocity = (int) wrapper.getVelocity();
 
         ByteBuffer buffer = ByteBuffer.allocateDirect(19);
-        // buffer.put(0, (byte) ((binnedPosition & 0xFF0000) >> 16));
-        // buffer.put(1, (byte) ((binnedPosition & 0x00FF00) >> 8));
-        // buffer.put(2, (byte) ((binnedPosition & 0x0000FF) >> 0));
-        // buffer.put(3, (byte) ((binnedVelocity & 0xFF00) >> 8));
-        // buffer.put(4, (byte) ((binnedVelocity & 0x00FF) >> 0));
         putNumber(buffer, binnedPosition, 3);
         buffer.putShort((short) binnedVelocity);
         buffer.put((byte) ((temperature + 50) / 0.6451612903));
@@ -290,7 +316,7 @@ public class CanManager
         }
         else if (messageId == 0x02041440)
         {
-            unsupportedRead(2);
+            populateStatus2(aPort);
         }
         else if (messageId == 0x02041480)
         {
@@ -299,26 +325,6 @@ public class CanManager
         else if (messageId == 0x020414C0)
         {
             populateStatus4(aPort);
-        }
-        else if (messageId == 0x02041500)
-        {
-            unsupportedRead(5);
-        }
-        else if (messageId == 0x02041540)
-        {
-            unsupportedRead(6);
-        }
-        else if (messageId == 0x02041580)
-        {
-            unsupportedRead(7);
-        }
-        else if (messageId == 0x020415C0)
-        {
-            unsupportedRead(8);
-        }
-        else if (messageId == 0x02041600)
-        {
-            unsupportedRead(9);
         }
         else
         {

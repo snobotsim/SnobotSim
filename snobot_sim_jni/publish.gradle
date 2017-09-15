@@ -14,6 +14,7 @@ task cppSourcesZip(type: Zip) {
 
 task javadoc(type: Javadoc, overwrite: true) {
     source = sourceSets.main.allJava
+    classpath = configurations.compile
     
     javadoc.options.links("http://docs.oracle.com/javase/8/docs/api/")
     options.addStringOption "tag", "pre:a:Pre-Condition"

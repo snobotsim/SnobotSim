@@ -56,10 +56,6 @@ public interface SimulatorDataAccessor
     /**
      * Simulates waiting for a DS packet to come in. Actually waits the amount
      * of time. Uses default tactical timing of 20ms/50hz
-     * 
-     * @param aUpdatePeriod
-     *            The time, in seconds, to pause before notifying the DS it has
-     *            received data
      */
     default void waitForNextUpdateLoop()
     {
