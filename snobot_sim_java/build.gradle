@@ -103,6 +103,7 @@ ext.addHalSimToLinker = { linker->
 dependencies {
     compile project(":snobot_sim_utilities")
     compile 'edu.wpi.first.ntcore:ntcore-java:' + getNtCoreVersion()
+    compile group: 'log4j', name: 'log4j', version: '1.2.16'
     
     testCompile 'junit:junit:4.12'
     testCompile "thirdparty.frc.kauai:Navx-Java:+"

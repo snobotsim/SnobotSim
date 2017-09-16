@@ -17,6 +17,7 @@ sourceSets {
 
 dependencies {
     compile 'edu.wpi.first.wpiutil:wpiutil-java:' + getWpiUtilVersion()
+    compile group: 'log4j', name: 'log4j', version: '1.2.16'
     
     testCompile 'junit:junit:4.12'
 }

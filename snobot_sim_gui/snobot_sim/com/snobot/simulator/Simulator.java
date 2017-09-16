@@ -9,6 +9,9 @@ import java.util.Properties;
 
 import javax.swing.JFrame;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.snobot.simulator.gui.SimulatorFrame;
 import com.snobot.simulator.joysticks.IMockJoystick;
 import com.snobot.simulator.joysticks.JoystickFactory;
@@ -102,9 +105,7 @@ public class Simulator
     private void createRobot() throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException,
             SecurityException, IllegalArgumentException, InvocationTargetException
     {
-        System.out.println("*************************************************************");
-        System.out.println("*                    Starting Robot Code                    *");
-        System.out.println("*************************************************************");
+        Logger.getLogger(Simulator.class).log(Level.INFO, "Starting Robot Code");
 
         mRobot.constructRobot();
     }
@@ -181,7 +182,7 @@ public class Simulator
                     {
                         mSimulator.createSimulatorComponents(mSimulatorConfig);
                         mSimulator.setRobot(mRobot);
-                        System.out.println("Created simulator : " + mSimulatorClassName);
+                        Logger.getLogger(Simulator.class).log(Level.INFO, "Created simulator : " + mSimulatorClassName);
                     }
 
                     SimulatorFrame frame = new SimulatorFrame(mSimulatorConfig);
@@ -230,7 +231,7 @@ public class Simulator
                 }
                 catch (Exception e)
                 {
-                    System.out.println("Unexpected exception, shutting down simulator");
+                    Logger.getLogger(Simulator.class).log(Level.FATAL, "Unexpected exception, shutting down simulator");
                     e.printStackTrace();
                     System.exit(-1);
                 }

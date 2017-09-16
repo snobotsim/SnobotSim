@@ -1,5 +1,8 @@
 package com.snobot.simulator.jni;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.AnalogWrapper;
 import com.snobot.simulator.module_wrapper.AnalogWrapper.VoltageSetterHelper;
@@ -22,6 +25,7 @@ import com.snobot.simulator.simulator_components.gyro.GyroWrapper.AngleSetterHel
 
 public class RegisterCallbacksJni extends BaseSnobotJni
 {
+    private static final Logger sLOGGER = Logger.getLogger(RegisterCallbacksJni.class);
     public static final ISpiSimulatorFactory sSPI_FACTORY = new DefaultSpiSimulatorFactory();
     public static final II2cSimulatorFactory sI2C_FACTORY = new DefaultI2CSimulatorFactory();
     public static final CanManager sCAN_MANAGER = new CanManager();
@@ -136,7 +140,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown Analog callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown Analog callback " + callbackType + " - " + halValue);
         }
     }
 
@@ -160,7 +164,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown AnalogGyro callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown AnalogGyro callback " + callbackType + " - " + halValue);
         }
     }
 
@@ -189,7 +193,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown Digital callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown Digital callback " + callbackType + " - " + halValue);
         }
     }
 
@@ -209,7 +213,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown Encoder callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown Encoder callback " + callbackType + " - " + halValue);
         }
     }
 
@@ -226,7 +230,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown I2C callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown I2C callback " + callbackType + " - " + halValue);
         }
     }
 
@@ -242,7 +246,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown PCM callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown PCM callback " + callbackType + " - " + halValue);
         }
     }
 
@@ -254,7 +258,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown PDP callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown PDP callback " + callbackType + " - " + halValue);
         }
     }
 
@@ -270,7 +274,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown PWM callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown PWM callback " + callbackType + " - " + halValue);
         }
     }
 
@@ -294,7 +298,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown Relay callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown Relay callback " + callbackType + " - " + halValue);
         }
     }
 
@@ -311,7 +315,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown SPI callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown SPI callback " + callbackType + " - " + halValue);
         }
     }
 }

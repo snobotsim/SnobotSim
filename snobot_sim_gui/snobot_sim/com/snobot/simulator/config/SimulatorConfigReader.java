@@ -7,6 +7,8 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
@@ -24,9 +26,7 @@ public class SimulatorConfigReader
     {
         if (aConfigFile == null)
         {
-            System.out.println("*******************************************");
-            System.out.println("Config file not set, won't hook anything up");
-            System.out.println("*******************************************");
+            Logger.getLogger(SimulatorConfigReader.class).log(Level.WARN, "Config file not set, won't hook anything up");
             return true;
         }
 
@@ -35,7 +35,7 @@ public class SimulatorConfigReader
         try
         {
             File file = new File(aConfigFile);
-            System.out.println("Loading " + file.getAbsolutePath());
+            Logger.getLogger(SimulatorConfigReader.class).log(Level.INFO, "Loading " + file.getAbsolutePath());
             Yaml yaml = new Yaml();
             parseConfig(yaml.load(new FileReader(file)));
 

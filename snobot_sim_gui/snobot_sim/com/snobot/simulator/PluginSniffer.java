@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import edu.wpi.first.wpilibj.RobotBase;
 
 public class PluginSniffer
@@ -37,7 +40,7 @@ public class PluginSniffer
 
     public void loadPlugins(File pluginDir) throws Exception
     {
-        System.out.println("Searching for robot plugins in " + pluginDir.getAbsolutePath());
+        Logger.getLogger(PluginSniffer.class).log(Level.INFO, "Searching for robot plugins in " + pluginDir.getAbsolutePath());
         mDiscoveredJars = pluginDir.listFiles(new FilenameFilter()
         {
 
@@ -56,7 +59,7 @@ public class PluginSniffer
             for (File file : mDiscoveredJars)
             {
                 method.invoke(classLoader, file.toURI().toURL());
-				System.out.println("  Added " + file.getAbsolutePath() + " to classpath");
+                Logger.getLogger(PluginSniffer.class).log(Level.INFO, "  Added " + file.getAbsolutePath() + " to classpath");
             }
         }
     }

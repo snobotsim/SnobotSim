@@ -3,11 +3,15 @@ package com.snobot.simulator.simulator_components.ctre;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.SensorFeedbackJni;
 
 public class CanManager
 {
+    private static final Logger sLOGGER = Logger.getLogger(CanManager.class);
     private static final int sCAN_OFFSET = 100;
 
     public void handleIncomingMessage(String aCallbackType, int aMessageId)
@@ -32,7 +36,7 @@ public class CanManager
         }
         else
         {
-            System.err.println("Unknown CAN callback " + aCallbackType + " - Message ID: 0x" + Integer.toHexString(aMessageId));
+            sLOGGER.log(Level.ERROR, "Unknown CAN callback " + aCallbackType + " - Message ID: 0x" + Integer.toHexString(aMessageId));
         }
     }
 
@@ -44,7 +48,7 @@ public class CanManager
         {
             CanTalonSpeedControllerSim wrapper = new CanTalonSpeedControllerSim(aPort);
             SensorActuatorRegistry.get().register(wrapper, aPort + sCAN_OFFSET);
-            System.out.println("Creating " + aPort);
+            Logger.getLogger(CanManager.class).log(Level.DEBUG, "Creating " + aPort);
         }
         else if (command == 0x20)
         {
@@ -93,7 +97,7 @@ public class CanManager
 
     private void handleParamRequest(ByteBuffer aBuffer, int aPort)
     {
-        // System.out.println("Getting parameters...");
+        // sLOGGER.log(Level.DEBUG, "Getting parameters...");
 
         CanTalonSpeedControllerSim wrapper = getWrapperHelper(aPort);
         aBuffer.order(ByteOrder.LITTLE_ENDIAN);
@@ -126,7 +130,8 @@ public class CanManager
             System.err.println("Unknown SetParam command: " + commandType);
         }
         int rawValue = (int) (floatValue / 0.0000002384185791015625);
-        // System.out.println("Raw value..." + rawValue + ", " + floatValue);
+        // sLOGGER.log(Level.DEBUG, "Raw value..." + rawValue + ", " +
+        // floatValue);
         
         ByteBuffer outputBuffer = ByteBuffer.allocateDirect(40);
         outputBuffer.order(ByteOrder.LITTLE_ENDIAN);
@@ -150,44 +155,45 @@ public class CanManager
         byte commandType = (byte) ((aBuffer.get(6) >> 4) & 0xF);
         CanTalonSpeedControllerSim wrapper = getWrapperHelper(aPort);
         short demand = aBuffer.getShort(3);
-        // System.out.println(String.format(" Demand: %d", demand));
+        // sLOGGER.log(Level.DEBUG, String.format(" Demand: %d", demand));
 
         if (commandType == 0x00)
         {
             double appliedVoltageDemand = demand / 1023.0;
-            // System.out.println(" Setting by applied throttle.. " +
+            // sLOGGER.log(Level.DEBUG, " Setting by applied throttle.. " +
             // appliedVoltageDemand);
             wrapper.set(appliedVoltageDemand);
         }
         else if (commandType == (byte) 0x01)
         {
-            System.out.println("  Setting by position.");
+            sLOGGER.log(Level.DEBUG, "  Setting by position.");
         }
         else if (commandType == (byte) 0x02)
         {
-            System.out.println("  Setting by speed.");
+            sLOGGER.log(Level.DEBUG, "  Setting by speed.");
         }
         else if (commandType == (byte) 0x03)
         {
-            System.out.println("  Setting by current.");
+            sLOGGER.log(Level.DEBUG, "  Setting by current.");
         }
         else if (commandType == (byte) 0x04)
         {
             double voltageDemand = demand / 256.0;
-            // System.out.println(" Setting by voltage. " + voltageDemand);
+            // sLOGGER.log(Level.DEBUG, " Setting by voltage. " +
+            // voltageDemand);
             wrapper.set(voltageDemand / 12.0);
         }
         else if (commandType == (byte) 0x05)
         {
-            System.out.println("  Setting by FOLLOWER.");
+            sLOGGER.log(Level.DEBUG, "  Setting by FOLLOWER.");
         }
         else if (commandType == (byte) 0x06)
         {
-            System.out.println("  Setting by Motion Profile.");
+            sLOGGER.log(Level.DEBUG, "  Setting by Motion Profile.");
         }
         else if (commandType == (byte) 0x07)
         {
-            System.out.println("  Setting by Motion Magic.");
+            sLOGGER.log(Level.DEBUG, "  Setting by Motion Magic.");
         }
         else if (commandType == (byte) 0x0F)
         {
@@ -202,7 +208,7 @@ public class CanManager
     private void populateStatus1(int aPort)
     {
         CanTalonSpeedControllerSim wrapper = getWrapperHelper(aPort);
-        // System.out.println(" Getting STATUS1 " + wrapper.get());
+        // sLOGGER.log(Level.DEBUG, " Getting STATUS1 " + wrapper.get());
 
         ByteBuffer buffer = ByteBuffer.allocateDirect(19);
         buffer.putShort(3, (short) (wrapper.get() * 1023));
@@ -229,7 +235,7 @@ public class CanManager
 
     private void populateStatus4(int aPort)
     {
-        // System.out.println("POPULATE STATUS 4");
+        // sLOGGER.log(Level.DEBUG, "POPULATE STATUS 4");
         double temperature = 30;
         double batteryVoltage = 12;
         CanTalonSpeedControllerSim wrapper = getWrapperHelper(aPort);
@@ -255,7 +261,7 @@ public class CanManager
         ByteBuffer buffer = ByteBuffer.allocateDirect(19);
         SensorFeedbackJni.getCanLastSentMessageData(buffer, 8);
 
-        System.out.println(
+        sLOGGER.log(Level.DEBUG,
                 "@SendingMessage: MID: " + Integer.toHexString(aMessageId) + ", Data: (0x" + String.format("%016X", buffer.getLong(0)) + ")");
 
         int messageId = aMessageId & 0xFFFFFFC0;
@@ -280,7 +286,7 @@ public class CanManager
 
     private void handleReceive(int aMessageId, int aPort)
     {
-        System.out.println("@ReceiveMessage: MID: " + Integer.toHexString(aMessageId));
+        sLOGGER.log(Level.DEBUG, "@ReceiveMessage: MID: " + Integer.toHexString(aMessageId));
 
         int messageId = aMessageId & 0xFFFFFFC0;
 

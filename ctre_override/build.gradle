@@ -25,11 +25,6 @@ sourceSets {
             srcDirs = ["ctre_source/java/src"]
         }
     }
-    test {
-        java {
-            srcDirs = ["snobot_sim/unit_tests"]
-        }
-    }
 }
 test {
 	ignoreFailures = true

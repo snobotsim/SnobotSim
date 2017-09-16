@@ -8,6 +8,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
@@ -24,7 +26,7 @@ public class SimulatorConfigWriter
         try
         {
             File file = new File(aOutFile);
-            System.out.println("Writing to " + file.getAbsolutePath());
+            Logger.getLogger(SimulatorConfigWriter.class).log(Level.INFO, "Writing to " + file.getAbsolutePath());
 
             Map<String, Object> output = dumpConfig();
 
