@@ -114,6 +114,21 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_getSpiLas
     HALSIM_GetSPIGetWriteBuffer(aHandle, dataPtr, size);
 }
 
+/*
+ * Class:     com_snobot_simulator_jni_SensorFeedbackJni
+ * Method:    getSpiLastTransaction
+ * Signature: (ILjava/nio/ByteBuffer;I)V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_getSpiLastTransaction
+  (JNIEnv * env, jclass, jint aHandle, jobject data, jint size)
+{
+    uint8_t *dataPtr = nullptr;
+    if (data != 0) {
+        dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
+    }
+
+    HALSIM_GetSPIGetTransactionBuffer(aHandle, dataPtr, size);
+}
 
 /*
  * Class:     com_snobot_simulator_jni_SensorFeedbackJni

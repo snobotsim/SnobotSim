@@ -313,6 +313,14 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         {
             SensorActuatorRegistry.get().getSpiWrappers().get(port).handleRead();
         }
+        else if ("Write".equals(callbackType))
+        {
+            SensorActuatorRegistry.get().getSpiWrappers().get(port).handleWrite();
+        }
+        else if ("Transaction".equals(callbackType))
+        {
+            SensorActuatorRegistry.get().getSpiWrappers().get(port).handleTransaction();
+        }
         else
         {
             sLOGGER.log(Level.ERROR, "Unknown SPI callback " + callbackType + " - " + halValue);
