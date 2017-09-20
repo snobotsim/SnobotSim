@@ -19,13 +19,8 @@ public class ADXL362_SpiAccelerometer implements ISpiWrapper
         mNativePort = aPort;
     }
 
-    @Override
-    public void handleRead()
+    private void populateRead(int lastWrittenAddress)
     {
-        ByteBuffer lastWriteValue = ByteBuffer.allocateDirect(4);
-        SensorFeedbackJni.getSpiLastWrite(mNativePort, lastWriteValue, 4);
-        lastWriteValue.rewind();
-        int lastWrittenAddress = lastWriteValue.get(1) & 0xFF;
         ByteBuffer buffer = ByteBuffer.allocateDirect(10);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
 
@@ -62,6 +57,28 @@ public class ADXL362_SpiAccelerometer implements ISpiWrapper
         }
 
         SensorFeedbackJni.setSpiValueForRead(mNativePort, buffer, buffer.capacity());
+    }
+
+    @Override
+    public void handleRead()
+    {
+
+    }
+
+    @Override
+    public void handleWrite()
+    {
+
+    }
+
+    @Override
+    public void handleTransaction()
+    {
+        ByteBuffer lastWriteValue = ByteBuffer.allocateDirect(4);
+        SensorFeedbackJni.getSpiLastTransaction(mNativePort, lastWriteValue, 4);
+        lastWriteValue.rewind();
+        int lastWrittenAddress = lastWriteValue.get(1) & 0xFF;
+        populateRead(lastWrittenAddress);
     }
 
 }

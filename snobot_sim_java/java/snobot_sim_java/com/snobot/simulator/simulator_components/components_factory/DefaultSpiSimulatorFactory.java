@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.snobot.simulator.simulator_components.ISpiWrapper;
 import com.snobot.simulator.simulator_components.accelerometer.ADXL345_SpiAccelerometer;
 import com.snobot.simulator.simulator_components.accelerometer.ADXL362_SpiAccelerometer;
@@ -41,7 +44,7 @@ public class DefaultSpiSimulatorFactory implements ISpiSimulatorFactory
     @Override
     public void setDefaultWrapper(int aPort, String aType)
     {
-        System.out.println("Setting default on SPI port " + aPort + " to '" + aType + "'");
+        Logger.getLogger(DefaultSpiSimulatorFactory.class).log(Level.DEBUG, "Setting default on SPI port " + aPort + " to '" + aType + "'");
         mDefaults.put(aPort, aType);
     }
 

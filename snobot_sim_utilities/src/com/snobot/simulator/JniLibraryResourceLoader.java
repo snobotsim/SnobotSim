@@ -9,6 +9,9 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import edu.wpi.first.wpiutil.RuntimeDetector;
 
 public class JniLibraryResourceLoader
@@ -80,7 +83,8 @@ public class JniLibraryResourceLoader
                 is.close();
             }
 
-            System.out.println("Copied resource to " + aResourceFile.getAbsolutePath() + " from resource " + aResourceName);
+            Logger.getLogger(JniLibraryResourceLoader.class).log(Level.DEBUG,
+                    "Copied resource to " + aResourceFile.getAbsolutePath() + " from resource " + aResourceName);
         }
         else
         {
@@ -109,7 +113,7 @@ public class JniLibraryResourceLoader
     {
         if (LOADED_LIBS.contains(aLibraryName))
         {
-            // System.out.println("Already loaded " + aLibraryName);
+            Logger.getLogger(JniLibraryResourceLoader.class).log(Level.TRACE, "Already loaded " + aLibraryName);
             return true;
         }
 

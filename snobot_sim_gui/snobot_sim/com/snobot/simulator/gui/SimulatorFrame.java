@@ -11,6 +11,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.snobot.simulator.config.SimulatorConfigWriter;
 import com.snobot.simulator.gui.joysticks.JoystickManagerDialog;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
@@ -135,7 +138,7 @@ public class SimulatorFrame extends JFrame
         
         if(dumpFile != null)
         {
-            System.out.println("Saving to '" + dumpFile + "'");
+            Logger.getLogger(SimulatorFrame.class).log(Level.INFO, "Saving to '" + dumpFile + "'");
             if (mSimulatorConfigFile == null)
             {
                 String message = "<html>This does not update the simulator file, you must add this line to the simulator config file:<br><br><br>"

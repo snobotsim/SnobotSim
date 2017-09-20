@@ -19,13 +19,8 @@ public class ADXL345_SpiAccelerometer implements ISpiWrapper
         mNativePort = aPort;
     }
 
-    @Override
-    public void handleRead()
+    private void populateRead(int lastWrittenAddress)
     {
-        ByteBuffer lastWriteValue = ByteBuffer.allocateDirect(4);
-        SensorFeedbackJni.getSpiLastWrite(mNativePort, lastWriteValue, 4);
-        lastWriteValue.rewind();
-        int lastWrittenAddress = lastWriteValue.get() & 0xF;
         ByteBuffer buffer = ByteBuffer.allocateDirect(10);
         buffer.put((byte) 0);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
@@ -58,6 +53,28 @@ public class ADXL345_SpiAccelerometer implements ISpiWrapper
         {
             System.err.println("Unsupported write address " + lastWrittenAddress);
         }
+    }
+
+    @Override
+    public void handleRead()
+    {
+
+    }
+
+    @Override
+    public void handleWrite()
+    {
+
+    }
+
+    @Override
+    public void handleTransaction()
+    {
+        ByteBuffer buffer = ByteBuffer.allocateDirect(10);
+        SensorFeedbackJni.getSpiLastTransaction(mNativePort, buffer, buffer.capacity());
+
+        int lastWrittenAddress = buffer.get() & 0xF;
+        populateRead(lastWrittenAddress);
     }
 
 }

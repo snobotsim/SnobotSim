@@ -1,5 +1,8 @@
 package com.snobot.simulator.simulator_components;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.EncoderWrapper;
 import com.snobot.simulator.simulator_components.gyro.GyroWrapper;
@@ -72,8 +75,8 @@ public class TankDriveGyroSimulator implements ISimulatorUpdater
             mAngle = (leftDist - rightDist) / (Math.PI * mKP) * (180.0);
 
             mGyroWrapper.setAngle(mAngle);
-            // System.out.println("SIMULATOR : angle=" + mAngle + ", right=" +
-            // rightDist + ", left=" + leftDist);
+            Logger.getLogger(TankDriveGyroSimulator.class).log(Level.TRACE,
+                    "SIMULATOR : angle=" + mAngle + ", right=" + rightDist + ", left=" + leftDist);
         }
     }
 

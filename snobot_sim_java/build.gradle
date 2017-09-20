@@ -103,6 +103,7 @@ ext.addHalSimToLinker = { linker->
 dependencies {
     compile project(":snobot_sim_utilities")
     compile 'edu.wpi.first.ntcore:ntcore-java:' + getNtCoreVersion()
+    compile group: 'log4j', name: 'log4j', version: '1.2.16'
     
     testCompile 'junit:junit:4.12'
     testCompile "thirdparty.frc.kauai:Navx-Java:+"
@@ -110,7 +111,7 @@ dependencies {
     testRuntime 'edu.wpi.first.ntcore:ntcore-jni:' + getNtCoreVersion() + ':all'
     testRuntime combineNativeLibrariesIntoOne.outputs.files
     
-    testCompile "thirdparty.frc.ctre:Toolsuite-Java:+"
+    testCompile "thirdparty.frc.ctre:Toolsuite-Java:4.4.1.14"
     testCompile project(':ctre_override')
     testRuntime project(':ctre_override').combineNativeLibrariesIntoOne.outputs.files
 }

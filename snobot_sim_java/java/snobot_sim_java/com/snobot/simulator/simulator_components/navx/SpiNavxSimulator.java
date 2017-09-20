@@ -74,4 +74,16 @@ public class SpiNavxSimulator extends NavxSimulator implements ISpiWrapper
             SensorFeedbackJni.setSpiValueForRead(mNativePort, toSend, withoutCrc.capacity() + 1);
         }
     }
+
+    @Override
+    public void handleWrite()
+    {
+
+    }
+
+    @Override
+    public void handleTransaction()
+    {
+
+    }
 }
