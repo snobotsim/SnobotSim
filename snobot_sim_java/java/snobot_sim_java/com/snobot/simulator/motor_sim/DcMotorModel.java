@@ -21,8 +21,11 @@ public class DcMotorModel
      * Reset the motor to a specified state.
      * 
      * @param position
+     *            The new position
      * @param velocity
+     *            The new velocity
      * @param current
+     *            The new current
      */
     public void reset(double position, double velocity, double current)
     {

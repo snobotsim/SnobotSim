@@ -24,7 +24,7 @@ public class GraphicalSensorDisplayPanel extends JPanel
         create();
     }
 
-    private List<BaseWidgetDisplay<?, ?>> mDisplayPanels;
+    protected List<BaseWidgetDisplay<?, ?>> mDisplayPanels;
 
     public void create()
     {
