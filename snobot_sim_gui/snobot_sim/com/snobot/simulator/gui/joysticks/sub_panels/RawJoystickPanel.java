@@ -69,7 +69,11 @@ public class RawJoystickPanel extends JPanel
 
     public void updateDisplay()
     {
-        mJoystick.poll();
+        if (mJoystick != null)
+        {
+            mJoystick.poll();
+        }
+
         for (int i = 0; i < mAnalogComponents.size(); ++i)
         {
             float rawValue = mAnalogComponents.get(i).getPollData();
