@@ -31,7 +31,6 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     @Override
     public void setLogLevel(SnobotLogLevel logLevel)
     {
-
     }
 
     @Override

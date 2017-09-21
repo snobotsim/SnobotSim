@@ -179,11 +179,6 @@ public class TestControllerLoop extends BaseSimulatorTest
         Assert.assertEquals(0, robot.mSpeedController0.get(), DOUBLE_EPSILON);
         Assert.assertEquals(0, robot.mSpeedController1.get(), DOUBLE_EPSILON);
         Assert.assertFalse(robot.mSolenoid.get());
-
-
-        System.out.println(robot.disabledCtr);
-        System.out.println(robot.enabledCtr);
-        System.out.println(robot.autonCtr);
     }
 
     @After

@@ -40,4 +40,16 @@ public class ADXRS450_SpiGyroWrapper extends GyroWrapper implements ISpiWrapper
         buf.putInt(0xe00a4000);
         SensorFeedbackJni.setSpiValueForRead(mSpiPort, buf, 4);
     }
+
+    @Override
+    public void handleWrite()
+    {
+
+    }
+
+    @Override
+    public void handleTransaction()
+    {
+
+    }
 }

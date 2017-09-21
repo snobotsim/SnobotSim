@@ -12,6 +12,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.snobot.simulator.joysticks.joystick_specializations.NullJoystick;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -71,7 +74,8 @@ public class JoystickFactory
             p.store(stream, "");
             stream.close();
 
-            System.out.println("Wrote joystick config file to " + new File(sJOYSTICK_CONFIG_FILE).getAbsolutePath());
+            Logger.getLogger(JoystickFactory.class).log(Level.INFO,
+                    "Wrote joystick config file to " + new File(sJOYSTICK_CONFIG_FILE).getAbsolutePath());
         }
         catch (Exception e1)
         {
@@ -224,7 +228,7 @@ public class JoystickFactory
 
             if (!foundController)
             {
-                System.out.println("Replacing null joystick with '" + pair.getKey() + "'");
+                Logger.getLogger(JoystickFactory.class).log(Level.DEBUG, "Replacing null joystick with '" + pair.getKey() + "'");
                 setJoysticks(aJoystickIndex, pair.getKey());
                 break;
             }

@@ -43,7 +43,6 @@ public class SpiNavxSimulator extends NavxSimulator implements ISpiWrapper
         SensorFeedbackJni.getSpiLastWrite(mNativePort, lastWriteValue, 4);
         lastWriteValue.rewind();
         int lastWrittenAddress = lastWriteValue.get();
-        lastWrittenAddress = 4;
 
         ByteBuffer withoutCrc = null;
 
@@ -73,5 +72,17 @@ public class SpiNavxSimulator extends NavxSimulator implements ISpiWrapper
             toSend.rewind();
             SensorFeedbackJni.setSpiValueForRead(mNativePort, toSend, withoutCrc.capacity() + 1);
         }
+    }
+
+    @Override
+    public void handleWrite()
+    {
+
+    }
+
+    @Override
+    public void handleTransaction()
+    {
+
     }
 }

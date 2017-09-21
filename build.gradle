@@ -3,18 +3,21 @@
 buildscript {
     repositories {
         mavenLocal()
+        jcenter()
         maven {
             url "https://plugins.gradle.org/m2/"
         }
     }
     dependencies {
         classpath 'gradle.plugin.edu.wpi.first:native-utils:1.2.12'
+        classpath 'com.netflix.nebula:gradle-aggregate-javadocs-plugin:2.2.+'
     }
 }
 
 plugins {
     id 'edu.wpi.first.wpilib.versioning.WPILibVersioningPlugin' version '1.6'
 }
+apply plugin: 'nebula-aggregate-javadocs'
 
 task clean(type: Delete) {
     delete buildDir
@@ -44,7 +47,7 @@ ext.getWpilibcVersion = {
 
 // Publshing Information
 
-ext.maven_publishing_path = '/home/pj/GitHub/FIRST/2017/maven_repo/'
+ext.maven_publishing_path = 'build/maven_repo/'
 if(hasProperty('maven_repo'))
 {
     ext.maven_publishing_path = maven_repo
@@ -52,7 +55,7 @@ if(hasProperty('maven_repo'))
 ext.maven_publishing_path = new File(maven_publishing_path).getAbsolutePath()
 println "Publishing maven to " + ext.maven_publishing_path.toString()
 
-ext.maven_version = "0.1"
+ext.maven_version = "0.2"
 if(hasProperty('maven_version'))
 {
     ext.maven_version = maven_version

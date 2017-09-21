@@ -1,9 +1,41 @@
 
 apply plugin: 'maven-publish'
+apply plugin: 'java'
+
+
+task createReleaseJar(type: Jar) {
+    classifier = "all"
+    
+    configurations {
+        subproject_jars
+    }
+    
+    dependencies {
+        subproject_jars project(":snobot_sim_utilities")
+        subproject_jars jar.outputs.files
+        
+        if(build_simulator_cpp)
+        {
+            subproject_jars project(":snobot_sim_jni")
+        }
+        
+        if(build_simulator_java)
+        {
+            subproject_jars project(":snobot_sim_java")
+        }
+    }
+    
+    configurations.subproject_jars.each {
+        if (it.toString().contains("snobot_sim")) {
+            from zipTree(it)
+        }
+    }
+}
 
 
 task javadoc(type: Javadoc, overwrite: true) {
     source = sourceSets.main.allJava
+    classpath = configurations.compile
     
     javadoc.options.links("http://docs.oracle.com/javase/8/docs/api/")
     options.addStringOption "tag", "pre:a:Pre-Condition"
@@ -58,6 +90,7 @@ publishing {
             artifact jar
             artifact javadocJar
             artifact copyDependencies
+            artifact createReleaseJar
         }
         
         snobot_sim_gui_application(MavenPublication) {

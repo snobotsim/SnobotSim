@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
@@ -25,7 +27,7 @@ public class SimulatorConfigWriter
         try
         {
             File file = new File(aOutFile);
-            System.out.println("Writing to " + file.getAbsolutePath());
+            Logger.getLogger(SimulatorConfigWriter.class).log(Level.INFO, "Writing to " + file.getAbsolutePath());
 
             Object output = dumpConfig();
 

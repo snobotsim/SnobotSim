@@ -25,11 +25,6 @@ sourceSets {
             srcDirs = ["ctre_source/java/src"]
         }
     }
-    test {
-        java {
-            srcDirs = ["snobot_sim/unit_tests"]
-        }
-    }
 }
 test {
 	ignoreFailures = true
@@ -242,7 +237,8 @@ model {
                 sources {
                     cpp {
                         source {
-                            srcDirs = [ 'snobot_sim/shared/lib', 
+                            srcDirs = ['ctre_source/cpp/shared/lib',
+                                       'snobot_sim/shared/lib', 
                                         'snobot_sim/java_simulator/lib' ]
                             includes = ["**/*.cpp"]
                         }

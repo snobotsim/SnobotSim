@@ -1,5 +1,8 @@
 package com.snobot.simulator.jni;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.AnalogWrapper;
 import com.snobot.simulator.module_wrapper.AnalogWrapper.VoltageSetterHelper;
@@ -16,19 +19,24 @@ import com.snobot.simulator.simulator_components.components_factory.DefaultI2CSi
 import com.snobot.simulator.simulator_components.components_factory.DefaultSpiSimulatorFactory;
 import com.snobot.simulator.simulator_components.components_factory.II2cSimulatorFactory;
 import com.snobot.simulator.simulator_components.components_factory.ISpiSimulatorFactory;
+import com.snobot.simulator.simulator_components.ctre.CanManager;
 import com.snobot.simulator.simulator_components.gyro.GyroWrapper;
 import com.snobot.simulator.simulator_components.gyro.GyroWrapper.AngleSetterHelper;
 
 public class RegisterCallbacksJni extends BaseSnobotJni
 {
+    private static final Logger sLOGGER = Logger.getLogger(RegisterCallbacksJni.class);
     public static final ISpiSimulatorFactory sSPI_FACTORY = new DefaultSpiSimulatorFactory();
     public static final II2cSimulatorFactory sI2C_FACTORY = new DefaultI2CSimulatorFactory();
+    public static final CanManager sCAN_MANAGER = new CanManager();
 
     public static native void reset();
 
     public static native void registerAnalogCallback(String functionName);
 
     public static native void registerAnalogGyroCallback(String functionName);
+
+    public static native void registerCanCallback(String functionName);
 
     public static native void registerDigitalCallback(String functionName);
 
@@ -50,6 +58,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
     {
         registerAnalogCallback();
         registerAnalogGyroCallback();
+        registerCanCallback();
         registerDigitalCallback();
         registerEncoderCallback();
         registerI2CCallback();
@@ -68,6 +77,11 @@ public class RegisterCallbacksJni extends BaseSnobotJni
     public static void registerAnalogGyroCallback()
     {
         registerAnalogGyroCallback("analogGyroCallback");
+    }
+
+    public static void registerCanCallback()
+    {
+        registerCanCallback("canCallback");
     }
 
     public static void registerDigitalCallback()
@@ -126,7 +140,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown Analog callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown Analog callback " + callbackType + " - " + halValue);
         }
     }
 
@@ -150,8 +164,13 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown AnalogGyro callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown AnalogGyro callback " + callbackType + " - " + halValue);
         }
+    }
+
+    public static void canCallback(String callbackType, int port, HalCallbackValue halValue)
+    {
+        sCAN_MANAGER.handleIncomingMessage(callbackType, halValue.mInt);
     }
 
     public static void digitalCallback(String callbackType, int port, HalCallbackValue halValue)
@@ -174,7 +193,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown Digital callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown Digital callback " + callbackType + " - " + halValue);
         }
     }
 
@@ -194,7 +213,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown Encoder callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown Encoder callback " + callbackType + " - " + halValue);
         }
     }
 
@@ -211,7 +230,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown I2C callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown I2C callback " + callbackType + " - " + halValue);
         }
     }
 
@@ -227,7 +246,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown PCM callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown PCM callback " + callbackType + " - " + halValue);
         }
     }
 
@@ -239,7 +258,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown PDP callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown PDP callback " + callbackType + " - " + halValue);
         }
     }
 
@@ -255,7 +274,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown PWM callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown PWM callback " + callbackType + " - " + halValue);
         }
     }
 
@@ -279,7 +298,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
         else
         {
-            System.out.println("Unknown Relay callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown Relay callback " + callbackType + " - " + halValue);
         }
     }
 
@@ -294,9 +313,17 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         {
             SensorActuatorRegistry.get().getSpiWrappers().get(port).handleRead();
         }
+        else if ("Write".equals(callbackType))
+        {
+            SensorActuatorRegistry.get().getSpiWrappers().get(port).handleWrite();
+        }
+        else if ("Transaction".equals(callbackType))
+        {
+            SensorActuatorRegistry.get().getSpiWrappers().get(port).handleTransaction();
+        }
         else
         {
-            System.out.println("Unknown SPI callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown SPI callback " + callbackType + " - " + halValue);
         }
     }
 }

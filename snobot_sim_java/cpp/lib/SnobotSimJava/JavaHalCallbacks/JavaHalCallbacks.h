@@ -30,6 +30,7 @@ namespace SnobotSimJava
 
     CallbackHelperContainer& GetAnalogCallback();
     CallbackHelperContainer& GetAnalogGyroCallback();
+    CallbackHelperContainer& GetCanCallback();
     CallbackHelperContainer& GetDigitalCallback();
     CallbackHelperContainer& GetEncoderCallback();
     CallbackHelperContainer& GetI2CCallback();

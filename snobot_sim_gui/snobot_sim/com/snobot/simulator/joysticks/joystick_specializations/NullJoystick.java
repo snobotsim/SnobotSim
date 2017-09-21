@@ -8,15 +8,17 @@ public class NullJoystick implements IMockJoystick
 {
     public static final String sNAME = "Null Joystick";
 
-    private static final int sNUM_BUTTONS = 10;
-    private static final int sNUM_AXIS = 6;
-    private static final int sNUM_POV = 1;
+    protected static final int sNUM_BUTTONS = 10;
+    protected static final int sNUM_AXIS = 6;
+    protected static final int sNUM_POV = 1;
 
-    private float[] mAxis;
-    private short[] mPov;
+    protected float[] mAxis;
+    protected short[] mPov;
+    protected int mButtonMask;
 
     public NullJoystick()
     {
+        mButtonMask = 0;
         mAxis = new float[sNUM_AXIS];
         mPov = new short[sNUM_POV];
         for (int i = 0; i < mPov.length; ++i)
@@ -57,13 +59,13 @@ public class NullJoystick implements IMockJoystick
     @Override
     public int getButtonMask()
     {
-        return 0;
+        return mButtonMask;
     }
 
     @Override
     public boolean getRawButton(int aIndex)
     {
-        return false;
+        return (getButtonMask() & (1 << aIndex)) != 0;
     }
 
     @Override

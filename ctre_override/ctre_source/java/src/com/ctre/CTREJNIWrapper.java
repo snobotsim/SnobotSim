@@ -6,7 +6,6 @@ public class CTREJNIWrapper
 {
     static
     {
-        System.out.println("Should be loading something");
         // JniLibraryResourceLoader.loadLibrary("ntcore");
         // JniLibraryResourceLoader.loadLibrary("wpiutil");
         // JniLibraryResourceLoader.loadLibrary("wpilibc");

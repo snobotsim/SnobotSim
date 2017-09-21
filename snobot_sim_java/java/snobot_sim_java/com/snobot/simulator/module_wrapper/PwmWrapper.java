@@ -11,7 +11,12 @@ public class PwmWrapper extends ASensorWrapper
 
     public PwmWrapper(int index)
     {
-        super("Speed Controller " + index);
+        this(index, "Speed Controller " + index);
+    }
+
+    public PwmWrapper(int index, String aName)
+    {
+        super(aName);
 
         mHandle = index;
         mMotorSimulator = new IMotorSimulator.NullMotorSimulator();

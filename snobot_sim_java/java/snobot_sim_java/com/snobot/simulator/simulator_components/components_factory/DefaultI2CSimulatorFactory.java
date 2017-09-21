@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.snobot.simulator.simulator_components.II2CWrapper;
 import com.snobot.simulator.simulator_components.accelerometer.ADXL345_I2CAcceleratometer;
 import com.snobot.simulator.simulator_components.navx.I2CNavxSimulator;
@@ -39,7 +42,7 @@ public class DefaultI2CSimulatorFactory implements II2cSimulatorFactory
     @Override
     public void setDefaultWrapper(int aPort, String aType)
     {
-        System.out.println("Setting I2C default for port " + aPort + " to " + aType);
+        Logger.getLogger(DefaultI2CSimulatorFactory.class).log(Level.DEBUG, "Setting I2C default for port " + aPort + " to " + aType);
         mDefaults.put(aPort, aType);
     }
 
