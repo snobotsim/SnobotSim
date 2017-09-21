@@ -1,9 +1,14 @@
 package com.snobot.simulator.simulator_components.ctre;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.snobot.simulator.module_wrapper.PwmWrapper;
 
 public class CanTalonSpeedControllerSim extends PwmWrapper
 {
+    private static final Logger sLOGGER = Logger.getLogger(CanTalonSpeedControllerSim.class);
+
     public enum ControlType
     {
         Raw, Position, Speed
@@ -131,10 +136,10 @@ public class CanTalonSpeedControllerSim extends PwmWrapper
 
         mLastError = error;
         
-//        System.out.println(
-//                "Updating CAN PID: Error: " + error + ", Output: " + output + 
-//                " (Cur: " + aCurrent + ", Goal: " + aGoal + ") " + 
-//                " (P: " + pComp + ", I: " + iComp + ", D: " + dComp + ", F: " + fComp+ ")");
+        sLOGGER.log(Level.DEBUG,
+                "Updating CAN PID: Error: " + error + ", Output: " + output + 
+                " (Cur: " + aCurrent + ", Goal: " + aGoal + ") " + 
+                " (P: " + pComp + ", I: " + iComp + ", D: " + dComp + ", F: " + fComp+ ")");
 
         return output;
 

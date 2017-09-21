@@ -16,6 +16,8 @@ import com.snobot.simulator.simulator_components.navx.SpiNavxSimulator;
 
 public class DefaultSpiSimulatorFactory implements ISpiSimulatorFactory
 {
+    private static final Logger sLOGGER = Logger.getLogger(DefaultSpiSimulatorFactory.class);
+
     protected Map<Integer, String> mDefaults;
 
     public DefaultSpiSimulatorFactory()
@@ -35,7 +37,7 @@ public class DefaultSpiSimulatorFactory implements ISpiSimulatorFactory
 
         if (output == null)
         {
-            System.err.println("Could not create simulator for SPI on port " + aPort);
+            sLOGGER.log(Level.ERROR, "Could not create simulator for SPI on port " + aPort);
         }
 
         return output;
@@ -44,7 +46,7 @@ public class DefaultSpiSimulatorFactory implements ISpiSimulatorFactory
     @Override
     public void setDefaultWrapper(int aPort, String aType)
     {
-        Logger.getLogger(DefaultSpiSimulatorFactory.class).log(Level.DEBUG, "Setting default on SPI port " + aPort + " to '" + aType + "'");
+        sLOGGER.log(Level.DEBUG, "Setting default on SPI port " + aPort + " to '" + aType + "'");
         mDefaults.put(aPort, aType);
     }
 

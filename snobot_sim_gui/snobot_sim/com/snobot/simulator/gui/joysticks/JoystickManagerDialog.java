@@ -12,11 +12,15 @@ import java.util.Map.Entry;
 import javax.swing.JDialog;
 import javax.swing.JTabbedPane;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.snobot.simulator.joysticks.ControllerConfiguration;
 import com.snobot.simulator.joysticks.JoystickFactory;
 
 public class JoystickManagerDialog extends JDialog
 {
+    private static final Logger sLOGGER = Logger.getLogger(JoystickManagerDialog.class);
     private static final int sUPDATE_TIME = 20;
 
     private Map<String, JoystickTabPanel> mJoystickPanels;
@@ -65,7 +69,7 @@ public class JoystickManagerDialog extends JDialog
             }
             catch (IOException e)
             {
-                e.printStackTrace();
+                sLOGGER.log(Level.ERROR, e);
             }
         }
 
@@ -100,7 +104,7 @@ public class JoystickManagerDialog extends JDialog
                         }
                         catch (InterruptedException e)
                         {
-                            e.printStackTrace();
+                            sLOGGER.log(Level.ERROR, e);
                         }
                     }
                 }

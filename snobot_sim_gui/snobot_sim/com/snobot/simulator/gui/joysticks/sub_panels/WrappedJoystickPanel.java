@@ -9,10 +9,15 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.snobot.simulator.joysticks.IMockJoystick;
 
 public class WrappedJoystickPanel extends JPanel
 {
+    private static final Logger sLOGGER = Logger.getLogger(WrappedJoystickPanel.class);
+
     private IMockJoystick mJoystick;
     private JPanel digitalPanel;
     private JPanel analogPanel;
@@ -81,7 +86,7 @@ public class WrappedJoystickPanel extends JPanel
         }
         else
         {
-            System.err.println("Joystick is null");
+            sLOGGER.log(Level.WARN, "Joystick is null");
         }
     }
 

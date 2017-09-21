@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.RegisterCallbacksJni;
 import com.snobot.simulator.jni.SensorFeedbackJni;
@@ -28,6 +31,8 @@ import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor;
 
 public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
 {
+    private static final Logger sLOGGER = Logger.getLogger(JavaSimulatorDataAccessor.class);
+
     @Override
     public void setLogLevel(SnobotLogLevel logLevel)
     {
@@ -100,7 +105,7 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
         }
         else
         {
-            System.err.println("Unknown speed controller " + aScHandle);
+            sLOGGER.log(Level.ERROR, "Unknown speed controller " + aScHandle);
         }
 
         return success;
@@ -119,7 +124,7 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
         }
         else
         {
-            System.err.println("Unknown speed controller " + aScHandle);
+            sLOGGER.log(Level.ERROR, "Unknown speed controller " + aScHandle);
         }
 
         return success;
@@ -138,7 +143,7 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
         }
         else
         {
-            System.err.println("Unknown speed controller " + aScHandle);
+            sLOGGER.log(Level.ERROR, "Unknown speed controller " + aScHandle);
         }
 
         return success;
@@ -157,7 +162,7 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
         }
         else
         {
-            System.err.println("Unknown speed controller " + aScHandle);
+            sLOGGER.log(Level.ERROR, "Unknown speed controller " + aScHandle);
         }
 
         return success;

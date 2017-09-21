@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor.SnobotLogLevel;
 
@@ -12,6 +15,8 @@ import edu.wpi.first.wpilibj.util.WPILibVersion;
 
 public class Main
 {
+    private static final Logger sLOGGER = Logger.getLogger(Main.class);
+
     private static final File DEFAULT_PLUGIN_DIR = new File("user_libs");
     private static final String sUSER_CONFIG_DIR = "user_config/";
 
@@ -39,26 +44,22 @@ public class Main
         }
         catch (ClassNotFoundException e)
         {
-            e.printStackTrace();
-            System.err.println("\n\n\n\n");
-            System.err.println("Class not found exception.  You either have an error in your properties file, " + 
+            sLOGGER.log(Level.FATAL, "Class not found exception.  You either have an error in your properties file, " +
                     "or the project is not set up to be able to find the robot project you are attempting to create" + 
-                    "\nerror: " + e);
+                    "\nerror: " + e, e);
 
             System.exit(-1);
         }
         catch (UnsatisfiedLinkError e)
         {
-            e.printStackTrace();
-            System.err.println("\n\n\n\n");
-            System.err.println("Unsatisfied link error.  This likely means that there is a native "
-                    + "call in WpiLib or the NetworkTables libraries.  Please tell PJ so he can mock it out.\n\nError Message: " + e);
+            sLOGGER.log(Level.FATAL, "Unsatisfied link error.  This likely means that there is a native "
+                    + "call in WpiLib or the NetworkTables libraries.  Please tell PJ so he can mock it out.\n\nError Message: " + e, e);
 
             System.exit(-1);
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            sLOGGER.log(Level.ERROR, e);
             System.exit(1);
         }
     }
@@ -141,7 +142,7 @@ public class Main
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            sLOGGER.log(Level.ERROR, e);
             System.exit(-1);
         }
     }

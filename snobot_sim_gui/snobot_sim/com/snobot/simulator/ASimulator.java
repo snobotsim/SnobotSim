@@ -3,6 +3,9 @@ package com.snobot.simulator;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.snobot.simulator.config.BasicModuleConfig;
 import com.snobot.simulator.config.EncoderConfig;
 import com.snobot.simulator.config.PwmConfig;
@@ -24,11 +27,13 @@ import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor;
 
 public class ASimulator implements ISimulatorUpdater
 {
+    private static final Logger sLOGGER = Logger.getLogger(ASimulator.class);
     private static final Object sUPDATE_MUTEX = new Object();
 
     private static final double sMOTOR_UPDATE_FREQUENCY = .02;
 
     private SimulatorConfig mConfig;
+    private boolean mRunning;
 
     protected ASimulator()
     {
@@ -180,7 +185,7 @@ public class ASimulator implements ISimulatorUpdater
         @Override
         public void run()
         {
-            while (true)
+            while (mRunning)
             {
                 synchronized (sUPDATE_MUTEX)
                 {
@@ -193,10 +198,22 @@ public class ASimulator implements ISimulatorUpdater
                 }
                 catch (InterruptedException e)
                 {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    sLOGGER.log(Level.ERROR, e);
                 }
             }
         }
     }, "MotorUpdater");
+
+    public void shutdown()
+    {
+        mRunning = false;
+        try
+        {
+            updateMotorsThread.join();
+        }
+        catch (InterruptedException e)
+        {
+            sLOGGER.log(Level.ERROR, e);
+        }
+    }
 }

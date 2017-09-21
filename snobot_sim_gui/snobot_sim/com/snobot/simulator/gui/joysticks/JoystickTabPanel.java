@@ -10,6 +10,9 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.snobot.simulator.gui.joysticks.sub_panels.RawJoystickPanel;
 import com.snobot.simulator.gui.joysticks.sub_panels.WrappedJoystickPanel;
 import com.snobot.simulator.gui.joysticks.sub_panels.XboxPanel;
@@ -23,6 +26,8 @@ import net.java.games.input.Controller.Type;
 
 public class JoystickTabPanel extends JPanel
 {
+    private static final Logger sLOGGER = Logger.getLogger(JoystickTabPanel.class);
+
     private RawJoystickPanel mRawPanel;
 
     private JComboBox<String> mSelectInterperetTypeBox;
@@ -117,7 +122,7 @@ public class JoystickTabPanel extends JPanel
                 }
                 catch (Exception e)
                 {
-                    e.printStackTrace();
+                    sLOGGER.log(Level.ERROR, e);
                 }
                 break;
             }

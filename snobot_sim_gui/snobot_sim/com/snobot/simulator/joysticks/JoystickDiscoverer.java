@@ -9,6 +9,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.snobot.simulator.joysticks.joystick_specializations.GenericGamepadJoystick;
 import com.snobot.simulator.joysticks.joystick_specializations.KeyboardJoystick;
 import com.snobot.simulator.joysticks.joystick_specializations.Ps4Joystick;
@@ -20,6 +23,7 @@ import net.java.games.input.ControllerEnvironment;
 
 public class JoystickDiscoverer
 {
+    private static final Logger sLOGGER = Logger.getLogger(JoystickDiscoverer.class);
     private static final List<Type> sTYPES_TO_IGNORE = Arrays.asList(Type.UNKNOWN, Type.MOUSE);
 
     public static final Map<Class<? extends IMockJoystick>, String> sAVAILABLE_SPECIALIZATIONS;
@@ -111,7 +115,7 @@ public class JoystickDiscoverer
             switch (name)
             {
             default:
-                System.err.println("Unknown joystick name " + name);
+                sLOGGER.log(Level.ERROR, "Unknown joystick name " + name);
                 output = GenericGamepadJoystick.class;
             }
         }
@@ -123,13 +127,13 @@ public class JoystickDiscoverer
                 output = Ps4Joystick.class;
                 break;
             default:
-                System.err.println("Unknown joystick name " + name);
+                sLOGGER.log(Level.ERROR, "Unknown joystick name " + name);
                 output = GenericGamepadJoystick.class;
             }
         }
         else
         {
-            System.err.println("Unknown joystick type " + type);
+            sLOGGER.log(Level.WARN, "Unknown joystick type " + type);
         }
 
         return output;

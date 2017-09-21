@@ -14,6 +14,7 @@ import com.snobot.simulator.simulator_components.navx.I2CNavxSimulator;
 
 public class DefaultI2CSimulatorFactory implements II2cSimulatorFactory
 {
+    private static final Logger sLOGGER = Logger.getLogger(DefaultI2CSimulatorFactory.class);
     protected Map<Integer, String> mDefaults;
 
     public DefaultI2CSimulatorFactory()
@@ -33,7 +34,7 @@ public class DefaultI2CSimulatorFactory implements II2cSimulatorFactory
 
         if (output == null)
         {
-            System.err.println("Could not create simulator for I2C on port " + aPort);
+            sLOGGER.log(Level.ERROR, "Could not create simulator for I2C on port " + aPort);
         }
 
         return output;
@@ -42,7 +43,7 @@ public class DefaultI2CSimulatorFactory implements II2cSimulatorFactory
     @Override
     public void setDefaultWrapper(int aPort, String aType)
     {
-        Logger.getLogger(DefaultI2CSimulatorFactory.class).log(Level.DEBUG, "Setting I2C default for port " + aPort + " to " + aType);
+        sLOGGER.log(Level.DEBUG, "Setting I2C default for port " + aPort + " to " + aType);
         mDefaults.put(aPort, aType);
     }
 

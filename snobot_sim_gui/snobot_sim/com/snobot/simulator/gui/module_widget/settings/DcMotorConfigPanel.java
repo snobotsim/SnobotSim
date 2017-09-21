@@ -16,6 +16,9 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.snobot.simulator.gui.motor_display.MotorCurveDisplay;
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
@@ -24,6 +27,8 @@ import net.miginfocom.swing.MigLayout;
 
 public class DcMotorConfigPanel extends JPanel
 {
+    private static final Logger sLOGGER = Logger.getLogger(DcMotorConfigPanel.class);
+
     private JComboBox<String> mMotorSelectionBox;
     private JSpinner mNumMotors;
     private JTextField mGearReduction;
@@ -147,7 +152,7 @@ public class DcMotorConfigPanel extends JPanel
         }
         catch (NumberFormatException e)
         {
-            e.printStackTrace();
+            sLOGGER.log(Level.ERROR, e);
         }
 
         return output;

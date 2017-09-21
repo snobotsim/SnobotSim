@@ -3,11 +3,15 @@ package com.snobot.simulator.simulator_components.accelerometer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.snobot.simulator.jni.SensorFeedbackJni;
 import com.snobot.simulator.simulator_components.ISpiWrapper;
 
 public class ADXL345_SpiAccelerometer implements ISpiWrapper
 {
+    private static final Logger sLOGGER = Logger.getLogger(ADXL345_SpiAccelerometer.class);
     private static double sLSB = 0.00390625;
 
     protected final ThreeAxisAccelerometer mDataContainer;
@@ -51,7 +55,7 @@ public class ADXL345_SpiAccelerometer implements ISpiWrapper
         }
         else
         {
-            System.err.println("Unsupported write address " + lastWrittenAddress);
+            sLOGGER.log(Level.ERROR, "Unsupported write address " + lastWrittenAddress);
         }
     }
 

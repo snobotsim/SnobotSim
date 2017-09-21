@@ -20,6 +20,7 @@ import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 public class SimulatorFrame extends JFrame
 {
+    private static final Logger sLOGGER = Logger.getLogger(SimulatorFrame.class);
 
     private GraphicalSensorDisplayPanel mBasicPanel;
     private EnablePanel mEnablePanel;
@@ -138,7 +139,7 @@ public class SimulatorFrame extends JFrame
         
         if(dumpFile != null)
         {
-            Logger.getLogger(SimulatorFrame.class).log(Level.INFO, "Saving to '" + dumpFile + "'");
+            sLOGGER.log(Level.INFO, "Saving to '" + dumpFile + "'");
             if (mSimulatorConfigFile == null)
             {
                 String message = "<html>This does not update the simulator file, you must add this line to the simulator config file:<br><br><br>"
@@ -151,7 +152,7 @@ public class SimulatorFrame extends JFrame
         }
         else
         {
-            System.err.println("User cancelled save!");
+            sLOGGER.log(Level.INFO, "User cancelled save!");
         }
         
         showSettingsOptions(false);

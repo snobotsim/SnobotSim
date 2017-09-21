@@ -10,6 +10,8 @@ import org.yaml.snakeyaml.Yaml;
 @SuppressWarnings("unchecked")
 public class SimulatorConfigReader
 {
+    private static final Logger sLOGGER = Logger.getLogger(SimulatorConfigReader.class);
+
     private SimulatorConfig mConfig;
 
     public SimulatorConfigReader()
@@ -21,7 +23,7 @@ public class SimulatorConfigReader
     {
         if (aConfigFile == null)
         {
-            Logger.getLogger(SimulatorConfigReader.class).log(Level.WARN, "Config file not set, won't hook anything up");
+            sLOGGER.log(Level.WARN, "Config file not set, won't hook anything up");
             return true;
         }
 
@@ -30,7 +32,7 @@ public class SimulatorConfigReader
         try
         {
             File file = new File(aConfigFile);
-            Logger.getLogger(SimulatorConfigReader.class).log(Level.INFO, "Loading " + file.getAbsolutePath());
+            sLOGGER.log(Level.INFO, "Loading " + file.getAbsolutePath());
             Yaml yaml = new Yaml();
             mConfig = (SimulatorConfig) yaml.load(new FileReader(file));
 
@@ -38,7 +40,7 @@ public class SimulatorConfigReader
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            sLOGGER.log(Level.ERROR, e);
         }
 
         return success;

@@ -2,12 +2,17 @@ package com.snobot.simulator.joysticks;
 
 import java.util.List;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import net.java.games.input.Component;
 import net.java.games.input.Component.Identifier;
 import net.java.games.input.Controller;
 
 public class BaseJoystick implements IMockJoystick
 {
+    private static final Logger sLOGGER = Logger.getLogger(BaseJoystick.class);
+
     protected final String mName;
     protected final List<Identifier> mAxis;
     protected final List<Identifier> mButtons;
@@ -71,7 +76,8 @@ public class BaseJoystick implements IMockJoystick
         }
         else
         {
-            System.err.println("Controller is null.  The simulator could not setup a controller of type [" + mName + "]");
+            sLOGGER.log(Level.WARN,
+                    "Controller is null.  The simulator could not setup a controller of type [" + mName + "]");
         }
 
         return mAxisValues;
@@ -99,7 +105,8 @@ public class BaseJoystick implements IMockJoystick
         }
         else
         {
-            System.err.println("Controller is null.  The simulator could not setup a controller of type [" + mName + "]");
+            sLOGGER.log(Level.WARN,
+                    "Controller is null.  The simulator could not setup a controller of type [" + mName + "]");
         }
 
         return output;

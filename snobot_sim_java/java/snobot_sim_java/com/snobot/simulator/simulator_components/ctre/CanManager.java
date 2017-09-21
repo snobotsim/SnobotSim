@@ -48,7 +48,7 @@ public class CanManager
         {
             CanTalonSpeedControllerSim wrapper = new CanTalonSpeedControllerSim(aPort);
             SensorActuatorRegistry.get().register(wrapper, aPort + sCAN_OFFSET);
-            Logger.getLogger(CanManager.class).log(Level.DEBUG, "Creating " + aPort);
+            sLOGGER.log(Level.DEBUG, "Creating " + aPort);
         }
         else if (command == 0x20)
         {
@@ -56,7 +56,7 @@ public class CanManager
         }
         else
         {
-            System.err.println("Unknown command: " + command);
+            sLOGGER.log(Level.ERROR, "Unknown command: " + command);
         }
     }
 
@@ -92,12 +92,11 @@ public class CanManager
         // I Zone
         else if (commandType == 5)
         {
-            // System.out.println("IZone: " + rawValue + ", " + floatValue);
             wrapper.setIZone(rawValue);
         }
         else
         {
-            System.err.println("Unknown SetParam command: " + commandType);
+            sLOGGER.log(Level.ERROR, "Unknown SetParam command: " + commandType);
         }
     }
 
@@ -140,7 +139,7 @@ public class CanManager
         }
         else
         {
-            System.err.println("Unknown GetParam command: " + commandType);
+            sLOGGER.log(Level.ERROR, "Unknown GetParam command: " + commandType);
         }
         int rawValue;
         if(isFloat)
@@ -151,7 +150,6 @@ public class CanManager
         {
             rawValue = (int) floatValue;
         }
-        // System.out.println("Raw value..." + rawValue + ", " + floatValue);
         
         int messageId = 0x2041840;
         messageId |= aPort;
@@ -209,11 +207,11 @@ public class CanManager
         }
         else if (commandType == (byte) 0x06)
         {
-            System.out.println("  Setting by Motion Profile.");
+            sLOGGER.log(Level.DEBUG, "  Setting by Motion Profile.");
         }
         else if (commandType == (byte) 0x07)
         {
-            System.out.println("  Setting by Motion Magic.");
+            sLOGGER.log(Level.DEBUG, "  Setting by Motion Magic.");
         }
         else if (commandType == (byte) 0x0F)
         {
@@ -221,7 +219,7 @@ public class CanManager
         }
         else
         {
-            System.err.println(String.format("Unknown set command type 0x%02X", commandType));
+            sLOGGER.log(Level.ERROR, String.format("Unknown set command type 0x%02X", commandType));
         }
     }
 
@@ -351,7 +349,7 @@ public class CanManager
 
     private void unsupportedRead(int aStatusType)
     {
-        System.err.println("Status request " + aStatusType + " is not supported.");
+        sLOGGER.log(Level.ERROR, "Status request " + aStatusType + " is not supported.");
 
         ByteBuffer buffer = ByteBuffer.allocateDirect(19);
         SensorFeedbackJni.setCanSetValueForRead(buffer, 8);
@@ -359,7 +357,7 @@ public class CanManager
 
     private void unsupportedWrite(int aStatusType)
     {
-        System.err.println("TX Request " + aStatusType + " is not supported.");
+        sLOGGER.log(Level.ERROR, "TX Request " + aStatusType + " is not supported.");
 
         ByteBuffer buffer = ByteBuffer.allocateDirect(19);
         SensorFeedbackJni.setCanSetValueForRead(buffer, 8);

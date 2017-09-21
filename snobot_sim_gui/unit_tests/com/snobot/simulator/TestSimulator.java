@@ -3,7 +3,10 @@ package com.snobot.simulator;
 import java.io.File;
 
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 
 import com.snobot.simulator.gui.SimulatorFrame;
 import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor.SnobotLogLevel;
@@ -11,9 +14,22 @@ import com.snobot.test.utilities.BaseSimulatorTest;
 
 public class TestSimulator extends BaseSimulatorTest
 {
+    private static final long TIME_TO_RUN_MS = 10;
+
+    @Rule
+    public TestName name = new TestName();
+
+    @Before
+    public void setup()
+    {
+        System.out.println("\n******************************\n" + name.getMethodName() + "\n******************************\n");
+        super.setup();
+    }
+
     public class MockSimulator extends Simulator
     {
         boolean error = false;
+
         public MockSimulator(SnobotLogLevel aLogLevel, File aPluginDirectory, String aUserConfigDir) throws Exception
         {
             super(aLogLevel, aPluginDirectory, aUserConfigDir);
@@ -25,25 +41,19 @@ public class TestSimulator extends BaseSimulatorTest
 
         }
 
-        protected void stop()
-        {
-            System.out.println("Stopping mock simulator...");
-            try
-            {
-                Thread.sleep(500);
-            }
-            catch (InterruptedException e)
-            {
-                //
-            }
-            super.stop();
-        }
-
+        @Override
         protected void exitWithError()
         {
             error = true;
             stop();
             System.out.println("Exiting with error");
+        }
+
+        protected void runTestForTime(long aMilliseconds) throws Exception
+        {
+            startSimulation();
+            Thread.sleep(aMilliseconds);
+            stop();
         }
 
     }
@@ -52,9 +62,7 @@ public class TestSimulator extends BaseSimulatorTest
     public void testStartSimulator() throws Exception
     {
         MockSimulator simulator = new MockSimulator(SnobotLogLevel.DEBUG, new File("test_files/plugins"), "test_output/test_start_simulator/");
-        simulator.startSimulation();
-
-        simulator.stop();
+        simulator.runTestForTime(TIME_TO_RUN_MS);
         Assert.assertFalse(simulator.error);
     }
 
@@ -63,8 +71,7 @@ public class TestSimulator extends BaseSimulatorTest
     {
         MockSimulator simulator = new MockSimulator(SnobotLogLevel.DEBUG, new File("test_files/plugins"),
                 "test_files/SimulatorTest/TestValidUserConfig/");
-        simulator.startSimulation();
-        simulator.stop();
+        simulator.runTestForTime(TIME_TO_RUN_MS);
         Assert.assertFalse(simulator.error);
     }
 
@@ -73,9 +80,7 @@ public class TestSimulator extends BaseSimulatorTest
     {
         MockSimulator simulator = new MockSimulator(SnobotLogLevel.DEBUG, new File("test_files/plugins"),
                 "test_files/SimulatorTest/InvalidSimulatorName/");
-
-        simulator.startSimulation();
-        simulator.stop();
+        simulator.runTestForTime(TIME_TO_RUN_MS);
         Assert.assertTrue(simulator.error);
     }
 
@@ -84,18 +89,7 @@ public class TestSimulator extends BaseSimulatorTest
     {
         MockSimulator simulator = new MockSimulator(SnobotLogLevel.DEBUG, new File("test_files/plugins"),
                 "test_files/SimulatorTest/CustomSimulatorName/");
-        simulator.startSimulation();
-        simulator.stop();
+        simulator.runTestForTime(TIME_TO_RUN_MS);
         Assert.assertFalse(simulator.error);
-    }
-
-    @Test
-    public void testSimulatorUpdates() throws Exception
-    {
-        MockSimulator simulator = new MockSimulator(SnobotLogLevel.DEBUG, new File("test_files/plugins"),
-                "test_files/SimulatorTest/CustomSimulatorName/");
-        simulator.startSimulation();
-
-        Thread.sleep(10000);
     }
 }

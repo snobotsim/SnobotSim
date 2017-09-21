@@ -2,11 +2,15 @@ package com.snobot.simulator.simulator_components.navx;
 
 import java.nio.ByteBuffer;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.snobot.simulator.jni.SensorFeedbackJni;
 import com.snobot.simulator.simulator_components.ISpiWrapper;
 
 public class SpiNavxSimulator extends NavxSimulator implements ISpiWrapper
 {
+    private static final Logger sLOGGER = Logger.getLogger(SpiNavxSimulator.class);
     public static final int SPI_NAVX_OFFSET = 200;
 
     public SpiNavxSimulator(int aSpiPort)
@@ -56,7 +60,7 @@ public class SpiNavxSimulator extends NavxSimulator implements ISpiWrapper
         }
         else
         {
-            System.err.println("Unknown last write address " + lastWrittenAddress);
+            sLOGGER.log(Level.ERROR, "Unknown last write address " + lastWrittenAddress);
         }
 
         if (withoutCrc != null)

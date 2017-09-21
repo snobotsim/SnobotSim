@@ -22,6 +22,7 @@ import net.java.games.input.Controller;
 
 public class JoystickFactory
 {
+    private static final Logger sLOGGER = Logger.getLogger(JoystickFactory.class);
 
     private static final JoystickFactory sINSTANCE = new JoystickFactory();
     private static final String sJOYSTICK_CONFIG_FILE = "user_config/joystick_config.properties";
@@ -74,7 +75,7 @@ public class JoystickFactory
             p.store(stream, "");
             stream.close();
 
-            Logger.getLogger(JoystickFactory.class).log(Level.INFO,
+            sLOGGER.log(Level.INFO,
                     "Wrote joystick config file to " + new File(sJOYSTICK_CONFIG_FILE).getAbsolutePath());
         }
         catch (Exception e1)
@@ -175,7 +176,7 @@ public class JoystickFactory
             }
             catch (Exception e)
             {
-                e.printStackTrace();
+                sLOGGER.log(Level.ERROR, e);
                 joystick = new NullJoystick();
             }
         }
@@ -183,7 +184,7 @@ public class JoystickFactory
         else
         {
             joystick = new NullJoystick();
-            System.err.println("Unknown joystick name : " + aControllerName);
+            sLOGGER.log(Level.ERROR, "Unknown joystick name : " + aControllerName);
         }
 
         mJoystickMap[aJoystickIndex] = joystick;
@@ -228,7 +229,7 @@ public class JoystickFactory
 
             if (!foundController)
             {
-                Logger.getLogger(JoystickFactory.class).log(Level.DEBUG, "Replacing null joystick with '" + pair.getKey() + "'");
+                sLOGGER.log(Level.DEBUG, "Replacing null joystick with '" + pair.getKey() + "'");
                 setJoysticks(aJoystickIndex, pair.getKey());
                 break;
             }

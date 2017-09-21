@@ -9,6 +9,8 @@ import com.snobot.simulator.simulator_components.gyro.GyroWrapper;
 
 public class TankDriveGyroSimulator implements ISimulatorUpdater
 {
+    private static final Logger sLOGGER = Logger.getLogger(TankDriveGyroSimulator.class);
+
     private final TankDriveConfig mConfig;
     private final EncoderWrapper mLeftEncoder;
     private final EncoderWrapper mRightEncoder;
@@ -35,7 +37,7 @@ public class TankDriveGyroSimulator implements ISimulatorUpdater
 
         if (!mIsSetup)
         {
-            System.err.println("Can't simulate gyro, some inputs are null");
+            sLOGGER.log(Level.ERROR, "Can't simulate gyro, some inputs are null");
         }
 
         SensorActuatorRegistry.get().register(this);
@@ -53,7 +55,7 @@ public class TankDriveGyroSimulator implements ISimulatorUpdater
             mAngle = (leftDist - rightDist) / (Math.PI * mKP) * (180.0);
 
             mGyroWrapper.setAngle(mAngle);
-            Logger.getLogger(TankDriveGyroSimulator.class).log(Level.TRACE,
+            sLOGGER.log(Level.TRACE,
                     "SIMULATOR : angle=" + mAngle + ", right=" + rightDist + ", left=" + leftDist);
         }
     }

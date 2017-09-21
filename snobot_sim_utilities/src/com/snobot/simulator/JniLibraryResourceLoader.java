@@ -16,6 +16,8 @@ import edu.wpi.first.wpiutil.RuntimeDetector;
 
 public class JniLibraryResourceLoader
 {
+    private static final Logger sLOGGER = Logger.getLogger(JniLibraryResourceLoader.class);
+
     private static final File TEMP_DIR_ROOT;
     private static final File TEMP_DIR;
     private static final Set<String> LOADED_LIBS;
@@ -83,12 +85,12 @@ public class JniLibraryResourceLoader
                 is.close();
             }
 
-            Logger.getLogger(JniLibraryResourceLoader.class).log(Level.DEBUG,
+            sLOGGER.log(Level.DEBUG,
                     "Copied resource to " + aResourceFile.getAbsolutePath() + " from resource " + aResourceName);
         }
         else
         {
-            System.err.println("Could not find resource at " + aResourceName);
+            sLOGGER.log(Level.FATAL, "Could not find resource at " + aResourceName);
         }
 
         return success;
@@ -113,7 +115,7 @@ public class JniLibraryResourceLoader
     {
         if (LOADED_LIBS.contains(aLibraryName))
         {
-            Logger.getLogger(JniLibraryResourceLoader.class).log(Level.TRACE, "Already loaded " + aLibraryName);
+            sLOGGER.log(Level.TRACE, "Already loaded " + aLibraryName);
             return true;
         }
 
@@ -130,7 +132,7 @@ public class JniLibraryResourceLoader
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            sLOGGER.log(Level.ERROR, e);
             throw new RuntimeException("Could not load " + resname);
         }
 

@@ -18,6 +18,8 @@ import edu.wpi.first.wpilibj.RobotBase;
 
 public class PluginSniffer
 {
+    private static final Logger sLOGGER = Logger.getLogger(PluginSniffer.class);
+
     private File[] mDiscoveredJars;
     private List<Class<?>> mCppRobots;
     private List<Class<?>> mJavaRobots;
@@ -40,7 +42,7 @@ public class PluginSniffer
 
     public void loadPlugins(File pluginDir) throws Exception
     {
-        Logger.getLogger(PluginSniffer.class).log(Level.INFO, "Searching for robot plugins in " + pluginDir.getAbsolutePath());
+        sLOGGER.log(Level.INFO, "Searching for robot plugins in " + pluginDir.getAbsolutePath());
         mDiscoveredJars = pluginDir.listFiles(new FilenameFilter()
         {
 
@@ -59,7 +61,7 @@ public class PluginSniffer
             for (File file : mDiscoveredJars)
             {
                 method.invoke(classLoader, file.toURI().toURL());
-                Logger.getLogger(PluginSniffer.class).log(Level.INFO, "  Added " + file.getAbsolutePath() + " to classpath");
+                sLOGGER.log(Level.INFO, "  Added " + file.getAbsolutePath() + " to classpath");
             }
         }
     }
@@ -123,7 +125,8 @@ public class PluginSniffer
         }
         catch (Exception e)
         {
-            System.err.println("Thought we had a C++ robot in " + file + ", but couldn't find required items: " + e.getMessage());
+            sLOGGER.log(Level.WARN,
+                    "Thought we had a C++ robot in " + file + ", but couldn't find required items: " + e.getMessage(), e);
         }
     }
 }

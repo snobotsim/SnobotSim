@@ -26,10 +26,13 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class Simulator
 {
+    private static final Logger sLOGGER = Logger.getLogger(Simulator.class);
+
     private final String USER_CONFIG_DIRECTORY;
     private final String PROPERTIES_FILE;
 
-    private String mSimulatorClassName; // The name of the class that represents the simulator
+    // private String mSimulatorClassName; // The name of the class that
+    // represents the simulator
     private String mSimulatorConfig;
 
     private IRobotClassContainer mRobot; // The robot code to run
@@ -37,6 +40,7 @@ public class Simulator
 
     protected Thread mRobotThread;
     protected Thread mSimulatorThread;
+    protected boolean mRunningSimulator;
 
     public Simulator(SnobotLogLevel aLogLevel, File aPluginDirectory, String aUserConfigDir) throws Exception
     {
@@ -62,7 +66,8 @@ public class Simulator
         {
             if (!Files.exists(Paths.get(aFile)))
             {
-                System.err.println("Could not read properties file, will use defaults and will overwrite the file if it exists");
+                sLOGGER.log(Level.WARN,
+                        "Could not read properties file, will use defaults and will overwrite the file if it exists");
 
                 if (!JniLibraryResourceLoader.copyResourceFromJar("/com/snobot/simulator/config/default_properties.properties",
                         new File(PROPERTIES_FILE), false))
@@ -75,42 +80,70 @@ public class Simulator
             p.load(new FileInputStream(new File(aFile)));
 
             String robotClassName = p.getProperty("robot_class");
-            mSimulatorClassName = p.getProperty("simulator_class");
+            String robotType = p.getProperty("robot_type");
+
+            String simulatorClassName = p.getProperty("simulator_class");
             mSimulatorConfig = p.getProperty("simulator_config");
 
-            String robotType = p.getProperty("robot_type");
-            if (robotType == null || robotType.equals("java"))
-            {
-                mRobot = new JavaRobotContainer(robotClassName);
-            }
-            else if (robotType.equals("cpp"))
-            {
-                mRobot = new CppRobotContainer(robotClassName);
-            }
-            else if (robotType.equals("python"))
-            {
-                mRobot = new PythonRobotContainer(robotClassName);
-            }
-            else
-            {
-                throw new RuntimeException("Unsuppored robot type " + robotType);
-            }
+            createRobot(robotType, robotClassName);
+            createSimulator(simulatorClassName, mSimulatorConfig);
 
             NetworkTable.setPersistentFilename(USER_CONFIG_DIRECTORY + robotClassName + ".preferences.ini");
         }
         catch (Exception e)
         {
-            e.printStackTrace();
-            System.err.println("Could not read properties file");
+            sLOGGER.log(Level.WARN, "Could not read properties file", e);
         }
     }
 
-    private void createRobot() throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException,
+    private void createRobot(String aRobotType, String aRobotClassName)
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException,
             SecurityException, IllegalArgumentException, InvocationTargetException
     {
-        Logger.getLogger(Simulator.class).log(Level.INFO, "Starting Robot Code");
+        sLOGGER.log(Level.INFO, "Starting Robot Code");
+
+        if (aRobotType == null || aRobotType.equals("java"))
+        {
+            mRobot = new JavaRobotContainer(aRobotClassName);
+        }
+        else if (aRobotType.equals("cpp"))
+        {
+            mRobot = new CppRobotContainer(aRobotClassName);
+        }
+        else if (aRobotType.equals("python"))
+        {
+            mRobot = new PythonRobotContainer(aRobotClassName);
+        }
+        else
+        {
+            throw new RuntimeException("Unsuppored robot type " + aRobotType);
+        }
 
         mRobot.constructRobot();
+    }
+
+    private void createSimulator(String aSimulatorClassName, String aSimulatorConfig)
+    {
+        try
+        {
+            if (aSimulatorClassName != null && !aSimulatorClassName.isEmpty())
+            {
+                mSimulator = (ASimulator) Class.forName(aSimulatorClassName).newInstance();
+                mSimulator.loadConfig(aSimulatorConfig);
+                sLOGGER.log(Level.INFO, aSimulatorClassName);
+            }
+            else
+            {
+                mSimulator = new ASimulator();
+                mSimulator.loadConfig(aSimulatorConfig);
+                sLOGGER.log(Level.DEBUG, "Created default simulator");
+            }
+
+        }
+        catch (ClassNotFoundException | InstantiationException | IllegalAccessError | IllegalAccessException e)
+        {
+            sLOGGER.log(Level.FATAL, "Could not find simulator class " + aSimulatorClassName, e);
+        }
     }
 
     public void startSimulation()
@@ -120,14 +153,30 @@ public class Simulator
         loadConfig(PROPERTIES_FILE);
 
         sendJoystickUpdate();
-        createSimulator();
-        createRobot();
 
-        mRobotThread = new Thread(createRobotThread(), "RobotThread");
-        mSimulatorThread = new Thread(createSimulationThread(), "SimulatorThread");
+        if (mSimulator != null && mRobot != null)
+        {
+            mRobotThread = new Thread(createRobotThread(), "RobotThread");
+            mSimulatorThread = new Thread(createSimulationThread(), "SimulatorThread");
 
-        mSimulatorThread.start();
-        mRobotThread.start();
+            mRunningSimulator = true;
+            sLOGGER.log(Level.INFO, "Starting simulator");
+
+            mSimulatorThread.start();
+            mRobotThread.start();
+        }
+        else
+        {
+            if (mSimulator != null)
+            {
+                sLOGGER.log(Level.FATAL, "Could not start simulator, no simulator was created");
+            }
+            if (mRobot != null)
+            {
+                sLOGGER.log(Level.FATAL, "Could not start simulator, robot was created");
+            }
+            exitWithError();
+        }
     }
 
     protected void setFrameVisible(SimulatorFrame frame)
@@ -149,31 +198,6 @@ public class Simulator
         }
     }
 
-    private void createSimulator()
-    {
-        try
-        {
-            if (mSimulatorClassName != null && !mSimulatorClassName.isEmpty())
-            {
-                mSimulator = (ASimulator) Class.forName(mSimulatorClassName).newInstance();
-                mSimulator.loadConfig(mSimulatorConfig);
-                System.out.println("Created simulator : " + mSimulatorClassName);
-            }
-            else
-            {
-                mSimulator = new ASimulator();
-                mSimulator.loadConfig(mSimulatorConfig);
-                System.out.println("Created default simulator");
-            }
-
-        }
-        catch (ClassNotFoundException | InstantiationException | IllegalAccessError | IllegalAccessException e)
-        {
-            System.err.println("Could not find simulator class " + mSimulatorClassName);
-            exitWithError();
-        }
-    }
-
     private Runnable createSimulationThread()
     {
         return new Runnable()
@@ -186,17 +210,13 @@ public class Simulator
                 {
                     DataAccessorFactory.getInstance().getSimulatorDataAccessor().waitForProgramToStart();
 
-                    if (mSimulator != null)
-                    {
-                        mSimulator.createSimulatorComponents();
-                        mSimulator.setRobot(mRobot);
-                        Logger.getLogger(Simulator.class).log(Level.INFO, "Created simulator : " + mSimulatorClassName);
-                    }
+                    mSimulator.createSimulatorComponents();
+                    mSimulator.setRobot(mRobot);
 
                     SimulatorFrame frame = new SimulatorFrame(mSimulatorConfig);
                     setFrameVisible(frame);
 
-                    while (true)
+                    while (mRunningSimulator)
                     {
                         DataAccessorFactory.getInstance().getSimulatorDataAccessor().waitForNextUpdateLoop();
 
@@ -207,8 +227,7 @@ public class Simulator
                 }
                 catch (Throwable e)
                 {
-                    System.err.println("Encountered fatal error, will exit.  Error: " + e.getMessage());
-                    e.printStackTrace();
+                    sLOGGER.log(Level.FATAL, "Encountered fatal error, will exit.  Error: " + e.getMessage(), e);
                     exitWithError();
                 }
             }
@@ -230,16 +249,15 @@ public class Simulator
                 }
                 catch (UnsatisfiedLinkError e)
                 {
-                    e.printStackTrace();
-                    System.err.println("\n\n\n\n");
-                    System.err.println("Unsatisfied link error.  This likely means that there is a native "
-                            + "call in WpiLib or the NetworkTables libraries.  Please tell PJ so he can mock it out.\n\nError Message: " + e);
+                    sLOGGER.log(Level.FATAL,
+                            "Unsatisfied link error.  This likely means that there is a native "
+                                    + "call in WpiLib or the NetworkTables libraries.  Please tell PJ so he can mock it out.\n\nError Message: " + e,
+                            e);
                     exitWithError();
                 }
                 catch (Exception e)
                 {
-                    Logger.getLogger(Simulator.class).log(Level.FATAL, "Unexpected exception, shutting down simulator");
-                    e.printStackTrace();
+                    sLOGGER.log(Level.FATAL, "Unexpected exception, shutting down simulator", e);
                     exitWithError();
                 }
             }
@@ -248,8 +266,33 @@ public class Simulator
 
     protected void stop()
     {
-        mRobotThread = null;
-        mSimulatorThread = null;
+        sLOGGER.log(Level.INFO, "Stopping simulator");
+
+        if (mSimulator != null)
+        {
+            mSimulator.shutdown();
+        }
+
+        if (mSimulatorThread != null)
+        {
+            try
+            {
+                mRunningSimulator = false;
+                mSimulatorThread.join();
+                mSimulatorThread = null;
+            }
+            catch (InterruptedException e)
+            {
+                sLOGGER.log(Level.FATAL, e);
+            }
+        }
+
+        if (mRobotThread != null)
+        {
+            mRobotThread.interrupt();
+            mRobotThread.stop();
+            mRobotThread = null;
+        }
     }
 
     protected void exitWithError()

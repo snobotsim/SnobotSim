@@ -20,6 +20,8 @@ import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor.Mot
 
 public class SimulatorConfigWriter
 {
+    private static final Logger sLOGGER = Logger.getLogger(SimulatorConfigWriter.class);
+
     public boolean writeConfig(String aOutFile)
     {
         boolean success = false;
@@ -27,7 +29,7 @@ public class SimulatorConfigWriter
         try
         {
             File file = new File(aOutFile);
-            Logger.getLogger(SimulatorConfigWriter.class).log(Level.INFO, "Writing to " + file.getAbsolutePath());
+            sLOGGER.log(Level.INFO, "Writing to " + file.getAbsolutePath());
 
             Object output = dumpConfig();
 
@@ -41,7 +43,7 @@ public class SimulatorConfigWriter
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            sLOGGER.log(Level.ERROR, e);
         }
 
         return success;

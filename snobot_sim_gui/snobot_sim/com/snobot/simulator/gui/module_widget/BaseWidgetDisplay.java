@@ -21,8 +21,12 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 public abstract class BaseWidgetDisplay<KeyType, WidgetType extends Container> extends JPanel
 {
+    private static final Logger sLOGGER = Logger.getLogger(BaseWidgetDisplay.class);
 
     protected Map<KeyType, WidgetType> mWidgetMap;
     protected Map<KeyType, JLabel> mLabelMap;
@@ -44,7 +48,7 @@ public abstract class BaseWidgetDisplay<KeyType, WidgetType extends Container> e
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            sLOGGER.log(Level.ERROR, e);
         }
 
         int i = 0;

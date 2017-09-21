@@ -2,6 +2,9 @@ package com.snobot.simulator.joysticks.joystick_specializations;
 
 import java.util.Arrays;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.snobot.simulator.gui.joysticks.sub_panels.XboxButtonMap;
 import com.snobot.simulator.joysticks.BaseJoystick;
 
@@ -10,6 +13,8 @@ import net.java.games.input.Controller;
 
 public class KeyboardJoystick extends BaseJoystick
 {
+    private static final Logger sLOGGER = Logger.getLogger(KeyboardJoystick.class);
+
     // Backwards on purpose
     private static final short sNEGATIVE_VALUE = 1;
     private static final short sPOSITIVE_VALUE = -1;
@@ -137,7 +142,8 @@ public class KeyboardJoystick extends BaseJoystick
         }
         else
         {
-            System.err.println("Controller is null.  The simulator could not setup a controller of type [" + mName + "]");
+            sLOGGER.log(Level.ERROR,
+                    "Controller is null.  The simulator could not setup a controller of type [" + mName + "]");
         }
 
         return mAxisValues;
