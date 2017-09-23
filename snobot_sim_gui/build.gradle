@@ -67,18 +67,19 @@ dependencies {
     // Internal
     compile project(":snobot_sim_utilities")
     
+    def os_name = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
     if(build_simulator_cpp)
     {
         compile project(":snobot_sim_jni")
-        runtime     files("${rootDir}/snobot_sim_jni/build/libs/snobot_sim_jni-uber_native-windows.jar")
-        testRuntime files("${rootDir}/snobot_sim_jni/build/libs/snobot_sim_jni-uber_native-windows.jar")
+        runtime     files("${rootDir}/snobot_sim_jni/build/libs/snobot_sim_jni-uber_native-" + os_name  +".jar")
+        testRuntime files("${rootDir}/snobot_sim_jni/build/libs/snobot_sim_jni-uber_native-" + os_name  +".jar")
     }
     
     if(build_simulator_java)
     {
         compile project(":snobot_sim_java")
-        runtime     files("${rootDir}/snobot_sim_java/build/libs/snobot_sim_java-uber_native-windows.jar")
-        testRuntime files("${rootDir}/snobot_sim_java/build/libs/snobot_sim_java-uber_native-windows.jar")
+        runtime     files("${rootDir}/snobot_sim_java/build/libs/snobot_sim_java-uber_native-" + os_name  +".jar")
+        testRuntime files("${rootDir}/snobot_sim_java/build/libs/snobot_sim_java-uber_native-" + os_name  +".jar")
     }
     
     // Test
