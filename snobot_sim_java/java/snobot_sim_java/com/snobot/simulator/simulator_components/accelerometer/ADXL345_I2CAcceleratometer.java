@@ -15,7 +15,7 @@ public class ADXL345_I2CAcceleratometer implements II2CWrapper
 
     public ADXL345_I2CAcceleratometer(int aPort)
     {
-        mDataContainer = new ThreeAxisAccelerometer(aPort * 50, "I2C Accel ");
+        mDataContainer = new ThreeAxisAccelerometer(aPort * 50, "ADXL345 I2C Accel ");
         mNativePort = aPort;
     }
 
