@@ -55,9 +55,9 @@ public class TestADXL345_SPIAccelerometer extends BaseSimulatorTest
         ADXL345_SPI accel = new ADXL345_SPI(mPort, mRange);
         ADXL345_SPI.AllAxes axes = null;
 
-        int xHandle = 50 + mPort.value * 3;
-        int yHandle = 51 + mPort.value * 3;
-        int zHandle = 52 + mPort.value * 3;
+        int xHandle = 100 + mPort.value * 3;
+        int yHandle = 101 + mPort.value * 3;
+        int zHandle = 102 + mPort.value * 3;
 
         Assert.assertEquals(3, DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().size());
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(xHandle));

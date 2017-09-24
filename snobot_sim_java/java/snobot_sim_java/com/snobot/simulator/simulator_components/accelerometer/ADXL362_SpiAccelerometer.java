@@ -19,7 +19,7 @@ public class ADXL362_SpiAccelerometer implements ISpiWrapper
 
     public ADXL362_SpiAccelerometer(int aPort)
     {
-        mDataContainer = new ThreeAxisAccelerometer(75 + aPort * 3, "ADXL362 SPI Accel ");
+        mDataContainer = new ThreeAxisAccelerometer(150 + aPort * 3, "ADXL362 SPI Accel ");
         mNativePort = aPort;
     }
 

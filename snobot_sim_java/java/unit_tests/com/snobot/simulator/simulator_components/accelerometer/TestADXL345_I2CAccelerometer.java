@@ -24,8 +24,13 @@ public class TestADXL345_I2CAccelerometer extends BaseSimulatorTest
     {
         Collection<Object[]> output = new ArrayList<>();
 
-        output.add(new Object[]
-        { I2C.Port.kMXP, Range.k2G });
+        for (I2C.Port port : I2C.Port.values())
+        {
+            for (Range range : Range.values())
+            {
+                output.add(new Object[]{ port, range });
+            }
+        }
 
         return output;
     }
@@ -48,10 +53,11 @@ public class TestADXL345_I2CAccelerometer extends BaseSimulatorTest
         ADXL345_I2C accel = new ADXL345_I2C(mPort, mRange);
         ADXL345_I2C.AllAxes axes = null;
 
-        int xHandle = 50;
-        int yHandle = 51;
-        int zHandle = 52;
+        int xHandle = 50 + mPort.value * 3;
+        int yHandle = 51 + mPort.value * 3;
+        int zHandle = 52 + mPort.value * 3;
 
+        System.out.println(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList());
         Assert.assertEquals(3, DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().size());
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(xHandle));
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(yHandle));

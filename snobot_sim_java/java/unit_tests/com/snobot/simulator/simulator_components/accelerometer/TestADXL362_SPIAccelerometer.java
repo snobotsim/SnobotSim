@@ -50,9 +50,9 @@ public class TestADXL362_SPIAccelerometer extends BaseSimulatorTest
         ADXL362 accel = new ADXL362(mPort, mRange);
         ADXL362.AllAxes axes = null;
 
-        int xHandle = 75 + mPort.value * 3;
-        int yHandle = 76 + mPort.value * 3;
-        int zHandle = 77 + mPort.value * 3;
+        int xHandle = 150 + mPort.value * 3;
+        int yHandle = 151 + mPort.value * 3;
+        int zHandle = 152 + mPort.value * 3;
 
         System.out.println(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList());
         Assert.assertEquals(3, DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().size());
