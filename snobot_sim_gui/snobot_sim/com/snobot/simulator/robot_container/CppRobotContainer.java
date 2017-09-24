@@ -5,6 +5,12 @@ import java.lang.reflect.Method;
 
 import com.snobot.simulator.JniLibraryResourceLoader;
 
+/**
+ * Wrapper class around a C++ robot's code
+ * 
+ * @author PJ
+ *
+ */
 public class CppRobotContainer implements IRobotClassContainer
 {
     private String mRobotClassName;

@@ -215,6 +215,13 @@ namespace SnobotSimJava
         {
             gEncoderArrayIndices[i] = i;
             HALSIM_RegisterEncoderInitializedCallback(i, &EncoderCallback, &gEncoderArrayIndices[i], false);
+            HALSIM_RegisterEncoderCountCallback(i, &EncoderCallback, &gEncoderArrayIndices[i], false);
+            HALSIM_RegisterEncoderPeriodCallback(i, &EncoderCallback, &gEncoderArrayIndices[i], false);
+            HALSIM_RegisterEncoderResetCallback(i, &EncoderCallback, &gEncoderArrayIndices[i], false);
+            HALSIM_RegisterEncoderMaxPeriodCallback(i, &EncoderCallback, &gEncoderArrayIndices[i], false);
+            HALSIM_RegisterEncoderDirectionCallback(i, &EncoderCallback, &gEncoderArrayIndices[i], false);
+            HALSIM_RegisterEncoderReverseDirectionCallback(i, &EncoderCallback, &gEncoderArrayIndices[i], false);
+            HALSIM_RegisterEncoderSamplesToAverageCallback(i, &EncoderCallback, &gEncoderArrayIndices[i], false);
         }
         for(int i = 0; i < 2; ++i)
         {
@@ -260,6 +267,8 @@ namespace SnobotSimJava
             HALSIM_RegisterSPIReadCallback(i, &SpiCallback, &gSpiInArrayIndices[i], false);
             HALSIM_RegisterSPIWriteCallback(i, &SpiCallback, &gSpiInArrayIndices[i], false);
             HALSIM_RegisterSPITransactionCallback(i, &SpiCallback, &gSpiInArrayIndices[i], false);
+            HALSIM_RegisterSPIResetAccumulatorCallback(i, &SpiCallback, &gSpiInArrayIndices[i], false);
+
         }
     }
 

@@ -17,6 +17,12 @@ import com.snobot.simulator.gui.module_widget.SolenoidGraphicDisplay;
 import com.snobot.simulator.gui.module_widget.SpeedControllerGraphicDisplay;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
+/**
+ * This is the top level panel that shows all of the simulator components
+ * 
+ * @author PJ
+ *
+ */
 public class GraphicalSensorDisplayPanel extends JPanel
 {
     public GraphicalSensorDisplayPanel()

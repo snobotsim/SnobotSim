@@ -24,6 +24,13 @@ import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor.SnobotLogLev
 
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
+/**
+ * The actual simulator. Runs the robot and the GUI threads. The GUI will appear
+ * after receiving the signal that the robot code has started
+ * 
+ * @author PJ
+ *
+ */
 public class Simulator
 {
     private static final Logger sLOGGER = Logger.getLogger(Simulator.class);
@@ -42,6 +49,18 @@ public class Simulator
     protected Thread mSimulatorThread;
     protected boolean mRunningSimulator;
 
+    /**
+     * Constructor
+     * 
+     * @param aLogLevel
+     *            The log level to set up the simulator with
+     * @param aPluginDirectory
+     *            The directory to search for plugins
+     * @param aUserConfigDir
+     *            The config directory where settings are saved
+     * @throws Exception
+     *             Throws an exception if the plugin loading failed
+     */
     public Simulator(SnobotLogLevel aLogLevel, File aPluginDirectory, String aUserConfigDir) throws Exception
     {
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setLogLevel(aLogLevel);
@@ -71,9 +90,9 @@ public class Simulator
 
                 if (!JniLibraryResourceLoader.copyResourceFromJar("/com/snobot/simulator/config/default_properties.properties",
                         new File(PROPERTIES_FILE), false))
-            	{
-            		throw new RuntimeException("Could not copy properties file!  Have to exit!");
-            	}
+                {
+                    throw new RuntimeException("Could not copy properties file!  Have to exit!");
+                }
             }
 
             Properties p = new Properties();
@@ -146,6 +165,24 @@ public class Simulator
         }
     }
 
+    /**
+     * Starts the simulation by starting the robot and the GUI
+     * 
+     * @throws InstantiationException
+     *             Thrown the robot class could not be started with reflection
+     * @throws IllegalAccessException
+     *             Thrown the robot class could not be started with reflection
+     * @throws ClassNotFoundException
+     *             Thrown the robot class could not be started with reflection
+     * @throws NoSuchMethodException
+     *             Thrown the robot class could not be started with reflection
+     * @throws SecurityException
+     *             Thrown the robot class could not be started with reflection
+     * @throws IllegalArgumentException
+     *             Thrown the robot class could not be started with reflection
+     * @throws InvocationTargetException
+     *             Thrown the robot class could not be started with reflection
+     */
     public void startSimulation()
             throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, SecurityException,
             IllegalArgumentException, InvocationTargetException
@@ -264,6 +301,9 @@ public class Simulator
         };
     }
 
+    /**
+     * Stops the all the simulator threads (that we can stop)
+     */
     protected void stop()
     {
         sLOGGER.log(Level.INFO, "Stopping simulator");
@@ -295,14 +335,12 @@ public class Simulator
         }
     }
 
+    /**
+     * Shuts down the simulator when an error has occurred
+     */
     protected void exitWithError()
     {
         stop();
         System.exit(-1);
-    }
-
-    public ASimulator getSimulator()
-    {
-        return mSimulator;
     }
 }

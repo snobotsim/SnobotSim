@@ -1,9 +1,12 @@
 package com.snobot.simulator.simulator_components;
 
+import java.util.Collection;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig;
+import com.snobot.simulator.simulator_components.TankDriveGyroSimulator.TankDriveConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
@@ -81,5 +84,24 @@ public class TestTankDriveSimulator extends BaseSimulatorTest
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
         new AnalogGyro(0);
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().connectTankDriveSimulator(0, 1, 0, 180 / Math.PI);
+    }
+
+    @Test
+    public void testSimulatorComponentRegister()
+    {
+        new Encoder(0, 1);
+        new Encoder(2, 3);
+        new AnalogGyro(0);
+
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().connectTankDriveSimulator(0, 1, 0, 180 / Math.PI);
+
+        Collection<Object> configs = DataAccessorFactory.getInstance().getSimulatorDataAccessor().getSimulatorComponentConfigs();
+        Assert.assertEquals(1, configs.size());
+
+        TankDriveGyroSimulator.TankDriveConfig config = (TankDriveConfig) configs.iterator().next();
+        Assert.assertEquals(0, config.getmGyroHandle());
+        Assert.assertEquals(0, config.getmLeftEncoderHandle());
+        Assert.assertEquals(1, config.getmRightEncoderHandle());
+        Assert.assertEquals(180 / Math.PI, config.getmTurnKp(), DOUBLE_EPSILON);
     }
 }

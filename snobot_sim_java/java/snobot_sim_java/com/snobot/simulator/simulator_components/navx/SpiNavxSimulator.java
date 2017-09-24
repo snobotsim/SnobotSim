@@ -89,4 +89,10 @@ public class SpiNavxSimulator extends NavxSimulator implements ISpiWrapper
     {
 
     }
+
+    @Override
+    public void resetAccumulator()
+    {
+
+    }
 }

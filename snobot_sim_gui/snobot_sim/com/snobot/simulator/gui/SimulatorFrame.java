@@ -18,6 +18,12 @@ import com.snobot.simulator.config.SimulatorConfigWriter;
 import com.snobot.simulator.gui.joysticks.JoystickManagerDialog;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
+/**
+ * Top level frame that displays all of the simulation displays
+ * 
+ * @author PJ
+ *
+ */
 public class SimulatorFrame extends JFrame
 {
     private static final Logger sLOGGER = Logger.getLogger(SimulatorFrame.class);

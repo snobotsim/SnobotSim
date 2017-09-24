@@ -47,6 +47,11 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
 task copyDependencies(type: Zip)  {
         
     doFirst {
@@ -89,6 +94,7 @@ publishing {
             
             artifact jar
             artifact javadocJar
+            artifact sourcesJar
             artifact copyDependencies
             artifact createReleaseJar
         }

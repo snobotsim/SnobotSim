@@ -139,7 +139,8 @@ class SimpleSimConfigPanel extends JPanel implements SubmitableMotorSimulator
     {
         if (aVisible)
         {
-            mMaxSpeedField.setText("" + DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimSimpleModelConfig(mHandle));
+            SimpleMotorSimulationConfig config = DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimSimpleModelConfig(mHandle);
+            mMaxSpeedField.setText("" + config.mMaxSpeed);
         }
 
         super.setVisible(aVisible);
@@ -205,7 +206,8 @@ class StaticLoadSimConfigPanel extends MotorSimWithModelPanel
     @Override
     protected void updateSimulatorParams()
     {
-        mLoadField.setText("" + DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimStaticModelConfig(mHandle));
+        StaticLoadMotorSimulationConfig config = DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimStaticModelConfig(mHandle);
+        mLoadField.setText("" + config.mLoad);
     }
 }
 
@@ -259,6 +261,8 @@ class GravitationalLoadSimConfigPanel extends MotorSimWithModelPanel
     @Override
     protected void updateSimulatorParams()
     {
-        mLoadField.setText("" + DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimGravitationalModelConfig(mHandle));
+        GravityLoadMotorSimulationConfig config = DataAccessorFactory.getInstance().getSpeedControllerAccessor()
+                .getMotorSimGravitationalModelConfig(mHandle);
+        mLoadField.setText("" + config.mLoad);
     }
 }

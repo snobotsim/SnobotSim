@@ -71,15 +71,24 @@ public class TestEncoderJni extends BaseSimulatorTest
         Assert.assertEquals(12.0, encoder.getDistance(), DOUBLE_EPSILON);
         Assert.assertEquals(12.0, DataAccessorFactory.getInstance().getEncoderAccessor().getDistance(0), DOUBLE_EPSILON);
         Assert.assertEquals(12.0 / 4, DataAccessorFactory.getInstance().getEncoderAccessor().getRaw(0), DOUBLE_EPSILON);
+
+        encoder.reset();
+        Assert.assertEquals(0.0, encoder.getDistance(), DOUBLE_EPSILON);
+        Assert.assertEquals(0.0, DataAccessorFactory.getInstance().getEncoderAccessor().getDistance(0), DOUBLE_EPSILON);
+        Assert.assertEquals(0.0, DataAccessorFactory.getInstance().getEncoderAccessor().getRaw(0), DOUBLE_EPSILON);
     }
 
     @Test
     public void testSimulatorFeedbackNoUpdate()
     {
-        new Encoder(1, 2);
+        Encoder encoder = new Encoder(1, 2);
         EncoderWrapper wrapper = SensorActuatorRegistry.get().getEncoders().get(0);
         wrapper.setPosition(5);
         wrapper.setPosition(5);
+
+        Assert.assertEquals(5.0, encoder.getDistance(), DOUBLE_EPSILON);
+        Assert.assertEquals(5.0, DataAccessorFactory.getInstance().getEncoderAccessor().getDistance(0), DOUBLE_EPSILON);
+        Assert.assertEquals((int) 5.0 / 4, DataAccessorFactory.getInstance().getEncoderAccessor().getRaw(0), DOUBLE_EPSILON);
     }
 
     @Test

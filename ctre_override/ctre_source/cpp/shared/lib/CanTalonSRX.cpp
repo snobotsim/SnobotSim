@@ -346,7 +346,7 @@ void CanTalonSRX::ProcessStreamMessages() {
   /* read out latest bunch of messages */
   _can_stat = 0;
 
-  std::cout << "Process stream messages... " << _can_h << std::endl;
+//  std::cout << "Process stream messages... " << _can_h << std::endl;
   if (_can_h) {
       HAL_CAN_ReadStreamSession(
         _can_h, _msgBuff, messagesToRead, &messagesRead, &_can_stat);
@@ -354,7 +354,7 @@ void CanTalonSRX::ProcessStreamMessages() {
   /* loop thru each message of interest */
   for (i = 0; i < messagesRead; ++i) {
     HAL_CANStreamMessage *msg = _msgBuff + i;
-    std::cout << "  Reading message " << i << " - " << msg->messageID << ", " << (PARAM_RESPONSE | GetDeviceNumber()) << std::endl;
+//    std::cout << "  Reading message " << i << " - " << msg->messageID << ", " << (PARAM_RESPONSE | GetDeviceNumber()) << std::endl;
     if (msg->messageID == (PARAM_RESPONSE | GetDeviceNumber())) {
       TALON_Param_Response_t *paramResp = (TALON_Param_Response_t *)msg->data;
       /* decode value */
@@ -1229,12 +1229,12 @@ CTR_Code CanTalonSRX::GetSensorPosition(int &param)
 {
   GET_STATUS2();
 
-  std::cout << "GetSensorPosition... " <<
-          ((int) rx->SensorPositionH) << ", " <<
-          ((int) rx->SensorPositionM) << ", " <<
-          ((int) rx->SensorPositionL) << ", " <<
-          ((int) rx->PosDiv8) << ", " <<
-          std::endl;
+//  std::cout << "GetSensorPosition... " <<
+//          ((int) rx->SensorPositionH) << ", " <<
+//          ((int) rx->SensorPositionM) << ", " <<
+//          ((int) rx->SensorPositionL) << ", " <<
+//          ((int) rx->PosDiv8) << ", " <<
+//          std::endl;
 
   int32_t raw = 0;
   raw |= rx->SensorPositionH;
@@ -1253,11 +1253,11 @@ CTR_Code CanTalonSRX::GetSensorVelocity(int &param)
 {
   GET_STATUS2();
 
-  std::cout << "GetSensorVelocity... " <<
-          ((int) rx->SensorVelocityH) << ", " <<
-          ((int) rx->SensorVelocityL) << ", " <<
-          ((int) rx->VelDiv4) << ", " <<
-          std::endl;
+//  std::cout << "GetSensorVelocity... " <<
+//          ((int) rx->SensorVelocityH) << ", " <<
+//          ((int) rx->SensorVelocityL) << ", " <<
+//          ((int) rx->VelDiv4) << ", " <<
+//          std::endl;
   int32_t raw = 0;
   raw |= rx->SensorVelocityH;
   raw <<= 8;
@@ -1361,12 +1361,12 @@ CTR_Code CanTalonSRX::GetQuadIdxpin(int &param)
 CTR_Code CanTalonSRX::GetAnalogInWithOv(int &param)
 {
   GET_STATUS4();
-  std::cout << "GetAnalogInWithOv: " <<
-          ((int) rx->AnalogInWithOvH) << ", " <<
-          ((int) rx->AnalogInWithOvM) << ", " <<
-          ((int) rx->AnalogInWithOvL) <<", " <<
-          ((int) rx->PosDiv8) <<
-          std::endl;
+//  std::cout << "GetAnalogInWithOv: " <<
+//          ((int) rx->AnalogInWithOvH) << ", " <<
+//          ((int) rx->AnalogInWithOvM) << ", " <<
+//          ((int) rx->AnalogInWithOvL) <<", " <<
+//          ((int) rx->PosDiv8) <<
+//          std::endl;
   int32_t raw = 0;
   raw |= rx->AnalogInWithOvH;
   raw <<= 16 - 8;
@@ -1383,11 +1383,11 @@ CTR_Code CanTalonSRX::GetAnalogInWithOv(int &param)
 CTR_Code CanTalonSRX::GetAnalogInVel(int &param)
 {
   GET_STATUS4();
-  std::cout << "GetAnalogInVel: " <<
-          ((int) rx->AnalogInVelH) << ", " <<
-          ((int) rx->AnalogInVelL) << ", " <<
-          ((int) rx->VelDiv4) <<
-          std::endl;
+//  std::cout << "GetAnalogInVel: " <<
+//          ((int) rx->AnalogInVelH) << ", " <<
+//          ((int) rx->AnalogInVelL) << ", " <<
+//          ((int) rx->VelDiv4) <<
+//          std::endl;
   int32_t raw = 0;
   raw |= rx->AnalogInVelH;
   raw <<= 8;

@@ -7,4 +7,6 @@ public interface ISpiWrapper
     void handleWrite();
 
     void handleTransaction();
+
+    void resetAccumulator();
 }

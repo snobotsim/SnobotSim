@@ -1,15 +1,6 @@
 
 apply plugin: 'maven-publish'
-
-task cppSourcesZip(type: Zip) {
-    destinationDir = project.buildDir
-    
-    classifier = "sources"
-    
-    from('cpp') {
-        into 'SnobotSim'
-    }
-}
+apply plugin: 'java'
 
 
 task javadoc(type: Javadoc, overwrite: true) {
@@ -38,16 +29,14 @@ publishing {
        }
     }
     publications {
-        snobot_sim_java(MavenPublication) {
+        snobot_sim_gui(MavenPublication) {
             groupId 'com.snobot.simulator'
-            artifactId 'snobot_sim_jni'
+            artifactId 'snobot_sim_utilites'
             version maven_version
             
             artifact jar
-            artifact cppSourcesZip
             artifact javadocJar
             artifact sourcesJar
-            artifact combineNativeLibrariesIntoOne
         }
     }
 

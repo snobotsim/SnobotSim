@@ -19,7 +19,7 @@ public class ADXL345_SpiAccelerometer implements ISpiWrapper
 
     public ADXL345_SpiAccelerometer(int aPort)
     {
-        mDataContainer = new ThreeAxisAccelerometer(aPort * 75, "SPI Accel ");
+        mDataContainer = new ThreeAxisAccelerometer(50 + aPort * 3, "SPI Accel ");
         mNativePort = aPort;
     }
 
@@ -79,6 +79,12 @@ public class ADXL345_SpiAccelerometer implements ISpiWrapper
 
         int lastWrittenAddress = buffer.get() & 0xF;
         populateRead(lastWrittenAddress);
+    }
+
+    @Override
+    public void resetAccumulator()
+    {
+
     }
 
 }

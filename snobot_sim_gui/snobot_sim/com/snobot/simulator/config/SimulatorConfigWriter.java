@@ -18,10 +18,24 @@ import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor;
 import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor;
 import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor.MotorSimType;
 
+/**
+ * This class writes the configuration information to a config file
+ * 
+ * @author PJ
+ *
+ */
 public class SimulatorConfigWriter
 {
     private static final Logger sLOGGER = Logger.getLogger(SimulatorConfigWriter.class);
 
+    /**
+     * Looks at all of the loaded simulator components and writes the config to
+     * a file
+     * 
+     * @param aOutFile
+     *            The output configuration file path
+     * @return True if the write was successful
+     */
     public boolean writeConfig(String aOutFile)
     {
         boolean success = false;

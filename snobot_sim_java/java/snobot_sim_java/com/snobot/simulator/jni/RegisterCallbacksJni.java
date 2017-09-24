@@ -211,6 +211,14 @@ public class RegisterCallbacksJni extends BaseSnobotJni
                 }
             }), port);
         }
+        else if ("Count".equals(callbackType))
+        {
+            sLOGGER.log(Level.DEBUG, "Ignoring count feedback");
+        }
+        else if ("Reset".equals(callbackType))
+        {
+            SensorActuatorRegistry.get().getEncoders().get(port).reset();
+        }
         else
         {
             sLOGGER.log(Level.ERROR, "Unknown Encoder callback " + callbackType + " - " + halValue);
@@ -320,6 +328,10 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         else if ("Transaction".equals(callbackType))
         {
             SensorActuatorRegistry.get().getSpiWrappers().get(port).handleTransaction();
+        }
+        else if ("ResetAccumulator".equals(callbackType))
+        {
+            SensorActuatorRegistry.get().getSpiWrappers().get(port).resetAccumulator();
         }
         else
         {

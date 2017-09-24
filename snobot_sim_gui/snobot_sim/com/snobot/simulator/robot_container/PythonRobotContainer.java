@@ -2,7 +2,15 @@ package com.snobot.simulator.robot_container;
 
 import java.lang.reflect.InvocationTargetException;
 
-
+/**
+ * Wrapper around a python robot.
+ * 
+ * @deprecated This isn't currently hooked up, because the Jython library is
+ *             humongous and robotpy isn't updated yet
+ * 
+ * @author PJ
+ *
+ */
 public class PythonRobotContainer implements IRobotClassContainer
 {
     protected static final String sCLASS_DELIMITER = "--";

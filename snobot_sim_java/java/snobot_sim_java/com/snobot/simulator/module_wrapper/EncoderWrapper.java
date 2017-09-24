@@ -1,5 +1,6 @@
 package com.snobot.simulator.module_wrapper;
 
+import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.simulator_components.IMotorFeedbackSensor;
 
 public class EncoderWrapper extends ASensorWrapper implements IMotorFeedbackSensor
@@ -48,5 +49,17 @@ public class EncoderWrapper extends ASensorWrapper implements IMotorFeedbackSens
     public double getPosition()
     {
         return mPosition;
+    }
+
+    public void reset()
+    {
+        for (PwmWrapper pwmWrapper : SensorActuatorRegistry.get().getSpeedControllers().values())
+        {
+            if (pwmWrapper.getFeedbackSensor().equals(this))
+            {
+                pwmWrapper.reset();
+                setPosition(0);
+            }
+        }
     }
 }

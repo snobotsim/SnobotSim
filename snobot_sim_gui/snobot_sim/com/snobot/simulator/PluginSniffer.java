@@ -16,6 +16,13 @@ import org.apache.log4j.Logger;
 
 import edu.wpi.first.wpilibj.RobotBase;
 
+/**
+ * Class that loads any of the jar files in the plugin directory. Also can
+ * search for C++/Java robot classes
+ * 
+ * @author PJ
+ *
+ */
 public class PluginSniffer
 {
     private static final Logger sLOGGER = Logger.getLogger(PluginSniffer.class);
@@ -30,16 +37,36 @@ public class PluginSniffer
         mJavaRobots = new ArrayList<>();
     }
 
+    /**
+     * Gets the list of C++ robots discovered. Note: Must call
+     * {@link findRobots} before this list gets populated
+     * 
+     * @return The C++ robots
+     */
     public List<Class<?>> getCppRobots()
     {
         return mCppRobots;
     }
 
+    /**
+     * Gets the list of Java robots discovered. Note: Must call
+     * {@link findRobots} before this list gets populated
+     * 
+     * @return The Java robots
+     */
     public List<Class<?>> getJavaRobots()
     {
         return mJavaRobots;
     }
 
+    /**
+     * Loads all the plugins in the plugin directory. Does not search recursivly
+     * 
+     * @param pluginDir
+     *            The directory to search.
+     * @throws Exception
+     *             Thrown if the plugin loading fails
+     */
     public void loadPlugins(File pluginDir) throws Exception
     {
         sLOGGER.log(Level.INFO, "Searching for robot plugins in " + pluginDir.getAbsolutePath());
@@ -66,6 +93,12 @@ public class PluginSniffer
         }
     }
 
+    /**
+     * Finds any robot classes available in the plugin directory
+     * 
+     * @throws Exception
+     *             Thrown if the plugin loading fails
+     */
     public void findRobots() throws Exception
     {
         if (mDiscoveredJars != null)

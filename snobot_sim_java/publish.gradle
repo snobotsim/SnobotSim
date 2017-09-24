@@ -26,6 +26,11 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
 publishing {
     repositories {
        maven {
@@ -41,6 +46,7 @@ publishing {
             artifact jar
             artifact cppSourcesZip
             artifact javadocJar
+            artifact sourcesJar
             artifact combineNativeLibrariesIntoOne
         }
     }

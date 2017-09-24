@@ -52,4 +52,10 @@ public class ADXRS450_SpiGyroWrapper extends GyroWrapper implements ISpiWrapper
     {
 
     }
+
+    @Override
+    public void resetAccumulator()
+    {
+        setAngle(0);
+    }
 }

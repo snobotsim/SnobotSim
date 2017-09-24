@@ -7,6 +7,12 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * This panel shows the Enable and Autonomous buttons
+ * 
+ * @author PJ
+ *
+ */
 public class EnablePanel extends JPanel
 {
     private JCheckBox mEnableButton = new JCheckBox("Enabled");
