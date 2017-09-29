@@ -43,6 +43,12 @@ ext.getNtCoreVersion = {
 ext.getWpilibcVersion = {
     return '2017.3.1-20170908015815-103-g57ba589'
 }
+ext.getCsCoreVersion = {
+    return '+'
+}
+ext.getWpilibOpencvVersion = {
+    return '3.2.0'
+}
 /////////////////////////////////////////
 
 // Publshing Information

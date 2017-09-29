@@ -31,7 +31,9 @@ public class CppRobotContainer implements IRobotClassContainer
         String libraryName = (String) mJniClass.getMethod("getLibraryName").invoke(null);
 
         JniLibraryResourceLoader.loadLibrary("ntcore");
+        JniLibraryResourceLoader.loadLibrary("cscore");
         JniLibraryResourceLoader.loadLibrary("wpiutil");
+        JniLibraryResourceLoader.loadLibrary("opencv_core320");
         JniLibraryResourceLoader.loadLibrary("wpilibc");
         JniLibraryResourceLoader.loadLibrary("CTRLibDriver");
         JniLibraryResourceLoader.loadLibrary("CtrCpp");
