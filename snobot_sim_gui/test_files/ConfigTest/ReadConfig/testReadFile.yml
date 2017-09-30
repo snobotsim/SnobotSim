@@ -1,23 +1,23 @@
 !!com.snobot.simulator.config.SimulatorConfig
 mAccelerometers:
-- mHandle: 0
-  mName: I2C Accel X
-- mHandle: 1
-  mName: I2C Accel Y
-- mHandle: 2
-  mName: I2C Accel Z
-- mHandle: 150
-  mName: SPI Accel X
-- mHandle: 151
-  mName: SPI Accel Y
-- mHandle: 152
-  mName: SPI Accel Z
-- mHandle: 75
-  mName: SPI Accel X
-- mHandle: 76
-  mName: SPI Accel Y
-- mHandle: 77
-  mName: SPI Accel Z
+- mHandle: 50
+  mName: ADXL345 I2C Accel X
+- mHandle: 51
+  mName: ADXL345 I2C Accel Y
+- mHandle: 52
+  mName: ADXL345 I2C Accel Z
+- mHandle: 103
+  mName: ADXL345 SPI Accel X
+- mHandle: 104
+  mName: ADXL345 SPI Accel Y
+- mHandle: 105
+  mName: ADXL345 SPI Accel Z
+- mHandle: 156
+  mName: ADXL362 SPI Accel X
+- mHandle: 157
+  mName: ADXL362 SPI Accel Y
+- mHandle: 158
+  mName: ADXL362 SPI Accel Z
 mAnalogIO:
 - mHandle: 0
   mName: Analog 0
@@ -68,33 +68,59 @@ mGyros:
   mName: Analog Gyro
 mPwm:
 - mHandle: 0
+  mMotorModelConfig: null
   mMotorSimConfig: !!com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig
     mMaxSpeed: 12.0
   mName: Speed Controller 0
 - mHandle: 1
+  mMotorModelConfig:
+    mGearReduction: 10.0
+    mGearboxEfficiency: 1.0
+    mMotorType: RS775
+    mNumMotors: 1
   mMotorSimConfig: !!com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig
     mConversionFactor: 6.28
     mLoad: 0.5
   mName: Speed Controller 1
 - mHandle: 2
-  mMotorSimConfig: null
+  mMotorModelConfig:
+    mGearReduction: 10.0
+    mGearboxEfficiency: 1.0
+    mMotorType: RS775
+    mNumMotors: 1
+  mMotorSimConfig: !!com.snobot.simulator.motor_sim.GravityLoadMotorSimulationConfig
+    mLoad: 0.5
   mName: Speed Controller 2
 - mHandle: 3
-  mMotorSimConfig: null
+  mMotorModelConfig:
+    mGearReduction: 10.0
+    mGearboxEfficiency: 1.0
+    mMotorType: RS775
+    mNumMotors: 1
+  mMotorSimConfig: !!com.snobot.simulator.motor_sim.RotationalLoadMotorSimulationConfig
+    mArmCenterOfMass: 1.0
+    mArmMass: 1.0
+    mConstantAssistTorque: 0.0
+    mOverCenterAssistTorque: 0.0
   mName: Speed Controller 3
 - mHandle: 4
+  mMotorModelConfig: null
   mMotorSimConfig: null
   mName: Speed Controller 4
 - mHandle: 5
+  mMotorModelConfig: null
   mMotorSimConfig: null
   mName: Speed Controller 5
 - mHandle: 6
+  mMotorModelConfig: null
   mMotorSimConfig: null
   mName: Speed Controller 6
 - mHandle: 7
+  mMotorModelConfig: null
   mMotorSimConfig: null
   mName: Speed Controller 7
 - mHandle: 8
+  mMotorModelConfig: null
   mMotorSimConfig: null
   mName: Speed Controller 8
 mRelays:

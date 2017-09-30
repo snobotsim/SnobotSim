@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
+import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.IMotorSimulatorConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.simulator.wrapper_accessors.EncoderWrapperAccessor;
@@ -108,9 +109,16 @@ public class SimulatorConfigWriter
     {
         for (int portHandle : accessor.getPortList())
         {
-            PwmConfig config = new PwmConfig(portHandle, accessor.getName(portHandle), getMotorSimConfig(accessor, portHandle));
+            PwmConfig config = new PwmConfig(portHandle, accessor.getName(portHandle), getMotorSimConfig(accessor, portHandle),
+                    getMotorModel(accessor, portHandle));
             outputList.add(config);
         }
+    }
+
+    protected DcMotorModelConfig.FactoryParams getMotorModel(SpeedControllerWrapperAccessor accessor, int portHandle)
+    {
+        DcMotorModelConfig motorConfig = accessor.getMotorConfig(portHandle);
+        return motorConfig == null ? null : motorConfig.mFactoryParams;
     }
 
     protected void dumpSimulatorComponents(SimulatorDataAccessor accessor, List<Object> outputList)
@@ -141,114 +149,4 @@ public class SimulatorConfigWriter
         }
         return null;
     }
-
-    // protected void dumpSpeedControllers(Map<String, Object> aOutMap)
-    // {
-    // List<Integer> speedControllers =
-    // DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList();
-    //
-    // if (!speedControllers.isEmpty())
-    // {
-    // List<Object> listConfig = new ArrayList<>();
-    // for (int handle : speedControllers)
-    // {
-    // Map<String, Object> singleConfig = new LinkedHashMap<>();
-    // singleConfig.put("name",
-    // DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(handle));
-    // singleConfig.put("handle", handle);
-    //
-    // listConfig.add(singleConfig);
-    // dumpMotorSim(singleConfig, handle);
-    // }
-    // aOutMap.put("speed_controllers", listConfig);
-    // }
-    // }
-    //
-    // private void dumpMotorSim(Map<String, Object> aScConfig, int aHandle)
-    // {
-    // MotorSimType simType =
-    // DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimType(aHandle);
-    // switch (simType)
-    // {
-    // case Simple:
-    // dumpMotorSimSimple(aScConfig, aHandle);
-    // break;
-    // case StaticLoad:
-    // dumpMotorSimStaticLoad(aScConfig, aHandle);
-    // break;
-    // case GravitationalLoad:
-    // dumpMotorSimGravitationalLoad(aScConfig, aHandle);
-    // break;
-    // case RotationalLoad:
-    // dumpMotorSimRotationalLoad(aScConfig, aHandle);
-    // break;
-    //
-    // case None:
-    // default:
-    // break;
-    //
-    // }
-    // }
-    //
-    // private void dumpMotorSimSimple(Map<String, Object> aScConfig, int
-    // aHandle)
-    // {
-    // Map<String, Object> motorSim = new LinkedHashMap<>();
-    // motorSim.put("type", "Simple");
-    // motorSim.put("max_speed",
-    // DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimSimpleModelConfig(aHandle));
-    //
-    // aScConfig.put("motor_sim", motorSim);
-    // }
-    //
-    // private void dumpMotorSimStaticLoad(Map<String, Object> aScConfig, int
-    // aHandle)
-    // {
-    // Map<String, Object> motorSim = new LinkedHashMap<>();
-    // motorSim.put("type", "StaticLoad");
-    // motorSim.put("load",
-    // DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimStaticModelConfig(aHandle));
-    // motorSim.put("conversion_factor", 1);
-    //
-    // DcMotorModelConfig modelConfig =
-    // DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorConfig(aHandle);
-    // if (modelConfig != null)
-    // {
-    // motorSim.put("motor_model", dumpDcMotorModelConfig(modelConfig));
-    // }
-    //
-    // aScConfig.put("motor_sim", motorSim);
-    // }
-    //
-    // private void dumpMotorSimGravitationalLoad(Map<String, Object> aScConfig,
-    // int aHandle)
-    // {
-    //
-    // }
-    //
-    // private void dumpMotorSimRotationalLoad(Map<String, Object> aScConfig,
-    // int aHandle)
-    // {
-    //
-    // }
-    //
-    // private Map<String, Object> dumpDcMotorModelConfig(DcMotorModelConfig
-    // aConfig)
-    // {
-    // Map<String, Object> output = new LinkedHashMap<>();
-    //
-    // output.put("motor_type", aConfig.mFactoryParams.mMotorType);
-    // output.put("inverted", aConfig.mInverted);
-    // output.put("has_brake", aConfig.mHasBrake);
-    //
-    // Map<String, Object> transmissionConfig = new LinkedHashMap<>();
-    // transmissionConfig.put("num_motors", aConfig.mFactoryParams.mNumMotors);
-    // transmissionConfig.put("gear_reduction",
-    // aConfig.mFactoryParams.mGearReduction);
-    // transmissionConfig.put("efficiency",
-    // aConfig.mFactoryParams.mGearboxEfficiency);
-    // output.put("transmission", transmissionConfig);
-    //
-    // return output;
-    // }
 }

@@ -7,6 +7,12 @@ public class RotationalLoadMotorSimulationConfig implements IMotorSimulatorConfi
     public final double mConstantAssistTorque;
     public final double mOverCenterAssistTorque;
 
+    @SuppressWarnings("unused")
+    private RotationalLoadMotorSimulationConfig()
+    {
+        this(0, 0);
+    }
+
     /**
      *
      * @param aArmCenterOfMass

@@ -4,10 +4,16 @@ public class DcMotorModelConfig
 {
     public static class FactoryParams
     {
-        public final String mMotorType;
-        public final int mNumMotors;
-        public final double mGearReduction;
-        public final double mGearboxEfficiency;
+        public String mMotorType;
+        public int mNumMotors;
+        public double mGearReduction;
+        public double mGearboxEfficiency;
+
+        @SuppressWarnings("unused")
+        private FactoryParams()
+        {
+            this("", 0, 0, 0);
+        }
 
         public FactoryParams(String aMotorType, int aNumMotors, double aGearReduction, double aGearboxEfficiency)
         {
@@ -15,6 +21,46 @@ public class DcMotorModelConfig
             mNumMotors = aNumMotors;
             mGearReduction = aGearReduction;
             mGearboxEfficiency = aGearboxEfficiency;
+        }
+
+        public String getmMotorType()
+        {
+            return mMotorType;
+        }
+
+        public int getmNumMotors()
+        {
+            return mNumMotors;
+        }
+
+        public double getmGearReduction()
+        {
+            return mGearReduction;
+        }
+
+        public double getmGearboxEfficiency()
+        {
+            return mGearboxEfficiency;
+        }
+
+        public void setmMotorType(String mMotorType)
+        {
+            this.mMotorType = mMotorType;
+        }
+
+        public void setmNumMotors(int mNumMotors)
+        {
+            this.mNumMotors = mNumMotors;
+        }
+
+        public void setmGearReduction(double mGearReduction)
+        {
+            this.mGearReduction = mGearReduction;
+        }
+
+        public void setmGearboxEfficiency(double mGearboxEfficiency)
+        {
+            this.mGearboxEfficiency = mGearboxEfficiency;
         }
 
         @Override

@@ -4,6 +4,7 @@ public class SimpleMotorSimulationConfig implements IMotorSimulatorConfig
 {
     public final double mMaxSpeed;
 
+    @SuppressWarnings("unused")
     private SimpleMotorSimulationConfig()
     {
         this(0);

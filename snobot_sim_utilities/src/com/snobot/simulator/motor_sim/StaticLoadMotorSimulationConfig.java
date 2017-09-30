@@ -5,6 +5,7 @@ public class StaticLoadMotorSimulationConfig implements IMotorSimulatorConfig
     public final double mLoad;
     public final double mConversionFactor;
 
+    @SuppressWarnings("unused")
     private StaticLoadMotorSimulationConfig()
     {
         this(0, 0);

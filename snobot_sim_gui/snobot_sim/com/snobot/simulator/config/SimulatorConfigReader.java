@@ -168,6 +168,20 @@ public class SimulatorConfigReader
     {
         SimulatorDataAccessor simulatorAccessor = DataAccessorFactory.getInstance().getSimulatorDataAccessor();
         IMotorSimulatorConfig baseMotorConfig = aPwmConfig.getmMotorSimConfig();
+        DcMotorModelConfig.FactoryParams motorConfigFactoryParams = aPwmConfig.getmMotorModelConfig();
+        DcMotorModelConfig motorConfig;
+        if (motorConfigFactoryParams != null)
+        {
+            motorConfig = simulatorAccessor.createMotor(motorConfigFactoryParams.mMotorType, motorConfigFactoryParams.mNumMotors,
+                    motorConfigFactoryParams.mGearReduction, motorConfigFactoryParams.mGearboxEfficiency);
+        }
+        else
+        {
+            motorConfig = new DcMotorModelConfig(motorConfigFactoryParams, null, false, false);
+        }
+
+        System.out.println(baseMotorConfig);
+
         if (baseMotorConfig != null)
         {
             if (baseMotorConfig instanceof SimpleMotorSimulationConfig)
@@ -176,17 +190,14 @@ public class SimulatorConfigReader
             }
             else if (baseMotorConfig instanceof StaticLoadMotorSimulationConfig)
             {
-                DcMotorModelConfig motorConfig = simulatorAccessor.createMotor("");
                 simulatorAccessor.setSpeedControllerModel_Static(aPwmHandle, motorConfig, (StaticLoadMotorSimulationConfig) baseMotorConfig);
             }
             else if (baseMotorConfig instanceof GravityLoadMotorSimulationConfig)
             {
-                DcMotorModelConfig motorConfig = simulatorAccessor.createMotor("");
                 simulatorAccessor.setSpeedControllerModel_Gravitational(aPwmHandle, motorConfig, (GravityLoadMotorSimulationConfig) baseMotorConfig);
             }
             else if (baseMotorConfig instanceof RotationalLoadMotorSimulationConfig)
             {
-                DcMotorModelConfig motorConfig = simulatorAccessor.createMotor("");
                 simulatorAccessor.setSpeedControllerModel_Rotational(aPwmHandle, motorConfig, (RotationalLoadMotorSimulationConfig) baseMotorConfig);
             }
         }
