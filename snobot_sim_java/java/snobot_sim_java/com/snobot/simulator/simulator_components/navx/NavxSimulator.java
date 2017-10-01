@@ -5,7 +5,6 @@ import java.nio.ByteOrder;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.simulator_components.gyro.GyroWrapper;
-import com.snobot.simulator.simulator_components.gyro.GyroWrapper.AngleSetterHelper;
 
 public class NavxSimulator
 {
@@ -19,9 +18,9 @@ public class NavxSimulator
 
     public NavxSimulator(int aNativePort, int aSimulatorOffset)
     {
-        mYawGyro = new GyroWrapper("NavX Pitch", NULL_ANGLE_SETTER);
-        mPitchGyro = new GyroWrapper("NavX Yaw", NULL_ANGLE_SETTER);
-        mRollGyro = new GyroWrapper("NavX Roll", NULL_ANGLE_SETTER);
+        mYawGyro = new GyroWrapper("NavX Pitch", GyroWrapper.NULL_ANGLE_SETTER);
+        mPitchGyro = new GyroWrapper("NavX Yaw", GyroWrapper.NULL_ANGLE_SETTER);
+        mRollGyro = new GyroWrapper("NavX Roll", GyroWrapper.NULL_ANGLE_SETTER);
 
         mNativePort = aNativePort;
 
@@ -95,14 +94,4 @@ public class NavxSimulator
 
         return output;
     }
-
-    protected static final GyroWrapper.AngleSetterHelper NULL_ANGLE_SETTER = new AngleSetterHelper()
-    {
-
-        @Override
-        public void updateAngle(double aAngle)
-        {
-            // Nothing to do, handled by read/write transactions
-        }
-    };
 }

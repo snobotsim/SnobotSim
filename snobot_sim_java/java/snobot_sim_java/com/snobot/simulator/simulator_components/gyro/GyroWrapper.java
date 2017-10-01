@@ -9,6 +9,16 @@ public class GyroWrapper extends ASensorWrapper
         public void updateAngle(double aAngle);
     }
 
+    public static final GyroWrapper.AngleSetterHelper NULL_ANGLE_SETTER = new AngleSetterHelper()
+    {
+
+        @Override
+        public void updateAngle(double aAngle)
+        {
+
+        }
+    };
+
     protected final AngleSetterHelper mAngleSetterHelper;
     protected double mAngle;
 
