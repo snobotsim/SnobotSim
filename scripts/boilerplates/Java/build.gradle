@@ -5,6 +5,8 @@ plugins {
     id 'edu.wpi.first.wpilib.versioning.WPILibVersioningPlugin' version '1.5.1'
 }
 
+apply plugin: 'eclipse'
+
 
 repositories {
     mavenCentral()
@@ -22,21 +24,56 @@ sourceSets {
             srcDirs = ["${rootDir}/src"]
         }
     }
+    
+    simulator
+    {
+        java
+        {
+            srcDirs = ["${rootDir}/simulator"]
+        }
+    }
+}
+
+ext.getNtCoreVersion = {
+    return '4.0.0-alpha-1-20170907000421-20-g95bce5d'
+}
+ext.getWpilibjVersion = {
+    return '2017.3.1-20170908015815-103-g57ba589'
+}
+ext.getWpiUtilVersion = {
+    return '2.0.0-20170907010827-33-gef85809'
+}
+ext.getSnobotSimVersion = {
+    return "0.2"
 }
 
 dependencies {
     // WPILib
-    compile 'edu.wpi.first.wpilibj:athena:+'
-    compile 'edu.wpi.first.wpilib.networktables.java:NetworkTables:+:desktop'
-    compile 'edu.wpi.cscore.java:cscore:+:arm'
-    compile 'org.opencv:opencv-java:+'
+    compile 'edu.wpi.first.wpilibj:wpilibj-java:' + getWpilibjVersion() + ':javaArtifact'
+    compile 'edu.wpi.first.ntcore:ntcore-java:' + getNtCoreVersion()
+
+    // Testing
+    testCompile    'com.snobot.simulator:snobot_sim_gui:'  + getSnobotSimVersion() + ':all'
+    testRuntime    'com.snobot.simulator:snobot_sim_java:' + getSnobotSimVersion() + ':uber_native-linux'
+    testRuntime    'com.snobot.simulator:snobot_sim_java:' + getSnobotSimVersion() + ':uber_native-windows'
+
+    simulatorCompile sourceSets.main.output
+    simulatorCompile configurations.compile
+    simulatorCompile configurations.testCompile
+    simulatorRuntime configurations.testRuntime
     
-    // 3rd Party
+    // TODO nice to remove these
+    testCompile 'log4j:log4j:1.2.16'
+    testRuntime 'jfree:jcommon:1.0.16'
+    testRuntime 'jfree:jfreechart:1.0.13'
+    testRuntime 'net.java.jinput:jinput:2.0.7'
+    testRuntime 'org.yaml:snakeyaml:1.18'
+    testRuntime 'com.miglayout:miglayout-swing:4.2'
+    
+    
 }
 
 
 jar {
     dependsOn { classes }
 }
-
-

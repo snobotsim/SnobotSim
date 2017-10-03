@@ -95,7 +95,7 @@ public class ${robotName}SimulatorJni
 
     public static String getLibraryName()
     {
-        return "${libraryName}";
+        return "CppTest";
     }
 
     public static native void createRobot();
