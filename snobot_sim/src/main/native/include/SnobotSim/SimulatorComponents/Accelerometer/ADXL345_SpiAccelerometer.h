@@ -19,7 +19,13 @@ public:
 
     virtual void HandleRead() override;
 
+    void HandleWrite() override;
+
+    void HandleTransaction() override;
+
 protected:
+
+    void PopulateRead(int lastWrittenAddress);
 
     ThreeAxisAccelerometer mThreeAxisAccelerometer;
 

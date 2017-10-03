@@ -34,6 +34,6 @@ public class TestSpiFactory extends BaseSimulatorTest
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultI2CSimulator(0, "DoesntExist");
 
-        new ADXL345_SPI(SPI.Port.kMXP, Range.k2G);
+        new ADXL345_SPI(SPI.Port.kOnboardCS0, Range.k2G);
     }
 }

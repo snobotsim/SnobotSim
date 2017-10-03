@@ -12,3 +12,13 @@ void NullSpiWrapper::HandleRead()
 {
     SNOBOT_LOG(SnobotLogging::WARN, "Null Wrapper: " << __FUNCTION_NAME__);
 }
+
+void NullSpiWrapper::HandleWrite()
+{
+    SNOBOT_LOG(SnobotLogging::WARN, "Null Wrapper: " << __FUNCTION_NAME__);
+}
+
+void NullSpiWrapper::HandleTransaction()
+{
+    SNOBOT_LOG(SnobotLogging::WARN, "Null Wrapper: " << __FUNCTION_NAME__);
+}

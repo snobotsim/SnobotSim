@@ -19,6 +19,10 @@ public:
 
     void HandleRead() override;
 
+    void HandleWrite() override;
+
+    void HandleTransaction() override;
+
 protected:
 
     uint8_t GetCRC(uint8_t* buffer, int length);

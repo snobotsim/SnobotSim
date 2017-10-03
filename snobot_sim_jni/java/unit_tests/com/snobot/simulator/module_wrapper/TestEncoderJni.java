@@ -1,4 +1,4 @@
-package com.snobot.simulator.jni.module_wrapper;
+package com.snobot.simulator.module_wrapper;
 
 
 
@@ -22,12 +22,12 @@ public class TestEncoderJni extends BaseSimulatorTest
 
         new Encoder(0, 1);
         Assert.assertEquals(1, DataAccessorFactory.getInstance().getEncoderAccessor().getPortList().size());
-        Assert.assertEquals("Encoder (0, 0)", DataAccessorFactory.getInstance().getEncoderAccessor().getName(0));
+        Assert.assertEquals("Encoder 0", DataAccessorFactory.getInstance().getEncoderAccessor().getName(0));
         Assert.assertFalse(DataAccessorFactory.getInstance().getEncoderAccessor().getWantsHidden(0));
 
         new Encoder(2, 3);
         Assert.assertEquals(2, DataAccessorFactory.getInstance().getEncoderAccessor().getPortList().size());
-        Assert.assertEquals("Encoder (1, 1)", DataAccessorFactory.getInstance().getEncoderAccessor().getName(1));
+        Assert.assertEquals("Encoder 1", DataAccessorFactory.getInstance().getEncoderAccessor().getName(1));
         Assert.assertFalse(DataAccessorFactory.getInstance().getEncoderAccessor().getWantsHidden(0));
 
         DataAccessorFactory.getInstance().getEncoderAccessor().setName(1, "NewNameFor1");

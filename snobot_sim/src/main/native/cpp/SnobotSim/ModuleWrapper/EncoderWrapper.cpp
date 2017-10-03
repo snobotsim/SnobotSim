@@ -10,7 +10,7 @@
 #include "MockData/EncoderData.h"
 
 EncoderWrapper::EncoderWrapper(int aPortA, int aPortB) :
-        EncoderWrapper(aPortA, "Encoder (" + std::to_string(UnwrapPort(aPortA)) + ", " + std::to_string(UnwrapPort(aPortB)) + ")")
+        EncoderWrapper(aPortA, "Encoder " + std::to_string(UnwrapPort(aPortA)))
 {
 
 }

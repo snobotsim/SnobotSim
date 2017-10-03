@@ -19,6 +19,16 @@ ADXRS450_SpiGyro::~ADXRS450_SpiGyro()
 
 }
 
+void ADXRS450_SpiGyro::HandleWrite()
+{
+
+}
+
+void ADXRS450_SpiGyro::HandleTransaction()
+{
+
+}
+
 
 void ADXRS450_SpiGyro::HandleRead()
 {

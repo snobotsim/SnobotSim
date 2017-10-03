@@ -21,6 +21,10 @@ public:
 
     void HandleRead() override;
 
+    void HandleWrite() override;
+
+    void HandleTransaction() override;
+
     void SetAngle(double aAngle) override;
 
 protected:

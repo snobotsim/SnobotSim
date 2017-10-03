@@ -1,4 +1,4 @@
-package com.snobot.simulator.jni.module_wrapper;
+package com.snobot.simulator.module_wrapper;
 
 import org.junit.Assert;
 import org.junit.Test;

@@ -39,4 +39,14 @@ public class NullMotorSimTest extends BaseSimulatorTest
 
         Assert.assertEquals(MotorSimType.None, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimType(0));
     }
+
+    @Test
+    public void testInvalidSetup()
+    {
+        SpeedController sc = new Talon(0);
+        DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimSimpleModelConfig(0);
+        DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimStaticModelConfig(0);
+        DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimGravitationalModelConfig(0);
+        DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimRotationalModelConfig(0);
+    }
 }

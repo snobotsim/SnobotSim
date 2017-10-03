@@ -12,7 +12,7 @@
 #include <cstring>
 
 ADXL362_SpiAccelerometer::ADXL362_SpiAccelerometer(int aPort, const std::string& aBaseName):
-    mThreeAxisAccelerometer((aPort * 75), aBaseName),
+    mThreeAxisAccelerometer(150 + aPort * 3, aBaseName),
     mSpiPort(aPort)
 {
 
@@ -23,12 +23,30 @@ ADXL362_SpiAccelerometer::~ADXL362_SpiAccelerometer()
 
 }
 
+
+void ADXL362_SpiAccelerometer::HandleWrite()
+{
+
+}
+
+void ADXL362_SpiAccelerometer::HandleTransaction()
+{
+
+}
+
 void ADXL362_SpiAccelerometer::HandleRead()
 {
     uint8_t buffer[199];
-
-    HALSIM_GetSPIGetWriteBuffer(mSpiPort, buffer, 4);
+    HALSIM_GetSPIGetTransactionBuffer(mSpiPort, buffer, 4);
     int lastRegisterRequested = buffer[1] & 0xFF;
+    PopulateRead(lastRegisterRequested);
+}
+
+void ADXL362_SpiAccelerometer::PopulateRead(int lastRegisterRequested)
+{
+
+    uint8_t buffer[199];
+
     int count = 8;
 
     SNOBOT_LOG(SnobotLogging::INFO, "Last read address... " << lastRegisterRequested);

@@ -30,6 +30,16 @@ void SpiCallback(const char* name, void* param, const struct HAL_Value* value)
         std::shared_ptr<ISpiWrapper> spiWrapper = SpiWrapperFactory::Get().GetSpiWrapper(port);
         spiWrapper->HandleRead();
     }
+    else if ("Transaction" == nameStr)
+    {
+        std::shared_ptr<ISpiWrapper> spiWrapper = SpiWrapperFactory::Get().GetSpiWrapper(port);
+        spiWrapper->HandleTransaction();
+    }
+    else if ("Write" == nameStr)
+    {
+        std::shared_ptr<ISpiWrapper> spiWrapper = SpiWrapperFactory::Get().GetSpiWrapper(port);
+        spiWrapper->HandleWrite();
+    }
     else
     {
         SNOBOT_LOG(SnobotLogging::WARN, "Unknown name " << nameStr);
@@ -45,6 +55,9 @@ void SnobotSim::InitializeSpiCallbacks()
         gSpiInArrayIndices[i] = i;
         HALSIM_RegisterSPIInitializedCallback(i, &SpiCallback, &gSpiInArrayIndices[i], false);
         HALSIM_RegisterSPIReadCallback(i, &SpiCallback, &gSpiInArrayIndices[i], false);
+        HALSIM_RegisterSPIWriteCallback(i, &SpiCallback, &gSpiInArrayIndices[i], false);
+        HALSIM_RegisterSPITransactionCallback(i, &SpiCallback, &gSpiInArrayIndices[i], false);
+        HALSIM_RegisterSPIResetAccumulatorCallback(i, &SpiCallback, &gSpiInArrayIndices[i], false);
     }
 }
 

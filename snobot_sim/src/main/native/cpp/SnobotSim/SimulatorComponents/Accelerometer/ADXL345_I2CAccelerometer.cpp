@@ -12,7 +12,7 @@
 
 ADXL345_I2CAccelerometer::ADXL345_I2CAccelerometer(int aPort, const std::string& aBaseName):
     mI2CPort(aPort),
-    mThreeAxisAccelerometer((aPort * 50), aBaseName)
+    mThreeAxisAccelerometer(50  + aPort * 3, aBaseName)
 {
 
 }

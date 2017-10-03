@@ -20,6 +20,15 @@ SpiNavxSimulator::~SpiNavxSimulator()
 
 }
 
+void SpiNavxSimulator::HandleWrite()
+{
+
+}
+
+void SpiNavxSimulator::HandleTransaction()
+{
+
+}
 
 void SpiNavxSimulator::HandleRead()
 {
