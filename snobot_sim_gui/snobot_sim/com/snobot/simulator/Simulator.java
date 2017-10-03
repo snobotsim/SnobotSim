@@ -2,6 +2,7 @@ package com.snobot.simulator;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -88,11 +89,18 @@ public class Simulator
                 sLOGGER.log(Level.WARN,
                         "Could not read properties file, will use defaults and will overwrite the file if it exists");
 
-                if (!JniLibraryResourceLoader.copyResourceFromJar("/com/snobot/simulator/config/default_properties.properties",
-                        new File(PROPERTIES_FILE), false))
+                String defaultSimConfig = USER_CONFIG_DIRECTORY + "simulator_config.yml";
+                Properties defaults = new Properties();
+                defaults.load(Simulator.class.getResourceAsStream("/com/snobot/simulator/config/default_properties.properties"));
+                defaults.putIfAbsent("simulator_config", defaultSimConfig);
+
+                File defaultConfigFile = new File(defaultSimConfig);
+                if (!defaultConfigFile.exists())
                 {
-                    throw new RuntimeException("Could not copy properties file!  Have to exit!");
+                    defaultConfigFile.createNewFile();
                 }
+
+                defaults.store(new FileWriter(aFile), "");
             }
 
             Properties p = new Properties();

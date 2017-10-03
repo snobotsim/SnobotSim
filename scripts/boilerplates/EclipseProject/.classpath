@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="dependencies/cscore-java-1.0.2-20171001140620-15-g223e61d.jar"/>
+	<classpathentry kind="lib" path="dependencies/cscore-jni-1.0.2-20171001140620-15-g223e61d-all.jar"/>
+	<classpathentry kind="lib" path="dependencies/jcommon-1.0.16.jar"/>
+	<classpathentry kind="lib" path="dependencies/jfreechart-1.0.13.jar"/>
+	<classpathentry kind="lib" path="dependencies/jinput-2.0.7.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="2017Simulator/dependencies/native"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="dependencies/jutils-1.0.0.jar"/>
+	<classpathentry kind="lib" path="dependencies/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="dependencies/miglayout-core-4.2.jar"/>
+	<classpathentry kind="lib" path="dependencies/miglayout-swing-4.2.jar"/>
+	<classpathentry kind="lib" path="dependencies/ntcore-java-4.0.0-alpha-1-20170907000421-20-g95bce5d.jar"/>
+	<classpathentry kind="lib" path="dependencies/opencv-java-3.2.0.jar"/>
+	<classpathentry kind="lib" path="dependencies/opencv-jni-3.2.0-all.jar"/>
+	<classpathentry kind="lib" path="dependencies/snakeyaml-1.18.jar"/>
+	<classpathentry kind="lib" path="dependencies/snobot_sim_java-uber_native-windows.jar"/>
+	<classpathentry kind="lib" path="dependencies/snobot_sim_java.jar"/>
+	<classpathentry kind="lib" path="dependencies/snobot_sim_utilities.jar"/>
+	<classpathentry kind="lib" path="dependencies/wpilibj-java-2017.3.1-20170908015815-103-g57ba589-javaArtifact.jar"/>
+	<classpathentry kind="lib" path="dependencies/wpiutil-java-2.0.0-20170907010827-33-gef85809.jar"/>
+	<classpathentry kind="lib" path="dependencies/ntcore-jni-4.0.0-alpha-1-20170907000421-20-g95bce5d-all.jar"/>
+	<classpathentry kind="lib" path="dependencies/snobotSim.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

@@ -180,8 +180,6 @@ public class SimulatorConfigReader
             motorConfig = new DcMotorModelConfig(motorConfigFactoryParams, null, false, false);
         }
 
-        System.out.println(baseMotorConfig);
-
         if (baseMotorConfig != null)
         {
             if (baseMotorConfig instanceof SimpleMotorSimulationConfig)

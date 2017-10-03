@@ -28,8 +28,8 @@ artifacts:
 - path: build/maven_repo/com/snobot/simulator/snobot_sim_gui/**/snobot_sim_gui*.jar
   name: simulator_gui
 
-- path: build/maven_repo/com/snobot/simulator/snobot_sim_gui/**/snobot_sim_gui-*-javadeps.zip
-  name: simulator_javadeps
+- path: build/maven_repo/com/snobot/simulator/snobot_sim_gui_eclipse_boilerplate/**/snobot_sim_gui_eclipse_boilerplate-*.zip
+  name: eciplse_boilerplate
 
 - path: build/maven_repo
   name: full_maven_repo

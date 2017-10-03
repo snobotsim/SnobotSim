@@ -55,7 +55,6 @@ ext.addHalSimToLinker = { linker->
         hal_path += "/libwpiHal.so"
     }
     hal_path = new File(hal_path).getAbsolutePath()
-    println hal_path
     linker.args hal_path
 }
 
@@ -66,7 +65,6 @@ task packageNativeFilesInJar(type: Jar) {
     project.model {
         binaries {
             withType(SharedLibraryBinarySpec) { binary ->
-            println binary.component.name
                 if (binary.component.name == 'CTRLibDriverShared' || 
                     binary.component.name == 'SnobotSimCppCtre' ||
                     binary.component.name == 'SnobotSimJavaCtre') 
@@ -128,7 +126,7 @@ dependencies {
   // Task to explode the zipped library into a temporary dir
 task extractWplibcHeadersZip(type: Copy) {
     ext.libsdir = "${rootProject.buildDir}/dependencies/wpilibc/include"
-    from { configurations.wpilibcHeaders.collect { println it; zipTree(it) } }
+    from { configurations.wpilibcHeaders.collect { zipTree(it) } }
     into libsdir
 }
 task extractWplibcLibraryZip(type: Copy) {
@@ -217,7 +215,6 @@ model {
                                        "snobot_sim/cpp_simulator/include", 
                                        "${extractWplibcHeadersZip.libsdir}", 
                                        project(':hal_override').extractHalHeadersZip.libsdir]
-                            println srcDirs
                         }
                     }
                 }
@@ -247,7 +244,6 @@ model {
                                        "ctre_source/cpp/shared/include",
                                        "snobot_sim/java_simulator/include", 
                                        "${extractHalHeadersZip.libsdir}"]
-                            println srcDirs
                         }
                     }
                 }

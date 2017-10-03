@@ -52,32 +52,48 @@ task sourcesJar(type: Jar, dependsOn: classes) {
     from sourceSets.main.allSource
 }
 
-task copyDependencies(type: Zip)  {
+task createSimpleEclipseProject {
+
+
+    copy {
+        def destinationDir = new File(project.buildDir.toString() + "/EclipseProject")
+        into destinationDir.toString() + "/src"
+        from "snobot_sim" 
+        include "com/snobot/simulator/Main.java"
         
-    doFirst {
-        copy {
-            configurations.native3rdPartyDeps.each {
-                println it
-                from zipTree(it)
-                into destinationDir.toString() + "/jinput_native"
-                include "*.dll"
-                include "*.pdb"
-                include "*.so"
-            }
+    }
+    copy {
+        def destinationDir = new File(project.buildDir.toString() + "/EclipseProject")
+        into destinationDir
+        from new File("../scripts/boilerplates/EclipseProject")
+    }
+    
+    copy {
+    
+        def destinationDir = new File(project.buildDir.toString() + "/EclipseProject")
+        from configurations.runtime {
+            into destinationDir.toString() + "/dependencies"
+            exclude "jinput-*-natives-*.jar"
+            exclude "*.zip"
         }
     }
+    
+    copy {
+        def destinationDir = new File(project.buildDir.toString() + "/EclipseProject")
+        from unzipNativeLibraries.outputs
+        into destinationDir.toString() + "/dependencies/native"
+    }
+    
+    copy {
+        def destinationDir = new File(project.buildDir.toString() + "/EclipseProject")
+        from jar.outputs
+        into destinationDir.toString() + "/dependencies"
+    }
+    
+}
 
-    destinationDir = project.buildDir
-    classifier = "javadeps"
-    
-    from configurations.compile {
-        into "dependencies"
-        exclude "jinput-platform-2.0.7-natives-*.jar"
-    }
-    
-    from (destinationDir.toString() + "/jinput_native") {
-        into "native"
-    }
+task zipEclipseProject(type: Zip, dependsOn: createSimpleEclipseProject) {
+    from project.buildDir.toString() + "/EclipseProject"
 }
 
 publishing {
@@ -95,7 +111,6 @@ publishing {
             artifact jar
             artifact javadocJar
             artifact sourcesJar
-            artifact copyDependencies
             artifact createReleaseJar
         }
         
@@ -106,6 +121,14 @@ publishing {
             
             artifact distZip
             artifact distTar
+        }
+        
+        snobot_sim_gui_eclipse_boilerplate(MavenPublication) {
+            groupId 'com.snobot.simulator'
+            artifactId 'snobot_sim_gui_eclipse_boilerplate'
+            version maven_version
+            
+            artifact zipEclipseProject
         }
     }
 
