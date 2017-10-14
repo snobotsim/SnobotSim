@@ -6,7 +6,7 @@
 #include <chrono>
 
 #include "com_snobot_simulator_jni_SensorFeedbackJni.h"
-#include "MockData/CANData.h"
+//#include "MockData/CANData.h"
 
 
 extern "C"
@@ -27,7 +27,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJniTestHelper
     }
 
     int32_t status = 0;
-    HAL_CAN_SendMessage(messageId, dataPtr, size, 0, &status);
+//    HAL_CAN_SendMessage(messageId, dataPtr, size, 0, &status);
 }
 
 

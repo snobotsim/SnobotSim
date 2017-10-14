@@ -6,11 +6,12 @@
  */
 
 #include "SnobotSimJava/JavaHalCallbacks/JavaHalCallbacks.h"
+#include "SnobotSimJava/Logging/SnobotLogger.h"
 
 #include "MockData/AnalogInData.h"
 #include "MockData/AnalogOutData.h"
 #include "MockData/AnalogGyroData.h"
-#include "MockData/CANData.h"
+//#include "MockData/CANData.h"
 #include "MockData/DIOData.h"
 #include "MockData/EncoderData.h"
 #include "MockData/I2CData.h"
@@ -21,7 +22,6 @@
 #include "MockData/SPIData.h"
 
 #include "support/jni_util.h"
-#include <iostream>
 
 using namespace wpi::java;
 
@@ -51,7 +51,7 @@ namespace SnobotSimJava
 
         if(constructor == NULL)
         {
-            std::cerr << "HalCallbackValue not set up correctly, bailing" << std::endl;
+            SNOBOT_LOG(SnobotLogging::CRITICAL, "HalCallbackValue not set up correctly, bailing");
             return NULL;
         }
 
@@ -72,7 +72,7 @@ namespace SnobotSimJava
 
         if(aEnv == NULL || callbackHelper.mClazz == NULL || callbackHelper.mMethodId == NULL)
         {
-            std::cerr << "JNI Components not setup yet" << std::endl;
+            SNOBOT_LOG(SnobotLogging::CRITICAL, "JNI Components not setup yet");
             return;
         }
 
@@ -88,6 +88,41 @@ namespace SnobotSimJava
         }
     }
 
+    void CallJavaBufferCallback(const jclass& aClazz, const jmethodID& aMethodId, const char* name, void* param, uint8_t* buffer, uint32_t count)
+    {
+        JavaVMAttachArgs args = {JNI_VERSION_1_2, 0, 0};
+        JNIEnv* aEnv;
+        gJvm->AttachCurrentThread((void**) &aEnv, &args);
+
+        if(aEnv == NULL || aClazz == NULL || aMethodId == NULL)
+        {
+            SNOBOT_LOG(SnobotLogging::CRITICAL, "JNI Components not setup yet " << aEnv << ", " << aClazz << ", " << aMethodId);
+            return;
+        }
+
+        int port = *((int*) param);
+        jstring nameString = MakeJString(aEnv, name);
+
+        jobject data = aEnv->NewDirectByteBuffer(buffer, count);
+
+        aEnv->CallStaticVoidMethod(aClazz, aMethodId, nameString, port, data);
+
+        if (aEnv->ExceptionCheck())
+        {
+            aEnv->ExceptionDescribe();
+        }
+    }
+
+    void CallJavaReadBufferCallback(const BufferCallbackHelperContainer& callbackHelper, const char* name, void* param, uint8_t* buffer, uint32_t count)
+    {
+        CallJavaBufferCallback(callbackHelper.mClazz, callbackHelper.mReadBufferMethodId, name, param, buffer, count);
+    }
+
+    void CallJavaWriteBufferCallback(const BufferCallbackHelperContainer& callbackHelper, const char* name, void* param, uint8_t* buffer, uint32_t count)
+    {
+        CallJavaBufferCallback(callbackHelper.mClazz, callbackHelper.mWriteBufferMethodId, name, param, buffer, count);
+    }
+
     void SetGlobalEnvironment(JNIEnv * env)
     {
         env->GetJavaVM(&gJvm);
@@ -101,24 +136,24 @@ namespace SnobotSimJava
     CallbackHelperContainer gCanCallbackContainer;
     CallbackHelperContainer gDigitalCallbackContainer;
     CallbackHelperContainer gEncoderCallbackContainer;
-    CallbackHelperContainer gI2CCallbackContainer;
+    BufferCallbackHelperContainer gI2CCallbackContainer;
     CallbackHelperContainer gPcmCallbackContainer;
     CallbackHelperContainer gPdpCallbackContainer;
     CallbackHelperContainer gPwmCallbackContainer;
     CallbackHelperContainer gRelayCallbackContainer;
-    CallbackHelperContainer gSpiCallbackContainer;
+    BufferCallbackHelperContainer gSpiCallbackContainer;
 
     CallbackHelperContainer& GetAnalogCallback()     { return gAnalogCallbackContainer; }
     CallbackHelperContainer& GetAnalogGyroCallback() { return gAnalogGyroCallbackContainer; }
     CallbackHelperContainer& GetCanCallback()        { return gCanCallbackContainer; }
     CallbackHelperContainer& GetDigitalCallback()    { return gDigitalCallbackContainer; }
     CallbackHelperContainer& GetEncoderCallback()    { return gEncoderCallbackContainer; }
-    CallbackHelperContainer& GetI2CCallback()        { return gI2CCallbackContainer; }
+    BufferCallbackHelperContainer& GetI2CCallback()  { return gI2CCallbackContainer; }
     CallbackHelperContainer& GetPCMCallback()        { return gPcmCallbackContainer; }
     CallbackHelperContainer& GetPDPCallback()        { return gPdpCallbackContainer; }
     CallbackHelperContainer& GetPWMCallback()        { return gPwmCallbackContainer; }
     CallbackHelperContainer& GetRelayCallback()      { return gRelayCallbackContainer; }
-    CallbackHelperContainer& GetSpiCallback()        { return gSpiCallbackContainer; }
+    BufferCallbackHelperContainer& GetSpiCallback()  { return gSpiCallbackContainer; }
 
     //////////////////////////////////////////////
     // Callbacks
@@ -147,6 +182,14 @@ namespace SnobotSimJava
     {
         CallJavaCallback(gI2CCallbackContainer, name, param, value);
     }
+    void I2CReadCallback(const char* name, void* param, uint8_t* buffer, uint32_t count)
+    {
+        CallJavaReadBufferCallback(gI2CCallbackContainer, name, param, buffer, count);
+    }
+    void I2CWriteCallback(const char* name, void* param, uint8_t* buffer, uint32_t count)
+    {
+        CallJavaWriteBufferCallback(gI2CCallbackContainer, name, param, buffer, count);
+    }
     void PdpCallback(const char* name, void* param, const struct HAL_Value* value)
     {
         CallJavaCallback(gPdpCallbackContainer, name, param, value);
@@ -166,6 +209,14 @@ namespace SnobotSimJava
     void SpiCallback(const char* name, void* param, const struct HAL_Value* value)
     {
         CallJavaCallback(gSpiCallbackContainer, name, param, value);
+    }
+    void SpiReadCallback(const char* name, void* param, uint8_t* buffer, uint32_t count)
+    {
+        CallJavaReadBufferCallback(gSpiCallbackContainer, name, param, buffer, count);
+    }
+    void SpiWriteCallback(const char* name, void* param, uint8_t* buffer, uint32_t count)
+    {
+        CallJavaWriteBufferCallback(gSpiCallbackContainer, name, param, buffer, count);
     }
 
 
@@ -196,12 +247,12 @@ namespace SnobotSimJava
         }
 
         {
-            HALSIM_RegisterCANSendMessageCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
-            HALSIM_RegisterCANReceiveMessageCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
-            HALSIM_RegisterCANOpenStreamSessionCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
-            HALSIM_RegisterCANCloseStreamSessionCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
-            HALSIM_RegisterCANReadStreamSessionCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
-            HALSIM_RegisterCANGetCANStatusCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
+//            HALSIM_RegisterCANSendMessageCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
+//            HALSIM_RegisterCANReceiveMessageCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
+//            HALSIM_RegisterCANOpenStreamSessionCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
+//            HALSIM_RegisterCANCloseStreamSessionCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
+//            HALSIM_RegisterCANReadStreamSessionCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
+//            HALSIM_RegisterCANGetCANStatusCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
         }
 
         for(int i = 0; i < HAL_GetNumDigitalHeaders(); ++i)
@@ -227,7 +278,8 @@ namespace SnobotSimJava
         {
             gI2CInArrayIndices[i] = i;
             HALSIM_RegisterI2CInitializedCallback(i, &I2CCallback, &gI2CInArrayIndices[i], false);
-            HALSIM_RegisterI2CReadCallback(i, &I2CCallback, &gI2CInArrayIndices[i], false);
+//            HALSIM_RegisterI2CReadCallback(i, &I2CReadCallback, &gI2CInArrayIndices[i]);
+//            HALSIM_RegisterI2CWriteCallback(i, &I2CWriteCallback, &gI2CInArrayIndices[i]);
         }
 
         for(int i = 0; i < HAL_GetNumPWMChannels(); ++i)
@@ -264,11 +316,11 @@ namespace SnobotSimJava
         {
             gSpiInArrayIndices[i] = i;
             HALSIM_RegisterSPIInitializedCallback(i, &SpiCallback, &gSpiInArrayIndices[i], false);
-            HALSIM_RegisterSPIReadCallback(i, &SpiCallback, &gSpiInArrayIndices[i], false);
-            HALSIM_RegisterSPIWriteCallback(i, &SpiCallback, &gSpiInArrayIndices[i], false);
-            HALSIM_RegisterSPITransactionCallback(i, &SpiCallback, &gSpiInArrayIndices[i], false);
-            HALSIM_RegisterSPIResetAccumulatorCallback(i, &SpiCallback, &gSpiInArrayIndices[i], false);
-
+//            HALSIM_RegisterSPIReadCallback(i, &SpiReadCallback, &gSpiInArrayIndices[i]);
+//            HALSIM_RegisterSPIWriteCallback(i, &SpiWriteCallback, &gSpiInArrayIndices[i]);
+////            HALSIM_RegisterSPITransactionCallback(i, &SpiCallback, &gSpiInArrayIndices[i], false);
+//            HALSIM_RegisterSPIResetAccumulatorCallback(i, &SpiCallback, &gSpiInArrayIndices[i], false);
+//
         }
     }
 
@@ -292,7 +344,7 @@ namespace SnobotSimJava
         }
 
         {
-            HALSIM_ResetCAN();
+//            HALSIM_ResetCAN();
         }
 
         for(int i = 0; i < HAL_GetNumEncoders(); ++i)

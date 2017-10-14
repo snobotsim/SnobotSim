@@ -5,7 +5,6 @@ import java.nio.ByteBuffer;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import com.snobot.simulator.jni.SensorFeedbackJni;
 import com.snobot.simulator.simulator_components.ISpiWrapper;
 
 public class SpiNavxSimulator extends NavxSimulator implements ISpiWrapper
@@ -39,17 +38,18 @@ public class SpiNavxSimulator extends NavxSimulator implements ISpiWrapper
         return (byte) crc;
     }
 
+    int lastWrittenAddress = -1;
+
     @Override
-    public void handleRead()
+    public void handleRead(ByteBuffer buffer)
     {
 
-        ByteBuffer lastWriteValue = ByteBuffer.allocateDirect(4);
-        SensorFeedbackJni.getSpiLastWrite(mNativePort, lastWriteValue, 4);
-        lastWriteValue.rewind();
-        int lastWrittenAddress = lastWriteValue.get();
-
+        // ByteBuffer lastWriteValue = ByteBuffer.allocateDirect(4);
+        // SensorFeedbackJni.getSpiLastWrite(mNativePort, lastWriteValue, 4);
+        // lastWriteValue.rewind();
+        //
         ByteBuffer withoutCrc = null;
-
+        //
         if (lastWrittenAddress == 0x00)
         {
             withoutCrc = createConfigBuffer();
@@ -71,17 +71,14 @@ public class SpiNavxSimulator extends NavxSimulator implements ISpiWrapper
             byte crc = getCRC(raw_bytes, withoutCrc.capacity());
             raw_bytes[raw_bytes.length - 1] = crc;
 
-            ByteBuffer toSend = ByteBuffer.allocateDirect(withoutCrc.capacity() + 1);
-            toSend.put(raw_bytes);
-            toSend.rewind();
-            SensorFeedbackJni.setSpiValueForRead(mNativePort, toSend, withoutCrc.capacity() + 1);
+            buffer.put(raw_bytes);
         }
     }
 
     @Override
-    public void handleWrite()
+    public void handleWrite(ByteBuffer buffer)
     {
-
+        lastWrittenAddress = buffer.get();
     }
 
     @Override

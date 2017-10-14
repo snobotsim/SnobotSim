@@ -11,6 +11,7 @@ apply plugin: 'visual-studio'
 apply plugin: 'edu.wpi.first.NativeUtils'
 
 apply from: '../config.gradle'
+apply from: "$rootDir/extract_hal_headers.gradle"
 
 ext.addSnobotSimToLinker = { binary->
     binary.lib project: ':snobot_sim', library: 'snobotSimXXXStatic', linkage: 'shared'
@@ -56,25 +57,6 @@ task packageNativeFilesInJar(type: Jar) {
     }
 }
 build.dependsOn packageNativeFilesInJar
-
-
-///////////////////////////////////////////////////
-configurations {
-    halHeaders
-}
-
-
-dependencies {
-    halHeaders getHalHeadersVersion()
-}
-
-  // Task to explode the zipped library into a temporary dir
-task extractHalHeadersZip(type: Copy) {
-    ext.libsdir = "${rootProject.buildDir}/dependencies/hal"
-    from { configurations.halHeaders.collect { zipTree(it) } }
-    into libsdir
-}
-///////////////////////////////////////////////////
 
 
 model {

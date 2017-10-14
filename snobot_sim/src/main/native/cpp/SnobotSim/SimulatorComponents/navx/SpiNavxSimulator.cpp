@@ -32,28 +32,28 @@ void SpiNavxSimulator::HandleTransaction()
 
 void SpiNavxSimulator::HandleRead()
 {
-    uint8_t buffer[199];
-    int count = 0;
-
-    mLastWriteAddress = 0x04;
-    if(mLastWriteAddress == 0x00)
-    {
-        GetWriteConfig(buffer);
-        count = 17 + 1;
-    }
-    else if(mLastWriteAddress == 0x04)
-    {
-        GetCurrentData(buffer, 0x04);
-        count = 86 - 0x04 + 1;
-    }
-    else
-    {
-        SNOBOT_LOG(SnobotLogging::CRITICAL,  "Unknown last write address " << ((int) mLastWriteAddress));
-    }
-
-    buffer[count - 1] = GetCRC(buffer, count - 1);
-
-    HALSIM_SetSPISetValueForRead(mNativePort, buffer, count);
+//    uint8_t buffer[199];
+//    int count = 0;
+//
+//    mLastWriteAddress = 0x04;
+//    if(mLastWriteAddress == 0x00)
+//    {
+//        GetWriteConfig(buffer);
+//        count = 17 + 1;
+//    }
+//    else if(mLastWriteAddress == 0x04)
+//    {
+//        GetCurrentData(buffer, 0x04);
+//        count = 86 - 0x04 + 1;
+//    }
+//    else
+//    {
+//        SNOBOT_LOG(SnobotLogging::CRITICAL,  "Unknown last write address " << ((int) mLastWriteAddress));
+//    }
+//
+//    buffer[count - 1] = GetCRC(buffer, count - 1);
+//
+//    HALSIM_SetSPISetValueForRead(mNativePort, buffer, count);
 }
 
 uint8_t SpiNavxSimulator::GetCRC(uint8_t* buffer, int length)

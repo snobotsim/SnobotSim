@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.snobot.simulator.simulator_components.ISpiWrapper;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
@@ -101,12 +100,5 @@ public class TestADXL345_SPIAccelerometer extends BaseSimulatorTest
         Assert.assertEquals(-0.3, axes.XAxis, DOUBLE_EPSILON);
         Assert.assertEquals(-1.3, axes.YAxis, DOUBLE_EPSILON);
         Assert.assertEquals(-2.0, axes.ZAxis, DOUBLE_EPSILON);
-    }
-
-    @Test
-    public void testInvalidRead()
-    {
-        ISpiWrapper accel = new ADXL345_SpiAccelerometer(0);
-        accel.handleRead();
     }
 }

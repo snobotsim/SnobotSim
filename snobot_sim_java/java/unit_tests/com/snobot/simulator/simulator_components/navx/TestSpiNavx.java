@@ -145,6 +145,6 @@ public class TestSpiNavx extends BaseSimulatorTest
     public void testInvalidAddress()
     {
         SpiNavxSimulator sim = new SpiNavxSimulator(0);
-        sim.handleRead();
+        sim.handleRead(null);
     }
 }

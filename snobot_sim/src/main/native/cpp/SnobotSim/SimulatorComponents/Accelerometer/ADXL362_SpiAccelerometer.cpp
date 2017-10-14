@@ -36,10 +36,10 @@ void ADXL362_SpiAccelerometer::HandleTransaction()
 
 void ADXL362_SpiAccelerometer::HandleRead()
 {
-    uint8_t buffer[199];
-    HALSIM_GetSPIGetTransactionBuffer(mSpiPort, buffer, 4);
-    int lastRegisterRequested = buffer[1] & 0xFF;
-    PopulateRead(lastRegisterRequested);
+//    uint8_t buffer[199];
+//    HALSIM_GetSPIGetTransactionBuffer(mSpiPort, buffer, 4);
+//    int lastRegisterRequested = buffer[1] & 0xFF;
+//    PopulateRead(lastRegisterRequested);
 }
 
 void ADXL362_SpiAccelerometer::PopulateRead(int lastRegisterRequested)
@@ -90,6 +90,6 @@ void ADXL362_SpiAccelerometer::PopulateRead(int lastRegisterRequested)
     }
 
 
-    HALSIM_SetSPISetValueForRead(mSpiPort, buffer, count);
+//    HALSIM_SetSPISetValueForRead(mSpiPort, buffer, count);
 }
 

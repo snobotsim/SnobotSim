@@ -10,17 +10,36 @@ dependencies {
     halHeaders getHalHeadersVersion()
 }
 
-task extractHalHeadersZip(type: Copy) {
+task extractHalSimHeadersZip(type: Copy) {
+    ext.libsdir = "${rootProject.buildDir}/dependencies/adx_gyro_accelerometer-ABCD-headers"
+        
+    if(useLocalHal)
+    {
+        println "USing local hal ${projectDir}/../temp_libs/adx_gyro_accelerometer-ABCD-headers.zip"
+        from { zipTree("${projectDir}/../temp_libs/adx_gyro_accelerometer-ABCD-headers.zip") }
+        into libsdir
+    }
+    else
+    {
+        println "WHAT"
+        from { configurations.halHeaders.collect { zipTree(it) } }
+        into libsdir
+    }
+}
+
+task extractHalHeadersZip(type: Copy, dependsOn: extractHalSimHeadersZip) {
 
     ext.libsdir = "${rootProject.buildDir}/dependencies/hal"
         
     if(useLocalHal)
     {
+        println "USing local hal ${projectDir}/../temp_libs/hal-ABCD-headers.zip"
         from { zipTree("${projectDir}/../temp_libs/hal-ABCD-headers.zip") }
         into libsdir
     }
     else
     {
+        println "WHAT"
         from { configurations.halHeaders.collect { zipTree(it) } }
         into libsdir
     }

@@ -26,6 +26,12 @@ namespace SnobotSimJava
         }
     };
 
+    struct BufferCallbackHelperContainer : public CallbackHelperContainer
+    {
+        jmethodID mReadBufferMethodId;
+        jmethodID mWriteBufferMethodId;
+    };
+
     void SetGlobalEnvironment(JNIEnv * env);
 
     CallbackHelperContainer& GetAnalogCallback();
@@ -33,12 +39,12 @@ namespace SnobotSimJava
     CallbackHelperContainer& GetCanCallback();
     CallbackHelperContainer& GetDigitalCallback();
     CallbackHelperContainer& GetEncoderCallback();
-    CallbackHelperContainer& GetI2CCallback();
+    BufferCallbackHelperContainer& GetI2CCallback();
     CallbackHelperContainer& GetPCMCallback();
     CallbackHelperContainer& GetPDPCallback();
     CallbackHelperContainer& GetPWMCallback();
     CallbackHelperContainer& GetRelayCallback();
-    CallbackHelperContainer& GetSpiCallback();
+    BufferCallbackHelperContainer& GetSpiCallback();
 
     void InitializeSnobotCallbacks();
     void ResetMockData();

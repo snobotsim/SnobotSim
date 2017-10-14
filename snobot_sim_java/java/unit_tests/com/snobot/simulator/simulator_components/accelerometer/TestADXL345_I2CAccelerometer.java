@@ -101,11 +101,4 @@ public class TestADXL345_I2CAccelerometer extends BaseSimulatorTest
         Assert.assertEquals(-1.3, axes.YAxis, DOUBLE_EPSILON);
         Assert.assertEquals(-2.0, axes.ZAxis, DOUBLE_EPSILON);
     }
-
-    @Test
-    public void testInvalidRead()
-    {
-        ADXL362_SpiAccelerometer accel = new ADXL362_SpiAccelerometer(0);
-        accel.handleRead();
-    }
 }

@@ -9,7 +9,7 @@
 
 #include "MockData/AnalogInData.h"
 #include "MockData/AnalogGyroData.h"
-#include "MockData/CANData.h"
+//#include "MockData/CANData.h"
 #include "MockData/DIOData.h"
 #include "MockData/DriverStationData.h"
 #include "MockData/EncoderData.h"
@@ -17,7 +17,7 @@
 #include "MockData/MockHooks.h"
 #include "MockData/SPIData.h"
 
-#include <iostream>
+#include "SnobotSimJava/Logging/SnobotLogger.h"
 
 extern "C"
 {
@@ -78,7 +78,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setAnalog
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setSpiAccumulatorValue
   (JNIEnv *, jclass, jint aHandle, jlong aValue)
 {
-    HALSIM_SetSPIGetAccumulatorValue(aHandle, aValue);
+    HALSIM_SetSPISetAccumulatorValue(aHandle, aValue);
 }
 
 
@@ -95,7 +95,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setSpiVal
         dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
     }
 
-    HALSIM_SetSPISetValueForRead(aHandle, dataPtr, size);
+//    HALSIM_SetSPISetValueForRead(aHandle, dataPtr, size);
 }
 
 /*
@@ -111,7 +111,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_getSpiLas
         dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
     }
 
-    HALSIM_GetSPIGetWriteBuffer(aHandle, dataPtr, size);
+//    HALSIM_GetSPIGetWriteBuffer(aHandle, dataPtr, size);
 }
 
 /*
@@ -127,7 +127,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_getSpiLas
         dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
     }
 
-    HALSIM_GetSPIGetTransactionBuffer(aHandle, dataPtr, size);
+//    HALSIM_GetSPIGetTransactionBuffer(aHandle, dataPtr, size);
 }
 
 /*
@@ -143,7 +143,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setI2CVal
         dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
     }
 
-    HALSIM_SetI2CSetValueForRead(aHandle, dataPtr, size);
+//    HALSIM_SetI2CSetValueForRead(aHandle, dataPtr, size);
 }
 
 /*
@@ -159,7 +159,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_getI2CLas
         dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
     }
 
-    HALSIM_GetI2CGetWriteBuffer(aHandle, dataPtr, size);
+//    HALSIM_GetI2CGetWriteBuffer(aHandle, dataPtr, size);
 }
 
 /*
@@ -175,7 +175,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setCanSet
         dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
     }
 
-    HALSIM_SetCANValueForRead(dataPtr, size);
+//    HALSIM_SetCANValueForRead(dataPtr, size);
 }
 
 /*
@@ -191,9 +191,9 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setCanSet
         dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
     }
 
-    HAL_CANStreamMessage streamMessage[1];
-    std::memcpy(&streamMessage[0], &dataPtr[0], sizeof(streamMessage));
-    HALSIM_SetCANMessagesForReadStream(streamMessage, count);
+//    HAL_CANStreamMessage streamMessage[1];
+//    std::memcpy(&streamMessage[0], &dataPtr[0], sizeof(streamMessage));
+//    HALSIM_SetCANMessagesForReadStream(streamMessage, count);
 }
 
 
@@ -210,7 +210,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_getCanLas
         dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
     }
 
-    HALSIM_GetCANLastSentMessageData(dataPtr, size);
+//    HALSIM_GetCANLastSentMessageData(dataPtr, size);
 }
 
 /*
@@ -263,7 +263,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_delayForN
     }
     else
     {
-        std::cerr << "Unsupported... Cannot delay 0 at the moment" << std::endl;
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unsupported... Cannot delay 0 at the moment");
     }
 }
 
@@ -312,9 +312,9 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setJoysti
     }
     env->ReleaseShortArrayElements(aPovs, povs, 0);
 
-    HALSIM_SetJoystickAxes(aHandle, newAxes);
-    HALSIM_SetJoystickPOVs(aHandle, newPov);
-    HALSIM_SetJoystickButtons(aHandle, newButtons);
+//    HALSIM_SetJoystickAxes(aHandle, newAxes);
+//    HALSIM_SetJoystickPOVs(aHandle, newPov);
+//    HALSIM_SetJoystickButtons(aHandle, newButtons);
 }
 
-}
+} // extern c

@@ -70,4 +70,20 @@ public class TestSpiGyro extends BaseSimulatorTest
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(gyroHandle), DOUBLE_EPSILON);
         Assert.assertEquals(0, gyro.getAngle(), DOUBLE_EPSILON);
     }
+
+    // @Test
+    // public void longTest()
+    // {
+    // int gyroHandle = 100 + mPort.value;
+    // DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(mPort.value,
+    // "ADXRS450");
+    // ADXRS450_Gyro gyro = new ADXRS450_Gyro(mPort);
+    //
+    // for (int i = 0; i < 1e8; ++i)
+    // {
+    // DataAccessorFactory.getInstance().getGyroAccessor().setAngle(gyroHandle,
+    // i);
+    // gyro.getAngle();
+    // }
+    // }
 }

@@ -120,6 +120,7 @@ def jniClasses = [
     'com.snobot.simulator.jni.RegisterCallbacksJni',
     'com.snobot.simulator.jni.SensorFeedbackJni',
     'com.snobot.simulator.jni.SensorFeedbackJniTestHelper',
+    'com.snobot.simulator.jni.SpiI2CSimulatorHal',
 ]
     
 model {

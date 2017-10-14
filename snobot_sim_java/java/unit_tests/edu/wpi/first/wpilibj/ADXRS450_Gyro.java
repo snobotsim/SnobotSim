@@ -9,6 +9,7 @@ package edu.wpi.first.wpilibj;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Arrays;
 
 import edu.wpi.first.wpilibj.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.wpilibj.hal.HAL;
@@ -64,6 +65,8 @@ public class ADXRS450_Gyro extends GyroBase implements Gyro, PIDSource, LiveWind
     m_spi.setChipSelectActiveLow();
 
     // Validate the part ID
+        int xxx = readRegister(kPIDRegister);
+    System.out.println("Read: " + xxx);
     if ((readRegister(kPIDRegister) & 0xff00) != 0x5200) {
       m_spi.free();
       m_spi = null;
@@ -120,6 +123,10 @@ public class ADXRS450_Gyro extends GyroBase implements Gyro, PIDSource, LiveWind
 
     m_spi.write(buf, 4);
     m_spi.read(false, buf, 4);
+
+        byte[] xxx = new byte[4];
+        buf.get(xxx);
+        System.out.println(Arrays.toString(xxx));
 
     if ((buf.get(0) & 0xe0) == 0) {
       return 0;  // error, return 0

@@ -15,16 +15,6 @@ public class SensorFeedbackJni extends BaseSnobotJni
 
     public static native void setSpiAccumulatorValue(int aHandle, long aValue);
 
-    public static native void setSpiValueForRead(int aHandle, ByteBuffer aReadArray, int aCount);
-
-    public static native void getSpiLastWrite(int aHandle, ByteBuffer aOutputBuffer, int aCopyCount);
-
-    public static native void getSpiLastTransaction(int aHandle, ByteBuffer aOutputBuffer, int aCopyCount);
-
-    public static native void setI2CValueForRead(int aHandle, ByteBuffer aReadArray, int aCount);
-
-    public static native void getI2CLastWrite(int aHandle, ByteBuffer aOutputBuffer, int aCopyCount);
-
     public static native void setCanSetValueForRead(ByteBuffer aOutputBuffer, int aCopyCount);
 
     public static native void setCanSetValueForReadStream(ByteBuffer aOutputBuffer, int aCopyCount);
@@ -42,6 +32,5 @@ public class SensorFeedbackJni extends BaseSnobotJni
     public static native double getMatchTime();
 
     public static native void setJoystickInformation(int aJoystickHandle, float[] aAxesArray, short[] aPovsArray, int aButtonCount, int aButtonMask);
-
 
 }

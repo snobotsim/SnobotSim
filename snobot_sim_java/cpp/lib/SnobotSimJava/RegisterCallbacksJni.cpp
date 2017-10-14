@@ -5,10 +5,14 @@
 
 #include "com_snobot_simulator_jni_RegisterCallbacksJni.h"
 #include "SnobotSimJava/JavaHalCallbacks/JavaHalCallbacks.h"
+#include "SnobotSimJava/Logging/SnobotLogger.h"
+#include "SnobotSimJava/Logging/SnobotCoutLogger.h"
 #include "HAL/handles/HandlesInternal.h"
 #include <iostream>
 
 //http://adamish.com/blog/archives/327
+
+static SnobotLogging::ISnobotLogger* sSnobotLogger = NULL;
 
 using namespace wpi::java;
 
@@ -19,7 +23,7 @@ void SetCallbackContainerInfo(JNIEnv * env, jclass clz, const std::string& funct
     outContainer.mMethodId = env->GetStaticMethodID(clz, functionName.c_str(), "(Ljava/lang/String;ILcom/snobot/simulator/jni/HalCallbackValue;)V");
     if (outContainer.mMethodId == NULL)
     {
-        std::cerr << "Failed to find method reference for function " << functionName << std::endl;
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Failed to find method reference for function " << functionName);
     }
 }
 
@@ -35,6 +39,15 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RegisterCallbacksJni_reset
 {
     hal::HandleBase::ResetGlobalHandles();
     SnobotSimJava::ResetMockData();
+
+    if(sSnobotLogger)
+    {
+        delete sSnobotLogger;
+    }
+
+    sSnobotLogger = new SnobotLogging::SnobotCoutLogger();
+    sSnobotLogger->SetLogLevel(SnobotLogging::DEBUG);
+    SnobotLogging::SetLogger(sSnobotLogger);
 }
 
 /*
@@ -112,7 +125,20 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RegisterCallbacksJni_regist
 {
     SnobotSimJava::SetGlobalEnvironment(env);
     std::string functionName = env->GetStringUTFChars(aFunctionName, NULL);
-    SetCallbackContainerInfo(env, clz, functionName, SnobotSimJava::GetI2CCallback());
+    SnobotSimJava::BufferCallbackHelperContainer& callbackContainer = SnobotSimJava::GetI2CCallback();
+    SetCallbackContainerInfo(env, clz, functionName, callbackContainer);
+
+    callbackContainer.mReadBufferMethodId = env->GetStaticMethodID(callbackContainer.mClazz, functionName.c_str(), "(Ljava/lang/String;ILjava/nio/ByteBuffer;)V");
+    if (callbackContainer.mReadBufferMethodId == NULL)
+    {
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Failed to find method reference for function " << functionName);
+    }
+
+    callbackContainer.mWriteBufferMethodId = env->GetStaticMethodID(callbackContainer.mClazz, functionName.c_str(), "(Ljava/lang/String;ILjava/nio/ByteBuffer;)V");
+    if (callbackContainer.mWriteBufferMethodId == NULL)
+    {
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Failed to find method reference for function " << functionName);
+    }
 }
 
 /*
@@ -177,7 +203,22 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RegisterCallbacksJni_regist
 {
     SnobotSimJava::SetGlobalEnvironment(env);
     std::string functionName = env->GetStringUTFChars(aFunctionName, NULL);
-    SetCallbackContainerInfo(env, clz, functionName, SnobotSimJava::GetSpiCallback());
+
+    SnobotSimJava::BufferCallbackHelperContainer& callbackContainer = SnobotSimJava::GetSpiCallback();
+
+    SetCallbackContainerInfo(env, clz, functionName, callbackContainer);
+
+    callbackContainer.mReadBufferMethodId = env->GetStaticMethodID(callbackContainer.mClazz, functionName.c_str(), "(Ljava/lang/String;ILjava/nio/ByteBuffer;)V");
+    if (callbackContainer.mReadBufferMethodId == NULL)
+    {
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Failed to find method reference for function " << functionName);
+    }
+
+    callbackContainer.mWriteBufferMethodId = env->GetStaticMethodID(callbackContainer.mClazz, functionName.c_str(), "(Ljava/lang/String;ILjava/nio/ByteBuffer;)V");
+    if (callbackContainer.mWriteBufferMethodId == NULL)
+    {
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Failed to find method reference for function " << functionName);
+    }
 }
 
 

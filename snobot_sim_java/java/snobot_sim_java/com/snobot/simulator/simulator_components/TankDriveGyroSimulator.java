@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.EncoderWrapper;
-import com.snobot.simulator.simulator_components.gyro.GyroWrapper;
+import com.snobot.simulator.simulator_components.gyro.IGyroWrapper;
 
 public class TankDriveGyroSimulator implements ISimulatorUpdater
 {
@@ -14,7 +14,7 @@ public class TankDriveGyroSimulator implements ISimulatorUpdater
     private final TankDriveConfig mConfig;
     private final EncoderWrapper mLeftEncoder;
     private final EncoderWrapper mRightEncoder;
-    private final GyroWrapper mGyroWrapper;
+    private final IGyroWrapper mGyroWrapper;
     private double mKP;
     private boolean mIsSetup;
 

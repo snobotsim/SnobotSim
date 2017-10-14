@@ -4,23 +4,47 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 import com.snobot.simulator.SensorActuatorRegistry;
-import com.snobot.simulator.simulator_components.gyro.GyroWrapper;
+import com.snobot.simulator.module_wrapper.ASensorWrapper;
+import com.snobot.simulator.simulator_components.gyro.IGyroWrapper;
 
 public class NavxSimulator
 {
+    private class NavxGyro extends ASensorWrapper implements IGyroWrapper
+    {
+
+        public NavxGyro(String aName)
+        {
+            super(aName);
+        }
+
+        @Override
+        public double getAngle()
+        {
+            // TODO Auto-generated method stub
+            return 0;
+        }
+
+        @Override
+        public void setAngle(double aAngle)
+        {
+            // TODO Auto-generated method stub
+
+        }
+
+    }
 
     protected static int TIMESTAMP = 1;
 
-    protected final GyroWrapper mYawGyro;
-    protected final GyroWrapper mPitchGyro;
-    protected final GyroWrapper mRollGyro;
+    protected final IGyroWrapper mYawGyro;
+    protected final IGyroWrapper mPitchGyro;
+    protected final IGyroWrapper mRollGyro;
     protected final int mNativePort;
 
     public NavxSimulator(int aNativePort, int aSimulatorOffset)
     {
-        mYawGyro = new GyroWrapper("NavX Pitch", GyroWrapper.NULL_ANGLE_SETTER);
-        mPitchGyro = new GyroWrapper("NavX Yaw", GyroWrapper.NULL_ANGLE_SETTER);
-        mRollGyro = new GyroWrapper("NavX Roll", GyroWrapper.NULL_ANGLE_SETTER);
+        mYawGyro = new NavxGyro("NavX Pitch");
+        mPitchGyro = new NavxGyro("NavX Yaw");
+        mRollGyro = new NavxGyro("NavX Roll");
 
         mNativePort = aNativePort;
 

@@ -1,5 +1,7 @@
 package com.snobot.simulator.jni;
 
+import java.nio.ByteBuffer;
+
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -20,8 +22,7 @@ import com.snobot.simulator.simulator_components.components_factory.DefaultSpiSi
 import com.snobot.simulator.simulator_components.components_factory.II2cSimulatorFactory;
 import com.snobot.simulator.simulator_components.components_factory.ISpiSimulatorFactory;
 import com.snobot.simulator.simulator_components.ctre.CanManager;
-import com.snobot.simulator.simulator_components.gyro.GyroWrapper;
-import com.snobot.simulator.simulator_components.gyro.GyroWrapper.AngleSetterHelper;
+import com.snobot.simulator.simulator_components.gyro.AnalogGyroWrapper;
 
 public class RegisterCallbacksJni extends BaseSnobotJni
 {
@@ -148,14 +149,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
     {
         if ("Initialized".equals(callbackType))
         {
-            GyroWrapper wrapper = new GyroWrapper("Analog Gyro", new AngleSetterHelper()
-            {
-                @Override
-                public void updateAngle(double aAngle)
-                {
-                    SensorFeedbackJni.setAnalogGyroAngle(port, aAngle);
-                }
-            });
+            AnalogGyroWrapper wrapper = new AnalogGyroWrapper(port, "Analog Gyro");
             SensorActuatorRegistry.get().register(wrapper, port);
         }
         else if ("Angle".equals(callbackType))
@@ -242,6 +236,28 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         }
     }
 
+    public static void i2cCallback(String callbackType, int port, ByteBuffer buffer)
+    {
+        if (false)
+        {
+
+        }
+        // if ("Read".equals(callbackType))
+        // {
+        // SensorActuatorRegistry.get().getSpiWrappers().get(port).handleRead(buffer);
+        // }
+        // else if ("Write".equals(callbackType))
+        // {
+        // SensorActuatorRegistry.get().getSpiWrappers().get(port).handleWrite(buffer);
+        // }
+        else
+        {
+            sLOGGER.log(Level.ERROR, "Unknown I2C callback " + callbackType + " - " + buffer.capacity());
+        }
+
+        // System.out.println("Post: " + Arrays.toString(buffer));
+    }
+
     public static void pcmCallback(String callbackType, int port, HalCallbackValue halValue)
     {
         if ("SolenoidInitialized".equals(callbackType))
@@ -312,18 +328,11 @@ public class RegisterCallbacksJni extends BaseSnobotJni
 
     public static void spiCallback(String callbackType, int port, HalCallbackValue halValue)
     {
+        System.out.println(callbackType);
         if ("Initialized".equals(callbackType))
         {
             ISpiWrapper wrapper = sSPI_FACTORY.createSpiWrapper(port);
             SensorActuatorRegistry.get().register(wrapper, port);
-        }
-        else if ("Read".equals(callbackType))
-        {
-            SensorActuatorRegistry.get().getSpiWrappers().get(port).handleRead();
-        }
-        else if ("Write".equals(callbackType))
-        {
-            SensorActuatorRegistry.get().getSpiWrappers().get(port).handleWrite();
         }
         else if ("Transaction".equals(callbackType))
         {
@@ -337,5 +346,20 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         {
             sLOGGER.log(Level.ERROR, "Unknown SPI callback " + callbackType + " - " + halValue);
         }
+    }
+
+    public static void spiCallback(String callbackType, int port, ByteBuffer buffer)
+    {
+        System.out.println(callbackType);
+        if ("Read".equals(callbackType))
+        {
+            SensorActuatorRegistry.get().getSpiWrappers().get(port).handleRead(buffer);
+        }
+        else if ("Write".equals(callbackType))
+        {
+            SensorActuatorRegistry.get().getSpiWrappers().get(port).handleWrite(buffer);
+        }
+
+        // System.out.println("Post: " + Arrays.toString(buffer));
     }
 }

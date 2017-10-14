@@ -32,11 +32,11 @@ void ADXRS450_SpiGyro::HandleTransaction()
 
 void ADXRS450_SpiGyro::HandleRead()
 {
-    uint8_t buffer[4];
-    uint32_t numToPut = 0x00400AE0;
-    std::memcpy(&buffer[0], &numToPut, sizeof(numToPut));
-
-    HALSIM_SetSPISetValueForRead(mSpiPort, buffer, sizeof(numToPut));
+//    uint8_t buffer[4];
+//    uint32_t numToPut = 0x00400AE0;
+//    std::memcpy(&buffer[0], &numToPut, sizeof(numToPut));
+//
+//    HALSIM_SetSPISetValueForRead(mSpiPort, buffer, sizeof(numToPut));
 }
 
 void ADXRS450_SpiGyro::SetAngle(double aAngle)
@@ -47,5 +47,5 @@ void ADXRS450_SpiGyro::SetAngle(double aAngle)
     accum = accum / 0.0125;
     accum = accum / 0.001;
 
-    HALSIM_SetSPIGetAccumulatorValue(mSpiPort, accum);
+//    HALSIM_SetSPIGetAccumulatorValue(mSpiPort, accum);
 }

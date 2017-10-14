@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.snobot.simulator.module_wrapper.ASensorWrapper;
+import com.snobot.simulator.module_wrapper.ISensorWrapper;
 
-public abstract class BaseWrapperAccessor<Type extends ASensorWrapper>
+public abstract class BaseWrapperAccessor<Type extends ISensorWrapper>
 {
     protected abstract Map<Integer, Type> getMap();
 

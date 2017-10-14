@@ -1,10 +1,12 @@
 package com.snobot.simulator.simulator_components;
 
+import java.nio.ByteBuffer;
+
 public interface ISpiWrapper
 {
-    void handleRead();
+    void handleRead(ByteBuffer buffer);
 
-    void handleWrite();
+    void handleWrite(ByteBuffer buffer);
 
     void handleTransaction();
 

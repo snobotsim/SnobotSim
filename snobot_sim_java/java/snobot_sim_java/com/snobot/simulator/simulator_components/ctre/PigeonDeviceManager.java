@@ -8,8 +8,9 @@ import org.apache.log4j.Logger;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.SensorFeedbackJni;
+import com.snobot.simulator.module_wrapper.ASensorWrapper;
 import com.snobot.simulator.simulator_components.accelerometer.ThreeAxisAccelerometer;
-import com.snobot.simulator.simulator_components.gyro.GyroWrapper;
+import com.snobot.simulator.simulator_components.gyro.IGyroWrapper;
 
 public class PigeonDeviceManager implements ICanDeviceManager
 {
@@ -21,6 +22,26 @@ public class PigeonDeviceManager implements ICanDeviceManager
         return sSENSOR_OFFSET + aPort * 3;
     }
 
+    private class PigeonGyroWrapper extends ASensorWrapper implements IGyroWrapper
+    {
+        public PigeonGyroWrapper(String string)
+        {
+            super(string);
+        }
+
+        @Override
+        public double getAngle()
+        {
+            return 0;
+        }
+
+        @Override
+        public void setAngle(double aAngle)
+        {
+        }
+
+    };
+
     @Override
     public void handleSend(int aMessageId)
     {
@@ -30,9 +51,9 @@ public class PigeonDeviceManager implements ICanDeviceManager
         if (messageId == 0x15042800)
         {
             int basePort = getBasePort(port);
-            SensorActuatorRegistry.get().register(new GyroWrapper("Pigeon Pitch", GyroWrapper.NULL_ANGLE_SETTER), basePort + 0);
-            SensorActuatorRegistry.get().register(new GyroWrapper("Pigeon Yaw", GyroWrapper.NULL_ANGLE_SETTER), basePort + 1);
-            SensorActuatorRegistry.get().register(new GyroWrapper("Pigeon Roll", GyroWrapper.NULL_ANGLE_SETTER), basePort + 2);
+            SensorActuatorRegistry.get().register(new PigeonGyroWrapper("Pigeon Pitch"), basePort + 0);
+            SensorActuatorRegistry.get().register(new PigeonGyroWrapper("Pigeon Yaw"), basePort + 1);
+            SensorActuatorRegistry.get().register(new PigeonGyroWrapper("Pigeon Roll"), basePort + 2);
 
             new ThreeAxisAccelerometer(basePort, "Pigeon");
         }
@@ -46,7 +67,7 @@ public class PigeonDeviceManager implements ICanDeviceManager
 
     private ByteBuffer dumpAngles(int aPort, double aScaler, int aBytes)
     {
-        Map<Integer, GyroWrapper> allGyros = SensorActuatorRegistry.get().getGyros();
+        Map<Integer, IGyroWrapper> allGyros = SensorActuatorRegistry.get().getGyros();
         ByteBuffer buffer = ByteBuffer.allocateDirect(16);
         // buffer.order(ByteOrder.LITTLE_ENDIAN);
         int basePort = getBasePort(aPort);
