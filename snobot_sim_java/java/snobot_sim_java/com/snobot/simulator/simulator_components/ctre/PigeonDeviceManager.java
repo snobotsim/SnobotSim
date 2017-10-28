@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.SensorFeedbackJni;
 import com.snobot.simulator.module_wrapper.ASensorWrapper;
+import com.snobot.simulator.simulator_components.accelerometer.IAccelerometerWrapper;
 import com.snobot.simulator.simulator_components.gyro.IGyroWrapper;
 
 public class PigeonDeviceManager implements ICanDeviceManager
@@ -41,6 +42,26 @@ public class PigeonDeviceManager implements ICanDeviceManager
 
     };
 
+    private class PigeonAccelWrapper extends ASensorWrapper implements IAccelerometerWrapper
+    {
+        public PigeonAccelWrapper(String string)
+        {
+            super(string);
+        }
+
+        @Override
+        public double getAcceleration()
+        {
+            return 0;
+        }
+
+        @Override
+        public void setAcceleration(double aAngle)
+        {
+        }
+
+    };
+
     @Override
     public void handleSend(int aMessageId)
     {
@@ -54,7 +75,9 @@ public class PigeonDeviceManager implements ICanDeviceManager
             SensorActuatorRegistry.get().register(new PigeonGyroWrapper("Pigeon Yaw"), basePort + 1);
             SensorActuatorRegistry.get().register(new PigeonGyroWrapper("Pigeon Roll"), basePort + 2);
 
-            // new ThreeAxisAccelerometer(basePort, "Pigeon");
+            SensorActuatorRegistry.get().register(new PigeonAccelWrapper("Pigeon X"), basePort + 0);
+            SensorActuatorRegistry.get().register(new PigeonAccelWrapper("Pigeon Y"), basePort + 1);
+            SensorActuatorRegistry.get().register(new PigeonAccelWrapper("Pigeon Z"), basePort + 2);
         }
         else
         {

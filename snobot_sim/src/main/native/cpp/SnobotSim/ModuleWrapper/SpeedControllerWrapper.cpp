@@ -7,7 +7,6 @@
 
 #include "SnobotSim/ModuleWrapper/SpeedControllerWrapper.h"
 #include "SnobotSim/PortUnwrapper.h"
-#include <iostream>
 
 SpeedControllerWrapper::SpeedControllerWrapper(int aPort) :
         AModuleWrapper("Speed Controller " + std::to_string(UnwrapPort(aPort))),

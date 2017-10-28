@@ -8,8 +8,6 @@
 #include "NavxSim/SpiNavxSimulator.h"
 #include "MockData/SPIData.h"
 
-#include <iostream>
-
 static void NavxSPIReadBufferCallback(const char* name, void* param,
                                           uint8_t* buffer, uint32_t count) {
     SpiNavxSimulator* sim = static_cast<SpiNavxSimulator*>(param);
@@ -41,7 +39,6 @@ void SpiNavxSimulator::HandleWrite(uint8_t* buffer, uint32_t count)
 
 void SpiNavxSimulator::HandleRead(uint8_t* buffer, uint32_t count)
 {
-    std::cout << "Reading " << count << std::endl;
     mLastWriteAddress = 0x04;
     if(mLastWriteAddress == 0x00)
     {

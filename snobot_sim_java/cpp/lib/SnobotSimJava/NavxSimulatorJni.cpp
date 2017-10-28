@@ -10,7 +10,7 @@
 #include "NavxSim/SpiNavxSimulator.h"
 
 #include "SnobotSimJava/Logging/SnobotLogger.h"
-#include <iostream>
+#include <cstring>
 
 /*
  * Class:     com_snobot_simulator_jni_NavxSimulatorHal
@@ -115,7 +115,6 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_NavxSimulatorHal_setNavxDat
             break;
         default:
             SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown type : " << aDataType);
-            std::cout << "XXXX" << std::endl;
         }
     }
     else

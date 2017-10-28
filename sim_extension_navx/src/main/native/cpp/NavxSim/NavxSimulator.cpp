@@ -8,13 +8,9 @@
 #include "NavxSim/NavxSimulator.h"
 #include "MockData/NotifyCallbackHelpers.h"
 
-#include <iostream>
-
 NavxSimulator::NavxSimulator()
 {
-//    SensorActuatorRegistry::Get().Register(aPortOffset + (aNativePort * 3) + 0, mYawGyro);
-//    SensorActuatorRegistry::Get().Register(aPortOffset + (aNativePort * 3) + 1, mPitchGyro);
-//    SensorActuatorRegistry::Get().Register(aPortOffset + (aNativePort * 3) + 2, mRollGyro);
+
 }
 
 NavxSimulator::~NavxSimulator()
@@ -77,8 +73,6 @@ void NavxSimulator::GetCurrentData(uint8_t* aBuffer, int aFirstAddress)
     pitch = BoundBetweenNeg180Pos180(pitch);
     roll = BoundBetweenNeg180Pos180(roll);
 
-    std::cout << "Yaw: " << yaw << ", " << pitch << ", " << roll << std::endl;
-
     PutTheValue(aBuffer, 0x16 - aFirstAddress, int16_t(yaw * 100), 2); // Yaw
     PutTheValue(aBuffer, 0x1A - aFirstAddress, int16_t(pitch * 100), 2); // Pitch
     PutTheValue(aBuffer, 0x18 - aFirstAddress, int16_t(roll * 100), 2); // Roll
@@ -116,9 +110,7 @@ void NavxSimulator::InvokeXCallback(HAL_Value value) {
   InvokeCallback(mXCallbacks, "X", &value);
 }
 
-double NavxSimulator::GetX() {
-    std::cout << "X: " << mX << ", " << mY << ", " << mZ << ", " << mYaw << ", " << mPitch << ", " << mRoll << std::endl;
-    return mX; }
+double NavxSimulator::GetX() { return mX; }
 
 void NavxSimulator::SetX(double x) {
   double oldValue = mX.exchange(x);
@@ -196,9 +188,6 @@ void NavxSimulator::SetZ(double z) {
     InvokeZCallback(MakeDouble(z));
   }
 }
-
-
-///////////////////////////////////////////////////////////////////////
 
 int32_t NavxSimulator::RegisterYawCallback(
     HAL_NotifyCallback callback, void* param, HAL_Bool initialNotify) {

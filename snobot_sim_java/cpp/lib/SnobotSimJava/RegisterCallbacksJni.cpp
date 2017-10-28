@@ -8,7 +8,6 @@
 #include "SnobotSimJava/Logging/SnobotLogger.h"
 #include "SnobotSimJava/Logging/SnobotCoutLogger.h"
 #include "HAL/handles/HandlesInternal.h"
-#include <iostream>
 
 //http://adamish.com/blog/archives/327
 
