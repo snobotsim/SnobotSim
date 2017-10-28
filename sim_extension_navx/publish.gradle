@@ -15,7 +15,7 @@ if (project.hasProperty("publishVersion")) {
 }
 
 def baseArtifactId = 'navx_simulator'
-def artifactGroupId = 'edu.wpi.first.halsim'
+def artifactGroupId = 'com.snobot.simulator.navx_sim'
 
 def outputsFolder = file("$project.buildDir/outputs")
 
@@ -51,13 +51,17 @@ model {
                 }
             }
         }
-
+        repositories {
+           maven {
+               url maven_publishing_path
+           }
+        }
         publications {
             cpp(MavenPublication) {
                 artifact libSpec
                 artifactId = baseArtifactId
                 groupId artifactGroupId
-                version pubVersion
+                version maven_version
 
                 artifact cppHeadersZip
                 artifact cppSourcesZip
