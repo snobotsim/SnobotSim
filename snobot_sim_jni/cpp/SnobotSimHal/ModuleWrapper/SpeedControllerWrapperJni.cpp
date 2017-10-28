@@ -223,8 +223,6 @@ JNIEXPORT jobject JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedCon
         SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown motor sim type " << type);
     }
 
-    std::cout << "Returning " << output << std::endl;
-
     return output;
 }
 
