@@ -2,18 +2,24 @@ package com.snobot.simulator.jni;
 
 public class SpiI2CSimulatorHal
 {
+    public enum DataType
+    {
+        X, Y, Z
+    }
 
-    public static native void setSpiI2cAccelerometerX(String aType, long aNativePointer, double aAccel);
+    public static native void setSpiI2cAccelerometerData(String aType, long aNativePointer, int aDataType, double aAccel);
 
-    public static native double getSpiI2cAccelerometerX(String aType, long aNativePointer);
+    public static native double getSpiI2cAccelerometerData(String aType, long aNativePointer, int aDataType);
 
-    public static native void setSpiI2cAccelerometerY(String aType, long aNativePointer, double aAccel);
+    public static void setSpiI2cAccelerometerData(String aType, long aNativePointer, DataType aDataType, double aAccel)
+    {
+        setSpiI2cAccelerometerData(aType, aNativePointer, aDataType.ordinal(), aAccel);
+    }
 
-    public static native double getSpiI2cAccelerometerY(String aType, long aNativePointer);
-
-    public static native void setSpiI2cAccelerometerZ(String aType, long aNativePointer, double aAccel);
-
-    public static native double getSpiI2cAccelerometerZ(String aType, long aNativePointer);
+    public static double getSpiI2cAccelerometerData(String aType, long aNativePointer, DataType aDataType)
+    {
+        return getSpiI2cAccelerometerData(aType, aNativePointer, aDataType.ordinal());
+    }
 
     public static native long createSpiI2cAccelerometer(String aType, int aPort);
 

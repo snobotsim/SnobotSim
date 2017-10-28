@@ -3,10 +3,10 @@ package com.snobot.simulator.wrapper_accessors.java;
 import java.util.Map;
 
 import com.snobot.simulator.SensorActuatorRegistry;
-import com.snobot.simulator.simulator_components.accelerometer.AccelerometerWrapper;
+import com.snobot.simulator.simulator_components.accelerometer.IAccelerometerWrapper;
 import com.snobot.simulator.wrapper_accessors.AccelerometerWrapperAccessor;
 
-public class JavaAccelerometerWrapperAccessor extends BaseWrapperAccessor<AccelerometerWrapper> implements AccelerometerWrapperAccessor
+public class JavaAccelerometerWrapperAccessor extends BaseWrapperAccessor<IAccelerometerWrapper> implements AccelerometerWrapperAccessor
 {
 
     @Override
@@ -28,7 +28,7 @@ public class JavaAccelerometerWrapperAccessor extends BaseWrapperAccessor<Accele
     }
 
     @Override
-    protected Map<Integer, AccelerometerWrapper> getMap()
+    protected Map<Integer, IAccelerometerWrapper> getMap()
     {
         return SensorActuatorRegistry.get().getAccelerometers();
     }

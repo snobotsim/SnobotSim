@@ -140,11 +140,4 @@ public class TestSpiNavx extends BaseSimulatorTest
         navx.free();
         Thread.sleep(SHUTDOWN_TIME);
     }
-
-    @Test
-    public void testInvalidAddress()
-    {
-        SpiNavxSimulator sim = new SpiNavxSimulator(0);
-        sim.handleRead(null);
-    }
 }

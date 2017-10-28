@@ -8,11 +8,12 @@ import java.util.Map;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import com.snobot.simulator.jni.NavxSimulatorHal;
 import com.snobot.simulator.jni.SpiI2CSimulatorHal;
 import com.snobot.simulator.simulator_components.ISpiWrapper;
 import com.snobot.simulator.simulator_components.accelerometer.SpiI2CAccelerometer;
 import com.snobot.simulator.simulator_components.gyro.SpiGyro;
-import com.snobot.simulator.simulator_components.navx.SpiNavxSimulator;
+import com.snobot.simulator.simulator_components.navx.NavxSimulatorWrapper;
 
 public class DefaultSpiSimulatorFactory implements ISpiSimulatorFactory
 {
@@ -61,7 +62,8 @@ public class DefaultSpiSimulatorFactory implements ISpiSimulatorFactory
 
         if ("NavX".equals(aType))
         {
-            return new SpiNavxSimulator(aPort);
+            long nativePointer = NavxSimulatorHal.createNavx(fullType, aPort);
+            new NavxSimulatorWrapper(fullType, nativePointer, 200 + aPort * 3);
         }
         else if ("ADXRS450".equals(aType))
         {

@@ -25,15 +25,15 @@ public class TestASimulator extends BaseSimulatorTest
 
         baseSimulator.createSimulatorComponents();
 
-        Assert.assertEquals("I2C ADXL345 Accel X", DataAccessorFactory.getInstance().getAccelerometerAccessor().getName(50));
-        Assert.assertEquals("I2C ADXL345 Accel Y", DataAccessorFactory.getInstance().getAccelerometerAccessor().getName(51));
-        Assert.assertEquals("I2C ADXL345 Accel Z", DataAccessorFactory.getInstance().getAccelerometerAccessor().getName(52));
-        Assert.assertEquals("SPI ADXL345 Accel X", DataAccessorFactory.getInstance().getAccelerometerAccessor().getName(103));
-        Assert.assertEquals("SPI ADXL345 Accel Y", DataAccessorFactory.getInstance().getAccelerometerAccessor().getName(104));
-        Assert.assertEquals("SPI ADXL345 Accel Z", DataAccessorFactory.getInstance().getAccelerometerAccessor().getName(105));
-        Assert.assertEquals("SPI ADXL362 Accel X", DataAccessorFactory.getInstance().getAccelerometerAccessor().getName(156));
-        Assert.assertEquals("SPI ADXL362 Accel Y", DataAccessorFactory.getInstance().getAccelerometerAccessor().getName(157));
-        Assert.assertEquals("SPI ADXL362 Accel Z", DataAccessorFactory.getInstance().getAccelerometerAccessor().getName(158));
+        Assert.assertEquals("I2C ADXL345 X Accel", DataAccessorFactory.getInstance().getAccelerometerAccessor().getName(50));
+        Assert.assertEquals("I2C ADXL345 Y Accel", DataAccessorFactory.getInstance().getAccelerometerAccessor().getName(51));
+        Assert.assertEquals("I2C ADXL345 Z Accel", DataAccessorFactory.getInstance().getAccelerometerAccessor().getName(52));
+        Assert.assertEquals("SPI ADXL345 X Accel", DataAccessorFactory.getInstance().getAccelerometerAccessor().getName(103));
+        Assert.assertEquals("SPI ADXL345 Y Accel", DataAccessorFactory.getInstance().getAccelerometerAccessor().getName(104));
+        Assert.assertEquals("SPI ADXL345 Z Accel", DataAccessorFactory.getInstance().getAccelerometerAccessor().getName(105));
+        Assert.assertEquals("SPI ADXL362 X Accel", DataAccessorFactory.getInstance().getAccelerometerAccessor().getName(156));
+        Assert.assertEquals("SPI ADXL362 Y Accel", DataAccessorFactory.getInstance().getAccelerometerAccessor().getName(157));
+        Assert.assertEquals("SPI ADXL362 Z Accel", DataAccessorFactory.getInstance().getAccelerometerAccessor().getName(158));
 
         Assert.assertEquals("Analog 0", DataAccessorFactory.getInstance().getAnalogAccessor().getName(0));
         Assert.assertEquals("Analog 1", DataAccessorFactory.getInstance().getAnalogAccessor().getName(1));

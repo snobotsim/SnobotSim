@@ -101,40 +101,9 @@ task combineNativeLibrariesIntoOne(type: Jar) {
 
 build.dependsOn packageNativeFilesInJar
 
-///////////////////////////////////////////////////
-configurations {
-    wpilibcHeaders
-    wpilibcLibrary
-}
-
-
 dependencies {
-    wpilibcHeaders 'edu.wpi.first.wpilibc:wpilibc:' + getWpilibcVersion() + ':headers@zip'
-    wpilibcLibrary files('../temp_libs/wpilibc-ABCD-all.zip')
-    
     compile project(":snobot_sim_utilities")
-    
-    testCompile 'junit:junit:4.12'
-    testRuntime combineNativeLibrariesIntoOne.outputs.files
-    //testCompile files(System.getProperty("user.home") + "/wpilib/user/java/lib/CTRLib.jar")
-    testCompile 'edu.wpi.first.wpilibj:wpilibj-java:' + getWpilibjVersion() + ':javaArtifact'
-    testRuntime jar.outputs.files // Necessary for having resources in jar 
-    
-    testCompile "thirdparty.frc.ctre:Toolsuite-Java:+"
 }
-
-  // Task to explode the zipped library into a temporary dir
-task extractWplibcHeadersZip(type: Copy) {
-    ext.libsdir = "${rootProject.buildDir}/dependencies/wpilibc/include"
-    from { configurations.wpilibcHeaders.collect { zipTree(it) } }
-    into libsdir
-}
-task extractWplibcLibraryZip(type: Copy) {
-    ext.libsdir = "${rootProject.buildDir}/dependencies/wpilibc/lib"
-    from { configurations.wpilibcLibrary.collect { zipTree(it); } }
-    into libsdir
-}
-///////////////////////////////////////////////////
 
 
 def jniClasses = ['com.ctre.CanTalonJNI']
@@ -279,8 +248,6 @@ model {
         all {
             tasks.withType(CppCompile) {
                 dependsOn extractHalHeadersZip
-                dependsOn extractWplibcHeadersZip
-                dependsOn extractWplibcLibraryZip
             }
         }
     }

@@ -17,21 +17,6 @@ ext.addSnobotSimToLinker = { binary->
     binary.lib project: ':snobot_sim', library: 'snobotSimXXXStatic', linkage: 'shared'
 }
 
-ext.addHalSimToLinker = { linker->
-    def os_name = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
-    def hal_path = 'temp_libs/hal/' + os_name + '/x86-64'
-    if (OperatingSystem.current().isWindows())
-    {
-        hal_path += "/wpiHal.lib"
-    }
-    else if (OperatingSystem.current().isLinux())
-    {
-        hal_path += "/libwpiHal.so"
-    }
-    hal_path = new File(hal_path).getAbsolutePath()
-    linker.args hal_path
-}
-
 //test.dependsOn nativeTestFilesJar
 
 def willPublish = false

@@ -14,7 +14,7 @@ import com.snobot.simulator.module_wrapper.SolenoidWrapper;
 import com.snobot.simulator.simulator_components.II2CWrapper;
 import com.snobot.simulator.simulator_components.ISimulatorUpdater;
 import com.snobot.simulator.simulator_components.ISpiWrapper;
-import com.snobot.simulator.simulator_components.accelerometer.AccelerometerWrapper;
+import com.snobot.simulator.simulator_components.accelerometer.IAccelerometerWrapper;
 import com.snobot.simulator.simulator_components.gyro.IGyroWrapper;
 
 public class SensorActuatorRegistry
@@ -29,7 +29,7 @@ public class SensorActuatorRegistry
     private Map<Integer, EncoderWrapper> mEncoderWrapperMap = new HashMap<>();
 
     private Map<Integer, IGyroWrapper> mGyroWrapperMap = new HashMap<>();
-    private Map<Integer, AccelerometerWrapper> mAccelerometerWrapperMap = new HashMap<>();
+    private Map<Integer, IAccelerometerWrapper> mAccelerometerWrapperMap = new HashMap<>();
     private Map<Integer, II2CWrapper> mI2CWrapperMap = new HashMap<>();
     private Map<Integer, ISpiWrapper> mSpiWrapperMap = new HashMap<>();
 
@@ -81,7 +81,7 @@ public class SensorActuatorRegistry
         return registerItem(aEncoder, aPort, mEncoderWrapperMap, "Encoder");
     }
 
-    public boolean register(AccelerometerWrapper aSensor, Integer aPort)
+    public boolean register(IAccelerometerWrapper aSensor, Integer aPort)
     {
         return registerItem(aSensor, aPort, mAccelerometerWrapperMap, "Accelerometer");
     }
@@ -137,7 +137,7 @@ public class SensorActuatorRegistry
         return mEncoderWrapperMap;
     }
 
-    public Map<Integer, AccelerometerWrapper> getAccelerometers()
+    public Map<Integer, IAccelerometerWrapper> getAccelerometers()
     {
         return mAccelerometerWrapperMap;
     }

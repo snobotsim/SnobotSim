@@ -75,6 +75,10 @@ task combineNativeLibrariesIntoOne(type: Jar) {
     captureWpiLibraries.outputs.files.each {
         from(zipTree(it))
     }
+    
+    from('../sim_extension_navx/build/libs/navx_simulator/shared/navx_simulator.dll') { 
+        into "windows/x86-64"
+    }
 }
 build.dependsOn packageNativeFilesInJar
 
@@ -106,6 +110,7 @@ def jniClasses = [
     'com.snobot.simulator.jni.SensorFeedbackJni',
     'com.snobot.simulator.jni.SensorFeedbackJniTestHelper',
     'com.snobot.simulator.jni.SpiI2CSimulatorHal',
+    'com.snobot.simulator.jni.NavxSimulatorHal',
 ]
     
 model {
@@ -167,6 +172,7 @@ model {
                     exportedHeaders {
                         srcDirs = ["cpp/lib", "${extractHalHeadersZip.libsdir}", "${extractHalSimAdxHeadersZip.libsdir}"]
                     }
+                    lib project: ':sim_extension_navx', library: 'navx_simulator', linkage: 'shared'
                 }
             }
         }

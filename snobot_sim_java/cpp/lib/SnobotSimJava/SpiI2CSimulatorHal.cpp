@@ -26,18 +26,32 @@ extern "C"
 
 /*
  * Class:     com_snobot_simulator_jni_SpiI2CSimulatorHal
- * Method:    setSpiI2cAccelerometerX
- * Signature: (Ljava/lang/String;J)V
+ * Method:    setSpiI2cAccelerometerData
+ * Signature: (Ljava/lang/String;JID)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SpiI2CSimulatorHal_setSpiI2cAccelerometerX
-  (JNIEnv * env, jclass, jstring aType, jlong aPointerAddress, jdouble aAcceleration)
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SpiI2CSimulatorHal_setSpiI2cAccelerometerData
+  (JNIEnv * env, jclass, jstring aType, jlong aPointerAddress, jint aDataType, jdouble aAcceleration)
 {
     std::string type = env->GetStringUTFChars(aType, NULL);
 
     if(type == "I2C ADXL345" || type == "SPI ADXL345" || type == "SPI ADXL362")
     {
         ThreeAxisAccelerometerData* accel = (ThreeAxisAccelerometerData*) aPointerAddress;
-        accel->SetX(aAcceleration);
+        switch(aDataType)
+        {
+        case 0:
+            accel->SetX(aAcceleration);
+            break;
+        case 1:
+            accel->SetY(aAcceleration);
+            break;
+        case 2:
+            accel->SetZ(aAcceleration);
+            break;
+        default:
+            SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown type : " << aDataType);
+        }
+
     }
     else
     {
@@ -47,106 +61,28 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SpiI2CSimulatorHal_setSpiI2
 
 /*
  * Class:     com_snobot_simulator_jni_SpiI2CSimulatorHal
- * Method:    getSpiI2cAccelerometerX
- * Signature: (Ljava/lang/String;J)D
+ * Method:    getSpiI2cAccelerometerData
+ * Signature: (Ljava/lang/String;JI)D
  */
-JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_SpiI2CSimulatorHal_getSpiI2cAccelerometerX
-  (JNIEnv * env, jclass, jstring aType, jlong aPointerAddress)
+JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_SpiI2CSimulatorHal_getSpiI2cAccelerometerData
+  (JNIEnv * env, jclass, jstring aType, jlong aPointerAddress, jint aDataType)
 {
     std::string type = env->GetStringUTFChars(aType, NULL);
 
     if(type == "I2C ADXL345" || type == "SPI ADXL345" || type == "SPI ADXL362")
     {
         ThreeAxisAccelerometerData* accel = (ThreeAxisAccelerometerData*) aPointerAddress;
-        return accel->GetX();
-    }
-    else
-    {
-        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown type : " << type);
-    }
-
-    return 0;
-}
-
-/*
- * Class:     com_snobot_simulator_jni_SpiI2CSimulatorHal
- * Method:    setSpiI2cAccelerometerY
- * Signature: (Ljava/lang/String;J)V
- */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SpiI2CSimulatorHal_setSpiI2cAccelerometerY
-  (JNIEnv * env, jclass, jstring aType, jlong aPointerAddress, jdouble aAcceleration)
-{
-    std::string type = env->GetStringUTFChars(aType, NULL);
-
-    if(type == "I2C ADXL345" || type == "SPI ADXL345" || type == "SPI ADXL362")
-    {
-        ThreeAxisAccelerometerData* accel = (ThreeAxisAccelerometerData*) aPointerAddress;
-        accel->SetY(aAcceleration);
-    }
-    else
-    {
-        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown type : " << type);
-    }
-}
-
-/*
- * Class:     com_snobot_simulator_jni_SpiI2CSimulatorHal
- * Method:    getSpiI2cAccelerometerY
- * Signature: (Ljava/lang/String;J)D
- */
-JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_SpiI2CSimulatorHal_getSpiI2cAccelerometerY
-  (JNIEnv * env, jclass, jstring aType, jlong aPointerAddress)
-{
-    std::string type = env->GetStringUTFChars(aType, NULL);
-
-    if(type == "I2C ADXL345" || type == "SPI ADXL345" || type == "SPI ADXL362")
-    {
-        ThreeAxisAccelerometerData* accel = (ThreeAxisAccelerometerData*) aPointerAddress;
-        return accel->GetY();
-    }
-    else
-    {
-        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown type : " << type);
-    }
-
-    return 0;
-}
-
-/*
- * Class:     com_snobot_simulator_jni_SpiI2CSimulatorHal
- * Method:    setSpiI2cAccelerometerZ
- * Signature: (Ljava/lang/String;J)V
- */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SpiI2CSimulatorHal_setSpiI2cAccelerometerZ
-  (JNIEnv * env, jclass, jstring aType, jlong aPointerAddress, jdouble aAcceleration)
-{
-    std::string type = env->GetStringUTFChars(aType, NULL);
-
-    if(type == "I2C ADXL345" || type == "SPI ADXL345" || type == "SPI ADXL362")
-    {
-        ThreeAxisAccelerometerData* accel = (ThreeAxisAccelerometerData*) aPointerAddress;
-        accel->SetZ(aAcceleration);
-    }
-    else
-    {
-        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown type : " << type);
-    }
-}
-
-/*
- * Class:     com_snobot_simulator_jni_SpiI2CSimulatorHal
- * Method:    getSpiI2cAccelerometerZ
- * Signature: (Ljava/lang/String;J)D
- */
-JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_SpiI2CSimulatorHal_getSpiI2cAccelerometerZ
-  (JNIEnv * env, jclass, jstring aType, jlong aPointerAddress)
-{
-    std::string type = env->GetStringUTFChars(aType, NULL);
-
-    if(type == "I2C ADXL345" || type == "SPI ADXL345" || type == "SPI ADXL362")
-    {
-        ThreeAxisAccelerometerData* accel = (ThreeAxisAccelerometerData*) aPointerAddress;
-        return accel->GetZ();
+        switch(aDataType)
+        {
+        case 0:
+            return accel->GetX();
+        case 1:
+            return accel->GetY();
+        case 2:
+            return accel->GetZ();
+        default:
+            SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown type : " << aDataType);
+        }
     }
     else
     {
