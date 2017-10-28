@@ -9,7 +9,7 @@
 
 #include "MockData/AnalogInData.h"
 #include "MockData/AnalogGyroData.h"
-//#include "MockData/CANData.h"
+#include "MockData/CANData.h"
 #include "MockData/DIOData.h"
 #include "MockData/DriverStationData.h"
 #include "MockData/EncoderData.h"
@@ -81,87 +81,6 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setSpiAcc
     HALSIM_SetSPISetAccumulatorValue(aHandle, aValue);
 }
 
-
-/*
- * Class:     com_snobot_simulator_jni_SensorFeedbackJni
- * Method:    setSpiValueForRead
- * Signature: ([BI)V
- */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setSpiValueForRead
-  (JNIEnv * env, jclass, jint aHandle, jobject data, jint size)
-{
-    uint8_t *dataPtr = nullptr;
-    if (data != 0) {
-        dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
-    }
-
-//    HALSIM_SetSPISetValueForRead(aHandle, dataPtr, size);
-}
-
-/*
- * Class:     com_snobot_simulator_jni_SensorFeedbackJni
- * Method:    setSpiLastWrite
- * Signature: (ILjava/nio/ByteBuffer;I)V
- */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_getSpiLastWrite
-  (JNIEnv * env, jclass, jint aHandle, jobject data, jint size)
-{
-    uint8_t *dataPtr = nullptr;
-    if (data != 0) {
-        dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
-    }
-
-//    HALSIM_GetSPIGetWriteBuffer(aHandle, dataPtr, size);
-}
-
-/*
- * Class:     com_snobot_simulator_jni_SensorFeedbackJni
- * Method:    getSpiLastTransaction
- * Signature: (ILjava/nio/ByteBuffer;I)V
- */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_getSpiLastTransaction
-  (JNIEnv * env, jclass, jint aHandle, jobject data, jint size)
-{
-    uint8_t *dataPtr = nullptr;
-    if (data != 0) {
-        dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
-    }
-
-//    HALSIM_GetSPIGetTransactionBuffer(aHandle, dataPtr, size);
-}
-
-/*
- * Class:     com_snobot_simulator_jni_SensorFeedbackJni
- * Method:    setI2CValueForRead
- * Signature: ([BI)V
- */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setI2CValueForRead
-  (JNIEnv * env, jclass, jint aHandle, jobject data, jint size)
-{
-    uint8_t *dataPtr = nullptr;
-    if (data != 0) {
-        dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
-    }
-
-//    HALSIM_SetI2CSetValueForRead(aHandle, dataPtr, size);
-}
-
-/*
- * Class:     com_snobot_simulator_jni_SensorFeedbackJni
- * Method:    setI2CLastWrite
- * Signature: (ILjava/nio/ByteBuffer;I)V
- */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_getI2CLastWrite
-  (JNIEnv * env, jclass, jint aHandle, jobject data, jint size)
-{
-    uint8_t *dataPtr = nullptr;
-    if (data != 0) {
-        dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
-    }
-
-//    HALSIM_GetI2CGetWriteBuffer(aHandle, dataPtr, size);
-}
-
 /*
  * Class:     com_snobot_simulator_jni_SensorFeedbackJni
  * Method:    getCanSetValueForRead
@@ -175,7 +94,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setCanSet
         dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
     }
 
-//    HALSIM_SetCANValueForRead(dataPtr, size);
+    HALSIM_SetCANValueForRead(dataPtr, size);
 }
 
 /*
@@ -191,9 +110,9 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setCanSet
         dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
     }
 
-//    HAL_CANStreamMessage streamMessage[1];
-//    std::memcpy(&streamMessage[0], &dataPtr[0], sizeof(streamMessage));
-//    HALSIM_SetCANMessagesForReadStream(streamMessage, count);
+    HAL_CANStreamMessage streamMessage[1];
+    std::memcpy(&streamMessage[0], &dataPtr[0], sizeof(streamMessage));
+    HALSIM_SetCANMessagesForReadStream(streamMessage, count);
 }
 
 
@@ -210,7 +129,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_getCanLas
         dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
     }
 
-//    HALSIM_GetCANLastSentMessageData(dataPtr, size);
+    HALSIM_GetCANLastSentMessageData(dataPtr, size);
 }
 
 /*
@@ -312,9 +231,9 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setJoysti
     }
     env->ReleaseShortArrayElements(aPovs, povs, 0);
 
-//    HALSIM_SetJoystickAxes(aHandle, newAxes);
-//    HALSIM_SetJoystickPOVs(aHandle, newPov);
-//    HALSIM_SetJoystickButtons(aHandle, newButtons);
+    HALSIM_SetJoystickAxes(aHandle, newAxes);
+    HALSIM_SetJoystickPOVs(aHandle, newPov);
+    HALSIM_SetJoystickButtons(aHandle, newButtons);
 }
 
 } // extern c

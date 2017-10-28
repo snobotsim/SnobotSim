@@ -11,7 +11,7 @@
 #include "MockData/AnalogInData.h"
 #include "MockData/AnalogOutData.h"
 #include "MockData/AnalogGyroData.h"
-//#include "MockData/CANData.h"
+#include "MockData/CANData.h"
 #include "MockData/DIOData.h"
 #include "MockData/EncoderData.h"
 #include "MockData/I2CData.h"
@@ -247,12 +247,12 @@ namespace SnobotSimJava
         }
 
         {
-//            HALSIM_RegisterCANSendMessageCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
-//            HALSIM_RegisterCANReceiveMessageCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
-//            HALSIM_RegisterCANOpenStreamSessionCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
-//            HALSIM_RegisterCANCloseStreamSessionCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
-//            HALSIM_RegisterCANReadStreamSessionCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
-//            HALSIM_RegisterCANGetCANStatusCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
+            HALSIM_RegisterCANSendMessageCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
+            HALSIM_RegisterCANReceiveMessageCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
+            HALSIM_RegisterCANOpenStreamSessionCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
+            HALSIM_RegisterCANCloseStreamSessionCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
+            HALSIM_RegisterCANReadStreamSessionCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
+            HALSIM_RegisterCANGetCANStatusCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
         }
 
         for(int i = 0; i < HAL_GetNumDigitalHeaders(); ++i)
@@ -344,7 +344,7 @@ namespace SnobotSimJava
         }
 
         {
-//            HALSIM_ResetCAN();
+            HALSIM_ResetCAN();
         }
 
         for(int i = 0; i < HAL_GetNumEncoders(); ++i)
