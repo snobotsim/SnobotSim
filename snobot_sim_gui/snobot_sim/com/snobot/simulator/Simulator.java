@@ -23,6 +23,7 @@ import com.snobot.simulator.robot_container.PythonRobotContainer;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor.SnobotLogLevel;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 /**
@@ -290,6 +291,8 @@ public class Simulator
 
                 try
                 {
+                    DriverStation.getInstance();
+                    DataAccessorFactory.getInstance().getSimulatorDataAccessor().waitForNextUpdateLoop();
                     mRobot.startCompetition();
                 }
                 catch (UnsatisfiedLinkError e)

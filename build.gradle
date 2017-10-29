@@ -29,22 +29,22 @@ ext.build_simulator_java = true
 /////////////////////////////////////////
 // Specify WPI Versions
 ext.getHalHeadersVersion = {
-    return 'edu.wpi.first.hal:hal:2017.3.1-20170908015814-103-g57ba589:headers@zip'
+    return '2018.1.1-beta-1-20171028022722-29-gefc7770:headers@zip'
 }
 ext.getWpilibjVersion = {
-    return '2017.3.1-20170908015815-103-g57ba589'
-}
-ext.getWpiUtilVersion = {
-    return '2.0.0-20170907010827-33-gef85809'
-}
-ext.getNtCoreVersion = {
-    return '4.0.0-alpha-1-20170907000421-20-g95bce5d'
+    return '2018.1.1-beta-1-20171028022722-29-gefc7770'
 }
 ext.getWpilibcVersion = {
-    return '2017.3.1-20170908015815-103-g57ba589'
+    return '2018.1.1-beta-1-20171028022722-29-gefc7770'
+}
+ext.getWpiUtilVersion = {
+    return '3.0.0-alpha-2-20171025132427-1-ga6c7789'
+}
+ext.getNtCoreVersion = {
+    return '4.0.0-beta-1-20171028041924-2-gfd32350'
 }
 ext.getCsCoreVersion = {
-    return '+'
+    return '1.1.0-alpha-1-20171028025024-4-gb9c8ebe'
 }
 ext.getWpilibOpencvVersion = {
     return '3.2.0'

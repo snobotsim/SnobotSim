@@ -69,6 +69,10 @@ public class NavxSimulatorWrapper
 
     public NavxSimulatorWrapper(String aType, long aNativePointer, int aBasePort)
     {
+        if (aNativePointer == -1)
+        {
+            throw new IllegalArgumentException("Native pointer not set up correctly");
+        }
 
         IAccelerometerWrapper xWrapper = new NavxAccelWrapper(aNativePointer, aType, " X Accel", DataType.X);
         IAccelerometerWrapper yWrapper = new NavxAccelWrapper(aNativePointer, aType, " Y Accel", DataType.Y);

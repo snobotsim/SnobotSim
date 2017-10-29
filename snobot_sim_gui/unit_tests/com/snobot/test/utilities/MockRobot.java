@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.Victor;
@@ -60,7 +59,6 @@ public class MockRobot extends IterativeRobot
     private final SD540 mSd540;
     private final Solenoid mSolenoid;
     private final Talon mTalon;
-    private final TalonSRX mTalonSrx;
     private final Timer mTimer;
     private final Ultrasonic mUltrasonic;
     private final Victor mVictor;
@@ -97,7 +95,6 @@ public class MockRobot extends IterativeRobot
         mSd540 = new SD540(4);
         mSolenoid = new Solenoid(3);
         mTalon = new Talon(5);
-        mTalonSrx = new TalonSRX(6);
         mTimer = new Timer();
         mUltrasonic = new Ultrasonic(8, 9);
         mVictor = new Victor(7);

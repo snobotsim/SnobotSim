@@ -47,6 +47,7 @@ public class BaseSimulatorTest
             INITIALIZED = true;
         }
 
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().waitForNextUpdateLoop();
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
         RobotBase.initializeHardwareConfiguration();
     }

@@ -51,7 +51,7 @@ dependencies {
     
     // WPILib
     compile 'edu.wpi.first.ntcore:ntcore-java:' + getNtCoreVersion()
-    compile 'edu.wpi.first.wpilibj:wpilibj-java:' + getWpilibjVersion() + ':javaArtifact'
+    compile 'edu.wpi.first.wpilibj:wpilibj-java:' + getWpilibjVersion()
     compile 'edu.wpi.first.wpiutil:wpiutil-java:' + getWpiUtilVersion()
     compile 'org.opencv:opencv-java:' + getWpilibOpencvVersion()
     compile 'edu.wpi.first.cscore:cscore-java:' + getCsCoreVersion()

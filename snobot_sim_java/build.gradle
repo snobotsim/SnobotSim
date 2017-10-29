@@ -94,7 +94,7 @@ dependencies {
     
     testCompile 'junit:junit:4.12'
     testCompile "thirdparty.frc.kauai:Navx-Java:+"
-    testCompile 'edu.wpi.first.wpilibj:wpilibj-java:' + getWpilibjVersion() + ':javaArtifact'
+    testCompile 'edu.wpi.first.wpilibj:wpilibj-java:' + getWpilibjVersion()
     testRuntime 'edu.wpi.first.ntcore:ntcore-jni:' + getNtCoreVersion() + ':all'
     testRuntime combineNativeLibrariesIntoOne.outputs.files
     
