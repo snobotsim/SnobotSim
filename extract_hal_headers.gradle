@@ -74,8 +74,6 @@ ext.addHalSimAdxToLinker = { linker->
         hal_path += "/libhalsim_adx_gyro_accelerometer.so"
     }
     hal_path = new File(hal_path).getAbsolutePath()
-    print "XXXXXXXXXXX"
-    print hal_path
     linker.args hal_path
 }
 
