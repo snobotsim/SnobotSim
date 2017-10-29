@@ -14,12 +14,12 @@ public class SpiI2CAccelerometer
         private final String mType;
         private final SpiI2CSimulatorHal.DataType mDataType;
 
-        public AdxAccelWrapper(long aNativePointer, String aName, SpiI2CSimulatorHal.DataType aDataType)
+        public AdxAccelWrapper(long aNativePointer, String aType, String aExtraName, SpiI2CSimulatorHal.DataType aDataType)
         {
-            super(aName);
+            super(aType + aExtraName);
 
             mNativePointer = aNativePointer;
-            mType = aName;
+            mType = aType;
             mDataType = aDataType;
         }
 
@@ -44,9 +44,9 @@ public class SpiI2CAccelerometer
             throw new IllegalArgumentException("Native pointer not set up correctly");
         }
 
-        IAccelerometerWrapper xWrapper = new AdxAccelWrapper(aNativePointer, aType, DataType.X);
-        IAccelerometerWrapper yWrapper = new AdxAccelWrapper(aNativePointer, aType, DataType.Y);
-        IAccelerometerWrapper zWrapper = new AdxAccelWrapper(aNativePointer, aType, DataType.Z);
+        IAccelerometerWrapper xWrapper = new AdxAccelWrapper(aNativePointer, aType, " X Accel", DataType.X);
+        IAccelerometerWrapper yWrapper = new AdxAccelWrapper(aNativePointer, aType, " Y Accel", DataType.Y);
+        IAccelerometerWrapper zWrapper = new AdxAccelWrapper(aNativePointer, aType, " Z Accel", DataType.Z);
 
         SensorActuatorRegistry.get().register(xWrapper, aBasePort + 0);
         SensorActuatorRegistry.get().register(yWrapper, aBasePort + 1);

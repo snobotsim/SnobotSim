@@ -36,8 +36,6 @@ test {
 }
 
 task packageNativeFilesInJar(type: Jar) {
-
-    println "Packging native files"
     
     dependsOn jar
     

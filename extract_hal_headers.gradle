@@ -13,11 +13,11 @@ dependencies {
 }
 
 task extractHalSimAdxHeadersZip(type: Copy) {
-    ext.libsdir = "${rootProject.buildDir}/dependencies/adx_gyro_accelerometer-ABCD-headers"
+    ext.libsdir = "${rootProject.buildDir}/dependencies/halsim-adx_gyro_accelerometer-ABCD-headers"
         
     if(useLocalHal)
     {
-        from { zipTree("${projectDir}/../temp_libs/adx_gyro_accelerometer-ABCD-headers.zip") }
+        from { zipTree("${projectDir}/../temp_libs/halsim-adx_gyro_accelerometer-ABCD-headers.zip") }
         into libsdir
     }
     else

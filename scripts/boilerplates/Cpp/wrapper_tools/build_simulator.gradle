@@ -67,7 +67,6 @@ model {
                     source {
                         srcDirs = ["${wrapperDir}/src"]
                         includes = ['**/*.cpp']
-                        println srcDirs
                     }
                     exportedHeaders {
                         srcDirs = ["${wrapperDir}/cpp",

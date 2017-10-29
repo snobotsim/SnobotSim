@@ -15,12 +15,12 @@ public class NavxSimulatorWrapper
         private final String mType;
         private final NavxSimulatorHal.DataType mDataType;
 
-        public NavxAccelWrapper(long aNativePointer, String aName, NavxSimulatorHal.DataType aDataType)
+        public NavxAccelWrapper(long aNativePointer, String aType, String aExtraName, NavxSimulatorHal.DataType aDataType)
         {
-            super(aName);
+            super(aType + aExtraName);
 
             mNativePointer = aNativePointer;
-            mType = aName;
+            mType = aType;
             mDataType = aDataType;
         }
 
@@ -44,12 +44,12 @@ public class NavxSimulatorWrapper
         private final String mType;
         private final NavxSimulatorHal.DataType mDataType;
 
-        public NavxGyroWrapper(long aNativePointer, String aName, NavxSimulatorHal.DataType aDataType)
+        public NavxGyroWrapper(long aNativePointer, String aType, String aExtraName, NavxSimulatorHal.DataType aDataType)
         {
-            super(aName);
+            super(aType + aExtraName);
 
             mNativePointer = aNativePointer;
-            mType = aName;
+            mType = aType;
             mDataType = aDataType;
         }
 
@@ -70,12 +70,12 @@ public class NavxSimulatorWrapper
     public NavxSimulatorWrapper(String aType, long aNativePointer, int aBasePort)
     {
 
-        IAccelerometerWrapper xWrapper = new NavxAccelWrapper(aNativePointer, aType, DataType.X);
-        IAccelerometerWrapper yWrapper = new NavxAccelWrapper(aNativePointer, aType, DataType.Y);
-        IAccelerometerWrapper zWrapper = new NavxAccelWrapper(aNativePointer, aType, DataType.Z);
-        IGyroWrapper yawWrapper = new NavxGyroWrapper(aNativePointer, aType, DataType.Yaw);
-        IGyroWrapper pitchWrapper = new NavxGyroWrapper(aNativePointer, aType, DataType.Pitch);
-        IGyroWrapper rollWrapper = new NavxGyroWrapper(aNativePointer, aType, DataType.Roll);
+        IAccelerometerWrapper xWrapper = new NavxAccelWrapper(aNativePointer, aType, " X Accel", DataType.X);
+        IAccelerometerWrapper yWrapper = new NavxAccelWrapper(aNativePointer, aType, " Y Accel", DataType.Y);
+        IAccelerometerWrapper zWrapper = new NavxAccelWrapper(aNativePointer, aType, " Z Accel", DataType.Z);
+        IGyroWrapper yawWrapper = new NavxGyroWrapper(aNativePointer, aType, " Yaw", DataType.Yaw);
+        IGyroWrapper pitchWrapper = new NavxGyroWrapper(aNativePointer, aType, " Pitch", DataType.Pitch);
+        IGyroWrapper rollWrapper = new NavxGyroWrapper(aNativePointer, aType, " Roll", DataType.Roll);
 
         SensorActuatorRegistry.get().register(xWrapper, aBasePort + 0);
         SensorActuatorRegistry.get().register(yWrapper, aBasePort + 1);

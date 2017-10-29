@@ -69,7 +69,7 @@ task extractHalHeadersZip(type: Copy) {
 
 task extractWplibcHeadersZip(type: Copy) {
     ext.libsdir = "${rootProject.buildDir}/dependencies/wpilibc/include"
-    from { configurations.wpilibcHeaders.collect { println it; zipTree(it) } }
+    from { configurations.wpilibcHeaders.collect { zipTree(it) } }
     into libsdir
 }
 task extractWplibcLibraryZip(type: Copy) {
