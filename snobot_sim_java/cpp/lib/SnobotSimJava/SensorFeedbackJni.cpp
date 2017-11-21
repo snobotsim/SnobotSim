@@ -9,7 +9,7 @@
 
 #include "MockData/AnalogInData.h"
 #include "MockData/AnalogGyroData.h"
-#include "MockData/CANData.h"
+//#include "MockData/CANData.h"
 #include "MockData/DIOData.h"
 #include "MockData/DriverStationData.h"
 #include "MockData/EncoderData.h"
@@ -94,7 +94,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setCanSet
         dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
     }
 
-    HALSIM_SetCANValueForRead(dataPtr, size);
+//    HALSIM_SetCANValueForRead(dataPtr, size);
 }
 
 /*
@@ -112,7 +112,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setCanSet
 
     HAL_CANStreamMessage streamMessage[1];
     std::memcpy(&streamMessage[0], &dataPtr[0], sizeof(streamMessage));
-    HALSIM_SetCANMessagesForReadStream(streamMessage, count);
+//    HALSIM_SetCANMessagesForReadStream(streamMessage, count);
 }
 
 
@@ -129,7 +129,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_getCanLas
         dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
     }
 
-    HALSIM_GetCANLastSentMessageData(dataPtr, size);
+//    HALSIM_GetCANLastSentMessageData(dataPtr, size);
 }
 
 /*
@@ -231,9 +231,9 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setJoysti
     }
     env->ReleaseShortArrayElements(aPovs, povs, 0);
 
-    HALSIM_SetJoystickAxes(aHandle, newAxes);
-    HALSIM_SetJoystickPOVs(aHandle, newPov);
-    HALSIM_SetJoystickButtons(aHandle, newButtons);
+    HALSIM_SetJoystickAxes(aHandle, &newAxes);
+    HALSIM_SetJoystickPOVs(aHandle, &newPov);
+    HALSIM_SetJoystickButtons(aHandle, &newButtons);
 }
 
 } // extern c

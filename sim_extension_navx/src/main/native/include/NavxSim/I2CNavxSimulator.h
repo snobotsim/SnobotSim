@@ -17,7 +17,7 @@ public:
     virtual ~I2CNavxSimulator();
 
     virtual void HandleRead(uint8_t* buffer, uint32_t count);
-    virtual void HandleWrite(uint8_t* buffer, uint32_t count);
+    virtual void HandleWrite(const uint8_t* buffer, uint32_t count);
 
 protected:
 

@@ -17,7 +17,7 @@ public:
     virtual ~SpiNavxSimulator();
 
     void HandleRead(uint8_t* buffer, uint32_t count);
-    void HandleWrite(uint8_t* buffer, uint32_t count);
+    void HandleWrite(const uint8_t* buffer, uint32_t count);
 
 protected:
 

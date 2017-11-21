@@ -28,17 +28,22 @@ ext.build_simulator_java = true
 
 /////////////////////////////////////////
 // Specify WPI Versions
+
+ext.allwpilibVersion = {
+    return '+'
+}
+
 ext.getHalHeadersVersion = {
-    return '2018.1.1-beta-1-20171028022722-29-gefc7770:headers@zip'
+    return allwpilibVersion()
 }
 ext.getWpilibjVersion = {
-    return '2018.1.1-beta-1-20171028022722-29-gefc7770'
+    return allwpilibVersion()
 }
 ext.getWpilibcVersion = {
-    return '2018.1.1-beta-1-20171028022722-29-gefc7770'
+    return allwpilibVersion()
 }
 ext.getWpiUtilVersion = {
-    return '3.0.0-alpha-2-20171025132427-1-ga6c7789'
+    return '+'
 }
 ext.getNtCoreVersion = {
     return '4.0.0-beta-1-20171028041924-2-gfd32350'

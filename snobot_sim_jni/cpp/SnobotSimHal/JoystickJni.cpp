@@ -40,8 +40,8 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_JoystickJni_setJoystickInfo
     }
     env->ReleaseShortArrayElements(aPovs, povs, 0);
 
-    HALSIM_SetJoystickAxes(aHandle, newAxes);
-    HALSIM_SetJoystickPOVs(aHandle, newPov);
-    HALSIM_SetJoystickButtons(aHandle, newButtons);
+    HALSIM_SetJoystickAxes(aHandle, &newAxes);
+    HALSIM_SetJoystickPOVs(aHandle, &newPov);
+    HALSIM_SetJoystickButtons(aHandle, &newButtons);
 }
 }

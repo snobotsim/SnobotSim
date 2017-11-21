@@ -15,6 +15,16 @@ if (!project.hasProperty('onlyAthena')) {
 
 
     model {
+        dependencyConfigs {
+            wpiutil(DependencyConfig) {
+                groupId = 'edu.wpi.first.wpiutil'
+                artifactId = 'wpiutil-cpp'
+                headerClassifier = 'headers'
+                ext = 'zip'
+            version = getWpiUtilVersion()
+                sharedConfigs = [ navx_simulator: [] ]
+            }
+        }
         exportsConfigs {
             navx_simulator(ExportsConfig) {
                 x86ExcludeSymbols = [ '_CT??_R0?AV_System_error', '_CT??_R0?AVexception', '_CT??_R0?AVfailure',

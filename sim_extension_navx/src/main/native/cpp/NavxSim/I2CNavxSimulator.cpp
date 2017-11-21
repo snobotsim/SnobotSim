@@ -15,7 +15,7 @@ static void NavxI2CReadBufferCallback(const char* name, void* param,
 }
 
 static void NavxI2CWriteBufferCallback(const char* name, void* param,
-                                           uint8_t* buffer, uint32_t count) {
+                                           const uint8_t* buffer, uint32_t count) {
     I2CNavxSimulator* sim = static_cast<I2CNavxSimulator*>(param);
     sim->HandleWrite(buffer, count);
 }
@@ -31,7 +31,7 @@ I2CNavxSimulator::~I2CNavxSimulator()
 
 }
 
-void I2CNavxSimulator::HandleWrite(uint8_t* buffer, uint32_t count)
+void I2CNavxSimulator::HandleWrite(const uint8_t* buffer, uint32_t count)
 {
     mLastWriteAddress = buffer[0];
 }

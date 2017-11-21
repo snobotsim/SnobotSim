@@ -15,7 +15,7 @@ static void NavxSPIReadBufferCallback(const char* name, void* param,
 }
 
 static void NavxSPIWriteBufferCallback(const char* name, void* param,
-                                           uint8_t* buffer, uint32_t count) {
+		const uint8_t* buffer, uint32_t count) {
     SpiNavxSimulator* sim = static_cast<SpiNavxSimulator*>(param);
     sim->HandleWrite(buffer, count);
 }
@@ -32,7 +32,7 @@ SpiNavxSimulator::~SpiNavxSimulator()
 
 }
 
-void SpiNavxSimulator::HandleWrite(uint8_t* buffer, uint32_t count)
+void SpiNavxSimulator::HandleWrite(const uint8_t* buffer, uint32_t count)
 {
     mLastWriteAddress = buffer[0];
 }
