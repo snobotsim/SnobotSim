@@ -4,7 +4,7 @@
 #include "support/jni_util.h"
 
 
-#include "com_snobot_simulator_jni_NavxSimulatorHal.h"
+#include "com_snobot_simulator_jni_navx_NavxSimulatorJni.h"
 
 #include "NavxSim/I2CNavxSimulator.h"
 #include "NavxSim/SpiNavxSimulator.h"
@@ -17,7 +17,7 @@
  * Method:    createNavx
  * Signature: (Ljava/lang/String;I)J
  */
-JNIEXPORT jlong JNICALL Java_com_snobot_simulator_jni_NavxSimulatorHal_createNavx
+JNIEXPORT jlong JNICALL Java_com_snobot_simulator_jni_navx_NavxSimulatorJni_createNavx
   (JNIEnv * env, jclass, jstring aType, jint aPort)
 {
     std::string type = env->GetStringUTFChars(aType, NULL);
@@ -45,7 +45,7 @@ JNIEXPORT jlong JNICALL Java_com_snobot_simulator_jni_NavxSimulatorHal_createNav
  * Method:    getNavxData
  * Signature: (Ljava/lang/String;JI)D
  */
-JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_NavxSimulatorHal_getNavxData
+JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_navx_NavxSimulatorJni_getNavxData
   (JNIEnv * env, jclass, jstring aType, jlong aPointerAddress, jint aDataType)
 {
     std::string type = env->GetStringUTFChars(aType, NULL);
@@ -85,7 +85,7 @@ JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_NavxSimulatorHal_getNavx
  * Method:    setNavxData
  * Signature: (Ljava/lang/String;JID)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_NavxSimulatorHal_setNavxData
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_navx_NavxSimulatorJni_setNavxData
   (JNIEnv * env, jclass, jstring aType, jlong aPointerAddress, jint aDataType, jdouble aData)
 {
     std::string type = env->GetStringUTFChars(aType, NULL);

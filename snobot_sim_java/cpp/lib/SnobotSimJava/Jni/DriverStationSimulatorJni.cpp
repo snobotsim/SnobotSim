@@ -5,87 +5,22 @@
 
 #include <chrono>
 
-#include "com_snobot_simulator_jni_SensorFeedbackJni.h"
+#include "com_snobot_simulator_jni_DriverStationSimulatorJni.h"
 
-#include "MockData/AnalogInData.h"
-#include "MockData/AnalogGyroData.h"
-#include "MockData/DIOData.h"
 #include "MockData/DriverStationData.h"
-#include "MockData/EncoderData.h"
-#include "MockData/I2CData.h"
 #include "MockData/MockHooks.h"
-#include "MockData/SPIData.h"
 
 #include "SnobotSimJava/Logging/SnobotLogger.h"
 
 extern "C"
 {
 
-
-/*
- * Class:     com_snobot_simulator_jni_SensorFeedbackJni
- * Method:    setAnalogGyroAngle
- * Signature: (D)V
- */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setAnalogGyroAngle
-  (JNIEnv *, jclass, jint aHandle, jdouble aAngle)
-{
-    HALSIM_SetAnalogGyroAngle(aHandle, aAngle);
-}
-
-
-/*
- * Class:     com_snobot_simulator_jni_SensorFeedbackJni
- * Method:    setEncoderDistance
- * Signature: (ID)V
- */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setEncoderDistance
-  (JNIEnv *, jclass, jint aHandle, jdouble aDistance)
-{
-    HALSIM_SetEncoderCount(aHandle, (int) aDistance);
-}
-
-
-/*
- * Class:     com_snobot_simulator_jni_SensorFeedbackJni
- * Method:    setDigitalInput
- * Signature: (IZ)V
- */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setDigitalInput
-  (JNIEnv *, jclass, jint aHandle, jboolean aState)
-{
-    HALSIM_SetDIOValue(aHandle, aState);
-}
-
-
-/*
- * Class:     com_snobot_simulator_jni_SensorFeedbackJni
- * Method:    setAnalogVoltage
- * Signature: (ID)V
- */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setAnalogVoltage
-  (JNIEnv *, jclass, jint aHandle, jdouble aVoltage)
-{
-    HALSIM_SetAnalogInVoltage(aHandle, aVoltage);
-}
-
-/*
- * Class:     com_snobot_simulator_jni_SensorFeedbackJni
- * Method:    setSpiAccumulatorValue
- * Signature: (IJ)V
- */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setSpiAccumulatorValue
-  (JNIEnv *, jclass, jint aHandle, jlong aValue)
-{
-    HALSIM_SetSPISetAccumulatorValue(aHandle, aValue);
-}
-
 /*
  * Class:     com_snobot_simulator_jni_SensorFeedbackJni
  * Method:    setEnabled
  * Signature: (Z)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setEnabled
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_DriverStationSimulatorJni_setEnabled
   (JNIEnv *, jclass, jboolean aEnabled)
 {
     HALSIM_SetDriverStationDsAttached(aEnabled);
@@ -97,7 +32,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setEnable
  * Method:    setAutonomous
  * Signature: (Z)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setAutonomous
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_DriverStationSimulatorJni_setAutonomous
   (JNIEnv *, jclass, jboolean aAuton)
 {
     HALSIM_SetDriverStationAutonomous(aAuton);
@@ -108,7 +43,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setAutono
  * Method:    waitForProgramToStart
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_waitForProgramToStart
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_DriverStationSimulatorJni_waitForProgramToStart
   (JNIEnv *, jclass)
 {
     HALSIM_WaitForProgramStart();
@@ -119,7 +54,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_waitForPr
  * Method:    delayForNextUpdateLoop
  * Signature: (D)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_delayForNextUpdateLoop
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_DriverStationSimulatorJni_delayForNextUpdateLoop
   (JNIEnv *, jclass, jdouble aDelayPeriod)
 {
     if(aDelayPeriod > 0)
@@ -139,7 +74,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_delayForN
  * Method:    getMatchTime
  * Signature: ()D
  */
-JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_getMatchTime
+JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_DriverStationSimulatorJni_getMatchTime
   (JNIEnv *, jclass)
 {
     return HALSIM_GetDriverStationMatchTime();
@@ -151,7 +86,7 @@ JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_getMat
  * Method:    setJoystickInformation
  * Signature: (I[F[SII)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setJoystickInformation
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_DriverStationSimulatorJni_setJoystickInformation
   (JNIEnv * env, jclass,
           jint aHandle, jfloatArray aAxes, jshortArray aPovs, jint aButtonCount, jint aButtonMask)
 {

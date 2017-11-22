@@ -4,6 +4,16 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.snobot.simulator.SensorActuatorRegistry;
+import com.snobot.simulator.jni.standard_components.AnalogCallbackJni;
+import com.snobot.simulator.jni.standard_components.AnalogGyroCallbackJni;
+import com.snobot.simulator.jni.standard_components.DigitalCallbackJni;
+import com.snobot.simulator.jni.standard_components.EncoderCallbackJni;
+import com.snobot.simulator.jni.standard_components.I2CCallbackJni;
+import com.snobot.simulator.jni.standard_components.PcmCallbackJni;
+import com.snobot.simulator.jni.standard_components.PdpCallbackJni;
+import com.snobot.simulator.jni.standard_components.PwmCallbackJni;
+import com.snobot.simulator.jni.standard_components.RelayCallbackJni;
+import com.snobot.simulator.jni.standard_components.SpiCallbackJni;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -56,15 +66,15 @@ public class TestRegisterJavaCallback extends BaseSimulatorTest
     @Test
     public void testUnsupportedOptions()
     {
-        RegisterCallbacksJni.analogCallback("DoesntExist", 0, null);
-        RegisterCallbacksJni.analogGyroCallback("DoesntExist", 0, null);
-        RegisterCallbacksJni.digitalCallback("DoesntExist", 0, null);
-        RegisterCallbacksJni.encoderCallback("DoesntExist", 0, null);
-        RegisterCallbacksJni.i2cCallback("DoesntExist", 0, (HalCallbackValue) null);
-        RegisterCallbacksJni.pcmCallback("DoesntExist", 0, null);
-        RegisterCallbacksJni.pdpCallback("DoesntExist", 0, null);
-        RegisterCallbacksJni.pwmCallback("DoesntExist", 0, null);
-        RegisterCallbacksJni.relayCallback("DoesntExist", 0, null);
-        RegisterCallbacksJni.spiCallback("DoesntExist", 0, (HalCallbackValue) null);
+        AnalogCallbackJni.analogCallback("DoesntExist", 0, null);
+        AnalogGyroCallbackJni.analogGyroCallback("DoesntExist", 0, null);
+        DigitalCallbackJni.digitalCallback("DoesntExist", 0, null);
+        EncoderCallbackJni.encoderCallback("DoesntExist", 0, null);
+        I2CCallbackJni.i2cCallback("DoesntExist", 0, (HalCallbackValue) null);
+        PcmCallbackJni.pcmCallback("DoesntExist", 0, null);
+        PdpCallbackJni.pdpCallback("DoesntExist", 0, null);
+        PwmCallbackJni.pwmCallback("DoesntExist", 0, null);
+        RelayCallbackJni.relayCallback("DoesntExist", 0, null);
+        SpiCallbackJni.spiCallback("DoesntExist", 0, (HalCallbackValue) null);
     }
 }

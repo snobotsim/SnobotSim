@@ -1,18 +1,7 @@
 package com.snobot.simulator.jni;
 
-public class SensorFeedbackJni extends BaseSnobotJni
+public class DriverStationSimulatorJni extends BaseSnobotJni
 {
-
-    public static native void setAnalogGyroAngle(int aHandle, double aAngle);
-
-    public static native void setEncoderDistance(int aHandle, double aAngle);
-
-    public static native void setDigitalInput(int aHandle, boolean aState);
-
-    public static native void setAnalogVoltage(int aHandle, double aVoltage);
-
-    public static native void setSpiAccumulatorValue(int aHandle, long aValue);
-
     public static native void setEnabled(boolean aEnabled);
 
     public static native void setAutonomous(boolean aAuton);

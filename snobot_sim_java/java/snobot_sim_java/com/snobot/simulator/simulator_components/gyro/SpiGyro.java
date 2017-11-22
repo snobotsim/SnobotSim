@@ -1,7 +1,7 @@
 package com.snobot.simulator.simulator_components.gyro;
 
 import com.snobot.simulator.SensorActuatorRegistry;
-import com.snobot.simulator.jni.SpiI2CSimulatorHal;
+import com.snobot.simulator.jni.adx_family.SpiI2CSimulatorJni;
 import com.snobot.simulator.module_wrapper.ASensorWrapper;
 
 public class SpiGyro extends ASensorWrapper implements IGyroWrapper
@@ -27,12 +27,12 @@ public class SpiGyro extends ASensorWrapper implements IGyroWrapper
     @Override
     public double getAngle()
     {
-        return SpiI2CSimulatorHal.getSpiGyroAngle(mType, mNativePointer);
+        return SpiI2CSimulatorJni.getSpiGyroAngle(mType, mNativePointer);
     }
 
     @Override
     public void setAngle(double aAngle)
     {
-        SpiI2CSimulatorHal.setSpiGyroAngle(mType, mNativePointer, aAngle);
+        SpiI2CSimulatorJni.setSpiGyroAngle(mType, mNativePointer, aAngle);
     }
 }

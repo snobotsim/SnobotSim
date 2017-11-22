@@ -9,7 +9,9 @@ import org.apache.log4j.Logger;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.RegisterCallbacksJni;
-import com.snobot.simulator.jni.SensorFeedbackJni;
+import com.snobot.simulator.jni.DriverStationSimulatorJni;
+import com.snobot.simulator.jni.standard_components.I2CCallbackJni;
+import com.snobot.simulator.jni.standard_components.SpiCallbackJni;
 import com.snobot.simulator.module_wrapper.PwmWrapper;
 import com.snobot.simulator.motor_sim.DcMotorModel;
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
@@ -171,25 +173,25 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     @Override
     public void setDisabled(boolean aDisabled)
     {
-        SensorFeedbackJni.setEnabled(!aDisabled);
+        DriverStationSimulatorJni.setEnabled(!aDisabled);
     }
 
     @Override
     public void setAutonomous(boolean aAuton)
     {
-        SensorFeedbackJni.setAutonomous(aAuton);
+        DriverStationSimulatorJni.setAutonomous(aAuton);
     }
 
     @Override
     public double getMatchTime()
     {
-        return SensorFeedbackJni.getMatchTime();
+        return DriverStationSimulatorJni.getMatchTime();
     }
 
     @Override
     public void waitForProgramToStart()
     {
-        SensorFeedbackJni.waitForProgramToStart();
+        DriverStationSimulatorJni.waitForProgramToStart();
     }
 
     @Override
@@ -210,49 +212,49 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     @Override
     public void waitForNextUpdateLoop(double aUpdatePeriod)
     {
-        SensorFeedbackJni.delayForNextUpdateLoop(aUpdatePeriod);
+        DriverStationSimulatorJni.delayForNextUpdateLoop(aUpdatePeriod);
     }
 
     @Override
     public void setJoystickInformation(int aJoystickHandle, float[] aAxesArray, short[] aPovsArray, int aButtonCount, int aButtonMask)
     {
-        SensorFeedbackJni.setJoystickInformation(aJoystickHandle, aAxesArray, aPovsArray, aButtonCount, aButtonMask);
+        DriverStationSimulatorJni.setJoystickInformation(aJoystickHandle, aAxesArray, aPovsArray, aButtonCount, aButtonMask);
     }
 
     @Override
     public void setDefaultSpiSimulator(int aPort, String aType)
     {
-        RegisterCallbacksJni.sSPI_FACTORY.setDefaultWrapper(aPort, aType);
+        SpiCallbackJni.setDefaultWrapper(aPort, aType);
     }
 
     @Override
     public void setDefaultI2CSimulator(int aPort, String aType)
     {
-        RegisterCallbacksJni.sI2C_FACTORY.setDefaultWrapper(aPort, aType);
+        I2CCallbackJni.setDefaultWrapper(aPort, aType);
     }
 
     @Override
     public Collection<String> getAvailableSpiSimulators()
     {
-        return RegisterCallbacksJni.sSPI_FACTORY.getAvailableTypes();
+        return SpiCallbackJni.getAvailableTypes();
     }
 
     @Override
     public Collection<String> getAvailableI2CSimulators()
     {
-        return RegisterCallbacksJni.sI2C_FACTORY.getAvailableTypes();
+        return I2CCallbackJni.getAvailableTypes();
     }
 
     @Override
     public Map<Integer, String> getDefaultI2CWrappers()
     {
-        return RegisterCallbacksJni.sI2C_FACTORY.getDefaults();
+        return I2CCallbackJni.getDefaults();
     }
 
     @Override
     public Map<Integer, String> getDefaultSpiWrappers()
     {
-        return RegisterCallbacksJni.sSPI_FACTORY.getDefaults();
+        return SpiCallbackJni.getDefaults();
     }
 
 }

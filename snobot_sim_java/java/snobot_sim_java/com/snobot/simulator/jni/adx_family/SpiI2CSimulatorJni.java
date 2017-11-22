@@ -1,6 +1,6 @@
-package com.snobot.simulator.jni;
+package com.snobot.simulator.jni.adx_family;
 
-public class SpiI2CSimulatorHal
+public class SpiI2CSimulatorJni
 {
     public enum DataType
     {

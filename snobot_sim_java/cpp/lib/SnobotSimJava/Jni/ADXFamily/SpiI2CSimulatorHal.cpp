@@ -4,7 +4,7 @@
 #include "support/jni_util.h"
 
 
-#include "com_snobot_simulator_jni_SpiI2CSimulatorHal.h"
+#include "com_snobot_simulator_jni_adx_family_SpiI2CSimulatorJni.h"
 
 #include "ADXL345_I2CAccelerometerData.h"
 #include "ADXL345_SpiAccelerometerData.h"

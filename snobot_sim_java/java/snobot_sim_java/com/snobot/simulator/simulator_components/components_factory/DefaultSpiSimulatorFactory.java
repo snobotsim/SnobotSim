@@ -8,8 +8,8 @@ import java.util.Map;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import com.snobot.simulator.jni.NavxSimulatorHal;
-import com.snobot.simulator.jni.SpiI2CSimulatorHal;
+import com.snobot.simulator.jni.adx_family.SpiI2CSimulatorJni;
+import com.snobot.simulator.jni.navx.NavxSimulatorJni;
 import com.snobot.simulator.simulator_components.ISpiWrapper;
 import com.snobot.simulator.simulator_components.accelerometer.SpiI2CAccelerometer;
 import com.snobot.simulator.simulator_components.gyro.SpiGyro;
@@ -62,22 +62,22 @@ public class DefaultSpiSimulatorFactory implements ISpiSimulatorFactory
 
         if ("NavX".equals(aType))
         {
-            long nativePointer = NavxSimulatorHal.createNavx(fullType, aPort);
+            long nativePointer = NavxSimulatorJni.createNavx(fullType, aPort);
             new NavxSimulatorWrapper(fullType, nativePointer, 200 + aPort * 3);
         }
         else if ("ADXRS450".equals(aType))
         {
-            long nativePointer = SpiI2CSimulatorHal.createSpiGyro(fullType, aPort);
+            long nativePointer = SpiI2CSimulatorJni.createSpiGyro(fullType, aPort);
             new SpiGyro(fullType, nativePointer, 100 + aPort);
         }
         else if ("ADXL345".equals(aType))
         {
-            long nativePointer = SpiI2CSimulatorHal.createSpiI2cAccelerometer(fullType, aPort);
+            long nativePointer = SpiI2CSimulatorJni.createSpiI2cAccelerometer(fullType, aPort);
             new SpiI2CAccelerometer(fullType, nativePointer, 100 + aPort * 3);
         }
         else if ("ADXL362".equals(aType))
         {
-            long nativePointer = SpiI2CSimulatorHal.createSpiI2cAccelerometer(fullType, aPort);
+            long nativePointer = SpiI2CSimulatorJni.createSpiI2cAccelerometer(fullType, aPort);
             new SpiI2CAccelerometer(fullType, nativePointer, 150 + aPort * 3);
         }
 

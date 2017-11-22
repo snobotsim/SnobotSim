@@ -1,6 +1,6 @@
-package com.snobot.simulator.jni;
+package com.snobot.simulator.jni.navx;
 
-public class NavxSimulatorHal
+public class NavxSimulatorJni
 {
     public enum DataType
     {

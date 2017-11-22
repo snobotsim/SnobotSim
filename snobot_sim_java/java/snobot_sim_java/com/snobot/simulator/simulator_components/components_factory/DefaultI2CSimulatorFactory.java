@@ -8,8 +8,8 @@ import java.util.Map;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import com.snobot.simulator.jni.NavxSimulatorHal;
-import com.snobot.simulator.jni.SpiI2CSimulatorHal;
+import com.snobot.simulator.jni.adx_family.SpiI2CSimulatorJni;
+import com.snobot.simulator.jni.navx.NavxSimulatorJni;
 import com.snobot.simulator.simulator_components.II2CWrapper;
 import com.snobot.simulator.simulator_components.accelerometer.SpiI2CAccelerometer;
 import com.snobot.simulator.simulator_components.navx.NavxSimulatorWrapper;
@@ -60,11 +60,11 @@ public class DefaultI2CSimulatorFactory implements II2cSimulatorFactory
         String fullType = "I2C " + aType;
         if ("NavX".equals(aType))
         {
-            new NavxSimulatorWrapper(fullType, NavxSimulatorHal.createNavx(fullType, aPort), 250 + aPort * 3);
+            new NavxSimulatorWrapper(fullType, NavxSimulatorJni.createNavx(fullType, aPort), 250 + aPort * 3);
         }
         if ("ADXL345".equals(aType))
         {
-            new SpiI2CAccelerometer(fullType, SpiI2CSimulatorHal.createSpiI2cAccelerometer(fullType, aPort), 50 + aPort * 3);
+            new SpiI2CAccelerometer(fullType, SpiI2CSimulatorJni.createSpiI2cAccelerometer(fullType, aPort), 50 + aPort * 3);
         }
 
         return null;

@@ -1,8 +1,8 @@
 package com.snobot.simulator.simulator_components.accelerometer;
 
 import com.snobot.simulator.SensorActuatorRegistry;
-import com.snobot.simulator.jni.SpiI2CSimulatorHal;
-import com.snobot.simulator.jni.SpiI2CSimulatorHal.DataType;
+import com.snobot.simulator.jni.adx_family.SpiI2CSimulatorJni;
+import com.snobot.simulator.jni.adx_family.SpiI2CSimulatorJni.DataType;
 import com.snobot.simulator.module_wrapper.ASensorWrapper;
 
 public class SpiI2CAccelerometer
@@ -12,9 +12,9 @@ public class SpiI2CAccelerometer
     {
         private final long mNativePointer;
         private final String mType;
-        private final SpiI2CSimulatorHal.DataType mDataType;
+        private final SpiI2CSimulatorJni.DataType mDataType;
 
-        public AdxAccelWrapper(long aNativePointer, String aType, String aExtraName, SpiI2CSimulatorHal.DataType aDataType)
+        public AdxAccelWrapper(long aNativePointer, String aType, String aExtraName, SpiI2CSimulatorJni.DataType aDataType)
         {
             super(aType + aExtraName);
 
@@ -26,13 +26,13 @@ public class SpiI2CAccelerometer
         @Override
         public void setAcceleration(double aAcceleration)
         {
-            SpiI2CSimulatorHal.setSpiI2cAccelerometerData(mType, mNativePointer, mDataType, aAcceleration);
+            SpiI2CSimulatorJni.setSpiI2cAccelerometerData(mType, mNativePointer, mDataType, aAcceleration);
         }
 
         @Override
         public double getAcceleration()
         {
-            return SpiI2CSimulatorHal.getSpiI2cAccelerometerData(mType, mNativePointer, mDataType);
+            return SpiI2CSimulatorJni.getSpiI2cAccelerometerData(mType, mNativePointer, mDataType);
         }
 
     }

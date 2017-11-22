@@ -112,11 +112,20 @@ dependencies {
 }
 
 def jniClasses = [
-    'com.snobot.simulator.jni.RegisterCallbacksJni',
-    'com.snobot.simulator.jni.SensorFeedbackJni',
-    'com.snobot.simulator.jni.SensorFeedbackJniTestHelper',
-    'com.snobot.simulator.jni.SpiI2CSimulatorHal',
-    'com.snobot.simulator.jni.NavxSimulatorHal',
+    'com.snobot.simulator.jni.DriverStationSimulatorJni',
+    'com.snobot.simulator.jni.adx_family.SpiI2CSimulatorJni',
+    'com.snobot.simulator.jni.can.CanCallbackJni',
+    'com.snobot.simulator.jni.navx.NavxSimulatorJni',
+    'com.snobot.simulator.jni.standard_components.AnalogCallbackJni',
+    'com.snobot.simulator.jni.standard_components.AnalogGyroCallbackJni',
+    'com.snobot.simulator.jni.standard_components.DigitalCallbackJni',
+    'com.snobot.simulator.jni.standard_components.EncoderCallbackJni',
+    'com.snobot.simulator.jni.standard_components.I2CCallbackJni',
+    'com.snobot.simulator.jni.standard_components.PcmCallbackJni',
+    'com.snobot.simulator.jni.standard_components.PdpCallbackJni',
+    'com.snobot.simulator.jni.standard_components.PwmCallbackJni',
+    'com.snobot.simulator.jni.standard_components.RelayCallbackJni',
+    'com.snobot.simulator.jni.standard_components.SpiCallbackJni',
 ]
     
 model {

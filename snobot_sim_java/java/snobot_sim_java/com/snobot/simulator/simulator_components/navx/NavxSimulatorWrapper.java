@@ -1,8 +1,8 @@
 package com.snobot.simulator.simulator_components.navx;
 
 import com.snobot.simulator.SensorActuatorRegistry;
-import com.snobot.simulator.jni.NavxSimulatorHal;
-import com.snobot.simulator.jni.NavxSimulatorHal.DataType;
+import com.snobot.simulator.jni.navx.NavxSimulatorJni;
+import com.snobot.simulator.jni.navx.NavxSimulatorJni.DataType;
 import com.snobot.simulator.module_wrapper.ASensorWrapper;
 import com.snobot.simulator.simulator_components.accelerometer.IAccelerometerWrapper;
 import com.snobot.simulator.simulator_components.gyro.IGyroWrapper;
@@ -13,9 +13,9 @@ public class NavxSimulatorWrapper
     {
         private final long mNativePointer;
         private final String mType;
-        private final NavxSimulatorHal.DataType mDataType;
+        private final NavxSimulatorJni.DataType mDataType;
 
-        public NavxAccelWrapper(long aNativePointer, String aType, String aExtraName, NavxSimulatorHal.DataType aDataType)
+        public NavxAccelWrapper(long aNativePointer, String aType, String aExtraName, NavxSimulatorJni.DataType aDataType)
         {
             super(aType + aExtraName);
 
@@ -27,13 +27,13 @@ public class NavxSimulatorWrapper
         @Override
         public void setAcceleration(double aAcceleration)
         {
-            NavxSimulatorHal.setNavxData(mType, mNativePointer, mDataType, aAcceleration);
+            NavxSimulatorJni.setNavxData(mType, mNativePointer, mDataType, aAcceleration);
         }
 
         @Override
         public double getAcceleration()
         {
-            return NavxSimulatorHal.getNavxData(mType, mNativePointer, mDataType);
+            return NavxSimulatorJni.getNavxData(mType, mNativePointer, mDataType);
         }
 
     }
@@ -42,9 +42,9 @@ public class NavxSimulatorWrapper
     {
         private final long mNativePointer;
         private final String mType;
-        private final NavxSimulatorHal.DataType mDataType;
+        private final NavxSimulatorJni.DataType mDataType;
 
-        public NavxGyroWrapper(long aNativePointer, String aType, String aExtraName, NavxSimulatorHal.DataType aDataType)
+        public NavxGyroWrapper(long aNativePointer, String aType, String aExtraName, NavxSimulatorJni.DataType aDataType)
         {
             super(aType + aExtraName);
 
@@ -56,13 +56,13 @@ public class NavxSimulatorWrapper
         @Override
         public void setAngle(double aAngle)
         {
-            NavxSimulatorHal.setNavxData(mType, mNativePointer, mDataType, aAngle);
+            NavxSimulatorJni.setNavxData(mType, mNativePointer, mDataType, aAngle);
         }
 
         @Override
         public double getAngle()
         {
-            return NavxSimulatorHal.getNavxData(mType, mNativePointer, mDataType);
+            return NavxSimulatorJni.getNavxData(mType, mNativePointer, mDataType);
         }
 
     }
