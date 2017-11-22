@@ -300,7 +300,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_can_CanCallbackJni_reset
 {
     static int dataPtr = 0;
 
-//    HALSIM_ResetCAN();
+    HALSIM_ResetCanData();
 
     // Initialize
     HALSIM_RegisterCanSendMessageCallback(&CanSendMessageCallback, &dataPtr);
