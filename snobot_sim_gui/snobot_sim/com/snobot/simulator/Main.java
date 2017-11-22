@@ -1,6 +1,7 @@
 package com.snobot.simulator;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -19,6 +20,8 @@ public class Main
 
     private static final File DEFAULT_PLUGIN_DIR = new File("user_libs");
     private static final String sUSER_CONFIG_DIR = "user_config/";
+
+    private static final PrintStream VERSION_PRINTER = System.out;
 
     public static void main(String[] args)
     {
@@ -81,11 +84,11 @@ public class Main
 
     private static void printVersions()
 	{
-        System.out.println("Versions:");
-        System.out.println("Wpilib Java    : " + WPILibVersion.Version);
-        System.out.println("SnobotSim HAL  : " + SnobotSimGuiVersion.Version);
-        System.out.println("SnobotSim GUI  : " + DataAccessorFactory.getInstance().getSimulatorDataAccessor().getNativeBuildVersion());
-        System.out.println("Simulator Type : " + DataAccessorFactory.getInstance().getAccessorType());
+        VERSION_PRINTER.println("Versions:");
+        VERSION_PRINTER.println("Wpilib Java    : " + WPILibVersion.Version);
+        VERSION_PRINTER.println("SnobotSim HAL  : " + SnobotSimGuiVersion.Version);
+        VERSION_PRINTER.println("SnobotSim GUI  : " + DataAccessorFactory.getInstance().getSimulatorDataAccessor().getNativeBuildVersion());
+        VERSION_PRINTER.println("Simulator Type : " + DataAccessorFactory.getInstance().getAccessorType());
     }
 
     private static void discoverRobots()
@@ -138,7 +141,7 @@ public class Main
                 }
             }
 
-            System.out.println(output.toString());
+            VERSION_PRINTER.println(output.toString());
         }
         catch (Exception e)
         {

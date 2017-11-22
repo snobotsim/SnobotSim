@@ -74,8 +74,12 @@ task combineNativeLibrariesIntoOne(type: Jar) {
         from(zipTree(it))
     }
     
-    from('../sim_extension_navx/build/libs/navx_simulator/shared/navx_simulator.dll') { 
+    def navx_path = '../sim_extension_navx/build/libs/navx_simulator/shared/'
+    from(navx_path + 'navx_simulator.dll') { 
         into "windows/x86-64"
+    }
+    from(navx_path + 'libnavx_simulator.so') { 
+        into "linux/x86-64"
     }
 }
 build.dependsOn packageNativeFilesInJar

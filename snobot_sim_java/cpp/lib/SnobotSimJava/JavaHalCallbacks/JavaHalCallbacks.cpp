@@ -11,7 +11,7 @@
 #include "MockData/AnalogInData.h"
 #include "MockData/AnalogOutData.h"
 #include "MockData/AnalogGyroData.h"
-//#include "MockData/CANData.h"
+#include "MockData/CanData.h"
 #include "MockData/DIOData.h"
 #include "MockData/EncoderData.h"
 #include "MockData/I2CData.h"
@@ -133,7 +133,7 @@ namespace SnobotSimJava
     //////////////////////////////////////////////
     CallbackHelperContainer gAnalogCallbackContainer;
     CallbackHelperContainer gAnalogGyroCallbackContainer;
-    CallbackHelperContainer gCanCallbackContainer;
+    CanCallbackHelperContainer gCanCallbackContainer;
     CallbackHelperContainer gDigitalCallbackContainer;
     CallbackHelperContainer gEncoderCallbackContainer;
     BufferCallbackHelperContainer gI2CCallbackContainer;
@@ -145,7 +145,7 @@ namespace SnobotSimJava
 
     CallbackHelperContainer& GetAnalogCallback()     { return gAnalogCallbackContainer; }
     CallbackHelperContainer& GetAnalogGyroCallback() { return gAnalogGyroCallbackContainer; }
-    CallbackHelperContainer& GetCanCallback()        { return gCanCallbackContainer; }
+    CanCallbackHelperContainer& GetCanCallback()     { return gCanCallbackContainer; }
     CallbackHelperContainer& GetDigitalCallback()    { return gDigitalCallbackContainer; }
     CallbackHelperContainer& GetEncoderCallback()    { return gEncoderCallbackContainer; }
     BufferCallbackHelperContainer& GetI2CCallback()  { return gI2CCallbackContainer; }
@@ -165,10 +165,6 @@ namespace SnobotSimJava
     void AnalogGyroCallback(const char* name, void* param, const struct HAL_Value* value)
     {
         CallJavaCallback(gAnalogGyroCallbackContainer, name, param, value);
-    }
-    void CanCallback(const char* name, void* param, const struct HAL_Value* value)
-    {
-        CallJavaCallback(gCanCallbackContainer, name, param, value);
     }
     void DigitalIOCallback(const char* name, void* param, const struct HAL_Value* value)
     {
@@ -221,6 +217,223 @@ namespace SnobotSimJava
 
 
 
+
+    void CanSendMessageCallback(const char* name, void* param,
+
+    		    		uint32_t messageID, const uint8_t* data,
+    		    		                         uint8_t dataSize, int32_t periodMs, int32_t* status)
+    {
+    	const jclass& aClazz = gCanCallbackContainer.mClazz;
+    	const jmethodID& aMethodId = gCanCallbackContainer.mSendMessageMethodId;
+
+        JavaVMAttachArgs args = {JNI_VERSION_1_2, 0, 0};
+        JNIEnv* aEnv;
+        gJvm->AttachCurrentThread((void**) &aEnv, &args);
+
+        if(aEnv == NULL || aClazz == NULL || aMethodId == NULL)
+        {
+            SNOBOT_LOG(SnobotLogging::CRITICAL, "JNI Components not setup yet " << aEnv << ", " << aClazz << ", " << aMethodId);
+            return;
+        }
+
+        int port = *((int*) param);
+        jstring nameString = MakeJString(aEnv, name);
+
+        jobject dataBuffer = aEnv->NewDirectByteBuffer(const_cast<uint8_t*>(data), (uint32_t) dataSize);
+        aEnv->CallStaticVoidMethod(aClazz, aMethodId, nameString, port, messageID, dataBuffer, dataSize, periodMs);
+
+        if (aEnv->ExceptionCheck())
+        {
+            aEnv->ExceptionDescribe();
+        }
+    }
+    void CanReadMessageCallback(const char* name, void* param,
+    		    		uint32_t* messageID, uint32_t messageIDMask,
+    		            uint8_t* data, uint8_t* dataSize,
+    		            uint32_t* timeStamp, int32_t* status)
+    {
+    	const jclass& aClazz = gCanCallbackContainer.mClazz;
+    	const jmethodID& aMethodId = gCanCallbackContainer.mRecvMessageMethodId;
+
+        JavaVMAttachArgs args = {JNI_VERSION_1_2, 0, 0};
+        JNIEnv* aEnv;
+        gJvm->AttachCurrentThread((void**) &aEnv, &args);
+
+        if(aEnv == NULL || aClazz == NULL || aMethodId == NULL)
+        {
+            SNOBOT_LOG(SnobotLogging::CRITICAL, "JNI Components not setup yet " << aEnv << ", " << aClazz << ", " << aMethodId);
+            return;
+        }
+
+        int port = *((int*) param);
+        jstring nameString = MakeJString(aEnv, name);
+
+        uint8_t castDataSize = *dataSize;
+        jobject dataBuffer = aEnv->NewDirectByteBuffer(const_cast<uint8_t*>(data), 8);
+		uint32_t castMessageId = *messageID;
+		uint32_t castTimeStamp = *timeStamp;
+
+        aEnv->CallStaticVoidMethod(aClazz, aMethodId, nameString, port, castMessageId, messageIDMask, dataBuffer, castDataSize, castTimeStamp);
+
+        if (aEnv->ExceptionCheck())
+        {
+            aEnv->ExceptionDescribe();
+        }
+    }
+
+    void CanOpenStreamCallback(
+    		const char* name, void* param,
+    		uint32_t* sessionHandle, uint32_t messageID,
+            uint32_t messageIDMask, uint32_t maxMessages,
+            int32_t* status)
+    {
+    	const jclass& aClazz = gCanCallbackContainer.mClazz;
+    	const jmethodID& aMethodId = gCanCallbackContainer.mOpenStreamMethodId;
+
+        JavaVMAttachArgs args = {JNI_VERSION_1_2, 0, 0};
+        JNIEnv* aEnv;
+        gJvm->AttachCurrentThread((void**) &aEnv, &args);
+
+        if(aEnv == NULL || aClazz == NULL || aMethodId == NULL)
+        {
+            SNOBOT_LOG(SnobotLogging::CRITICAL, "JNI Components not setup yet " << aEnv << ", " << aClazz << ", " << aMethodId);
+            return;
+        }
+
+        int port = *((int*) param);
+        jstring nameString = MakeJString(aEnv, name);
+
+        int castSessionHandle = *sessionHandle;
+
+        *sessionHandle = aEnv->CallStaticIntMethod(aClazz, aMethodId, nameString, port, castSessionHandle, messageID, messageIDMask, maxMessages);
+
+        if (aEnv->ExceptionCheck())
+        {
+            aEnv->ExceptionDescribe();
+        }
+    }
+
+    void CanCloseStreamSessionCallback(
+    		const char* name, void* param,
+    		uint32_t sessionHandle)
+    {
+    	const jclass& aClazz = gCanCallbackContainer.mClazz;
+    	const jmethodID& aMethodId = gCanCallbackContainer.mCloseStreamMethodId;
+
+        JavaVMAttachArgs args = {JNI_VERSION_1_2, 0, 0};
+        JNIEnv* aEnv;
+        gJvm->AttachCurrentThread((void**) &aEnv, &args);
+
+        if(aEnv == NULL || aClazz == NULL || aMethodId == NULL)
+        {
+            SNOBOT_LOG(SnobotLogging::CRITICAL, "JNI Components not setup yet " << aEnv << ", " << aClazz << ", " << aMethodId);
+            return;
+        }
+
+        int port = *((int*) param);
+        jstring nameString = MakeJString(aEnv, name);
+
+        aEnv->CallStaticVoidMethod(aClazz, aMethodId, nameString, port, sessionHandle);
+
+        if (aEnv->ExceptionCheck())
+        {
+            aEnv->ExceptionDescribe();
+        }
+    }
+
+    void CanReadStreamSessionCallback(
+    		const char* name, void* param,
+    		uint32_t sessionHandle,
+            struct HAL_CANStreamMessage* messages,
+            uint32_t messagesToRead, uint32_t* messagesRead,
+            int32_t* status)
+    {
+    	const jclass& aClazz = gCanCallbackContainer.mClazz;
+    	const jmethodID& aMethodId = gCanCallbackContainer.mReadStreamMethodId;
+
+        JavaVMAttachArgs args = {JNI_VERSION_1_2, 0, 0};
+        JNIEnv* aEnv;
+        gJvm->AttachCurrentThread((void**) &aEnv, &args);
+
+        if(aEnv == NULL || aClazz == NULL || aMethodId == NULL)
+        {
+            SNOBOT_LOG(SnobotLogging::CRITICAL, "JNI Components not setup yet " << aEnv << ", " << aClazz << ", " << aMethodId);
+            return;
+        }
+
+        int port = *((int*) param);
+        jstring nameString = MakeJString(aEnv, name);
+
+    	jclass byteBufferClazz =  aEnv->FindClass("java/nio/ByteBuffer");
+
+        jobjectArray dataBufferArray = aEnv->NewObjectArray(20, byteBufferClazz, NULL);
+
+        // Copy all of the messages into the JNI buffer
+        for(int i = 0; i < 20; ++i)
+        {
+        	uint8_t* dataBuffer[sizeof(HAL_CANStreamMessage)];
+        	std::memset(dataBuffer, 0, sizeof(HAL_CANStreamMessage));
+
+            jobject theBuffer = aEnv->NewDirectByteBuffer(dataBuffer, sizeof(HAL_CANStreamMessage));
+            aEnv->SetObjectArrayElement(dataBufferArray, i, theBuffer);
+        }
+
+        // Call the Java method
+        *messagesRead = aEnv->CallStaticIntMethod(aClazz, aMethodId, nameString, port, sessionHandle, dataBufferArray, messagesToRead);
+
+        // Copy it all back to the raw buffer used by the HAL
+        for(unsigned int i = 0; i < *messagesRead; ++i)
+        {
+            uint8_t *dataPtr = nullptr;
+            jobject data = aEnv->GetObjectArrayElement(dataBufferArray, i);
+            if (data != 0)
+            {
+                dataPtr = (uint8_t *)aEnv->GetDirectBufferAddress(data);
+            }
+
+        	std::memcpy(&messages[i], dataPtr, sizeof(HAL_CANStreamMessage));
+        }
+
+        if (aEnv->ExceptionCheck())
+        {
+            aEnv->ExceptionDescribe();
+        }
+    }
+
+    void CanGetCANStatusCallback(
+    		const char* name, void* param,
+    		float* percentBusUtilization, uint32_t* busOffCount,
+            uint32_t* txFullCount, uint32_t* receiveErrorCount,
+            uint32_t* transmitErrorCount, int32_t* status)
+    {
+    	const jclass& aClazz = gCanCallbackContainer.mClazz;
+    	const jmethodID& aMethodId = gCanCallbackContainer.mGetCanStatusMethodId;
+
+        JavaVMAttachArgs args = {JNI_VERSION_1_2, 0, 0};
+        JNIEnv* aEnv;
+        gJvm->AttachCurrentThread((void**) &aEnv, &args);
+
+        if(aEnv == NULL || aClazz == NULL || aMethodId == NULL)
+        {
+            SNOBOT_LOG(SnobotLogging::CRITICAL, "JNI Components not setup yet " << aEnv << ", " << aClazz << ", " << aMethodId);
+            return;
+        }
+
+        int port = *((int*) param);
+        jstring nameString = MakeJString(aEnv, name);
+
+        aEnv->CallStaticVoidMethod(aClazz, aMethodId, nameString, port,
+        		*percentBusUtilization, *busOffCount, *txFullCount, *receiveErrorCount, *transmitErrorCount);
+
+        if (aEnv->ExceptionCheck())
+        {
+            aEnv->ExceptionDescribe();
+        }
+    }
+
+
+
+
     //////////////////////////////////////////////
     // Connect Callbacks
     //////////////////////////////////////////////
@@ -247,12 +460,12 @@ namespace SnobotSimJava
         }
 
         {
-//            HALSIM_RegisterCANSendMessageCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
-//            HALSIM_RegisterCANReceiveMessageCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
-//            HALSIM_RegisterCANOpenStreamSessionCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
-//            HALSIM_RegisterCANCloseStreamSessionCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
-//            HALSIM_RegisterCANReadStreamSessionCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
-//            HALSIM_RegisterCANGetCANStatusCallback(0, &CanCallback, &gAnalogGyroArrayIndices[0], false);
+            HALSIM_RegisterCanSendMessageCallback(&CanSendMessageCallback, &gAnalogGyroArrayIndices[0]);
+            HALSIM_RegisterCanReceiveMessageCallback(&CanReadMessageCallback, &gAnalogGyroArrayIndices[0]);
+            HALSIM_RegisterCanOpenStreamCallback(&CanOpenStreamCallback, &gAnalogGyroArrayIndices[0]);
+            HALSIM_RegisterCanCloseStreamCallback(&CanCloseStreamSessionCallback, &gAnalogGyroArrayIndices[0]);
+            HALSIM_RegisterCanReadStreamCallback(&CanReadStreamSessionCallback, &gAnalogGyroArrayIndices[0]);
+            HALSIM_RegisterCanGetCANStatusCallback(&CanGetCANStatusCallback, &gAnalogGyroArrayIndices[0]);
         }
 
         for(int i = 0; i < HAL_GetNumDigitalHeaders(); ++i)

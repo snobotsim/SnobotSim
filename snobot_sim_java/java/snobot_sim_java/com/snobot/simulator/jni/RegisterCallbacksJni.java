@@ -164,7 +164,53 @@ public class RegisterCallbacksJni extends BaseSnobotJni
 
     public static void canCallback(String callbackType, int port, HalCallbackValue halValue)
     {
-        sCAN_MANAGER.handleIncomingMessage(callbackType, halValue.mInt);
+        sLOGGER.log(Level.ERROR, "Shouldn't be called directly " + callbackType + " - " + halValue);
+    }
+
+    // uint32_t messageID, const uint8_t* data,
+    // uint8_t dataSize, int32_t periodMs, int32_t* status
+
+    public static void canCallback(String callbackType, int port, int aMessageId, ByteBuffer aData, int aDataSize, int aPeriodMs)
+    {
+        sCAN_MANAGER.handleSendMessage(callbackType, aMessageId, aData, aDataSize);
+    }
+
+    public static void canCallback(String callbackType, int port, int aMessageId, int messageIDMask, ByteBuffer aData, int aDataSize, int aTimestamp)
+    {
+        sCAN_MANAGER.handleReceiveMessage(callbackType, aMessageId, aData, aDataSize);
+    }
+
+    public static int canCallback(String callbackType, int port, int messageId, int messageIdMask, int maxMessages)
+    {
+        return sCAN_MANAGER.handleOpenStream(callbackType, messageId, messageIdMask, maxMessages);
+    }
+
+    public static void canCallback(String callbackType, int port, int sessionHandle)
+    {
+        sCAN_MANAGER.handleCloseStream(callbackType, sessionHandle);
+    }
+
+    // public static native int canCallbackXXXXX(String callbackType, int port,
+    // int sessionHandle, Object messages, int messagesToRead);
+    //
+    // public static native int canCallbackXXXXXZZ(String callbackType, int
+    // port, int sessionHandle, ByteBuffer[] messages, int messagesToRead);
+    public static int canCallback(String callbackType, int port, int sessionHandle, ByteBuffer[] messages, int messagesToRead)
+    {
+//        int messageId = 0x2041840;
+//
+//        messages[0].order(ByteOrder.LITTLE_ENDIAN);
+//
+//        messages[0].putInt(messageId);
+//        messages[0].position(0);
+        
+        return sCAN_MANAGER.handleReadStream(callbackType, sessionHandle, messages, messagesToRead);
+    }
+
+    public static void canCallback(String callbackType, int port, float percentVbus, int busOffCount, int txFullCount, int recvErroRCount,
+            int transmitCount)
+    {
+        sLOGGER.log(Level.ERROR, "Unsupported CanCallback (getstatus) ");
     }
 
     public static void digitalCallback(String callbackType, int port, HalCallbackValue halValue)
@@ -238,24 +284,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
 
     public static void i2cCallback(String callbackType, int port, ByteBuffer buffer)
     {
-        if (false)
-        {
-
-        }
-        // if ("Read".equals(callbackType))
-        // {
-        // SensorActuatorRegistry.get().getSpiWrappers().get(port).handleRead(buffer);
-        // }
-        // else if ("Write".equals(callbackType))
-        // {
-        // SensorActuatorRegistry.get().getSpiWrappers().get(port).handleWrite(buffer);
-        // }
-        else
-        {
-            sLOGGER.log(Level.ERROR, "Unknown I2C callback " + callbackType + " - " + buffer.capacity());
-        }
-
-        // System.out.println("Post: " + Arrays.toString(buffer));
+        sLOGGER.log(Level.ERROR, "Unknown I2C callback " + callbackType + " - " + buffer.capacity());
     }
 
     public static void pcmCallback(String callbackType, int port, HalCallbackValue halValue)
@@ -328,7 +357,6 @@ public class RegisterCallbacksJni extends BaseSnobotJni
 
     public static void spiCallback(String callbackType, int port, HalCallbackValue halValue)
     {
-        System.out.println(callbackType);
         if ("Initialized".equals(callbackType))
         {
             ISpiWrapper wrapper = sSPI_FACTORY.createSpiWrapper(port);
@@ -350,7 +378,6 @@ public class RegisterCallbacksJni extends BaseSnobotJni
 
     public static void spiCallback(String callbackType, int port, ByteBuffer buffer)
     {
-        System.out.println(callbackType);
         if ("Read".equals(callbackType))
         {
             SensorActuatorRegistry.get().getSpiWrappers().get(port).handleRead(buffer);
@@ -359,7 +386,5 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         {
             SensorActuatorRegistry.get().getSpiWrappers().get(port).handleWrite(buffer);
         }
-
-        // System.out.println("Post: " + Arrays.toString(buffer));
     }
 }

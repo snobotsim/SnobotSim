@@ -85,7 +85,44 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RegisterCallbacksJni_regist
 {
     SnobotSimJava::SetGlobalEnvironment(env);
     std::string functionName = env->GetStringUTFChars(aFunctionName, NULL);
-    SetCallbackContainerInfo(env, clz, functionName, SnobotSimJava::GetCanCallback());
+    SnobotSimJava::CanCallbackHelperContainer& callbackContainer = SnobotSimJava::GetCanCallback();
+    SetCallbackContainerInfo(env, clz, functionName, callbackContainer);
+
+    callbackContainer.mSendMessageMethodId = env->GetStaticMethodID(callbackContainer.mClazz, functionName.c_str(), "(Ljava/lang/String;IILjava/nio/ByteBuffer;II)V");
+    if (callbackContainer.mSendMessageMethodId == NULL)
+    {
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Failed to find method reference for function " << functionName << "(SendMessage)");
+    }
+
+    callbackContainer.mRecvMessageMethodId = env->GetStaticMethodID(callbackContainer.mClazz, functionName.c_str(), "(Ljava/lang/String;IIILjava/nio/ByteBuffer;II)V");
+    if (callbackContainer.mRecvMessageMethodId == NULL)
+    {
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Failed to find method reference for function " << functionName << " (RecvMessage)");
+    }
+
+    callbackContainer.mOpenStreamMethodId = env->GetStaticMethodID(callbackContainer.mClazz, functionName.c_str(), "(Ljava/lang/String;IIII)I");
+    if (callbackContainer.mOpenStreamMethodId == NULL)
+    {
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Failed to find method reference for function " << functionName << " (OpenStream)");
+    }
+
+    callbackContainer.mCloseStreamMethodId = env->GetStaticMethodID(callbackContainer.mClazz, functionName.c_str(), "(Ljava/lang/String;II)V");
+    if (callbackContainer.mCloseStreamMethodId == NULL)
+    {
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Failed to find method reference for function " << functionName << " (CloseStream)");
+    }
+
+    callbackContainer.mReadStreamMethodId = env->GetStaticMethodID(callbackContainer.mClazz, functionName.c_str(), "(Ljava/lang/String;II[Ljava/nio/ByteBuffer;I)I");
+    if (callbackContainer.mReadStreamMethodId == NULL)
+    {
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Failed to find method reference for function " << functionName << " (ReadStream)");
+    }
+
+    callbackContainer.mGetCanStatusMethodId = env->GetStaticMethodID(callbackContainer.mClazz, functionName.c_str(), "(Ljava/lang/String;IFIIII)V");
+    if (callbackContainer.mGetCanStatusMethodId == NULL)
+    {
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Failed to find method reference for function " << functionName << " (GetCanStatus)");
+    }
 }
 
 /*

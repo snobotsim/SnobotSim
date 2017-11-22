@@ -32,11 +32,21 @@ namespace SnobotSimJava
         jmethodID mWriteBufferMethodId;
     };
 
+    struct CanCallbackHelperContainer : public CallbackHelperContainer
+    {
+        jmethodID mSendMessageMethodId;
+        jmethodID mRecvMessageMethodId;
+        jmethodID mOpenStreamMethodId;
+        jmethodID mCloseStreamMethodId;
+        jmethodID mReadStreamMethodId;
+        jmethodID mGetCanStatusMethodId;
+    };
+
     void SetGlobalEnvironment(JNIEnv * env);
 
     CallbackHelperContainer& GetAnalogCallback();
     CallbackHelperContainer& GetAnalogGyroCallback();
-    CallbackHelperContainer& GetCanCallback();
+    CanCallbackHelperContainer& GetCanCallback();
     CallbackHelperContainer& GetDigitalCallback();
     CallbackHelperContainer& GetEncoderCallback();
     BufferCallbackHelperContainer& GetI2CCallback();

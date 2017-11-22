@@ -163,9 +163,6 @@ public class ADXL345_SPI extends SensorBase implements Accelerometer, LiveWindow
     // Sensor is little endian
     transferBuffer.order(ByteOrder.LITTLE_ENDIAN);
 
-        System.out.println("Java: " + transferBuffer.getShort(0));
-        System.out.println("Java: " + transferBuffer.getShort(1));
-
     return transferBuffer.getShort(1) * kGsPerLSB;
   }
 

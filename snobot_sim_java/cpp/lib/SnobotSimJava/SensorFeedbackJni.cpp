@@ -9,7 +9,6 @@
 
 #include "MockData/AnalogInData.h"
 #include "MockData/AnalogGyroData.h"
-//#include "MockData/CANData.h"
 #include "MockData/DIOData.h"
 #include "MockData/DriverStationData.h"
 #include "MockData/EncoderData.h"
@@ -79,57 +78,6 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setSpiAcc
   (JNIEnv *, jclass, jint aHandle, jlong aValue)
 {
     HALSIM_SetSPISetAccumulatorValue(aHandle, aValue);
-}
-
-/*
- * Class:     com_snobot_simulator_jni_SensorFeedbackJni
- * Method:    getCanSetValueForRead
- * Signature: (Ljava/nio/ByteBuffer;I)V
- */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setCanSetValueForRead
-  (JNIEnv * env, jclass, jobject data, jint size)
-{
-    uint8_t *dataPtr = nullptr;
-    if (data != 0) {
-        dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
-    }
-
-//    HALSIM_SetCANValueForRead(dataPtr, size);
-}
-
-/*
- * Class:     com_snobot_simulator_jni_SensorFeedbackJni
- * Method:    setCanSetValueForReadStream
- * Signature: (Ljava/nio/ByteBuffer;I)V
- */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_setCanSetValueForReadStream
-  (JNIEnv * env, jclass, jobject data, jint count)
-{
-    uint8_t *dataPtr = nullptr;
-    if (data != 0) {
-        dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
-    }
-
-    HAL_CANStreamMessage streamMessage[1];
-    std::memcpy(&streamMessage[0], &dataPtr[0], sizeof(streamMessage));
-//    HALSIM_SetCANMessagesForReadStream(streamMessage, count);
-}
-
-
-/*
- * Class:     com_snobot_simulator_jni_SensorFeedbackJni
- * Method:    getCanLastSentMessageData
- * Signature: (Ljava/nio/ByteBuffer;I)V
- */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SensorFeedbackJni_getCanLastSentMessageData
-  (JNIEnv * env, jclass, jobject data, jint size)
-{
-    uint8_t *dataPtr = nullptr;
-    if (data != 0) {
-        dataPtr = (uint8_t *)env->GetDirectBufferAddress(data);
-    }
-
-//    HALSIM_GetCANLastSentMessageData(dataPtr, size);
 }
 
 /*

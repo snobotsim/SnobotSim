@@ -57,7 +57,6 @@ public class TestADXL345_I2CAccelerometer extends BaseSimulatorTest
         int yHandle = 51 + mPort.value * 3;
         int zHandle = 52 + mPort.value * 3;
 
-        System.out.println(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList());
         Assert.assertEquals(3, DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().size());
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(xHandle));
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(yHandle));

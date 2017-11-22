@@ -7,37 +7,51 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.snobot.simulator.SensorActuatorRegistry;
-import com.snobot.simulator.jni.SensorFeedbackJni;
 
 public class TalonSrxDeviceManager implements ICanDeviceManager
 {
     private static final Logger sLOGGER = Logger.getLogger(TalonSrxDeviceManager.class);
     private static final int sCAN_OFFSET = 100;
 
+    private ByteBuffer mSetParamBuffer = ByteBuffer.allocateDirect(40);
+
+    public TalonSrxDeviceManager()
+    {
+        mSetParamBuffer.order(ByteOrder.LITTLE_ENDIAN);
+    }
+
     @Override
-    public void handleSend(int aMessageId)
+    public void handleSend(int aMessageId, ByteBuffer aData, int aDataSize)
     {
         int port = aMessageId & 0x3F;
 
-        ByteBuffer buffer = ByteBuffer.allocateDirect(19);
-        SensorFeedbackJni.getCanLastSentMessageData(buffer, 8);
+        String bufferPrintout = "Uhoh";
+
+        if (aDataSize >= 8)
+        {
+            bufferPrintout = "(0x" + String.format("%016X", aData.getLong(0)) + ")";
+        }
+        else
+        {
+            bufferPrintout = "(too small)";
+        }
 
         sLOGGER.log(Level.DEBUG,
-                "@SendingMessage: MID: " + Integer.toHexString(aMessageId) + ", Data: (0x" + String.format("%016X", buffer.getLong(0)) + ")");
+                "@SendingMessage: MID: " + Integer.toHexString(aMessageId) + ", size: " + aDataSize + ", buffer: " + bufferPrintout);
 
         int messageId = aMessageId & 0xFFFFFFC0;
 
         if (messageId == 0x02040000)
         {
-            handleTx1(buffer, port);
+            handleTx1(aData, port);
         }
         else if (messageId == 0x02041880)
         {
-            handleSetParamCommand(buffer, port);
+            handleSetParamCommand(aData, port);
         }
         else if (messageId == 0x02041800)
         {
-            handleParamRequest(buffer, port);
+            handleParamRequest(aData, port);
         }
         else
         {
@@ -46,29 +60,29 @@ public class TalonSrxDeviceManager implements ICanDeviceManager
     }
 
     @Override
-    public void handleReceive(int aMessageId)
+    public void handleReceive(int aMessageId, ByteBuffer aData, int aDataSize)
     {
         int port = aMessageId & 0x3F;
 
-        sLOGGER.log(Level.DEBUG, "@ReceiveMessage: MID: " + Integer.toHexString(aMessageId));
+        sLOGGER.log(Level.DEBUG, "@ReceiveMessage: MID: " + Integer.toHexString(aMessageId) + ", ExpectedSize: " + aDataSize);
 
         int messageId = aMessageId & 0xFFFFFFC0;
 
         if (messageId == 0x02041400)
         {
-            populateStatus1(port);
+            populateStatus1(port, aData);
         }
         else if (messageId == 0x02041440)
         {
-            populateStatus2(port);
+            populateStatus2(port, aData);
         }
         else if (messageId == 0x02041480)
         {
-            populateStatus3(port);
+            populateStatus3(port, aData);
         }
         else if (messageId == 0x020414C0)
         {
-            populateStatus4(port);
+            populateStatus4(port, aData);
         }
         else
         {
@@ -76,16 +90,24 @@ public class TalonSrxDeviceManager implements ICanDeviceManager
         }
     }
 
+    private static int STREAM_CTR = 1;
+
     @Override
-    public void openStreamSession(int aMessageId)
+    public int openStreamSession(int aMessageId)
     {
-        // Handled Elsewhere
+        return STREAM_CTR++;
     }
 
     @Override
-    public void readStreamSession(int aMessageId)
+    public void readStreamSession(ByteBuffer[] messages, int messagesToRead)
     {
-        // Handled Elsewhere
+        ByteBuffer buffer = messages[0];
+        buffer.rewind();
+        mSetParamBuffer.rewind();
+        for (int i = 0; i < 17; ++i)
+        {
+            buffer.put(mSetParamBuffer.get(i));
+        }
     }
 
     private void handleTx1(ByteBuffer aBuffer, int aPort)
@@ -202,15 +224,11 @@ public class TalonSrxDeviceManager implements ICanDeviceManager
         int messageId = 0x2041840;
         messageId |= aPort;
 
-        ByteBuffer outputBuffer = ByteBuffer.allocateDirect(40);
-        outputBuffer.order(ByteOrder.LITTLE_ENDIAN);
-        outputBuffer.putInt(messageId);
-        outputBuffer.putInt(0xDEADBEEF); // Timestamp
-        outputBuffer.put(commandType);
-        outputBuffer.putInt(rawValue);
-
-        SensorFeedbackJni.setCanSetValueForReadStream(outputBuffer, 1);
-
+        mSetParamBuffer.rewind();
+        mSetParamBuffer.putInt(messageId);
+        mSetParamBuffer.putInt(0xDEADBEEF); // Timestamp
+        mSetParamBuffer.put(commandType);
+        mSetParamBuffer.putInt(rawValue);
     }
 
     private void handleSetDemandCommand(ByteBuffer aBuffer, int aPort)
@@ -271,43 +289,35 @@ public class TalonSrxDeviceManager implements ICanDeviceManager
         }
     }
 
-    private void populateStatus1(int aPort)
+    private void populateStatus1(int aPort, ByteBuffer aData)
     {
         CanTalonSpeedControllerSim wrapper = getWrapperHelper(aPort);
         sLOGGER.log(Level.DEBUG, " Getting STATUS1 " + wrapper.get());
 
-        ByteBuffer buffer = ByteBuffer.allocateDirect(19);
-        buffer.putShort(3, (short) (wrapper.get() * 1023));
-        SensorFeedbackJni.setCanSetValueForRead(buffer, 8);
+        aData.putShort(3, (short) (wrapper.get() * 1023));
     }
 
-    private void populateStatus2(int aPort)
+    private void populateStatus2(int aPort, ByteBuffer aData)
     {
         CanTalonSpeedControllerSim wrapper = getWrapperHelper(aPort);
         int binnedPosition = (int) (wrapper.getPosition() * 4096);
         int binnedVelocity = (int) (wrapper.getVelocity() * 6.9);
 
-        ByteBuffer buffer = ByteBuffer.allocateDirect(19);
-        putNumber(buffer, binnedPosition, 3);
-        buffer.putShort((short) binnedVelocity);
-
-        SensorFeedbackJni.setCanSetValueForRead(buffer, 8);
+        putNumber(aData, binnedPosition, 3);
+        aData.putShort((short) binnedVelocity);
     }
 
-    private void populateStatus3(int aPort)
+    private void populateStatus3(int aPort, ByteBuffer aData)
     {
         CanTalonSpeedControllerSim wrapper = getWrapperHelper(aPort);
         int binnedPosition = (int) wrapper.getPosition();
         int binnedVelocity = (int) wrapper.getVelocity();
 
-        ByteBuffer buffer = ByteBuffer.allocateDirect(19);
-        putNumber(buffer, binnedPosition, 3);
-        buffer.putShort((short) binnedVelocity);
-
-        SensorFeedbackJni.setCanSetValueForRead(buffer, 8);
+        putNumber(aData, binnedPosition, 3);
+        aData.putShort((short) binnedVelocity);
     }
 
-    private void populateStatus4(int aPort)
+    private void populateStatus4(int aPort, ByteBuffer aData)
     {
         sLOGGER.log(Level.DEBUG, "POPULATE STATUS 4");
         double temperature = 30;
@@ -316,13 +326,10 @@ public class TalonSrxDeviceManager implements ICanDeviceManager
         int binnedPosition = (int) wrapper.getPosition();
         int binnedVelocity = (int) wrapper.getVelocity();
 
-        ByteBuffer buffer = ByteBuffer.allocateDirect(19);
-        putNumber(buffer, binnedPosition, 3);
-        buffer.putShort((short) binnedVelocity);
-        buffer.put((byte) ((temperature + 50) / 0.6451612903));
-        buffer.put((byte) ((batteryVoltage - 4) / 0.05));
-
-        SensorFeedbackJni.setCanSetValueForRead(buffer, 8);
+        putNumber(aData, binnedPosition, 3);
+        aData.putShort((short) binnedVelocity);
+        aData.put((byte) ((temperature + 50) / 0.6451612903));
+        aData.put((byte) ((batteryVoltage - 4) / 0.05));
     }
 
     private void putNumber(ByteBuffer aOutput, int aNumber, int aBytes)
@@ -340,7 +347,7 @@ public class TalonSrxDeviceManager implements ICanDeviceManager
         sLOGGER.log(Level.ERROR, "Status request " + aStatusType + " is not supported.");
 
         ByteBuffer buffer = ByteBuffer.allocateDirect(19);
-        SensorFeedbackJni.setCanSetValueForRead(buffer, 8);
+        // SensorFeedbackJni.setCanSetValueForRead(buffer, 8);
     }
 
     private void unsupportedWrite(int aStatusType)
@@ -348,7 +355,7 @@ public class TalonSrxDeviceManager implements ICanDeviceManager
         sLOGGER.log(Level.ERROR, "TX Request " + aStatusType + " is not supported.");
 
         ByteBuffer buffer = ByteBuffer.allocateDirect(19);
-        SensorFeedbackJni.setCanSetValueForRead(buffer, 8);
+        // SensorFeedbackJni.setCanSetValueForRead(buffer, 8);
     }
 
     private CanTalonSpeedControllerSim getWrapperHelper(int aPort)

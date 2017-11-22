@@ -57,8 +57,6 @@ public class BaseSimulatorTest
     @After
     public void cleanup()
     {
-        System.out.println("Starting to shutdown NetworkTables...");
-        // NetworkTableInstance.getDefault().stopServer();
-        System.out.println("Shutdown");
+
     }
 }

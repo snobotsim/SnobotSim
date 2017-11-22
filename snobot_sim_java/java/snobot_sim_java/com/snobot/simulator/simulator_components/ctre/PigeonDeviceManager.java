@@ -7,7 +7,6 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.snobot.simulator.SensorActuatorRegistry;
-import com.snobot.simulator.jni.SensorFeedbackJni;
 import com.snobot.simulator.module_wrapper.ASensorWrapper;
 import com.snobot.simulator.simulator_components.accelerometer.IAccelerometerWrapper;
 import com.snobot.simulator.simulator_components.gyro.IGyroWrapper;
@@ -63,7 +62,7 @@ public class PigeonDeviceManager implements ICanDeviceManager
     };
 
     @Override
-    public void handleSend(int aMessageId)
+    public void handleSend(int aMessageId, ByteBuffer aData, int aDataSize)
     {
         int port = aMessageId & 0x3F;
         int messageId = aMessageId & 0xFFFFFFC0;
@@ -114,20 +113,21 @@ public class PigeonDeviceManager implements ICanDeviceManager
     }
 
     @Override
-    public void handleReceive(int aMessageId)
+    public void handleReceive(int aMessageId, ByteBuffer aData, int aDataSize)
     {
         int port = aMessageId & 0x3F;
         int messageId = aMessageId & 0xFFFFFFC0;
 
         if (messageId == 0x15041C40)
         {
-            SensorFeedbackJni.setCanSetValueForRead(dumpAngles(port, 16.4, 2), 8);
+            // SensorFeedbackJni.setCanSetValueForRead(dumpAngles(port, 16.4,
+            // 2), 8);
         }
         else if (messageId == 0x15042140)
         {
-            ByteBuffer buffer = ByteBuffer.allocateDirect(16);
+            // ByteBuffer buffer = ByteBuffer.allocateDirect(16);
 
-            SensorFeedbackJni.setCanSetValueForRead(buffer, 8);
+            // SensorFeedbackJni.setCanSetValueForRead(buffer, 8);
         }
         else
         {
@@ -136,14 +136,15 @@ public class PigeonDeviceManager implements ICanDeviceManager
     }
 
     @Override
-    public void openStreamSession(int aMessageId)
+    public void readStreamSession(ByteBuffer[] messages, int messagesToRead)
     {
-
+        System.out.println("readStreamSession");
     }
 
     @Override
-    public void readStreamSession(int aMessageId)
+    public int openStreamSession(int aMessageId)
     {
-
+        System.out.println("Opening stream session");
+        return 0;
     }
 }

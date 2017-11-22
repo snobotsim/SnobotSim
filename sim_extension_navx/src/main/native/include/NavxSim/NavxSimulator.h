@@ -10,6 +10,7 @@
 
 #include <atomic>
 #include <memory>
+#include <cstring>
 
 #include <support/mutex.h>
 
