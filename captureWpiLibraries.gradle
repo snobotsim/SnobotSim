@@ -1,13 +1,13 @@
 
-task captureWpiLibraries(type: Jar) {
+task captureWpiLibraries(type: Jar, dependsOn: extractWpilibjZip) {
 
     def os_name = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
     def output_path = os_name + "/x86-64/"
-
+    
     destinationDir = file("$rootDir/build/wpi_libraries")
     classifier = "wpi_native-" + os_name;
     
-    from(zipTree('../temp_libs/wpilibj-jni-ABCD-all.jar'))
+    from("$rootDir/build/dependencies/wpilibj-jni")
     
     def wpiutil_path = "$rootDir/build/dependencies/wpiutil-cpp/" + os_name + "x86-64/" + os_name + "/x86-64/shared"
     from(wpiutil_path) {
@@ -16,22 +16,15 @@ task captureWpiLibraries(type: Jar) {
         include "*.so"
     }
     
-    def wpilibc_path = "$rootDir/build/dependencies/wpilibc/lib/" + os_name + '/x86-64/shared'
-    from(wpilibc_path) {
-        into output_path
-        include "*.dll"
-        include "*.so"
-    }
-    
-    def ntcore_path = 'build/dependencies/ntcore-cpp/' + os_name + 'x86-64/' + os_name + '/x86-64/shared'
-    from(ntcore_path) {
-        into output_path
-        include "*.dll"
-        include "*.so"
-    }
-    
-    def hal_path = new File('temp_libs/hal/' + os_name + '/x86-64').getAbsolutePath()
+    def hal_path = "$rootDir/build/dependencies/hal/libs/" + os_name + '/x86-64/shared'
     from(hal_path) {
+        into output_path
+        include "*.dll"
+        include "*.so"
+    }
+    
+    def hal_adx_sim_path = "$rootDir/build/dependencies/halsim-adx_gyro_accelerometer/libs/" + os_name + '/x86-64/shared'
+    from(hal_adx_sim_path) {
         into output_path
         include "*.dll"
         include "*.so"
