@@ -78,6 +78,13 @@ task wrapper(type: Wrapper) {
     gradleVersion = '4.1'
 }
 
+task tempCombineWindowsAndLinuxHalLibraries(type: Zip) {
+   destinationDir(file('temp_libs'))
+   classifier "hal-ABCD-all"
+   
+   from(zipTree('temp_libs/hal-ABCD-windowsx86-64.zip'))
+   from(zipTree('temp_libs/hal-ABCD-linuxx86-64.zip'))
+}
 
 task tempCombineWindowsAndLinuxWpilibjLibraries(type: Jar) {
    destinationDir(file('temp_libs'))

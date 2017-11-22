@@ -16,6 +16,8 @@ public class RegisterCallbacksJni extends BaseSnobotJni
 {
     public static void reset()
     {
+        resetWpiHal();
+
         AnalogCallbackJni.reset();
         AnalogGyroCallbackJni.reset();
         CanCallbackJni.reset();
@@ -43,5 +45,7 @@ public class RegisterCallbacksJni extends BaseSnobotJni
         RelayCallbackJni.registerRelayCallback();
         SpiCallbackJni.registerSpiCallback();
     }
+
+    public static native void resetWpiHal();
 
 }

@@ -113,6 +113,7 @@ dependencies {
 
 def jniClasses = [
     'com.snobot.simulator.jni.DriverStationSimulatorJni',
+    'com.snobot.simulator.jni.RegisterCallbacksJni',
     'com.snobot.simulator.jni.adx_family.SpiI2CSimulatorJni',
     'com.snobot.simulator.jni.can.CanCallbackJni',
     'com.snobot.simulator.jni.navx.NavxSimulatorJni',

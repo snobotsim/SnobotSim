@@ -17,6 +17,7 @@ apply plugin: 'java'
 apply plugin: 'jacoco'
 
 apply from: '../config.gradle'
+apply from: "$rootDir/extract_hal_headers.gradle"
 
 sourceSets {
     main {

@@ -29,7 +29,7 @@ extern "C"
  * Method:    setSpiI2cAccelerometerData
  * Signature: (Ljava/lang/String;JID)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SpiI2CSimulatorHal_setSpiI2cAccelerometerData
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_adx_1family_SpiI2CSimulatorJni_setSpiI2cAccelerometerData
   (JNIEnv * env, jclass, jstring aType, jlong aPointerAddress, jint aDataType, jdouble aAcceleration)
 {
     std::string type = env->GetStringUTFChars(aType, NULL);
@@ -64,7 +64,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SpiI2CSimulatorHal_setSpiI2
  * Method:    getSpiI2cAccelerometerData
  * Signature: (Ljava/lang/String;JI)D
  */
-JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_SpiI2CSimulatorHal_getSpiI2cAccelerometerData
+JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_adx_1family_SpiI2CSimulatorJni_getSpiI2cAccelerometerData
   (JNIEnv * env, jclass, jstring aType, jlong aPointerAddress, jint aDataType)
 {
     std::string type = env->GetStringUTFChars(aType, NULL);
@@ -97,7 +97,7 @@ JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_SpiI2CSimulatorHal_getSp
  * Method:    createSpiI2cAccelerometer
  * Signature: (Ljava/lang/String;I)J
  */
-JNIEXPORT jlong JNICALL Java_com_snobot_simulator_jni_SpiI2CSimulatorHal_createSpiI2cAccelerometer
+JNIEXPORT jlong JNICALL Java_com_snobot_simulator_jni_adx_1family_SpiI2CSimulatorJni_createSpiI2cAccelerometer
   (JNIEnv * env, jclass, jstring aType, jint aPort)
 {
     std::string type = env->GetStringUTFChars(aType, NULL);
@@ -142,7 +142,7 @@ JNIEXPORT jlong JNICALL Java_com_snobot_simulator_jni_SpiI2CSimulatorHal_createS
  * Method:    createSpiGyro
  * Signature: (Ljava/lang/String;I)J
  */
-JNIEXPORT jlong JNICALL Java_com_snobot_simulator_jni_SpiI2CSimulatorHal_createSpiGyro
+JNIEXPORT jlong JNICALL Java_com_snobot_simulator_jni_adx_1family_SpiI2CSimulatorJni_createSpiGyro
   (JNIEnv * env, jclass, jstring aType, jint aPort)
 {
     std::string type = env->GetStringUTFChars(aType, NULL);
@@ -167,7 +167,7 @@ JNIEXPORT jlong JNICALL Java_com_snobot_simulator_jni_SpiI2CSimulatorHal_createS
  * Method:    setSpiGyroAngle
  * Signature: (Ljava/lang/String;JD)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SpiI2CSimulatorHal_setSpiGyroAngle
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_adx_1family_SpiI2CSimulatorJni_setSpiGyroAngle
   (JNIEnv * env, jclass, jstring aType, jlong aPointerAddress, jdouble aAngle)
 {
     std::string type = env->GetStringUTFChars(aType, NULL);
@@ -188,7 +188,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SpiI2CSimulatorHal_setSpiGy
  * Method:    getSpiGyroAngle
  * Signature: (Ljava/lang/String;J)D
  */
-JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_SpiI2CSimulatorHal_getSpiGyroAngle
+JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_adx_1family_SpiI2CSimulatorJni_getSpiGyroAngle
   (JNIEnv * env, jclass, jstring aType, jlong aPointerAddress)
 {
     std::string type = env->GetStringUTFChars(aType, NULL);
