@@ -38,7 +38,7 @@ public class BaseSimulatorTest
         if (!INITIALIZED)
         {
             DataAccessorFactory.setAccessor(new JniDataAccessor());
-            SnobotSimulatorJni.initializeLogging(1);
+            SnobotSimulatorJni.initializeLogging(0);
 
             File directory = new File("test_output");
             if (directory.exists())

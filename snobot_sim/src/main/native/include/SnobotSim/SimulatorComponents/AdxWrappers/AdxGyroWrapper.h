@@ -11,13 +11,19 @@
 #include <memory>
 
 #include "SnobotSim/SimulatorComponents/Spi/ISpiWrapper.h"
+#include "SnobotSim/SimulatorComponents/Gyro/IGyroWrapper.h"
 #include "ADXRS450_SpiGyroWrapperData.h"
 
-class AdxGyroWrapper : public ISpiWrapper
+class AdxGyroWrapper : public ISpiWrapper, public IGyroWrapper
 {
 public:
 	AdxGyroWrapper(int aPort);
 	virtual ~AdxGyroWrapper();
+
+
+    void SetAngle(double aAngle) override;
+
+    double GetAngle() override;
 
 protected:
 

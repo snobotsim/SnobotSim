@@ -8,7 +8,8 @@
 #include "SnobotSim/SimulatorComponents/Spi/SpiWrapperFactory.h"
 
 #include "SnobotSim/SimulatorComponents/AdxWrappers/AdxGyroWrapper.h"
-#include "SnobotSim/SimulatorComponents/AdxWrappers/AdxSpiAccelWrapper.h"
+#include "SnobotSim/SimulatorComponents/AdxWrappers/AdxSpi345AccelWrapper.h"
+#include "SnobotSim/SimulatorComponents/AdxWrappers/AdxSpi362AccelWrapper.h"
 #include "SnobotSim/SimulatorComponents/NavxWrappers/SpiNavxWrapper.h"
 #include "SnobotSim/GetSensorActuatorHelper.h"
 
@@ -83,17 +84,17 @@ std::shared_ptr<ISpiWrapper> SpiWrapperFactory::CreateWrapper(int aPort, const s
     if(aType == ADXRS450_GYRO_NAME)
     {
         std::shared_ptr<AdxGyroWrapper> spiGyro(new AdxGyroWrapper(aPort));
-//        SensorActuatorRegistry::Get().Register(aPort + 100, std::shared_ptr<GyroWrapper>(spiGyro));
-//
+        SensorActuatorRegistry::Get().Register(aPort + 100, std::shared_ptr<IGyroWrapper>(spiGyro));
+
         return spiGyro;
     }
     else if(aType == ADXL345_ACCELEROMETER_NAME)
     {
-        return std::shared_ptr<ISpiWrapper>(new AdxSpiAccelWrapper("345", aPort));
+        return std::shared_ptr<ISpiWrapper>(new AdxSpi345AccelWrapper(aPort));
     }
     else if(aType == ADXL362_ACCELEROMETER_NAME)
     {
-        return std::shared_ptr<ISpiWrapper>(new AdxSpiAccelWrapper("362", aPort));
+        return std::shared_ptr<ISpiWrapper>(new AdxSpi362AccelWrapper(aPort));
     }
 
 

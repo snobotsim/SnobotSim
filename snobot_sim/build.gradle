@@ -101,6 +101,7 @@ model {
         all {
             tasks.withType(CppCompile) {
                 dependsOn extractHalHeadersZip
+                dependsOn extractHalSimAdxHeadersZip
             }
         }
         withType(NativeBinarySpec) {
