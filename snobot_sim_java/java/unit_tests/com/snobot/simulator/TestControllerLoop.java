@@ -67,6 +67,7 @@ public class TestControllerLoop extends BaseSimulatorTest
     @Test
     public void testControlLoop() throws Exception
     {
+        double DOUBLE_EPSILON = .1;
         TestRobot robot = new TestRobot();
 
         Thread thread = new Thread(new Runnable()

@@ -20,9 +20,10 @@ void AnalogGyroCallback(const char* name, void* param, const struct HAL_Value* v
  * Signature: (ID)V
  */
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_AnalogGyroCallbackJni_setAnalogGyroAngle
-  (JNIEnv *, jclass, jint, jdouble)
+  (JNIEnv *, jclass, jint aHandle, jdouble aAngle)
 {
 
+    HALSIM_SetAnalogGyroAngle(aHandle, aAngle);
 }
 
 /*
@@ -31,11 +32,11 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_Analog
  * Signature: (Ljava/lang/String;)V
  */
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_AnalogGyroCallbackJni_registerAnalogGyroCallback
-  (JNIEnv * env, jclass, jstring aFunctionName)
+  (JNIEnv * env, jclass clz, jstring aFunctionName)
 {
-//    SnobotSimJava::SetGlobalEnvironment(env);
-//    std::string functionName = env->GetStringUTFChars(aFunctionName, NULL);
-//    SetCallbackContainerInfo(env, clz, functionName, SnobotSimJava::GetAnalogGyroCallback());
+    SnobotSimJava::SetGlobalEnvironment(env);
+    std::string functionName = env->GetStringUTFChars(aFunctionName, NULL);
+    SetCallbackContainerInfo(env, clz, functionName, gAnalogGyroCallbackContainer);
 }
 
 /*
