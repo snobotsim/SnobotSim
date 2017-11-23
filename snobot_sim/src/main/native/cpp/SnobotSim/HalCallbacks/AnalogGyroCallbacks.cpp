@@ -29,7 +29,7 @@ void AnalogGyroCallback(const char* name, void* param, const struct HAL_Value* v
     else if (nameStr == "Angle")
     {
         double angle = value->data.v_double;
-        SensorActuatorRegistry::Get().GetGyroWrapper(port)->SetAngle(angle);
+        SensorActuatorRegistry::Get().GetIGyroWrapper(port)->SetAngle(angle);
     }
     else
     {

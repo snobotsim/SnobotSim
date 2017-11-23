@@ -22,8 +22,8 @@ class DigitalSourceWrapper;
 class AnalogSourceWrapper;
 class SolenoidWrapper;
 class EncoderWrapper;
-class GyroWrapper;
-class AccelerometerWrapper;
+class IGyroWrapper;
+class IAccelerometerWrapper;
 class ISpiWrapper;
 class II2CWrapper;
 class CompressorWrapper;
@@ -60,8 +60,8 @@ public:
     ACTUATOR_GETTERS(AnalogSourceWrapper)
     ACTUATOR_GETTERS(SolenoidWrapper)
     ACTUATOR_GETTERS(EncoderWrapper)
-    ACTUATOR_GETTERS(AccelerometerWrapper)
-    ACTUATOR_GETTERS(GyroWrapper)
+    ACTUATOR_GETTERS(IAccelerometerWrapper)
+    ACTUATOR_GETTERS(IGyroWrapper)
     ACTUATOR_GETTERS(ISpiWrapper)
     ACTUATOR_GETTERS(II2CWrapper)
 
@@ -117,8 +117,8 @@ protected:
     std::map<int, std::shared_ptr<AnalogSourceWrapper>> mAnalogSourceWrapperMap;
     std::map<int, std::shared_ptr<SolenoidWrapper>> mSolenoidWrapperMap;
     std::map<int, std::shared_ptr<EncoderWrapper>> mEncoderWrapperMap;
-    std::map<int, std::shared_ptr<GyroWrapper>> mGyroWrapperMap;
-    std::map<int, std::shared_ptr<AccelerometerWrapper>> mAccelerometerWrapperMap;
+    std::map<int, std::shared_ptr<IGyroWrapper>> mIGyroWrapperMap;
+    std::map<int, std::shared_ptr<IAccelerometerWrapper>> mIAccelerometerWrapperMap;
     std::map<int, std::shared_ptr<ISpiWrapper>> mISpiWrapperMap;
     std::map<int, std::shared_ptr<II2CWrapper>> mII2CWrapperMap;
 

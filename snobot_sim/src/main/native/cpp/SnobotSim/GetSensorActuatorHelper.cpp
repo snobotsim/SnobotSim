@@ -27,7 +27,7 @@ std::shared_ptr<WrapperType> Get##WrapperType(int aHandle, bool aLogOnMissing)  
 namespace GetSensorActuatorHelper
 {
     FIND_MODULE_FUNC(SpeedControllerWrapper)
-    FIND_MODULE_FUNC(GyroWrapper)
+    FIND_MODULE_FUNC(IGyroWrapper)
     FIND_MODULE_FUNC(DigitalSourceWrapper)
     FIND_MODULE_FUNC(AnalogSourceWrapper)
     FIND_MODULE_FUNC(RelayWrapper)

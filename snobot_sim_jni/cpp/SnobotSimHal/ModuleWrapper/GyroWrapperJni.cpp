@@ -6,7 +6,7 @@
 #include "com_snobot_simulator_jni_module_wrapper_GyroWrapperJni.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/GetSensorActuatorHelper.h"
-#include "SnobotSim/SimulatorComponents/Gyro/GyroWrapper.h"
+#include "SnobotSim/SimulatorComponents/Gyro/IGyroWrapper.h"
 
 using namespace wpi::java;
 
@@ -21,8 +21,8 @@ extern "C"
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_register
   (JNIEnv * env, jclass, jint aHandle, jstring aName)
 {
-    std::shared_ptr<GyroWrapper> gyroWrapper(new GyroWrapper(env->GetStringUTFChars(aName, NULL)));
-    SensorActuatorRegistry::Get().Register(aHandle, gyroWrapper);
+//    std::shared_ptr<GyroWrapper> gyroWrapper(new GyroWrapper(env->GetStringUTFChars(aName, NULL)));
+//    SensorActuatorRegistry::Get().Register(aHandle, gyroWrapper);
 }
 
 /*
@@ -33,7 +33,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapper
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_setName
   (JNIEnv * env, jclass, jint aPortHandle, jstring aName)
 {
-    std::shared_ptr<GyroWrapper> wrapper = GetSensorActuatorHelper::GetGyroWrapper(aPortHandle);
+    std::shared_ptr<IGyroWrapper> wrapper = GetSensorActuatorHelper::GetIGyroWrapper(aPortHandle);
     if(wrapper)
     {
         wrapper->SetName(env->GetStringUTFChars(aName, NULL));
@@ -48,7 +48,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapper
 JNIEXPORT jstring JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_getName
   (JNIEnv * env, jclass, jint aPortHandle)
 {
-    jstring output = MakeJString(env, SensorActuatorRegistry::Get().GetGyroWrapper(aPortHandle)->GetName());
+    jstring output = MakeJString(env, SensorActuatorRegistry::Get().GetIGyroWrapper(aPortHandle)->GetName());
     return output;
 }
 
@@ -60,7 +60,7 @@ JNIEXPORT jstring JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrap
 JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_getWantsHidden
   (JNIEnv *, jclass, jint aPortHandle)
 {
-    return SensorActuatorRegistry::Get().GetGyroWrapper(aPortHandle)->WantsHidden();
+    return SensorActuatorRegistry::Get().GetIGyroWrapper(aPortHandle)->WantsHidden();
 }
 
 /*
@@ -71,7 +71,7 @@ JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWra
 JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_getAngle
   (JNIEnv *, jclass, jint aPortHandle)
 {
-    return SensorActuatorRegistry::Get().GetGyroWrapper(aPortHandle)->GetAngle();
+    return SensorActuatorRegistry::Get().GetIGyroWrapper(aPortHandle)->GetAngle();
 }
 
 /*
@@ -82,7 +82,7 @@ JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrap
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_setAngle
   (JNIEnv *, jclass, jint aPortHandle, jdouble aAngle)
 {
-    SensorActuatorRegistry::Get().GetGyroWrapper(aPortHandle)->SetAngle(aAngle);
+    SensorActuatorRegistry::Get().GetIGyroWrapper(aPortHandle)->SetAngle(aAngle);
 }
 
 /*
@@ -93,7 +93,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapper
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_reset
   (JNIEnv *, jclass, jint aPortHandle)
 {
-    SensorActuatorRegistry::Get().GetGyroWrapper(aPortHandle)->SetAngle(0);
+    SensorActuatorRegistry::Get().GetIGyroWrapper(aPortHandle)->SetAngle(0);
 }
 
 /*
@@ -104,14 +104,14 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapper
 JNIEXPORT jintArray JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_getPortList
   (JNIEnv * env, jclass)
 {
-    const std::map<int, std::shared_ptr<GyroWrapper>>& gyroWrappers =
-            SensorActuatorRegistry::Get().GetGyroWrapperMap();
+    const std::map<int, std::shared_ptr<IGyroWrapper>>& gyroWrappers =
+            SensorActuatorRegistry::Get().GetIGyroWrapperMap();
 
     jintArray output = env->NewIntArray(gyroWrappers.size());
 
     jint values[30];
 
-    std::map<int, std::shared_ptr<GyroWrapper>>::const_iterator iter =
+    std::map<int, std::shared_ptr<IGyroWrapper>>::const_iterator iter =
             gyroWrappers.begin();
 
     int ctr = 0;

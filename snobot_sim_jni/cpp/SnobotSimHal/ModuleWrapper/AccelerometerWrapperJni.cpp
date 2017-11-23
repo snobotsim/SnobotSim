@@ -5,7 +5,7 @@
 
 #include "com_snobot_simulator_jni_module_wrapper_GyroWrapperJni.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
-#include "SnobotSim/SimulatorComponents/Accelerometer/AccelerometerWrapper.h"
+#include "SnobotSim/SimulatorComponents/Accelerometer/IAccelerometerWrapper.h"
 
 using namespace wpi::java;
 
@@ -20,8 +20,8 @@ extern "C"
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_AccelerometerWrapperJni_register
   (JNIEnv * env, jclass, jint aPortHandle, jstring aName)
 {
-    std::shared_ptr<AccelerometerWrapper> accelerometerWrapper(new AccelerometerWrapper(env->GetStringUTFChars(aName, NULL)));
-    SensorActuatorRegistry::Get().Register(aPortHandle, accelerometerWrapper);
+//    std::shared_ptr<AccelerometerWrapper> accelerometerWrapper(new AccelerometerWrapper(env->GetStringUTFChars(aName, NULL)));
+//    SensorActuatorRegistry::Get().Register(aPortHandle, accelerometerWrapper);
 }
 
 /*
@@ -32,7 +32,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_Acceleromet
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_AccelerometerWrapperJni_setName
   (JNIEnv * env, jclass, jint aPortHandle, jstring aName)
 {
-    SensorActuatorRegistry::Get().GetAccelerometerWrapper(aPortHandle)->SetName(env->GetStringUTFChars(aName, NULL));
+    SensorActuatorRegistry::Get().GetIAccelerometerWrapper(aPortHandle)->SetName(env->GetStringUTFChars(aName, NULL));
 }
 
 /*
@@ -43,7 +43,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_Acceleromet
 JNIEXPORT jstring JNICALL Java_com_snobot_simulator_jni_module_1wrapper_AccelerometerWrapperJni_getName
   (JNIEnv * env, jclass, jint aPortHandle)
 {
-    jstring output = MakeJString(env, SensorActuatorRegistry::Get().GetAccelerometerWrapper(aPortHandle)->GetName());
+    jstring output = MakeJString(env, SensorActuatorRegistry::Get().GetIAccelerometerWrapper(aPortHandle)->GetName());
     return output;
 }
 
@@ -55,7 +55,7 @@ JNIEXPORT jstring JNICALL Java_com_snobot_simulator_jni_module_1wrapper_Accelero
 JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_AccelerometerWrapperJni_getWantsHidden
   (JNIEnv * env, jclass, jint aPortHandle)
 {
-    return SensorActuatorRegistry::Get().GetAccelerometerWrapper(aPortHandle)->WantsHidden();
+    return SensorActuatorRegistry::Get().GetIAccelerometerWrapper(aPortHandle)->WantsHidden();
 }
 
 /*
@@ -66,7 +66,7 @@ JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_Acceler
 JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_AccelerometerWrapperJni_getAcceleration
   (JNIEnv * env, jclass, jint aPortHandle)
 {
-    return SensorActuatorRegistry::Get().GetAccelerometerWrapper(aPortHandle)->GetAcceleration();
+    return SensorActuatorRegistry::Get().GetIAccelerometerWrapper(aPortHandle)->GetAcceleration();
 }
 
 /*
@@ -77,7 +77,7 @@ JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_Accelero
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_AccelerometerWrapperJni_setAcceleration
   (JNIEnv *, jclass, jint aPortHandle, jdouble aAccel)
 {
-    return SensorActuatorRegistry::Get().GetAccelerometerWrapper(aPortHandle)->SetAcceleration(aAccel);
+    return SensorActuatorRegistry::Get().GetIAccelerometerWrapper(aPortHandle)->SetAcceleration(aAccel);
 }
 
 /*
@@ -88,14 +88,14 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_Acceleromet
 JNIEXPORT jintArray JNICALL Java_com_snobot_simulator_jni_module_1wrapper_AccelerometerWrapperJni_getPortList
   (JNIEnv * env, jclass)
 {
-    const std::map<int, std::shared_ptr<AccelerometerWrapper>>& accelerometerWrappers =
-            SensorActuatorRegistry::Get().GetAccelerometerWrapperMap();
+    const std::map<int, std::shared_ptr<IAccelerometerWrapper>>& accelerometerWrappers =
+            SensorActuatorRegistry::Get().GetIAccelerometerWrapperMap();
 
     jintArray output = env->NewIntArray(accelerometerWrappers.size());
 
     jint values[30];
 
-    std::map<int, std::shared_ptr<AccelerometerWrapper>>::const_iterator iter =
+    std::map<int, std::shared_ptr<IAccelerometerWrapper>>::const_iterator iter =
             accelerometerWrappers.begin();
 
     int ctr = 0;

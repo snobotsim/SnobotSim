@@ -9,8 +9,9 @@
 #include "MockData/AnalogGyroData.h"
 
 AnalogGyroWrapper::AnalogGyroWrapper(const std::shared_ptr<AnalogSourceWrapper>& aAnalogWrapper):
-    GyroWrapper("Analog Gyro"),
-    mAnalogWrapper(aAnalogWrapper)
+    IGyroWrapper("Analog Gyro"),
+    mAnalogWrapper(aAnalogWrapper),
+	mAngle(0)
 {
 
 
@@ -23,6 +24,11 @@ AnalogGyroWrapper::~AnalogGyroWrapper() {
 
 void AnalogGyroWrapper::SetAngle(double aAngle)
 {
-    HALSIM_SetAnalogGyroAngle(mAnalogWrapper->GetHandle(), aAngle);
-    GyroWrapper::SetAngle(aAngle);
+	mAngle = aAngle;
+    HALSIM_SetAnalogGyroAngle(mAnalogWrapper->GetHandle(), mAngle);
+}
+
+double AnalogGyroWrapper::GetAngle()
+{
+	return mAngle;
 }

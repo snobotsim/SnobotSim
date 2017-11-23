@@ -40,8 +40,8 @@ void SensorActuatorRegistry::Reset()
     mAnalogSourceWrapperMap.clear();
     mSolenoidWrapperMap.clear();
     mEncoderWrapperMap.clear();
-    mGyroWrapperMap.clear();
-    mAccelerometerWrapperMap.clear();
+    mIGyroWrapperMap.clear();
+    mIAccelerometerWrapperMap.clear();
     mISpiWrapperMap.clear();
     mII2CWrapperMap.clear();
 
@@ -89,7 +89,7 @@ ACTUATOR_GETTERS(DigitalSourceWrapper, false)
 ACTUATOR_GETTERS(AnalogSourceWrapper, false)
 ACTUATOR_GETTERS(SolenoidWrapper, false)
 ACTUATOR_GETTERS(EncoderWrapper, false)
-ACTUATOR_GETTERS(AccelerometerWrapper, false)
-ACTUATOR_GETTERS(GyroWrapper, false)
+ACTUATOR_GETTERS(IAccelerometerWrapper, false)
+ACTUATOR_GETTERS(IGyroWrapper, false)
 ACTUATOR_GETTERS(ISpiWrapper, true)
 ACTUATOR_GETTERS(II2CWrapper, true)

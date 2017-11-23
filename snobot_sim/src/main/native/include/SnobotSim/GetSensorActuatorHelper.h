@@ -13,7 +13,7 @@
 namespace GetSensorActuatorHelper
 {
     EXPORT_ std::shared_ptr<SpeedControllerWrapper> GetSpeedControllerWrapper(int aHandle, bool aLogOnMissing=true);
-    EXPORT_ std::shared_ptr<GyroWrapper> GetGyroWrapper(int aHandle, bool aLogOnMissing=true);
+    EXPORT_ std::shared_ptr<IGyroWrapper> GetIGyroWrapper(int aHandle, bool aLogOnMissing=true);
     EXPORT_ std::shared_ptr<DigitalSourceWrapper> GetDigitalSourceWrapper(int aHandle, bool aLogOnMissing=true);
     EXPORT_ std::shared_ptr<AnalogSourceWrapper> GetAnalogSourceWrapper(int aHandle, bool aLogOnMissing=true);
     EXPORT_ std::shared_ptr<RelayWrapper> GetRelayWrapper(int aHandle, bool aLogOnMissing=true);

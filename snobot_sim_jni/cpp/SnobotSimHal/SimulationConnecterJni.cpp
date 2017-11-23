@@ -10,7 +10,7 @@
 #include "SnobotSim/MotorSim/SimpleMotorSimulator.h"
 #include "SnobotSim/SimulatorComponents/ISimulatorUpdater.h"
 #include "SnobotSim/SimulatorComponents/TankDriveSimulator.h"
-#include "SnobotSim/SimulatorComponents/Gyro/GyroWrapper.h"
+#include "SnobotSim/SimulatorComponents/Gyro/IGyroWrapper.h"
 #include "ConversionUtils.h"
 #include <vector>
 #include <memory>
@@ -129,7 +129,7 @@ JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_
 {    
     std::shared_ptr<EncoderWrapper> leftEncoder = GetEncoderWrapper(aLeftEncHandle);
     std::shared_ptr<EncoderWrapper> rightEncoder = GetEncoderWrapper(aRightEncHandle);
-    std::shared_ptr<GyroWrapper> gyro = GetGyroWrapper(aGyroHandle);
+    std::shared_ptr<IGyroWrapper> gyro = GetIGyroWrapper(aGyroHandle);
 
     std::shared_ptr<TankDriveSimulator> simulator(new TankDriveSimulator(leftEncoder, rightEncoder, gyro, aTurnKp));
 

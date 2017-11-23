@@ -66,8 +66,11 @@ model {
                         includes = ['**/*.cpp']
                     }
                     exportedHeaders {
-                        srcDirs = ["src/main/native/include", "${extractHalHeadersZip.libsdir}"]
+                        srcDirs = ["src/main/native/include", 
+                                   "${extractHalHeadersZip.libsdir}", 
+                                   "${extractHalSimAdxHeadersZip.libsdir}"]
                     }
+                    lib project: ':sim_extension_navx', library: 'navx_simulator', linkage: 'shared'
                 }
             }
         }
@@ -84,8 +87,11 @@ model {
                         includes = ['**/*.cpp']
                     }
                     exportedHeaders {
-                        srcDirs = ["src/main/native/include", "${extractHalHeadersZip.libsdir}"]
+                        srcDirs = ["src/main/native/include", 
+                                   "${extractHalHeadersZip.libsdir}", 
+                                   "${extractHalSimAdxHeadersZip.libsdir}"]
                     }
+                    lib project: ':sim_extension_navx', library: 'navx_simulator', linkage: 'shared'
                 }
             }
         }
@@ -102,6 +108,7 @@ model {
             if(it.targetPlatform.architecture.name != "athena")
             {
                 addHalSimToLinker(linker)
+                addHalSimAdxToLinker(linker)
             }
             else
             {

@@ -7,10 +7,9 @@
 
 #include "SnobotSim/SimulatorComponents/Spi/SpiWrapperFactory.h"
 
-#include "SnobotSim/SimulatorComponents/Gyro/ADXRS450_SpiGyro.h"
-#include "SnobotSim/SimulatorComponents/Accelerometer/ADXL345_SpiAccelerometer.h"
-#include "SnobotSim/SimulatorComponents/Accelerometer/ADXL362_SpiAccelerometer.h"
-#include "SnobotSim/SimulatorComponents/navx/SpiNavxSimulator.h"
+#include "SnobotSim/SimulatorComponents/AdxWrappers/AdxGyroWrapper.h"
+#include "SnobotSim/SimulatorComponents/AdxWrappers/AdxSpiAccelWrapper.h"
+#include "SnobotSim/SimulatorComponents/NavxWrappers/SpiNavxWrapper.h"
 #include "SnobotSim/GetSensorActuatorHelper.h"
 
 const std::string SpiWrapperFactory::AUTO_DISCOVER_NAME = "AutoDiscover";
@@ -78,34 +77,28 @@ std::shared_ptr<ISpiWrapper> SpiWrapperFactory::CreateWrapper(int aPort, const s
 {
     if(aType == NAVX)
     {
-        return std::shared_ptr<ISpiWrapper>(new SpiNavxSimulator(aPort));
+        return std::shared_ptr<ISpiWrapper>(new SpiNavxWrapper());
     }
 
     if(aType == ADXRS450_GYRO_NAME)
     {
-        std::shared_ptr<ADXRS450_SpiGyro> spiGyro(new ADXRS450_SpiGyro(aPort));
-        SensorActuatorRegistry::Get().Register(aPort + 100, std::shared_ptr<GyroWrapper>(spiGyro));
-
+        std::shared_ptr<AdxGyroWrapper> spiGyro(new AdxGyroWrapper(aPort));
+//        SensorActuatorRegistry::Get().Register(aPort + 100, std::shared_ptr<GyroWrapper>(spiGyro));
+//
         return spiGyro;
     }
     else if(aType == ADXL345_ACCELEROMETER_NAME)
     {
-        return std::shared_ptr<ISpiWrapper>(new ADXL345_SpiAccelerometer(aPort, ""));
+        return std::shared_ptr<ISpiWrapper>(new AdxSpiAccelWrapper("345", aPort));
     }
     else if(aType == ADXL362_ACCELEROMETER_NAME)
     {
-        return std::shared_ptr<ISpiWrapper>(new ADXL362_SpiAccelerometer(aPort, ""));
+        return std::shared_ptr<ISpiWrapper>(new AdxSpiAccelWrapper("362", aPort));
     }
 
 
     SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown simulator type '" << aType << "', defaulting to null");
     return std::shared_ptr<ISpiWrapper>(new NullSpiWrapper);
-
-
-    //        std::shared_ptr<ISpiWrapper> spiWrapper(new NullSpiWrapper);
-    //        std::shared_ptr<ISpiWrapper> spiWrapper(new SpiNavxSimulator(port));
-    //        SensorActuatorRegistry::Get().Register(port, spiWrapper);
-
 }
 
 
