@@ -58,13 +58,15 @@ public class CanManager
         }
     }
 
-    public void handleReceiveMessage(String aCallback, int aMessageId, ByteBuffer aData, int aDataSize)
+    public int handleReceiveMessage(String aCallback, int aMessageId, ByteBuffer aData)
     {
         ICanDeviceManager deviceManager = getDeviceManager(aMessageId);
         if (deviceManager != null)
         {
-            deviceManager.handleReceive(aMessageId, aData, aDataSize);
+            return deviceManager.handleReceive(aMessageId, aData);
         }
+
+        return 0;
     }
 
     public int handleOpenStream(String callbackType, int aMessageId, int aMessageIdMask, int aMaxMessages)

@@ -747,14 +747,14 @@ public class PigeonImu extends CtreCanMap
 			params[2] = p3 * scalar;
 		}
 
-        System.out.println("Getting");
-        System.out.println(String.format("%016X", _cache));
-        System.out.println(p1 + ", " + String.format("%016X", p1));
-        System.out.println(p2 + ", " + String.format("%016X", p2));
-        System.out.println(p3 + ", " + String.format("%016X", p3));
-        System.out.println(params[0]);
-        System.out.println(params[1]);
-        System.out.println(params[2]);
+        // System.out.println("Getting");
+        // System.out.println(String.format("%016X", _cache));
+        // System.out.println(p1 + ", " + String.format("%016X", p1));
+        // System.out.println(p2 + ", " + String.format("%016X", p2));
+        // System.out.println(p3 + ", " + String.format("%016X", p3));
+        // System.out.println(params[0]);
+        // System.out.println(params[1]);
+        // System.out.println(params[2]);
 		return errCode;
 	}
 	//----------------------- Strongly typed Signal decoders  -----------------------//

@@ -7,7 +7,7 @@ public interface ICanDeviceManager
 
     void handleSend(int aMessageId, ByteBuffer aData, int aDataSize);
 
-    void handleReceive(int aMessageId, ByteBuffer aData, int aDataSize);
+    int handleReceive(int aMessageId, ByteBuffer aData);
 
     int openStreamSession(int aMessageId);
 

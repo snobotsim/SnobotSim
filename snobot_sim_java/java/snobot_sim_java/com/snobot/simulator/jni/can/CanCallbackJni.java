@@ -33,9 +33,9 @@ public class CanCallbackJni
         sCAN_MANAGER.handleSendMessage(callbackType, aMessageId, aData, aDataSize);
     }
 
-    public static void canCallback(String callbackType, int port, int aMessageId, int messageIDMask, ByteBuffer aData, int aDataSize, int aTimestamp)
+    public static int canCallback(String callbackType, int port, int aMessageId, int messageIDMask, ByteBuffer aData, int aTimestamp)
     {
-        sCAN_MANAGER.handleReceiveMessage(callbackType, aMessageId, aData, aDataSize);
+        return sCAN_MANAGER.handleReceiveMessage(callbackType, aMessageId, aData);
     }
 
     public static int canCallback(String callbackType, int port, int messageId, int messageIdMask, int maxMessages)

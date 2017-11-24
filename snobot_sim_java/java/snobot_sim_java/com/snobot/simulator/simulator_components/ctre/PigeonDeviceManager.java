@@ -1,65 +1,23 @@
 package com.snobot.simulator.simulator_components.ctre;
 
 import java.nio.ByteBuffer;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-
-import com.snobot.simulator.SensorActuatorRegistry;
-import com.snobot.simulator.module_wrapper.ASensorWrapper;
-import com.snobot.simulator.simulator_components.accelerometer.IAccelerometerWrapper;
-import com.snobot.simulator.simulator_components.gyro.IGyroWrapper;
 
 public class PigeonDeviceManager implements ICanDeviceManager
 {
     private static final Logger sLOGGER = Logger.getLogger(PigeonDeviceManager.class);
     private static final int sSENSOR_OFFSET = 400;
 
-    private int getBasePort(int aPort)
+    private final Map<Integer, CanPigeonImuSim> mPigeonMap;
+
+    public PigeonDeviceManager()
     {
-        return sSENSOR_OFFSET + aPort * 3;
+        mPigeonMap = new HashMap<>();
     }
-
-    private class PigeonGyroWrapper extends ASensorWrapper implements IGyroWrapper
-    {
-        public PigeonGyroWrapper(String string)
-        {
-            super(string);
-        }
-
-        @Override
-        public double getAngle()
-        {
-            return 0;
-        }
-
-        @Override
-        public void setAngle(double aAngle)
-        {
-        }
-
-    };
-
-    private class PigeonAccelWrapper extends ASensorWrapper implements IAccelerometerWrapper
-    {
-        public PigeonAccelWrapper(String string)
-        {
-            super(string);
-        }
-
-        @Override
-        public double getAcceleration()
-        {
-            return 0;
-        }
-
-        @Override
-        public void setAcceleration(double aAngle)
-        {
-        }
-
-    };
 
     @Override
     public void handleSend(int aMessageId, ByteBuffer aData, int aDataSize)
@@ -69,70 +27,67 @@ public class PigeonDeviceManager implements ICanDeviceManager
 
         if (messageId == 0x15042800)
         {
-            int basePort = getBasePort(port);
-            SensorActuatorRegistry.get().register(new PigeonGyroWrapper("Pigeon Pitch"), basePort + 0);
-            SensorActuatorRegistry.get().register(new PigeonGyroWrapper("Pigeon Yaw"), basePort + 1);
-            SensorActuatorRegistry.get().register(new PigeonGyroWrapper("Pigeon Roll"), basePort + 2);
-
-            SensorActuatorRegistry.get().register(new PigeonAccelWrapper("Pigeon X"), basePort + 0);
-            SensorActuatorRegistry.get().register(new PigeonAccelWrapper("Pigeon Y"), basePort + 1);
-            SensorActuatorRegistry.get().register(new PigeonAccelWrapper("Pigeon Z"), basePort + 2);
+            sLOGGER.log(Level.INFO, "Creating Pigeon on port " + port);
+            CanPigeonImuSim sim = new CanPigeonImuSim(sSENSOR_OFFSET + port * 3);
+            mPigeonMap.put(port, sim);
         }
         else
         {
             sLOGGER.log(Level.WARN, String.format("Unknown send command %016X", messageId));
         }
-
-        System.out.println("Send: " + aMessageId + ", " + port);
     }
 
-    private ByteBuffer dumpAngles(int aPort, double aScaler, int aBytes)
+    private void dumpAngles(ByteBuffer aData, int aPort, double aScaler, int aBytes)
     {
-        Map<Integer, IGyroWrapper> allGyros = SensorActuatorRegistry.get().getGyros();
-        ByteBuffer buffer = ByteBuffer.allocateDirect(16);
-        // buffer.order(ByteOrder.LITTLE_ENDIAN);
-        int basePort = getBasePort(aPort);
+        CanPigeonImuSim sim = mPigeonMap.get(aPort);
+        if (sim == null)
+        {
+            sLOGGER.log(Level.WARN, "Unknown pigeon " + aPort);
+            return;
+        }
 
-        System.out.println("\nSetting");
-        int yaw = (int) (allGyros.get(basePort + 0).getAngle() * aScaler);
-        int pitch = (int) (allGyros.get(basePort + 1).getAngle() * aScaler);
-        int roll = (int) (allGyros.get(basePort + 2).getAngle() * aScaler);
-        System.out.println(yaw + ", " + String.format("%016X", yaw));
-        System.out.println(pitch + ", " + String.format("%016X", pitch));
-        System.out.println(roll + ", " + String.format("%016X", roll));
+        double yaw = sim.getYawWrapper().getAngle();
+        double pitch = sim.getPitchWrapper().getAngle();
+        double roll = sim.getRollWrapper().getAngle();
+
+        int binnedYaw = (int) (yaw * aScaler);
+        int binnedPitch = (int) (pitch * aScaler);
+        int binnedRoll = (int) (roll * aScaler);
+
+        sLOGGER.log(Level.DEBUG, 
+                "Yaw: " + yaw + " - " + binnedYaw + ", " + String.format("%016X", binnedYaw) + ", " + 
+                "Pitch: " + pitch + " - " + binnedPitch + ", " + String.format("%016X", binnedPitch) + ", " + 
+                "Roll: " + roll + " - " + binnedRoll + ", " + String.format("%016X", binnedRoll));
 
         if (aBytes == 3)
         {
-            buffer.putShort((short) 0);
+            aData.putShort((short) 0);
         }
-        buffer.putShort((short) yaw);
-        buffer.putShort((short) pitch);
-        buffer.putShort((short) roll);
-
-        return buffer;
+        aData.putShort((short) binnedYaw);
+        aData.putShort((short) binnedPitch);
+        aData.putShort((short) binnedRoll);
     }
 
     @Override
-    public void handleReceive(int aMessageId, ByteBuffer aData, int aDataSize)
+    public int handleReceive(int aMessageId, ByteBuffer aData)
     {
         int port = aMessageId & 0x3F;
         int messageId = aMessageId & 0xFFFFFFC0;
 
         if (messageId == 0x15041C40)
         {
-            // SensorFeedbackJni.setCanSetValueForRead(dumpAngles(port, 16.4,
-            // 2), 8);
+            dumpAngles(aData, port, 16.4, 2);
         }
         else if (messageId == 0x15042140)
         {
-            // ByteBuffer buffer = ByteBuffer.allocateDirect(16);
 
-            // SensorFeedbackJni.setCanSetValueForRead(buffer, 8);
         }
         else
         {
             sLOGGER.log(Level.WARN, String.format("Unknown read command %016X", messageId));
         }
+
+        return 8;
     }
 
     @Override
@@ -140,7 +95,6 @@ public class PigeonDeviceManager implements ICanDeviceManager
     {
         System.out.println("readStreamSession");
     }
-
     @Override
     public int openStreamSession(int aMessageId)
     {

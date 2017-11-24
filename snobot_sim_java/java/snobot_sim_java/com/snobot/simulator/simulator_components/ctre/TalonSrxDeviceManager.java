@@ -60,11 +60,16 @@ public class TalonSrxDeviceManager implements ICanDeviceManager
     }
 
     @Override
-    public void handleReceive(int aMessageId, ByteBuffer aData, int aDataSize)
+    public int handleReceive(int aMessageId, ByteBuffer aData)
     {
         int port = aMessageId & 0x3F;
 
-        sLOGGER.log(Level.DEBUG, "@ReceiveMessage: MID: " + Integer.toHexString(aMessageId) + ", ExpectedSize: " + aDataSize);
+        // Clear the incoming vector
+        byte[] debug = new byte[8];
+        aData.put(debug);
+        aData.rewind();
+
+        sLOGGER.log(Level.DEBUG, "@ReceiveMessage: MID: " + Integer.toHexString(aMessageId));
 
         int messageId = aMessageId & 0xFFFFFFC0;
 
@@ -88,6 +93,8 @@ public class TalonSrxDeviceManager implements ICanDeviceManager
         {
             unsupportedRead(messageId);
         }
+
+        return 8;
     }
 
     private static int STREAM_CTR = 1;

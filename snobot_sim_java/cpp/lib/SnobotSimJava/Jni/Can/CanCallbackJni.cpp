@@ -76,12 +76,11 @@ void CanReadMessageCallback(const char* name, void* param,
     int port = *((int*) param);
     jstring nameString = MakeJString(aEnv, name);
 
-    uint8_t castDataSize = *dataSize;
     jobject dataBuffer = aEnv->NewDirectByteBuffer(const_cast<uint8_t*>(data), 8);
   uint32_t castMessageId = *messageID;
   uint32_t castTimeStamp = *timeStamp;
 
-    aEnv->CallStaticVoidMethod(aClazz, aMethodId, nameString, port, castMessageId, messageIDMask, dataBuffer, castDataSize, castTimeStamp);
+  *dataSize = aEnv->CallStaticIntMethod(aClazz, aMethodId, nameString, port, castMessageId, messageIDMask, dataBuffer, castTimeStamp);
 
     if (aEnv->ExceptionCheck())
     {
@@ -258,7 +257,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_can_CanCallbackJni_register
         SNOBOT_LOG(SnobotLogging::CRITICAL, "Failed to find method reference for function " << functionName << "(SendMessage)");
     }
 
-    gCanCallbackContainer.mRecvMessageMethodId = env->GetStaticMethodID(gCanCallbackContainer.mClazz, functionName.c_str(), "(Ljava/lang/String;IIILjava/nio/ByteBuffer;II)V");
+    gCanCallbackContainer.mRecvMessageMethodId = env->GetStaticMethodID(gCanCallbackContainer.mClazz, functionName.c_str(), "(Ljava/lang/String;IIILjava/nio/ByteBuffer;I)I");
     if (gCanCallbackContainer.mRecvMessageMethodId == NULL)
     {
         SNOBOT_LOG(SnobotLogging::CRITICAL, "Failed to find method reference for function " << functionName << " (RecvMessage)");

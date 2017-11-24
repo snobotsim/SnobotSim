@@ -24,6 +24,6 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RegisterCallbacksJni_resetW
     }
 
     sSnobotLogger = new SnobotLogging::SnobotCoutLogger();
-    sSnobotLogger->SetLogLevel(SnobotLogging::DEBUG);
+    sSnobotLogger->SetLogLevel(SnobotLogging::INFO);
     SnobotLogging::SetLogger(sSnobotLogger);
 }
