@@ -84,6 +84,10 @@ public class CanManager
 
     public void handleCloseStream(String callbackType, int sessionHandle)
     {
+        if (!mStreamSessionMap.containsKey(sessionHandle))
+        {
+            sLOGGER.log(Level.ERROR, "Could not close stream " + sessionHandle);
+        }
         mStreamSessionMap.remove(sessionHandle);
     }
 

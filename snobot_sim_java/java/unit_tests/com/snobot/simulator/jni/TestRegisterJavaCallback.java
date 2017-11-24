@@ -1,5 +1,7 @@
 package com.snobot.simulator.jni;
 
+import java.nio.ByteBuffer;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -71,10 +73,12 @@ public class TestRegisterJavaCallback extends BaseSimulatorTest
         DigitalCallbackJni.digitalCallback("DoesntExist", 0, null);
         EncoderCallbackJni.encoderCallback("DoesntExist", 0, null);
         I2CCallbackJni.i2cCallback("DoesntExist", 0, (HalCallbackValue) null);
+        I2CCallbackJni.i2cCallback("DoesntExist", 0, ByteBuffer.allocate(5));
         PcmCallbackJni.pcmCallback("DoesntExist", 0, null);
         PdpCallbackJni.pdpCallback("DoesntExist", 0, null);
         PwmCallbackJni.pwmCallback("DoesntExist", 0, null);
         RelayCallbackJni.relayCallback("DoesntExist", 0, null);
         SpiCallbackJni.spiCallback("DoesntExist", 0, (HalCallbackValue) null);
+        SpiCallbackJni.spiCallback("DoesntExist", 0, ByteBuffer.allocate(5));
     }
 }

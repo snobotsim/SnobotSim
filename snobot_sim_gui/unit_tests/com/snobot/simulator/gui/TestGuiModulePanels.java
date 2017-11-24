@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 
 import org.junit.Test;
 
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseGuiSimulatorTest;
 
 import edu.wpi.first.wpilibj.AnalogAccelerometer;
 import edu.wpi.first.wpilibj.AnalogGyro;
@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 
-public class TestGuiModulePanels extends BaseSimulatorTest
+public class TestGuiModulePanels extends BaseGuiSimulatorTest
 {
     @Test
     public void testGuiPanels()
@@ -32,12 +32,13 @@ public class TestGuiModulePanels extends BaseSimulatorTest
         new DigitalInput(2);
 
         GraphicalSensorDisplayPanel panel = new GraphicalSensorDisplayPanel();
-        panel.create();
-        panel.update();
+        // panel.create();
+        // panel.update();
 
-        JFrame frame = new JFrame();
+        JFrame frame = getFrame();
         frame.add(panel);
         frame.pack();
+        frame.setVisible(true);
 
         panel.repaint();
     }

@@ -63,6 +63,7 @@ public class TalonSrxDeviceManager implements ICanDeviceManager
     public int handleReceive(int aMessageId, ByteBuffer aData)
     {
         int port = aMessageId & 0x3F;
+        boolean success = true;
 
         // Clear the incoming vector
         byte[] debug = new byte[8];
@@ -91,10 +92,11 @@ public class TalonSrxDeviceManager implements ICanDeviceManager
         }
         else
         {
+            success = false;
             unsupportedRead(messageId);
         }
 
-        return 8;
+        return success ? 8 : 0;
     }
 
     private static int STREAM_CTR = 1;
