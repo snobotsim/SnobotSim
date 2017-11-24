@@ -31,6 +31,11 @@ public class TestJoystickFactory extends BaseSimulatorTest
             Assert.assertTrue(configFile.delete());
         }
 
+        if (!configFile.getParentFile().exists())
+        {
+            Assert.assertTrue(configFile.getParentFile().mkdirs());
+        }
+
         JoystickFactory factory = JoystickFactory.get();
 
         Map<String, ControllerConfiguration> config = factory.getControllerConfiguration();
