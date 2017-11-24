@@ -24,6 +24,10 @@ protected:
     uint8_t GetCRC(uint8_t* buffer, int length);
 
     uint8_t mLastWriteAddress;
+
+    int32_t mPort;
+    int32_t mReadCallbackId;
+    int32_t mWriteCallbackId;
 };
 
 #endif /* SPINAVXSIMULATOR_H_ */

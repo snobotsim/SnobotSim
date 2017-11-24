@@ -78,7 +78,7 @@ std::shared_ptr<ISpiWrapper> SpiWrapperFactory::CreateWrapper(int aPort, const s
 {
     if(aType == NAVX)
     {
-        return std::shared_ptr<ISpiWrapper>(new SpiNavxWrapper());
+        return std::shared_ptr<ISpiWrapper>(new SpiNavxWrapper(aPort));
     }
 
     if(aType == ADXRS450_GYRO_NAME)

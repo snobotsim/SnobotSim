@@ -71,7 +71,7 @@ std::shared_ptr<II2CWrapper> I2CWrapperFactory::CreateWrapper(int aPort, const s
 {
     if(aType == NAVX)
     {
-        return std::shared_ptr<II2CWrapper>(new I2CNavxWrapper());
+        return std::shared_ptr<II2CWrapper>(new I2CNavxWrapper(aPort));
     }
 
     if(aType == I2C_ACCELEROMETER_NAME)

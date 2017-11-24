@@ -1,5 +1,9 @@
 package com.snobot.simulator.wrapper_accessors.jni;
 
+import java.io.File;
+
+import org.apache.log4j.PropertyConfigurator;
+
 import com.snobot.simulator.wrapper_accessors.AccelerometerWrapperAccessor;
 import com.snobot.simulator.wrapper_accessors.AnalogSourceWrapperAccessor;
 import com.snobot.simulator.wrapper_accessors.DigitalSourceWrapperAccessor;
@@ -25,6 +29,9 @@ public class JniDataAccessor implements IDataAccessor
 
     public JniDataAccessor()
     {
+        String logFile = new File("log4j.properties").getAbsolutePath();
+        PropertyConfigurator.configure(logFile);
+
         accelerometer = new JniAccelerometerWrapperAccessor();
         gyro = new JniGyroWrapperAccessor();
         analog = new JniAnalogSourceWrapperAccessor();

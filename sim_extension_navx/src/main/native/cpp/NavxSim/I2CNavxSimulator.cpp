@@ -20,15 +20,16 @@ static void NavxI2CWriteBufferCallback(const char* name, void* param,
     sim->HandleWrite(buffer, count);
 }
 
-I2CNavxSimulator::I2CNavxSimulator(int port)
+I2CNavxSimulator::I2CNavxSimulator(int port) : mPort(port)
 {
-    HALSIM_RegisterI2CReadCallback(port, NavxI2CReadBufferCallback, this);
-    HALSIM_RegisterI2CWriteCallback(port, NavxI2CWriteBufferCallback, this);
+    mReadCallbackId = HALSIM_RegisterI2CReadCallback(port, NavxI2CReadBufferCallback, this);
+    mWriteCallbackId = HALSIM_RegisterI2CWriteCallback(port, NavxI2CWriteBufferCallback, this);
 }
 
 I2CNavxSimulator::~I2CNavxSimulator()
 {
-
+	HALSIM_CancelI2CReadCallback(mPort, mReadCallbackId);
+	HALSIM_CancelI2CWriteCallback(mPort, mWriteCallbackId);
 }
 
 void I2CNavxSimulator::HandleWrite(const uint8_t* buffer, uint32_t count)

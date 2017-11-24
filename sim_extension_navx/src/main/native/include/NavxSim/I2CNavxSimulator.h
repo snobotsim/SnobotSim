@@ -22,6 +22,10 @@ public:
 protected:
 
     uint8_t mLastWriteAddress;
+
+    int32_t mPort;
+    int32_t mReadCallbackId;
+    int32_t mWriteCallbackId;
 };
 
 #endif /* I2CNAVXSIMULATOR_H_ */
