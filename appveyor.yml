@@ -16,8 +16,38 @@ test_script:
     # upload results to AppVeyor
 
     $wc = New-Object 'System.Net.WebClient'
+    
+    $files = Get-ChildItem ./snobot_sim_java/build/test-results/test/
+    
+    for ($i=0; $i -lt $files.Count; $i++) {
+    
+       $the_file = $files[$i].Name
+       
+       $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path snobot_sim_java/build/test-results/test/$the_file))
+       
+    }
+    
+    $files = Get-ChildItem ./snobot_sim_jni/build/test-results/test/
+    
+    for ($i=0; $i -lt $files.Count; $i++) {
+    
+       $the_file = $files[$i].Name
+       
+       $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path snobot_sim_jni/build/test-results/test/$the_file))
+       
+    }
+    
+    $files = Get-ChildItem ./snobot_sim_gui/build/test-results/test/
+    
+    for ($i=0; $i -lt $files.Count; $i++) {
+    
+       $the_file = $files[$i].Name
+       
+       $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path snobot_sim_gui/build/test-results/test/$the_file))
+       
+    }
 
-    $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path snobot_sim_java/build/test-results/test/TEST-com.snobot.simulator.jni.TestLinking.xml))
+    
     
 
 artifacts:
