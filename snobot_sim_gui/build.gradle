@@ -1,4 +1,6 @@
 
+import org.gradle.internal.os.OperatingSystem
+
 repositories {
     mavenCentral()
 }
@@ -21,7 +23,7 @@ sourceSets {
     }
 }
 test {
-	ignoreFailures = true
+	ignoreFailures = !OperatingSystem.current().isWindows()
 }
 
 jacocoTestReport {

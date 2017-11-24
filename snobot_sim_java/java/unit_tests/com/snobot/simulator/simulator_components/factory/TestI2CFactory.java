@@ -37,7 +37,7 @@ public class TestI2CFactory extends BaseSimulatorTest
     }
 
     @Test
-    public void testDefaultI2cWrappers()
+    public void testDefaultI2CWrappers()
     {
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultI2CSimulator(0, "TestA");
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultI2CSimulator(1, "TestB");

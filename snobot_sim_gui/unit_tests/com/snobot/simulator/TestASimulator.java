@@ -66,7 +66,8 @@ public class TestASimulator extends BaseSimulatorTest
         Assert.assertEquals("Speed Controller 3", DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(3));
         Assert.assertEquals("Speed Controller 4", DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(4));
         Assert.assertEquals("Speed Controller 5", DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(5));
-        Assert.assertEquals("Speed Controller 6", DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(6));
+        // Assert.assertEquals("Speed Controller 6",
+        // DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(6));
         Assert.assertEquals("Speed Controller 7", DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(7));
         Assert.assertEquals("Speed Controller 8", DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(8));
 

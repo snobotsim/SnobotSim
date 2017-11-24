@@ -27,7 +27,7 @@ sourceSets {
     }
 }
 test {
-	ignoreFailures = true
+	ignoreFailures = !OperatingSystem.current().isWindows()
 }
 
 

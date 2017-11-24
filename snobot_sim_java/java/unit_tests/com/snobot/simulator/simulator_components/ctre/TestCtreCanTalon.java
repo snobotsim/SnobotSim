@@ -135,8 +135,6 @@ public class TestCtreCanTalon extends BaseSimulatorTest
         });
 
         Assert.assertEquals(36, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPosition(mRawHandle), .05);
-        System.out.println(talon.getEncPosition());
-        System.out.println(talon.getEncVelocity());
     }
 
     @Test
@@ -148,8 +146,6 @@ public class TestCtreCanTalon extends BaseSimulatorTest
 
         talon.changeControlMode(TalonControlMode.Position);
         talon.setFeedbackDevice(FeedbackDevice.AnalogPot);
-
-        System.out.println(talon.getAnalogInPosition());
     }
 
     @Test
@@ -179,9 +175,6 @@ public class TestCtreCanTalon extends BaseSimulatorTest
         });
 
         Assert.assertEquals(40, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVelocity(mRawHandle), .05);
-
-        System.out.println(talon.getEncPosition());
-        System.out.println(talon.getEncVelocity());
     }
 
     @Test
@@ -193,9 +186,6 @@ public class TestCtreCanTalon extends BaseSimulatorTest
 
         talon.changeControlMode(TalonControlMode.Speed);
         talon.setFeedbackDevice(FeedbackDevice.AnalogPot);
-
-        System.out.println(talon.getAnalogInVelocity());
-
     }
 
     @Test

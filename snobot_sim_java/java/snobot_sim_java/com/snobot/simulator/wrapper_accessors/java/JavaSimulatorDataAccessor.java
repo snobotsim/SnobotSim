@@ -49,6 +49,8 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     @Override
     public void reset()
     {
+        getDefaultI2CWrappers().clear();
+        getDefaultSpiWrappers().clear();
         SensorActuatorRegistry.get().reset();
         RegisterCallbacksJni.reset();
     }

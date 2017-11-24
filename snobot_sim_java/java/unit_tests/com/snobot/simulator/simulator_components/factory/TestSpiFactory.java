@@ -39,7 +39,7 @@ public class TestSpiFactory extends BaseSimulatorTest
     }
 
     @Test
-    public void testDefaultI2cWrappers()
+    public void testDefaultSpiWrappers()
     {
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(0, "TestA");
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(1, "TestB");
