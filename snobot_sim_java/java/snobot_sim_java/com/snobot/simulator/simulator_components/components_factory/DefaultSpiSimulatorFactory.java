@@ -63,22 +63,22 @@ public class DefaultSpiSimulatorFactory implements ISpiSimulatorFactory
         if ("NavX".equals(aType))
         {
             long nativePointer = NavxSimulatorJni.createNavx(fullType, aPort);
-            new NavxSimulatorWrapper(fullType, nativePointer, 200 + aPort * 3);
+            return new NavxSimulatorWrapper(fullType, nativePointer, 200 + aPort * 3);
         }
         else if ("ADXRS450".equals(aType))
         {
             long nativePointer = SpiI2CSimulatorJni.createSpiGyro(fullType, aPort);
-            new SpiGyro(fullType, nativePointer, 100 + aPort);
+            return new SpiGyro(fullType, nativePointer, 100 + aPort);
         }
         else if ("ADXL345".equals(aType))
         {
             long nativePointer = SpiI2CSimulatorJni.createSpiI2cAccelerometer(fullType, aPort);
-            new SpiI2CAccelerometer(fullType, nativePointer, 100 + aPort * 3);
+            return new SpiI2CAccelerometer(fullType, nativePointer, 100 + aPort * 3);
         }
         else if ("ADXL362".equals(aType))
         {
             long nativePointer = SpiI2CSimulatorJni.createSpiI2cAccelerometer(fullType, aPort);
-            new SpiI2CAccelerometer(fullType, nativePointer, 150 + aPort * 3);
+            return new SpiI2CAccelerometer(fullType, nativePointer, 150 + aPort * 3);
         }
 
         return null;

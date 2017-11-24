@@ -164,6 +164,21 @@ public class SensorActuatorRegistry
 
     public void reset()
     {
+        for (ISpiWrapper wrapper : mSpiWrapperMap.values())
+        {
+            if (wrapper != null)
+            {
+                wrapper.shutdown();
+            }
+        }
+        for (II2CWrapper wrapper : mI2CWrapperMap.values())
+        {
+            if (wrapper != null)
+            {
+                wrapper.shutdown();
+            }
+        }
+
         mSpeedControllerMap.clear();
         mRelayWrapperMap.clear();
         mDigitalSourceWrapperMap.clear();

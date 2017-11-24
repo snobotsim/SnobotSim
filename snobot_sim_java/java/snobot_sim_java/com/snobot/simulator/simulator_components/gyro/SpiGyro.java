@@ -3,8 +3,9 @@ package com.snobot.simulator.simulator_components.gyro;
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.adx_family.SpiI2CSimulatorJni;
 import com.snobot.simulator.module_wrapper.ASensorWrapper;
+import com.snobot.simulator.simulator_components.ISpiWrapper;
 
-public class SpiGyro extends ASensorWrapper implements IGyroWrapper
+public class SpiGyro extends ASensorWrapper implements IGyroWrapper, ISpiWrapper
 {
     private final String mType;
     private final long mNativePointer;
@@ -21,7 +22,7 @@ public class SpiGyro extends ASensorWrapper implements IGyroWrapper
             throw new IllegalArgumentException("Native pointer not set up correctly");
         }
 
-        SensorActuatorRegistry.get().register(this, aBasePort);
+        SensorActuatorRegistry.get().register((IGyroWrapper) this, aBasePort);
     }
 
     @Override
@@ -34,5 +35,11 @@ public class SpiGyro extends ASensorWrapper implements IGyroWrapper
     public void setAngle(double aAngle)
     {
         SpiI2CSimulatorJni.setSpiGyroAngle(mType, mNativePointer, aAngle);
+    }
+
+    @Override
+    public void shutdown()
+    {
+        SpiI2CSimulatorJni.deleteSpiGyro(mType, mNativePointer);
     }
 }

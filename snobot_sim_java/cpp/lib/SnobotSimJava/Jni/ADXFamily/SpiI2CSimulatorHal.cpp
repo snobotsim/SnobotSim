@@ -18,7 +18,7 @@ using namespace hal;
 
 void XXXXNullCallback(const char* name, void* param, const struct HAL_Value* value)
 {
-    SNOBOT_LOG(SnobotLogging::INFO, "Null Callback..." << name << ", " << value->data.v_double);
+    SNOBOT_LOG(SnobotLogging::DEBUG, "Null Callback..." << name << ", " << value->data.v_double);
 }
 
 extern "C"
@@ -138,6 +138,27 @@ JNIEXPORT jlong JNICALL Java_com_snobot_simulator_jni_adx_1family_SpiI2CSimulato
 }
 
 /*
+ * Class:     com_snobot_simulator_jni_adx_family_SpiI2CSimulatorJni
+ * Method:    deleteAccelerometer
+ * Signature: (Ljava/lang/String;J)V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_adx_1family_SpiI2CSimulatorJni_deleteAccelerometer
+  (JNIEnv * env, jclass, jstring aType, jlong aPointerAddress)
+{
+    std::string type = env->GetStringUTFChars(aType, NULL);
+    if(type == "I2C ADXL345" || type == "SPI ADXL345" || type == "SPI ADXL362")
+    {
+        ThreeAxisAccelerometerData* accel = (ThreeAxisAccelerometerData*) aPointerAddress;
+        delete accel;
+    }
+    else
+    {
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown type : " << type);
+    }
+
+}
+
+/*
  * Class:     com_snobot_simulator_jni_SpiI2CSimulatorHal
  * Method:    createSpiGyro
  * Signature: (Ljava/lang/String;I)J
@@ -161,6 +182,27 @@ JNIEXPORT jlong JNICALL Java_com_snobot_simulator_jni_adx_1family_SpiI2CSimulato
     return -1;
 }
 
+
+/*
+ * Class:     com_snobot_simulator_jni_adx_family_SpiI2CSimulatorJni
+ * Method:    deleteSpiGyro
+ * Signature: (Ljava/lang/String;I)J
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_adx_1family_SpiI2CSimulatorJni_deleteSpiGyro
+  (JNIEnv * env, jclass, jstring aType, jlong aPointerAddress)
+{
+    std::string type = env->GetStringUTFChars(aType, NULL);
+
+    if(type == "SPI ADXRS450")
+    {
+    	ADXRS450_SpiGyroWrapper* sim = (ADXRS450_SpiGyroWrapper*) aPointerAddress;
+    	delete sim;
+    }
+    else
+    {
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown type : " << type);
+    }
+}
 
 /*
  * Class:     com_snobot_simulator_jni_SpiI2CSimulatorHal

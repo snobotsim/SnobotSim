@@ -4,8 +4,10 @@ import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.adx_family.SpiI2CSimulatorJni;
 import com.snobot.simulator.jni.adx_family.SpiI2CSimulatorJni.DataType;
 import com.snobot.simulator.module_wrapper.ASensorWrapper;
+import com.snobot.simulator.simulator_components.II2CWrapper;
+import com.snobot.simulator.simulator_components.ISpiWrapper;
 
-public class SpiI2CAccelerometer
+public class SpiI2CAccelerometer implements ISpiWrapper, II2CWrapper
 {
 
     private class AdxAccelWrapper extends ASensorWrapper implements IAccelerometerWrapper
@@ -37,12 +39,18 @@ public class SpiI2CAccelerometer
 
     }
 
+    private final long mNativePointer;
+    private final String mType;
+
     public SpiI2CAccelerometer(String aType, long aNativePointer, int aBasePort)
     {
         if (aNativePointer == -1)
         {
             throw new IllegalArgumentException("Native pointer not set up correctly");
         }
+
+        mNativePointer = aNativePointer;
+        mType = aType;
 
         IAccelerometerWrapper xWrapper = new AdxAccelWrapper(aNativePointer, aType, " X Accel", DataType.X);
         IAccelerometerWrapper yWrapper = new AdxAccelWrapper(aNativePointer, aType, " Y Accel", DataType.Y);
@@ -52,7 +60,10 @@ public class SpiI2CAccelerometer
         SensorActuatorRegistry.get().register(yWrapper, aBasePort + 1);
         SensorActuatorRegistry.get().register(zWrapper, aBasePort + 2);
     }
-    
 
-//    public double 
+    @Override
+    public void shutdown()
+    {
+        SpiI2CSimulatorJni.deleteAccelerometer(mType, mNativePointer);
+    }
 }

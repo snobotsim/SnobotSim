@@ -36,14 +36,6 @@ public class SpiCallbackJni
             ISpiWrapper wrapper = sSPI_FACTORY.createSpiWrapper(port);
             SensorActuatorRegistry.get().register(wrapper, port);
         }
-        else if ("Transaction".equals(callbackType))
-        {
-            SensorActuatorRegistry.get().getSpiWrappers().get(port).handleTransaction();
-        }
-        else if ("ResetAccumulator".equals(callbackType))
-        {
-            SensorActuatorRegistry.get().getSpiWrappers().get(port).resetAccumulator();
-        }
         else
         {
             sLOGGER.log(Level.ERROR, "Unknown SPI callback " + callbackType + " - " + halValue);
@@ -52,14 +44,7 @@ public class SpiCallbackJni
 
     public static void spiCallback(String callbackType, int port, ByteBuffer buffer)
     {
-        if ("Read".equals(callbackType))
-        {
-            SensorActuatorRegistry.get().getSpiWrappers().get(port).handleRead(buffer);
-        }
-        else if ("Write".equals(callbackType))
-        {
-            SensorActuatorRegistry.get().getSpiWrappers().get(port).handleWrite(buffer);
-        }
+        sLOGGER.log(Level.ERROR, "Unsupported SPI callback " + callbackType);
     }
 
 

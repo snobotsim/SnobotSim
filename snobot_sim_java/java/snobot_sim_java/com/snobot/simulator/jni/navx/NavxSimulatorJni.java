@@ -9,6 +9,8 @@ public class NavxSimulatorJni
 
     public static native long createNavx(String aType, int aPort);
 
+    public static native void deleteNavx(String aType, long aNativePointer);
+
     public static native double getNavxData(String aType, long aNativePointer, int dataType);
 
     public static native void setNavxData(String aType, long aNativePointer, int dataType, double aValue);
@@ -22,4 +24,5 @@ public class NavxSimulatorJni
     {
         setNavxData(aType, aNativePointer, dataType.ordinal(), aValue);
     }
+
 }

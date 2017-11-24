@@ -39,10 +39,6 @@ public class I2CCallbackJni
             II2CWrapper wrapper = sI2C_FACTORY.createI2CWrapper(port);
             SensorActuatorRegistry.get().register(wrapper, port);
         }
-        else if ("Read".equals(callbackType))
-        {
-            SensorActuatorRegistry.get().getI2CWrapperss().get(port).handleRead();
-        }
         else
         {
             sLOGGER.log(Level.ERROR, "Unknown I2C callback " + callbackType + " - " + halValue);

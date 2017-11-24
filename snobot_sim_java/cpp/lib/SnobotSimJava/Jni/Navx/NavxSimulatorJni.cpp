@@ -41,6 +41,27 @@ JNIEXPORT jlong JNICALL Java_com_snobot_simulator_jni_navx_NavxSimulatorJni_crea
 }
 
 /*
+ * Class:     com_snobot_simulator_jni_navx_NavxSimulatorJni
+ * Method:    deleteNavx
+ * Signature: (Ljava/lang/String;J)V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_navx_NavxSimulatorJni_deleteNavx
+  (JNIEnv * env, jclass, jstring aType, jlong aPointerAddress)
+{
+    std::string type = env->GetStringUTFChars(aType, NULL);
+
+    if(type == "SPI NavX" || type == "I2C NavX")
+    {
+        NavxSimulator* simulator = (NavxSimulator*) aPointerAddress;
+        delete simulator;
+    }
+    else
+    {
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown type : " << type);
+    }
+}
+
+/*
  * Class:     com_snobot_simulator_jni_NavxSimulatorHal
  * Method:    getNavxData
  * Signature: (Ljava/lang/String;JI)D

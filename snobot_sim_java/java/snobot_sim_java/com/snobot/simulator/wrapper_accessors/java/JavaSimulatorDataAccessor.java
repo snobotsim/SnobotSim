@@ -8,8 +8,8 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.snobot.simulator.SensorActuatorRegistry;
-import com.snobot.simulator.jni.RegisterCallbacksJni;
 import com.snobot.simulator.jni.DriverStationSimulatorJni;
+import com.snobot.simulator.jni.RegisterCallbacksJni;
 import com.snobot.simulator.jni.standard_components.I2CCallbackJni;
 import com.snobot.simulator.jni.standard_components.SpiCallbackJni;
 import com.snobot.simulator.module_wrapper.PwmWrapper;
@@ -49,8 +49,8 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     @Override
     public void reset()
     {
-        RegisterCallbacksJni.reset();
         SensorActuatorRegistry.get().reset();
+        RegisterCallbacksJni.reset();
     }
 
     @Override

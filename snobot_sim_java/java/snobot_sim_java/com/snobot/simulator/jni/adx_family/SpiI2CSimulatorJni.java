@@ -23,7 +23,11 @@ public class SpiI2CSimulatorJni
 
     public static native long createSpiI2cAccelerometer(String aType, int aPort);
 
+    public static native void deleteAccelerometer(String mType, long aNativePointer);
+
     public static native long createSpiGyro(String aType, int aPort);
+
+    public static native void deleteSpiGyro(String aType, long aNativePointer);
 
     public static native void setSpiGyroAngle(String aType, long aNativePointer, double aAngle);
 

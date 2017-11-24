@@ -60,11 +60,11 @@ public class DefaultI2CSimulatorFactory implements II2cSimulatorFactory
         String fullType = "I2C " + aType;
         if ("NavX".equals(aType))
         {
-            new NavxSimulatorWrapper(fullType, NavxSimulatorJni.createNavx(fullType, aPort), 250 + aPort * 3);
+            return new NavxSimulatorWrapper(fullType, NavxSimulatorJni.createNavx(fullType, aPort), 250 + aPort * 3);
         }
         if ("ADXL345".equals(aType))
         {
-            new SpiI2CAccelerometer(fullType, SpiI2CSimulatorJni.createSpiI2cAccelerometer(fullType, aPort), 50 + aPort * 3);
+            return new SpiI2CAccelerometer(fullType, SpiI2CSimulatorJni.createSpiI2cAccelerometer(fullType, aPort), 50 + aPort * 3);
         }
 
         return null;

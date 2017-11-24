@@ -4,10 +4,12 @@ import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.navx.NavxSimulatorJni;
 import com.snobot.simulator.jni.navx.NavxSimulatorJni.DataType;
 import com.snobot.simulator.module_wrapper.ASensorWrapper;
+import com.snobot.simulator.simulator_components.II2CWrapper;
+import com.snobot.simulator.simulator_components.ISpiWrapper;
 import com.snobot.simulator.simulator_components.accelerometer.IAccelerometerWrapper;
 import com.snobot.simulator.simulator_components.gyro.IGyroWrapper;
 
-public class NavxSimulatorWrapper
+public class NavxSimulatorWrapper implements ISpiWrapper, II2CWrapper
 {
     private class NavxAccelWrapper extends ASensorWrapper implements IAccelerometerWrapper
     {
@@ -67,12 +69,18 @@ public class NavxSimulatorWrapper
 
     }
 
+    private final long mNativePointer;
+    private final String mType;
+
     public NavxSimulatorWrapper(String aType, long aNativePointer, int aBasePort)
     {
         if (aNativePointer == -1)
         {
             throw new IllegalArgumentException("Native pointer not set up correctly");
         }
+
+        mType = aType;
+        mNativePointer = aNativePointer;
 
         IAccelerometerWrapper xWrapper = new NavxAccelWrapper(aNativePointer, aType, " X Accel", DataType.X);
         IAccelerometerWrapper yWrapper = new NavxAccelWrapper(aNativePointer, aType, " Y Accel", DataType.Y);
@@ -88,5 +96,11 @@ public class NavxSimulatorWrapper
         SensorActuatorRegistry.get().register(yawWrapper, aBasePort + 0);
         SensorActuatorRegistry.get().register(pitchWrapper, aBasePort + 1);
         SensorActuatorRegistry.get().register(rollWrapper, aBasePort + 2);
+    }
+
+    @Override
+    public void shutdown()
+    {
+        NavxSimulatorJni.deleteNavx(mType, mNativePointer);
     }
 }
