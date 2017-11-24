@@ -18,7 +18,9 @@ test_script:
     $wc = New-Object 'System.Net.WebClient'
 
     $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path snobot_sim_java/build/test-results/test/TEST-*.xml))
+    
     $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path snobot_sim_jni/build/test-results/test/TEST-*.xml))
+    
     $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path snobot_sim_gui/build/test-results/test/TEST-*.xml))
 
 
