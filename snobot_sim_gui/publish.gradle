@@ -123,13 +123,13 @@ publishing {
             artifact distTar
         }
         
-        snobot_sim_gui_eclipse_boilerplate(MavenPublication) {
-            groupId 'com.snobot.simulator'
-            artifactId 'snobot_sim_gui_eclipse_boilerplate'
-            version maven_version
-            
-            artifact zipEclipseProject
-        }
+        //snobot_sim_gui_eclipse_boilerplate(MavenPublication) {
+        //    groupId 'com.snobot.simulator'
+        //    artifactId 'snobot_sim_gui_eclipse_boilerplate'
+        //    version maven_version
+        //    
+        //    artifact zipEclipseProject
+        //}
     }
 
 }
