@@ -1,7 +1,7 @@
 
 import org.gradle.internal.os.OperatingSystem
 
-ext.useLocalLibraries = true
+ext.useLocalLibraries = false
 
 configurations {
     halHeaders
@@ -19,7 +19,7 @@ def thestuff = [
                 ["halLibs",          "hal",                            "libs",    "-all.zip", configurations.halLibs],
                 ["halAdxSimHeaders", "halsim-adx_gyro_accelerometer",  "headers", "-headers.zip", configurations.halAdxSimHeaders],
                 ["halAdxSimLib",     "halsim-adx_gyro_accelerometer",  "libs",    "-" + libType + ".zip", configurations.halAdxSimLib],
-                ["wpilibjJni",       "wpilibj-jni",                    "",        "-all.jar",         configurations.wpilibjJni],
+                ["wpilibjJni",       "wpilibj-jniShared",              "",        "-all.jar",         configurations.wpilibjJni],
                ]
 
 dependencies {
@@ -30,7 +30,7 @@ dependencies {
     halAdxSimHeaders 'edu.wpi.first.halsim:halsim-adx_gyro_accelerometer:' + getHalHeadersVersion() + ':headers@zip'
     halAdxSimLib     'edu.wpi.first.halsim:halsim-adx_gyro_accelerometer:' + getHalHeadersVersion() + ':' + libType + '@zip'
     halAdxSimLib     'edu.wpi.first.halsim:halsim-adx_gyro_accelerometer:' + getHalHeadersVersion() + ':' + libType + '@zip'
-    wpilibjJni       'edu.wpi.first.wpilibj:wpilibj-jni:' + getWpilibjVersion() + ':all'
+    wpilibjJni       'edu.wpi.first.wpilibj:wpilibj-jniShared:' + getWpilibjVersion() + ':all'
 }
 
 thestuff.each { params ->
