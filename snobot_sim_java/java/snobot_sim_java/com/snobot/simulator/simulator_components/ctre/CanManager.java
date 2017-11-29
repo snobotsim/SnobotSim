@@ -10,60 +10,58 @@ import org.apache.log4j.Logger;
 public class CanManager
 {
     private static final Logger sLOGGER = Logger.getLogger(CanManager.class);
+    private static int STREAM_CTR = 1;
 
-    private final Map<Integer, ICanDeviceManager> mDeviceManagers;
+    private final Map<Integer, ICanDeviceManager> mDeviceManagerMap;
     private final Map<Integer, ICanDeviceManager> mStreamSessionMap;
 
     public CanManager()
     {
         mStreamSessionMap = new HashMap<>();
-        mDeviceManagers = new HashMap<>();
-        mDeviceManagers.put(0x02040000, new TalonSrxDeviceManager());
-        mDeviceManagers.put(0x15040000, new PigeonDeviceManager());
+
+        mDeviceManagerMap = new HashMap<>();
+
+        TalonSrxDeviceManager talonManager = new TalonSrxDeviceManager();
+        for (int id : TalonSrxDeviceManager.getSupportedMessageIds())
+        {
+            mDeviceManagerMap.put(id, talonManager);
+        }
+
+        PigeonDeviceManager pigeonManager = new PigeonDeviceManager();
+        for (int id : PigeonDeviceManager.getSupportedMessageIds())
+        {
+            mDeviceManagerMap.put(id, pigeonManager);
+        }
     }
 
-    private ICanDeviceManager getDeviceManager(int aMessageId)
+    public void handleSendMessage(String aCallback, int aCanMessageId, int aCanPort, ByteBuffer aData, int aDataSize)
     {
-        int deviceId = aMessageId & 0xFFFF0000;
-
-        if (!mDeviceManagers.containsKey(deviceId) && deviceId != 0)
+        ICanDeviceManager deviceManager = mDeviceManagerMap.get(aCanMessageId);
+        if (deviceManager != null)
         {
-            sLOGGER.log(Level.ERROR, "Unknown device ID " + deviceId);
-            return null;
-        }
-
-        ICanDeviceManager deviceManager = null;
-        if (deviceId == 0)
-        {
-            deviceManager = mDeviceManagers.get(0x02040000);
-        }
-        else if (mDeviceManagers.containsKey(deviceId))
-        {
-            deviceManager = mDeviceManagers.get(deviceId);
+            deviceManager.handleSend(aCanMessageId, aCanPort, aData, aDataSize);
         }
         else
         {
-            sLOGGER.log(Level.ERROR, "Unknown device ID " + deviceId);
-        }
-
-        return deviceManager;
-    }
-
-    public void handleSendMessage(String aCallback, int aMessageId, ByteBuffer aData, int aDataSize)
-    {
-        ICanDeviceManager deviceManager = getDeviceManager(aMessageId);
-        if (deviceManager != null)
-        {
-            deviceManager.handleSend(aMessageId, aData, aDataSize);
+            sLOGGER.log(Level.ERROR, "Unknown device manager for " + aCanMessageId);
         }
     }
 
-    public int handleReceiveMessage(String aCallback, int aMessageId, ByteBuffer aData)
+    public int handleReceiveMessage(String aCallback, int aCanMessageId, int aCanPort, ByteBuffer aData)
     {
-        ICanDeviceManager deviceManager = getDeviceManager(aMessageId);
+        // Clear the incoming vector
+        byte[] debug = new byte[8];
+        aData.put(debug);
+        aData.rewind();
+
+        ICanDeviceManager deviceManager = mDeviceManagerMap.get(aCanMessageId);
         if (deviceManager != null)
         {
-            return deviceManager.handleReceive(aMessageId, aData);
+            return deviceManager.handleReceive(aCanMessageId, aCanPort, aData);
+        }
+        else
+        {
+            sLOGGER.log(Level.ERROR, "Unknown device manager for " + aCanMessageId);
         }
 
         return 0;
@@ -71,12 +69,16 @@ public class CanManager
 
     public int handleOpenStream(String callbackType, int aMessageId, int aMessageIdMask, int aMaxMessages)
     {
-        ICanDeviceManager deviceManager = getDeviceManager(aMessageId);
+        ICanDeviceManager deviceManager = mDeviceManagerMap.get(aMessageId);
         if (deviceManager != null)
         {
-            int streamSession = deviceManager.openStreamSession(aMessageId);
+            int streamSession = STREAM_CTR++;
             mStreamSessionMap.put(streamSession, deviceManager);
             return streamSession;
+        }
+        else
+        {
+            sLOGGER.log(Level.ERROR, "Unknown device manager for " + aMessageId);
         }
 
         return 0;

@@ -8,6 +8,7 @@
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/SimulatorComponents/CompressorWrapper.h"
 #include "HAL/handles/HandlesInternal.h"
+#include "SnobotSim/SimulatorComponents/Ctre/CanManager.h"
 
 SensorActuatorRegistry* SensorActuatorRegistry::sInstance =
         new SensorActuatorRegistry();
@@ -46,6 +47,8 @@ void SensorActuatorRegistry::Reset()
     mII2CWrapperMap.clear();
 
     mSimulatorComponents.clear();
+
+    mCanManager = std::shared_ptr<CanManager>(new CanManager);
 }
 
 std::shared_ptr<CompressorWrapper> SensorActuatorRegistry::GetCompressorWrapper()

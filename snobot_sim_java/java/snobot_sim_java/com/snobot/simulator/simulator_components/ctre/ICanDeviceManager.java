@@ -5,11 +5,9 @@ import java.nio.ByteBuffer;
 public interface ICanDeviceManager
 {
 
-    void handleSend(int aMessageId, ByteBuffer aData, int aDataSize);
+    void handleSend(int aCanMessageId, int aCanPort, ByteBuffer aData, int aDataSize);
 
-    int handleReceive(int aMessageId, ByteBuffer aData);
-
-    int openStreamSession(int aMessageId);
+    int handleReceive(int aCanMessageId, int aCanPort, ByteBuffer aData);
 
     void readStreamSession(ByteBuffer[] messages, int messagesToRead);
 

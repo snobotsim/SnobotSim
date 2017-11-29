@@ -23,27 +23,33 @@ public class CanCallbackJni
         registerCanCallback("canCallback");
     }
 
-    public static void canCallback(String callbackType, int port, HalCallbackValue halValue)
+    public static void canCallback(String callbackType, int dummy, HalCallbackValue halValue)
     {
         sLOGGER.log(Level.ERROR, "Shouldn't be called directly " + callbackType + " - " + halValue);
     }
 
-    public static void canCallback(String callbackType, int port, int aMessageId, ByteBuffer aData, int aDataSize, int aPeriodMs)
+    public static void canCallback(String callbackType, int dummy, int aMessageId, ByteBuffer aData, int aDataSize, int aPeriodMs)
     {
-        sCAN_MANAGER.handleSendMessage(callbackType, aMessageId, aData, aDataSize);
+        int canMessageId = aMessageId & 0xFFFFFFC0;
+        int canPort = aMessageId & 0x3F;
+
+        sCAN_MANAGER.handleSendMessage(callbackType, canMessageId, canPort, aData, aDataSize);
     }
 
-    public static int canCallback(String callbackType, int port, int aMessageId, int messageIDMask, ByteBuffer aData, int aTimestamp)
+    public static int canCallback(String callbackType, int dummy, int aMessageId, int messageIDMask, ByteBuffer aData, int aTimestamp)
     {
-        return sCAN_MANAGER.handleReceiveMessage(callbackType, aMessageId, aData);
+        int canMessageId = aMessageId & 0xFFFFFFC0;
+        int canPort = aMessageId & 0x3F;
+
+        return sCAN_MANAGER.handleReceiveMessage(callbackType, canMessageId, canPort, aData);
     }
 
-    public static int canCallback(String callbackType, int port, int messageId, int messageIdMask, int maxMessages)
+    public static int canCallback(String callbackType, int dummy, int messageId, int messageIdMask, int maxMessages)
     {
         return sCAN_MANAGER.handleOpenStream(callbackType, messageId, messageIdMask, maxMessages);
     }
 
-    public static void canCallback(String callbackType, int port, int sessionHandle)
+    public static void canCallback(String callbackType, int dummy, int sessionHandle)
     {
         sCAN_MANAGER.handleCloseStream(callbackType, sessionHandle);
     }

@@ -27,6 +27,7 @@ class IAccelerometerWrapper;
 class ISpiWrapper;
 class II2CWrapper;
 class CompressorWrapper;
+class CanManager;
 
 #define ACTUATOR_GETTERS(ItemType)                                              \
     bool Register(int aPort, const std::shared_ptr<ItemType>& aActuator);       \
@@ -123,6 +124,7 @@ protected:
     std::map<int, std::shared_ptr<II2CWrapper>> mII2CWrapperMap;
 
     std::shared_ptr<CompressorWrapper> mCompressor;
+    std::shared_ptr<CanManager> mCanManager;
 
     std::vector<std::shared_ptr<ISimulatorUpdater>> mSimulatorComponents;
 };

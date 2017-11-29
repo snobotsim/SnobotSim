@@ -1,6 +1,8 @@
 package com.snobot.simulator.simulator_components.ctre;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,21 +21,28 @@ public class PigeonDeviceManager implements ICanDeviceManager
         mPigeonMap = new HashMap<>();
     }
 
-    @Override
-    public void handleSend(int aMessageId, ByteBuffer aData, int aDataSize)
+    public static Collection<Integer> getSupportedMessageIds()
     {
-        int port = aMessageId & 0x3F;
-        int messageId = aMessageId & 0xFFFFFFC0;
+        return Arrays.asList(
+                // In Series
+                0x15042800, 0x15042140, 0x15041C40,
 
-        if (messageId == 0x15042800)
+                // In Talon
+                0x2042800, 0x2041C40, 0x2042140);
+    }
+
+    @Override
+    public void handleSend(int aCanMessageId, int aCanPort, ByteBuffer aData, int aDataSize)
+    {
+        if (aCanMessageId == 0x15042800 || aCanMessageId == 0x2042800)
         {
-            sLOGGER.log(Level.INFO, "Creating Pigeon on port " + port);
-            CanPigeonImuSim sim = new CanPigeonImuSim(sSENSOR_OFFSET + port * 3);
-            mPigeonMap.put(port, sim);
+            sLOGGER.log(Level.INFO, "Creating Pigeon on port " + aCanPort);
+            CanPigeonImuSim sim = new CanPigeonImuSim(sSENSOR_OFFSET + aCanPort * 3);
+            mPigeonMap.put(aCanPort, sim);
         }
         else
         {
-            sLOGGER.log(Level.WARN, String.format("Unknown send command %016X", messageId));
+            sLOGGER.log(Level.WARN, String.format("Unknown send command %016X", aCanMessageId));
         }
     }
 
@@ -69,22 +78,19 @@ public class PigeonDeviceManager implements ICanDeviceManager
     }
 
     @Override
-    public int handleReceive(int aMessageId, ByteBuffer aData)
+    public int handleReceive(int aCanMessageId, int aCanPort, ByteBuffer aData)
     {
-        int port = aMessageId & 0x3F;
-        int messageId = aMessageId & 0xFFFFFFC0;
-
-        if (messageId == 0x15041C40)
+        if (aCanMessageId == 0x15041C40 || aCanMessageId == 0x2041C40)
         {
-            dumpAngles(aData, port, 16.4, 2);
+            dumpAngles(aData, aCanPort, 16.4, 2);
         }
-        else if (messageId == 0x15042140)
+        else if (aCanMessageId == 0x15042140 || aCanMessageId == 0x2042140)
         {
 
         }
         else
         {
-            sLOGGER.log(Level.WARN, String.format("Unknown read command %016X", messageId));
+            sLOGGER.log(Level.WARN, String.format("Unknown read command %016X", aCanMessageId));
         }
 
         return 8;
@@ -94,11 +100,5 @@ public class PigeonDeviceManager implements ICanDeviceManager
     public void readStreamSession(ByteBuffer[] messages, int messagesToRead)
     {
         System.out.println("readStreamSession");
-    }
-    @Override
-    public int openStreamSession(int aMessageId)
-    {
-        System.out.println("Opening stream session");
-        return 0;
     }
 }

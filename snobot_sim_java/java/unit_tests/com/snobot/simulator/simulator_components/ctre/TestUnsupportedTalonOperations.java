@@ -15,7 +15,7 @@ public class TestUnsupportedTalonOperations extends BaseSimulatorTest
     {
         TalonSrxDeviceManager deviceManager = new TalonSrxDeviceManager();
 
-        deviceManager.handleSend(0xFFFFFFFF, ByteBuffer.allocate(8), 8);
+        deviceManager.handleSend(0xFFFFFFFF, 6, ByteBuffer.allocate(8), 8);
     }
 
     @Test
@@ -23,7 +23,7 @@ public class TestUnsupportedTalonOperations extends BaseSimulatorTest
     {
         TalonSrxDeviceManager deviceManager = new TalonSrxDeviceManager();
 
-        Assert.assertEquals(0, deviceManager.handleReceive(0xFFFFFFFF, ByteBuffer.allocate(8)));
+        Assert.assertEquals(0, deviceManager.handleReceive(0xFFFFFFFF, 6, ByteBuffer.allocate(8)));
     }
 
     @Test
@@ -33,7 +33,7 @@ public class TestUnsupportedTalonOperations extends BaseSimulatorTest
 
         ByteBuffer buffer = ByteBuffer.allocate(8);
         buffer.putLong(0xFFFFFFFFFFFFFFFFL);
-        deviceManager.handleSend(0x0204000F, buffer, 8);
+        deviceManager.handleSend(0x0204000F, 6, buffer, 8);
     }
 
     @Test
@@ -43,7 +43,7 @@ public class TestUnsupportedTalonOperations extends BaseSimulatorTest
 
         ByteBuffer buffer = ByteBuffer.allocate(8);
         buffer.putLong(0x000000000022EE00L);
-        deviceManager.handleSend(0x0204000F, buffer, 8);
+        deviceManager.handleSend(0x0204000F, 6, buffer, 8);
     }
 
     @Test
@@ -53,7 +53,7 @@ public class TestUnsupportedTalonOperations extends BaseSimulatorTest
 
         ByteBuffer buffer = ByteBuffer.allocate(8);
         buffer.putLong(0xFFFFFFFFFFFFFFFFL);
-        deviceManager.handleSend(0x02041880, buffer, 8);
+        deviceManager.handleSend(0x02041880, 6, buffer, 8);
     }
 
     @Test
@@ -63,7 +63,7 @@ public class TestUnsupportedTalonOperations extends BaseSimulatorTest
 
         ByteBuffer buffer = ByteBuffer.allocate(8);
         buffer.putLong(0xFFFFFFFFFFFFFFFFL);
-        deviceManager.handleSend(0x02041800, buffer, 8);
+        deviceManager.handleSend(0x02041800, 6, buffer, 8);
     }
 
 }

@@ -15,7 +15,7 @@ public class TestUnsupportedCanManagerOperations extends BaseSimulatorTest
         CanManager deviceManager = new CanManager();
 
         ByteBuffer buffer = ByteBuffer.allocate(8);
-        deviceManager.handleSendMessage("", 0x12340000, buffer, 8);
+        deviceManager.handleSendMessage("", 0x12340000, 8, buffer, 8);
     }
 
     @Test
@@ -24,7 +24,7 @@ public class TestUnsupportedCanManagerOperations extends BaseSimulatorTest
         CanManager deviceManager = new CanManager();
 
         ByteBuffer buffer = ByteBuffer.allocate(8);
-        deviceManager.handleReceiveMessage("", 0x12340000, buffer);
+        deviceManager.handleReceiveMessage("", 0x12340000, 8, buffer);
     }
 
     @Test

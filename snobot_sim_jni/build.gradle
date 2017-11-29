@@ -108,6 +108,10 @@ dependencies {
     testRuntime 'org.opencv:opencv-jni:' + getWpilibOpencvVersion() + ':all'
     testRuntime combineNativeLibrariesIntoOne.outputs.files
     
+    testCompile project(':ctre_override')
+    testCompile "thirdparty.frc.ctre:Toolsuite-Java:4.4.1.14"
+    testRuntime project(':ctre_override').combineNativeLibrariesIntoOne.outputs.files
+    
 }
 
 def jniClasses = [

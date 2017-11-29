@@ -2,6 +2,8 @@ package com.snobot.simulator.simulator_components.ctre;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -20,12 +22,23 @@ public class TalonSrxDeviceManager implements ICanDeviceManager
         mSetParamBuffer.order(ByteOrder.LITTLE_ENDIAN);
     }
 
-    @Override
-    public void handleSend(int aMessageId, ByteBuffer aData, int aDataSize)
+    public static Collection<Integer> getSupportedMessageIds()
     {
-        int port = aMessageId & 0x3F;
+        return Arrays.asList(
+                // Stream
+                0,
 
-        String bufferPrintout = "Uhoh";
+                // Send
+                0x02041400, 0x02041440, 0x02041480, 0x020414C0,
+
+                // Recv
+                0x02040000, 0x02041880, 0x02041800);
+    }
+
+    @Override
+    public void handleSend(int aCanMessageId, int aCanPort, ByteBuffer aData, int aDataSize)
+    {
+        String bufferPrintout;
 
         if (aDataSize >= 8)
         {
@@ -37,74 +50,56 @@ public class TalonSrxDeviceManager implements ICanDeviceManager
         }
 
         sLOGGER.log(Level.DEBUG,
-                "@SendingMessage: MID: " + Integer.toHexString(aMessageId) + ", size: " + aDataSize + ", buffer: " + bufferPrintout);
+                "@SendingMessage: MID: " + Integer.toHexString(aCanMessageId) + ", size: " + aDataSize + ", buffer: " + bufferPrintout);
 
-        int messageId = aMessageId & 0xFFFFFFC0;
-
-        if (messageId == 0x02040000)
+        if (aCanMessageId == 0x02040000)
         {
-            handleTx1(aData, port);
+            handleTx1(aData, aCanPort);
         }
-        else if (messageId == 0x02041880)
+        else if (aCanMessageId == 0x02041880)
         {
-            handleSetParamCommand(aData, port);
+            handleSetParamCommand(aData, aCanPort);
         }
-        else if (messageId == 0x02041800)
+        else if (aCanMessageId == 0x02041800)
         {
-            handleParamRequest(aData, port);
+            handleParamRequest(aData, aCanPort);
         }
         else
         {
-            unsupportedWrite(messageId);
+            unsupportedWrite(aCanMessageId);
         }
     }
 
     @Override
-    public int handleReceive(int aMessageId, ByteBuffer aData)
+    public int handleReceive(int aCanMessageId, int aCanPort, ByteBuffer aData)
     {
-        int port = aMessageId & 0x3F;
         boolean success = true;
 
-        // Clear the incoming vector
-        byte[] debug = new byte[8];
-        aData.put(debug);
-        aData.rewind();
+        sLOGGER.log(Level.DEBUG, "@ReceiveMessage: MID: " + Integer.toHexString(aCanMessageId));
 
-        sLOGGER.log(Level.DEBUG, "@ReceiveMessage: MID: " + Integer.toHexString(aMessageId));
-
-        int messageId = aMessageId & 0xFFFFFFC0;
-
-        if (messageId == 0x02041400)
+        if (aCanMessageId == 0x02041400)
         {
-            populateStatus1(port, aData);
+            populateStatus1(aCanPort, aData);
         }
-        else if (messageId == 0x02041440)
+        else if (aCanMessageId == 0x02041440)
         {
-            populateStatus2(port, aData);
+            populateStatus2(aCanPort, aData);
         }
-        else if (messageId == 0x02041480)
+        else if (aCanMessageId == 0x02041480)
         {
-            populateStatus3(port, aData);
+            populateStatus3(aCanPort, aData);
         }
-        else if (messageId == 0x020414C0)
+        else if (aCanMessageId == 0x020414C0)
         {
-            populateStatus4(port, aData);
+            populateStatus4(aCanPort, aData);
         }
         else
         {
             success = false;
-            unsupportedRead(messageId);
+            unsupportedRead(aCanMessageId);
         }
 
         return success ? 8 : 0;
-    }
-
-    private static int STREAM_CTR = 1;
-
-    @Override
-    public int openStreamSession(int aMessageId)
-    {
-        return STREAM_CTR++;
     }
 
     @Override
@@ -354,17 +349,11 @@ public class TalonSrxDeviceManager implements ICanDeviceManager
     private void unsupportedRead(int aStatusType)
     {
         sLOGGER.log(Level.ERROR, "Status request " + aStatusType + " is not supported.");
-
-        ByteBuffer buffer = ByteBuffer.allocateDirect(19);
-        // SensorFeedbackJni.setCanSetValueForRead(buffer, 8);
     }
 
     private void unsupportedWrite(int aStatusType)
     {
         sLOGGER.log(Level.ERROR, "TX Request " + aStatusType + " is not supported.");
-
-        ByteBuffer buffer = ByteBuffer.allocateDirect(19);
-        // SensorFeedbackJni.setCanSetValueForRead(buffer, 8);
     }
 
     private CanTalonSpeedControllerSim getWrapperHelper(int aPort)
