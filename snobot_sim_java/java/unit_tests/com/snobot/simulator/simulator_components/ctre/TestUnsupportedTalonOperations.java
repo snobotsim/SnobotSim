@@ -8,7 +8,6 @@ import org.junit.Test;
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.TrajectoryPoint;
-import com.ctre.CanTalonJNI.param_t;
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
@@ -161,7 +160,7 @@ public class TestUnsupportedTalonOperations extends BaseSimulatorTest
         climber.getOutputCurrent();
         climber.getOutputVoltage();
         climber.getP();
-        climber.getParameter(param_t.eAinPosition);
+        // climber.getParameter(param_t.eAinPosition);
         climber.getPIDSourceType();
         climber.getPinStateQuadA();
         climber.getPinStateQuadB();

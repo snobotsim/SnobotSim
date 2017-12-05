@@ -33,7 +33,11 @@ public class TalonSrxDeviceManager implements ICanDeviceManager
                 0x02041400, 0x02041440, 0x02041480, 0x020414C0,
 
                 // Recv
-                0x02040000, 0x02041880, 0x02041800);
+                0x02040000, 0x02041880, 0x02041800,
+
+                0x02040140, 0x02040080,
+
+                0x020415C0);
     }
 
     @Override
@@ -222,6 +226,10 @@ public class TalonSrxDeviceManager implements ICanDeviceManager
         {
             sLOGGER.log(Level.INFO, "setForwardSoftLimit is not supported");
         }
+        else if (commandType == 21)
+        {
+            sLOGGER.log(Level.INFO, "setForwardSoftLimit is not supported");
+        }
         else if (commandType == 22)
         {
             sLOGGER.log(Level.INFO, "setReverseSoftLimit is not supported");
@@ -261,6 +269,10 @@ public class TalonSrxDeviceManager implements ICanDeviceManager
         else if (commandType == 104 || commandType == 106)
         {
             sLOGGER.log(Level.INFO, "configPeakOutputVoltage is not supported, but it probably shouldn't matter ");
+        }
+        else if (commandType == 108 || commandType == 100)
+        {
+            sLOGGER.log(Level.INFO, "enableZeroSensorPositionOnIndex is not supported, but it probably shouldn't matter ");
         }
         else if (commandType == 111)
         {

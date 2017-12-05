@@ -802,27 +802,27 @@ CTR_Code CanTalonSRX::ClearStickyFaults() {
   if (status) return CTR_TxFailed;
   return CTR_OKAY;
 }
-///**
-// * @return the tx task that transmits Control6 (motion profile control).
-// *         If it's not scheduled, then schedule it.  This is part of firing
-// *         the MotionProf framing only when needed to save bandwidth.
-// */
-//CtreCanNode::txTask<TALON_Control_6_MotProfAddTrajPoint_t>
-//CanTalonSRX::GetControl6() {
-//  CtreCanNode::txTask<TALON_Control_6_MotProfAddTrajPoint_t> control6 =
-//      GetTx<TALON_Control_6_MotProfAddTrajPoint_t>(CONTROL_6 |
-//                                                   GetDeviceNumber());
-//  if (control6.IsEmpty()) {
-//    /* control6 never started, arm it now */
-//    RegisterTx(CONTROL_6 | GetDeviceNumber(), _control6PeriodMs);
-//    control6 = GetTx<TALON_Control_6_MotProfAddTrajPoint_t>(CONTROL_6 |
-//                                                            GetDeviceNumber());
-//    control6->Idx = 0;
-//    _motProfFlowControl = 0;
-//    FlushTx(control6);
-//  }
-//  return control6;
-//}
+/**
+ * @return the tx task that transmits Control6 (motion profile control).
+ *         If it's not scheduled, then schedule it.  This is part of firing
+ *         the MotionProf framing only when needed to save bandwidth.
+ */
+CtreCanNode::txTask<TALON_Control_6_MotProfAddTrajPoint_t>
+CanTalonSRX::GetControl6() {
+  CtreCanNode::txTask<TALON_Control_6_MotProfAddTrajPoint_t> control6 =
+      GetTx<TALON_Control_6_MotProfAddTrajPoint_t>(CONTROL_6 |
+                                                   GetDeviceNumber());
+  if (control6.IsEmpty()) {
+    /* control6 never started, arm it now */
+    RegisterTx(CONTROL_6 | GetDeviceNumber(), _control6PeriodMs);
+    control6 = GetTx<TALON_Control_6_MotProfAddTrajPoint_t>(CONTROL_6 |
+                                                            GetDeviceNumber());
+    control6->Idx = 0;
+    _motProfFlowControl = 0;
+    FlushTx(control6);
+  }
+  return control6;
+}
 /**
  * Calling application can opt to speed up the handshaking between the robot API
  * and the Talon to increase the download rate of the Talon's Motion Profile.
@@ -848,10 +848,10 @@ void CanTalonSRX::ClearMotionProfileTrajectories() {
   /* clear the top buffer */
   _motProfTopBuffer.Clear();
   /* send signal to clear bottom buffer */
-  //auto toFill = CanTalonSRX::GetControl6();
-  //toFill->Idx = 0;
-  //_motProfFlowControl = 0; /* match the transmitted flow control */
-  //FlushTx(toFill);
+  auto toFill = CanTalonSRX::GetControl6();
+  toFill->Idx = 0;
+  _motProfFlowControl = 0; /* match the transmitted flow control */
+  FlushTx(toFill);
 }
 /**
  * Retrieve just the buffer count for the api-level (top) buffer.
@@ -1005,14 +1005,14 @@ void CanTalonSRX::ProcessMotionProfileBuffer() {
     if (_motProfTopBuffer.IsEmpty()) {
       /* nothing to do */
     } else {
-     ///* get the latest control frame */
-     //auto toFill = GetControl6();
-     //TALON_Control_6_MotProfAddTrajPoint_t *front = _motProfTopBuffer.Front();
-     //CopyTrajPtIntoControl(toFill.toSend, front);
-     //_motProfTopBuffer.Pop();
-     //_motProfFlowControl = MotionProf_IncrementSync(_motProfFlowControl);
-     //toFill->Idx = _motProfFlowControl;
-     //FlushTx(toFill);
+     /* get the latest control frame */
+     auto toFill = GetControl6();
+     TALON_Control_6_MotProfAddTrajPoint_t *front = _motProfTopBuffer.Front();
+     CopyTrajPtIntoControl(toFill.toSend, front);
+     _motProfTopBuffer.Pop();
+     _motProfFlowControl = MotionProf_IncrementSync(_motProfFlowControl);
+     toFill->Idx = _motProfFlowControl;
+     FlushTx(toFill);
     }
   } else {
     /* still waiting on Talon */

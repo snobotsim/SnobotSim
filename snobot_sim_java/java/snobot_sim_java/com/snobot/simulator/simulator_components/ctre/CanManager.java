@@ -43,7 +43,7 @@ public class CanManager
         }
         else
         {
-            sLOGGER.log(Level.ERROR, "Unknown device manager for " + aCanMessageId);
+            sLOGGER.log(Level.ERROR, String.format("Unknown device manager for message 0x%08X", aCanMessageId));
         }
     }
 
@@ -61,7 +61,7 @@ public class CanManager
         }
         else
         {
-            sLOGGER.log(Level.ERROR, "Unknown device manager for " + aCanMessageId);
+            sLOGGER.log(Level.ERROR, String.format("Unknown device manager for message 0x%08X", aCanMessageId));
         }
 
         return 0;
@@ -78,7 +78,7 @@ public class CanManager
         }
         else
         {
-            sLOGGER.log(Level.ERROR, "Unknown device manager for " + aMessageId);
+            sLOGGER.log(Level.ERROR, String.format("Unknown device manager for message 0x%08X", aMessageId));
         }
 
         return 0;

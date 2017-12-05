@@ -168,6 +168,13 @@ class CanTalonSRX : public CtreCanNode {
    */
   void GetControlFrameCopy(uint8_t *toFill);
   /**
+   * @return the tx task that transmits Control6 (motion profile control).
+   *         If it's not scheduled, then schedule it.  This is part
+   *         of making the lazy-framing that only peforms MotionProf framing
+   *         when needed to save bandwidth.
+   */
+  CtreCanNode::txTask<TALON_Control_6_MotProfAddTrajPoint_t> GetControl6();
+  /**
    * Caller is either pushing a new motion profile point, or is
    * calling the Process buffer routine.  In either case check our
    * flow control to see if we need to start sending control6.
