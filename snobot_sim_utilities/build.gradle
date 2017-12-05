@@ -22,4 +22,10 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
+jar {
+   from("${rootDir}/snobot_sim_utilities/src") {
+      include  '**/*.properties'
+   }
+}
+
 apply from: "publish.gradle"

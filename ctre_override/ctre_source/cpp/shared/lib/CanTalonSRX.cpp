@@ -184,9 +184,24 @@ const double FXP_TO_FLOAT_10_22 = 0.0000002384185791015625;
 const double FLOAT_TO_FXP_0_8 = (double)0x100;
 const double FXP_TO_FLOAT_0_8 = 0.00390625;
 
+//#define PRINT_DEBUGGING_OUTPUT
 
-//#define DEBUG_CAN_TALON_SRX(x) std::cout << x << std::endl;
-#define DEBUG_CAN_TALON_SRX(x) ;
+#ifdef PRINT_DEBUGGING_OUTPUT
+    #ifndef __FUNCTION_NAME__
+        #ifdef WIN32   //WINDOWS
+            #define __FUNCTION_NAME__   __FUNCTION__
+        #else          //*NIX
+            #define __FUNCTION_NAME__   __func__
+        #endif
+    #endif
+    #include <iomanip>
+    #define DEBUG_CAN_TALON_SRX(x) std::cout << std::left << std::setw (45) << __FUNCTION_NAME__ << "(" << __LINE__ << "): " << x << std::endl;
+//    #define DEBUG_DETAILED_CAN_TALON_SRX(x) std::cout << x << std::endl;
+    #define DEBUG_DETAILED_CAN_TALON_SRX(x) ;
+#else
+    #define DEBUG_CAN_TALON_SRX(x) ;
+    #define DEBUG_DETAILED_CAN_TALON_SRX(x) ;
+#endif
 
 CanTalonSRX::CanTalonSRX(int deviceNumber, int controlPeriodMs,
                          int enablePeriodMs)
@@ -290,7 +305,7 @@ void CanTalonSRX::GetControlFrameCopy(uint8_t *toFill) {
  * if needed for some reason.
  */
 void CanTalonSRX::UpdateControlId() {
-    DEBUG_CAN_TALON_SRX("\nUpdateControlId");
+    DEBUG_DETAILED_CAN_TALON_SRX("\nUpdateControlId");
   uint8_t work[8];
   uint32_t frameToUse;
   /* deduce if we should change IDs.  If firm supports the new frame, and
@@ -323,7 +338,7 @@ void CanTalonSRX::UpdateControlId() {
     /* save the correct frame ArbID */
     _controlFrameArbId = frameToUse;
   }
-  DEBUG_CAN_TALON_SRX("\n//UpdateControlId ");
+  DEBUG_DETAILED_CAN_TALON_SRX("\n//UpdateControlId ");
 }
 void CanTalonSRX::OpenSessionIfNeedBe() {
   _can_stat = 0;
@@ -350,7 +365,7 @@ void CanTalonSRX::ProcessStreamMessages() {
   /* read out latest bunch of messages */
   _can_stat = 0;
 
-  DEBUG_CAN_TALON_SRX("Process stream messages... " << _can_h);
+  DEBUG_DETAILED_CAN_TALON_SRX("Process stream messages... " << _can_h);
   if (_can_h) {
       HAL_CAN_ReadStreamSession(
         _can_h, _msgBuff, messagesToRead, &messagesRead, &_can_stat);
@@ -358,7 +373,7 @@ void CanTalonSRX::ProcessStreamMessages() {
   /* loop thru each message of interest */
   for (i = 0; i < messagesRead; ++i) {
     HAL_CANStreamMessage *msg = _msgBuff + i;
-    DEBUG_CAN_TALON_SRX("Reading message " << i << " - " << msg->messageID << ", " << (PARAM_RESPONSE | GetDeviceNumber()));
+    DEBUG_DETAILED_CAN_TALON_SRX("Reading message " << i << " - " << msg->messageID << ", " << (PARAM_RESPONSE | GetDeviceNumber()));
     if (msg->messageID == (PARAM_RESPONSE | GetDeviceNumber())) {
       TALON_Param_Response_t *paramResp = (TALON_Param_Response_t *)msg->data;
       /* decode value */
@@ -370,7 +385,7 @@ void CanTalonSRX::ProcessStreamMessages() {
       val <<= 8;
       val |= paramResp->ParamValueL;
       /* save latest signal */
-      DEBUG_CAN_TALON_SRX("    " << val << ", " << paramResp->ParamEnum << std::endl);
+      DEBUG_DETAILED_CAN_TALON_SRX("    " << val << ", " << paramResp->ParamEnum << std::endl);
       _sigs[paramResp->ParamEnum] = val;
     } else {
       int brkpthere = 42;
@@ -379,6 +394,7 @@ void CanTalonSRX::ProcessStreamMessages() {
   }
 }
 void CanTalonSRX::Set(double value) {
+    DEBUG_CAN_TALON_SRX(value);
   if (value > 1)
     value = 1;
   else if (value < -1)
@@ -400,6 +416,7 @@ void CanTalonSRX::Set(double value) {
  * GetParamResponse will catch the latest value after a couple ms.
  */
 CTR_Code CanTalonSRX::SetParamRaw(unsigned paramEnum, int rawBits) {
+    DEBUG_CAN_TALON_SRX(paramEnum << ", " << rawBits);
   /* caller is using param API.  Open session if it hasn'T been done. */
   if (0 == _can_h) OpenSessionIfNeedBe();
   TALON_Param_Response_t frame;
@@ -409,7 +426,7 @@ CTR_Code CanTalonSRX::SetParamRaw(unsigned paramEnum, int rawBits) {
   frame.ParamValueMH = rawBits >> 0x10;
   frame.ParamValueML = rawBits >> 0x08;
   frame.ParamValueL = rawBits;
-  DEBUG_CAN_TALON_SRX("SetParamRaw: " << paramEnum << ", " <<
+  DEBUG_DETAILED_CAN_TALON_SRX("SetParamRaw: " << paramEnum << ", " <<
           "Raw: " << rawBits << ", " <<
           "H: "  << ((int) frame.ParamValueH) <<", " <<
           "MH: " << ((int) frame.ParamValueMH) <<", " <<
@@ -440,7 +457,7 @@ CTR_Code CanTalonSRX::SetParamRaw(unsigned paramEnum, int rawBits) {
  * Checks cached CAN frames and updating solicited signals.
  */
 CTR_Code CanTalonSRX::GetParamResponseRaw(unsigned paramEnum, int &rawBits) {
-    DEBUG_CAN_TALON_SRX("GetParamResponseRaw: " << paramEnum << ", " << rawBits);
+    DEBUG_DETAILED_CAN_TALON_SRX("GetParamResponseRaw: " << paramEnum << ", " << rawBits);
   CTR_Code retval = CTR_OKAY;
   /* process received param events. We don't expect many since this API is not
    * used often. */
@@ -462,6 +479,7 @@ CTR_Code CanTalonSRX::GetParamResponseRaw(unsigned paramEnum, int &rawBits) {
   * @param param to request.
  */
 CTR_Code CanTalonSRX::RequestParam(param_t paramEnum) {
+    DEBUG_CAN_TALON_SRX(paramEnum);
   /* process received param events. We don't expect many since this API is not
    * used often. */
   ProcessStreamMessages();
@@ -477,6 +495,7 @@ CTR_Code CanTalonSRX::RequestParam(param_t paramEnum) {
 }
 
 CTR_Code CanTalonSRX::SetParam(param_t paramEnum, double value) {
+    DEBUG_CAN_TALON_SRX(paramEnum << ", " << value);
   int32_t rawbits = 0;
   switch (paramEnum) {
     case eProfileParamSlot0_P: /* unsigned 10.22 fixed pt value */
@@ -528,6 +547,7 @@ CTR_Code CanTalonSRX::SetParam(param_t paramEnum, double value) {
   return SetParamRaw(paramEnum, rawbits);
 }
 CTR_Code CanTalonSRX::GetParamResponse(param_t paramEnum, double &value) {
+    DEBUG_CAN_TALON_SRX(paramEnum);
   int32_t rawbits = 0;
   CTR_Code retval = GetParamResponseRaw(paramEnum, rawbits);
   switch (paramEnum) {
@@ -589,11 +609,13 @@ CTR_Code CanTalonSRX::SetIzone(unsigned slotIdx, int zone) {
 }
 CTR_Code CanTalonSRX::SetCloseLoopRampRate(unsigned slotIdx,
                                            int closeLoopRampRate) {
+    DEBUG_CAN_TALON_SRX(slotIdx << " " << closeLoopRampRate);
   if (slotIdx == 0)
     return SetParam(eProfileParamSlot0_CloseLoopRampRate, closeLoopRampRate);
   return SetParam(eProfileParamSlot1_CloseLoopRampRate, closeLoopRampRate);
 }
 CTR_Code CanTalonSRX::SetVoltageCompensationRate(double voltagePerMs) {
+    DEBUG_CAN_TALON_SRX(voltagePerMs);
   return SetParam(eProfileParamVcompRate, voltagePerMs);
 }
 CTR_Code CanTalonSRX::GetPgain(unsigned slotIdx, double &gain) {
@@ -619,6 +641,7 @@ CTR_Code CanTalonSRX::GetIzone(unsigned slotIdx, int &zone) {
 }
 CTR_Code CanTalonSRX::GetCloseLoopRampRate(unsigned slotIdx,
                                            int &closeLoopRampRate) {
+    DEBUG_CAN_TALON_SRX(slotIdx << ", " << closeLoopRampRate);
   if (slotIdx == 0)
     return GetParamResponseInt32(eProfileParamSlot0_CloseLoopRampRate,
                                  closeLoopRampRate);
@@ -632,29 +655,37 @@ CTR_Code CanTalonSRX::SetSensorPosition(int pos) {
   return SetParam(eSensorPosition, pos);
 }
 CTR_Code CanTalonSRX::SetForwardSoftLimit(int forwardLimit) {
+    DEBUG_CAN_TALON_SRX(forwardLimit);
   return SetParam(eProfileParamSoftLimitForThreshold, forwardLimit);
 }
 CTR_Code CanTalonSRX::SetReverseSoftLimit(int reverseLimit) {
+    DEBUG_CAN_TALON_SRX(reverseLimit);
   return SetParam(eProfileParamSoftLimitRevThreshold, reverseLimit);
 }
 CTR_Code CanTalonSRX::SetForwardSoftEnable(int enable) {
+    DEBUG_CAN_TALON_SRX(enable);
   return SetParam(eProfileParamSoftLimitForEnable, enable);
 }
 CTR_Code CanTalonSRX::SetReverseSoftEnable(int enable) {
+    DEBUG_CAN_TALON_SRX(enable);
   return SetParam(eProfileParamSoftLimitRevEnable, enable);
 }
 CTR_Code CanTalonSRX::GetForwardSoftLimit(int &forwardLimit) {
+    DEBUG_CAN_TALON_SRX(forwardLimit);
   return GetParamResponseInt32(eProfileParamSoftLimitForThreshold,
                                forwardLimit);
 }
 CTR_Code CanTalonSRX::GetReverseSoftLimit(int &reverseLimit) {
+    DEBUG_CAN_TALON_SRX(reverseLimit);
   return GetParamResponseInt32(eProfileParamSoftLimitRevThreshold,
                                reverseLimit);
 }
 CTR_Code CanTalonSRX::GetForwardSoftEnable(int &enable) {
+    DEBUG_CAN_TALON_SRX(enable);
   return GetParamResponseInt32(eProfileParamSoftLimitForEnable, enable);
 }
 CTR_Code CanTalonSRX::GetReverseSoftEnable(int &enable) {
+    DEBUG_CAN_TALON_SRX(enable);
   return GetParamResponseInt32(eProfileParamSoftLimitRevEnable, enable);
 }
 /**
@@ -678,6 +709,7 @@ CTR_Code CanTalonSRX::GetPulseWidthRiseToFallUs(int &param) {
   return (CTR_Code)std::max((int)retval1, (int)retval2);
 }
 CTR_Code CanTalonSRX::IsPulseWidthSensorPresent(int &param) {
+    DEBUG_CAN_TALON_SRX(param);
   int periodUs = 0;
   CTR_Code retval = GetPulseWidthRiseToRiseUs(periodUs);
   /* if a nonzero period is present, we are getting good pules.
@@ -695,7 +727,8 @@ CTR_Code CanTalonSRX::IsPulseWidthSensorPresent(int &param) {
  * This function has the advantage of atomically setting mode and demand.
  */
 CTR_Code CanTalonSRX::SetModeSelect(int modeSelect, int demand) {
-    DEBUG_CAN_TALON_SRX("\nSet Mode Select22 " << modeSelect << ", " << demand);
+
+    DEBUG_CAN_TALON_SRX(modeSelect << ", " << demand);
   CtreCanNode::txTask<TALON_Control_1_General_10ms_t> toFill =
       GetTx<TALON_Control_1_General_10ms_t>(_controlFrameArbId |
                                             GetDeviceNumber());
@@ -713,6 +746,7 @@ CTR_Code CanTalonSRX::SetModeSelect(int modeSelect, int demand) {
  */
 CTR_Code CanTalonSRX::SetStatusFrameRate(unsigned frameEnum,
                                          unsigned periodMs) {
+    DEBUG_CAN_TALON_SRX(frameEnum << ", " << periodMs);
   CTR_Code retval = CTR_OKAY;
   int32_t paramEnum = 0;
   /* bounds check the period */
@@ -876,6 +910,7 @@ CTR_Code CanTalonSRX::PushMotionProfileTrajectory(int targPos, int targVel,
                                                   int timeDurMs, int velOnly,
                                                   int isLastPoint,
                                                   int zeroPos) {
+    DEBUG_CAN_TALON_SRX("");
   ReactToMotionProfileCall();
   /* create our trajectory point */
   TALON_Control_6_MotProfAddTrajPoint_huff0_t traj;
@@ -1171,7 +1206,7 @@ CTR_Code CanTalonSRX::GetAppliedThrottle(int &param)
 {
   GET_STATUS1();
   int32_t raw = 0;
-  DEBUG_CAN_TALON_SRX("Getting applied throttle " << rx->AppliedThrottle_h3 << ", " << rx->AppliedThrottle_l8);
+  DEBUG_DETAILED_CAN_TALON_SRX("Getting applied throttle " << rx->AppliedThrottle_h3 << ", " << rx->AppliedThrottle_l8);
   raw |= rx->AppliedThrottle_h3;
   raw <<= 8;
   raw |= rx->AppliedThrottle_l8;
@@ -1232,7 +1267,7 @@ CTR_Code CanTalonSRX::GetSensorPosition(int &param)
 {
   GET_STATUS2();
 
-  DEBUG_CAN_TALON_SRX("GetSensorPosition... " <<
+  DEBUG_DETAILED_CAN_TALON_SRX("GetSensorPosition... " <<
           ((int) rx->SensorPositionH) << ", " <<
           ((int) rx->SensorPositionM) << ", " <<
           ((int) rx->SensorPositionL) << ", " <<
@@ -1255,7 +1290,7 @@ CTR_Code CanTalonSRX::GetSensorVelocity(int &param)
 {
   GET_STATUS2();
 
-  DEBUG_CAN_TALON_SRX("GetSensorVelocity... " <<
+  DEBUG_DETAILED_CAN_TALON_SRX("GetSensorVelocity... " <<
           ((int) rx->SensorVelocityH) << ", " <<
           ((int) rx->SensorVelocityL) << ", " <<
           ((int) rx->VelDiv4) << ", ");
@@ -1290,7 +1325,7 @@ CTR_Code CanTalonSRX::GetEncPosition(int &param)
 {
   GET_STATUS3();
 
-  DEBUG_CAN_TALON_SRX("GetEncoderPosition... " <<
+  DEBUG_DETAILED_CAN_TALON_SRX("GetEncoderPosition... " <<
           ((int) rx->EncPositionH) << ", " <<
           ((int) rx->EncPositionM) << ", " <<
           ((int) rx->EncPositionL) << ", " <<
@@ -1313,7 +1348,7 @@ CTR_Code CanTalonSRX::GetEncVel(int &param)
 {
   GET_STATUS3();
 
-  DEBUG_CAN_TALON_SRX("GetEncVel... " <<
+  DEBUG_DETAILED_CAN_TALON_SRX("GetEncVel... " <<
           ((int) rx->EncVelH) << ", " <<
           ((int) rx->EncVelL) << ", " <<
           ((int) rx->VelDiv4) << ", ");
@@ -1360,7 +1395,7 @@ CTR_Code CanTalonSRX::GetQuadIdxpin(int &param)
 CTR_Code CanTalonSRX::GetAnalogInWithOv(int &param)
 {
   GET_STATUS4();
-  DEBUG_CAN_TALON_SRX("GetAnalogInWithOv: " <<
+  DEBUG_DETAILED_CAN_TALON_SRX("GetAnalogInWithOv: " <<
           ((int) rx->AnalogInWithOvH) << ", " <<
           ((int) rx->AnalogInWithOvM) << ", " <<
           ((int) rx->AnalogInWithOvL) <<", " <<
@@ -1382,7 +1417,7 @@ CTR_Code CanTalonSRX::GetAnalogInWithOv(int &param)
 CTR_Code CanTalonSRX::GetAnalogInVel(int &param)
 {
   GET_STATUS4();
-  DEBUG_CAN_TALON_SRX("GetAnalogInVel: " <<
+  DEBUG_DETAILED_CAN_TALON_SRX("GetAnalogInVel: " <<
           ((int) rx->AnalogInVelH) << ", " <<
           ((int) rx->AnalogInVelL) << ", " <<
           ((int) rx->VelDiv4));
@@ -1407,7 +1442,7 @@ CTR_Code CanTalonSRX::GetTemp(double &param)
 CTR_Code CanTalonSRX::GetBatteryV(double &param)
 {
   GET_STATUS4();
-  DEBUG_CAN_TALON_SRX("GetBatteryV " << rx->BatteryV);
+  DEBUG_DETAILED_CAN_TALON_SRX("GetBatteryV " << rx->BatteryV);
   uint32_t raw = rx->BatteryV;
   param = (double)raw * 0.05 + 4;
   return rx.err;
@@ -1570,7 +1605,7 @@ CTR_Code CanTalonSRX::GetActTraj_Position(int &param)
 }
 CTR_Code CanTalonSRX::SetDemand(int param)
 {
-    DEBUG_CAN_TALON_SRX("\nSet Demand " << param);
+    DEBUG_DETAILED_CAN_TALON_SRX("\nSet Demand " << param);
   CtreCanNode::txTask<TALON_Control_1_General_10ms_t> toFill = GetTx<TALON_Control_1_General_10ms_t>(_controlFrameArbId | GetDeviceNumber());
   if (toFill.IsEmpty()) return CTR_UnexpectedArbId;
   toFill->DemandH = param>>16;
@@ -1581,7 +1616,7 @@ CTR_Code CanTalonSRX::SetDemand(int param)
 }
 CTR_Code CanTalonSRX::SetOverrideLimitSwitchEn(int param)
 {
-    DEBUG_CAN_TALON_SRX("\nSetOverrideLimitSwitchEn " << param);
+    DEBUG_CAN_TALON_SRX(param);
   CtreCanNode::txTask<TALON_Control_1_General_10ms_t> toFill = GetTx<TALON_Control_1_General_10ms_t>(_controlFrameArbId | GetDeviceNumber());
   if (toFill.IsEmpty()) return CTR_UnexpectedArbId;
   toFill->OverrideLimitSwitchEn = param;
@@ -1590,6 +1625,7 @@ CTR_Code CanTalonSRX::SetOverrideLimitSwitchEn(int param)
 }
 CTR_Code CanTalonSRX::SetFeedbackDeviceSelect(int param)
 {
+    DEBUG_CAN_TALON_SRX(param);
   CtreCanNode::txTask<TALON_Control_1_General_10ms_t> toFill = GetTx<TALON_Control_1_General_10ms_t>(_controlFrameArbId | GetDeviceNumber());
   if (toFill.IsEmpty()) return CTR_UnexpectedArbId;
   toFill->FeedbackDeviceSelect = param;
@@ -1598,6 +1634,7 @@ CTR_Code CanTalonSRX::SetFeedbackDeviceSelect(int param)
 }
 CTR_Code CanTalonSRX::SetRevMotDuringCloseLoopEn(int param)
 {
+    DEBUG_CAN_TALON_SRX(param);
   CtreCanNode::txTask<TALON_Control_1_General_10ms_t> toFill = GetTx<TALON_Control_1_General_10ms_t>(_controlFrameArbId | GetDeviceNumber());
   if (toFill.IsEmpty()) return CTR_UnexpectedArbId;
   toFill->RevMotDuringCloseLoopEn = param;
@@ -1606,6 +1643,7 @@ CTR_Code CanTalonSRX::SetRevMotDuringCloseLoopEn(int param)
 }
 CTR_Code CanTalonSRX::SetOverrideBrakeType(int param)
 {
+    DEBUG_CAN_TALON_SRX(param);
   CtreCanNode::txTask<TALON_Control_1_General_10ms_t> toFill = GetTx<TALON_Control_1_General_10ms_t>(_controlFrameArbId | GetDeviceNumber());
   if (toFill.IsEmpty()) return CTR_UnexpectedArbId;
   toFill->OverrideBrakeType = param;
@@ -1614,7 +1652,7 @@ CTR_Code CanTalonSRX::SetOverrideBrakeType(int param)
 }
 CTR_Code CanTalonSRX::SetModeSelect(int param)
 {
-    DEBUG_CAN_TALON_SRX("\nSet Mode Select " << param);
+    DEBUG_CAN_TALON_SRX(param);
   CtreCanNode::txTask<TALON_Control_1_General_10ms_t> toFill = GetTx<TALON_Control_1_General_10ms_t>(_controlFrameArbId | GetDeviceNumber());
   if (toFill.IsEmpty()) return CTR_UnexpectedArbId;
   toFill->ModeSelect = param;
@@ -1623,7 +1661,7 @@ CTR_Code CanTalonSRX::SetModeSelect(int param)
 }
 CTR_Code CanTalonSRX::SetProfileSlotSelect(int param)
 {
-    DEBUG_CAN_TALON_SRX("\nSet Profile Slot Select " << param);
+    DEBUG_CAN_TALON_SRX(param);
   CtreCanNode::txTask<TALON_Control_1_General_10ms_t> toFill = GetTx<TALON_Control_1_General_10ms_t>(_controlFrameArbId | GetDeviceNumber());
   if (toFill.IsEmpty()) return CTR_UnexpectedArbId;
   toFill->ProfileSlotSelect = param;
@@ -1632,6 +1670,7 @@ CTR_Code CanTalonSRX::SetProfileSlotSelect(int param)
 }
 CTR_Code CanTalonSRX::SetRampThrottle(int param)
 {
+    DEBUG_CAN_TALON_SRX(param);
   CtreCanNode::txTask<TALON_Control_1_General_10ms_t> toFill = GetTx<TALON_Control_1_General_10ms_t>(_controlFrameArbId | GetDeviceNumber());
   if (toFill.IsEmpty()) return CTR_UnexpectedArbId;
   toFill->RampThrottle = param;
@@ -1640,6 +1679,7 @@ CTR_Code CanTalonSRX::SetRampThrottle(int param)
 }
 CTR_Code CanTalonSRX::SetRevFeedbackSensor(int param)
 {
+    DEBUG_CAN_TALON_SRX(param);
   CtreCanNode::txTask<TALON_Control_1_General_10ms_t> toFill = GetTx<TALON_Control_1_General_10ms_t>(_controlFrameArbId | GetDeviceNumber());
   if (toFill.IsEmpty()) return CTR_UnexpectedArbId;
   toFill->RevFeedbackSensor = param ? 1 : 0;

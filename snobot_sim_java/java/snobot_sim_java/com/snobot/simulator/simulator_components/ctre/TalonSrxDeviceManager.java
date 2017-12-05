@@ -9,6 +9,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.snobot.simulator.SensorActuatorRegistry;
+import com.snobot.simulator.module_wrapper.PwmWrapper;
 
 public class TalonSrxDeviceManager implements ICanDeviceManager
 {
@@ -66,7 +67,7 @@ public class TalonSrxDeviceManager implements ICanDeviceManager
         }
         else
         {
-            unsupportedWrite(aCanMessageId);
+            sLOGGER.log(Level.ERROR, "TX Request " + aCanMessageId + " is not supported.");
         }
     }
 
@@ -96,7 +97,7 @@ public class TalonSrxDeviceManager implements ICanDeviceManager
         else
         {
             success = false;
-            unsupportedRead(aCanMessageId);
+            sLOGGER.log(Level.ERROR, "Status request " + aCanMessageId + " is not supported.");
         }
 
         return success ? 8 : 0;
@@ -116,21 +117,65 @@ public class TalonSrxDeviceManager implements ICanDeviceManager
 
     private void handleTx1(ByteBuffer aBuffer, int aPort)
     {
+        CanTalonSpeedControllerSim wrapper = getWrapperHelper(aPort);
 
-        byte command = (byte) (aBuffer.get(5) & 0xF0);
-        if (command == 0x00)
+        byte commandSection = (byte) (aBuffer.get(5));
+        byte profileSelect = (byte) (commandSection & 0x01);
+        byte feedbackDevice = (byte) (commandSection & 0x0E);
+        byte overrideLimitSwitches = (byte) (commandSection & 0xE0);
+
+        byte commandType = (byte) ((aBuffer.get(6) >> 4) & 0xF);
+        int demand = (aBuffer.getInt(2)) >> 8;
+        sLOGGER.log(Level.DEBUG, String.format("handleTx1: Demand: %d, Command: %d, Profile: %d, Feedback Device: %d, Limit Switches: %d", demand,
+                commandType, profileSelect, feedbackDevice, overrideLimitSwitches));
+
+        if (commandType == 0x00)
         {
-            CanTalonSpeedControllerSim wrapper = new CanTalonSpeedControllerSim(aPort);
-            SensorActuatorRegistry.get().register(wrapper, aPort + sCAN_OFFSET);
-            sLOGGER.log(Level.DEBUG, "Creating " + aPort);
+            double appliedVoltageDemand = demand / 1023.0;
+            wrapper.set(appliedVoltageDemand);
+            sLOGGER.log(Level.DEBUG, " Setting by applied throttle.. " + appliedVoltageDemand);
         }
-        else if (command == 0x20)
+        else if (commandType == (byte) 0x01)
         {
-            handleSetDemandCommand(aBuffer, aPort);
+            double position = demand / 4096.0;
+            wrapper.setPositionGoal(position);
+            sLOGGER.log(Level.DEBUG, "  Setting by position." + position);
+        }
+        else if (commandType == (byte) 0x02)
+        {
+            double speed = demand * 600.0 / 4096.0;
+            wrapper.setSpeedGoal(speed);
+            sLOGGER.log(Level.DEBUG, " Setting by speed. " + speed);
+        }
+        else if (commandType == (byte) 0x03)
+        {
+            sLOGGER.log(Level.DEBUG, "  Setting by current." + demand);
+        }
+        else if (commandType == (byte) 0x04)
+        {
+            double voltageDemand = demand / 256.0;
+            wrapper.set(voltageDemand / 12.0);
+            sLOGGER.log(Level.DEBUG, "  Setting by voltage. " + voltageDemand);
+        }
+        else if (commandType == (byte) 0x05)
+        {
+            sLOGGER.log(Level.DEBUG, "  Setting by FOLLOWER.");
+        }
+        else if (commandType == (byte) 0x06)
+        {
+            sLOGGER.log(Level.DEBUG, "  Setting by Motion Profile.");
+        }
+        else if (commandType == (byte) 0x07)
+        {
+            sLOGGER.log(Level.DEBUG, "  Setting by Motion Magic.");
+        }
+        else if (commandType == (byte) 0x0F)
+        {
+            // Nothing to do, but don't print error
         }
         else
         {
-            sLOGGER.log(Level.ERROR, "Unknown command: " + command);
+            sLOGGER.log(Level.ERROR, String.format("Unknown set command type 0x%02X", commandType));
         }
     }
 
@@ -168,6 +213,80 @@ public class TalonSrxDeviceManager implements ICanDeviceManager
         {
             wrapper.setIZone(rawValue);
         }
+
+        else if (commandType == 6)
+        {
+            sLOGGER.log(Level.INFO, "setCloseLoopRampRate is not supported");
+        }
+        else if (commandType == 6)
+        {
+            sLOGGER.log(Level.INFO, "setForwardSoftLimit is not supported");
+        }
+        else if (commandType == 22)
+        {
+            sLOGGER.log(Level.INFO, "setReverseSoftLimit is not supported");
+        }
+        else if (commandType == 23)
+        {
+            sLOGGER.log(Level.INFO, "enableForwardSoftLimit is not supported");
+        }
+        else if (commandType == 32)
+        {
+            sLOGGER.log(Level.INFO, "ConfigFwdLimitSwitchNormallyOpen is not supported");
+        }
+        else if (commandType == 33)
+        {
+            sLOGGER.log(Level.INFO, "ConfigRevLimitSwitchNormallyOpen is not supported");
+        }
+        else if (commandType == 44)
+        {
+            sLOGGER.log(Level.INFO, "setForwardSoftLimit is not supported");
+        }
+        else if (commandType == 73)
+        {
+            sLOGGER.log(Level.INFO, "setPosition is not supported");
+        }
+        else if (commandType == 77)
+        {
+            wrapper.reset(rawValue, wrapper.getVelocity(), wrapper.getCurrent());
+        }
+        else if (commandType == 93)
+        {
+            sLOGGER.log(Level.INFO, "clearIAccum is not supported");
+        }
+        else if (commandType == 105 || commandType == 107)
+        {
+            sLOGGER.log(Level.INFO, "configNominalOutputVoltage is not supported, but it probably shouldn't matter ");
+        }
+        else if (commandType == 104 || commandType == 106)
+        {
+            sLOGGER.log(Level.INFO, "configPeakOutputVoltage is not supported, but it probably shouldn't matter ");
+        }
+        else if (commandType == 111)
+        {
+            sLOGGER.log(Level.INFO, "setAllowableClosedLoopErr is not supported");
+        }
+        else if (commandType == 112)
+        {
+            sLOGGER.log(Level.INFO, "configPotentiometerTurns is not supported");
+        }
+        else if (commandType == 113)
+        {
+            sLOGGER.log(Level.INFO, "configEncoderCodesPerRev is not supported");
+        }
+        else if (commandType == 114)
+        {
+            sLOGGER.log(Level.INFO, "setPulseWidthPosition is not supported");
+        }
+        else if (commandType == 115)
+        {
+            sLOGGER.log(Level.INFO, "setAnalogPosition is not supported");
+        }
+        else if (commandType == 119)
+        {
+            sLOGGER.log(Level.INFO, "clearMotionProfileHasUnderrun is not supported");
+        }
+
         else
         {
             sLOGGER.log(Level.ERROR, "Unknown SetParam command: " + commandType);
@@ -235,64 +354,6 @@ public class TalonSrxDeviceManager implements ICanDeviceManager
         mSetParamBuffer.putInt(rawValue);
     }
 
-    private void handleSetDemandCommand(ByteBuffer aBuffer, int aPort)
-    {
-        byte commandType = (byte) ((aBuffer.get(6) >> 4) & 0xF);
-        CanTalonSpeedControllerSim wrapper = getWrapperHelper(aPort);
-        int demand = (aBuffer.getInt(2)) >> 8;
-        // int demand2 =
-        sLOGGER.log(Level.DEBUG, String.format(" Demand: %d, Command: %d", demand, commandType));
-
-        if (commandType == 0x00)
-        {
-            double appliedVoltageDemand = demand / 1023.0;
-            wrapper.set(appliedVoltageDemand);
-            sLOGGER.log(Level.DEBUG, " Setting by applied throttle.. " + appliedVoltageDemand);
-        }
-        else if (commandType == (byte) 0x01)
-        {
-            double position = demand / 4096.0;
-            wrapper.setPositionGoal(position);
-            sLOGGER.log(Level.DEBUG, "  Setting by position." + position);
-        }
-        else if (commandType == (byte) 0x02)
-        {
-            double speed = demand * 600.0 / 4096.0;
-            wrapper.setSpeedGoal(speed);
-            sLOGGER.log(Level.DEBUG, " Setting by speed. " + speed);
-        }
-        else if (commandType == (byte) 0x03)
-        {
-            sLOGGER.log(Level.DEBUG, "  Setting by current." + demand);
-        }
-        else if (commandType == (byte) 0x04)
-        {
-            double voltageDemand = demand / 256.0;
-            wrapper.set(voltageDemand / 12.0);
-            sLOGGER.log(Level.DEBUG, "  Setting by voltage. " + voltageDemand);
-        }
-        else if (commandType == (byte) 0x05)
-        {
-            sLOGGER.log(Level.DEBUG, "  Setting by FOLLOWER.");
-        }
-        else if (commandType == (byte) 0x06)
-        {
-            sLOGGER.log(Level.DEBUG, "  Setting by Motion Profile.");
-        }
-        else if (commandType == (byte) 0x07)
-        {
-            sLOGGER.log(Level.DEBUG, "  Setting by Motion Magic.");
-        }
-        else if (commandType == (byte) 0x0F)
-        {
-            // Nothing to do, but don't print error
-        }
-        else
-        {
-            sLOGGER.log(Level.ERROR, String.format("Unknown set command type 0x%02X", commandType));
-        }
-    }
-
     private void populateStatus1(int aPort, ByteBuffer aData)
     {
         CanTalonSpeedControllerSim wrapper = getWrapperHelper(aPort);
@@ -346,18 +407,18 @@ public class TalonSrxDeviceManager implements ICanDeviceManager
         }
     }
 
-    private void unsupportedRead(int aStatusType)
-    {
-        sLOGGER.log(Level.ERROR, "Status request " + aStatusType + " is not supported.");
-    }
-
-    private void unsupportedWrite(int aStatusType)
-    {
-        sLOGGER.log(Level.ERROR, "TX Request " + aStatusType + " is not supported.");
-    }
-
     private CanTalonSpeedControllerSim getWrapperHelper(int aPort)
     {
-        return (CanTalonSpeedControllerSim) SensorActuatorRegistry.get().getSpeedControllers().get(aPort + sCAN_OFFSET);
+        PwmWrapper rawWrapper = SensorActuatorRegistry.get().getSpeedControllers().get(aPort + sCAN_OFFSET);
+
+        if (rawWrapper == null)
+        {
+            CanTalonSpeedControllerSim output = new CanTalonSpeedControllerSim(aPort);
+            SensorActuatorRegistry.get().register(output, aPort + sCAN_OFFSET);
+            sLOGGER.log(Level.DEBUG, "Creating " + aPort);
+            return output;
+        }
+        
+        return (CanTalonSpeedControllerSim) rawWrapper;
     }
 }

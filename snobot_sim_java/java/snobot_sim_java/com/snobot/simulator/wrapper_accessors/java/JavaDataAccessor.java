@@ -1,9 +1,6 @@
 package com.snobot.simulator.wrapper_accessors.java;
 
-import java.io.File;
-
-import org.apache.log4j.PropertyConfigurator;
-
+import com.snobot.simulator.LogConfigurator;
 import com.snobot.simulator.jni.RegisterCallbacksJni;
 import com.snobot.simulator.wrapper_accessors.AccelerometerWrapperAccessor;
 import com.snobot.simulator.wrapper_accessors.AnalogSourceWrapperAccessor;
@@ -30,9 +27,7 @@ public class JavaDataAccessor implements IDataAccessor
 
     public JavaDataAccessor()
     {
-        String logFile = new File("log4j.properties").getAbsolutePath();
-        PropertyConfigurator.configure(logFile);
-
+        LogConfigurator.loadLog4jConfig();
         RegisterCallbacksJni.registerAllCallbacks();
 
         accelerometer = new JavaAccelerometerWrapperAccessor();
