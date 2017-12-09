@@ -61,8 +61,6 @@ public class TestJoystickFactory extends BaseSimulatorTest
         Assert.assertTrue(factory.get(4) instanceof NullJoystick);
         Assert.assertTrue(factory.get(5) instanceof KeyboardJoystick);
 
-        System.out.println(factory.getControllerConfiguration());
-
         InputStream input_stream = new FileInputStream(sJOYSTICK_CONFIG_FILE);
         Properties properties = new Properties();
         properties.load(input_stream);

@@ -7,28 +7,28 @@ import java.util.Map;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-public class CanManager
+public class CtreManager
 {
-    private static final Logger sLOGGER = Logger.getLogger(CanManager.class);
+    private static final Logger sLOGGER = Logger.getLogger(CtreManager.class);
     private static int STREAM_CTR = 1;
 
     private final Map<Integer, ICanDeviceManager> mDeviceManagerMap;
     private final Map<Integer, ICanDeviceManager> mStreamSessionMap;
 
-    public CanManager()
+    public CtreManager()
     {
         mStreamSessionMap = new HashMap<>();
 
         mDeviceManagerMap = new HashMap<>();
 
-        TalonSrxDeviceManager talonManager = new TalonSrxDeviceManager();
-        for (int id : TalonSrxDeviceManager.getSupportedMessageIds())
+        CtreTalonSrxDeviceManager talonManager = new CtreTalonSrxDeviceManager();
+        for (int id : CtreTalonSrxDeviceManager.getSupportedMessageIds())
         {
             mDeviceManagerMap.put(id, talonManager);
         }
 
-        PigeonDeviceManager pigeonManager = new PigeonDeviceManager();
-        for (int id : PigeonDeviceManager.getSupportedMessageIds())
+        CtrePigeonImuDeviceManager pigeonManager = new CtrePigeonImuDeviceManager();
+        for (int id : CtrePigeonImuDeviceManager.getSupportedMessageIds())
         {
             mDeviceManagerMap.put(id, pigeonManager);
         }
@@ -98,8 +98,8 @@ public class CanManager
         ICanDeviceManager deviceManager = mStreamSessionMap.get(sessionHandle);
         if (deviceManager != null)
         {
-            deviceManager.readStreamSession(messages, messagesToRead);
+            return deviceManager.readStreamSession(messages, messagesToRead);
         }
-        return 1;
+        return 0;
     }
 }

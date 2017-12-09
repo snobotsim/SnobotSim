@@ -9,6 +9,6 @@ public interface ICanDeviceManager
 
     int handleReceive(int aCanMessageId, int aCanPort, ByteBuffer aData);
 
-    void readStreamSession(ByteBuffer[] messages, int messagesToRead);
+    int readStreamSession(ByteBuffer[] messages, int messagesToRead);
 
 }

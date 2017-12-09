@@ -9,14 +9,14 @@ import java.util.Map;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-public class PigeonDeviceManager implements ICanDeviceManager
+public class CtrePigeonImuDeviceManager implements ICanDeviceManager
 {
-    private static final Logger sLOGGER = Logger.getLogger(PigeonDeviceManager.class);
+    private static final Logger sLOGGER = Logger.getLogger(CtrePigeonImuDeviceManager.class);
     private static final int sSENSOR_OFFSET = 400;
 
-    private final Map<Integer, CanPigeonImuSim> mPigeonMap;
+    private final Map<Integer, CtrePigeonImuSim> mPigeonMap;
 
-    public PigeonDeviceManager()
+    public CtrePigeonImuDeviceManager()
     {
         mPigeonMap = new HashMap<>();
     }
@@ -37,7 +37,7 @@ public class PigeonDeviceManager implements ICanDeviceManager
         if (aCanMessageId == 0x15042800 || aCanMessageId == 0x2042800)
         {
             sLOGGER.log(Level.INFO, "Creating Pigeon on port " + aCanPort);
-            CanPigeonImuSim sim = new CanPigeonImuSim(sSENSOR_OFFSET + aCanPort * 3);
+            CtrePigeonImuSim sim = new CtrePigeonImuSim(sSENSOR_OFFSET + aCanPort * 3);
             mPigeonMap.put(aCanPort, sim);
         }
         else
@@ -48,7 +48,7 @@ public class PigeonDeviceManager implements ICanDeviceManager
 
     private void dumpAngles(ByteBuffer aData, int aPort, double aScaler, int aBytes)
     {
-        CanPigeonImuSim sim = mPigeonMap.get(aPort);
+        CtrePigeonImuSim sim = mPigeonMap.get(aPort);
         if (sim == null)
         {
             sLOGGER.log(Level.WARN, "Unknown pigeon " + aPort);
@@ -97,8 +97,9 @@ public class PigeonDeviceManager implements ICanDeviceManager
     }
 
     @Override
-    public void readStreamSession(ByteBuffer[] messages, int messagesToRead)
+    public int readStreamSession(ByteBuffer[] messages, int messagesToRead)
     {
-        System.out.println("readStreamSession");
+        sLOGGER.log(Level.WARN, "readStreamSession isn't supported");
+        return 0;
     }
 }

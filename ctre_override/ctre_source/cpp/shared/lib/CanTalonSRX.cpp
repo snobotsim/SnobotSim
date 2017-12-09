@@ -195,8 +195,8 @@ const double FXP_TO_FLOAT_0_8 = 0.00390625;
         #endif
     #endif
     #include <iomanip>
-    #define DEBUG_CAN_TALON_SRX(x) std::cout << std::left << std::setw (45) << __FUNCTION_NAME__ << "(" << __LINE__ << "): " << x << std::endl;
-//    #define DEBUG_DETAILED_CAN_TALON_SRX(x) std::cout << x << std::endl;
+    #define DEBUG_CAN_TALON_SRX(x) std::cout << std::left << std::setw (51) << __FUNCTION_NAME__ << ":" << __LINE__ << " - " << x << std::endl;
+//    #define DEBUG_DETAILED_CAN_TALON_SRX(x) std::cout << std::left << std::setw (45) << __FUNCTION_NAME__ << "!!!!!!:" << __LINE__ << " - "  <<x << std::endl;
     #define DEBUG_DETAILED_CAN_TALON_SRX(x) ;
 #else
     #define DEBUG_CAN_TALON_SRX(x) ;
@@ -465,6 +465,7 @@ CTR_Code CanTalonSRX::GetParamResponseRaw(unsigned paramEnum, int &rawBits) {
   /* grab the solicited signal value */
   sigs_t::iterator i = _sigs.find(paramEnum);
   if (i == _sigs.end()) {
+      std::cerr << "Could not get GetParamResponseRaw " << paramEnum << std::endl;
     retval = CTR_SigNotUpdated;
   } else {
     rawBits = i->second;
@@ -844,6 +845,7 @@ void CanTalonSRX::ChangeMotionControlFramePeriod(uint32_t periodMs) {
  * (top).
  */
 void CanTalonSRX::ClearMotionProfileTrajectories() {
+    DEBUG_CAN_TALON_SRX("Clearing...");
   std::unique_lock<std::mutex> lock(_mutMotProf);
   /* clear the top buffer */
   _motProfTopBuffer.Clear();
@@ -910,7 +912,7 @@ CTR_Code CanTalonSRX::PushMotionProfileTrajectory(int targPos, int targVel,
                                                   int timeDurMs, int velOnly,
                                                   int isLastPoint,
                                                   int zeroPos) {
-    DEBUG_CAN_TALON_SRX("");
+    DEBUG_CAN_TALON_SRX("Current Count: " << _motProfTopBuffer.GetNumTrajectories() << ", Capacity: " << kMotionProfileTopBufferCapacity);
   ReactToMotionProfileCall();
   /* create our trajectory point */
   TALON_Control_6_MotProfAddTrajPoint_huff0_t traj;
@@ -999,6 +1001,26 @@ void CanTalonSRX::ProcessMotionProfileBuffer() {
   GET_STATUS9();
   /* lock */
   std::unique_lock<std::mutex> lock(_mutMotProf);
+
+    DEBUG_CAN_TALON_SRX("Processing buffer..." << ", " << _motProfFlowControl << ", " << rx->NextID);
+    DEBUG_DETAILED_CAN_TALON_SRX(
+        "" << rx->ActTraj_IsValid << ", " <<
+        "" << rx->ActTraj_ProfileSlotSelect << ", " <<
+        "" << rx->ActTraj_VelOnly << ", " <<
+        "" << rx->ActTraj_IsLast << ", " <<
+        "" << rx->OutputType << ", " <<
+        "" << rx->HasUnderrun << ", " <<
+        "" << rx->IsUnderrun << ", " <<
+        "" << "Next Id: " << rx->NextID << ", " <<
+        "" << rx->reserved1 << ", " <<
+        "" << rx->BufferIsFull << ", " <<
+        "" << rx->Count << ", " <<
+        "" << rx->ActTraj_VelocityH << ", " <<
+        "" << rx->ActTraj_VelocityL << ", " <<
+        "" << rx->ActTraj_PositionH << ", " <<
+        "" << rx->ActTraj_PositionM << ", " <<
+        "" << rx->ActTraj_PositionL);
+
   /* calc what we expect to receive */
   if (_motProfFlowControl == rx->NextID) {
     /* Talon has completed the last req */
@@ -1070,6 +1092,7 @@ CTR_Code CanTalonSRX::GetMotionProfileStatus(
     int32_t &targVel, uint32_t &topBufferRem, uint32_t &topBufferCnt,
     uint32_t &btmBufferCnt, uint32_t &outputEnable) {
   /* get the latest status frame */
+    DEBUG_CAN_TALON_SRX("");
   GET_STATUS9();
 
   /* clear signals in case we never received an update, caller should check
@@ -1118,6 +1141,8 @@ CTR_Code CanTalonSRX::GetMotionProfileStatus(
       outputEnable = kMotionProf_Disabled;
       break;
   }
+  DEBUG_DETAILED_CAN_TALON_SRX("  Pos: " << targPos << ", Vel: " << targVel << ", OE: " << outputEnable << ", F: " << flags);
+
   return rx.err;
 }
 //------------------------ auto generated ------------------------------------//

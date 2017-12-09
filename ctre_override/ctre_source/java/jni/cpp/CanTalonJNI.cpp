@@ -14,7 +14,15 @@
 
 #include <iostream>
 
-#define CAN_LOG_UNSUPPORTED(x) std::cout << "Unsupported" << std::endl;
+#ifndef __FUNCTION_NAME__
+    #ifdef WIN32   //WINDOWS
+        #define __FUNCTION_NAME__   __FUNCTION__
+    #else          //*NIX
+        #define __FUNCTION_NAME__   __func__
+    #endif
+#endif
+
+#define CAN_LOG_UNSUPPORTED(x) std::cerr << __FUNCTION_NAME__ << " Unsupported" << std::endl;
 
 extern "C" {
 
@@ -98,12 +106,8 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetLastError
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_GetMotionProfileStatus
   (JNIEnv *env, jclass, jlong handle, jobject canTalon, jobject motionProfileStatus)
 {
-    static jmethodID setMotionProfileStatusFromJNI = nullptr;
-    if (!setMotionProfileStatusFromJNI) {
-        jclass cls = env->GetObjectClass(canTalon);
-        setMotionProfileStatusFromJNI = env->GetMethodID(cls, "setMotionProfileStatusFromJNI", "(Ledu/wpi/first/wpilibj/CANTalon$MotionProfileStatus;IIIIIIII)V");
-        if (!setMotionProfileStatusFromJNI) return;
-    }
+    jfieldID trajectoryPointFieldId = env->GetFieldID(env->GetObjectClass(motionProfileStatus), "activePoint", "Lcom/ctre/CANTalon$TrajectoryPoint;");
+    jobject trajectoryPointObject = env->GetObjectField(motionProfileStatus, trajectoryPointFieldId);
 
     uint32_t flags;
     uint32_t profileSlotSelect;
@@ -116,7 +120,32 @@ JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_GetMotionProfileStatus
     CTR_Code status = ((CanTalonSRX*)handle)->GetMotionProfileStatus(flags, profileSlotSelect, targPos, targVel, topBufferRem, topBufferCnt, btmBufferCnt, outputEnable);
     if (!CheckCTRStatus(env, status)) return;
 
-    env->CallVoidMethod(canTalon, setMotionProfileStatusFromJNI, motionProfileStatus, (jint)flags, (jint)profileSlotSelect, (jint)targPos, (jint)targVel, (jint)topBufferRem, (jint)topBufferCnt, (jint)btmBufferCnt, (jint)outputEnable);
+    static const int kMotionProfileFlag_ActTraj_IsValid = 0x1;
+    static const int kMotionProfileFlag_HasUnderrun = 0x2;
+    static const int kMotionProfileFlag_IsUnderrun = 0x4;
+    static const int kMotionProfileFlag_ActTraj_IsLast = 0x8;
+    static const int kMotionProfileFlag_ActTraj_VelOnly = 0x10;
+
+    bool activePointValid = flags & 0x01;
+    bool hasUnderrun      = flags & 0x02;
+    bool isUnderrun       = flags & 0x04;
+    bool isLastPoint      = flags & 0x08;
+    bool velocityOnly     = flags & 0x10;
+    bool zeroPos = false;
+
+    env->SetIntField(motionProfileStatus, env->GetFieldID(env->GetObjectClass(motionProfileStatus), "topBufferRem", "I"), topBufferRem);
+    env->SetIntField(motionProfileStatus, env->GetFieldID(env->GetObjectClass(motionProfileStatus), "topBufferCnt", "I"), topBufferCnt);
+    env->SetIntField(motionProfileStatus, env->GetFieldID(env->GetObjectClass(motionProfileStatus), "btmBufferCnt", "I"), btmBufferCnt);
+    env->SetBooleanField(motionProfileStatus, env->GetFieldID(env->GetObjectClass(motionProfileStatus), "activePointValid", "Z"), activePointValid);
+    env->SetBooleanField(motionProfileStatus, env->GetFieldID(env->GetObjectClass(motionProfileStatus), "hasUnderrun", "Z"), hasUnderrun);
+    env->SetBooleanField(motionProfileStatus, env->GetFieldID(env->GetObjectClass(motionProfileStatus), "isUnderrun", "Z"), isUnderrun);
+
+    env->SetDoubleField(trajectoryPointObject, env->GetFieldID(env->GetObjectClass(trajectoryPointObject), "position", "D"), targPos);
+    env->SetDoubleField(trajectoryPointObject, env->GetFieldID(env->GetObjectClass(trajectoryPointObject), "velocity", "D"), targVel);
+    env->SetIntField(trajectoryPointObject, env->GetFieldID(env->GetObjectClass(trajectoryPointObject), "profileSlotSelect", "I"), profileSlotSelect);
+    env->SetIntField(trajectoryPointObject, env->GetFieldID(env->GetObjectClass(trajectoryPointObject), "isLastPoint", "Z"), isLastPoint);
+    env->SetIntField(trajectoryPointObject, env->GetFieldID(env->GetObjectClass(trajectoryPointObject), "velocityOnly", "Z"), velocityOnly);
+    env->SetIntField(trajectoryPointObject, env->GetFieldID(env->GetObjectClass(trajectoryPointObject), "zeroPos", "Z"), zeroPos);
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_Set

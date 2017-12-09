@@ -6,13 +6,13 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.snobot.simulator.jni.HalCallbackValue;
-import com.snobot.simulator.simulator_components.ctre.CanManager;
+import com.snobot.simulator.simulator_components.ctre.CtreManager;
 
 public class CanCallbackJni
 {
     private static final Logger sLOGGER = Logger.getLogger(CanCallbackJni.class);
 
-    public static final CanManager sCAN_MANAGER = new CanManager();
+    public static final CtreManager sCAN_MANAGER = new CtreManager();
 
     public static native void registerCanCallback(String functionName);
 

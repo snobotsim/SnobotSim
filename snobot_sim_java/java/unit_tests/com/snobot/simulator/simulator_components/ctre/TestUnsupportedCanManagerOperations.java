@@ -12,7 +12,7 @@ public class TestUnsupportedCanManagerOperations extends BaseSimulatorTest
     @Test
     public void testUnsupportedSendMessage()
     {
-        CanManager deviceManager = new CanManager();
+        CtreManager deviceManager = new CtreManager();
 
         ByteBuffer buffer = ByteBuffer.allocate(8);
         deviceManager.handleSendMessage("", 0x12340000, 8, buffer, 8);
@@ -21,7 +21,7 @@ public class TestUnsupportedCanManagerOperations extends BaseSimulatorTest
     @Test
     public void testUnsupportedReceiveMessage()
     {
-        CanManager deviceManager = new CanManager();
+        CtreManager deviceManager = new CtreManager();
 
         ByteBuffer buffer = ByteBuffer.allocate(8);
         deviceManager.handleReceiveMessage("", 0x12340000, 8, buffer);
@@ -30,7 +30,7 @@ public class TestUnsupportedCanManagerOperations extends BaseSimulatorTest
     @Test
     public void testUnsupportedOpenStreamMessage()
     {
-        CanManager deviceManager = new CanManager();
+        CtreManager deviceManager = new CtreManager();
 
         deviceManager.handleOpenStream("", 0x12340000, 0, 0);
     }
@@ -38,7 +38,7 @@ public class TestUnsupportedCanManagerOperations extends BaseSimulatorTest
     @Test
     public void testUnsupportedCloseStreamMessage()
     {
-        CanManager deviceManager = new CanManager();
+        CtreManager deviceManager = new CtreManager();
 
         deviceManager.handleCloseStream("", 0);
     }

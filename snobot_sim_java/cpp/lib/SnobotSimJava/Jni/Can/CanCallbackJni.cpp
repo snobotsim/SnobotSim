@@ -171,15 +171,14 @@ void CanReadStreamSessionCallback(
     int port = *((int*) param);
     jstring nameString = MakeJString(aEnv, name);
 
-  jclass byteBufferClazz =  aEnv->FindClass("java/nio/ByteBuffer");
-
+    jclass byteBufferClazz =  aEnv->FindClass("java/nio/ByteBuffer");
     jobjectArray dataBufferArray = aEnv->NewObjectArray(20, byteBufferClazz, NULL);
 
     // Copy all of the messages into the JNI buffer
     for(int i = 0; i < 20; ++i)
     {
-      uint8_t* dataBuffer[sizeof(HAL_CANStreamMessage)];
-      std::memset(dataBuffer, 0, sizeof(HAL_CANStreamMessage));
+        uint8_t* dataBuffer = reinterpret_cast<uint8_t*>(&messages[i]);
+        std::memset(dataBuffer, 0, sizeof(HAL_CANStreamMessage));
 
         jobject theBuffer = aEnv->NewDirectByteBuffer(dataBuffer, sizeof(HAL_CANStreamMessage));
         aEnv->SetObjectArrayElement(dataBufferArray, i, theBuffer);
@@ -187,19 +186,6 @@ void CanReadStreamSessionCallback(
 
     // Call the Java method
     *messagesRead = aEnv->CallStaticIntMethod(aClazz, aMethodId, nameString, port, sessionHandle, dataBufferArray, messagesToRead);
-
-    // Copy it all back to the raw buffer used by the HAL
-    for(unsigned int i = 0; i < *messagesRead; ++i)
-    {
-        uint8_t *dataPtr = nullptr;
-        jobject data = aEnv->GetObjectArrayElement(dataBufferArray, i);
-        if (data != 0)
-        {
-            dataPtr = (uint8_t *)aEnv->GetDirectBufferAddress(data);
-        }
-
-      std::memcpy(&messages[i], dataPtr, sizeof(HAL_CANStreamMessage));
-    }
 
     if (aEnv->ExceptionCheck())
     {
