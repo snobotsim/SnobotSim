@@ -120,12 +120,6 @@ JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_GetMotionProfileStatus
     CTR_Code status = ((CanTalonSRX*)handle)->GetMotionProfileStatus(flags, profileSlotSelect, targPos, targVel, topBufferRem, topBufferCnt, btmBufferCnt, outputEnable);
     if (!CheckCTRStatus(env, status)) return;
 
-    static const int kMotionProfileFlag_ActTraj_IsValid = 0x1;
-    static const int kMotionProfileFlag_HasUnderrun = 0x2;
-    static const int kMotionProfileFlag_IsUnderrun = 0x4;
-    static const int kMotionProfileFlag_ActTraj_IsLast = 0x8;
-    static const int kMotionProfileFlag_ActTraj_VelOnly = 0x10;
-
     bool activePointValid = flags & 0x01;
     bool hasUnderrun      = flags & 0x02;
     bool isUnderrun       = flags & 0x04;
