@@ -14,9 +14,11 @@ notifications:
       
 addons:
   apt:
+    sources: [ 'ubuntu-toolchain-r-test']
     packages:
     - g++-multilib
     - lib32stdc++6
+    - libstdc++6
 before_install:
   sudo apt-get install libstdc++6
 before_cache:
