@@ -17,6 +17,8 @@ addons:
     packages:
     - g++-multilib
     - lib32stdc++6
+before_install:
+  sudo apt-get install libstdc++6
 before_cache:
 - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 install: []
