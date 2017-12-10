@@ -8,7 +8,7 @@
 #include "SnobotSim/SimulatorComponents/Ctre/CtreTalonSrxDeviceManager.h"
 #include "SnobotSim/SimulatorComponents/Ctre/CtreTalonSrxSimulator.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
-#include <iostream>
+#include <cstring>
 
 std::shared_ptr<CtreTalonSrxSimulator> GetWrapperHelper(int aPort)
 {
@@ -44,7 +44,7 @@ void CtreTalonSrxDeviceManager::HandleSend(uint32_t aCanMessageId, uint32_t aCan
     }
     else
     {
-        std::cout << "Unsupported send " << std::hex << aCanMessageId << std::dec << std::endl;
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unsupported send " << std::hex << aCanMessageId << std::dec);
     }
 }
 
@@ -71,7 +71,7 @@ void CtreTalonSrxDeviceManager::HandleReceive(uint32_t aCanMessageId, uint32_t a
     else
     {
         success = false;
-        std::cout << "Unsupported recv " << std::hex << aCanMessageId << std::dec << std::endl;
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unsupported recv " << std::hex << aCanMessageId << std::dec);
     }
 
     if(success)
@@ -102,7 +102,7 @@ void CtreTalonSrxDeviceManager::HandleTx1(const uint8_t* aData, int aPort)
     }
     else
     {
-        std::cout << "Unsupported tx1 command 0x" << std::hex << ((int) command) << std::dec << std::endl;
+    	SNOBOT_LOG(SnobotLogging::CRITICAL, "Unsupported tx1 command 0x" << std::hex << ((int) command) << std::dec);
     }
 }
 
@@ -122,35 +122,35 @@ void CtreTalonSrxDeviceManager::HandleSetDemandCommand(const uint8_t* aData, int
     {
         double position = demand / 4096.0;
         wrapper->SetPositionGoal(position);
-//        sLOGGER.log(Level.DEBUG, "  Setting by position." + position);
+        SNOBOT_LOG(SnobotLogging::DEBUG, "  Setting by position." << position);
     }
     else if (commandType == 0x02)
     {
         double speed = demand * 600.0 / 4096.0;
         wrapper->SetSpeedGoal(speed);
-//        sLOGGER.log(Level.DEBUG, " Setting by speed. " + speed);
+        SNOBOT_LOG(SnobotLogging::DEBUG, " Setting by speed. " << speed);
     }
     else if (commandType == 0x03)
     {
-//        sLOGGER.log(Level.DEBUG, "  Setting by current." + demand);
+        SNOBOT_LOG(SnobotLogging::DEBUG, "  Setting by current." << demand);
     }
     else if (commandType == 0x04)
     {
         double voltageDemand = demand / 256.0;
         wrapper->SetVoltagePercentage(voltageDemand / 12.0);
-//        sLOGGER.log(Level.DEBUG, "  Setting by voltage. " + voltageDemand);
+        SNOBOT_LOG(SnobotLogging::DEBUG, "  Setting by voltage. " << voltageDemand);
     }
     else if (commandType == 0x05)
     {
-//        sLOGGER.log(Level.DEBUG, "  Setting by FOLLOWER.");
+    	SNOBOT_LOG(SnobotLogging::DEBUG, "Setting by Motion Follower");
     }
     else if (commandType == 0x06)
     {
-//        sLOGGER.log(Level.DEBUG, "  Setting by Motion Profile.");
+    	SNOBOT_LOG(SnobotLogging::DEBUG, "Setting by Motion Profile");
     }
     else if (commandType == 0x07)
     {
-//        sLOGGER.log(Level.DEBUG, "  Setting by Motion Magic.");
+    	SNOBOT_LOG(SnobotLogging::DEBUG, "Setting by Motion Magic");
     }
     else if (commandType == 0x0F)
     {
@@ -158,8 +158,7 @@ void CtreTalonSrxDeviceManager::HandleSetDemandCommand(const uint8_t* aData, int
     }
     else
     {
-        std::cout << "Unknown command type 0x" << std::hex << ((int) commandType) << std::dec << std::endl;
-//        sLOGGER.log(Level.ERROR, String.format("Unknown set command type 0x%02X", commandType));
+    	SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown command type 0x" << std::hex << ((int) commandType) << std::dec);
     }
 }
 
@@ -199,8 +198,7 @@ void CtreTalonSrxDeviceManager::HandleSetParamCommand(const uint8_t* aData, int 
     }
     else
     {
-        std::cout << "Unknown SetParam command " << std::hex << ((int) commandType) << std::dec << std::endl;
-//        sLOGGER.log(Level.ERROR, "Unknown SetParam command: " + commandType);
+    	SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown SetParam command " << std::hex << ((int) commandType) << std::dec);
     }
 }
 
@@ -240,8 +238,7 @@ void CtreTalonSrxDeviceManager::HandleParamRequest(const uint8_t* aData, int aPo
     }
     else
     {
-        std::cout << "Unknown GetParam command " << std::hex << ((int) commandType) << std::dec << std::endl;
-//        sLOGGER.log(Level.ERROR, "Unknown GetParam command: " + commandType);
+    	SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown GetParam command " << std::hex << ((int) commandType) << std::dec);
     }
     int rawValue;
     if(isFloat)

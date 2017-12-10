@@ -15,7 +15,7 @@
 
 class BaseNavxWrapper {
 public:
-	BaseNavxWrapper(int aBasePort, std::shared_ptr<NavxSimulator>& aNavx);
+	BaseNavxWrapper(int aBasePort, const std::shared_ptr<NavxSimulator>& aNavx);
 	virtual ~BaseNavxWrapper();
 
 	class AccelerometerWrapper : public IAccelerometerWrapper

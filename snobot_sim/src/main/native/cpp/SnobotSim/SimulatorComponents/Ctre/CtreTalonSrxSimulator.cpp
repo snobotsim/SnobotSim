@@ -7,8 +7,6 @@
 
 #include "SnobotSim/SimulatorComponents/Ctre/CtreTalonSrxSimulator.h"
 
-#include <iostream>
-
 CtreTalonSrxSimulator::CtreTalonSrxSimulator(int aPort) :
     SpeedControllerWrapper(aPort)
 {

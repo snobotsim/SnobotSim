@@ -8,7 +8,7 @@
 #include "SnobotSim/SimulatorComponents/NavxWrappers/BaseNavxWrapper.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 
-BaseNavxWrapper::BaseNavxWrapper(int aBasePort, std::shared_ptr<NavxSimulator>& aNavx)  :
+BaseNavxWrapper::BaseNavxWrapper(int aBasePort, const std::shared_ptr<NavxSimulator>& aNavx)  :
 	mXWrapper(new AccelerometerWrapper(AccelerometerWrapper::AXIS_X, aNavx)),
 	mYWrapper(new AccelerometerWrapper(AccelerometerWrapper::AXIS_Y, aNavx)),
 	mZWrapper(new AccelerometerWrapper(AccelerometerWrapper::AXIS_Z, aNavx)),

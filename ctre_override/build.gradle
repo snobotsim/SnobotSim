@@ -134,76 +134,43 @@ model {
             sharedConfigs = [ SnobotSimCppCtre: [],
                               CTRLibDriver: [] ]
         }
-        //wpilibc(DependencyConfig) {
-        //    groupId = 'edu.wpi.first.wpilibc'
-        //    artifactId = 'wpilibc'
-        //    headerClassifier = 'headers'
-        //    ext = 'zip'
-        //    version = getWpiUtilVersion()
-        //    sharedConfigs = [ HALAthena: [] ]
-        //}
     }
-    
 
     components {
-        //if(build_simulator_cpp)
-        if(false)
-        {
-            SnobotSimCppCtre(NativeLibrarySpec) {
-                baseName = 'SnobotSimCppCtre'
-                
-                binaries {
-                    withType(NativeBinarySpec) {
-                        project(':snobot_sim').addSnobotSimToLinker(it)
-                    }
-                }
-                sources {
-                    cpp {
-                        source {
-                            srcDirs = [ 'snobot_sim/shared/lib', 
-                                        'snobot_sim/cpp_simulator/lib' ]
-                            includes = ["**/*.cpp"]
-                        }
-                        exportedHeaders {
-                            srcDirs = ["snobot_sim/shared/include", 
-                                       "snobot_sim/cpp_simulator/include", 
-                                       "${extractWplibcHeadersZip.libsdir}", 
-                                       project(':hal_override').extractHalHeadersZip.libsdir]
-                        }
-                    }
-                }
-            }
-        }
-        else
-        {
-            SnobotSimJavaCtre(NativeLibrarySpec) {
-                baseName = 'SnobotSimJavaCtre'
-                
-                binaries {
-                    withType(NativeBinarySpec) {
+        SnobotSimJavaCtre(NativeLibrarySpec) {
+            baseName = 'SnobotSimJavaCtre'
+            
+            binaries {
+                withType(NativeBinarySpec) {
+                    if(it.targetPlatform.architecture.name != "athena")
+                    {
                         addHalSimToLinker(linker)
                     }
-                }
-            
-                sources {
-                    cpp {
-                        source {
-                            srcDirs = ['ctre_source/cpp/shared/lib',
-                                       'snobot_sim/shared/lib', 
-                                        'snobot_sim/java_simulator/lib' ]
-                            includes = ["**/*.cpp"]
-                        }
-                        exportedHeaders {
-                            srcDirs = [
-                                       "ctre_source/cpp/shared/include",
-                                       "snobot_sim/java_simulator/include", 
-                                       "${extractHalHeadersZip.libsdir}"]
-                        }
+                    else
+                    {
+                        buildable = false
                     }
                 }
             }
-            
+        
+            sources {
+                cpp {
+                    source {
+                        srcDirs = ['ctre_source/cpp/shared/lib',
+                                   'snobot_sim/shared/lib', 
+                                    'snobot_sim/java_simulator/lib' ]
+                        includes = ["**/*.cpp"]
+                    }
+                    exportedHeaders {
+                        srcDirs = [
+                                   "ctre_source/cpp/shared/include",
+                                   "snobot_sim/java_simulator/include", 
+                                   "${extractHalHeadersZip.libsdir}"]
+                    }
+                }
+            }
         }
+            
         CTRLibDriverShared(NativeLibrarySpec) {
             baseName = 'CTRLibDriver'
                 
@@ -212,7 +179,14 @@ model {
                    it.lib project: ':ctre_override', library: 'SnobotSimJavaCtre', linkage: 'static'
                 }
                 withType(NativeBinarySpec) {
-                    addHalSimToLinker(linker)
+                    if(it.targetPlatform.architecture.name != "athena")
+                    {
+                        addHalSimToLinker(linker)
+                    }
+                    else
+                    {
+                        buildable = false
+                    }
                 }
             }
             sources {
