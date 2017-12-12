@@ -172,8 +172,9 @@ public class CtreTalonSrxDeviceManager implements ICanDeviceManager
 
         byte commandSection = (byte) (aBuffer.get(5));
         byte profileSelect = (byte) (commandSection & 0x01);
-        byte feedbackDevice = (byte) (commandSection & 0x0E);
+        byte feedbackDevice = (byte) ((commandSection & 0x1E) >> 1);
         byte overrideLimitSwitchesRaw = (byte) ((commandSection & 0xE0) >> 5);
+        wrapper.setCanFeedbackDevice(feedbackDevice);
 
         if (overrideLimitSwitchesRaw != 0x1)
         {
@@ -196,9 +197,8 @@ public class CtreTalonSrxDeviceManager implements ICanDeviceManager
         }
         else if (commandType == (byte) 0x01)
         {
-            double position = demand / 4096.0;
-            wrapper.setPositionGoal(position);
-            sLOGGER.log(Level.DEBUG, "  Setting by position." + position);
+            wrapper.setPositionGoal(demand);
+            sLOGGER.log(Level.DEBUG, "  Setting by position." + demand);
         }
         else if (commandType == (byte) 0x02)
         {
@@ -495,8 +495,8 @@ public class CtreTalonSrxDeviceManager implements ICanDeviceManager
     private void populateStatus2(int aPort, ByteBuffer aData)
     {
         CtreTalonSrxSpeedControllerSim wrapper = getWrapperHelper(aPort);
-        int binnedPosition = (int) (wrapper.getPosition() * 4096);
-        int binnedVelocity = (int) (wrapper.getVelocity() * 6.9);
+        int binnedPosition = wrapper.getBinnedPosition();
+        int binnedVelocity = wrapper.getBinnedVelocity();
         int binnedCurrent = 4;
         byte stickyFaults = 0;
         byte lastByte = 0;

@@ -36,7 +36,7 @@ public class CtrePigeonImuDeviceManager implements ICanDeviceManager
     {
         if (aCanMessageId == 0x15042800 || aCanMessageId == 0x2042800)
         {
-            sLOGGER.log(Level.INFO, "Creating Pigeon on port " + aCanPort);
+            sLOGGER.log(Level.DEBUG, "Creating Pigeon on port " + aCanPort);
             CtrePigeonImuSim sim = new CtrePigeonImuSim(sSENSOR_OFFSET + aCanPort * 3);
             mPigeonMap.put(aCanPort, sim);
         }
