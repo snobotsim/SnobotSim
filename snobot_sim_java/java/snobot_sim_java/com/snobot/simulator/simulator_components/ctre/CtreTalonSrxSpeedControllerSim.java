@@ -68,7 +68,7 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
 
     }
 
-    protected int mCanHandle; // The handle without the offset applied
+    protected final int mCanHandle; // The handle without the offset applied
     protected ControlType mControlType;
 
     // Feedback control
@@ -92,6 +92,8 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
     public CtreTalonSrxSpeedControllerSim(int aCanHandle)
     {
         super(aCanHandle + 100, "CAN SC: " + aCanHandle);
+
+        mCanHandle = aCanHandle;
 
         mPidConstants = new PIDFConstants();
         mControlType = ControlType.Raw;
@@ -429,7 +431,7 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
         switch (mFeedbackDevice)
         {
         case Encoder:
-            SensorActuatorRegistry.get().register(new EncoderWrapper(getHandle(), new DistanceSetterHelper()
+            SensorActuatorRegistry.get().register(new EncoderWrapper("CAN Encoder (" + mCanHandle + ")", new DistanceSetterHelper()
             {
 
                 @Override
@@ -441,12 +443,11 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
             DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(getHandle(), getHandle());
             break;
         case Analog:
-            SensorActuatorRegistry.get().register(new AnalogWrapper(getHandle(), new VoltageSetterHelper()
+            SensorActuatorRegistry.get().register(new AnalogWrapper("CAN Analog (" + mCanHandle + ")", new VoltageSetterHelper()
             {
                 @Override
                 public void setVoltage(double aVoltage)
                 {
-                    System.out.println("Getting");
                 }
             }), getHandle());
             break;
