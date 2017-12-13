@@ -12,7 +12,12 @@ public class AnalogWrapper extends ASensorWrapper
 
     public AnalogWrapper(int aIndex, VoltageSetterHelper aSetterHelper)
     {
-        super("Analog " + aIndex);
+        this("Analog " + aIndex, aSetterHelper);
+    }
+
+    public AnalogWrapper(String aName, VoltageSetterHelper aSetterHelper)
+    {
+        super(aName);
 
         mSetterHelper = aSetterHelper;
     }

@@ -97,10 +97,12 @@ public class TestCtreCanTalon_ControlPosition extends BaseSimulatorTest
         case CtreMagEncoder_Absolute:
         case CtreMagEncoder_Relative:
             Assert.assertTrue(DataAccessorFactory.getInstance().getEncoderAccessor().getPortList().contains(mRawHandle));
+            Assert.assertEquals("CAN Encoder (" + mCanHandle + ")", DataAccessorFactory.getInstance().getEncoderAccessor().getName(mRawHandle));
             break;
         case AnalogEncoder:
         case AnalogPot:
             Assert.assertTrue(DataAccessorFactory.getInstance().getAnalogAccessor().getPortList().contains(mRawHandle));
+            Assert.assertEquals("CAN Analog (" + mCanHandle + ")", DataAccessorFactory.getInstance().getAnalogAccessor().getName(mRawHandle));
             break;
         default:
             Assert.assertTrue(false);
