@@ -43,7 +43,7 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     @Override
     public String getNativeBuildVersion()
     {
-        return "TODO";
+        return JaveSimulatorVersion.Version;
     }
 
     @Override
