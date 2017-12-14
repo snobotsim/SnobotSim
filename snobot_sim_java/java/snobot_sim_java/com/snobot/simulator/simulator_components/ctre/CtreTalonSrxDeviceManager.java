@@ -55,7 +55,7 @@ public class CtreTalonSrxDeviceManager implements ICanDeviceManager
             bufferPrintout = "(too small)";
         }
 
-        sLOGGER.log(Level.DEBUG,
+        sLOGGER.log(Level.TRACE,
                 "@SendingMessage: MID: " + Integer.toHexString(aCanMessageId) + ", size: " + aDataSize + ", buffer: " + bufferPrintout);
 
         if (aCanMessageId == 0x02040000)
@@ -89,7 +89,7 @@ public class CtreTalonSrxDeviceManager implements ICanDeviceManager
     {
         boolean success = true;
 
-        sLOGGER.log(Level.DEBUG, "@ReceiveMessage: MID: " + Integer.toHexString(aCanMessageId));
+        sLOGGER.log(Level.TRACE, "@ReceiveMessage: MID: " + Integer.toHexString(aCanMessageId));
 
         if (aCanMessageId == 0x02041400)
         {
@@ -127,7 +127,7 @@ public class CtreTalonSrxDeviceManager implements ICanDeviceManager
     @Override
     public int readStreamSession(ByteBuffer[] messages, int messagesToRead)
     {
-        sLOGGER.log(Level.DEBUG, "Reading stream session " + messagesToRead);
+        sLOGGER.log(Level.TRACE, "Reading stream session " + messagesToRead);
         ByteBuffer buffer = messages[0];
         buffer.rewind();
         mSetParamBuffer.rewind();
@@ -186,25 +186,25 @@ public class CtreTalonSrxDeviceManager implements ICanDeviceManager
 
         byte commandType = (byte) ((aBuffer.get(6) >> 4) & 0xF);
         int demand = (aBuffer.getInt(2)) >> 8;
-        sLOGGER.log(Level.DEBUG, String.format("handleTx1: Demand: %d, Command: %d, Profile: %d, Feedback Device: %d, Limit Switches: %02X",
+        sLOGGER.log(Level.TRACE, String.format("handleTx1: Demand: %d, Command: %d, Profile: %d, Feedback Device: %d, Limit Switches: %02X",
                 demand, commandType, profileSelect, feedbackDevice, overrideLimitSwitchesRaw));
 
         if (commandType == 0x00)
         {
             double appliedVoltageDemand = demand / 1023.0;
             wrapper.set(appliedVoltageDemand);
-            sLOGGER.log(Level.DEBUG, " Setting by applied throttle.. " + appliedVoltageDemand);
+            sLOGGER.log(Level.TRACE, " Setting by applied throttle.. " + appliedVoltageDemand);
         }
         else if (commandType == (byte) 0x01)
         {
             wrapper.setPositionGoal(demand);
-            sLOGGER.log(Level.DEBUG, "  Setting by position." + demand);
+            sLOGGER.log(Level.TRACE, "  Setting by position." + demand);
         }
         else if (commandType == (byte) 0x02)
         {
             double speed = demand * 600.0 / 4096.0;
             wrapper.setSpeedGoal(speed);
-            sLOGGER.log(Level.DEBUG, " Setting by speed. " + speed);
+            sLOGGER.log(Level.TRACE, " Setting by speed. " + speed);
         }
         else if (commandType == (byte) 0x03)
         {
@@ -214,23 +214,23 @@ public class CtreTalonSrxDeviceManager implements ICanDeviceManager
         {
             double voltageDemand = demand / 256.0;
             wrapper.set(voltageDemand / 12.0);
-            sLOGGER.log(Level.DEBUG, "  Setting by voltage. " + voltageDemand);
+            sLOGGER.log(Level.TRACE, "  Setting by voltage. " + voltageDemand);
         }
         else if (commandType == (byte) 0x05)
         {
             CtreTalonSrxSpeedControllerSim leadTalon = getWrapperHelper(demand);
             leadTalon.addFollower(wrapper);
-            sLOGGER.log(Level.DEBUG, "  Setting by FOLLOWER." + demand);
+            sLOGGER.log(Level.TRACE, "  Setting by FOLLOWER." + demand);
         }
         else if (commandType == (byte) 0x06)
         {
             wrapper.setMotionProfilingCommand(demand);
-            sLOGGER.log(Level.DEBUG, "  Setting by Motion Profile " + demand);
+            sLOGGER.log(Level.TRACE, "  Setting by Motion Profile " + demand);
         }
         else if (commandType == (byte) 0x07)
         {
             wrapper.setMotionMagicGoal(demand);
-            sLOGGER.log(Level.DEBUG, "  Setting by Motion Magic (" + demand + ")");
+            sLOGGER.log(Level.TRACE, "  Setting by Motion Magic (" + demand + ")");
         }
         else if (commandType == (byte) 0x0F)
         {
@@ -260,7 +260,7 @@ public class CtreTalonSrxDeviceManager implements ICanDeviceManager
         CtreTalonSrxSpeedControllerSim wrapper = getWrapperHelper(aCanPort);
         wrapper.addMotionProfilePoint(new CtreTalonSrxSpeedControllerSim.MotionProfilePoint(index, position, velocity));
 
-        sLOGGER.log(Level.DEBUG, String.format("handleTx6: " + 
+        sLOGGER.log(Level.TRACE, String.format("handleTx6: " +
                 "index: " + index + ", " + 
                 "isZeroPosition: " + isZeroPosition + ", " + 
                 "isLastPosition: " + isLastPosition + ", " + 
@@ -403,7 +403,7 @@ public class CtreTalonSrxDeviceManager implements ICanDeviceManager
 
     private void handleParamRequest(ByteBuffer aBuffer, int aPort)
     {
-        sLOGGER.log(Level.DEBUG, "Getting parameters...");
+        sLOGGER.log(Level.TRACE, "Getting parameters...");
 
         CtreTalonSrxSpeedControllerSim wrapper = getWrapperHelper(aPort);
         aBuffer.order(ByteOrder.LITTLE_ENDIAN);
@@ -475,7 +475,7 @@ public class CtreTalonSrxDeviceManager implements ICanDeviceManager
     private void populateStatus1(int aPort, ByteBuffer aData)
     {
         CtreTalonSrxSpeedControllerSim wrapper = getWrapperHelper(aPort);
-        sLOGGER.log(Level.DEBUG, " Getting STATUS1 " + wrapper.get());
+        sLOGGER.log(Level.TRACE, " Getting STATUS1 " + wrapper.get());
 
         int closedLoopErrorRaw = (int) wrapper.getLastClosedLoopError();
 
@@ -520,7 +520,7 @@ public class CtreTalonSrxDeviceManager implements ICanDeviceManager
 
     private void populateStatus4(int aPort, ByteBuffer aData)
     {
-        sLOGGER.log(Level.DEBUG, "POPULATE STATUS 4");
+        sLOGGER.log(Level.TRACE, "POPULATE STATUS 4");
         double temperature = 30;
         double batteryVoltage = 12;
 
@@ -536,7 +536,7 @@ public class CtreTalonSrxDeviceManager implements ICanDeviceManager
 
     private void populateStatus9(int aCanPort, ByteBuffer aData)
     {
-        sLOGGER.log(Level.DEBUG, "POPULATE STATUS 9");
+        sLOGGER.log(Level.TRACE, "POPULATE STATUS 9");
         CtreTalonSrxSpeedControllerSim wrapper = getWrapperHelper(aCanPort);
         MotionProfilePoint point = wrapper.getMotionProfilePoint();
 
@@ -571,7 +571,7 @@ public class CtreTalonSrxDeviceManager implements ICanDeviceManager
         aData.put(pos0);
         
         aData.order(ByteOrder.LITTLE_ENDIAN);
-        sLOGGER.log(Level.DEBUG, "POPULATE STATUS 4 " + point);
+        sLOGGER.log(Level.TRACE, "POPULATE STATUS 4 " + point);
     }
 
     private void putNumber(ByteBuffer aOutput, int aNumber, int aBytes)
@@ -592,7 +592,7 @@ public class CtreTalonSrxDeviceManager implements ICanDeviceManager
         {
             CtreTalonSrxSpeedControllerSim output = new CtreTalonSrxSpeedControllerSim(aPort);
             SensorActuatorRegistry.get().register(output, aPort + sCAN_OFFSET);
-            sLOGGER.log(Level.DEBUG, "Creating " + aPort);
+            sLOGGER.log(Level.TRACE, "Creating " + aPort);
             return output;
         }
         

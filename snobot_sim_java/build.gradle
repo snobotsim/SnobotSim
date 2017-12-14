@@ -19,6 +19,10 @@ apply plugin: 'jacoco'
 apply from: '../config.gradle'
 apply from: "$rootDir/extract_hal_headers.gradle"
 
+
+apply from: "../create_version_file.gradle"
+createJavaVersion("java/snobot_sim_java/com/snobot/simulator/wrapper_accessors/java", "JaveSimulatorVersion", "com.snobot.simulator.wrapper_accessors.java", getVersionName())
+
 sourceSets {
     main {
         java {

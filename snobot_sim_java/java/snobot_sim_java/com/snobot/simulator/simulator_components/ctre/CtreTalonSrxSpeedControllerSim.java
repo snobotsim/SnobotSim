@@ -441,6 +441,7 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
             }), getHandle());
 
             DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(getHandle(), getHandle());
+            sLOGGER.log(Level.INFO, "Created CAN Encoder for port " + mCanHandle);
             break;
         case Analog:
             SensorActuatorRegistry.get().register(new AnalogWrapper("CAN Analog (" + mCanHandle + ")", new VoltageSetterHelper()
@@ -450,6 +451,7 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
                 {
                 }
             }), getHandle());
+            sLOGGER.log(Level.INFO, "Created CAN Analog Device for port " + mCanHandle);
             break;
         default:
             sLOGGER.log(Level.ERROR, "Unsupported feedback device " + mFeedbackDevice);
