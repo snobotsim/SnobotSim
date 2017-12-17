@@ -53,6 +53,7 @@ public class TestCtreCanTalon extends BaseSimulatorTest
         Assert.assertEquals(0, talon.getF(), DOUBLE_EPSILON);
         Assert.assertEquals(0, talon.getIZone(), DOUBLE_EPSILON);
 
+        talon.setProfile(0);
         talon.setP(.5);
         talon.setI(1.5);
         talon.setD(100.7890);
@@ -64,6 +65,19 @@ public class TestCtreCanTalon extends BaseSimulatorTest
         Assert.assertEquals(100.7890, talon.getD(), DOUBLE_EPSILON);
         Assert.assertEquals(-9.485, talon.getF(), DOUBLE_EPSILON);
         Assert.assertEquals(40, talon.getIZone(), DOUBLE_EPSILON);
+
+        talon.setProfile(1);
+        talon.setP(.231);
+        talon.setI(1.634);
+        talon.setD(90.7890);
+        talon.setF(-8.485);
+        talon.setIZone(20);
+
+        Assert.assertEquals(.231, talon.getP(), DOUBLE_EPSILON);
+        Assert.assertEquals(1.634, talon.getI(), DOUBLE_EPSILON);
+        Assert.assertEquals(90.7890, talon.getD(), DOUBLE_EPSILON);
+        Assert.assertEquals(-8.485, talon.getF(), DOUBLE_EPSILON);
+        Assert.assertEquals(20, talon.getIZone(), DOUBLE_EPSILON);
 
         Assert.assertEquals(30, talon.getTemperature(), DOUBLE_EPSILON);
         Assert.assertEquals(12, talon.getBusVoltage(), DOUBLE_EPSILON);

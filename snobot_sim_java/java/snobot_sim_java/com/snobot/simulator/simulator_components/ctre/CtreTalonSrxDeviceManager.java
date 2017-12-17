@@ -175,6 +175,7 @@ public class CtreTalonSrxDeviceManager implements ICanDeviceManager
         byte feedbackDevice = (byte) ((commandSection & 0x1E) >> 1);
         byte overrideLimitSwitchesRaw = (byte) ((commandSection & 0xE0) >> 5);
         wrapper.setCanFeedbackDevice(feedbackDevice);
+        wrapper.setCurrentProfile(profileSelect);
 
         if (overrideLimitSwitchesRaw != 0x1)
         {
@@ -427,57 +428,61 @@ public class CtreTalonSrxDeviceManager implements ICanDeviceManager
 
     private void handleParamRequest(ByteBuffer aBuffer, int aPort)
     {
-        sLOGGER.log(Level.TRACE, "Getting parameters...");
 
         CtreTalonSrxSpeedControllerSim wrapper = getWrapperHelper(aPort);
         aBuffer.order(ByteOrder.LITTLE_ENDIAN);
         byte commandType = aBuffer.get(0);
-        int slot = 0;
+        sLOGGER.log(Level.TRACE, "Getting parameters... " + commandType);
 
         double floatValue = 0;
         boolean isFloat = true;
-
-        // P gain
-        if (commandType == 1)
+        
+        switch(commandType)
         {
-            floatValue = wrapper.getPidConstants(slot).mP;
-        }
-        // I gain
-        else if (commandType == 2)
-        {
-            floatValue = wrapper.getPidConstants(slot).mI;
-        }
-        // D gain
-        else if (commandType == 3)
-        {
-            floatValue = wrapper.getPidConstants(slot).mD;
-        }
-        // F gain
-        else if (commandType == 4)
-        {
-            floatValue = wrapper.getPidConstants(slot).mF;
-        }
-        // I Zone
-        else if (commandType == 5)
-        {
-            floatValue = wrapper.getPidConstants(slot).mIZone;
+        case 1:
+            floatValue = wrapper.getPidConstants(0).mP;
+            break;
+        case 2:
+            floatValue = wrapper.getPidConstants(0).mI;
+            break;
+        case 3:
+            floatValue = wrapper.getPidConstants(0).mD;
+            break;
+        case 4:
+            floatValue = wrapper.getPidConstants(0).mF;
+            break;
+        case 5:
+            floatValue = wrapper.getPidConstants(0).mIZone;
             isFloat = false;
-        }
-        // getCloseLoopRampRate
-        else if (commandType == 6)
-        {
+            break;
+        case 6:
             sLOGGER.log(Level.INFO, "getCloseLoopRampRate is not supported");
-        }
-        // GetIaccum
-        else if (commandType == 93)
-        {
+            break;
+        case 11:
+            floatValue = wrapper.getPidConstants(1).mP;
+            break;
+        case 12:
+            floatValue = wrapper.getPidConstants(1).mI;
+            break;
+        case 13:
+            floatValue = wrapper.getPidConstants(1).mD;
+            break;
+        case 14:
+            floatValue = wrapper.getPidConstants(1).mF;
+            break;
+        case 15:
+            floatValue = wrapper.getPidConstants(1).mIZone;
+            isFloat = false;
+            break;
+        case 93:
             sLOGGER.log(Level.INFO, "GetIaccum is not supported");
-        }
-        else
-        {
+            break;
+        default:
             sLOGGER.log(Level.ERROR, "************* Unknown GetParam command: " + commandType + " ************* "
                     + "If this is *crucial* to simulating your robot, please make an issue at https://github.com/pjreiniger/SnobotSim");
+            break;
         }
+
         int rawValue;
         if(isFloat)
         {

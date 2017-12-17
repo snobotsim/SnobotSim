@@ -26,7 +26,7 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
 
     public enum FeedbackDevice
     {
-        Encoder, Analog
+        QuadEncoder, Encoder, Analog
     }
 
     protected class PIDFConstants
@@ -73,7 +73,7 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
 
     // Feedback control
     protected PIDFConstants[] mPidConstants= {new PIDFConstants(), new PIDFConstants()};
-    protected int mCurrentSlot;
+    protected int mCurrentPidProfile;
     protected FeedbackDevice mFeedbackDevice;
     protected double mControlGoal;
     protected double mSumError;
@@ -96,7 +96,7 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
 
         mCanHandle = aCanHandle;
 
-        mCurrentSlot = 0;
+        mCurrentPidProfile = 0;
         mControlType = ControlType.Raw;
 
         mMotionProfilePoints = new LinkedList<>();
@@ -218,15 +218,15 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
         double dErr = error - mLastError;
         
         mSumError += error;
-        if (error > mPidConstants[mCurrentSlot].mIZone)
+        if (error > mPidConstants[mCurrentPidProfile].mIZone)
         {
             mSumError = 0;
         }
 
-        double pComp = mPidConstants[mCurrentSlot].mP * error;
-        double iComp = mPidConstants[mCurrentSlot].mI * mSumError;
-        double dComp = mPidConstants[mCurrentSlot].mD * dErr;
-        double fComp = mPidConstants[mCurrentSlot].mF * aGoal;
+        double pComp = mPidConstants[mCurrentPidProfile].mP * error;
+        double iComp = mPidConstants[mCurrentPidProfile].mI * mSumError;
+        double dComp = mPidConstants[mCurrentPidProfile].mD * dErr;
+        double fComp = mPidConstants[mCurrentPidProfile].mF * aGoal;
         
         double output = pComp + iComp + dComp + fComp;
 
@@ -263,10 +263,10 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
         double time_to_destination = error / aCurrentVelocity;
         
 
-        double pComp = mPidConstants[mCurrentSlot].mP * error;
-        double iComp = mPidConstants[mCurrentSlot].mI * mSumError;
-        double dComp = mPidConstants[mCurrentSlot].mD * dErr;
-        double fComp = mPidConstants[mCurrentSlot].mF * mMotionMagicMaxVelocity;
+        double pComp = mPidConstants[mCurrentPidProfile].mP * error;
+        double iComp = mPidConstants[mCurrentPidProfile].mI * mSumError;
+        double dComp = mPidConstants[mCurrentPidProfile].mD * dErr;
+        double fComp = mPidConstants[mCurrentPidProfile].mF * mMotionMagicMaxVelocity;
 
         double output = pComp + iComp + dComp + fComp;
 
@@ -319,10 +319,10 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
     {
         double error = aGoalPosition - aCurrentPosition;
 
-        double p_term = error * mPidConstants[mCurrentSlot].mP;
+        double p_term = error * mPidConstants[mCurrentPidProfile].mP;
         double d_term = 0;// mPidConstants.mD * ((error - last_error_) /
                           // segment.dt - segment.vel);
-        double v_term = mPidConstants[mCurrentSlot].mF * aGoalVelocity;
+        double v_term = mPidConstants[mCurrentPidProfile].mF * aGoalVelocity;
         double output = p_term + d_term + v_term;
 
 //        DecimalFormat df = new DecimalFormat("#.##");
@@ -391,13 +391,19 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
         }
     }
 
+    public void setCurrentProfile(byte profileSelect)
+    {
+        mCurrentPidProfile = profileSelect;
+    }
+
     public void setCanFeedbackDevice(byte feedbackDevice)
     {
         FeedbackDevice newDevice = null;
         switch (feedbackDevice)
         {
+        // Default feedback sensor, handle with care
         case 0:
-            // Not an error
+            // newDevice = FeedbackDevice.QuadEncoder;
             break;
         case 2:
             newDevice = FeedbackDevice.Analog;
@@ -424,6 +430,31 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
                 registerFeedbackSensor();
                 sLOGGER.log(Level.DEBUG, "Setting feedback device to " + newDevice);
             }
+            // if (mFeedbackDevice != null && mFeedbackDevice !=
+            // FeedbackDevice.QuadEncoder)
+            // {
+            // sLOGGER.log(Level.ERROR, "The simulator does not like you
+            // changing the feedback device attached to talon " + mCanHandle + "
+            // from "
+            // + mFeedbackDevice + " to " + newDevice);
+            // }
+            // else if (newDevice != FeedbackDevice.QuadEncoder)
+            // {
+            // if(mFeedbackDevice == FeedbackDevice.QuadEncoder)
+            // {
+            // System.out.println("UH OHHHHHH");
+            // }
+            //
+            // mFeedbackDevice = newDevice;
+            // registerFeedbackSensor();
+            // sLOGGER.log(Level.DEBUG, "Setting feedback device to " +
+            // newDevice);
+            // }
+            // else if (newDevice == FeedbackDevice.QuadEncoder)
+            // {
+            // mFeedbackDevice = newDevice;
+            // registerFeedbackSensor();
+            // }
         }
     }
 
