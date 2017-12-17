@@ -229,6 +229,7 @@ snobotSim*.jar
 !temp_libs
 !temp_libs/**
 snobot_sim_gui/snobot_sim/com/snobot/simulator/SnobotSimGuiVersion.java
+snobot_sim_java/java/snobot_sim_java/com/snobot/simulator/wrapper_accessors/java/JaveSimulatorVersion.java
 snobot_sim/src/main/native/cpp/SnobotSim/SnobotSimHalVersion.cpp
 maven_repo
 !scripts/boilerplates/

@@ -1,6 +1,5 @@
 package com.snobot.simulator.simulator_components.ctre;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,7 +7,13 @@ import java.util.List;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import com.snobot.simulator.SensorActuatorRegistry;
+import com.snobot.simulator.module_wrapper.AnalogWrapper;
+import com.snobot.simulator.module_wrapper.AnalogWrapper.VoltageSetterHelper;
+import com.snobot.simulator.module_wrapper.EncoderWrapper;
+import com.snobot.simulator.module_wrapper.EncoderWrapper.DistanceSetterHelper;
 import com.snobot.simulator.module_wrapper.PwmWrapper;
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
 {
@@ -17,6 +22,11 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
     public enum ControlType
     {
         Raw, Position, Speed, MotionMagic, MotionProfile
+    }
+
+    public enum FeedbackDevice
+    {
+        Encoder, Analog
     }
 
     protected class PIDFConstants
@@ -58,21 +68,32 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
 
     }
 
-    protected PIDFConstants mPidConstants;
+    protected final int mCanHandle; // The handle without the offset applied
     protected ControlType mControlType;
+
+    // Feedback control
+    protected PIDFConstants mPidConstants;
+    protected FeedbackDevice mFeedbackDevice;
     protected double mControlGoal;
     protected double mSumError;
     protected double mLastError;
 
+    // Motion Profile
     protected List<MotionProfilePoint> mMotionProfilePoints;
     protected int mMotionProfileProcessedCounter;
     protected int mMotionProfileCurrentPointIndex;
+
+    // Motion Magic
+    protected double mMotionMagicMaxAcceleration;
+    protected double mMotionMagicMaxVelocity;
 
     protected List<CtreTalonSrxSpeedControllerSim> mFollowers;
 
     public CtreTalonSrxSpeedControllerSim(int aCanHandle)
     {
         super(aCanHandle + 100, "CAN SC: " + aCanHandle);
+
+        mCanHandle = aCanHandle;
 
         mPidConstants = new PIDFConstants();
         mControlType = ControlType.Raw;
@@ -113,10 +134,12 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
         return mPidConstants;
     }
 
-    public void setPositionGoal(double aPosition)
+    public void setPositionGoal(int aDemand)
     {
+        double position = aDemand / getPositionUnitConversion();
+
         mControlType = ControlType.Position;
-        mControlGoal = aPosition;
+        mControlGoal = position;
     }
 
     public void setSpeedGoal(double aSpeed)
@@ -125,10 +148,12 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
         mControlGoal = aSpeed;
     }
 
-    public void setMotionMagicGoal(double aSpeed)
+    public void setMotionMagicGoal(int aDemand)
     {
+        double goal = aDemand / getPositionUnitConversion();
+
         mControlType = ControlType.MotionMagic;
-        mControlGoal = aSpeed;
+        mControlGoal = goal;
     }
 
     public void setMotionProfilingCommand(int demand)
@@ -218,17 +243,14 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
 
     }
 
-    double tmpMaxAccel = 5;
-    double tmpMaxVel = 5;
-
     public void setMotionMagicMaxAcceleration(int aAccel)
     {
-        tmpMaxAccel = aAccel;
+        mMotionMagicMaxAcceleration = aAccel / getMotionMagicAccelerationUnitConversion();
     }
 
     public void setMotionMagicMaxVelocity(int aVel)
     {
-        tmpMaxVel = aVel;
+        mMotionMagicMaxVelocity = aVel / getMotionMagicVelocityUnitConversion();
     }
 
     private double calculateMotionMagicOutput(double aCurrentPosition, double aCurrentVelocity, double aControlGoal)
@@ -236,14 +258,14 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
         double error = aControlGoal - aCurrentPosition;
         double dErr = error - mLastError;
 
-        double time_to_stop = aCurrentVelocity / tmpMaxAccel;
+        double time_to_stop = aCurrentVelocity / mMotionMagicMaxAcceleration;
         double time_to_destination = error / aCurrentVelocity;
         
 
         double pComp = mPidConstants.mP * error;
         double iComp = mPidConstants.mI * mSumError;
         double dComp = mPidConstants.mD * dErr;
-        double fComp = mPidConstants.mF * tmpMaxVel;
+        double fComp = mPidConstants.mF * mMotionMagicMaxVelocity;
 
         double output = pComp + iComp + dComp + fComp;
 
@@ -253,12 +275,14 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
         mLastError = error;
 
 //        DecimalFormat df = new DecimalFormat("#.##");
-//        System.out.print("Motion Magic... " + 
+//        System.out.println("Motion Magic... " + 
 //                "Goal: " + aControlGoal + ", " + 
-//                "CurPos: " + df.format(position) + ", " + 
-//                "CurVel: " + df.format(velocity) + ", " + 
+//                "CurPos: " + df.format(aCurrentPosition) + ", " + 
+//                "CurVel: " + df.format(aCurrentVelocity) + ", " + 
 //                "TimeToStop: " + df.format(time_to_stop) + ", " + 
-//                "TimeToDestination: " + df.format(time_to_destination));
+//                "TimeToDestination: " + df.format(time_to_destination) + ", " + 
+//                "err: " + df.format(error) + ", " +
+//                "maxa: " + df.format(mMotionMagicMaxAcceleration) + ", " + "maxv: " + df.format(mMotionMagicMaxVelocity));
 //
 //        if (time_to_destination > time_to_stop)
 //        {
@@ -364,5 +388,147 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
             sLOGGED_CANT_OVERRIDE_REV_LIMIT_SWITCH = true;
             sLOGGER.log(Level.WARN, "Cannot override reverse limit switch");
         }
+    }
+
+    public void setCanFeedbackDevice(byte feedbackDevice)
+    {
+        FeedbackDevice newDevice = null;
+        switch (feedbackDevice)
+        {
+        case 0:
+            // Not an error
+            break;
+        case 2:
+            newDevice = FeedbackDevice.Analog;
+            break;
+        // The Absolute and Relative encoders behave the same
+        case 6:
+        case 7:
+            newDevice = FeedbackDevice.Encoder;
+            break;
+        default:
+            sLOGGER.log(Level.WARN, "Unsupported feedback device " + feedbackDevice);
+        }
+
+        if (newDevice != mFeedbackDevice)
+        {
+            if (mFeedbackDevice != null)
+            {
+                sLOGGER.log(Level.ERROR, "The simulator does not like you changing the feedback device attached to talon " + mCanHandle + " from "
+                        + mFeedbackDevice + " to " + newDevice);
+            }
+            else
+            {
+                mFeedbackDevice = newDevice;
+                registerFeedbackSensor();
+                sLOGGER.log(Level.DEBUG, "Setting feedback device to " + newDevice);
+            }
+        }
+    }
+
+    private void registerFeedbackSensor()
+    {
+        switch (mFeedbackDevice)
+        {
+        case Encoder:
+            SensorActuatorRegistry.get().register(new EncoderWrapper("CAN Encoder (" + mCanHandle + ")", new DistanceSetterHelper()
+            {
+
+                @Override
+                public void setDistance(double aDistance)
+                {
+                }
+            }), getHandle());
+
+            DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(getHandle(), getHandle());
+            sLOGGER.log(Level.INFO, "Created CAN Encoder for port " + mCanHandle);
+            break;
+        case Analog:
+            SensorActuatorRegistry.get().register(new AnalogWrapper("CAN Analog (" + mCanHandle + ")", new VoltageSetterHelper()
+            {
+                @Override
+                public void setVoltage(double aVoltage)
+                {
+                }
+            }), getHandle());
+            sLOGGER.log(Level.INFO, "Created CAN Analog Device for port " + mCanHandle);
+            break;
+        default:
+            sLOGGER.log(Level.ERROR, "Unsupported feedback device " + mFeedbackDevice);
+        }
+    }
+
+    private double getPositionUnitConversion()
+    {
+        if (mFeedbackDevice == null)
+        {
+            return 1;
+        }
+
+        switch (mFeedbackDevice)
+        {
+        case Encoder:
+            return 4096;
+        default:
+            return 1;
+        }
+    }
+
+    private double getVelocityUnitConversion()
+    {
+        if (mFeedbackDevice == null)
+        {
+            return 1;
+        }
+
+        switch (mFeedbackDevice)
+        {
+        case Encoder:
+            return 6.85; // TODO random... look at core code
+        default:
+            return 1;
+        }
+    }
+
+    private double getMotionMagicAccelerationUnitConversion()
+    {
+        if (mFeedbackDevice == null)
+        {
+            return 1;
+        }
+
+        switch (mFeedbackDevice)
+        {
+        case Encoder:
+            return 6.7916666666;
+        default:
+            return 1;
+        }
+    }
+
+    private double getMotionMagicVelocityUnitConversion()
+    {
+        if (mFeedbackDevice == null)
+        {
+            return 1;
+        }
+
+        switch (mFeedbackDevice)
+        {
+        case Encoder:
+            return 6.75;
+        default:
+            return 1;
+        }
+    }
+
+    public int getBinnedPosition()
+    {
+        return (int) (getPosition() * this.getPositionUnitConversion());
+    }
+
+    public int getBinnedVelocity()
+    {
+        return (int) (getVelocity() * this.getVelocityUnitConversion());
     }
 }

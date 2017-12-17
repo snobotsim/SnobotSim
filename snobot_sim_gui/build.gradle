@@ -22,9 +22,9 @@ sourceSets {
         }
     }
 }
-//test {
-//	ignoreFailures = !OperatingSystem.current().isWindows()
-//}
+test {
+    ignoreFailures = !OperatingSystem.current().isWindows()
+}
 
 jacocoTestReport {
     reports {

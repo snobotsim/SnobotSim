@@ -26,7 +26,6 @@ public class ASimulator implements ISimulatorUpdater
     protected ASimulator()
     {
         mConfigReader = new SimulatorConfigReader();
-        updateMotorsThread.start();
     }
 
     public boolean loadConfig(String aConfigFile)
@@ -46,7 +45,8 @@ public class ASimulator implements ISimulatorUpdater
     @Override
     public void setRobot(IRobotClassContainer aRobot)
     {
-
+        mRunning = true;
+        updateMotorsThread.start();
     }
 
     protected Thread updateMotorsThread = new Thread(new Runnable()

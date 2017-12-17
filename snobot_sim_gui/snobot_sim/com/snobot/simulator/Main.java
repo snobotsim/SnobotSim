@@ -86,9 +86,9 @@ public class Main
 	{
         VERSION_PRINTER.println("Versions:");
         VERSION_PRINTER.println("Wpilib Java    : " + WPILibVersion.Version);
-        VERSION_PRINTER.println("SnobotSim HAL  : " + SnobotSimGuiVersion.Version);
-        VERSION_PRINTER.println("SnobotSim GUI  : " + DataAccessorFactory.getInstance().getSimulatorDataAccessor().getNativeBuildVersion());
-        VERSION_PRINTER.println("Simulator Type : " + DataAccessorFactory.getInstance().getAccessorType());
+        VERSION_PRINTER.println("SnobotSim HAL  : " + DataAccessorFactory.getInstance().getSimulatorDataAccessor().getNativeBuildVersion());
+        VERSION_PRINTER.println("SnobotSim GUI  : " + SnobotSimGuiVersion.Version);
+        VERSION_PRINTER.println("SnobotSim Type : " + DataAccessorFactory.getInstance().getAccessorType());
     }
 
     private static void discoverRobots()

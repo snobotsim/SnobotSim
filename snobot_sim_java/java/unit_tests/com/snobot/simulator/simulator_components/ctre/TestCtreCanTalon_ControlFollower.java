@@ -1,0 +1,64 @@
+package com.snobot.simulator.simulator_components.ctre;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
+
+import com.ctre.CANTalon;
+import com.ctre.CANTalon.TalonControlMode;
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
+import com.snobot.test.utilities.BaseSimulatorTest;
+
+@RunWith(value = Parameterized.class)
+public class TestCtreCanTalon_ControlFollower extends BaseSimulatorTest
+{
+    @Parameters(name = "Test: {index} CanPort={0}")
+    public static Collection<Integer> data()
+    {
+        Collection<Integer> output = new ArrayList<>();
+
+        for (int i = 0; i < 64; ++i)
+        {
+            output.add(i);
+        }
+
+        return output;
+    }
+
+    private final int mCanHandle;
+
+    public TestCtreCanTalon_ControlFollower(int aCanHandle)
+    {
+        mCanHandle = aCanHandle;
+    }
+
+    @Test
+    public void testSetWithFollower()
+    {
+        double DOUBLE_EPSILON = 1.0 / 1023;
+
+        int leadTalonId = 5;
+        if (mCanHandle == leadTalonId)
+        {
+            return;
+        }
+
+        Assert.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
+        CANTalon leadTalon = new CANTalon(leadTalonId);
+        CANTalon talon = new CANTalon(mCanHandle);
+        Assert.assertEquals(2, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
+
+        talon.changeControlMode(TalonControlMode.Follower);
+        talon.set(leadTalonId);
+
+        leadTalon.set(.5);
+
+        Assert.assertEquals(.5, talon.get(), DOUBLE_EPSILON);
+        Assert.assertEquals(leadTalon.get(), talon.get(), DOUBLE_EPSILON);
+    }
+}
