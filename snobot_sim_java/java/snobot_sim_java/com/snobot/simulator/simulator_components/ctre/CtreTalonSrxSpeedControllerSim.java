@@ -72,7 +72,8 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
     protected ControlType mControlType;
 
     // Feedback control
-    protected PIDFConstants mPidConstants;
+    protected PIDFConstants[] mPidConstants= {new PIDFConstants(), new PIDFConstants()};
+    protected int mCurrentSlot;
     protected FeedbackDevice mFeedbackDevice;
     protected double mControlGoal;
     protected double mSumError;
@@ -95,7 +96,7 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
 
         mCanHandle = aCanHandle;
 
-        mPidConstants = new PIDFConstants();
+        mCurrentSlot = 0;
         mControlType = ControlType.Raw;
 
         mMotionProfilePoints = new LinkedList<>();
@@ -104,34 +105,34 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
         mFollowers = new ArrayList<>();
     }
 
-    public void setPGain(double aP)
+    public void setPGain(int aSlot, double aP)
     {
-        mPidConstants.mP = aP;
+        mPidConstants[aSlot].mP = aP;
     }
 
-    public void setIGain(double aI)
+    public void setIGain(int aSlot, double aI)
     {
-        mPidConstants.mI = aI;
+        mPidConstants[aSlot].mI = aI;
     }
 
-    public void setDGain(double aD)
+    public void setDGain(int aSlot, double aD)
     {
-        mPidConstants.mD = aD;
+        mPidConstants[aSlot].mD = aD;
     }
 
-    public void setFGain(double aF)
+    public void setFGain(int aSlot, double aF)
     {
-        mPidConstants.mF = aF;
+        mPidConstants[aSlot].mF = aF;
     }
 
-    public void setIZone(double aIzone)
+    public void setIZone(int aSlot, double aIzone)
     {
-        mPidConstants.mIZone = aIzone;
+        mPidConstants[aSlot].mIZone = aIzone;
     }
 
-    public PIDFConstants getPidConstants()
+    public PIDFConstants getPidConstants(int aSlot)
     {
-        return mPidConstants;
+        return mPidConstants[aSlot];
     }
 
     public void setPositionGoal(int aDemand)
@@ -217,15 +218,15 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
         double dErr = error - mLastError;
         
         mSumError += error;
-        if (error > mPidConstants.mIZone)
+        if (error > mPidConstants[mCurrentSlot].mIZone)
         {
             mSumError = 0;
         }
 
-        double pComp = mPidConstants.mP * error;
-        double iComp = mPidConstants.mI * mSumError;
-        double dComp = mPidConstants.mD * dErr;
-        double fComp = mPidConstants.mF * aGoal;
+        double pComp = mPidConstants[mCurrentSlot].mP * error;
+        double iComp = mPidConstants[mCurrentSlot].mI * mSumError;
+        double dComp = mPidConstants[mCurrentSlot].mD * dErr;
+        double fComp = mPidConstants[mCurrentSlot].mF * aGoal;
         
         double output = pComp + iComp + dComp + fComp;
 
@@ -262,10 +263,10 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
         double time_to_destination = error / aCurrentVelocity;
         
 
-        double pComp = mPidConstants.mP * error;
-        double iComp = mPidConstants.mI * mSumError;
-        double dComp = mPidConstants.mD * dErr;
-        double fComp = mPidConstants.mF * mMotionMagicMaxVelocity;
+        double pComp = mPidConstants[mCurrentSlot].mP * error;
+        double iComp = mPidConstants[mCurrentSlot].mI * mSumError;
+        double dComp = mPidConstants[mCurrentSlot].mD * dErr;
+        double fComp = mPidConstants[mCurrentSlot].mF * mMotionMagicMaxVelocity;
 
         double output = pComp + iComp + dComp + fComp;
 
@@ -318,10 +319,10 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
     {
         double error = aGoalPosition - aCurrentPosition;
 
-        double p_term = error * mPidConstants.mP;
+        double p_term = error * mPidConstants[mCurrentSlot].mP;
         double d_term = 0;// mPidConstants.mD * ((error - last_error_) /
                           // segment.dt - segment.vel);
-        double v_term = mPidConstants.mF * aGoalVelocity;
+        double v_term = mPidConstants[mCurrentSlot].mF * aGoalVelocity;
         double output = p_term + d_term + v_term;
 
 //        DecimalFormat df = new DecimalFormat("#.##");
