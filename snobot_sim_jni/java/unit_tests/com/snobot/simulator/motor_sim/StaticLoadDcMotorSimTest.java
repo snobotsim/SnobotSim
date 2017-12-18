@@ -150,8 +150,7 @@ public class StaticLoadDcMotorSimTest extends BaseSimulatorTest
     public void testInverted()
     {
         SpeedController rs775 = new Talon(0);
-        DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("rs775", 1, 10, 1);
-        motorConfig.setInverted(true);
+        DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("rs775", 1, 10, 1, true, false);
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(0, motorConfig,
                 new StaticLoadMotorSimulationConfig(1));
 
@@ -171,8 +170,7 @@ public class StaticLoadDcMotorSimTest extends BaseSimulatorTest
     public void testBrake()
     {
         SpeedController rs775 = new Talon(0);
-        DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("rs775", 1, 10, 1);
-        motorConfig.setHasBrake(true);
+        DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("rs775", 1, 10, 1, false, true);
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(0, motorConfig,
                 new StaticLoadMotorSimulationConfig(1));
 

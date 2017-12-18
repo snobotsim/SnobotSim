@@ -18,7 +18,7 @@ void I2CReadCallback(const char* name, void* param, uint8_t* buffer, uint32_t co
 {
     SnobotSimJava::CallJavaReadBufferCallback(gI2CCallbackContainer, name, param, buffer, count);
 }
-void I2CWriteCallback(const char* name, void* param, uint8_t* buffer, uint32_t count)
+void I2CWriteCallback(const char* name, void* param, const uint8_t* buffer, uint32_t count)
 {
     SnobotSimJava::CallJavaWriteBufferCallback(gI2CCallbackContainer, name, param, buffer, count);
 }
@@ -50,10 +50,21 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_I2CCal
 
 /*
  * Class:     com_snobot_simulator_jni_standard_components_I2CCallbackJni
+ * Method:    registerReadWriteCallbacks
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_I2CCallbackJni_registerReadWriteCallbacks
+  (JNIEnv *, jclass, jint aPort)
+{
+    HALSIM_RegisterI2CReadCallback(aPort, &I2CReadCallback, &gI2CInArrayIndices[aPort]);
+    HALSIM_RegisterI2CWriteCallback(aPort, &I2CWriteCallback, &gI2CInArrayIndices[aPort]);
+}
+/*
+ * Class:     com_snobot_simulator_jni_standard_components_I2CCallbackJni
  * Method:    reset
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_I2CCallbackJni_reset
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_I2CCallbackJni_resetNative
   (JNIEnv *, jclass)
 {
     for(int i = 0; i < 2; ++i)

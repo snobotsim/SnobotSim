@@ -2,6 +2,7 @@ package com.snobot.simulator.jni.standard_components;
 
 import java.nio.ByteBuffer;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Level;
@@ -16,20 +17,60 @@ import com.snobot.simulator.simulator_components.components_factory.II2cSimulato
 public class I2CCallbackJni
 {
     private static final Logger sLOGGER = Logger.getLogger(I2CCallbackJni.class);
-    private static final II2cSimulatorFactory sI2C_FACTORY = new DefaultI2CSimulatorFactory();
+    private static II2cSimulatorFactory sI2C_FACTORY = new DefaultI2CSimulatorFactory();
+    private static final Map<Integer, II2CWrapper> sCUSTOM_WRAPPERS = new HashMap<>();
 
     public static native void registerI2CCallback(String functionName);
 
-    public static native void reset();
+    public static native void registerReadWriteCallbacks(int port);
+
+    public static native void resetNative();
+
+    public static void reset()
+    {
+        sCUSTOM_WRAPPERS.clear();
+        resetNative();
+    }
+
+    public static void setI2CFactory(II2cSimulatorFactory aFactory)
+    {
+        sI2C_FACTORY = aFactory;
+    }
 
     public static void registerI2CCallback()
     {
         registerI2CCallback("i2cCallback");
     }
 
+    public static void registerReadWriteCallbacks(int aPort, II2CWrapper aWrapper)
+    {
+        registerReadWriteCallbacks(aPort);
+        sCUSTOM_WRAPPERS.put(aPort, aWrapper);
+    }
+
     public static void i2cCallback(String callbackType, int port, ByteBuffer buffer)
     {
-        sLOGGER.log(Level.ERROR, "Unknown I2C callback " + callbackType + " - " + buffer.capacity());
+        if (sCUSTOM_WRAPPERS.containsKey(port))
+        {
+            II2CWrapper wrapper = sCUSTOM_WRAPPERS.get(port);
+            if ("Read".equals(callbackType))
+            {
+                wrapper.handleRead(buffer);
+            }
+            else if ("Write".equals(callbackType))
+            {
+                wrapper.handleWrite(buffer);
+            }
+            else
+            {
+                sLOGGER.log(Level.ERROR, "Unknown I2C callback " + callbackType);
+            }
+
+        }
+        else
+        {
+            sLOGGER.log(Level.ERROR, "Calling read/write for unregistered wrapper " + port);
+        }
     }
 
     public static void i2cCallback(String callbackType, int port, HalCallbackValue halValue)

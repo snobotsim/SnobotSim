@@ -14,7 +14,7 @@ namespace SnobotSimJava
 
     void CallJavaReadBufferCallback(const BufferCallbackHelperContainer& callbackHelper, const char* name, void* param, uint8_t* buffer, uint32_t count);
 
-    void CallJavaWriteBufferCallback(const BufferCallbackHelperContainer& callbackHelper, const char* name, void* param, uint8_t* buffer, uint32_t count);
+    void CallJavaWriteBufferCallback(const BufferCallbackHelperContainer& callbackHelper, const char* name, void* param, const uint8_t* buffer, uint32_t count);
 
 
 

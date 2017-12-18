@@ -1,5 +1,10 @@
 package com.snobot.simulator.simulator_components.navx;
 
+import java.nio.ByteBuffer;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.navx.NavxSimulatorJni;
 import com.snobot.simulator.jni.navx.NavxSimulatorJni.DataType;
@@ -11,6 +16,8 @@ import com.snobot.simulator.simulator_components.gyro.IGyroWrapper;
 
 public class NavxSimulatorWrapper implements ISpiWrapper, II2CWrapper
 {
+    private static final Logger sLOGGER = Logger.getLogger(NavxSimulatorWrapper.class);
+
     private class NavxAccelWrapper extends ASensorWrapper implements IAccelerometerWrapper
     {
         private final long mNativePointer;
@@ -102,5 +109,17 @@ public class NavxSimulatorWrapper implements ISpiWrapper, II2CWrapper
     public void shutdown()
     {
         NavxSimulatorJni.deleteNavx(mType, mNativePointer);
+    }
+
+    @Override
+    public void handleRead(ByteBuffer buffer)
+    {
+        sLOGGER.log(Level.ERROR, "This shouldn't be called directly");
+    }
+
+    @Override
+    public void handleWrite(ByteBuffer buffer)
+    {
+        sLOGGER.log(Level.ERROR, "This shouldn't be called directly");
     }
 }

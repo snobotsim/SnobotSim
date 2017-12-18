@@ -20,16 +20,17 @@ public class LocalDcMotorModelConfig
             double aStallTorque, 
             double aStallCurrent, 
             double aMotorInertia,
-            boolean aHasBrake, 
             boolean aInverted,
+            boolean aHasBrake, 
 
             double aKt, double aKv, double aResistance)
     {
-        DcMotorModelConfig.FactoryParams factoryParams = new FactoryParams(aMotorType, aNumMotors, aGearReduction, aGearboxEfficiency);
+        DcMotorModelConfig.FactoryParams factoryParams = new FactoryParams(aMotorType, aNumMotors, aGearReduction, aGearboxEfficiency, aInverted,
+                aHasBrake);
         DcMotorModelConfig.MotorParams motorParams = new MotorParams(aNominalVoltage, aFreeSpeedRpm, aFreeCurrent, aStallTorque, aStallCurrent,
                 aMotorInertia, aKt, aKv, aResistance);
 
-        mConfig = new DcMotorModelConfig(factoryParams, motorParams, aHasBrake, aInverted);
+        mConfig = new DcMotorModelConfig(factoryParams, motorParams);
     }
 
     public LocalDcMotorModelConfig(DcMotorModelConfig aMotorConfig)

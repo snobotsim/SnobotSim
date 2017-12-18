@@ -19,7 +19,7 @@ public class Main
     private static final Logger sLOGGER = Logger.getLogger(Main.class);
 
     private static final File DEFAULT_PLUGIN_DIR = new File("user_libs");
-    private static final String sUSER_CONFIG_DIR = "user_config/";
+    private static final String sUSER_CONFIG_DIR = "simulator_config/";
 
     private static final PrintStream VERSION_PRINTER = System.out;
 

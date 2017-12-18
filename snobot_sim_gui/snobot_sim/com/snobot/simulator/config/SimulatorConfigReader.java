@@ -173,11 +173,12 @@ public class SimulatorConfigReader
         if (motorConfigFactoryParams != null)
         {
             motorConfig = simulatorAccessor.createMotor(motorConfigFactoryParams.mMotorType, motorConfigFactoryParams.mNumMotors,
-                    motorConfigFactoryParams.mGearReduction, motorConfigFactoryParams.mGearboxEfficiency);
+                    motorConfigFactoryParams.mGearReduction, motorConfigFactoryParams.mGearboxEfficiency, motorConfigFactoryParams.mInverted,
+                    motorConfigFactoryParams.mHasBrake);
         }
         else
         {
-            motorConfig = new DcMotorModelConfig(motorConfigFactoryParams, null, false, false);
+            motorConfig = new DcMotorModelConfig(motorConfigFactoryParams, null);
         }
 
         if (baseMotorConfig != null)
