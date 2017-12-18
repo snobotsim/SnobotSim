@@ -46,7 +46,7 @@ public class DcMotorModel
      */
     public void step(double applied_voltage, double load, double external_torque, double timestep)
     {
-        if (mConfig.mInverted)
+        if (mConfig.mFactoryParams.mInverted)
         {
             applied_voltage *= -1;
         }
@@ -60,7 +60,7 @@ public class DcMotorModel
          * dw/dt = (V - Kv * w) * Kt / (R * J) - external_torque / J
          */
 
-        if (mConfig.mHasBrake && applied_voltage == 0)
+        if (mConfig.mFactoryParams.mHasBrake && applied_voltage == 0)
         {
             mAcceleration = 0;
             mVelocity = 0;

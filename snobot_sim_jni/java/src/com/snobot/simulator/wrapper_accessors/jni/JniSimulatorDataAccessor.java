@@ -55,9 +55,11 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
     }
 
     @Override
-    public DcMotorModelConfig createMotor(String motorType, int numMotors, double gearReduction, double efficiency)
+    public DcMotorModelConfig createMotor(String motorType, int numMotors, double gearReduction, double efficiency, boolean aInverted, boolean aBrake)
     {
         LocalDcMotorModelConfig config = MotorConfigFactoryJni.createMotor(motorType, numMotors, gearReduction, efficiency);
+        config.getConfig().mFactoryParams.mHasBrake = aBrake;
+        config.getConfig().mFactoryParams.mInverted = aInverted;
         return config.getConfig();
     }
 

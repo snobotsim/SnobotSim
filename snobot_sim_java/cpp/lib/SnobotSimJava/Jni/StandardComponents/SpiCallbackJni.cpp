@@ -18,7 +18,7 @@ void SpiReadCallback(const char* name, void* param, uint8_t* buffer, uint32_t co
 {
     SnobotSimJava::CallJavaReadBufferCallback(gSpiCallbackContainer, name, param, buffer, count);
 }
-void SpiWriteCallback(const char* name, void* param, uint8_t* buffer, uint32_t count)
+void SpiWriteCallback(const char* name, void* param, const uint8_t* buffer, uint32_t count)
 {
     SnobotSimJava::CallJavaWriteBufferCallback(gSpiCallbackContainer, name, param, buffer, count);
 }
@@ -51,6 +51,18 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_SpiCal
 
 /*
  * Class:     com_snobot_simulator_jni_standard_components_SpiCallbackJni
+ * Method:    registerSpiReadWriteCallback
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_SpiCallbackJni_registerSpiReadWriteCallback
+  (JNIEnv *, jclass, jint aPort)
+{
+    HALSIM_RegisterSPIReadCallback(aPort, &SpiReadCallback, &gSpiInArrayIndices[aPort]);
+    HALSIM_RegisterSPIWriteCallback(aPort, &SpiWriteCallback, &gSpiInArrayIndices[aPort]);
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_standard_components_SpiCallbackJni
  * Method:    setSpiAccumulatorValue
  * Signature: (IJ)V
  */
@@ -65,7 +77,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_SpiCal
  * Method:    reset
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_SpiCallbackJni_reset
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_SpiCallbackJni_resetNative
   (JNIEnv *, jclass)
 {
     for(int i = 0; i < 5; ++i)

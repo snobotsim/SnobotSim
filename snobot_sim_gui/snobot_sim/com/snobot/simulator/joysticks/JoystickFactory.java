@@ -22,10 +22,11 @@ import net.java.games.input.Controller;
 
 public class JoystickFactory
 {
+    public static final String sJOYSTICK_CONFIG_FILE = "simulator_config/joystick_config.properties";
+
     private static final Logger sLOGGER = Logger.getLogger(JoystickFactory.class);
 
     private static final JoystickFactory sINSTANCE = new JoystickFactory();
-    private static final String sJOYSTICK_CONFIG_FILE = "user_config/joystick_config.properties";
     private static final String sKEY = "Joystick_";
 
     public static JoystickFactory get()

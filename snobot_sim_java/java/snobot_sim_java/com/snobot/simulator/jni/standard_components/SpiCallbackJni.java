@@ -2,6 +2,7 @@ package com.snobot.simulator.jni.standard_components;
 
 import java.nio.ByteBuffer;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Level;
@@ -16,17 +17,37 @@ import com.snobot.simulator.simulator_components.components_factory.ISpiSimulato
 public class SpiCallbackJni
 {
     private static final Logger sLOGGER = Logger.getLogger(SpiCallbackJni.class);
-    private static final ISpiSimulatorFactory sSPI_FACTORY = new DefaultSpiSimulatorFactory();
+    private static ISpiSimulatorFactory sSPI_FACTORY = new DefaultSpiSimulatorFactory();
+    private static final Map<Integer, ISpiWrapper> sCUSTOM_WRAPPERS = new HashMap<>();
+
+    public static void setSpiFactory(ISpiSimulatorFactory aFactory)
+    {
+        sSPI_FACTORY = aFactory;
+    }
 
     public static native void setSpiAccumulatorValue(int aHandle, long aValue);
 
     public static native void registerSpiCallback(String functionName);
 
-    public static native void reset();
+    public static native void registerSpiReadWriteCallback(int port);
+
+    public static native void resetNative();
+
+    public static void reset()
+    {
+        sCUSTOM_WRAPPERS.clear();
+        resetNative();
+    }
 
     public static void registerSpiCallback()
     {
         registerSpiCallback("spiCallback");
+    }
+
+    public static void registerSpiReadWriteCallback(int aPort, ISpiWrapper aWrapper)
+    {
+        registerSpiReadWriteCallback(aPort);
+        sCUSTOM_WRAPPERS.put(aPort, aWrapper);
     }
 
     public static void spiCallback(String callbackType, int port, HalCallbackValue halValue)
@@ -44,7 +65,27 @@ public class SpiCallbackJni
 
     public static void spiCallback(String callbackType, int port, ByteBuffer buffer)
     {
-        sLOGGER.log(Level.ERROR, "Unsupported SPI callback " + callbackType);
+        if (sCUSTOM_WRAPPERS.containsKey(port))
+        {
+            ISpiWrapper wrapper = sCUSTOM_WRAPPERS.get(port);
+            if ("Read".equals(callbackType))
+            {
+                wrapper.handleRead(buffer);
+            }
+            else if ("Write".equals(callbackType))
+            {
+                wrapper.handleWrite(buffer);
+            }
+            else
+            {
+                sLOGGER.log(Level.ERROR, "Unknown SPI callback " + callbackType);
+            }
+
+        }
+        else
+        {
+            sLOGGER.log(Level.ERROR, "Calling read/write for unregistered wrapper " + port);
+        }
     }
 
 

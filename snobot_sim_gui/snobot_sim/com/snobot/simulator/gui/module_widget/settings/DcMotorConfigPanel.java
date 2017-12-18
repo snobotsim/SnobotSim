@@ -93,8 +93,8 @@ public class DcMotorConfigPanel extends JPanel
                 mMotorParams_FreeCurrent.setText(mDecimalFormat.format(aConfig.mMotorParams.FREE_CURRENT));
                 mMotorParams_StallTorque.setText(mDecimalFormat.format(aConfig.mMotorParams.STALL_TORQUE));
                 mMotorParams_StallCurrent.setText(mDecimalFormat.format(aConfig.mMotorParams.STALL_CURRENT));
-                mMotorParams_Inverted.setSelected(aConfig.mInverted);
-                mMotorParams_Brake.setSelected(aConfig.mHasBrake);
+                mMotorParams_Inverted.setSelected(aConfig.mFactoryParams.mInverted);
+                mMotorParams_Brake.setSelected(aConfig.mFactoryParams.mHasBrake);
 
                 mMotorCurveDisplay.setCurveParams(aConfig);
             }
@@ -146,9 +146,8 @@ public class DcMotorConfigPanel extends JPanel
             double gearReduction = Double.parseDouble(mGearReduction.getText());
             double efficiency = Double.parseDouble(mGearboxEfficiency.getText());
 
-            output = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor(selectedMotor, numMotors, gearReduction, efficiency);
-            output.mInverted = mMotorParams_Inverted.isSelected();
-            output.mHasBrake = mMotorParams_Brake.isSelected();
+            output = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor(selectedMotor, numMotors, gearReduction, efficiency,
+                    mMotorParams_Inverted.isSelected(), mMotorParams_Brake.isSelected());
         }
         catch (NumberFormatException e)
         {

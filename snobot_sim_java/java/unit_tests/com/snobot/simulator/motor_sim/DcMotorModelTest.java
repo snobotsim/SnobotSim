@@ -17,7 +17,7 @@ public class DcMotorModelTest
     public void testGettersSetters()
     {
         // Make a new motor.
-        DcMotorModel motor = new DcMotorModel(new DcMotorModelConfig(null, null, false, false));
+        DcMotorModel motor = new DcMotorModel(new DcMotorModelConfig(null, null));
 
         // Check initial conditions.
         assertEquals(motor.getPosition(), 0.0, EPS);

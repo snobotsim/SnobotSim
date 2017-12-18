@@ -14,7 +14,7 @@ extern "C"
 /*
  * Class:     com_snobot_simulator_jni_MotorConfigFactoryJni
  * Method:    createMotor
- * Signature: (Ljava/lang/String;IDD)Lcom/snobot/simulator/DcMotorModelConfig;
+ * Signature: (Ljava/lang/String;IDDZZ)Lcom/snobot/simulator/jni/LocalDcMotorModelConfig;
  */
 JNIEXPORT jobject JNICALL Java_com_snobot_simulator_jni_MotorConfigFactoryJni_createMotor
   (JNIEnv * env, jclass, jstring aName, jint aNumMotors, jdouble aGearReduction, jdouble aTransmissionEfficiency)

@@ -55,7 +55,7 @@ public class DefaultI2CSimulatorFactory implements II2cSimulatorFactory
         return Arrays.asList("NavX", "ADXL345");
     }
 
-    private II2CWrapper createWrapper(int aPort, String aType)
+    protected II2CWrapper createWrapper(int aPort, String aType)
     {
         String fullType = "I2C " + aType;
         if ("NavX".equals(aType))

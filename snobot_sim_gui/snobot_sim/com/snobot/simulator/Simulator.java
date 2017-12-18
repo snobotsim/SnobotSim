@@ -113,8 +113,8 @@ public class Simulator
             String simulatorClassName = p.getProperty("simulator_class");
             mSimulatorConfig = p.getProperty("simulator_config");
 
-            createRobot(robotType, robotClassName);
             createSimulator(simulatorClassName, mSimulatorConfig);
+            createRobot(robotType, robotClassName);
 
             NetworkTable.setPersistentFilename(USER_CONFIG_DIRECTORY + robotClassName + ".preferences.ini");
         }

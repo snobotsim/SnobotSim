@@ -26,7 +26,12 @@ public interface SimulatorDataAccessor
 
     Collection<Object> getSimulatorComponentConfigs();
 
-    DcMotorModelConfig createMotor(String selectedMotor, int numMotors, double gearReduction, double efficiency);
+    default DcMotorModelConfig createMotor(String selectedMotor, int numMotors, double gearReduction, double efficiency)
+    {
+        return createMotor(selectedMotor, numMotors, gearReduction, efficiency, false, false);
+    }
+
+    DcMotorModelConfig createMotor(String selectedMotor, int numMotors, double gearReduction, double efficiency, boolean inverted, boolean brake);
 
     DcMotorModelConfig createMotor(String motorType);
 

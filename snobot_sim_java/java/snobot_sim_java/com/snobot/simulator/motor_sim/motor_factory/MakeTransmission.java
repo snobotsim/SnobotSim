@@ -7,7 +7,7 @@ public class MakeTransmission
     public static DcMotorModelConfig makeTransmission(DcMotorModelConfig motor, int num_motors, double gear_reduction, double efficiency)
     {
         DcMotorModelConfig.FactoryParams factoryParams = new DcMotorModelConfig.FactoryParams(motor.mFactoryParams.mMotorType, num_motors,
-                gear_reduction, efficiency);
+                gear_reduction, efficiency, motor.mFactoryParams.mInverted, motor.mFactoryParams.mHasBrake);
         DcMotorModelConfig.MotorParams modifiedMotorParams = new DcMotorModelConfig.MotorParams(
                 motor.mMotorParams.NOMINAL_VOLTAGE,
                 motor.mMotorParams.FREE_SPEED_RPM / gear_reduction,
@@ -17,10 +17,7 @@ public class MakeTransmission
                 motor.mMotorParams.MOTOR_INERTIA * num_motors * gear_reduction * gear_reduction,
                 efficiency * num_motors * gear_reduction);
 
-        DcMotorModelConfig output = new DcMotorModelConfig(factoryParams, modifiedMotorParams,
-                motor.mHasBrake,
-                motor.mInverted
-                );
+        DcMotorModelConfig output = new DcMotorModelConfig(factoryParams, modifiedMotorParams);
 
         return output;
     }

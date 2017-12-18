@@ -1,5 +1,10 @@
 package com.snobot.simulator.simulator_components.accelerometer;
 
+import java.nio.ByteBuffer;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.adx_family.SpiI2CSimulatorJni;
 import com.snobot.simulator.jni.adx_family.SpiI2CSimulatorJni.DataType;
@@ -9,6 +14,7 @@ import com.snobot.simulator.simulator_components.ISpiWrapper;
 
 public class SpiI2CAccelerometer implements ISpiWrapper, II2CWrapper
 {
+    private static final Logger sLOGGER = Logger.getLogger(SpiI2CAccelerometer.class);
 
     private class AdxAccelWrapper extends ASensorWrapper implements IAccelerometerWrapper
     {
@@ -59,6 +65,18 @@ public class SpiI2CAccelerometer implements ISpiWrapper, II2CWrapper
         SensorActuatorRegistry.get().register(xWrapper, aBasePort + 0);
         SensorActuatorRegistry.get().register(yWrapper, aBasePort + 1);
         SensorActuatorRegistry.get().register(zWrapper, aBasePort + 2);
+    }
+
+    @Override
+    public void handleRead(ByteBuffer buffer)
+    {
+        sLOGGER.log(Level.ERROR, "This shouldn't be called directly");
+    }
+
+    @Override
+    public void handleWrite(ByteBuffer buffer)
+    {
+        sLOGGER.log(Level.ERROR, "This shouldn't be called directly");
     }
 
     @Override

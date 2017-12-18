@@ -10,9 +10,9 @@ public class PublishedMotorFactory
 
     public static DcMotorModelConfig makeRS775()
     {
-        DcMotorModelConfig.FactoryParams factoryParams = new DcMotorModelConfig.FactoryParams("RS775", 1, 1, 1);
+        DcMotorModelConfig.FactoryParams factoryParams = new DcMotorModelConfig.FactoryParams("RS775", 1, 1, 1, false, false);
         DcMotorModelConfig.MotorParams motorParams = MOTOR_PARAMS_RS775;
 
-        return new DcMotorModelConfig(factoryParams, motorParams, false, false);
+        return new DcMotorModelConfig(factoryParams, motorParams);
     }
 }

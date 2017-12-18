@@ -39,9 +39,9 @@ namespace SnobotSimJava
         CallJavaBufferCallback(callbackHelper.mClazz, callbackHelper.mReadBufferMethodId, name, param, buffer, count);
     }
 
-    void CallJavaWriteBufferCallback(const BufferCallbackHelperContainer& callbackHelper, const char* name, void* param, uint8_t* buffer, uint32_t count)
+    void CallJavaWriteBufferCallback(const BufferCallbackHelperContainer& callbackHelper, const char* name, void* param, const uint8_t* buffer, uint32_t count)
     {
-        CallJavaBufferCallback(callbackHelper.mClazz, callbackHelper.mWriteBufferMethodId, name, param, buffer, count);
+        CallJavaBufferCallback(callbackHelper.mClazz, callbackHelper.mWriteBufferMethodId, name, param, const_cast<uint8_t*>(buffer), count);
     }
 
 }

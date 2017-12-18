@@ -35,8 +35,8 @@ namespace ConversionUtils
                 env->GetDoubleField(motorParamsObj, env->GetFieldID(env->GetObjectClass(motorParamsObj), "STALL_CURRENT", "D")),
                 env->GetDoubleField(motorParamsObj, env->GetFieldID(env->GetObjectClass(motorParamsObj), "MOTOR_INERTIA", "D")),
 
-                env->GetBooleanField(configObj, env->GetFieldID(env->GetObjectClass(configObj), "mHasBrake", "Z")),
-                env->GetBooleanField(configObj, env->GetFieldID(env->GetObjectClass(configObj), "mInverted", "Z")),
+                env->GetBooleanField(factoryParamsObj, env->GetFieldID(env->GetObjectClass(factoryParamsObj), "mHasBrake", "Z")),
+                env->GetBooleanField(factoryParamsObj, env->GetFieldID(env->GetObjectClass(factoryParamsObj), "mInverted", "Z")),
 
                 env->GetDoubleField(motorParamsObj, env->GetFieldID(env->GetObjectClass(motorParamsObj), "mKT", "D")),
                 env->GetDoubleField(motorParamsObj, env->GetFieldID(env->GetObjectClass(motorParamsObj), "mKV", "D")),
@@ -68,8 +68,8 @@ namespace ConversionUtils
                 aConfig.STALL_CURRENT,
                 aConfig.mMotorInertia,
 
-                aConfig.mHasBrake,
                 aConfig.mInverted,
+                aConfig.mHasBrake,
 
                 aConfig.mKT,
                 aConfig.mKV,

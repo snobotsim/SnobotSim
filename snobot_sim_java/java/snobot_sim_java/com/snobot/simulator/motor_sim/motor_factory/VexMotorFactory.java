@@ -35,13 +35,13 @@ public class VexMotorFactory
 
     public static DcMotorModelConfig createMotor(String aMotorName)
     {
-        DcMotorModelConfig.FactoryParams factoryParams = new DcMotorModelConfig.FactoryParams(aMotorName, 1, 1, 1);
+        DcMotorModelConfig.FactoryParams factoryParams = new DcMotorModelConfig.FactoryParams(aMotorName, 1, 1, 1, false, false);
         DcMotorModelConfig.MotorParams motorParams = sMOTOR_PARAMS.get(aMotorName);
 
         if (motorParams != null)
         {
-            return new DcMotorModelConfig(factoryParams, motorParams, false, false);
+            return new DcMotorModelConfig(factoryParams, motorParams);
         }
-        return new DcMotorModelConfig(factoryParams, new DcMotorModelConfig.MotorParams(NOMINAL_VOLTAGE, 0, 0, 0, 0), false, false);
+        return new DcMotorModelConfig(factoryParams, new DcMotorModelConfig.MotorParams(NOMINAL_VOLTAGE, 0, 0, 0, 0));
     }
 }

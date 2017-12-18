@@ -9,18 +9,30 @@ public class DcMotorModelConfig
         public double mGearReduction;
         public double mGearboxEfficiency;
 
+        // Indicates you want a positive voltage to move the system backwards
+        // instead of forwards
+        public boolean mInverted;
+
+        // Indicates the motor has a brake, i.e. when givin 0 volts it will stay
+        // put
+        public boolean mHasBrake;
+
         @SuppressWarnings("unused")
         private FactoryParams()
         {
-            this("", 0, 0, 0);
+            this("", 0, 0, 0, false, false);
         }
 
-        public FactoryParams(String aMotorType, int aNumMotors, double aGearReduction, double aGearboxEfficiency)
+        public FactoryParams(String aMotorType, int aNumMotors, double aGearReduction, double aGearboxEfficiency, boolean aInverted,
+                boolean aHasBrake)
         {
             mMotorType = aMotorType;
             mNumMotors = aNumMotors;
             mGearReduction = aGearReduction;
             mGearboxEfficiency = aGearboxEfficiency;
+
+            mHasBrake = aHasBrake;
+            mInverted = aInverted;
         }
 
         public String getmMotorType()
@@ -61,6 +73,16 @@ public class DcMotorModelConfig
         public void setmGearboxEfficiency(double mGearboxEfficiency)
         {
             this.mGearboxEfficiency = mGearboxEfficiency;
+        }
+
+        public void setInverted(boolean aInverted)
+        {
+            mInverted = aInverted;
+        }
+
+        public void setHasBrake(boolean aHasBrake)
+        {
+            mHasBrake = aHasBrake;
         }
 
         @Override
@@ -261,40 +283,18 @@ public class DcMotorModelConfig
     public final FactoryParams mFactoryParams;
     public final MotorParams mMotorParams;
 
-    // Indicates you want a positive voltage to move the system backwards instead of forwards
-    public boolean mInverted;
-
-    // Indicates the motor has a brake, i.e. when givin 0 volts it will stay put
-    public boolean mHasBrake;
-
     public DcMotorModelConfig(
             FactoryParams aFactoryParams,
-            MotorParams aMotorParams,
-            boolean aHasBrake, 
-            boolean aInverted)
+            MotorParams aMotorParams)
     {
         mFactoryParams = aFactoryParams;
         mMotorParams = aMotorParams;
-
-        mHasBrake = aHasBrake;
-        mInverted = aInverted;
-    }
-
-    public void setInverted(boolean aInverted)
-    {
-        mInverted = aInverted;
-    }
-
-    public void setHasBrake(boolean aHasBrake)
-    {
-        mHasBrake = aHasBrake;
     }
 
     @Override
     public String toString()
     {
-        return "DcMotorModelConfig [mFactoryParams=" + mFactoryParams + ", mMotorParams=" + mMotorParams + ", mInverted=" + mInverted + ", mHasBrake="
-                + mHasBrake + "]";
+        return "DcMotorModelConfig [mFactoryParams=" + mFactoryParams + ", mMotorParams=" + mMotorParams + "]";
     }
 
     @Override
@@ -303,8 +303,6 @@ public class DcMotorModelConfig
         final int prime = 31;
         int result = 1;
         result = prime * result + ((mFactoryParams == null) ? 0 : mFactoryParams.hashCode());
-        result = prime * result + (mHasBrake ? 1231 : 1237);
-        result = prime * result + (mInverted ? 1231 : 1237);
         result = prime * result + ((mMotorParams == null) ? 0 : mMotorParams.hashCode());
         return result;
     }
@@ -326,10 +324,6 @@ public class DcMotorModelConfig
         }
         else if (!mFactoryParams.equals(other.mFactoryParams))
             return false;
-        if (mHasBrake != other.mHasBrake)
-            return false;
-        if (mInverted != other.mInverted)
-            return false;
         if (mMotorParams == null)
         {
             if (other.mMotorParams != null)
@@ -339,5 +333,6 @@ public class DcMotorModelConfig
             return false;
         return true;
     }
+
 
 }

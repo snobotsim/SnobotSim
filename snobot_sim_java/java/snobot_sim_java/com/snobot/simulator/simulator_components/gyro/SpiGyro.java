@@ -1,5 +1,10 @@
 package com.snobot.simulator.simulator_components.gyro;
 
+import java.nio.ByteBuffer;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.adx_family.SpiI2CSimulatorJni;
 import com.snobot.simulator.module_wrapper.ASensorWrapper;
@@ -7,6 +12,8 @@ import com.snobot.simulator.simulator_components.ISpiWrapper;
 
 public class SpiGyro extends ASensorWrapper implements IGyroWrapper, ISpiWrapper
 {
+    private static final Logger sLOGGER = Logger.getLogger(SpiGyro.class);
+
     private final String mType;
     private final long mNativePointer;
 
@@ -35,6 +42,18 @@ public class SpiGyro extends ASensorWrapper implements IGyroWrapper, ISpiWrapper
     public void setAngle(double aAngle)
     {
         SpiI2CSimulatorJni.setSpiGyroAngle(mType, mNativePointer, aAngle);
+    }
+
+    @Override
+    public void handleRead(ByteBuffer buffer)
+    {
+        sLOGGER.log(Level.ERROR, "This shouldn't be called directly");
+    }
+
+    @Override
+    public void handleWrite(ByteBuffer buffer)
+    {
+        sLOGGER.log(Level.ERROR, "This shouldn't be called directly");
     }
 
     @Override

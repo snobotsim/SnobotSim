@@ -20,12 +20,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 public class TestJoystickFactory extends BaseSimulatorTest
 {
-    private static final String sJOYSTICK_CONFIG_FILE = "user_config/joystick_config.properties";
-
     @Test
     public void testJoystickFactory() throws Exception
     {
-        File configFile = new File(sJOYSTICK_CONFIG_FILE);
+        File configFile = new File(JoystickFactory.sJOYSTICK_CONFIG_FILE);
         if (configFile.exists())
         {
             Assert.assertTrue(configFile.delete());
@@ -61,7 +59,7 @@ public class TestJoystickFactory extends BaseSimulatorTest
         Assert.assertTrue(factory.get(4) instanceof NullJoystick);
         Assert.assertTrue(factory.get(5) instanceof KeyboardJoystick);
 
-        InputStream input_stream = new FileInputStream(sJOYSTICK_CONFIG_FILE);
+        InputStream input_stream = new FileInputStream(JoystickFactory.sJOYSTICK_CONFIG_FILE);
         Properties properties = new Properties();
         properties.load(input_stream);
         input_stream.close();
