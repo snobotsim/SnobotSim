@@ -31,13 +31,12 @@ public class TankDriveGyroSimulator implements ISimulatorUpdater
 
         mIsSetup = mLeftEncoder != null && mRightEncoder != null && mGyroWrapper != null;
 
-        // TODO I have no idea what this black magic number means
-        // mKP = 22.0 / 12.0;
-        // mKP = 110.0 / 12.0;
-
         if (!mIsSetup)
         {
-            sLOGGER.log(Level.ERROR, "Can't simulate gyro, some inputs are null");
+            sLOGGER.log(Level.ERROR, "Can't simulate gyro, some inputs are null: "
+                    + "Left Encoder (" + mLeftEncoder + "), Right Encoder (" + mRightEncoder + ")" + "Gyro (" + mGyroWrapper
+                    + ").  Available Encoders: " + SensorActuatorRegistry.get().getEncoders().keySet() + ", Available Gyros: "
+                    + SensorActuatorRegistry.get().getGyros().keySet());
         }
 
         SensorActuatorRegistry.get().register(this);
