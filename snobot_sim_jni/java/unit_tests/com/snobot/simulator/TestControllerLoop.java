@@ -2,6 +2,7 @@ package com.snobot.simulator;
 
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
@@ -64,6 +65,7 @@ public class TestControllerLoop extends BaseSimulatorTest
         }
     }
 
+    @Ignore
     @Test
     public void testControlLoop() throws Exception
     {

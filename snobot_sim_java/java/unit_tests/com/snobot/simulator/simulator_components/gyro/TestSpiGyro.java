@@ -60,14 +60,20 @@ public class TestSpiGyro extends BaseSimulatorTest
         Assert.assertEquals(359.9999, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(gyroHandle), DOUBLE_EPSILON);
         Assert.assertEquals(359.9999, gyro.getAngle(), DOUBLE_EPSILON);
 
+        DataAccessorFactory.getInstance().getGyroAccessor().setAngle(gyroHandle, -0.3358);
+        Assert.assertEquals(-0.3358, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(gyroHandle), DOUBLE_EPSILON);
+        Assert.assertEquals(-0.3358, gyro.getAngle(), DOUBLE_EPSILON);
+
+        DataAccessorFactory.getInstance().getGyroAccessor().setAngle(gyroHandle, -180.3358);
+        Assert.assertEquals(-180.3358, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(gyroHandle), DOUBLE_EPSILON);
+        Assert.assertEquals(-180.3358, gyro.getAngle(), DOUBLE_EPSILON);
+
         DataAccessorFactory.getInstance().getGyroAccessor().setAngle(gyroHandle, -421.3358);
         Assert.assertEquals(-421.3358, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(gyroHandle), DOUBLE_EPSILON);
         Assert.assertEquals(-421.3358, gyro.getAngle(), DOUBLE_EPSILON);
 
         // Reset
         gyro.reset();
-        DataAccessorFactory.getInstance().getGyroAccessor().setAngle(gyroHandle, 0);
-        Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(gyroHandle), DOUBLE_EPSILON);
         Assert.assertEquals(0, gyro.getAngle(), DOUBLE_EPSILON);
     }
 

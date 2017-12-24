@@ -10,7 +10,6 @@ import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.MotionProfileStatus;
 import com.ctre.CANTalon.StatusFrameRate;
 import com.ctre.CANTalon.TrajectoryPoint;
-import com.ctre.CanTalonJNI.param_t;
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
@@ -250,7 +249,7 @@ public class TestUnsupportedTalonOperations extends BaseSimulatorTest
         climber.setMotionMagicAcceleration(20);
         climber.setMotionMagicCruiseVelocity(100);
         climber.setP(11);
-        climber.setParameter(param_t.eEncPosition, 100);
+        // climber.setParameter(param_t.eEncPosition, 100);
         climber.setPID(4, 5, 4);
         climber.setPID(4, 5, 4, 5, 1, 0, 1);
         climber.setPosition(40);

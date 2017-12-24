@@ -25,8 +25,6 @@ public class SpiCallbackJni
         sSPI_FACTORY = aFactory;
     }
 
-    public static native void setSpiAccumulatorValue(int aHandle, long aValue);
-
     public static native void registerSpiCallback(String functionName);
 
     public static native void registerSpiReadWriteCallback(int port);

@@ -1,106 +1,19 @@
 
 import org.gradle.internal.os.OperatingSystem
 
-ext.useLocalLibraries = false
-
-configurations {
-    halHeaders
-    halLibs
-    halAdxSimHeaders
-    halAdxSimLib
-    wpilibjJni
-}
-
-def os_name = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
-def libType = os_name + "x86-64"
-
-def thestuff = [
-                ["halHeaders",       "hal",                            "headers", "-headers.zip", configurations.halHeaders],
-                ["halLibs",          "hal",                            "libs",    "-all.zip", configurations.halLibs],
-                ["halAdxSimHeaders", "halsim-adx_gyro_accelerometer",  "headers", "-headers.zip", configurations.halAdxSimHeaders],
-                ["halAdxSimLib",     "halsim-adx_gyro_accelerometer",  "libs",    "-" + libType + ".zip", configurations.halAdxSimLib],
-                ["wpilibjJni",       "wpilibj-jniShared",              "",        "-all.jar",         configurations.wpilibjJni],
-               ]
-
-dependencies {
-
-
-    halHeaders       'edu.wpi.first.hal:hal:' + getHalHeadersVersion() + ':headers@zip'
-    halLibs          'edu.wpi.first.hal:hal:' + getHalHeadersVersion() + ':' + libType + '@zip'
-    halAdxSimHeaders 'edu.wpi.first.halsim:halsim-adx_gyro_accelerometer:' + getHalHeadersVersion() + ':headers@zip'
-    halAdxSimLib     'edu.wpi.first.halsim:halsim-adx_gyro_accelerometer:' + getHalHeadersVersion() + ':' + libType + '@zip'
-    halAdxSimLib     'edu.wpi.first.halsim:halsim-adx_gyro_accelerometer:' + getHalHeadersVersion() + ':' + libType + '@zip'
-    wpilibjJni       'edu.wpi.first.wpilibj:wpilibj-jniShared:' + getWpilibjVersion() + ':all'
-}
-
-thestuff.each { params ->
-    def taskName = params[0]
-    def depName = params[1]
-    def folderSuffix = params[2]
-    def artifactSuffix = params[3]
-    def configurationSet = params[4]
-    
-    def t = tasks.create("extract${taskName}", Copy) {
-        ext.libsdir = "${rootProject.buildDir}/dependencies/" + depName + "/" + folderSuffix
-        
-        if(useLocalLibraries)
-        {
-            from { zipTree("${projectDir}/../temp_libs/" + depName + "-ABCD" + artifactSuffix) }
-            into libsdir
-        }
-        else
-        {
-            from { configurationSet.collect { zipTree(it) } }
-            into libsdir
-        }
+repositories {
+    mavenCentral()
+    maven {
+        url "http://raw.githubusercontent.com/pjreiniger/maven_repo/master/"
     }
 }
+
 
 task extractHalHeadersZip {
-
-    dependsOn extracthalHeaders
-    dependsOn extracthalLibs
-    ext.libsdir = extracthalHeaders.libsdir
+    ext.libsdir = "$rootDir/build/dependencies/hal/headers"
 }
-
-task extractHalSimAdxHeadersZip {
-
-    dependsOn extracthalAdxSimHeaders
-    dependsOn extracthalAdxSimLib
-    ext.libsdir = extracthalAdxSimHeaders.libsdir
-}
-
-task extractWpilibjZip {
-
-    dependsOn extractwpilibjJni
-}
-
-
-ext.getLibraryName = { libPath, libName ->
-    def library_path = 'build/dependencies/' + libPath + '/libs/' + os_name + '/x86-64/shared/'
-    
-    if (OperatingSystem.current().isWindows())
-    {
-        library_path += "/" + libName + ".lib"
-    }
-    else if (OperatingSystem.current().isLinux())
-    {
-        library_path += "/lib" + libName + ".so"
-    }
-    library_path = new File(library_path).getAbsolutePath()
-    
-    return library_path
-}
-
 
 ext.addHalSimToLinker = { linker->
 
-	def library_path =  getLibraryName("hal", "wpiHal")
-    linker.args library_path
+    linker.args "$rootDir/build/dependencies/hal/windowsx86-64/windows/x86-64/shared/wpiHal.lib"
 }
-
-ext.addHalSimAdxToLinker = { linker->
-	def library_path =  getLibraryName("halsim-adx_gyro_accelerometer", "halsim_adx_gyro_accelerometer")
-    linker.args library_path
-}
-

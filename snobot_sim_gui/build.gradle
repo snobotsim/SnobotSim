@@ -3,6 +3,9 @@ import org.gradle.internal.os.OperatingSystem
 
 repositories {
     mavenCentral()
+    maven {
+        url "http://raw.githubusercontent.com/pjreiniger/maven_repo/master/"
+    }
 }
 
 apply plugin: 'java'

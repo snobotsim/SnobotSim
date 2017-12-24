@@ -6,7 +6,6 @@ ext.build_simulator_java = true
 
 if(build_simulator_cpp)
 {
-    //include 'hal_override'
     include 'snobot_sim'
     include 'snobot_sim_jni'
 }

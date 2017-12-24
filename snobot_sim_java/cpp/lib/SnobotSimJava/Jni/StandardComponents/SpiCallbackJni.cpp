@@ -63,17 +63,6 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_SpiCal
 
 /*
  * Class:     com_snobot_simulator_jni_standard_components_SpiCallbackJni
- * Method:    setSpiAccumulatorValue
- * Signature: (IJ)V
- */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_SpiCallbackJni_setSpiAccumulatorValue
-  (JNIEnv *, jclass, jint aHandle, jlong aValue)
-{
-    HALSIM_SetSPISetAccumulatorValue(aHandle, aValue);
-}
-
-/*
- * Class:     com_snobot_simulator_jni_standard_components_SpiCallbackJni
  * Method:    reset
  * Signature: ()V
  */
