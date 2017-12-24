@@ -90,7 +90,7 @@ def mac32PlatformDetect = {
     }
 }
 
-if (!project.hasProperty('skipAthena')) {
+if (false) { //!project.hasProperty('skipAthena')) {
     model {
         buildConfigs {
                 roboRio(CrossBuildConfig) {

@@ -15,7 +15,6 @@ import com.kauailabs.navx.AHRSProtocol.AHRSPosUpdate;
 import com.kauailabs.navx.AHRSProtocol.BoardID;
 import com.kauailabs.navx.IMUProtocol.YPRUpdate;
 
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
@@ -23,7 +22,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SensorBase;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.tables.ITable;
 
 /**
@@ -44,7 +43,8 @@ import edu.wpi.first.wpilibj.tables.ITable;
  * @author Scott
  */
 
-public class AHRS extends SensorBase implements PIDSource, LiveWindowSendable {
+public class AHRS extends SensorBase implements PIDSource
+{
 
     /**
      * Identifies one of the three sensing axes on the navX sensor board.  Note that these axes are
@@ -1544,7 +1544,7 @@ public class AHRS extends SensorBase implements PIDSource, LiveWindowSendable {
     }
 
     @Override
-    public void initTable(NetworkTable subtable)
+    public void initSendable(SendableBuilder builder)
     {
         // TODO Auto-generated method stub
 

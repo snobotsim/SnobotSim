@@ -28,6 +28,8 @@ sourceSets {
     test {
         java {
             srcDirs = ["java/unit_tests"]
+            exclude '**/simulator_components/ctre/**'
+            exclude '**/com/ctre/**'
         }
     }
 }
@@ -136,7 +138,6 @@ model {
         snobotSimJniShared(JNIConfig) {
             jniDefinitionClasses = jniClasses
             jniArmHeaderLocations = [ all: file("${projectDir}/src/arm-linux-jni") ]
-            sourceSets = [ project.sourceSets.main ]
             sourceSets = [ project.sourceSets.main ]
         }
         snobotSimJniStatic(JNIConfig) {

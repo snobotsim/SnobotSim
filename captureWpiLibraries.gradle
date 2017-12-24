@@ -1,5 +1,33 @@
 
-task captureWpiLibraries(type: Jar, dependsOn: extractWpilibjZip) {
+
+repositories {
+    mavenCentral()
+    maven {
+        url "http://raw.githubusercontent.com/pjreiniger/maven_repo/master/"
+    }
+}
+
+configurations {
+    wpilibjJni
+}
+
+dependencies {
+    wpilibjJni 'edu.wpi.first.wpilibj:wpilibj-jniShared:' + getWpilibjVersion() + ':all'
+}
+
+task extractWpilibjJniShared(type: Copy) {
+    def os_name = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
+
+    destinationDir = file("$rootDir/build/dependencies/wpilibj-jniShared")
+	configurations.wpilibjJni.each {
+	    from(zipTree(it)) {
+	        into os_name + "x86-64/"
+	    }
+    }
+}
+
+
+task captureWpiLibraries(type: Jar, dependsOn: extractWpilibjJniShared) {
 
     def os_name = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
     def output_path = os_name + "/x86-64/"
@@ -7,32 +35,18 @@ task captureWpiLibraries(type: Jar, dependsOn: extractWpilibjZip) {
     destinationDir = file("$rootDir/build/wpi_libraries")
     classifier = "wpi_native-" + os_name;
     
-    def wpilibj_path = "$rootDir/build/dependencies/wpilibj-jniShared/" + os_name + "/x86-64/shared"
-    print wpilibj_path
-    from(wpilibj_path) {
-        into output_path
-        include "*.dll"
-        include "*.so"
-    }
-    
-    def wpiutil_path = "$rootDir/build/dependencies/wpiutil-cpp/" + os_name + "x86-64/" + os_name + "/x86-64/shared"
-    from(wpiutil_path) {
-        into output_path
-        include "*.dll"
-        include "*.so"
-    }
-    
-    def hal_path = "$rootDir/build/dependencies/hal/libs/" + os_name + '/x86-64/shared'
-    from(hal_path) {
-        into output_path
-        include "*.dll"
-        include "*.so"
-    }
-    
-    def hal_adx_sim_path = "$rootDir/build/dependencies/halsim-adx_gyro_accelerometer/libs/" + os_name + '/x86-64/shared'
-    from(hal_adx_sim_path) {
-        into output_path
-        include "*.dll"
-        include "*.so"
-    }
+    def libraries = ["wpilibj-jniShared",
+                     "wpiutil-cpp",
+                     "halsim-adx_gyro_accelerometer",
+                     "hal"]
+                 
+ 	libraries.each{
+ 	    def full_path = "$rootDir/build/dependencies/" + it + "/" + os_name + "x86-64/" + os_name + "/x86-64/shared"
+ 	    println full_path
+ 	    from(full_path) {
+            into output_path
+            include "*.dll"
+            include "*.so"
+        }
+ 	}
 }

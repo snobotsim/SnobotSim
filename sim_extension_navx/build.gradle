@@ -2,7 +2,12 @@
 apply plugin: 'edu.wpi.first.NativeUtils'
 apply plugin: 'cpp'
 
-apply from: "$rootDir/extract_hal_headers.gradle"
+repositories {
+    mavenCentral()
+    maven {
+        url "http://raw.githubusercontent.com/pjreiniger/maven_repo/master/"
+    }
+}
 
 ext.addNavxToLinker = { binary->
     binary.lib project: ':sim_extension_navx', library: 'navx_simulator', linkage: 'shared'
@@ -22,6 +27,14 @@ if (!project.hasProperty('onlyAthena')) {
                 headerClassifier = 'headers'
                 ext = 'zip'
             version = getWpiUtilVersion()
+                sharedConfigs = [ navx_simulator: [] ]
+            }
+            halsim(DependencyConfig) {
+                groupId = 'edu.wpi.first.hal'
+                artifactId = 'hal'
+                headerClassifier = 'headers'
+                ext = 'zip'
+                version = getHalHeadersVersion()
                 sharedConfigs = [ navx_simulator: [] ]
             }
         }
@@ -46,16 +59,10 @@ if (!project.hasProperty('onlyAthena')) {
                             includes = ["**/*.cpp"]
                         }
                         exportedHeaders {
-                            srcDirs = ["src/main/native/include", "${extractHalHeadersZip.libsdir}"]
+                            srcDirs = ["src/main/native/include"]
                         }
                     }
                 }
-            }
-        }
-
-        binaries {
-            all {
-                addHalSimToLinker(linker)
             }
         }
     }

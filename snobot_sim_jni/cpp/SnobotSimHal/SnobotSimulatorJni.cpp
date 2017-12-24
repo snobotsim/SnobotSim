@@ -13,6 +13,7 @@
 #include "SnobotSim/SnobotSimHalVersion.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
 #include "SnobotSim/Logging/SnobotCoutLogger.h"
+#include "HAL/HAL.h"
 
 using namespace wpi::java;
 
@@ -29,6 +30,11 @@ extern "C"
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SnobotSimulatorJni_initializeSimulator
   (JNIEnv *, jclass)
 {
+	if(!HAL_Initialize(0, 0))
+	{
+    	SNOBOT_LOG(SnobotLogging::CRITICAL, "Couldn't initialize!!!");
+	}
+
 	SnobotSim::InitializeSnobotCallbacks();
 }
 

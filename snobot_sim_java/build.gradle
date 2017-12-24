@@ -17,7 +17,6 @@ apply plugin: 'java'
 apply plugin: 'jacoco'
 
 apply from: '../config.gradle'
-apply from: "$rootDir/extract_hal_headers.gradle"
 
 
 apply from: "../create_version_file.gradle"
@@ -32,6 +31,8 @@ sourceSets {
     test {
         java {
             srcDirs = ["java/unit_tests"]
+            exclude '**/simulator_components/ctre/**'
+            exclude '**/com/ctre/**'
         }
     }
 }
@@ -139,7 +140,6 @@ model {
             jniDefinitionClasses = jniClasses
             jniArmHeaderLocations = [ all: file("${projectDir}/src/arm-linux-jni") ]
             sourceSets = [ project.sourceSets.main ]
-            sourceSets = [ project.sourceSets.main ]
         }
         snobotSimJavaJniStatic(JNIConfig) {
             jniDefinitionClasses = jniClasses
@@ -179,6 +179,22 @@ model {
             sharedConfigs = [ snobotSimJavaJniShared: [] ]
             staticConfigs = [ snobotSimJavaJniStatic: [] ]
         }
+        halsim(DependencyConfig) {
+            groupId = 'edu.wpi.first.hal'
+            artifactId = 'hal'
+            headerClassifier = 'headers'
+            ext = 'zip'
+            version = getHalHeadersVersion()
+            sharedConfigs = [ snobotSimJavaJniShared: [] ]
+        }
+        adxfamily(DependencyConfig) {
+            groupId = 'edu.wpi.first.halsim'
+            artifactId = 'halsim-adx_gyro_accelerometer'
+            headerClassifier = 'headers'
+            ext = 'zip'
+            version = getHalHeadersVersion()
+            sharedConfigs = [ snobotSimJavaJniShared: [] ]
+        }
     }
     components {
         snobotSimJavaJniShared(NativeLibrarySpec) {
@@ -190,7 +206,7 @@ model {
                         includes = ['**/*.cpp']
                     }
                     exportedHeaders {
-                        srcDirs = ["cpp/lib", "${extractHalHeadersZip.libsdir}", "${extractHalSimAdxHeadersZip.libsdir}"]
+                        srcDirs = ["cpp/lib"]
                     }
                     lib project: ':sim_extension_navx', library: 'navx_simulator', linkage: 'shared'
                 }
@@ -199,24 +215,6 @@ model {
 
     }
     binaries {
-        all {
-            tasks.withType(CppCompile) {
-                dependsOn extractHalHeadersZip
-                dependsOn extractHalSimAdxHeadersZip
-            }
-        }
-        withType(NativeBinarySpec) {
-        
-            if(it.targetPlatform.architecture.name != "athena")
-            {
-                addHalSimToLinker(linker)
-                addHalSimAdxToLinker(linker)
-            }
-            else
-            {
-                buildable = false
-            }
-        }
         withType(StaticLibraryBinarySpec) {
             it.buildable = false
         }

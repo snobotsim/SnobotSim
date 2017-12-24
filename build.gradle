@@ -7,6 +7,9 @@ buildscript {
         maven {
             url "https://plugins.gradle.org/m2/"
         }
+        maven {
+            url "http://raw.githubusercontent.com/pjreiniger/maven_repo/master/"
+        }
     }
     dependencies {
         classpath 'gradle.plugin.edu.wpi.first:native-utils:1.2.12'
@@ -19,6 +22,13 @@ plugins {
 }
 apply plugin: 'nebula-aggregate-javadocs'
 
+
+repositories {
+        maven {
+            url "http://raw.githubusercontent.com/pjreiniger/maven_repo/master/"
+        }
+}
+
 task clean(type: Delete) {
     delete buildDir
 }
@@ -30,7 +40,8 @@ ext.build_simulator_java = true
 // Specify WPI Versions
 
 ext.allwpilibVersion = {
-    return '2018.1.1-beta-3-20171203230242-42-g0994364'
+    //return '2018.1.1-beta-3-20171209024719-67-g1fa0adb'
+    return 'LOCAL-20171226'
 }
 
 ext.getHalHeadersVersion = {
@@ -79,4 +90,5 @@ task wrapper(type: Wrapper) {
 }
 
 apply from: "$rootDir/combine_libraries.gradle"
+apply from: "$rootDir/extract_local_wpilib.gradle"
 
