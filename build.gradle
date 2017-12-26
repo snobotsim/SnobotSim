@@ -90,5 +90,4 @@ task wrapper(type: Wrapper) {
 }
 
 apply from: "$rootDir/combine_libraries.gradle"
-apply from: "$rootDir/extract_local_wpilib.gradle"
 
