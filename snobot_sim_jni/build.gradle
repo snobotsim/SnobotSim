@@ -17,7 +17,6 @@ apply plugin: 'java'
 apply plugin: 'jacoco'
 
 apply from: '../config.gradle'
-apply from: "$rootDir/extract_hal_headers.gradle"
 
 sourceSets {
     main {
@@ -47,7 +46,7 @@ task packageNativeFilesInJar(type: Jar) {
     project.model {
         binaries {
             withType(SharedLibraryBinarySpec) { binary ->
-                if (binary.component.name == 'snobotSimJniStatic') {
+                if (binary.component.name == 'snobotSimJniShared') {
                     from(binary.sharedLibraryFile) {
                         into NativeUtils.getPlatformPath(binary)
                     }
@@ -157,16 +156,6 @@ model {
                 return retList
             }
         }
-        snobotSimJniStatic(ExportsConfig) {
-            x86SymbolFilter = { symbols->
-                def retList = []
-                return retList
-            }
-            x64SymbolFilter = { symbols->
-                def retList = []
-                return retList
-            }
-        }
     }
     dependencyConfigs {
         wpiutil(DependencyConfig) {
@@ -176,23 +165,17 @@ model {
             ext = 'zip'
             version = '+'
             sharedConfigs = [ snobotSimJniShared: [] ]
-            staticConfigs = [ snobotSimJniStatic: [] ]
+        }
+        halsim(DependencyConfig) {
+            groupId = 'edu.wpi.first.hal'
+            artifactId = 'hal'
+            headerClassifier = 'headers'
+            ext = 'zip'
+            version = getHalHeadersVersion()
+            sharedConfigs = [ snobotSimJniShared: [] ]
         }
     }
     components {
-        snobotSimJniStatic(NativeLibrarySpec) {
-            baseName = 'snobotSimJni'
-            sources {
-                cpp {
-                    source {
-                        srcDirs = ['cpp']
-                        includes = ['**/*.cpp']
-                    }
-                    exportedHeaders {
-                    }
-                }
-            }
-        }
         snobotSimJniShared(NativeLibrarySpec) {
             baseName = 'snobotSimJni'
             sources {
@@ -200,8 +183,6 @@ model {
                     source {
                         srcDirs = ['cpp']
                         includes = ['**/*.cpp']
-                    }
-                    exportedHeaders {
                     }
                 }
             }
@@ -214,7 +195,6 @@ model {
             if(it.targetPlatform.architecture.name != "athena")
             {
                 project(':snobot_sim').addSnobotSimToLinker(it)
-                project(':snobot_sim').addHalSimToLinker(linker)
             }
             else
             {

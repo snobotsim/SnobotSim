@@ -16,7 +16,7 @@ public class BaseSimulatorJni
         JniLibraryResourceLoader.loadLibrary("wpiHal");
         JniLibraryResourceLoader.loadLibrary("halsim_adx_gyro_accelerometer");
         JniLibraryResourceLoader.loadLibrary("navx_simulator");
-        JniLibraryResourceLoader.loadLibrary("snobotSimXXX");
+        JniLibraryResourceLoader.loadLibrary("snobotSimCpp");
         JniLibraryResourceLoader.loadLibrary("snobotSimJni");
         SnobotSimulatorJni.initializeSimulator();
     }
