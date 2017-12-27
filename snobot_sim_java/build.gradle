@@ -220,4 +220,8 @@ model {
     }
 }
 
+tasks.withType(Test) {
+    systemProperty "java.library.path", "$rootDir/ctre_override/build/libs/cTRE_PhoenixCCI/shared"
+}
+
 apply from: "publish.gradle"

@@ -39,7 +39,7 @@ task packageNativeFilesInJar(type: Jar) {
     project.model {
         binaries {
             withType(SharedLibraryBinarySpec) { binary ->
-                if (binary.component.name == 'CTRLibDriverShared' || 
+                if (binary.component.name == 'CTRE_PhoenixCCI' || 
                     binary.component.name == 'SnobotSimCppCtre' ||
                     binary.component.name == 'SnobotSimJavaCtre') 
                 {
@@ -86,14 +86,14 @@ def jniClasses = ['com.ctre.phoenix.CTRLoggerJNI',
 
 model {
     jniConfigs {
-        CTRLibDriverShared(JNIConfig) {
+        CTRE_PhoenixCCI(JNIConfig) {
             jniDefinitionClasses = jniClasses
             jniArmHeaderLocations = [ all: file("${projectDir}/../snobot_sim_gui/src/arm-linux-jni") ]
             sourceSets = [ project.sourceSets.main ]
         }
     }
     exportsConfigs {
-        CTRLibDriverShared(ExportsConfig) {
+        CTRE_PhoenixCCI(ExportsConfig) {
             x86SymbolFilter = { symbols->
                 def retList = []
                 return retList
@@ -132,7 +132,7 @@ model {
             ext = 'zip'
             version = getHalHeadersVersion()
             sharedConfigs = [ SnobotSimCppCtre: [],
-                              CTRLibDriverShared: [],
+                              CTRE_PhoenixCCI: [],
                               SnobotSimJavaCtre: [] ]
         }
     }
@@ -158,8 +158,8 @@ model {
             }
         }
             
-        CTRLibDriverShared(NativeLibrarySpec) {
-            baseName = 'CTRLibDriver'
+        CTRE_PhoenixCCI(NativeLibrarySpec) {
+            baseName = 'CTRE_PhoenixCCI'
                 
             binaries {
                 all {
