@@ -492,66 +492,22 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
 
     private double getPositionUnitConversion()
     {
-        if (mFeedbackDevice == null)
-        {
-            return 1;
-        }
-
-        switch (mFeedbackDevice)
-        {
-        case Encoder:
-            return 4096;
-        default:
-            return 1;
-        }
+        return 1;
     }
 
     private double getVelocityUnitConversion()
     {
-        if (mFeedbackDevice == null)
-        {
-            return 1;
-        }
-
-        switch (mFeedbackDevice)
-        {
-        case Encoder:
-            return 6.85; // TODO random... look at core code
-        default:
-            return 1;
-        }
+        return 1;
     }
 
     private double getMotionMagicAccelerationUnitConversion()
     {
-        if (mFeedbackDevice == null)
-        {
-            return 1;
-        }
-
-        switch (mFeedbackDevice)
-        {
-        case Encoder:
-            return 6.7916666666;
-        default:
-            return 1;
-        }
+        return 1;
     }
 
     private double getMotionMagicVelocityUnitConversion()
     {
-        if (mFeedbackDevice == null)
-        {
-            return 1;
-        }
-
-        switch (mFeedbackDevice)
-        {
-        case Encoder:
-            return 6.75;
-        default:
-            return 1;
-        }
+        return 1;
     }
 
     public int getBinnedPosition()

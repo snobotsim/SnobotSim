@@ -203,7 +203,7 @@ public class CtreTalonSrxDeviceManager implements ICanDeviceManager
         }
         else if (commandType == (byte) 0x02)
         {
-            double speed = demand * 600.0 / 4096.0;
+            double speed = demand;
             wrapper.setSpeedGoal(speed);
             sLOGGER.log(Level.TRACE, " Setting by speed. " + speed);
         }
@@ -543,7 +543,7 @@ public class CtreTalonSrxDeviceManager implements ICanDeviceManager
     {
         CtreTalonSrxSpeedControllerSim wrapper = getWrapperHelper(aPort);
         int binnedPosition = (int) wrapper.getPosition();
-        int binnedVelocity = (int) wrapper.getVelocity();
+        int binnedVelocity = (int) (wrapper.getVelocity() * 54.1343283582);
 
         putNumber(aData, binnedPosition, 3);
         aData.putShort((short) binnedVelocity);

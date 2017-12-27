@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.ctre.CANTalon;
+import com.ctre.phoenix.MotorControl.CAN.TalonSRX;
 import com.ctre.PigeonImu;
 import com.ctre.PigeonImu.FusionStatus;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;

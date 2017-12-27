@@ -112,7 +112,8 @@ dependencies {
     testRuntime combineNativeLibrariesIntoOne.outputs.files
     
     testCompile project(':ctre_override')
-    testCompile "thirdparty.frc.ctre:Toolsuite-Java:4.4.1.14"
+    //testCompile "thirdparty.frc.ctre:Toolsuite-Java:4.4.1.14"
+    testCompile files("$rootDir/templib/CTRE_Phoenix.jar")
     testRuntime project(':ctre_override').combineNativeLibrariesIntoOne.outputs.files
 }
 
@@ -219,6 +220,10 @@ model {
             it.buildable = false
         }
     }
+}
+
+tasks.withType(Test) {
+    systemProperty "java.library.path", "$rootDir/ctre_override/build/libs/cTRE_PhoenixCCI/shared"
 }
 
 apply from: "publish.gradle"

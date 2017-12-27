@@ -9,9 +9,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.ctre.CANTalon;
-import com.ctre.CANTalon.FeedbackDevice;
-import com.ctre.CANTalon.TalonControlMode;
+import com.ctre.phoenix.MotorControl.CAN.TalonSRX;
+import com.ctre.phoenix.MotorControl.SmartMotorController.FeedbackDevice;
+import com.ctre.phoenix.MotorControl.SmartMotorController.TalonControlMode;
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
