@@ -8,7 +8,7 @@
 #include <jni.h>
 #include <assert.h>
 
-#include "com_ctre_CanTalonJNI.h"
+#include "com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI.h"
 
 #include "CanTalonSRX.h"
 
@@ -40,7 +40,7 @@ inline bool CheckCTRStatus(JNIEnv *env, CTR_Code status) {
  * Method:        new_CanTalonSRX
  * Signature: (III)J
  */
-JNIEXPORT jlong JNICALL Java_com_ctre_CanTalonJNI_new_1CanTalonSRX__III
+JNIEXPORT jlong JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_new_1TalonSRX__III
   (JNIEnv *env, jclass, jint deviceNumber, jint controlPeriodMs, jint enablePeriodMs)
 {
 	  return (jlong)(new CanTalonSRX((int)deviceNumber, (int)controlPeriodMs, (int)enablePeriodMs));
@@ -51,7 +51,7 @@ JNIEXPORT jlong JNICALL Java_com_ctre_CanTalonJNI_new_1CanTalonSRX__III
  * Method:        new_CanTalonSRX
  * Signature: (II)J
  */
-JNIEXPORT jlong JNICALL Java_com_ctre_CanTalonJNI_new_1CanTalonSRX__II
+JNIEXPORT jlong JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_new_1TalonSRX__II
   (JNIEnv *env, jclass, jint deviceNumber, jint controlPeriodMs)
 {
 	  return (jlong)(new CanTalonSRX((int)deviceNumber, (int)controlPeriodMs));
@@ -62,7 +62,7 @@ JNIEXPORT jlong JNICALL Java_com_ctre_CanTalonJNI_new_1CanTalonSRX__II
  * Method:        new_CanTalonSRX
  * Signature: (I)J
  */
-JNIEXPORT jlong JNICALL Java_com_ctre_CanTalonJNI_new_1CanTalonSRX__I
+JNIEXPORT jlong JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_new_1TalonSRX__I
   (JNIEnv *env, jclass, jint deviceNumber)
 {
     jlong xxx = (jlong)(new CanTalonSRX((int)deviceNumber));
@@ -74,7 +74,7 @@ JNIEXPORT jlong JNICALL Java_com_ctre_CanTalonJNI_new_1CanTalonSRX__I
  * Method:        new_CanTalonSRX
  * Signature: ()J
  */
-JNIEXPORT jlong JNICALL Java_com_ctre_CanTalonJNI_new_1CanTalonSRX__
+JNIEXPORT jlong JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_new_1TalonSRX__
   (JNIEnv *env, jclass)
 {
     return (jlong)(new CanTalonSRX);
@@ -85,13 +85,13 @@ JNIEXPORT jlong JNICALL Java_com_ctre_CanTalonJNI_new_1CanTalonSRX__
  * Method:        delete_CanTalonSRX
  * Signature: (J)V
  */
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_delete_1CanTalonSRX
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_delete_1TalonSRX
   (JNIEnv *env, jclass, jlong handle)
 {
     delete (CanTalonSRX*)handle;
 }
 
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetLastError
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetLastError
   (JNIEnv *env, jclass, jlong)
 {
     CAN_LOG_UNSUPPORTED();
@@ -103,7 +103,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetLastError
  * Method:        GetMotionProfileStatus
  * Signature: (JLedu/wpi/first/wpilibj/CANTalon;Ledu/wpi/first/wpilibj/CANTalon/MotionProfileStatus;)V
  */
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_GetMotionProfileStatus
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetMotionProfileStatus
   (JNIEnv *env, jclass, jlong handle, jobject canTalon, jobject motionProfileStatus)
 {
     jfieldID trajectoryPointFieldId = env->GetFieldID(env->GetObjectClass(motionProfileStatus), "activePoint", "Lcom/ctre/CANTalon$TrajectoryPoint;");
@@ -142,24 +142,24 @@ JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_GetMotionProfileStatus
     env->SetIntField(trajectoryPointObject, env->GetFieldID(env->GetObjectClass(trajectoryPointObject), "zeroPos", "Z"), zeroPos);
 }
 
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_Set
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_Set
   (JNIEnv *env, jclass, jlong handle, jdouble value)
 {
     return ((CanTalonSRX*)handle)->Set((double)value);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetParam
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetParam
   (JNIEnv *env, jclass, jlong handle, jint paramEnum, jdouble value)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->SetParam((CanTalonSRX::param_t)paramEnum, (double)value);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_RequestParam
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_RequestParam
   (JNIEnv *env, jclass, jlong handle, jint paramEnum)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->RequestParam((CanTalonSRX::param_t)paramEnum);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetParamResponse
+JNIEXPORT jdouble JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetParamResponse
   (JNIEnv *env, jclass, jlong handle, jint paramEnum)
 {
     double value;
@@ -167,7 +167,7 @@ JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetParamResponse
     CheckCTRStatus(env, status);
     return value;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetParamResponseInt32
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetParamResponseInt32
   (JNIEnv *env, jclass, jlong handle, jint paramEnum)
 {
     int value;
@@ -175,79 +175,79 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetParamResponseInt32
     CheckCTRStatus(env, status);
     return value;
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetPgain
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetPgain
   (JNIEnv *env, jclass, jlong handle, jint slotIdx, jdouble gain)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->SetPgain((unsigned)slotIdx, (double)gain);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetIgain
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetIgain
   (JNIEnv *env, jclass, jlong handle, jint slotIdx, jdouble gain)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->SetIgain((unsigned)slotIdx, (double)gain);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetDgain
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetDgain
   (JNIEnv *env, jclass, jlong handle, jint slotIdx, jdouble gain)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->SetDgain((unsigned)slotIdx, (double)gain);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetFgain
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetFgain
   (JNIEnv *env, jclass, jlong handle, jint slotIdx, jdouble gain)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->SetFgain((unsigned)slotIdx, (double)gain);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetIzone
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetIzone
   (JNIEnv *env, jclass, jlong handle, jint slotIdx, jint zone)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->SetIzone((unsigned)slotIdx, (int)zone);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetCloseLoopRampRate
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetCloseLoopRampRate
   (JNIEnv *env, jclass, jlong handle, jint slotIdx, jint closeLoopRampRate)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->SetCloseLoopRampRate((unsigned)slotIdx, (int)closeLoopRampRate);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetVoltageCompensationRate
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetVoltageCompensationRate
   (JNIEnv *env, jclass, jlong handle, jdouble voltagePerMs)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->SetVoltageCompensationRate((double)voltagePerMs);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetSensorPosition
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetSensorPosition
   (JNIEnv *env, jclass, jlong handle, jint pos)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->SetSensorPosition((int)pos);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetForwardSoftLimit
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetForwardSoftLimit
   (JNIEnv *env, jclass, jlong handle, jint forwardLimit)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->SetForwardSoftLimit((int)forwardLimit);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetReverseSoftLimit
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetReverseSoftLimit
   (JNIEnv *env, jclass, jlong handle, jint reverseLimit)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->SetReverseSoftLimit((int)reverseLimit);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetForwardSoftEnable
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetForwardSoftEnable
   (JNIEnv *env, jclass, jlong handle, jint enable)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->SetForwardSoftEnable((int)enable);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetReverseSoftEnable
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetReverseSoftEnable
   (JNIEnv *env, jclass, jlong handle, jint enable)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->SetReverseSoftEnable((int)enable);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetPgain
+JNIEXPORT jdouble JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetPgain
   (JNIEnv *env, jclass, jlong handle, jint slotIdx)
 {
     double gain;
@@ -255,7 +255,7 @@ JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetPgain
     CheckCTRStatus(env, status);
     return gain;
 }
-JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetIgain
+JNIEXPORT jdouble JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetIgain
   (JNIEnv *env, jclass, jlong handle, jint slotIdx)
 {
     double gain;
@@ -263,7 +263,7 @@ JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetIgain
     CheckCTRStatus(env, status);
     return gain;
 }
-JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetDgain
+JNIEXPORT jdouble JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetDgain
   (JNIEnv *env, jclass, jlong handle, jint slotIdx)
 {
     double gain;
@@ -271,7 +271,7 @@ JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetDgain
     CheckCTRStatus(env, status);
     return gain;
 }
-JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetFgain
+JNIEXPORT jdouble JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetFgain
   (JNIEnv *env, jclass, jlong handle, jint slotIdx)
 {
     double gain;
@@ -279,7 +279,7 @@ JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetFgain
     CheckCTRStatus(env, status);
     return gain;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetIzone
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetIzone
   (JNIEnv *env, jclass, jlong handle, jint slotIdx)
 {
     int zone;
@@ -287,7 +287,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetIzone
     CheckCTRStatus(env, status);
     return zone;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetCloseLoopRampRate
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetCloseLoopRampRate
   (JNIEnv *env, jclass, jlong handle, jint slotIdx)
 {
     int closeLoopRampRate;
@@ -295,7 +295,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetCloseLoopRampRate
     CheckCTRStatus(env, status);
     return closeLoopRampRate;
 }
-JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetVoltageCompensationRate
+JNIEXPORT jdouble JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetVoltageCompensationRate
   (JNIEnv *env, jclass, jlong handle)
 {
     double voltagePerMs;
@@ -303,7 +303,7 @@ JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetVoltageCompensationRate
     CheckCTRStatus(env, status);
     return voltagePerMs;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetForwardSoftLimit
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetForwardSoftLimit
   (JNIEnv *env, jclass, jlong handle)
 {
     int forwardLimit;
@@ -311,7 +311,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetForwardSoftLimit
     CheckCTRStatus(env, status);
     return forwardLimit;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetReverseSoftLimit
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetReverseSoftLimit
   (JNIEnv *env, jclass, jlong handle)
 {
     int reverseLimit;
@@ -319,7 +319,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetReverseSoftLimit
     CheckCTRStatus(env, status);
     return reverseLimit;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetForwardSoftEnable
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetForwardSoftEnable
   (JNIEnv *env, jclass, jlong handle)
 {
     int enable;
@@ -327,7 +327,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetForwardSoftEnable
     CheckCTRStatus(env, status);
     return enable;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetReverseSoftEnable
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetReverseSoftEnable
   (JNIEnv *env, jclass, jlong handle)
 {
     int enable;
@@ -335,7 +335,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetReverseSoftEnable
     CheckCTRStatus(env, status);
     return enable;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetPulseWidthRiseToFallUs
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetPulseWidthRiseToFallUs
   (JNIEnv *env, jclass, jlong handle)
 {
     int param;
@@ -343,7 +343,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetPulseWidthRiseToFallUs
     CheckCTRStatus(env, status);
     return param;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_IsPulseWidthSensorPresent
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_IsPulseWidthSensorPresent
   (JNIEnv *env, jclass, jlong handle)
 {
     int param;
@@ -351,56 +351,56 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_IsPulseWidthSensorPresent
     CheckCTRStatus(env, status);
     return param;
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetModeSelect2
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetModeSelect2
   (JNIEnv *env, jclass, jlong handle, jint modeSelect, jint demand)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->SetModeSelect((int)modeSelect, (int)demand);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetStatusFrameRate
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetStatusFrameRate
   (JNIEnv *env, jclass, jlong handle, jint frameEnum, jint periodMs)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->SetStatusFrameRate((unsigned)frameEnum, (unsigned)periodMs);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_ClearStickyFaults
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_ClearStickyFaults
   (JNIEnv *env, jclass, jlong handle)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->ClearStickyFaults();
     CheckCTRStatus(env, status);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_ChangeMotionControlFramePeriod
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_ChangeMotionControlFramePeriod
   (JNIEnv *env, jclass, jlong handle, jint periodMs)
 {
     return ((CanTalonSRX*)handle)->ChangeMotionControlFramePeriod((uint32_t)periodMs);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_ClearMotionProfileTrajectories
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_ClearMotionProfileTrajectories
   (JNIEnv *env, jclass, jlong handle)
 {
     return ((CanTalonSRX*)handle)->ClearMotionProfileTrajectories();
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetMotionProfileTopLevelBufferCount
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetMotionProfileTopLevelBufferCount
   (JNIEnv *env, jclass, jlong handle)
 {
     return ((CanTalonSRX*)handle)->GetMotionProfileTopLevelBufferCount();
 }
-JNIEXPORT jboolean JNICALL Java_com_ctre_CanTalonJNI_IsMotionProfileTopLevelBufferFull
+JNIEXPORT jboolean JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_IsMotionProfileTopLevelBufferFull
   (JNIEnv *env, jclass, jlong handle)
 {
     return ((CanTalonSRX*)handle)->IsMotionProfileTopLevelBufferFull();
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_PushMotionProfileTrajectory
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_PushMotionProfileTrajectory
   (JNIEnv *env, jclass, jlong handle, jint targPos, jint targVel, jint profileSlotSelect, jint timeDurMs, jint velOnly, jint isLastPoint, jint zeroPos)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->PushMotionProfileTrajectory((int)targPos, (int)targVel, (int)profileSlotSelect, (int)timeDurMs, (int)velOnly, (int)isLastPoint, (int)zeroPos);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_ProcessMotionProfileBuffer
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_ProcessMotionProfileBuffer
   (JNIEnv *env, jclass, jlong handle)
 {
     return ((CanTalonSRX*)handle)->ProcessMotionProfileBuffer();
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFault_1OverTemp
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetFault_1OverTemp
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -408,7 +408,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFault_1OverTemp
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFault_1UnderVoltage
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetFault_1UnderVoltage
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -416,7 +416,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFault_1UnderVoltage
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFault_1ForLim
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetFault_1ForLim
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -424,7 +424,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFault_1ForLim
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFault_1RevLim
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetFault_1RevLim
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -432,7 +432,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFault_1RevLim
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFault_1HardwareFailure
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetFault_1HardwareFailure
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -440,7 +440,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFault_1HardwareFailure
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFault_1ForSoftLim
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetFault_1ForSoftLim
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -448,7 +448,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFault_1ForSoftLim
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFault_1RevSoftLim
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetFault_1RevSoftLim
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -456,7 +456,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFault_1RevSoftLim
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetStckyFault_1OverTemp
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetStckyFault_1OverTemp
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -464,7 +464,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetStckyFault_1OverTemp
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetStckyFault_1UnderVoltage
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetStckyFault_1UnderVoltage
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -472,7 +472,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetStckyFault_1UnderVoltage
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetStckyFault_1ForLim
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetStckyFault_1ForLim
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -480,7 +480,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetStckyFault_1ForLim
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetStckyFault_1RevLim
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetStckyFault_1RevLim
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -488,7 +488,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetStckyFault_1RevLim
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetStckyFault_1ForSoftLim
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetStckyFault_1ForSoftLim
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -496,7 +496,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetStckyFault_1ForSoftLim
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetStckyFault_1RevSoftLim
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetStckyFault_1RevSoftLim
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -504,7 +504,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetStckyFault_1RevSoftLim
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetAppliedThrottle
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetAppliedThrottle
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -512,7 +512,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetAppliedThrottle
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetCloseLoopErr
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetCloseLoopErr
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -520,7 +520,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetCloseLoopErr
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFeedbackDeviceSelect
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetFeedbackDeviceSelect
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -528,7 +528,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFeedbackDeviceSelect
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetModeSelect
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetModeSelect
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -536,7 +536,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetModeSelect
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetLimitSwitchEn
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetLimitSwitchEn
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -544,7 +544,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetLimitSwitchEn
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetLimitSwitchClosedFor
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetLimitSwitchClosedFor
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -552,7 +552,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetLimitSwitchClosedFor
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetLimitSwitchClosedRev
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetLimitSwitchClosedRev
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -560,7 +560,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetLimitSwitchClosedRev
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetSensorPosition
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetSensorPosition
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -568,7 +568,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetSensorPosition
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetSensorVelocity
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetSensorVelocity
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -576,7 +576,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetSensorVelocity
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetCurrent
+JNIEXPORT jdouble JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetCurrent
   (JNIEnv * env, jclass, jlong handle)
 {
     double retval;
@@ -584,7 +584,7 @@ JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetCurrent
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetBrakeIsEnabled
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetBrakeIsEnabled
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -592,7 +592,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetBrakeIsEnabled
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetEncPosition
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetEncPosition
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -600,7 +600,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetEncPosition
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetEncVel
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetEncVel
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -608,7 +608,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetEncVel
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetEncIndexRiseEvents
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetEncIndexRiseEvents
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -616,7 +616,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetEncIndexRiseEvents
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetQuadApin
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetQuadApin
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -624,7 +624,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetQuadApin
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetQuadBpin
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetQuadBpin
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -632,7 +632,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetQuadBpin
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetQuadIdxpin
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetQuadIdxpin
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -640,7 +640,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetQuadIdxpin
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetAnalogInWithOv
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetAnalogInWithOv
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -648,7 +648,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetAnalogInWithOv
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetAnalogInVel
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetAnalogInVel
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -656,7 +656,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetAnalogInVel
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetTemp
+JNIEXPORT jdouble JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetTemp
   (JNIEnv * env, jclass, jlong handle)
 {
     double retval;
@@ -664,7 +664,7 @@ JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetTemp
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetBatteryV
+JNIEXPORT jdouble JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetBatteryV
   (JNIEnv * env, jclass, jlong handle)
 {
     double retval;
@@ -673,28 +673,28 @@ JNIEXPORT jdouble JNICALL Java_com_ctre_CanTalonJNI_GetBatteryV
     return retval;
 }
 
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetClearPosOnIdx
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetClearPosOnIdx
   (JNIEnv *env, jclass, jlong)
 {
     CAN_LOG_UNSUPPORTED();
     return 0;
 }
 
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetClearPosOnLimR
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetClearPosOnLimR
   (JNIEnv *env, jclass, jlong)
 {
     CAN_LOG_UNSUPPORTED();
     return 0;
 }
 
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetClearPosOnLimF
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetClearPosOnLimF
   (JNIEnv *env, jclass, jlong)
 {
     CAN_LOG_UNSUPPORTED();
     return 0;
 }
 
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetResetCount
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetResetCount
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -702,7 +702,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetResetCount
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetResetFlags
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetResetFlags
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -710,7 +710,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetResetFlags
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFirmVers
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetFirmVers
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -718,7 +718,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetFirmVers
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetPulseWidthPosition
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetPulseWidthPosition
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -726,7 +726,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetPulseWidthPosition
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetPulseWidthVelocity
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetPulseWidthVelocity
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -734,7 +734,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetPulseWidthVelocity
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetPulseWidthRiseToRiseUs
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetPulseWidthRiseToRiseUs
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -742,7 +742,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetPulseWidthRiseToRiseUs
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetActTraj_1IsValid
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetActTraj_1IsValid
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -750,7 +750,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetActTraj_1IsValid
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetActTraj_1ProfileSlotSelect
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetActTraj_1ProfileSlotSelect
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -758,7 +758,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetActTraj_1ProfileSlotSelect
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetActTraj_1VelOnly
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetActTraj_1VelOnly
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -766,7 +766,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetActTraj_1VelOnly
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetActTraj_1IsLast
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetActTraj_1IsLast
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -774,7 +774,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetActTraj_1IsLast
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetOutputType
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetOutputType
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -782,7 +782,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetOutputType
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetHasUnderrun
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetHasUnderrun
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -790,7 +790,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetHasUnderrun
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetIsUnderrun
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetIsUnderrun
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -798,7 +798,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetIsUnderrun
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetNextID
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetNextID
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -806,7 +806,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetNextID
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetBufferIsFull
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetBufferIsFull
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -814,7 +814,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetBufferIsFull
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetCount
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetCount
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -822,7 +822,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetCount
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetActTraj_1Velocity
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetActTraj_1Velocity
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -830,7 +830,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetActTraj_1Velocity
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetActTraj_1Position
+JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetActTraj_1Position
   (JNIEnv * env, jclass, jlong handle)
 {
     int retval;
@@ -838,62 +838,62 @@ JNIEXPORT jint JNICALL Java_com_ctre_CanTalonJNI_GetActTraj_1Position
     CheckCTRStatus(env, status);
     return retval;
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetDemand
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetDemand
   (JNIEnv * env, jclass, jlong handle, jint param)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->SetDemand(param);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetOverrideLimitSwitchEn
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetOverrideLimitSwitchEn
   (JNIEnv * env, jclass, jlong handle, jint param)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->SetOverrideLimitSwitchEn(param);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetFeedbackDeviceSelect
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetFeedbackDeviceSelect
   (JNIEnv * env, jclass, jlong handle, jint param)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->SetFeedbackDeviceSelect(param);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetRevMotDuringCloseLoopEn
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetRevMotDuringCloseLoopEn
   (JNIEnv * env, jclass, jlong handle, jint param)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->SetRevMotDuringCloseLoopEn(param);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetOverrideBrakeType
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetOverrideBrakeType
   (JNIEnv * env, jclass, jlong handle, jint param)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->SetOverrideBrakeType(param);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetModeSelect
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetModeSelect
   (JNIEnv * env, jclass, jlong handle, jint param)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->SetModeSelect(param);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetProfileSlotSelect
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetProfileSlotSelect
   (JNIEnv * env, jclass, jlong handle, jint param)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->SetProfileSlotSelect(param);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetRampThrottle
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetRampThrottle
   (JNIEnv * env, jclass, jlong handle, jint param)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->SetRampThrottle(param);
     CheckCTRStatus(env, status);
 }
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetRevFeedbackSensor
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetRevFeedbackSensor
   (JNIEnv * env, jclass, jlong handle, jint param)
 {
     CTR_Code status = ((CanTalonSRX*)handle)->SetRevFeedbackSensor(param);
     CheckCTRStatus(env, status);
 }
 
-JNIEXPORT void JNICALL Java_com_ctre_CanTalonJNI_SetCurrentLimEnable
+JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_SetCurrentLimEnable
   (JNIEnv *env, jclass, jlong, jboolean)
 {
     CAN_LOG_UNSUPPORTED();

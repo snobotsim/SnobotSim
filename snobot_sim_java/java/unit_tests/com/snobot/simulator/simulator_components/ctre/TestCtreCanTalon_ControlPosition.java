@@ -4,19 +4,21 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.ctre.CANTalon;
-import com.ctre.CANTalon.FeedbackDevice;
-import com.ctre.CANTalon.TalonControlMode;
+import com.ctre.phoenix.MotorControl.SmartMotorController.FeedbackDevice;
+import com.ctre.phoenix.MotorControl.SmartMotorController.TalonControlMode;
+import com.ctre.phoenix.MotorControl.CAN.TalonSRX;
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
+@Ignore
 @RunWith(value = Parameterized.class)
 public class TestCtreCanTalon_ControlPosition extends BaseSimulatorTest
 {
@@ -51,7 +53,7 @@ public class TestCtreCanTalon_ControlPosition extends BaseSimulatorTest
     public void testSetWithPosition()
     {
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
-        CANTalon talon = new CANTalon(mCanHandle);
+        TalonSRX talon = new TalonSRX(mCanHandle);
         Assert.assertEquals(1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
 
         talon.changeControlMode(TalonControlMode.Position);

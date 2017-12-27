@@ -1,4 +1,4 @@
-package com.ctre;
+package com.ctre.phoenix.MotorControl;
 
 import com.snobot.simulator.JniLibraryResourceLoader;
 

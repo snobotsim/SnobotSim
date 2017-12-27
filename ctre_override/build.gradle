@@ -80,7 +80,8 @@ dependencies {
 }
 
 
-def jniClasses = ['com.ctre.CanTalonJNI']
+def jniClasses = ['com.ctre.phoenix.CTRLoggerJNI',
+                  'com.ctre.phoenix.MotorControl.CAN.TalonSRXJNI']
 
 model {
     jniConfigs {

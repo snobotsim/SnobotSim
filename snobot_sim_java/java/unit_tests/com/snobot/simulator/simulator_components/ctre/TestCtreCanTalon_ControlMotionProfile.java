@@ -5,20 +5,22 @@ import java.util.Collection;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.ctre.CANTalon;
-import com.ctre.CANTalon.MotionProfileStatus;
-import com.ctre.CANTalon.TalonControlMode;
-import com.ctre.CANTalon.TrajectoryPoint;
+import com.ctre.phoenix.MotorControl.SmartMotorController.MotionProfileStatus;
+import com.ctre.phoenix.MotorControl.SmartMotorController.TalonControlMode;
+import com.ctre.phoenix.MotorControl.SmartMotorController.TrajectoryPoint;
+import com.ctre.phoenix.MotorControl.CAN.TalonSRX;
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
+@Ignore
 @RunWith(value = Parameterized.class)
 public class TestCtreCanTalon_ControlMotionProfile extends BaseSimulatorTest
 {
@@ -49,7 +51,7 @@ public class TestCtreCanTalon_ControlMotionProfile extends BaseSimulatorTest
     {
 
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
-        CANTalon talon = new CANTalon(mCanHandle);
+        TalonSRX talon = new TalonSRX(mCanHandle);
         Assert.assertEquals(1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
 
         talon.setP(.045);
@@ -79,17 +81,17 @@ public class TestCtreCanTalon_ControlMotionProfile extends BaseSimulatorTest
         Assert.assertTrue(DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(mRawHandle, motorConfig,
                 new StaticLoadMotorSimulationConfig(.2)));
 
-        talon.set(CANTalon.SetValueMotionProfile.Disable.value);
+        talon.set(TalonSRX.SetValueMotionProfile.Disable.value);
         simulateForTime(.2, () ->
         {
         });
 
-        talon.set(CANTalon.SetValueMotionProfile.Hold.value);
+        talon.set(TalonSRX.SetValueMotionProfile.Hold.value);
         simulateForTime(.2, () ->
         {
         });
 
-        talon.set(CANTalon.SetValueMotionProfile.Enable.value);
+        talon.set(TalonSRX.SetValueMotionProfile.Enable.value);
         simulateForTime(10, () ->
         {
         });
@@ -154,7 +156,7 @@ public class TestCtreCanTalon_ControlMotionProfile extends BaseSimulatorTest
     }
 
     @SuppressWarnings("unused")
-    private void printMotionProfileStatus(CANTalon talon, MotionProfileStatus status)
+    private void printMotionProfileStatus(TalonSRX talon, MotionProfileStatus status)
     {
         System.out.println("Getting status...");
         TrajectoryPoint point = status.activePoint;

@@ -9,8 +9,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.ctre.CANTalon;
-import com.ctre.CANTalon.TalonControlMode;
+import com.ctre.phoenix.MotorControl.SmartMotorController.TalonControlMode;
+import com.ctre.phoenix.MotorControl.CAN.TalonSRX;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
@@ -45,7 +45,7 @@ public class TestCtreCanTalon_ControlVoltage extends BaseSimulatorTest
         double DOUBLE_EPSILON = .01;
 
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
-        CANTalon talon = new CANTalon(mCanHandle);
+        TalonSRX talon = new TalonSRX(mCanHandle);
         Assert.assertEquals(1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
 
         talon.changeControlMode(TalonControlMode.Voltage);

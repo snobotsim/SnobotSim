@@ -31,8 +31,6 @@ sourceSets {
     test {
         java {
             srcDirs = ["java/unit_tests"]
-            exclude '**/simulator_components/ctre/**'
-            exclude '**/com/ctre/**'
         }
     }
 }
@@ -112,7 +110,8 @@ dependencies {
     testRuntime combineNativeLibrariesIntoOne.outputs.files
     
     testCompile project(':ctre_override')
-    testCompile "thirdparty.frc.ctre:Toolsuite-Java:4.4.1.14"
+    //testCompile "thirdparty.frc.ctre:Toolsuite-Java:4.4.1.14"
+    testCompile files("$rootDir/templib/CTRE_Phoenix.jar")
     testRuntime project(':ctre_override').combineNativeLibrariesIntoOne.outputs.files
 }
 

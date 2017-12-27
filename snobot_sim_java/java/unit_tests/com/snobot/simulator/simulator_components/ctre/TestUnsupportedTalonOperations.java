@@ -3,13 +3,14 @@ package com.snobot.simulator.simulator_components.ctre;
 import java.nio.ByteBuffer;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
-import com.ctre.CANTalon;
-import com.ctre.CANTalon.FeedbackDevice;
-import com.ctre.CANTalon.MotionProfileStatus;
-import com.ctre.CANTalon.StatusFrameRate;
-import com.ctre.CANTalon.TrajectoryPoint;
+import com.ctre.phoenix.MotorControl.SmartMotorController.FeedbackDevice;
+import com.ctre.phoenix.MotorControl.SmartMotorController.MotionProfileStatus;
+import com.ctre.phoenix.MotorControl.SmartMotorController.StatusFrameRate;
+import com.ctre.phoenix.MotorControl.SmartMotorController.TrajectoryPoint;
+import com.ctre.phoenix.MotorControl.CAN.TalonSRX;
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
@@ -79,7 +80,7 @@ public class TestUnsupportedTalonOperations extends BaseSimulatorTest
     {
         int handle = 10;
         int mRawHandle = handle + 100;
-        CANTalon talon = new CANTalon(handle);
+        TalonSRX talon = new TalonSRX(handle);
 
         DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("CIM", 1, 10, 1);
         Assert.assertTrue(DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(mRawHandle, motorConfig,
@@ -95,12 +96,13 @@ public class TestUnsupportedTalonOperations extends BaseSimulatorTest
 
     }
 
+    @Ignore
     @Test
     public void testAllFunctions()
     {
-        CANTalon climber = new CANTalon(11);
+        TalonSRX climber = new TalonSRX(11);
 
-        climber.changeControlMode(CANTalon.TalonControlMode.Voltage);
+        climber.changeControlMode(TalonSRX.TalonControlMode.Voltage);
         climber.changeMotionControlFramePeriod(10);
         climber.clearIAccum();
         climber.ClearIaccum();
@@ -265,7 +267,7 @@ public class TestUnsupportedTalonOperations extends BaseSimulatorTest
         climber.setStatusFrameRateMs(StatusFrameRate.QuadEncoder, 10);
         // climber.SetVelocityMeasurementPeriod(null); // TODO doesn't work
         // climber.SetVelocityMeasurementWindow(4); TODO doesn't work
-        climber.setVoltageCompensationRampRate(4);
+        // climber.setVoltageCompensationRampRate(4);
         climber.setVoltageRampRate(55);
     }
 }
