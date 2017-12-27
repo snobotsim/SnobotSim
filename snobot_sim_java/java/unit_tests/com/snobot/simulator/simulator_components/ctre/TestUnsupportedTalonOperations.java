@@ -3,7 +3,6 @@ package com.snobot.simulator.simulator_components.ctre;
 import java.nio.ByteBuffer;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ctre.phoenix.MotorControl.SmartMotorController.FeedbackDevice;
@@ -96,7 +95,6 @@ public class TestUnsupportedTalonOperations extends BaseSimulatorTest
 
     }
 
-    @Ignore
     @Test
     public void testAllFunctions()
     {

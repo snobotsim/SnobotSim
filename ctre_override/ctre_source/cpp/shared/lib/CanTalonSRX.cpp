@@ -184,7 +184,7 @@ const double FXP_TO_FLOAT_10_22 = 0.0000002384185791015625;
 const double FLOAT_TO_FXP_0_8 = (double)0x100;
 const double FXP_TO_FLOAT_0_8 = 0.00390625;
 
-//#define PRINT_DEBUGGING_OUTPUT
+#define PRINT_DEBUGGING_OUTPUT
 
 #ifdef PRINT_DEBUGGING_OUTPUT
     #ifndef __FUNCTION_NAME__
@@ -196,8 +196,8 @@ const double FXP_TO_FLOAT_0_8 = 0.00390625;
     #endif
     #include <iomanip>
     #define DEBUG_CAN_TALON_SRX(x) std::cout << std::left << std::setw (51) << __FUNCTION_NAME__ << ":" << __LINE__ << " - " << x << std::endl;
-//    #define DEBUG_DETAILED_CAN_TALON_SRX(x) std::cout << std::left << std::setw (45) << __FUNCTION_NAME__ << "!!!!!!:" << __LINE__ << " - "  <<x << std::endl;
-    #define DEBUG_DETAILED_CAN_TALON_SRX(x) ;
+    #define DEBUG_DETAILED_CAN_TALON_SRX(x) std::cout << std::left << std::setw (45) << __FUNCTION_NAME__ << "!!!!!!:" << __LINE__ << " - "  <<x << std::endl;
+//    #define DEBUG_DETAILED_CAN_TALON_SRX(x) ;
 #else
     #define DEBUG_CAN_TALON_SRX(x) ;
     #define DEBUG_DETAILED_CAN_TALON_SRX(x) ;

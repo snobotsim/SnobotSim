@@ -74,8 +74,8 @@ public class TestCtreCanTalon_ControlSpeed extends BaseSimulatorTest
         {
         });
 
-        Assert.assertEquals(40, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVelocity(mRawHandle), .05);
-        Assert.assertEquals(40, talon.get(), .05);
+        Assert.assertEquals(40, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVelocity(mRawHandle), 1);
+        Assert.assertEquals(40, talon.get(), 1);
     }
 
     private void checkForFeedbackDevice()

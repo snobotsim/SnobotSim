@@ -94,7 +94,6 @@ JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_delete
 JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetLastError
   (JNIEnv *env, jclass, jlong)
 {
-    CAN_LOG_UNSUPPORTED();
     return 0;
 }
 
@@ -106,9 +105,9 @@ JNIEXPORT jint JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetLas
 JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetMotionProfileStatus
   (JNIEnv *env, jclass, jlong handle, jobject canTalon, jobject motionProfileStatus)
 {
-    jfieldID trajectoryPointFieldId = env->GetFieldID(env->GetObjectClass(motionProfileStatus), "activePoint", "Lcom/ctre/CANTalon$TrajectoryPoint;");
-    jobject trajectoryPointObject = env->GetObjectField(motionProfileStatus, trajectoryPointFieldId);
-
+//    jfieldID trajectoryPointFieldId = env->GetFieldID(env->GetObjectClass(motionProfileStatus), "activePoint", "Lcom/ctre/phoenix/MotorControl/MotionProfileStatus$TrajectoryPoint;");
+//    jobject trajectoryPointObject = env->GetObjectField(motionProfileStatus, trajectoryPointFieldId);
+//
     uint32_t flags;
     uint32_t profileSlotSelect;
     int32_t targPos;
@@ -133,13 +132,13 @@ JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_GetMot
     env->SetBooleanField(motionProfileStatus, env->GetFieldID(env->GetObjectClass(motionProfileStatus), "activePointValid", "Z"), activePointValid);
     env->SetBooleanField(motionProfileStatus, env->GetFieldID(env->GetObjectClass(motionProfileStatus), "hasUnderrun", "Z"), hasUnderrun);
     env->SetBooleanField(motionProfileStatus, env->GetFieldID(env->GetObjectClass(motionProfileStatus), "isUnderrun", "Z"), isUnderrun);
-
-    env->SetDoubleField(trajectoryPointObject, env->GetFieldID(env->GetObjectClass(trajectoryPointObject), "position", "D"), targPos);
-    env->SetDoubleField(trajectoryPointObject, env->GetFieldID(env->GetObjectClass(trajectoryPointObject), "velocity", "D"), targVel);
-    env->SetIntField(trajectoryPointObject, env->GetFieldID(env->GetObjectClass(trajectoryPointObject), "profileSlotSelect", "I"), profileSlotSelect);
-    env->SetIntField(trajectoryPointObject, env->GetFieldID(env->GetObjectClass(trajectoryPointObject), "isLastPoint", "Z"), isLastPoint);
-    env->SetIntField(trajectoryPointObject, env->GetFieldID(env->GetObjectClass(trajectoryPointObject), "velocityOnly", "Z"), velocityOnly);
-    env->SetIntField(trajectoryPointObject, env->GetFieldID(env->GetObjectClass(trajectoryPointObject), "zeroPos", "Z"), zeroPos);
+//
+//    env->SetDoubleField(trajectoryPointObject, env->GetFieldID(env->GetObjectClass(trajectoryPointObject), "position", "D"), targPos);
+//    env->SetDoubleField(trajectoryPointObject, env->GetFieldID(env->GetObjectClass(trajectoryPointObject), "velocity", "D"), targVel);
+//    env->SetIntField(trajectoryPointObject, env->GetFieldID(env->GetObjectClass(trajectoryPointObject), "profileSlotSelect", "I"), profileSlotSelect);
+//    env->SetIntField(trajectoryPointObject, env->GetFieldID(env->GetObjectClass(trajectoryPointObject), "isLastPoint", "Z"), isLastPoint);
+//    env->SetIntField(trajectoryPointObject, env->GetFieldID(env->GetObjectClass(trajectoryPointObject), "velocityOnly", "Z"), velocityOnly);
+//    env->SetIntField(trajectoryPointObject, env->GetFieldID(env->GetObjectClass(trajectoryPointObject), "zeroPos", "Z"), zeroPos);
 }
 
 JNIEXPORT void JNICALL Java_com_ctre_phoenix_MotorControl_CAN_TalonSRXJNI_Set

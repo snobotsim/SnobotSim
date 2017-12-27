@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -20,7 +19,6 @@ import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
-@Ignore
 @RunWith(value = Parameterized.class)
 public class TestCtreCanTalon_ControlMotionProfile extends BaseSimulatorTest
 {
