@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.ctre.phoenix.MotorControl.SmartMotorController.TalonControlMode;
+import com.ctre.phoenix.MotorControl.ControlMode;
 import com.ctre.phoenix.MotorControl.CAN.TalonSRX;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
@@ -53,12 +53,11 @@ public class TestCtreCanTalon_ControlFollower extends BaseSimulatorTest
         TalonSRX talon = new TalonSRX(mCanHandle);
         Assert.assertEquals(2, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
 
-        talon.changeControlMode(TalonControlMode.Follower);
-        talon.set(leadTalonId);
+        talon.set(ControlMode.Follower, leadTalonId);
 
-        leadTalon.set(.5);
+        leadTalon.set(ControlMode.PercentOutput, .5);
 
-        Assert.assertEquals(.5, talon.get(), DOUBLE_EPSILON);
-        Assert.assertEquals(leadTalon.get(), talon.get(), DOUBLE_EPSILON);
+        Assert.assertEquals(.5, talon.getMotorOutputPercent(), DOUBLE_EPSILON);
+        Assert.assertEquals(leadTalon.getMotorOutputPercent(), talon.getMotorOutputPercent(), DOUBLE_EPSILON);
     }
 }

@@ -81,104 +81,120 @@ dependencies {
 
 
 def jniClasses = ['com.ctre.phoenix.CTRLoggerJNI',
-                  'com.ctre.phoenix.MotorControl.CAN.TalonSRXJNI',
+                  'com.ctre.phoenix.MotorControl.CAN.MotControllerJNI',
                   'com.ctre.phoenix.Sensors.PigeonImuJNI']
 
 model {
     jniConfigs {
-        CTRE_PhoenixCCI(JNIConfig) {
+        CtrePhoenixJava(JNIConfig) {
             jniDefinitionClasses = jniClasses
             jniArmHeaderLocations = [ all: file("${projectDir}/../snobot_sim_gui/src/arm-linux-jni") ]
             sourceSets = [ project.sourceSets.main ]
         }
     }
     exportsConfigs {
-        CTRE_PhoenixCCI(ExportsConfig) {
+        CtreMockHooks(ExportsConfig) {
             x86SymbolFilter = { symbols->
                 def retList = []
+                println "X86"
+                println symbols
                 return retList
             }
             x64SymbolFilter = { symbols->
                 def retList = []
+                println "X64"
+                println symbols
+                return retList
+            }
+        }
+        CtrePhoenixJava(ExportsConfig) {
+            x86SymbolFilter = { symbols->
+                def retList = []
+                println "X86"
+                println symbols
+                return retList
+            }
+            x64SymbolFilter = { symbols->
+                def retList = []
+                println "X64"
+                println symbols
                 return retList
             }
         }
     }
     
     dependencyConfigs {
-        wpiutil(DependencyConfig) {
-            groupId = 'edu.wpi.first.wpiutil'
-            artifactId = 'wpiutil-cpp'
-            headerClassifier = 'headers'
-            ext = 'zip'
-            version = getWpiUtilVersion()
-            sharedConfigs = [ SnobotSimCppCtre: [],
-                              SnobotSimJavaCtre: [],
-                              CTRLibDriver: [] ]
-        }
-        ntcore(DependencyConfig) {
-            groupId = 'edu.wpi.first.ntcore'
-            artifactId = 'ntcore-cpp'
-            headerClassifier = 'headers'
-            ext = 'zip'
-            version = getNtCoreVersion()
-            sharedConfigs = [ SnobotSimCppCtre: [],
-                              CTRLibDriver: [] ]
-        }
-        halsim(DependencyConfig) {
-            groupId = 'edu.wpi.first.hal'
-            artifactId = 'hal'
-            headerClassifier = 'headers'
-            ext = 'zip'
-            version = getHalHeadersVersion()
-            sharedConfigs = [ SnobotSimCppCtre: [],
-                              CTRE_PhoenixCCI: [],
-                              SnobotSimJavaCtre: [] ]
-        }
+        //wpiutil(DependencyConfig) {
+        //    groupId = 'edu.wpi.first.wpiutil'
+        //    artifactId = 'wpiutil-cpp'
+        //    headerClassifier = 'headers'
+        //    ext = 'zip'
+        //    version = getWpiUtilVersion()
+        //    sharedConfigs = [ SnobotSimCppCtre: [],
+        //                      SnobotSimJavaCtre: [],
+        //                      CTRLibDriver: [] ]
+        //}
+        //ntcore(DependencyConfig) {
+        //    groupId = 'edu.wpi.first.ntcore'
+        //    artifactId = 'ntcore-cpp'
+        //    headerClassifier = 'headers'
+        //    ext = 'zip'
+        //    version = getNtCoreVersion()
+        //    sharedConfigs = [ SnobotSimCppCtre: [],
+        //                      CTRLibDriver: [] ]
+        //}
+        //halsim(DependencyConfig) {
+        //    groupId = 'edu.wpi.first.hal'
+        //    artifactId = 'hal'
+        //    headerClassifier = 'headers'
+        //    ext = 'zip'
+        //    version = getHalHeadersVersion()
+        //    sharedConfigs = [ SnobotSimCppCtre: [],
+        //                      CTRE_PhoenixCCI: [],
+        //                      SnobotSimJavaCtre: [] ]
+        //}
     }
 
     components {
-        SnobotSimJavaCtre(NativeLibrarySpec) {
-            baseName = 'SnobotSimJavaCtre'
+    
+        CtreMockHooks(NativeLibrarySpec) {
+
+            sources {
+                cpp {
+                    source {
+                        srcDirs = [ "mock_hooks/src"]
+                        includes = ["**/*.cpp"]
+                    }
+                    exportedHeaders {
+                        srcDirs = [ "ctre_libraries/include",
+                                    "mock_hooks/include"]
+                    }
+                }
+            }
+        }
+        
+        CtrePhoenixJava(NativeLibrarySpec) {
+            baseName = 'CTRE_PhoenixCCI'
+            
+            binaries {
+                all {
+                   it.lib project: ':ctre_override', library: 'CtreMockHooks', linkage: 'shared'
+                }
+            }
         
             sources {
                 cpp {
                     source {
-                        srcDirs = ['ctre_source/cpp/shared/lib',
-                                   'snobot_sim/shared/lib', 
-                                    'snobot_sim/java_simulator/lib' ]
+                        srcDirs = ['ctre_java_libraries/src']
                         includes = ["**/*.cpp"]
                     }
                     exportedHeaders {
-                        srcDirs = [
-                                   "ctre_source/cpp/shared/include",
-                                   "snobot_sim/java_simulator/include"]
+                        srcDirs = [ "ctre_libraries/include"]
                     }
                 }
             }
         }
             
-        CTRE_PhoenixCCI(NativeLibrarySpec) {
-            baseName = 'CTRE_PhoenixCCI'
-                
-            binaries {
-                all {
-                   it.lib project: ':ctre_override', library: 'SnobotSimJavaCtre', linkage: 'static'
-                }
-            }
-            sources {
-                cpp {
-                    source {
-                        srcDirs = [ 'java/jni', 
-                                    "ctre_source/java/jni/cpp"]
-                        includes = ["**/*.cpp"]
-                    }
-                    exportedHeaders {
-                        srcDirs = []
-                    }
-                }
-            }
-        }
     }
 }
 

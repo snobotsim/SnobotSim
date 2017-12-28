@@ -9,8 +9,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.ctre.phoenix.MotorControl.SmartMotorController.FeedbackDevice;
-import com.ctre.phoenix.MotorControl.SmartMotorController.TalonControlMode;
+import com.ctre.phoenix.MotorControl.ControlMode;
+import com.ctre.phoenix.MotorControl.FeedbackDevice;
 import com.ctre.phoenix.MotorControl.CAN.TalonSRX;
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
@@ -32,9 +32,8 @@ public class TestCtreCanTalon_ControlMotionMagic extends BaseSimulatorTest
         for (int i = 0; i < 64; ++i)
         {
 
-            output.add(new Object[]{ i, FeedbackDevice.CtreMagEncoder_Relative });
-            output.add(new Object[]{ i, FeedbackDevice.CtreMagEncoder_Absolute });
-            output.add(new Object[]{ i, FeedbackDevice.AnalogPot });
+            output.add(new Object[]{ i, FeedbackDevice.Analog });
+            output.add(new Object[]{ i, FeedbackDevice.QuadEncoder });
         }
 
         return output;
@@ -60,18 +59,15 @@ public class TestCtreCanTalon_ControlMotionMagic extends BaseSimulatorTest
         Assert.assertTrue(DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(mRawHandle, motorConfig,
                 new StaticLoadMotorSimulationConfig(.2)));
 
-        talon.setP(.11);
-        talon.setI(.005);
-        talon.setF(0.018);
-        talon.setIZone(2);
+        talon.config_kP(0, .11, 5);
+        talon.config_kI(0, .005, 5);
+        talon.config_kF(0, 0.018, 5);
+        talon.config_IntegralZone(0, 2, 5);
 
-        talon.configEncoderCodesPerRev(100);
-
-        talon.setFeedbackDevice(mFeedbackDevice);
-        talon.changeControlMode(TalonControlMode.MotionMagic);
-        talon.setMotionMagicCruiseVelocity(12);
-        talon.setMotionMagicAcceleration(24);
-        talon.set(30 * 12);
+        talon.configSelectedFeedbackSensor(mFeedbackDevice, 5);
+        talon.configMotionCruiseVelocity(12, 0);
+        talon.configMotionAcceleration(24, 0);
+        talon.set(ControlMode.MotionMagic, 30 * 12);
 
         simulateForTime(8, () ->
         {

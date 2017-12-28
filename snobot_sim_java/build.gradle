@@ -31,8 +31,6 @@ sourceSets {
     test {
         java {
             srcDirs = ["java/unit_tests"]
-            exclude '**/simulator_components/ctre/**'
-            exclude '**/com/ctre/**'
         }
     }
 }
@@ -86,6 +84,14 @@ task combineNativeLibrariesIntoOne(type: Jar) {
     from(navx_path + 'libnavx_simulator.so') { 
         into "linux/x86-64"
     }
+    
+    def ctre_path = '../ctre_override/build/libs/ctreMockHooks/shared/'
+    from(ctre_path + 'CtreMockHooks.dll') { 
+        into "windows/x86-64"
+    }
+    from(ctre_path + 'libCtreMockHooks.so') { 
+        into "linux/x86-64"
+    }
 }
 build.dependsOn packageNativeFilesInJar
 
@@ -113,7 +119,7 @@ dependencies {
     
     testCompile project(':ctre_override')
     //testCompile "thirdparty.frc.ctre:Toolsuite-Java:4.4.1.14"
-    testCompile files("$rootDir/templib/CTRE_Phoenix.jar")
+    testCompile files("$rootDir/temp_libs/CTRE_Phoenix.jar")
     testRuntime project(':ctre_override').combineNativeLibrariesIntoOne.outputs.files
 }
 
@@ -216,6 +222,9 @@ model {
 
     }
     binaries {
+        withType(NativeBinarySpec) {
+            it.lib project: ':ctre_override', library: 'CtreMockHooks', linkage: 'shared'
+        }
         withType(StaticLibraryBinarySpec) {
             it.buildable = false
         }
@@ -223,7 +232,7 @@ model {
 }
 
 tasks.withType(Test) {
-    systemProperty "java.library.path", "$rootDir/ctre_override/build/libs/cTRE_PhoenixCCI/shared"
+    systemProperty "java.library.path", "$rootDir/ctre_override/build/libs/ctrePhoenixJava/shared"
 }
 
 apply from: "publish.gradle"

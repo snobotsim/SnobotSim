@@ -18,50 +18,24 @@ public class CanCallbackJni
 
     public static native void reset();
 
+    public static void canCallback(String callbackType, int port, HalCallbackValue halValue)
+    {
+        sLOGGER.log(Level.ERROR, "Unsupported");
+    }
+
     public static void registerCanCallback()
     {
         registerCanCallback("canCallback");
     }
 
-    public static void canCallback(String callbackType, int dummy, HalCallbackValue halValue)
+    public static void canCallbackMotorController(String aName, int aPort, ByteBuffer aData)
     {
-        sLOGGER.log(Level.ERROR, "Shouldn't be called directly " + callbackType + " - " + halValue);
+        sCAN_MANAGER.handleMotorControllerMessage(aName, aPort, aData);
     }
 
-    public static void canCallback(String callbackType, int dummy, int aMessageId, ByteBuffer aData, int aDataSize, int aPeriodMs)
+    public static void canCallbackPigeon(String aName, int aPort, ByteBuffer aData)
     {
-        int canMessageId = aMessageId & 0xFFFFFFC0;
-        int canPort = aMessageId & 0x3F;
-
-        sCAN_MANAGER.handleSendMessage(callbackType, canMessageId, canPort, aData, aDataSize);
+        sCAN_MANAGER.handlePigeonMessage(aName, aPort, aData);
     }
 
-    public static int canCallback(String callbackType, int dummy, int aMessageId, int messageIDMask, ByteBuffer aData, int aTimestamp)
-    {
-        int canMessageId = aMessageId & 0xFFFFFFC0;
-        int canPort = aMessageId & 0x3F;
-
-        return sCAN_MANAGER.handleReceiveMessage(callbackType, canMessageId, canPort, aData);
-    }
-
-    public static int canCallback(String callbackType, int dummy, int messageId, int messageIdMask, int maxMessages)
-    {
-        return sCAN_MANAGER.handleOpenStream(callbackType, messageId, messageIdMask, maxMessages);
-    }
-
-    public static void canCallback(String callbackType, int dummy, int sessionHandle)
-    {
-        sCAN_MANAGER.handleCloseStream(callbackType, sessionHandle);
-    }
-
-    public static int canCallback(String callbackType, int port, int sessionHandle, ByteBuffer[] messages, int messagesToRead)
-    {
-        return sCAN_MANAGER.handleReadStream(callbackType, sessionHandle, messages, messagesToRead);
-    }
-
-    public static void canCallback(String callbackType, int port, float percentVbus, int busOffCount, int txFullCount, int recvErroRCount,
-            int transmitCount)
-    {
-        sLOGGER.log(Level.ERROR, "Unsupported CanCallback (getstatus) ");
-    }
 }

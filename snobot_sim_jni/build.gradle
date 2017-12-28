@@ -111,7 +111,7 @@ dependencies {
     
     testCompile project(':ctre_override')
     //testCompile "thirdparty.frc.ctre:Toolsuite-Java:4.4.1.14"
-    testCompile files("$rootDir/templib/CTRE_Phoenix.jar")
+    testCompile files("$rootDir/temp_libs/CTRE_Phoenix.jar")
     testRuntime project(':ctre_override').combineNativeLibrariesIntoOne.outputs.files
     
 }

@@ -403,7 +403,7 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
         {
         // Default feedback sensor, handle with care
         case 0:
-            // newDevice = FeedbackDevice.QuadEncoder;
+            newDevice = FeedbackDevice.Encoder;
             break;
         case 2:
             newDevice = FeedbackDevice.Analog;

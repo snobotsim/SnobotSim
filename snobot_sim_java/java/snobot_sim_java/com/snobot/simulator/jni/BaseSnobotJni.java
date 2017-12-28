@@ -10,6 +10,7 @@ public class BaseSnobotJni
         JniLibraryResourceLoader.loadLibrary("wpiHal");
         JniLibraryResourceLoader.loadLibrary("halsim_adx_gyro_accelerometer");
         JniLibraryResourceLoader.loadLibrary("navx_simulator");
+        JniLibraryResourceLoader.loadLibrary("CtreMockHooks");
         JniLibraryResourceLoader.loadLibrary("snobotSimJavaJni");
 
         RegisterCallbacksJni.reset();
