@@ -5,6 +5,27 @@
 #include "com_ctre_phoenix_Sensors_PigeonImuJNI.h"
 #include "ctre/phoenix/CCI/PigeonIMU_CCI.h"
 
+#define GET_THREE_AXIS(type, capType, funcName, size)    \
+                                                      \
+   type angles[size];                                    \
+   funcName(&handle, angles);                         \
+                                                      \
+   j##type##Array result;                             \
+   result = env->New##capType##Array(size);              \
+   if (result == NULL) {                              \
+       return NULL;                                   \
+   }                                                  \
+                                                      \
+   j##type fill[size];                                   \
+   for(int i = 0; i < size; ++i)                         \
+   {                                                  \
+       fill[i] = angles[i];                           \
+   }                                                  \
+                                                      \
+   env->Set##capType##ArrayRegion(result, 0, size, fill);     \
+   return result;                                     \
+
+
 /*
  * Class:     com_ctre_phoenix_Sensors_PigeonImuJNI
  * Method:    JNI_new_PigeonImu_Talon
@@ -33,9 +54,9 @@ JNIEXPORT jlong JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1new_1Pig
  * Signature: (JID)V
  */
 JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1ConfigSetParameter
-  (JNIEnv * env, jclass, jlong handle, jint, jdouble)
+  (JNIEnv * env, jclass, jlong handle, jint paramEnum, jdouble paramValue)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
+	c_PigeonIMU_ConfigSetParameter(&handle, paramEnum, paramValue);
 }
 
 /*
@@ -44,9 +65,9 @@ JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1ConfigSet
  * Signature: (JII)V
  */
 JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1SetStatusFrameRateMs
-  (JNIEnv * env, jclass, jlong handle, jint, jint)
+  (JNIEnv * env, jclass, jlong handle, jint statusRate, jint periodMs)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
+	c_PigeonIMU_SetStatusFrameRateMs(&handle, statusRate, periodMs);
 }
 
 /*
@@ -55,9 +76,9 @@ JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1SetStatus
  * Signature: (JD)V
  */
 JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1SetYaw
-  (JNIEnv * env, jclass, jlong handle, jdouble)
+  (JNIEnv * env, jclass, jlong handle, jdouble value)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
+	c_PigeonIMU_SetYaw(&handle, value);
 }
 
 /*
@@ -66,9 +87,9 @@ JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1SetYaw
  * Signature: (JD)V
  */
 JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1AddYaw
-  (JNIEnv * env, jclass, jlong handle, jdouble)
+  (JNIEnv * env, jclass, jlong handle, jdouble value)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
+	c_PigeonIMU_AddYaw(&handle, value);
 }
 
 /*
@@ -79,7 +100,7 @@ JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1AddYaw
 JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1SetYawToCompass
   (JNIEnv * env, jclass, jlong handle)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
+	c_PigeonIMU_SetYawToCompass(&handle);
 }
 
 /*
@@ -88,9 +109,9 @@ JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1SetYawToC
  * Signature: (JD)V
  */
 JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1SetFusedHeading
-  (JNIEnv * env, jclass, jlong handle, jdouble)
+  (JNIEnv * env, jclass, jlong handle, jdouble angleDeg)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
+	c_PigeonIMU_SetFusedHeading(&handle, angleDeg);
 }
 
 /*
@@ -99,9 +120,9 @@ JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1SetFusedH
  * Signature: (JD)V
  */
 JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1AddFusedHeading
-  (JNIEnv * env, jclass, jlong handle, jdouble)
+  (JNIEnv * env, jclass, jlong handle, jdouble angleDeg)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
+	c_PigeonIMU_AddFusedHeading(&handle, angleDeg);
 }
 
 /*
@@ -112,7 +133,7 @@ JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1AddFusedH
 JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1SetFusedHeadingToCompass
   (JNIEnv * env, jclass, jlong handle)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
+	c_PigeonIMU_SetFusedHeadingToCompass(&handle);
 }
 
 /*
@@ -121,9 +142,9 @@ JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1SetFusedH
  * Signature: (JD)V
  */
 JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1SetAccumZAngle
-  (JNIEnv * env, jclass, jlong handle, jdouble)
+  (JNIEnv * env, jclass, jlong handle, jdouble angleDeg)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
+	c_PigeonIMU_SetAccumZAngle(&handle, angleDeg);
 }
 
 /*
@@ -132,9 +153,9 @@ JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1SetAccumZ
  * Signature: (JI)V
  */
 JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1EnableTemperatureCompensation
-  (JNIEnv * env, jclass, jlong handle, jint)
+  (JNIEnv * env, jclass, jlong handle, jint value)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
+	c_PigeonIMU_EnableTemperatureCompensation(&handle, value);
 }
 
 /*
@@ -143,9 +164,9 @@ JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1EnableTem
  * Signature: (JD)V
  */
 JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1SetCompassDeclination
-  (JNIEnv * env, jclass, jlong handle, jdouble)
+  (JNIEnv * env, jclass, jlong handle, jdouble angleDegOffset)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
+	c_PigeonIMU_SetCompassDeclination(&handle, angleDegOffset);
 }
 
 /*
@@ -154,9 +175,9 @@ JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1SetCompas
  * Signature: (JD)V
  */
 JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1SetCompassAngle
-  (JNIEnv * env, jclass, jlong handle, jdouble)
+  (JNIEnv * env, jclass, jlong handle, jdouble angleDeg)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
+	c_PigeonIMU_SetCompassAngle(&handle, angleDeg);
 }
 
 /*
@@ -165,9 +186,9 @@ JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1SetCompas
  * Signature: (JI)V
  */
 JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1EnterCalibrationMode
-  (JNIEnv * env, jclass, jlong handle, jint)
+  (JNIEnv * env, jclass, jlong handle, jint value)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
+	c_PigeonIMU_EnterCalibrationMode(&handle, value);
 }
 
 /*
@@ -178,7 +199,18 @@ JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1EnterCali
 JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetGeneralStatus
   (JNIEnv * env, jclass, jlong handle, jobject, jobject)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
+	int state = 0;
+	int currentMode = 0;
+	int calibrationError = 0;
+	int bCalIsBooting = 0;
+	double tempC = 0;
+	int upTimeSec = 0;
+	int noMotionBiasCount = 0;
+	int tempCompensationCount = 0;
+	int lastError = 0;
+
+	c_PigeonIMU_GetGeneralStatus(&handle, &state, &currentMode, &calibrationError, &bCalIsBooting,
+			&tempC, &upTimeSec, &noMotionBiasCount, &tempCompensationCount, &lastError);
 }
 
 /*
@@ -189,10 +221,7 @@ JNIEXPORT void JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetGenera
 JNIEXPORT jdoubleArray JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1Get6dQuaternion
   (JNIEnv * env, jclass, jlong handle)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
-
-    jdoubleArray output;
-    return output;
+	GET_THREE_AXIS(double, Double, c_PigeonIMU_Get6dQuaternion, 4);
 }
 
 /*
@@ -203,10 +232,7 @@ JNIEXPORT jdoubleArray JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1G
 JNIEXPORT jdoubleArray JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetYawPitchRoll
   (JNIEnv * env, jclass, jlong handle)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
-
-    jdoubleArray output;
-    return output;
+	GET_THREE_AXIS(double, Double, c_PigeonIMU_GetYawPitchRoll, 3);
 }
 
 /*
@@ -217,10 +243,7 @@ JNIEXPORT jdoubleArray JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1G
 JNIEXPORT jdoubleArray JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetAccumGyro
   (JNIEnv * env, jclass, jlong handle)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
-
-    jdoubleArray output;
-    return output;
+	GET_THREE_AXIS(double, Double, c_PigeonIMU_GetAccumGyro, 3);
 }
 
 /*
@@ -231,8 +254,9 @@ JNIEXPORT jdoubleArray JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1G
 JNIEXPORT jdouble JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetAbsoluteCompassHeading
   (JNIEnv * env, jclass, jlong handle)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
-    return 0;
+	double output = 0;
+	c_PigeonIMU_GetAbsoluteCompassHeading(&handle, &output);
+    return output;
 }
 
 /*
@@ -243,8 +267,9 @@ JNIEXPORT jdouble JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetAbs
 JNIEXPORT jdouble JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetCompassHeading
   (JNIEnv * env, jclass, jlong handle)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
-    return 0;
+	double output = 0;
+	c_PigeonIMU_GetCompassHeading(&handle, &output);
+    return output;
 }
 
 /*
@@ -255,8 +280,9 @@ JNIEXPORT jdouble JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetCom
 JNIEXPORT jdouble JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetCompassFieldStrength
   (JNIEnv * env, jclass, jlong handle)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
-    return 0;
+	double output = 0;
+	c_PigeonIMU_GetCompassFieldStrength(&handle, &output);
+    return output;
 }
 
 /*
@@ -267,8 +293,9 @@ JNIEXPORT jdouble JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetCom
 JNIEXPORT jdouble JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetTemp
   (JNIEnv * env, jclass, jlong handle)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
-    return 0;
+	double output = 0;
+	c_PigeonIMU_GetTemp(&handle, &output);
+    return output;
 }
 
 /*
@@ -279,8 +306,9 @@ JNIEXPORT jdouble JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetTem
 JNIEXPORT jint JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetUpTime
   (JNIEnv * env, jclass, jlong handle)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
-    return 0;
+	int output = 0;
+	c_PigeonIMU_GetUpTime(&handle, &output);
+    return output;
 }
 
 /*
@@ -291,10 +319,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetUpTime
 JNIEXPORT jshortArray JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetRawMagnetometer
   (JNIEnv * env, jclass, jlong handle)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
-
-    jshortArray output;
-    return output;
+	GET_THREE_AXIS(short, Short, c_PigeonIMU_GetRawMagnetometer, 3);
 }
 
 /*
@@ -305,10 +330,7 @@ JNIEXPORT jshortArray JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1Ge
 JNIEXPORT jshortArray JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetBiasedMagnetometer
   (JNIEnv * env, jclass, jlong handle)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
-
-    jshortArray output;
-    return output;
+	GET_THREE_AXIS(short, Short, c_PigeonIMU_GetBiasedMagnetometer, 3);
 }
 
 /*
@@ -319,11 +341,9 @@ JNIEXPORT jshortArray JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1Ge
 JNIEXPORT jshortArray JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetBiasedAccelerometer
   (JNIEnv * env, jclass, jlong handle)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
-
-    jshortArray output;
-    return output;
+	GET_THREE_AXIS(short, Short, c_PigeonIMU_GetBiasedAccelerometer, 3);
 }
+
 
 /*
  * Class:     com_ctre_phoenix_Sensors_PigeonImuJNI
@@ -333,23 +353,7 @@ JNIEXPORT jshortArray JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1Ge
 JNIEXPORT jdoubleArray JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetRawGyro
   (JNIEnv * env, jclass, jlong handle)
 {
-    double angles[3];
-    c_PigeonIMU_GetRawGyro(&handle, angles);
-
-    jdoubleArray result;
-    result = env->NewDoubleArray(3);
-    if (result == NULL) {
-        return NULL;
-    }
-
-    jdouble fill[3];
-    for(int i = 0; i < 3; ++i)
-    {
-        fill[i] = angles[i];
-    }
-
-    env->SetDoubleArrayRegion(result, 0, 3, fill);
-    return result;
+	GET_THREE_AXIS(double, Double, c_PigeonIMU_GetRawGyro, 3);
 }
 
 /*
@@ -360,10 +364,7 @@ JNIEXPORT jdoubleArray JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1G
 JNIEXPORT jdoubleArray JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetAccelerometerAngles
   (JNIEnv * env, jclass, jlong handle)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
-
-    jdoubleArray output;
-    return output;
+	GET_THREE_AXIS(double, Double, c_PigeonIMU_GetAccelerometerAngles, 3);
 }
 
 /*
@@ -374,8 +375,9 @@ JNIEXPORT jdoubleArray JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1G
 JNIEXPORT jdouble JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetFusedHeading__J
   (JNIEnv * env, jclass, jlong handle)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
-    return 0;
+	double value = 0;
+	c_PigeonIMU_GetFusedHeading1(&handle, &value);
+    return value;
 }
 
 /*
@@ -384,10 +386,21 @@ JNIEXPORT jdouble JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetFus
  * Signature: (JLjava/lang/Object;Ljava/lang/Object;)D
  */
 JNIEXPORT jdouble JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetFusedHeading__JLjava_lang_Object_2Ljava_lang_Object_2
-  (JNIEnv * env, jclass, jlong handle, jobject, jobject)
+  (JNIEnv * env, jclass, jlong handle, jobject pigeonImuObj, jobject fusionStatusObj)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
-    return 0;
+	int bIsFusing = 0;
+	int bIsValid = 0;
+	double value = 0;
+	int error = 0;
+
+	c_PigeonIMU_GetFusedHeading2(&handle, &bIsFusing, &bIsValid, &value, &error);
+
+	env->SetBooleanField(fusionStatusObj, env->GetFieldID(env->GetObjectClass(fusionStatusObj), "bIsFusing", "Z"), (bool) bIsFusing);
+	env->SetBooleanField(fusionStatusObj, env->GetFieldID(env->GetObjectClass(fusionStatusObj), "bIsValid", "Z"), (bool) bIsValid);
+	env->SetDoubleField(fusionStatusObj, env->GetFieldID(env->GetObjectClass(fusionStatusObj), "heading", "D"), value);
+	env->SetIntField(fusionStatusObj, env->GetFieldID(env->GetObjectClass(fusionStatusObj), "lastError", "I"), error);
+
+    return value;
 }
 
 /*
@@ -398,8 +411,9 @@ JNIEXPORT jdouble JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetFus
 JNIEXPORT jint JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetState
   (JNIEnv * env, jclass, jlong handle)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
-    return 0;
+	int output = 0;
+	c_PigeonIMU_GetState(&handle, &output);
+    return output;
 }
 
 /*
@@ -410,8 +424,9 @@ JNIEXPORT jint JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetState
 JNIEXPORT jint JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetResetCount
   (JNIEnv * env, jclass, jlong handle)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
-    return 0;
+	int output = 0;
+	c_PigeonIMU_GetResetCount(&handle, &output);
+    return output;
 }
 
 /*
@@ -422,8 +437,9 @@ JNIEXPORT jint JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetResetC
 JNIEXPORT jint JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetResetFlags
   (JNIEnv * env, jclass, jlong handle)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
-    return 0;
+	int output = 0;
+	c_PigeonIMU_GetResetFlags(&handle, &output);
+    return output;
 }
 
 /*
@@ -434,8 +450,9 @@ JNIEXPORT jint JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetResetF
 JNIEXPORT jint JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetFirmVers
   (JNIEnv * env, jclass, jlong handle)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
-    return 0;
+	int output = 0;
+	c_PigeonIMU_GetFirmVers(&handle, &output);
+    return output;
 }
 
 /*
@@ -446,8 +463,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1GetFirmVe
 JNIEXPORT jint JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_GetLastError
   (JNIEnv * env, jclass, jlong handle)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
-    return 0;
+    return (jint) c_PigeonIMU_GetLastError(&handle);
 }
 
 /*
@@ -458,6 +474,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_GetLastError
 JNIEXPORT jboolean JNICALL Java_com_ctre_phoenix_Sensors_PigeonImuJNI_JNI_1HasResetOccured
   (JNIEnv * env, jclass, jlong handle)
 {
-    LOG_UNSUPPORTED_CAN_FUNC("");
-    return false;
+	bool output = 0;
+	c_PigeonIMU_HasResetOccured(&handle, &output);
+    return output;
 }

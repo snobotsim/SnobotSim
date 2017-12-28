@@ -7,12 +7,17 @@
 #include <string>
 #include <vector>
 
+#define RECEIVE_HELPER(paramName, size)                          \
+	MotorControllerWrapper* wrapper = ConvertToWrapper(handle);  \
+	uint8_t buffer[size];                                        \
+	std::memset(&buffer[0], 0, size);                            \
+	wrapper->Receive(paramName, buffer);
+
 
 std::vector<SnobotSim::CTRE_CallbackFunc> gMotorControllerCallbacks;
 
 void SnobotSim::SetMotControllerCallback(SnobotSim::CTRE_CallbackFunc callback)
 {
-	std::cout << "Setting callback " << std::endl;
 	gMotorControllerCallbacks.clear();
 	gMotorControllerCallbacks.push_back(callback);
 }
@@ -31,10 +36,8 @@ public:
 	}
 	void Send(const std::string& aName, uint8_t* aBuffer)
 	{
-		std::cout << "Sending..." << std::endl;
 		if(!gMotorControllerCallbacks.empty())
 		{
-			std::cout << "About to call.... " << this << "  *** " << aName.c_str() << ", " << mDeviceId << std::endl;
 			gMotorControllerCallbacks[0](aName.c_str(), mDeviceId, aBuffer);
 		}
 		else
@@ -47,7 +50,6 @@ public:
 	{
 		if(!gMotorControllerCallbacks.empty())
 		{
-			std::cout << "About to call SEND.... " << this << "  *** " << aName.c_str() << ", " << mDeviceId << std::endl;
 			gMotorControllerCallbacks[0](aName.c_str(), mDeviceId, aBuffer);
 		}
 		else
@@ -110,6 +112,24 @@ public:
 		delete buffer;
 	}
 
+	template<typename T0, typename T1, typename T2, typename T3>
+	void Send(const std::string& aName, T0& param0, T1& param1, T2& param2, T3& param3)
+	{
+		int size = sizeof(T0) + sizeof(T1) + sizeof(T2) + sizeof(T3);
+
+		uint8_t* buffer = new uint8_t[size];
+		std::memset(&buffer[0], 0, size);
+
+		uint32_t offset = 0;
+		PushValue(buffer, param0, offset);
+		PushValue(buffer, param1, offset);
+		PushValue(buffer, param2, offset);
+		PushValue(buffer, param3, offset);
+		Send(aName, buffer);
+
+		delete buffer;
+	}
+
 	template <typename T>
 	void PushValue(uint8_t* buffer, T& value, uint32_t& offset)
 	{
@@ -153,93 +173,106 @@ extern "C"{
 	}
 	void c_MotController_SetNeutralMode(void *handle, int neutralMode)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("SetNeutralMode", neutralMode);
 	}
 	void c_MotController_SetSensorPhase(void *handle, bool PhaseSensor)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("SetSensorPhase", PhaseSensor);
 	}
 	void c_MotController_SetInverted(void *handle, bool invert)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("SetInverted", invert);
 	}
 	ErrorCode c_MotController_ConfigOpenLoopRamp(void *handle, float secondsFromNeutralToFull, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("ConfigOpenLoopRamp", secondsFromNeutralToFull);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_ConfigClosedLoopRamp(void *handle, float secondsFromNeutralToFull, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("ConfigClosedLoopRamp", secondsFromNeutralToFull);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_ConfigPeakOutputForward(void *handle, float percentOut, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("ConfigPeakOutputForward", percentOut);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_ConfigPeakOutputReverse(void *handle, float percentOut, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("ConfigPeakOutputReverse", percentOut);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_ConfigNominalOutputForward(void *handle, float percentOut, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("ConfigNominalOutputForward", percentOut);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_ConfigNominalOutputReverse(void *handle, float percentOut, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("ConfigNominalOutputReverse", percentOut);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_ConfigNeutralDeadband(void *handle, float percentDeadband, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("ConfigNeutralDeadband", percentDeadband);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_ConfigVoltageCompSaturation(void *handle, float voltage, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("ConfigVoltageCompSaturation", voltage);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_ConfigVoltageMeasurementFilter(void *handle, int filterWindowSamples, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("ConfigVoltageMeasurementFilter", filterWindowSamples);
 		return (ErrorCode) 0;
 	}
 	void c_MotController_EnableVoltageCompensation(void *handle, bool enable)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("EnableVoltageCompensation", enable);
 	}
 	ErrorCode c_MotController_GetBusVoltage(void *handle, float *voltage)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		RECEIVE_HELPER("GetBusVoltage", 4);
+		std::memcpy(voltage, &buffer[0], 4);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_GetMotorOutputPercent(void *handle, float *percentOutput)
 	{
-		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
-		uint8_t buffer[4];
-		wrapper->Receive("GetMotorOutputPercent", buffer);
-
+		RECEIVE_HELPER("GetMotorOutputPercent", 4);
 		std::memcpy(percentOutput, &buffer[0], 4);
-
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_GetOutputCurrent(void *handle, float *current)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		RECEIVE_HELPER("GetOutputCurrent", 4);
+		std::memcpy(current, &buffer[0], 4);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_GetTemperature(void *handle, float *temperature)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		RECEIVE_HELPER("GetTemperature", 4);
+		std::memcpy(temperature, &buffer[0], 4);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_ConfigRemoteFeedbackFilter(void *handle, int arbId, int peripheralIdx, int reserved, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("ConfigRemoteFeedbackFilter", arbId, peripheralIdx, reserved);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_ConfigSelectedFeedbackSensor(void *handle, int feedbackDevice, int timeoutMs)
@@ -251,80 +284,85 @@ extern "C"{
 	}
 	ErrorCode c_MotController_GetSelectedSensorPosition(void *handle, int *param)
 	{
-		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
-		uint8_t buffer[4];
-		wrapper->Receive("GetSelectedSensorPosition", buffer);
-
+		RECEIVE_HELPER("GetSelectedSensorPosition", 4);
 		std::memcpy(param, &buffer[0], 4);
-
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_GetSelectedSensorVelocity(void *handle, int *param)
 	{
-		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
-		uint8_t buffer[4];
-		wrapper->Receive("GetSelectedSensorVelocity", buffer);
-
+		RECEIVE_HELPER("GetSelectedSensorVelocity", 4);
 		std::memcpy(param, &buffer[0], 4);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_SetSelectedSensorPosition(void *handle, int sensorPos, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("SetSelectedSensorPosition", sensorPos);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_SetControlFramePeriod(void *handle, int frame, int periodMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("SetControlFramePeriod", frame);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_SetStatusFramePeriod(void *handle, int frame, int periodMs, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("SetStatusFramePeriod", frame, periodMs);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_GetStatusFramePeriod(void *handle, int frame, int *periodMs, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		RECEIVE_HELPER("GetStatusFramePeriod", 4);
+		std::memcpy(periodMs, &buffer[0], 4);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_ConfigVelocityMeasurementPeriod(void *handle, int period, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("ConfigVelocityMeasurementPeriod", period);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_ConfigVelocityMeasurementWindow(void *handle, int windowSize, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("ConfigVelocityMeasurementWindow", windowSize);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_ConfigForwardLimitSwitchSource(void *handle, int type, int normalOpenOrClose, int deviceID, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("ConfigForwardLimitSwitchSource", type, normalOpenOrClose, deviceID);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_ConfigReverseLimitSwitchSource(void *handle, int type, int normalOpenOrClose, int deviceID, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("ConfigReverseLimitSwitchSource", type, normalOpenOrClose, deviceID);
 		return (ErrorCode) 0;
 	}
 	void c_MotController_EnableLimitSwitches(void *handle, bool enable)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("EnableLimitSwitches", enable);
 	}
 	ErrorCode c_MotController_ConfigForwardSoftLimit(void *handle, int forwardSensorLimit, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("ConfigForwardSoftLimit", forwardSensorLimit);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_ConfigReverseSoftLimit(void *handle, int reverseSensorLimit, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("ConfigReverseSoftLimit", reverseSensorLimit);
 		return (ErrorCode) 0;
 	}
 	void c_MotController_EnableSoftLimits(void *handle, bool enable)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("EnableSoftLimits", enable);
 	}
 	ErrorCode c_MotController_Config_kP(void *handle, int slotIdx, float value, int timeoutMs)
 	{
@@ -358,41 +396,44 @@ extern "C"{
 	}
 	ErrorCode c_MotController_ConfigAllowableClosedloopError(void *handle, int slotIdx, int allowableClosedLoopError, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("ConfigAllowableClosedloopError", slotIdx, allowableClosedLoopError);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_ConfigMaxIntegralAccumulator(void *handle, int slotIdx, float iaccum, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("ConfigMaxIntegralAccumulator", slotIdx, iaccum);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_SetIntegralAccumulator(void *handle, float iaccum, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("SetIntegralAccumulator", iaccum);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_GetClosedLoopError(void *handle, int *closedLoopError, int slotIdx)
 	{
-		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
-		uint8_t buffer[4];
-		wrapper->Receive("GetClosedLoopError", buffer);
-
+		RECEIVE_HELPER("GetClosedLoopError", 4);
 		std::memcpy(closedLoopError, &buffer[0], 4);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_GetIntegralAccumulator(void *handle, float *iaccum, int slotIdx)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		RECEIVE_HELPER("GetIntegralAccumulator", 4);
+		std::memcpy(iaccum, &buffer[0], 4);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_GetErrorDerivative(void *handle, float *derror, int slotIdx)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		RECEIVE_HELPER("GetErrorDerivative", 4);
+		std::memcpy(derror, &buffer[0], 4);
 		return (ErrorCode) 0;
 	}
 	void c_MotController_SelectProfileSlot(void *handle, int slotIdx)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("SelectProfileSlot", slotIdx);
 	}
 	ErrorCode c_MotController_ConfigMotionCruiseVelocity(void *handle, int sensorUnitsPer100ms, int timeoutMs)
 	{
@@ -408,57 +449,68 @@ extern "C"{
 	}
 	ErrorCode c_MotController_GetLastError(void *handle)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
 		return (ErrorCode) 0;
 	}
 	int c_MotController_GetFirmwareVersion(void *handle)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
-		return 0;
+		int version = 0;
+		RECEIVE_HELPER("GetFirmwareVersion", 4);
+		std::memcpy(&version, &buffer[0], 4);
+		return version;
 	}
 	bool c_MotController_HasResetOccurred(void *handle)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
-		return false;
+		bool output = 0;
+		RECEIVE_HELPER("HasResetOccurred", 4);
+		std::memcpy(&output, &buffer[0], 4);
+		return output;
 	}
 	ErrorCode c_MotController_ConfigSetCustomParam(void *handle, int newValue, int paramIndex, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("ConfigSetCustomParam", newValue, paramIndex);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_ConfigGetCustomParam(void *handle, int *readValue, int paramIndex, int timoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		RECEIVE_HELPER("ConfigGetCustomParam", 4);
+		std::memcpy(readValue, &buffer[0], 4);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_ConfigSetParameter(void *handle, int param, float value, int subValue, int ordinal, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("ConfigSetParameter", param, value, subValue, ordinal);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_ConfigGetParameter(void *handle, int param, float *value, int ordinal, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		RECEIVE_HELPER("ConfigGetParameter", 4);
+		std::memcpy(value, &buffer[0], 4);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_ConfigPeakCurrentLimit(void *handle, int amps, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("ConfigPeakCurrentLimit", amps);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_ConfigPeakCurrentDuration(void *handle, int milliseconds, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("ConfigPeakCurrentDuration", milliseconds);
 		return (ErrorCode) 0;
 	}
 	ErrorCode c_MotController_ConfigContinuousCurrentLimit(void *handle, int amps, int timeoutMs)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("ConfigContinuousCurrentLimit", amps);
 		return (ErrorCode) 0;
 	}
 	void c_MotController_EnableCurrentLimit(void *handle, bool enable)
 	{
-		LOG_UNSUPPORTED_CAN_FUNC("");
+		MotorControllerWrapper* wrapper = ConvertToWrapper(handle);
+		wrapper->Send("EnableCurrentLimit", enable);
 	}
 	ErrorCode c_MotController_SetLastError(void *handle, int error)
 	{

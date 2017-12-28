@@ -47,7 +47,7 @@ public class CtreManager
             int mode = aData.getInt();
             int param0 = aData.getInt();
             int param1 = aData.getInt();
-            System.out.println("Setting demand " + mode + ", " + param0 + ", " + param1);
+            sLOGGER.log(Level.DEBUG, "Setting demand " + mode + ", " + param0 + ", " + param1);
 
             switch (mode)
             {
@@ -79,8 +79,6 @@ public class CtreManager
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
 
             int feedbackDevice = aData.getInt();
-            System.out.println("feedbackDevice " + feedbackDevice);
-
             wrapper.setCanFeedbackDevice((byte) feedbackDevice);
 
         }
@@ -198,7 +196,12 @@ public class CtreManager
             aData.putDouble(wrapper.getYawWrapper().getAngle());
             aData.putDouble(wrapper.getPitchWrapper().getAngle());
             aData.putDouble(wrapper.getRollWrapper().getAngle());
+        }
+        else if ("GetFusedHeading".equals(aName))
+        {
+            CtrePigeonImuSim wrapper = getPigeonWrapper(aPort);
 
+            aData.putDouble(wrapper.getYawWrapper().getAngle());
         }
         else
         {

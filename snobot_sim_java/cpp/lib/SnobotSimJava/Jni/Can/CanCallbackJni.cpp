@@ -9,7 +9,6 @@
 #include "MockHooks.h"
 
 #include "support/jni_util.h"
-#include <iostream>
 
 using namespace wpi::java;
 using namespace SnobotSimJava;
@@ -26,7 +25,6 @@ CanCallbackHelperContainer gCanCallbackContainer;
 
 void CtreCallback(const char* name, uint32_t messageId, uint8_t* buffer, const jmethodID& aMethodId)
 {
-	std::cout << "Setting up callbacks " << aMethodId << std::endl;
 	const jclass& aClazz = gCanCallbackContainer.mClazz;
 
 	JavaVMAttachArgs args = {JNI_VERSION_1_2, 0, 0};
@@ -90,7 +88,6 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_can_CanCallbackJni_register
     }
     SnobotSim::SetMotControllerCallback(&CtreMotorControllerCallback);
     SnobotSim::SetPigeonCallback(&CtrePigeonCallback);
-    std::cout << "Registering CAN stuff" << std::endl;
 }
 
 

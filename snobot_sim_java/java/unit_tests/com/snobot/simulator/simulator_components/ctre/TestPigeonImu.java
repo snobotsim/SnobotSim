@@ -94,7 +94,7 @@ public class TestPigeonImu extends BaseSimulatorTest
 
         rawAngles = imu.getRawGyro();
         fusionStatus = imu.getFusedHeading();
-        // Assert.assertEquals(47, fusedHeading, ANGLE_EPSILON);
+        Assert.assertEquals(47, fusionStatus.heading, ANGLE_EPSILON);
         Assert.assertEquals(47, rawAngles[0], ANGLE_EPSILON);
         Assert.assertEquals(-98, rawAngles[1], ANGLE_EPSILON);
         Assert.assertEquals(24, rawAngles[2], ANGLE_EPSILON);

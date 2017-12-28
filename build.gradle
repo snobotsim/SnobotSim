@@ -41,7 +41,7 @@ ext.build_simulator_java = true
 
 ext.allwpilibVersion = {
     //return '2018.1.1-beta-3-20171209024719-67-g1fa0adb'
-    return 'LOCAL-20171226'
+    return 'LOCAL-20171228'
 }
 
 ext.getHalHeadersVersion = {
