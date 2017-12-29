@@ -79,6 +79,39 @@ public class TestEncoderJni extends BaseSimulatorTest
     }
 
     @Test
+    public void testSpeedControllerFeedbackWithDistancePerTick()
+    {
+        SpeedController sc = new Talon(0);
+        Assert.assertFalse(DataAccessorFactory.getInstance().getEncoderAccessor().isHookedUp(0));
+        Assert.assertEquals(-1, DataAccessorFactory.getInstance().getEncoderAccessor().getHookedUpId(0));
+
+        Encoder encoder = new Encoder(1, 2);
+        encoder.setDistancePerPulse(.0002);
+        Assert.assertFalse(DataAccessorFactory.getInstance().getEncoderAccessor().isHookedUp(0));
+        Assert.assertEquals(-1, DataAccessorFactory.getInstance().getEncoderAccessor().getHookedUpId(0));
+
+        Assert.assertTrue(DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(0, 0));
+        Assert.assertTrue(
+                DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(0, new SimpleMotorSimulationConfig(12)));
+        Assert.assertTrue(DataAccessorFactory.getInstance().getEncoderAccessor().isHookedUp(0));
+        Assert.assertEquals(0, DataAccessorFactory.getInstance().getEncoderAccessor().getHookedUpId(0));
+
+        simulateForTime(1, () ->
+        {
+            sc.set(1);
+        });
+
+        Assert.assertEquals(12.0, encoder.getDistance(), DOUBLE_EPSILON);
+        Assert.assertEquals(12.0, DataAccessorFactory.getInstance().getEncoderAccessor().getDistance(0), DOUBLE_EPSILON);
+        Assert.assertEquals(12.0 / 4, DataAccessorFactory.getInstance().getEncoderAccessor().getRaw(0), DOUBLE_EPSILON);
+
+        encoder.reset();
+        Assert.assertEquals(0.0, encoder.getDistance(), DOUBLE_EPSILON);
+        Assert.assertEquals(0.0, DataAccessorFactory.getInstance().getEncoderAccessor().getDistance(0), DOUBLE_EPSILON);
+        Assert.assertEquals(0.0, DataAccessorFactory.getInstance().getEncoderAccessor().getRaw(0), DOUBLE_EPSILON);
+    }
+
+    @Test
     public void testSimulatorFeedbackNoUpdate()
     {
         Encoder encoder = new Encoder(1, 2);

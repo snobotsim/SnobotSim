@@ -54,8 +54,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_Digita
     for(int i = 0; i < HAL_GetNumDigitalHeaders(); ++i)
     {
         gDigitalInArrayIndices[i] = i;
-        HALSIM_RegisterDIOInitializedCallback(i, &DigitalIOCallback, &gDigitalInArrayIndices[i], false);
-        HALSIM_RegisterDIOValueCallback(i, &DigitalIOCallback, &gDigitalInArrayIndices[i], false);
+        HALSIM_RegisterDIOAllCallbacks(i, &DigitalIOCallback, &gDigitalInArrayIndices[i], false);
     }
 }
 

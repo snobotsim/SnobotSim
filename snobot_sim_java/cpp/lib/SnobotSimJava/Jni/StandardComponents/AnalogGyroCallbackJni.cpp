@@ -56,9 +56,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_Analog
     for(int i = 0; i < HAL_GetNumAccumulators(); ++i)
     {
         gAnalogGyroArrayIndices[i] = i;
-        HALSIM_RegisterAnalogGyroInitializedCallback(i, &AnalogGyroCallback, &gAnalogGyroArrayIndices[i], false);
-        HALSIM_RegisterAnalogGyroAngleCallback(i, &AnalogGyroCallback, &gAnalogGyroArrayIndices[i], false);
-        HALSIM_RegisterAnalogGyroRateCallback(i, &AnalogGyroCallback, &gAnalogGyroArrayIndices[i], false);
+        HALSIM_RegisterAnalogGyroAllCallbacks(i, &AnalogGyroCallback, &gAnalogGyroArrayIndices[i], false);
     }
 }
 

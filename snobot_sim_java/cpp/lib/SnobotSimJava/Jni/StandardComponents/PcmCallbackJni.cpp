@@ -43,7 +43,6 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_PcmCal
     for(int i = 0; i < HAL_GetNumSolenoidChannels(); ++i)
     {
         gSolenoidArrayIndices[i] = i;
-        HALSIM_RegisterPCMSolenoidInitializedCallback(0, i, &SolenoidCallback, &gSolenoidArrayIndices[i], false);
-        HALSIM_RegisterPCMSolenoidOutputCallback(0, i, &SolenoidCallback, &gSolenoidArrayIndices[i], false);
+        HALSIM_RegisterPCMAllSolenoidCallbacks(0, i, &SolenoidCallback, &gSolenoidArrayIndices[i], false);
     }
 }

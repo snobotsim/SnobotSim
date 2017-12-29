@@ -45,6 +45,10 @@ public class EncoderCallbackJni
         {
             SensorActuatorRegistry.get().getEncoders().get(port).reset();
         }
+        else if ("DistancePerPulse".equals(callbackType))
+        {
+            SensorActuatorRegistry.get().getEncoders().get(port).setDistancePerTick(halValue.mDouble);
+        }
         else
         {
             sLOGGER.log(Level.ERROR, "Unknown Encoder callback " + callbackType + " - " + halValue);

@@ -53,14 +53,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_Encode
     for(int i = 0; i < HAL_GetNumEncoders(); ++i)
     {
         gEncoderArrayIndices[i] = i;
-        HALSIM_RegisterEncoderInitializedCallback(i, &EncoderCallback, &gEncoderArrayIndices[i], false);
-        HALSIM_RegisterEncoderCountCallback(i, &EncoderCallback, &gEncoderArrayIndices[i], false);
-        HALSIM_RegisterEncoderPeriodCallback(i, &EncoderCallback, &gEncoderArrayIndices[i], false);
-        HALSIM_RegisterEncoderResetCallback(i, &EncoderCallback, &gEncoderArrayIndices[i], false);
-        HALSIM_RegisterEncoderMaxPeriodCallback(i, &EncoderCallback, &gEncoderArrayIndices[i], false);
-        HALSIM_RegisterEncoderDirectionCallback(i, &EncoderCallback, &gEncoderArrayIndices[i], false);
-        HALSIM_RegisterEncoderReverseDirectionCallback(i, &EncoderCallback, &gEncoderArrayIndices[i], false);
-        HALSIM_RegisterEncoderSamplesToAverageCallback(i, &EncoderCallback, &gEncoderArrayIndices[i], false);
+        HALSIM_RegisterEncoderAllCallbacks(i, &EncoderCallback, &gEncoderArrayIndices[i], false);
     }
 
 

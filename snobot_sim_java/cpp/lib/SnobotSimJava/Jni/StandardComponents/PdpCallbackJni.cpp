@@ -42,6 +42,6 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_PdpCal
     for(int i = 0; i < HAL_GetNumPDPModules(); ++i)
     {
         gPdpArrayIndices[i] = i;
-        HALSIM_RegisterPDPInitializedCallback(i, &PdpCallback, &gPdpArrayIndices[i], false);
+        HALSIM_RegisterPDPAllNonCurrentCallbacks(i, 0, &PdpCallback, &gPdpArrayIndices[i], false);
     }
 }

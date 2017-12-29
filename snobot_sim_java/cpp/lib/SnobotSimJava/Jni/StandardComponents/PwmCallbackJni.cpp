@@ -43,9 +43,6 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_PwmCal
     for(int i = 0; i < HAL_GetNumPWMChannels(); ++i)
     {
         gPwmArrayIndices[i] = i;
-        HALSIM_RegisterPWMInitializedCallback(i, &PwmCallback, &gPwmArrayIndices[i], false);
-        HALSIM_RegisterPWMSpeedCallback(i, &PwmCallback, &gPwmArrayIndices[i], false);
-        HALSIM_RegisterPWMRawValueCallback(i, &PwmCallback, &gPwmArrayIndices[i], false);
-        HALSIM_RegisterPWMPositionCallback(i, &PwmCallback, &gPwmArrayIndices[i], false);
+        HALSIM_RegisterPWMAllCallbacks(i, &PwmCallback, &gPwmArrayIndices[i], false);
     }
 }

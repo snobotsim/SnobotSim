@@ -42,9 +42,6 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_RelayC
     for(int i = 0; i < HAL_GetNumRelayHeaders(); ++i)
     {
         gRelayArrayIndices[i] = i;
-        HALSIM_RegisterRelayInitializedForwardCallback(i, &RelayCallback, &gRelayArrayIndices[i], false);
-        HALSIM_RegisterRelayInitializedReverseCallback(i, &RelayCallback, &gRelayArrayIndices[i], false);
-        HALSIM_RegisterRelayForwardCallback(i, &RelayCallback, &gRelayArrayIndices[i], false);
-        HALSIM_RegisterRelayReverseCallback(i, &RelayCallback, &gRelayArrayIndices[i], false);
+        HALSIM_RegisterRelayAllCallcbaks(i, &RelayCallback, &gRelayArrayIndices[i], false);
     }
 }
