@@ -9,9 +9,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.ctre.phoenix.MotorControl.CAN.TalonSRX;
-import com.ctre.phoenix.Sensors.PigeonIMU;
-import com.ctre.phoenix.Sensors.PigeonIMU.FusionStatus;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.sensors.PigeonIMU;
+import com.ctre.phoenix.sensors.PigeonIMU.FusionStatus;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
@@ -78,8 +78,8 @@ public class TestPigeonImu extends BaseSimulatorTest
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(yPort));
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(zPort));
 
-        rawAngles = imu.getRawGyro();
-        fusionStatus = imu.getFusedHeading();
+        imu.getRawGyro(rawAngles);
+        imu.getFusedHeading(fusionStatus);
         Assert.assertEquals(0, fusionStatus.heading, ANGLE_EPSILON);
         Assert.assertEquals(0, rawAngles[0], ANGLE_EPSILON);
         Assert.assertEquals(0, rawAngles[1], ANGLE_EPSILON);
@@ -92,8 +92,8 @@ public class TestPigeonImu extends BaseSimulatorTest
         DataAccessorFactory.getInstance().getGyroAccessor().setAngle(pitchPort, -98);
         DataAccessorFactory.getInstance().getGyroAccessor().setAngle(rollPort, 24);
 
-        rawAngles = imu.getRawGyro();
-        fusionStatus = imu.getFusedHeading();
+        imu.getRawGyro(rawAngles);
+        imu.getFusedHeading(fusionStatus);
         Assert.assertEquals(47, fusionStatus.heading, ANGLE_EPSILON);
         Assert.assertEquals(47, rawAngles[0], ANGLE_EPSILON);
         Assert.assertEquals(-98, rawAngles[1], ANGLE_EPSILON);

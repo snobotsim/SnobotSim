@@ -9,9 +9,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.ctre.phoenix.MotorControl.ControlMode;
-import com.ctre.phoenix.MotorControl.FeedbackDevice;
-import com.ctre.phoenix.MotorControl.CAN.TalonSRX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
@@ -53,7 +53,7 @@ public class TestCtreCanTalon_ControlPosition extends BaseSimulatorTest
         TalonSRX talon = new TalonSRX(mCanHandle);
         Assert.assertEquals(1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
 
-        talon.configSelectedFeedbackSensor(mFeedbackDevice, 5);
+        talon.configSelectedFeedbackSensor(mFeedbackDevice, 0, 5);
         checkForFeedbackDevice();
 
         // Simulate CIM drivetrain
@@ -72,7 +72,7 @@ public class TestCtreCanTalon_ControlPosition extends BaseSimulatorTest
         });
 
         Assert.assertEquals(36, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPosition(mRawHandle), .5);
-        Assert.assertEquals(36, talon.getSelectedSensorPosition(), .05);
+        Assert.assertEquals(36, talon.getSelectedSensorPosition(0), .05);
     }
 
     private void checkForFeedbackDevice()

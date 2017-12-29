@@ -23,7 +23,7 @@
  
  #pragma once
  
- #include "../core/ctre.h"
+#include "ctre/Phoenix/ErrorCode.h"
  #include <map>
 
 #include "MockHookUtilities.h"
@@ -31,43 +31,56 @@
  static std::map<void *, bool> pigeonPresent;
  
  extern "C"{
-	EXPORT_ void *c_PigeonIMU_Create2(int talonDeviceID);
-	EXPORT_ void *c_PigeonIMU_Create1(int deviceNumber);
+    EXPORT_ void *c_PigeonIMU_Create2(int talonDeviceID);
+    EXPORT_ void *c_PigeonIMU_Create1(int deviceNumber);
 	// void c_PigeonIMU_Destroy(void *handle);
-	EXPORT_ CTR_Code c_PigeonIMU_ConfigSetParameter(void *handle, int paramEnum, double paramValue);
-	EXPORT_ CTR_Code c_PigeonIMU_SetStatusFrameRateMs(void *handle, int statusFrameRate, int periodMs);
-	EXPORT_ CTR_Code c_PigeonIMU_SetYaw(void *handle, double angleDeg);
-	EXPORT_ CTR_Code c_PigeonIMU_AddYaw(void *handle, double angleDeg);
-	EXPORT_ CTR_Code c_PigeonIMU_SetYawToCompass(void *handle);
-	EXPORT_ CTR_Code c_PigeonIMU_SetFusedHeading(void *handle, double angleDeg);
-	EXPORT_ CTR_Code c_PigeonIMU_AddFusedHeading(void *handle, double angleDeg);
-	EXPORT_ CTR_Code c_PigeonIMU_SetFusedHeadingToCompass(void *handle);
-	EXPORT_ CTR_Code c_PigeonIMU_SetAccumZAngle(void *handle, double angleDeg);
-	EXPORT_ CTR_Code c_PigeonIMU_EnableTemperatureCompensation(void *handle, int bTempCompEnable);
-	EXPORT_ CTR_Code c_PigeonIMU_SetCompassDeclination(void *handle, double angleDegOffset);
-	EXPORT_ CTR_Code c_PigeonIMU_SetCompassAngle(void *handle, double angleDeg);
-	EXPORT_ CTR_Code c_PigeonIMU_EnterCalibrationMode(void *handle, int calMode);
-	EXPORT_ CTR_Code c_PigeonIMU_GetGeneralStatus(void *handle, int *state, int *currentMode, int *calibrationError, int *bCalIsBooting, double *tempC, int *upTimeSec, int *noMotionBiasCount, int *tempCompensationCount, int *lastError);
-	EXPORT_ CTR_Code c_PigeonIMU_GetLastError(void *handle);
-	EXPORT_ CTR_Code c_PigeonIMU_Get6dQuaternion(void *handle, double wxyz[4]);
-	EXPORT_ CTR_Code c_PigeonIMU_GetYawPitchRoll(void *handle, double ypr[3]);
-	EXPORT_ CTR_Code c_PigeonIMU_GetAccumGyro(void *handle, double xyz_deg[3]);
-	EXPORT_ CTR_Code c_PigeonIMU_GetAbsoluteCompassHeading(void *handle, double *value);
-	EXPORT_ CTR_Code c_PigeonIMU_GetCompassHeading(void *handle, double *value);
-	EXPORT_ CTR_Code c_PigeonIMU_GetCompassFieldStrength(void *handle, double *value);
-	EXPORT_ CTR_Code c_PigeonIMU_GetTemp(void *handle, double *value);
-	EXPORT_ CTR_Code c_PigeonIMU_GetState(void *handle, int *state);
-	EXPORT_ CTR_Code c_PigeonIMU_GetUpTime(void *handle, int *value);
-	EXPORT_ CTR_Code c_PigeonIMU_GetRawMagnetometer(void *handle, short rm_xyz[3]);
-	EXPORT_ CTR_Code c_PigeonIMU_GetBiasedMagnetometer(void *handle, short bm_xyz[3]);
-	EXPORT_ CTR_Code c_PigeonIMU_GetBiasedAccelerometer(void *handle, short ba_xyz[3]);
-	EXPORT_ CTR_Code c_PigeonIMU_GetRawGyro(void *handle, double xyz_dps[3]);
-	EXPORT_ CTR_Code c_PigeonIMU_GetAccelerometerAngles(void *handle, double tiltAngles[3]);
-	EXPORT_ CTR_Code c_PigeonIMU_GetFusedHeading2(void *handle, int *bIsFusing, int *bIsValid, double *value, int *lastError);
-	EXPORT_ CTR_Code c_PigeonIMU_GetFusedHeading1(void *handle, double *value);
-	EXPORT_ CTR_Code c_PigeonIMU_GetResetCount(void *handle, int *value);
-	EXPORT_ CTR_Code c_PigeonIMU_GetResetFlags(void *handle, int *value);
-	EXPORT_ CTR_Code c_PigeonIMU_GetFirmVers(void *handle, int *value);
-	EXPORT_ CTR_Code c_PigeonIMU_HasResetOccured(void *handle, bool *value);
-	EXPORT_ void c_PigeonIMU_SetLastError(void *handle, int value);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_GetDescription(void *handle, char * toFill, int toFillByteSz, int * numBytesFilled);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_ConfigSetParameter(void *handle, int param, double paramValue, int subValue, int ordinal, int timeoutMs);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_ConfigGetParameter(void *handle, int param, double *value, int ordinal, int timeoutMs);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_ConfigSetCustomParam(void *handle, int newValue, int paramIndex, int timeoutMs);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_ConfigGetCustomParam(void *handle, int *readValue, int paramIndex, int timoutMs);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_SetYaw(void *handle, double angleDeg, int timeoutMs);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_AddYaw(void *handle, double angleDeg, int timeoutMs);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_SetYawToCompass(void *handle, int timeoutMs);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_SetFusedHeading(void *handle, double angleDeg, int timeoutMs);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_AddFusedHeading(void *handle, double angleDeg, int timeoutMs);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_SetFusedHeadingToCompass(void *handle, int timeoutMs);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_SetAccumZAngle(void *handle, double angleDeg, int timeoutMs);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_ConfigTemperatureCompensationEnable(void *handle, int bTempCompEnable, int timeoutMs);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_SetCompassDeclination(void *handle, double angleDegOffset, int timeoutMs);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_SetCompassAngle(void *handle, double angleDeg, int timeoutMs);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_EnterCalibrationMode(void *handle, int calMode, int timeoutMs);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_GetGeneralStatus(void *handle, int *state, int *currentMode, int *calibrationError, int *bCalIsBooting, double *tempC, int *upTimeSec, int *noMotionBiasCount, int *tempCompensationCount, int *lastError);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_GetLastError(void *handle);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_Get6dQuaternion(void *handle, double wxyz[4]);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_GetYawPitchRoll(void *handle, double ypr[3]);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_GetAccumGyro(void *handle, double xyz_deg[3]);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_GetAbsoluteCompassHeading(void *handle, double *value);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_GetCompassHeading(void *handle, double *value);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_GetCompassFieldStrength(void *handle, double *value);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_GetTemp(void *handle, double *value);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_GetState(void *handle, int *state);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_GetUpTime(void *handle, int *value);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_GetRawMagnetometer(void *handle, short rm_xyz[3]);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_GetBiasedMagnetometer(void *handle, short bm_xyz[3]);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_GetBiasedAccelerometer(void *handle, short ba_xyz[3]);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_GetRawGyro(void *handle, double xyz_dps[3]);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_GetAccelerometerAngles(void *handle, double tiltAngles[3]);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_GetFusedHeading2(void *handle, int *bIsFusing, int *bIsValid, double *value, int *lastError);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_GetFusedHeading1(void *handle, double *value);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_GetResetCount(void *handle, int *value);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_GetResetFlags(void *handle, int *value);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_GetFirmwareVersion(void *handle, int * firmwareVers);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_HasResetOccurred(void *handle, bool * hasReset);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_SetLastError(void *handle, int value);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_ConfigSetCustomParam(void *handle, int newValue, int paramIndex, int timeoutMs);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_ConfigGetCustomParam(void *handle, int *readValue, int paramIndex, int timoutMs);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_ConfigSetParameter(void *handle, int param, double value, int subValue, int ordinal, int timeoutMs);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_ConfigGetParameter(void *handle, int param, double *value, int ordinal, int timeoutMs);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_GetFaults(void *handle, int * param);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_GetStickyFaults(void *handle, int * param);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_ClearStickyFaults(void *handle, int timeoutMs);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_SetStatusFramePeriod(void *handle, int frame, int periodMs, int timeoutMs);
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_GetStatusFramePeriod(void *handle, int frame, int *periodMs, int timeoutMs) ;
+	EXPORT_ ctre::phoenix::ErrorCode c_PigeonIMU_SetControlFramePeriod(void *handle, int frame, int periodMs) ;
 }

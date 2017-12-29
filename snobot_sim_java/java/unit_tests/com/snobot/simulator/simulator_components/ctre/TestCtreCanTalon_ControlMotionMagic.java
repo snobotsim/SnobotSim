@@ -9,9 +9,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.ctre.phoenix.MotorControl.ControlMode;
-import com.ctre.phoenix.MotorControl.FeedbackDevice;
-import com.ctre.phoenix.MotorControl.CAN.TalonSRX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
@@ -64,7 +64,7 @@ public class TestCtreCanTalon_ControlMotionMagic extends BaseSimulatorTest
         talon.config_kF(0, 0.018, 5);
         talon.config_IntegralZone(0, 2, 5);
 
-        talon.configSelectedFeedbackSensor(mFeedbackDevice, 5);
+        talon.configSelectedFeedbackSensor(mFeedbackDevice, 0, 5);
         talon.configMotionCruiseVelocity(12, 0);
         talon.configMotionAcceleration(24, 0);
         talon.set(ControlMode.MotionMagic, 30 * 12);
@@ -73,7 +73,7 @@ public class TestCtreCanTalon_ControlMotionMagic extends BaseSimulatorTest
         {
         });
 
-        Assert.assertEquals(0, talon.getClosedLoopError(), 2);
+        Assert.assertEquals(0, talon.getClosedLoopError(0), 2);
     }
 
 }

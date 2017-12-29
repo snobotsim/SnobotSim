@@ -81,8 +81,8 @@ dependencies {
 
 
 def jniClasses = ['com.ctre.phoenix.CTRLoggerJNI',
-                  'com.ctre.phoenix.MotorControl.CAN.MotControllerJNI',
-                  'com.ctre.phoenix.Sensors.PigeonImuJNI']
+                  'com.ctre.phoenix.motorcontrol.can.MotControllerJNI',
+                  'com.ctre.phoenix.sensors.PigeonImuJNI']
 
 model {
     jniConfigs {
@@ -96,63 +96,23 @@ model {
         CtreMockHooks(ExportsConfig) {
             x86SymbolFilter = { symbols->
                 def retList = []
-                println "X86"
-                println symbols
                 return retList
             }
             x64SymbolFilter = { symbols->
                 def retList = []
-                println "X64"
-                println symbols
                 return retList
             }
         }
         CtrePhoenixJava(ExportsConfig) {
             x86SymbolFilter = { symbols->
                 def retList = []
-                println "X86"
-                println symbols
                 return retList
             }
             x64SymbolFilter = { symbols->
                 def retList = []
-                println "X64"
-                println symbols
                 return retList
             }
         }
-    }
-    
-    dependencyConfigs {
-        //wpiutil(DependencyConfig) {
-        //    groupId = 'edu.wpi.first.wpiutil'
-        //    artifactId = 'wpiutil-cpp'
-        //    headerClassifier = 'headers'
-        //    ext = 'zip'
-        //    version = getWpiUtilVersion()
-        //    sharedConfigs = [ SnobotSimCppCtre: [],
-        //                      SnobotSimJavaCtre: [],
-        //                      CTRLibDriver: [] ]
-        //}
-        //ntcore(DependencyConfig) {
-        //    groupId = 'edu.wpi.first.ntcore'
-        //    artifactId = 'ntcore-cpp'
-        //    headerClassifier = 'headers'
-        //    ext = 'zip'
-        //    version = getNtCoreVersion()
-        //    sharedConfigs = [ SnobotSimCppCtre: [],
-        //                      CTRLibDriver: [] ]
-        //}
-        //halsim(DependencyConfig) {
-        //    groupId = 'edu.wpi.first.hal'
-        //    artifactId = 'hal'
-        //    headerClassifier = 'headers'
-        //    ext = 'zip'
-        //    version = getHalHeadersVersion()
-        //    sharedConfigs = [ SnobotSimCppCtre: [],
-        //                      CTRE_PhoenixCCI: [],
-        //                      SnobotSimJavaCtre: [] ]
-        //}
     }
 
     components {

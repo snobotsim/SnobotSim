@@ -1,5 +1,6 @@
 package com.snobot.simulator.simulator_components.ctre;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -325,11 +326,9 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
         double v_term = mPidConstants[mCurrentPidProfile].mF * aGoalVelocity;
         double output = p_term + d_term + v_term;
 
-//        DecimalFormat df = new DecimalFormat("#.##");
-//        System.out.println(output + "  (" + 
-//                "P: " + df.format(aCurrentPosition) + ", " + "V: " + df.format(aCurrentVelocity) + " - " + 
-//                "GP: " + aGoalPosition + ", GV: " + aGoalVelocity + ") " + 
-//                "P: " + p_term + ", V: " + v_term);
+        DecimalFormat df = new DecimalFormat("#.##");
+        System.out.println(output + "  (" + "P: " + df.format(aCurrentPosition) + ", " + "V: " + df.format(aCurrentVelocity) + " - " + "GP: "
+                + aGoalPosition + ", GV: " + aGoalVelocity + ") " + "P: " + p_term + ", V: " + v_term);
 
         return output;
     }

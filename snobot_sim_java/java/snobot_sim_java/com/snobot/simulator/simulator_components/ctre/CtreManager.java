@@ -9,6 +9,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.snobot.simulator.SensorActuatorRegistry;
+import com.snobot.simulator.simulator_components.ctre.CtreTalonSrxSpeedControllerSim.MotionProfilePoint;
 
 public class CtreManager
 {
@@ -34,6 +35,8 @@ public class CtreManager
     public void handleMotorControllerMessage(String aCallback, int aCanPort, ByteBuffer aData)
     {
         aData.order(ByteOrder.LITTLE_ENDIAN);
+
+        sLOGGER.log(Level.TRACE, "Handling motor controller message " + aCallback + ", " + aCanPort);
 
         if ("Create".equals(aCallback))
         {
@@ -65,6 +68,9 @@ public class CtreManager
                 CtreTalonSrxSpeedControllerSim leadTalon = getMotorControllerWrapper(followerPort);
                 leadTalon.addFollower(wrapper);
                 break;
+            case 6:
+                wrapper.setMotionProfilingCommand(param0);
+                break;
             case 7:
                 wrapper.setMotionMagicGoal(param0);
                 break;
@@ -87,7 +93,7 @@ public class CtreManager
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
 
             int slot = aData.getInt();
-            float value = aData.getFloat();
+            double value = aData.getDouble();
 
             wrapper.setPGain(slot, value);
         }
@@ -96,7 +102,7 @@ public class CtreManager
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
 
             int slot = aData.getInt();
-            float value = aData.getFloat();
+            double value = aData.getDouble();
 
             wrapper.setIGain(slot, value);
         }
@@ -105,7 +111,7 @@ public class CtreManager
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
 
             int slot = aData.getInt();
-            float value = aData.getFloat();
+            double value = aData.getDouble();
 
             wrapper.setDGain(slot, value);
         }
@@ -114,7 +120,7 @@ public class CtreManager
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
 
             int slot = aData.getInt();
-            float value = aData.getFloat();
+            double value = aData.getDouble();
 
             wrapper.setFGain(slot, value);
         }
@@ -134,6 +140,19 @@ public class CtreManager
 
             wrapper.setMotionMagicMaxAcceleration(sensorUnitsPer100msPerSec);
         }
+        else if ("PushMotionProfileTrajectory".equals(aCallback))
+        {
+            double position = aData.getDouble();
+            double velocity = aData.getDouble();
+
+            CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
+            MotionProfilePoint point = new MotionProfilePoint(wrapper.getMotionProfileSize() + 1, position, velocity);
+            wrapper.addMotionProfilePoint(point);
+        }
+        else if ("ProcessMotionProfileBuffer".equals(aCallback))
+        {
+            // Nothing to do
+        }
 
         ////////////////////////
         //
@@ -143,7 +162,7 @@ public class CtreManager
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
 
             float speed = (float) wrapper.get();
-            aData.putFloat(0, speed);
+            aData.putDouble(0, speed);
 
         }
         else if ("GetSelectedSensorPosition".equals(aCallback))
@@ -170,6 +189,33 @@ public class CtreManager
             aData.putInt(0, speed);
 
         }
+        else if ("GetMotionProfileStatus".equals(aCallback))
+        {
+            CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
+
+            aData.putInt(4550);
+            aData.putInt(wrapper.getMotionProfileSize());
+            aData.putInt(0);
+            aData.put((byte) 3);
+            aData.put((byte) 4);
+            aData.put((byte) 5);
+            aData.put((byte) 0);
+            aData.putInt(4444);
+            aData.putInt(3333);
+        }
+        else if ("GetActiveTrajectoryPosition".equals(aCallback))
+        {
+            CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
+            MotionProfilePoint point = wrapper.getMotionProfilePoint();
+            aData.putInt(point == null ? 0 : (int) point.mPosition);
+        }
+        else if ("GetActiveTrajectoryVelocity".equals(aCallback))
+        {
+            CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
+            MotionProfilePoint point = wrapper.getMotionProfilePoint();
+            aData.putInt(point == null ? 0 : (int) point.mVelocity);
+
+        }
         else
         {
             sLOGGER.log(Level.ERROR, "Unknown motor callback: " + aCallback);
@@ -179,6 +225,8 @@ public class CtreManager
     public void handlePigeonMessage(String aName, int aPort, ByteBuffer aData)
     {
         aData.order(ByteOrder.LITTLE_ENDIAN);
+
+        sLOGGER.log(Level.TRACE, "Handling pigeon message " + aName + ", " + aPort);
 
         if ("Create".equals(aName))
         {
