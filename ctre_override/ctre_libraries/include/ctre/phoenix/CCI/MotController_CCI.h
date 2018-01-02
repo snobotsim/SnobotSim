@@ -1,9 +1,9 @@
-#include "ctre/Phoenix/ErrorCode.h"
+#include "ctre/phoenix/ErrorCode.h"
 
 #include "MockHookUtilities.h"
 
 extern "C"{
-    EXPORT_ void* c_MotController_Create1(int baseArbId);
+	EXPORT_ void* c_MotController_Create1(int baseArbId);
 
 	EXPORT_ ctre::phoenix::ErrorCode c_MotController_GetDeviceNumber(void *handle, int *deviceNumber);
 	EXPORT_ ctre::phoenix::ErrorCode c_MotController_GetDescription(void *handle, char * toFill, int toFillByteSz, int * numBytesFilled);

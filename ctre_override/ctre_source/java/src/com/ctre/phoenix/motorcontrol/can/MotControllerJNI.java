@@ -189,7 +189,7 @@ public class MotControllerJNI extends CTREJNIWrapper {
 	/**
 	 * Gets the temperature of the motor controller.
 	 *
-	 * @return The temperature of the motor controller (in °C)
+	 * @return The temperature of the motor controller (in 'C)
 	 */
 	public static native double GetTemperature(long handle);
 

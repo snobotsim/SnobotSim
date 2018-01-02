@@ -2,13 +2,14 @@
 #include "MockHooks.h"
 #include "ctre/phoenix/CCI/PigeonIMU_CCI.h"
 #include <vector>
+#include <cstring>
 
 
-#define RECEIVE_HELPER(paramName, size)                             \
-    PigeonImuSimulatorWrapper* wrapper = ConvertToWrapper(handle);  \
-    uint8_t buffer[size];                                           \
-    std::memset(&buffer[0], 0, size);                               \
-    wrapper->Receive(paramName, buffer);                            \
+#define RECEIVE_HELPER(paramName, size)                                   \
+    PigeonImuSimulatorWrapper* wrapper = ConvertToPigeonWrapper(handle);  \
+    uint8_t buffer[size];                                                 \
+    std::memset(&buffer[0], 0, size);                                     \
+    wrapper->Receive(paramName, buffer);                                  \
     uint32_t offset = 0;
 
 std::vector<SnobotSim::CTRE_CallbackFunc> gPigeonCallbacks;
@@ -146,7 +147,7 @@ public:
 };
 
 
-PigeonImuSimulatorWrapper* ConvertToWrapper(void* param)
+PigeonImuSimulatorWrapper* ConvertToPigeonWrapper(void* param)
 {
     long handle = *static_cast<long*>(param);
 
@@ -167,11 +168,12 @@ PigeonImuSimulatorWrapper* ConvertToWrapper(void* param)
     ctre::phoenix::ErrorCode c_PigeonIMU_GetDescription(void *handle, char * toFill, int toFillByteSz, int * numBytesFilled)
     {
         RECEIVE_HELPER("GetDescription", 1);
+        offset += 1; // Removes compiler warning
         return (ctre::phoenix::ErrorCode) 0;
     }
     ctre::phoenix::ErrorCode c_PigeonIMU_ConfigSetParameter(void *handle, int param, double paramValue, int subValue, int ordinal, int timeoutMs)
     {
-        PigeonImuSimulatorWrapper* wrapper = ConvertToWrapper(handle);
+        PigeonImuSimulatorWrapper* wrapper = ConvertToPigeonWrapper(handle);
         wrapper->Send("ConfigSetParameter", param, paramValue, subValue, ordinal, timeoutMs);
         return (ctre::phoenix::ErrorCode) 0;
     }
@@ -183,7 +185,7 @@ PigeonImuSimulatorWrapper* ConvertToWrapper(void* param)
     }
     ctre::phoenix::ErrorCode c_PigeonIMU_ConfigSetCustomParam(void *handle, int newValue, int paramIndex, int timeoutMs)
     {
-        PigeonImuSimulatorWrapper* wrapper = ConvertToWrapper(handle);
+        PigeonImuSimulatorWrapper* wrapper = ConvertToPigeonWrapper(handle);
         wrapper->Send("ConfigSetCustomParam", newValue, paramIndex, timeoutMs);
         return (ctre::phoenix::ErrorCode) 0;
     }
@@ -195,67 +197,67 @@ PigeonImuSimulatorWrapper* ConvertToWrapper(void* param)
     }
     ctre::phoenix::ErrorCode c_PigeonIMU_SetYaw(void *handle, double angleDeg, int timeoutMs)
     {
-        PigeonImuSimulatorWrapper* wrapper = ConvertToWrapper(handle);
+        PigeonImuSimulatorWrapper* wrapper = ConvertToPigeonWrapper(handle);
         wrapper->Send("SetYaw", angleDeg);
         return (ctre::phoenix::ErrorCode) 0;
     }
     ctre::phoenix::ErrorCode c_PigeonIMU_AddYaw(void *handle, double angleDeg, int timeoutMs)
     {
-        PigeonImuSimulatorWrapper* wrapper = ConvertToWrapper(handle);
+        PigeonImuSimulatorWrapper* wrapper = ConvertToPigeonWrapper(handle);
         wrapper->Send("AddYaw", angleDeg);
         return (ctre::phoenix::ErrorCode) 0;
     }
     ctre::phoenix::ErrorCode c_PigeonIMU_SetYawToCompass(void *handle, int timeoutMs)
     {
-        PigeonImuSimulatorWrapper* wrapper = ConvertToWrapper(handle);
+        PigeonImuSimulatorWrapper* wrapper = ConvertToPigeonWrapper(handle);
         wrapper->Send("SetYawToCompass");
         return (ctre::phoenix::ErrorCode) 0;
     }
     ctre::phoenix::ErrorCode c_PigeonIMU_SetFusedHeading(void *handle, double angleDeg, int timeoutMs)
     {
-        PigeonImuSimulatorWrapper* wrapper = ConvertToWrapper(handle);
+        PigeonImuSimulatorWrapper* wrapper = ConvertToPigeonWrapper(handle);
         wrapper->Send("SetFusedHeading", angleDeg);
         return (ctre::phoenix::ErrorCode) 0;
     }
     ctre::phoenix::ErrorCode c_PigeonIMU_AddFusedHeading(void *handle, double angleDeg, int timeoutMs)
     {
-        PigeonImuSimulatorWrapper* wrapper = ConvertToWrapper(handle);
+        PigeonImuSimulatorWrapper* wrapper = ConvertToPigeonWrapper(handle);
         wrapper->Send("AddFusedHeading", angleDeg);
         return (ctre::phoenix::ErrorCode) 0;
     }
     ctre::phoenix::ErrorCode c_PigeonIMU_SetFusedHeadingToCompass(void *handle, int timeoutMs)
     {
-        PigeonImuSimulatorWrapper* wrapper = ConvertToWrapper(handle);
+        PigeonImuSimulatorWrapper* wrapper = ConvertToPigeonWrapper(handle);
         wrapper->Send("SetFusedHeadingToCompass");
         return (ctre::phoenix::ErrorCode) 0;
     }
     ctre::phoenix::ErrorCode c_PigeonIMU_SetAccumZAngle(void *handle, double angleDeg, int timeoutMs)
     {
-        PigeonImuSimulatorWrapper* wrapper = ConvertToWrapper(handle);
+        PigeonImuSimulatorWrapper* wrapper = ConvertToPigeonWrapper(handle);
         wrapper->Send("SetAccumZAngle", angleDeg);
         return (ctre::phoenix::ErrorCode) 0;
     }
     ctre::phoenix::ErrorCode c_PigeonIMU_ConfigTemperatureCompensationEnable(void *handle, int bTempCompEnable, int timeoutMs)
     {
-        PigeonImuSimulatorWrapper* wrapper = ConvertToWrapper(handle);
+        PigeonImuSimulatorWrapper* wrapper = ConvertToPigeonWrapper(handle);
         wrapper->Send("ConfigTemperatureCompensationEnable", bTempCompEnable);
         return (ctre::phoenix::ErrorCode) 0;
     }
     ctre::phoenix::ErrorCode c_PigeonIMU_SetCompassDeclination(void *handle, double angleDegOffset, int timeoutMs)
     {
-        PigeonImuSimulatorWrapper* wrapper = ConvertToWrapper(handle);
+        PigeonImuSimulatorWrapper* wrapper = ConvertToPigeonWrapper(handle);
         wrapper->Send("SetCompassDeclination", angleDegOffset);
         return (ctre::phoenix::ErrorCode) 0;
     }
     ctre::phoenix::ErrorCode c_PigeonIMU_SetCompassAngle(void *handle, double angleDeg, int timeoutMs)
     {
-        PigeonImuSimulatorWrapper* wrapper = ConvertToWrapper(handle);
+        PigeonImuSimulatorWrapper* wrapper = ConvertToPigeonWrapper(handle);
         wrapper->Send("SetCompassAngle", angleDeg);
         return (ctre::phoenix::ErrorCode) 0;
     }
     ctre::phoenix::ErrorCode c_PigeonIMU_EnterCalibrationMode(void *handle, int calMode, int timeoutMs)
     {
-        PigeonImuSimulatorWrapper* wrapper = ConvertToWrapper(handle);
+        PigeonImuSimulatorWrapper* wrapper = ConvertToPigeonWrapper(handle);
         wrapper->Send("EnterCalibrationMode", calMode);
         return (ctre::phoenix::ErrorCode) 0;
     }
@@ -383,7 +385,7 @@ PigeonImuSimulatorWrapper* ConvertToWrapper(void* param)
     ctre::phoenix::ErrorCode c_PigeonIMU_GetFusedHeading2(void *handle, int *bIsFusing, int *bIsValid, double *value, int *lastError)
     {
         RECEIVE_HELPER("GetFusedHeading", sizeof(double));
-        std::memcpy(value, &buffer[0], sizeof(double));
+        PoplateReceiveResults(buffer, value, offset);
 
         *bIsFusing = 5;
         *bIsValid = 5;
@@ -425,7 +427,7 @@ PigeonImuSimulatorWrapper* ConvertToWrapper(void* param)
     }
     ctre::phoenix::ErrorCode c_PigeonIMU_SetLastError(void *handle, int value)
     {
-        PigeonImuSimulatorWrapper* wrapper = ConvertToWrapper(handle);
+        PigeonImuSimulatorWrapper* wrapper = ConvertToPigeonWrapper(handle);
         wrapper->Send("SetLastError", value);
         return (ctre::phoenix::ErrorCode) 0;
     }
@@ -443,13 +445,13 @@ PigeonImuSimulatorWrapper* ConvertToWrapper(void* param)
     }
     ctre::phoenix::ErrorCode c_PigeonIMU_ClearStickyFaults(void *handle, int timeoutMs)
     {
-        PigeonImuSimulatorWrapper* wrapper = ConvertToWrapper(handle);
+        PigeonImuSimulatorWrapper* wrapper = ConvertToPigeonWrapper(handle);
         wrapper->Send("ClearStickyFaults", timeoutMs);
         return (ctre::phoenix::ErrorCode) 0;
     }
     ctre::phoenix::ErrorCode c_PigeonIMU_SetStatusFramePeriod(void *handle, int frame, int periodMs, int timeoutMs)
     {
-        PigeonImuSimulatorWrapper* wrapper = ConvertToWrapper(handle);
+        PigeonImuSimulatorWrapper* wrapper = ConvertToPigeonWrapper(handle);
         wrapper->Send("SetStatusFramePeriod", frame, periodMs, timeoutMs);
         return (ctre::phoenix::ErrorCode) 0;
     }
@@ -461,7 +463,7 @@ PigeonImuSimulatorWrapper* ConvertToWrapper(void* param)
     }
     ctre::phoenix::ErrorCode c_PigeonIMU_SetControlFramePeriod(void *handle, int frame, int periodMs)
     {
-        PigeonImuSimulatorWrapper* wrapper = ConvertToWrapper(handle);
+        PigeonImuSimulatorWrapper* wrapper = ConvertToPigeonWrapper(handle);
         wrapper->Send("SetControlFramePeriod", frame, periodMs);
         return (ctre::phoenix::ErrorCode) 0;
     }
