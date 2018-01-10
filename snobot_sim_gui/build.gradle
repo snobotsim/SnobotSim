@@ -4,7 +4,7 @@ import org.gradle.internal.os.OperatingSystem
 repositories {
     mavenCentral()
     maven {
-        url "http://raw.githubusercontent.com/pjreiniger/maven_repo/master/"
+        url "http://first.wpi.edu/FRC/roborio/maven/release/"
     }
 }
 

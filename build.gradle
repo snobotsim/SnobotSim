@@ -22,13 +22,6 @@ plugins {
 }
 apply plugin: 'nebula-aggregate-javadocs'
 
-
-repositories {
-        maven {
-            url "http://raw.githubusercontent.com/pjreiniger/maven_repo/master/"
-        }
-}
-
 task clean(type: Delete) {
     delete buildDir
 }
@@ -40,8 +33,7 @@ ext.build_simulator_java = true
 // Specify WPI Versions
 
 ext.allwpilibVersion = {
-    //return '2018.1.1-beta-3-20171209024719-67-g1fa0adb'
-    return 'LOCAL-20180101'
+    return '2018.1.1'
 }
 
 ext.getHalHeadersVersion = {
@@ -54,13 +46,13 @@ ext.getWpilibcVersion = {
     return allwpilibVersion()
 }
 ext.getWpiUtilVersion = {
-    return '+'
+    return '3.0.0'
 }
 ext.getNtCoreVersion = {
-    return '4.0.0-beta-1-20171028041924-2-gfd32350'
+    return '4.0.0'
 }
 ext.getCsCoreVersion = {
-    return '1.1.0-alpha-1-20171028025024-4-gb9c8ebe'
+    return '1.1.0'
 }
 ext.getWpilibOpencvVersion = {
     return '3.2.0'
@@ -77,7 +69,7 @@ if(hasProperty('maven_repo'))
 ext.maven_publishing_path = new File(maven_publishing_path).getAbsolutePath()
 println "Publishing maven to " + ext.maven_publishing_path.toString()
 
-ext.maven_version = "0.6.0"
+ext.maven_version = "0.7.0"
 if(hasProperty('maven_version'))
 {
     ext.maven_version = maven_version
