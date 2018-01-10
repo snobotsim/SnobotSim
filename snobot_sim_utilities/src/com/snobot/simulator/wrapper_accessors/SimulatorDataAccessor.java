@@ -94,4 +94,11 @@ public interface SimulatorDataAccessor
 
     Map<Integer, String> getDefaultSpiWrappers();
 
+    enum MatchType
+    {
+        None, Practice, Qualification, Elimination
+    }
+
+    void setMatchInfo(String eventName, MatchType matchType, int matchNumber, int replayNumber, String gameSpecificMessage);
+
 }

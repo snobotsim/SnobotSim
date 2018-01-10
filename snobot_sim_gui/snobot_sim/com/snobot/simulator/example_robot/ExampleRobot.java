@@ -1,5 +1,6 @@
 package com.snobot.simulator.example_robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -42,6 +43,11 @@ public class ExampleRobot extends IterativeRobot
         mRightDriveEncoder.setDistancePerPulse(.01);
 
         mAutoTimer = new Timer();
+
+        System.err.println("Warning, this is the example robot bundled with the simulator!");
+        System.err.println(
+                "To configure this for your robot, change <project_dir>/simulator_config/simulator_config.properties, and update the robot_class field");
+
 	}
 
     @Override
@@ -50,6 +56,13 @@ public class ExampleRobot extends IterativeRobot
         mLeftDriveEncoder.reset();
         mRightDriveEncoder.reset();
         mAutoTimer.start();
+
+        System.out.println("Game Information: ");
+        System.out.println("  Match Number : " + DriverStation.getInstance().getMatchNumber());
+        System.out.println("  Match Replay : " + DriverStation.getInstance().getReplayNumber());
+        System.out.println("  Match Type   : " + DriverStation.getInstance().getMatchType());
+        System.out.println("  Event Name   : " + DriverStation.getInstance().getEventName());
+        System.out.println("  Game Info    : " + DriverStation.getInstance().getGameSpecificMessage());
     }
 
     @Override

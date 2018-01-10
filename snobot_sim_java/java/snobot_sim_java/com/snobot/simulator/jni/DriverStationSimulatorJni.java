@@ -14,4 +14,7 @@ public class DriverStationSimulatorJni extends BaseSnobotJni
 
     public static native void setJoystickInformation(int aJoystickHandle, float[] aAxesArray, short[] aPovsArray, int aButtonCount, int aButtonMask);
 
+    public static native void setMatchInfo(String eventName, int matchTypeVal, int matchNumber, int replayNumber,
+            String gameSpecificMessage);
+
 }

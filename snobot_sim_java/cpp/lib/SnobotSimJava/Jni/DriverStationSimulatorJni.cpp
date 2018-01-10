@@ -119,4 +119,25 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_DriverStationSimulatorJni_s
     HALSIM_SetJoystickButtons(aHandle, &newButtons);
 }
 
+/*
+ * Class:     com_snobot_simulator_jni_DriverStationSimulatorJni
+ * Method:    setMatchInfo
+ * Signature: (Ljava/lang/String;IIILjava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_DriverStationSimulatorJni_setMatchInfo
+  (JNIEnv * env, jclass, jstring aEventName, jint aMatchTypeVal, jint aMatchNumber, jint aReplayNumber, jstring aGameSpecificMessage)
+{
+    std::string eventName = env->GetStringUTFChars(aEventName, NULL);
+    std::string gameSpecificMessage = env->GetStringUTFChars(aGameSpecificMessage, NULL);
+
+    HAL_MatchInfo matchInfo;
+    matchInfo.eventName = const_cast<char*>(eventName.c_str());
+    matchInfo.gameSpecificMessage = const_cast<char*>(gameSpecificMessage.c_str());
+    matchInfo.matchType = (HAL_MatchType) aMatchTypeVal;
+    matchInfo.replayNumber = aReplayNumber;
+    matchInfo.matchNumber  = aMatchNumber;
+
+    HALSIM_SetMatchInfo(&matchInfo);
+}
+
 } // extern c

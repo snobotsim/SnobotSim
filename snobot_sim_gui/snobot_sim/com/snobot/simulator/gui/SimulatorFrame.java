@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -112,8 +113,13 @@ public class SimulatorFrame extends JFrame
         
         JScrollPane scrollPane = new JScrollPane(mBasicPanel);
 
+        JPanel driverStationPanel = new JPanel();
+        driverStationPanel.setLayout(new BoxLayout(driverStationPanel, BoxLayout.Y_AXIS));
+        driverStationPanel.add(mEnablePanel);
+        driverStationPanel.add(new GameSpecificDataPanel());
+
         add(scrollPane, BorderLayout.CENTER);
-        add(mEnablePanel, BorderLayout.NORTH);
+        add(driverStationPanel, BorderLayout.NORTH);
         add(buttonPanel, BorderLayout.SOUTH);
 
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDisabled(false);

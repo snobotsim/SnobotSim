@@ -227,6 +227,12 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     }
 
     @Override
+    public void setMatchInfo(String eventName, MatchType matchType, int matchNumber, int replayNumber, String gameSpecificMessage)
+    {
+        DriverStationSimulatorJni.setMatchInfo(eventName, matchType.ordinal(), matchNumber, replayNumber, gameSpecificMessage);
+    }
+
+    @Override
     public void setDefaultSpiSimulator(int aPort, String aType)
     {
         SpiCallbackJni.setDefaultWrapper(aPort, aType);

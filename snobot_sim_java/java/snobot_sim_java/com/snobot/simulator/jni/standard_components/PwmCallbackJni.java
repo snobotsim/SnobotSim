@@ -30,6 +30,10 @@ public class PwmCallbackJni
         {
             SensorActuatorRegistry.get().getSpeedControllers().get(port).set(halValue.mDouble);
         }
+        else if ("ZeroLatch".equals(callbackType))
+        {
+            sLOGGER.log(Level.DEBUG, "ZeroLatch ignored");
+        }
         else
         {
             sLOGGER.log(Level.ERROR, "Unknown PWM callback " + callbackType + " - " + halValue);

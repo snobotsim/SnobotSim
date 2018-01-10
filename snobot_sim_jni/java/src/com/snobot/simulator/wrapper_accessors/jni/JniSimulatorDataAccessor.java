@@ -179,4 +179,11 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
         return null;
     }
 
+    @Override
+    public void setMatchInfo(String eventName, MatchType matchType, int matchNumber, int replayNumber, String gameSpecificMessage)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
 }
