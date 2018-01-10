@@ -65,10 +65,15 @@ enum ErrorCode
 
 	//General
 	GeneralWarning = 100,
-	FeatureNotSupported = 101,
-	NotImplemented = 102,
+	FeatureNotSupported = 101, // feature not implement in the API or firmware
+	NotImplemented = 102, // feature not implement in the API
 	FirmVersionCouldNotBeRetrieved = 103,
-	FeaturesNotAvailableYet = 104,
+	FeaturesNotAvailableYet = 104, // feature will be release in an upcoming release
+	ControlModeNotValid = 105, // Current control mode of motor controller not valid for this call
+
+	ControlModeNotSupportedYet = 106,
+	CascadedPIDNotSupporteYet= 107,
+	RemoteSensorsNotSupportedYet= 108,
 };
 
 } // namespace phoenix

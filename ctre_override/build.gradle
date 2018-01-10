@@ -81,6 +81,7 @@ dependencies {
 
 
 def jniClasses = ['com.ctre.phoenix.CTRLoggerJNI',
+                  'com.ctre.phoenix.CANifierJNI',
                   'com.ctre.phoenix.motorcontrol.can.MotControllerJNI',
                   'com.ctre.phoenix.sensors.PigeonImuJNI']
 

@@ -214,10 +214,11 @@ extern "C"{
         *deviceNumber = wrapper->mDeviceId;
         return (ctre::phoenix::ErrorCode) 0;
     }
-    void c_MotController_SetDemand(void *handle, int mode, int demand0, int demand1)
+    ctre::phoenix::ErrorCode c_MotController_SetDemand(void *handle, int mode, int demand0, int demand1)
     {
         MotorControllerWrapper* wrapper = ConvertToMotorControllerWrapper(handle);
         wrapper->Send("SetDemand", mode, demand0, demand1);
+        return (ctre::phoenix::ErrorCode) 0;
     }
     void c_MotController_SetNeutralMode(void *handle, int neutralMode)
     {
