@@ -6,7 +6,7 @@ import org.gradle.internal.os.OperatingSystem
 repositories {
     mavenCentral()
     maven {
-        url "http://dev.imjac.in/maven/"
+        url getJaci3rdPartyMirror()
     }
 }
 
@@ -101,7 +101,6 @@ dependencies {
     compile 'edu.wpi.first.cscore:cscore-java:' + getCsCoreVersion()
     
     testCompile 'junit:junit:4.12'
-    testCompile "thirdparty.frc.kauai:Navx-Java:+"
     testCompile 'edu.wpi.first.wpilibj:wpilibj-java:' + getWpilibjVersion()
     testRuntime 'edu.wpi.first.ntcore:ntcore-jni:' + getNtCoreVersion() + ':all'
     testRuntime 'edu.wpi.first.cscore:cscore-jni:' + getCsCoreVersion() + ':all'
@@ -110,9 +109,8 @@ dependencies {
     testRuntime combineNativeLibrariesIntoOne.outputs.files
     
     testCompile project(':ctre_override')
-    //testCompile "thirdparty.frc.ctre:Toolsuite-Java:4.4.1.14"
-    testCompile files("$rootDir/temp_libs/CTRE_Phoenix.jar")
-    testRuntime project(':ctre_override').combineNativeLibrariesIntoOne.outputs.files
+    testCompile "openrio.mirror.third.ctre:CTRE-phoenix-java:" + getCtreVersion()
+    testCompile "openrio.mirror.third.kauailabs:navx-java:" + getNavxVersion()
     
 }
 

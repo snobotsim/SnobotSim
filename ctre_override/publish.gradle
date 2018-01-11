@@ -27,8 +27,7 @@ publishing {
             artifactId 'ctre_override'
             version maven_version
             
-            artifact jar
-            artifact combineNativeLibrariesIntoOne
+            artifact packageNativeCtreFilesInJar
         }
     }
 

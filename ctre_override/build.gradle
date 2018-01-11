@@ -9,7 +9,7 @@ repositories {
         url "http://dev.imjac.in/maven/"
     }
     maven {
-        url "http://raw.githubusercontent.com/pjreiniger/maven_repo/master/"
+        url "http://first.wpi.edu/FRC/roborio/maven/release/"
     }
 }
 
@@ -32,48 +32,26 @@ test {
 	ignoreFailures = !OperatingSystem.current().isWindows()
 }
 
-task packageNativeFilesInJar(type: Jar) {
+task packageNativeCtreFilesInJar(type: Jar) {
     destinationDir = project.buildDir
     classifier = "native-" + org.gradle.internal.os.OperatingSystem.current().getFamilyName();
 
     project.model {
         binaries {
             withType(SharedLibraryBinarySpec) { binary ->
-                if (binary.component.name == 'CTRE_PhoenixCCI' || 
-                    binary.component.name == 'SnobotSimCppCtre' ||
-                    binary.component.name == 'SnobotSimJavaCtre') 
+                println binary.component.name
+                if (binary.component.name == 'CtrePhoenixJava' || 
+                    binary.component.name == 'CtreMockHooks') 
                 {
-                    from(binary.sharedLibraryFile) {
-                        into NativeUtils.getPlatformPath(binary)
-                    }
+                    from(binary.sharedLibraryFile)
                     dependsOn binary.buildTask
                 }
             }
         }
     }
-
 }
 
-apply from: "$rootDir/captureWpiLibraries.gradle"
-task combineNativeLibrariesIntoOne(type: Jar) {
-
-    dependsOn packageNativeFilesInJar
-    dependsOn captureWpiLibraries
-
-    def os_name = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
-
-    classifier = "uber_native-" + os_name;
-    
-    packageNativeFilesInJar.outputs.files.each { 
-        from(zipTree(it))
-    }
-    
-    captureWpiLibraries.outputs.files.each {
-        from(zipTree(it))
-    }
-}
-
-build.dependsOn packageNativeFilesInJar
+build.dependsOn packageNativeCtreFilesInJar
 
 dependencies {
     compile project(":snobot_sim_utilities")

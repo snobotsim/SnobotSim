@@ -95,7 +95,7 @@ public class TestUnsupportedTalonOperations extends BaseSimulatorTest
         motorToTest.getIntegralAccumulator(0);
         motorToTest.getErrorDerivative(0);
         motorToTest.selectProfileSlot(0, 0);
-        motorToTest.getClosedLoopTarget(0);
+        // motorToTest.getClosedLoopTarget(0);
         motorToTest.getActiveTrajectoryPosition();
         motorToTest.getActiveTrajectoryVelocity();
         motorToTest.getActiveTrajectoryHeading();
@@ -124,7 +124,7 @@ public class TestUnsupportedTalonOperations extends BaseSimulatorTest
         motorToTest.getBaseID();
         motorToTest.follow(motorToFollow);
         motorToTest.valueUpdated();
-        motorToTest.getWPILIB_SpeedController();
+        // motorToTest.getWPILIB_SpeedController();
         motorToTest.getSensorCollection();
         
         // Enhanced Motor Controller

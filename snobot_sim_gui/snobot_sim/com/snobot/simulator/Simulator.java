@@ -23,15 +23,15 @@ import com.snobot.simulator.robot_container.PythonRobotContainer;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor.SnobotLogLevel;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 /**
  * The actual simulator. Runs the robot and the GUI threads. The GUI will appear
  * after receiving the signal that the robot code has started
  * 
  * @author PJ
- *
+ * 
  */
 public class Simulator
 {
@@ -116,7 +116,11 @@ public class Simulator
             createSimulator(simulatorClassName, mSimulatorConfig);
             createRobot(robotType, robotClassName);
 
-            NetworkTable.setPersistentFilename(USER_CONFIG_DIRECTORY + robotClassName + ".preferences.ini");
+            // Change the network table preferences path. Need to start
+            // the robot, stop the server and restart it
+            NetworkTableInstance inst = NetworkTableInstance.getDefault();
+            inst.stopServer();
+            inst.startServer(USER_CONFIG_DIRECTORY + "networktables.ini");
         }
         catch (Exception e)
         {

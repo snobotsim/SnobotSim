@@ -57,6 +57,17 @@ ext.getCsCoreVersion = {
 ext.getWpilibOpencvVersion = {
     return '3.2.0'
 }
+ext.getCtreVersion = {
+    return '5.1.2.1'
+}
+ext.getNavxVersion = {
+    return '3.0.342'
+}
+
+ext.getJaci3rdPartyMirror = {
+	return 'https://raw.githubusercontent.com/Open-RIO/Maven-Mirror/master/m2'
+}
+
 /////////////////////////////////////////
 
 // Publshing Information
@@ -69,7 +80,7 @@ if(hasProperty('maven_repo'))
 ext.maven_publishing_path = new File(maven_publishing_path).getAbsolutePath()
 println "Publishing maven to " + ext.maven_publishing_path.toString()
 
-ext.maven_version = "0.7.0"
+ext.maven_version = "0.7.1"
 if(hasProperty('maven_version'))
 {
     ext.maven_version = maven_version
