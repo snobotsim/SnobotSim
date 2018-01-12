@@ -43,11 +43,11 @@ public class ExampleRobot extends IterativeRobot
         mRightDriveEncoder.setDistancePerPulse(.01);
 
         mAutoTimer = new Timer();
+        
+        String errorMessage = "Warning, this is the example robot bundled with the simulator!\n";
+        errorMessage += "To configure this for your robot, change <project_dir>/simulator_config/simulator_config.properties, and update the robot_class field"; 
 
-        System.err.println("Warning, this is the example robot bundled with the simulator!");
-        System.err.println(
-                "To configure this for your robot, change <project_dir>/simulator_config/simulator_config.properties, and update the robot_class field");
-
+        System.err.println(errorMessage);
 	}
 
     @Override

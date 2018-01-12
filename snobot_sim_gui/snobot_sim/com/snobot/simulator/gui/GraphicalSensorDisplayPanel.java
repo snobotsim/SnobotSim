@@ -31,6 +31,7 @@ public class GraphicalSensorDisplayPanel extends JPanel
     }
 
     protected List<BaseWidgetDisplay<?, ?>> mDisplayPanels;
+    protected AdvancedSettingsPanel mAdvancedSettingsPanel;
 
     public void create()
     {
@@ -54,6 +55,9 @@ public class GraphicalSensorDisplayPanel extends JPanel
                 add(panel);
             }
         }
+
+        mAdvancedSettingsPanel = new AdvancedSettingsPanel();
+        add(mAdvancedSettingsPanel);
     }
 
     public void update()
@@ -72,5 +76,7 @@ public class GraphicalSensorDisplayPanel extends JPanel
         {
             panel.showSettingsButtons(aShow);
         }
+
+        mAdvancedSettingsPanel.showSettingsButtons(aShow);
     }
 }

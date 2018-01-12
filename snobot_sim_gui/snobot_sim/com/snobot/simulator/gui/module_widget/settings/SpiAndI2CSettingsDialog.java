@@ -1,0 +1,161 @@
+package com.snobot.simulator.gui.module_widget.settings;
+
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
+
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.SPI;
+
+public class SpiAndI2CSettingsDialog extends JDialog
+{
+    private JButton mSubmitButton;
+    private Map<Integer, ComponentRow> mSpiSettings;
+    private Map<Integer, ComponentRow> mI2CSettings;
+
+    public SpiAndI2CSettingsDialog(String aTitle)
+    {
+        setTitle(aTitle);
+
+        initComponents();
+    }
+
+    private void initComponents()
+    {
+        JPanel container = new JPanel();
+        container.setLayout(new GridBagLayout());
+        mSpiSettings = new HashMap<>();
+        mI2CSettings = new HashMap<>();
+
+        Map<Integer, String> defaultSpiMapping = DataAccessorFactory.getInstance().getSimulatorDataAccessor().getDefaultSpiWrappers();
+        Map<Integer, String> defaultI2CMapping = DataAccessorFactory.getInstance().getSimulatorDataAccessor().getDefaultI2CWrappers();
+        Collection<String> availableSpiOptions = new ArrayList<>();
+        Collection<String> availableI2COptions = new ArrayList<>();
+
+        availableSpiOptions.add("None");
+        availableSpiOptions.addAll(DataAccessorFactory.getInstance().getSimulatorDataAccessor().getAvailableSpiSimulators());
+
+        availableI2COptions.add("None");
+        availableI2COptions.addAll(DataAccessorFactory.getInstance().getSimulatorDataAccessor().getAvailableI2CSimulators());
+        
+        int rowCtr = 0;
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.ipadx = 5;
+
+        for (SPI.Port port : SPI.Port.values())
+        {
+            String selectedValue = defaultSpiMapping.get(port.value);
+
+            ComponentRow row = new ComponentRow("SPI " + port.name(), availableSpiOptions, selectedValue);
+            mSpiSettings.put(port.value, row);
+
+            constraints.gridx = rowCtr += 1;
+
+            constraints.gridx = 0;
+            container.add(row.mLabel, constraints);
+
+            constraints.gridx = 1;
+            container.add(row.mSelection, constraints);
+        }
+
+        for (I2C.Port port : I2C.Port.values())
+        {
+            String selectedValue = defaultI2CMapping.get(port.value);
+
+            ComponentRow row = new ComponentRow("I2C " + port.name(), availableI2COptions, selectedValue);
+            mI2CSettings.put(port.value, row);
+
+            constraints.gridx = rowCtr += 1;
+
+            constraints.gridx = 0;
+            container.add(row.mLabel, constraints);
+
+            constraints.gridx = 1;
+            container.add(row.mSelection, constraints);
+        }
+
+        mSubmitButton = new JButton("Submit");
+        mSubmitButton.addActionListener(new ActionListener()
+        {
+
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                onSubmit();
+                dispose();
+            }
+        });
+
+        add(container, BorderLayout.CENTER);
+        add(mSubmitButton, BorderLayout.SOUTH);
+    }
+
+    private void addEmpty()
+    {
+
+    }
+
+    private void onSubmit()
+    {
+        for (Entry<Integer, ComponentRow> pair : mSpiSettings.entrySet())
+        {
+            String value = pair.getValue().mSelection.getSelectedItem().toString();
+            if ("None".equals(value))
+            {
+                value = null;
+            }
+            DataAccessorFactory.getInstance().getSimulatorDataAccessor().getDefaultSpiWrappers().put(pair.getKey(), value);
+        }
+
+        for (Entry<Integer, ComponentRow> pair : mI2CSettings.entrySet())
+        {
+            String value = pair.getValue().mSelection.getSelectedItem().toString();
+            if ("None".equals(value))
+            {
+                value = null;
+            }
+            DataAccessorFactory.getInstance().getSimulatorDataAccessor().getDefaultI2CWrappers().put(pair.getKey(), value);
+        }
+
+        JOptionPane.showMessageDialog(null,
+                "SPI and I2C simulators are loaded on startup, so you will need to save your updates and restart the simulator", "SPI & I2C Config",
+                JOptionPane.WARNING_MESSAGE);
+    }
+
+    private class ComponentRow
+    {
+        private JComboBox<String> mSelection;
+        private JLabel mLabel;
+
+        public ComponentRow(String name, Collection<String> options, String selectedValue)
+        {
+            mLabel = new JLabel(name);
+            mSelection = new JComboBox<>();
+            for (String option : options)
+            {
+                mSelection.addItem(option);
+            }
+
+            mSelection.setSelectedItem(selectedValue);
+
+        }
+    }
+
+
+}

@@ -7,6 +7,8 @@
 # SnobotSim
 SnobotSim is a java-based simulator that can simulate FRC Robots written in Java, with incubating support for C++ and Python.
 
+Check out the [Release Notes](ReleaseNotes.md) to keep up with all the updates and bug fixes going on througout the season
+
 ## Features
 * Simple physics based motor simulations
 * Feedback Sensor simulation (AnalogIO, DigitalIO, Encoders, Gyros)
