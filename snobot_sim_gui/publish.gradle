@@ -53,7 +53,7 @@ task sourcesJar(type: Jar, dependsOn: classes) {
     from project(":snobot_sim_java").sourceSets.main.allSource
 }
 
-task createSimpleEclipseProject {
+task createSimpleEclipseProject (dependsOn: createReleaseJar) {
 
     // Copy the canned eclipse .project and .classpath
     copy {
