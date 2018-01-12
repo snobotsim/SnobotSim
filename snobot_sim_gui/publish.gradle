@@ -6,6 +6,8 @@ apply plugin: 'java'
 task createReleaseJar(type: Jar) {
     classifier = "all"
     
+    println "CREATING RELEASE JAR"
+    
     configurations {
         subproject_jars
     }
@@ -53,53 +55,54 @@ task sourcesJar(type: Jar, dependsOn: classes) {
     from project(":snobot_sim_java").sourceSets.main.allSource
 }
 
-task createSimpleEclipseProject (dependsOn: createReleaseJar) {
+task createSimpleEclipseProject {
+    println "CREATING ECLISPE FPROJEC JAR"
 
-    // Copy the canned eclipse .project and .classpath
-    copy {
-        def destinationDir = new File(project.buildDir.toString() + "/EclipseProject")
-        into destinationDir
-        from new File("../scripts/boilerplates/EclipseProject")
-    }
-    
-    // Copy all of the gui dependencies into a folder which will exist locally in the project
-    copy {
-    
-        def destinationDir = new File(project.buildDir.toString() + "/EclipseProject")
-        from configurations.runtime {
+    doLast {
+        // Copy the canned eclipse .project and .classpath
+        copy {
+            def destinationDir = new File(project.buildDir.toString() + "/EclipseProject")
+            into destinationDir
+            from new File("../scripts/boilerplates/EclipseProject")
+        }
+        
+        // Copy all of the gui dependencies into a folder which will exist locally in the project
+        copy {
+        
+            def destinationDir = new File(project.buildDir.toString() + "/EclipseProject")
+            from configurations.runtime {
+                into destinationDir.toString() + "/dependencies"
+                exclude "jinput-*-natives-*.jar"
+                exclude "cscore-java-*.jar" // Unnecessary, will be included in WPI Plugins
+                exclude "ntcore-java-*.jar" // Unnecessary, will be included in WPI Plugins
+                exclude "opencv-java-*.jar" // Unnecessary, will be included in WPI Plugins
+                exclude "snobot_sim_utilities*.jar" // Bundled in the release jar
+                exclude "snobot_sim_java.jar" // Bundled in the release jar
+                exclude "*.zip"
+            }
+        }
+        
+        // Unzip the jinput native libraries into the dependency folder
+        copy {
+            def destinationDir = new File(project.buildDir.toString() + "/EclipseProject")
+            from unzipNativeLibraries.outputs
+            into destinationDir.toString() + "/dependencies/native"
+        }
+        
+        copy {
+            def destinationDir = new File(project.buildDir.toString() + "/EclipseProject")
+            from createReleaseJar.outputs
             into destinationDir.toString() + "/dependencies"
-            exclude "jinput-*-natives-*.jar"
-            exclude "*.zip"
+        }
+        
+        // Copy the main() class.  This makes the project not empty by default, and a little more intuitive to run
+        copy {
+            def destinationDir = new File(project.buildDir.toString() + "/EclipseProject")
+            into destinationDir.toString() + "/src"
+            from "snobot_sim" 
+            include "com/snobot/simulator/Main.java"
         }
     }
-    
-    // Unzip the jinput native libraries into the dependency folder
-    copy {
-        def destinationDir = new File(project.buildDir.toString() + "/EclipseProject")
-        from unzipNativeLibraries.outputs
-        into destinationDir.toString() + "/dependencies/native"
-    }
-    
-    copy {
-        def destinationDir = new File(project.buildDir.toString() + "/EclipseProject")
-        from createReleaseJar.outputs
-        into destinationDir.toString() + "/dependencies"
-    }
-
-    // Copy the main() class.  This makes the project not empty by default, and a little more intuitive to run
-    copy {
-        def destinationDir = new File(project.buildDir.toString() + "/EclipseProject")
-        into destinationDir.toString() + "/src"
-        from "snobot_sim" 
-        include "com/snobot/simulator/Main.java"
-    }
-    //
-    //copy {
-    //    def destinationDir = new File(project.buildDir.toString() + "/EclipseProject")
-    //    from jar.outputs
-    //    into destinationDir.toString() + "/dependencies"
-    //}
-    
 }
 
 task zipEclipseProject(type: Zip, dependsOn: createSimpleEclipseProject) {
