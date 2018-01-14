@@ -268,4 +268,17 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
         return SpiCallbackJni.getDefaults();
     }
 
+    @Override
+    public void removeSimulatorComponent(Object comp)
+    {
+        for (ISimulatorUpdater sim : SensorActuatorRegistry.get().getSimulatorComponents())
+        {
+            if (sim.getConfig().equals(comp))
+            {
+                SensorActuatorRegistry.get().getSimulatorComponents().remove(sim);
+                break;
+            }
+        }
+    }
+
 }

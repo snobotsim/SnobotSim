@@ -101,4 +101,6 @@ public interface SimulatorDataAccessor
 
     void setMatchInfo(String eventName, MatchType matchType, int matchNumber, int replayNumber, String gameSpecificMessage);
 
+    void removeSimulatorComponent(Object comp);
+
 }

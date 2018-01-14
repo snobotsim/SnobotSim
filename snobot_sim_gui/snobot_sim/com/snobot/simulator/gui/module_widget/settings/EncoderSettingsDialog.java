@@ -11,19 +11,19 @@ import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 public class EncoderSettingsDialog extends SimpleSettingsDialog
 {
-    protected JComboBox<SpeedControllerOption> mSpeedControllerSelection;
+    protected JComboBox<SensorHandleOption> mSpeedControllerSelection;
 
     public EncoderSettingsDialog(String aTitle, int aKey, String aName)
     {
         super(aTitle, aKey, aName);
 
         mSpeedControllerSelection = new JComboBox<>();
-        mSpeedControllerSelection.addItem(new SpeedControllerOption(-1, "None"));
+        mSpeedControllerSelection.addItem(new SensorHandleOption(-1, "None"));
 
         List<Integer> speedControllers = DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList();
         for (int handle : speedControllers)
         {
-            SpeedControllerOption option = new SpeedControllerOption(handle,
+            SensorHandleOption option = new SensorHandleOption(handle,
                     DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(handle));
             mSpeedControllerSelection.addItem(option);
         }
@@ -53,7 +53,7 @@ public class EncoderSettingsDialog extends SimpleSettingsDialog
 
         for (int i = 0; i < mSpeedControllerSelection.getItemCount(); ++i)
         {
-            SpeedControllerOption option = mSpeedControllerSelection.getItemAt(i);
+            SensorHandleOption option = mSpeedControllerSelection.getItemAt(i);
 
             if (option.mHandle == connectedSc)
             {
@@ -69,7 +69,7 @@ public class EncoderSettingsDialog extends SimpleSettingsDialog
     @Override
     protected void onSubmit()
     {
-        SpeedControllerOption option = (SpeedControllerOption) mSpeedControllerSelection.getSelectedItem();
+        SensorHandleOption option = (SensorHandleOption) mSpeedControllerSelection.getSelectedItem();
         int scId = option == null ? -1 : option.mHandle;
 
         DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(mHandle, scId);

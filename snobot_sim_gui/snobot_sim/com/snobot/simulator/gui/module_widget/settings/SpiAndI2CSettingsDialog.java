@@ -29,9 +29,9 @@ public class SpiAndI2CSettingsDialog extends JDialog
     private Map<Integer, ComponentRow> mSpiSettings;
     private Map<Integer, ComponentRow> mI2CSettings;
 
-    public SpiAndI2CSettingsDialog(String aTitle)
+    public SpiAndI2CSettingsDialog()
     {
-        setTitle(aTitle);
+        setTitle("SPI and I2C");
 
         initComponents();
     }
@@ -62,7 +62,7 @@ public class SpiAndI2CSettingsDialog extends JDialog
         {
             String selectedValue = defaultSpiMapping.get(port.value);
 
-            ComponentRow row = new ComponentRow("SPI " + port.name(), availableSpiOptions, selectedValue);
+            ComponentRow row = new ComponentRow("SPI (" + port.ordinal() + "): " + port.name(), availableSpiOptions, selectedValue);
             mSpiSettings.put(port.value, row);
 
             constraints.gridx = rowCtr += 1;
@@ -78,7 +78,7 @@ public class SpiAndI2CSettingsDialog extends JDialog
         {
             String selectedValue = defaultI2CMapping.get(port.value);
 
-            ComponentRow row = new ComponentRow("I2C " + port.name(), availableI2COptions, selectedValue);
+            ComponentRow row = new ComponentRow("I2C (" + port.ordinal() + "): " + port.name(), availableI2COptions, selectedValue);
             mI2CSettings.put(port.value, row);
 
             constraints.gridx = rowCtr += 1;
@@ -106,29 +106,26 @@ public class SpiAndI2CSettingsDialog extends JDialog
         add(mSubmitButton, BorderLayout.SOUTH);
     }
 
-    private void addEmpty()
-    {
-
-    }
-
     private void onSubmit()
     {
         for (Entry<Integer, ComponentRow> pair : mSpiSettings.entrySet())
         {
-            String value = pair.getValue().mSelection.getSelectedItem().toString();
-            if ("None".equals(value))
+            Object selected = pair.getValue().mSelection.getSelectedItem();
+            String value = null;
+            if (selected != null && !"None".equals(selected))
             {
-                value = null;
+                value = selected.toString();
             }
             DataAccessorFactory.getInstance().getSimulatorDataAccessor().getDefaultSpiWrappers().put(pair.getKey(), value);
         }
 
         for (Entry<Integer, ComponentRow> pair : mI2CSettings.entrySet())
         {
-            String value = pair.getValue().mSelection.getSelectedItem().toString();
-            if ("None".equals(value))
+            Object selected = pair.getValue().mSelection.getSelectedItem();
+            String value = null;
+            if (selected != null && "None".equals(selected))
             {
-                value = null;
+                value = selected.toString();
             }
             DataAccessorFactory.getInstance().getSimulatorDataAccessor().getDefaultI2CWrappers().put(pair.getKey(), value);
         }
@@ -152,7 +149,14 @@ public class SpiAndI2CSettingsDialog extends JDialog
                 mSelection.addItem(option);
             }
 
-            mSelection.setSelectedItem(selectedValue);
+            if (selectedValue == null)
+            {
+                mSelection.setSelectedItem("None");
+            }
+            else
+            {
+                mSelection.setSelectedItem(selectedValue);
+            }
 
         }
     }

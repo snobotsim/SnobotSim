@@ -4,22 +4,51 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.snobot.simulator.gui.module_widget.settings.SpiAndI2CSettingsDialog;
+import com.snobot.simulator.gui.module_widget.settings.TankDriveSettingsDialog;
 
 public class AdvancedSettingsPanel extends JPanel
 {
     private static final Logger sLOGGER = Logger.getLogger(AdvancedSettingsPanel.class);
 
-    private JButton mSpiAndI2CSettingsButtion;
+    private List<ButtonDialogPair> mDialogs;
+
+    private class ButtonDialogPair
+    {
+        private JButton mButton;
+
+        public ButtonDialogPair(String aName, ImageIcon aIcon, JDialog aDialog)
+        {
+            mButton = new JButton(aName, aIcon);
+            mButton.setVisible(false);
+
+            mButton.addActionListener(new ActionListener()
+            {
+
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+
+                    aDialog.pack();
+                    aDialog.setModal(true);
+                    aDialog.setLocationRelativeTo(AdvancedSettingsPanel.this);
+                    aDialog.setVisible(true);
+                }
+            });
+        }
+    }
 
     public AdvancedSettingsPanel()
     {
@@ -34,29 +63,22 @@ public class AdvancedSettingsPanel extends JPanel
             sLOGGER.log(Level.ERROR, e);
         }
 
-        mSpiAndI2CSettingsButtion = new JButton("SPI & I2C", icon);
-        mSpiAndI2CSettingsButtion.setVisible(false);
-        add(mSpiAndI2CSettingsButtion);
+        mDialogs = new ArrayList<>();
+        mDialogs.add(new ButtonDialogPair("SPI & I2C", icon, new SpiAndI2CSettingsDialog()));
+        mDialogs.add(new ButtonDialogPair("Tank Drive", icon, new TankDriveSettingsDialog()));
 
-        mSpiAndI2CSettingsButtion.addActionListener(new ActionListener()
+        for (ButtonDialogPair pair : mDialogs)
         {
-
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-
-                SpiAndI2CSettingsDialog dialog = new SpiAndI2CSettingsDialog("SPI and I2C");
-                dialog.pack();
-                dialog.setModal(true);
-                dialog.setLocationRelativeTo(AdvancedSettingsPanel.this);
-                dialog.setVisible(true);
-            }
-        });
+            add(pair.mButton);
+        }
     }
 
     public void showSettingsButtons(boolean aShow)
     {
-        mSpiAndI2CSettingsButtion.setVisible(aShow);
+        for (ButtonDialogPair pair : mDialogs)
+        {
+            pair.mButton.setVisible(aShow);
+        }
     }
 
 }
