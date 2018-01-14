@@ -69,7 +69,10 @@ public class TestUnsupportedTalonOperations extends BaseSimulatorTest
         motorToTest.getSelectedSensorVelocity(0);
         motorToTest.setSelectedSensorPosition(0, 0, 0);
         motorToTest.setControlFramePeriod(ControlFrame.Control_3_General, 0);
+        motorToTest.setControlFramePeriod(0, 0);
+        motorToTest.setStatusFramePeriod(0, 0, 0);
         motorToTest.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic, 0, 0);
+        motorToTest.getStatusFramePeriod(0, 0);
         motorToTest.getStatusFramePeriod(StatusFrame.Status_10_MotionMagic, 0);
         motorToTest.getStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 0);
         motorToTest.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_100Ms, 0);
@@ -95,7 +98,6 @@ public class TestUnsupportedTalonOperations extends BaseSimulatorTest
         motorToTest.getIntegralAccumulator(0);
         motorToTest.getErrorDerivative(0);
         motorToTest.selectProfileSlot(0, 0);
-        // motorToTest.getClosedLoopTarget(0);
         motorToTest.getActiveTrajectoryPosition();
         motorToTest.getActiveTrajectoryVelocity();
         motorToTest.getActiveTrajectoryHeading();
@@ -111,7 +113,7 @@ public class TestUnsupportedTalonOperations extends BaseSimulatorTest
         motorToTest.changeMotionControlFramePeriod(0);
         motorToTest.getLastError();
         motorToTest.getFaults(new Faults());
-        motorToTest.getStickyFaults(new StickyFaults()); // TODO bug in dependency
+        motorToTest.getStickyFaults(new StickyFaults());
         motorToTest.clearStickyFaults(0);
         motorToTest.getFirmwareVersion();
         motorToTest.hasResetOccurred();
@@ -124,8 +126,8 @@ public class TestUnsupportedTalonOperations extends BaseSimulatorTest
         motorToTest.getBaseID();
         motorToTest.follow(motorToFollow);
         motorToTest.valueUpdated();
-        // motorToTest.getWPILIB_SpeedController();
         motorToTest.getSensorCollection();
+        motorToTest.getControlMode();
         
         // Enhanced Motor Controller
         motorToTest.setStatusFramePeriod(StatusFrameEnhanced.Status_11_UartGadgeteer, 0, 0);
