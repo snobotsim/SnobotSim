@@ -186,4 +186,11 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
 
     }
 
+    @Override
+    public void removeSimulatorComponent(Object comp)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
 }
