@@ -562,6 +562,13 @@ extern "C"{
         wrapper->Send("PushMotionProfileTrajectory", position, velocity, headingDeg, profileSlotSelect, isLastPoint, zeroPos);
         return (ctre::phoenix::ErrorCode) 0;
     }
+    ctre::phoenix::ErrorCode c_MotController_PushMotionProfileTrajectory_2(
+            void *handle, double position, double velocity, double headingDeg,
+            int profileSlotSelect0, int profileSlotSelect1, bool isLastPoint, bool zeroPos, int durationMs)
+    {
+        LOG_UNSUPPORTED_CAN_FUNC("");
+        return (ctre::phoenix::ErrorCode) 0;
+    }
     ctre::phoenix::ErrorCode c_MotController_IsMotionProfileTopLevelBufferFull(void *handle, bool * value)
     {
         RECEIVE_HELPER("IsMotionProfileTopLevelBufferFull", sizeof(*value));
@@ -591,6 +598,15 @@ extern "C"{
         PoplateReceiveResults(buffer, outputEnable, buffer_pos);
         return (ctre::phoenix::ErrorCode) 0;
     }
+    ctre::phoenix::ErrorCode c_MotController_GetMotionProfileStatus_2(void *handle,
+            int *topBufferRem, int *topBufferCnt, int *btmBufferCnt,
+            bool *hasUnderrun, bool *isUnderrun, bool *activePointValid,
+            bool *isLast, int *profileSlotSelect, int *outputEnable, int *timeDurMs,
+            int *profileSlotSelect1)
+    {
+        LOG_UNSUPPORTED_CAN_FUNC("");
+        return (ctre::phoenix::ErrorCode) 0;
+    }
     ctre::phoenix::ErrorCode c_MotController_ClearMotionProfileHasUnderrun(void *handle,
             int timeoutMs)
     {
@@ -605,6 +621,12 @@ extern "C"{
         wrapper->Send("ChangeMotionControlFramePeriod", periodMs);
         return (ctre::phoenix::ErrorCode) 0;
     }
+    ctre::phoenix::ErrorCode c_MotController_ConfigMotionProfileTrajectoryPeriod(
+            void *handle, int durationMs, int timeoutMs)
+	{
+        LOG_UNSUPPORTED_CAN_FUNC("");
+        return (ctre::phoenix::ErrorCode) 0;
+	}
     ctre::phoenix::ErrorCode c_MotController_GetLastError(void *handle)
     {
         return (ctre::phoenix::ErrorCode) 0;
@@ -834,6 +856,11 @@ extern "C"{
         return (ctre::phoenix::ErrorCode) 0;
     }
     ctre::phoenix::ErrorCode c_MotController_GetLimitSwitchState(void *handle, int * isFwdClosed, int * isRevClosed)
+    {
+        LOG_UNSUPPORTED_CAN_FUNC("");
+        return (ctre::phoenix::ErrorCode) 0;
+    }
+    ctre::phoenix::ErrorCode c_MotController_GetClosedLoopTarget(void *handle, int * value, int pidIdx)
     {
         LOG_UNSUPPORTED_CAN_FUNC("");
         return (ctre::phoenix::ErrorCode) 0;

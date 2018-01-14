@@ -66,16 +66,26 @@ extern "C"{
 	EXPORT_ ctre::phoenix::ErrorCode c_MotController_GetMotionProfileTopLevelBufferCount(void *handle, int * value);
 	EXPORT_ ctre::phoenix::ErrorCode c_MotController_PushMotionProfileTrajectory(void *handle, double position,
 			double velocity, double headingDeg, int profileSlotSelect, bool isLastPoint, bool zeroPos);
+ctre::phoenix::ErrorCode c_MotController_PushMotionProfileTrajectory_2(
+		void *handle, double position, double velocity, double headingDeg,
+		int profileSlotSelect0, int profileSlotSelect1, bool isLastPoint, bool zeroPos, int durationMs);
 	EXPORT_ ctre::phoenix::ErrorCode c_MotController_IsMotionProfileTopLevelBufferFull(void *handle, bool * value);
 	EXPORT_ ctre::phoenix::ErrorCode c_MotController_ProcessMotionProfileBuffer(void *handle);
 	EXPORT_ ctre::phoenix::ErrorCode c_MotController_GetMotionProfileStatus(void *handle,
 			int *topBufferRem, int *topBufferCnt, int *btmBufferCnt,
 			bool *hasUnderrun, bool *isUnderrun, bool *activePointValid,
 			bool *isLast, int *profileSlotSelect, int *outputEnable);
+	EXPORT_ ctre::phoenix::ErrorCode c_MotController_GetMotionProfileStatus_2(void *handle,
+			int *topBufferRem, int *topBufferCnt, int *btmBufferCnt,
+			bool *hasUnderrun, bool *isUnderrun, bool *activePointValid,
+			bool *isLast, int *profileSlotSelect, int *outputEnable, int *timeDurMs,
+			int *profileSlotSelect1);
 	EXPORT_ ctre::phoenix::ErrorCode c_MotController_ClearMotionProfileHasUnderrun(void *handle,
 			int timeoutMs);
 	EXPORT_ ctre::phoenix::ErrorCode c_MotController_ChangeMotionControlFramePeriod(void *handle,
 			int periodMs);
+	EXPORT_ ctre::phoenix::ErrorCode c_MotController_ConfigMotionProfileTrajectoryPeriod(
+			void *handle, int durationMs, int timeoutMs);
 	EXPORT_ ctre::phoenix::ErrorCode c_MotController_GetLastError(void *handle);
 	EXPORT_ ctre::phoenix::ErrorCode c_MotController_GetFirmwareVersion(void *handle, int *);
 	EXPORT_ ctre::phoenix::ErrorCode c_MotController_HasResetOccurred(void *handle,bool *);
@@ -116,4 +126,5 @@ extern "C"{
 	EXPORT_ ctre::phoenix::ErrorCode c_MotController_GetPulseWidthAll(void *handle, int * pos, int * vel, int * riseToRiseUs, int * riseToFallUs);
 	EXPORT_ ctre::phoenix::ErrorCode c_MotController_GetQuadPinStates(void *handle, int * quadA, int * quadB, int * quadIdx);
 	EXPORT_ ctre::phoenix::ErrorCode c_MotController_GetLimitSwitchState(void *handle, int * isFwdClosed, int * isRevClosed);
+	EXPORT_ ctre::phoenix::ErrorCode c_MotController_GetClosedLoopTarget(void *handle, int * value, int pidIdx);
 }
