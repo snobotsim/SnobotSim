@@ -103,4 +103,6 @@ public interface SimulatorDataAccessor
 
     void removeSimulatorComponent(Object comp);
 
+    double getTimeSinceEnabled();
+
 }

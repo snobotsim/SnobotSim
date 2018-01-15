@@ -43,7 +43,7 @@ public class SimulatorFrame extends JFrame
     public void updateLoop()
     {
         mBasicPanel.update();
-        mEnablePanel.setTime(DataAccessorFactory.getInstance().getSimulatorDataAccessor().getMatchTime());
+        mEnablePanel.setTime(DataAccessorFactory.getInstance().getSimulatorDataAccessor().getTimeSinceEnabled());
     }
 
     private void initComponenents()

@@ -34,6 +34,7 @@ import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor;
 public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
 {
     private static final Logger sLOGGER = Logger.getLogger(JavaSimulatorDataAccessor.class);
+    private static double sENABLED_TIME = -1;
 
     @Override
     public void setLogLevel(SnobotLogLevel logLevel)
@@ -179,12 +180,14 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     public void setDisabled(boolean aDisabled)
     {
         DriverStationSimulatorJni.setEnabled(!aDisabled);
+        sENABLED_TIME = System.currentTimeMillis() * 1e-3;
     }
 
     @Override
     public void setAutonomous(boolean aAuton)
     {
         DriverStationSimulatorJni.setAutonomous(aAuton);
+        sENABLED_TIME = System.currentTimeMillis() * 1e-3;
     }
 
     @Override
@@ -279,6 +282,15 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
                 break;
             }
         }
+    }
+
+    @Override
+    public double getTimeSinceEnabled()
+    {
+        double currentTime = (System.currentTimeMillis() * 1e-3);
+        double diff = currentTime - sENABLED_TIME;
+        System.out.println(currentTime + ", " + sENABLED_TIME + ", " + diff);
+        return diff;
     }
 
 }

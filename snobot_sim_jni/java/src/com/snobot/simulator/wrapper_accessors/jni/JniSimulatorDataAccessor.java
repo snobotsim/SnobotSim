@@ -193,4 +193,11 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
 
     }
 
+    @Override
+    public double getTimeSinceEnabled()
+    {
+        // TODO Auto-generated method stub
+        return -1;
+    }
+
 }
