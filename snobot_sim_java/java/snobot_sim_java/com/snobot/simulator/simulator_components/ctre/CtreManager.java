@@ -76,6 +76,7 @@ public class CtreManager
                 break;
             default:
                 sLOGGER.log(Level.ERROR, String.format("Unknown demand mode %d", mode));
+                break;
 
             }
 
@@ -150,7 +151,7 @@ public class CtreManager
             wrapper.addMotionProfilePoint(point);
         }
         else if ("ProcessMotionProfileBuffer".equals(aCallback))
-        {
+        { // NOPMD
             // Nothing to do
         }
 

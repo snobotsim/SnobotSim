@@ -27,15 +27,14 @@ public class JavaEncoderWrapperAccessor extends BaseWrapperAccessor<EncoderWrapp
 
         EncoderWrapper encoder = SensorActuatorRegistry.get().getEncoders().get(aEncoderHandle);
         PwmWrapper speedController = SensorActuatorRegistry.get().getSpeedControllers().get(aSpeedControllerHandle);
-        if (encoder != null && speedController != null)
+        if (encoder == null || speedController == null)
         {
-            speedController.setFeedbackSensor(encoder);
-            success = true;
+            sLOGGER.log(Level.ERROR, "Could not conenct SC to ENC... " + aEncoderHandle + ", " + aSpeedControllerHandle);
         }
         else
         {
-            sLOGGER.log(Level.ERROR,
-                    "Could not conenct SC to ENC... " + aEncoderHandle + ", " + aSpeedControllerHandle);
+            speedController.setFeedbackSensor(encoder);
+            success = true;
         }
 
         return success;

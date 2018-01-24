@@ -47,8 +47,8 @@ public class TestADXL345_SPIAccelerometer extends BaseSimulatorTest
     @Test
     public void testADXL345_SPI()
     {
-        double DOUBLE_EPSILON = 1 / 256.0; // Resoultion isn't as good as normal
-                                           // sensors
+        final double DOUBLE_EPSILON = 1 / 256.0; // Resoultion isn't as good as
+                                                 // normal sensors
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(mPort.value, "ADXL345");
 
         ADXL345_SPI accel = new ADXL345_SPI(mPort, mRange);

@@ -87,61 +87,61 @@ public class SimulatorConfigWriter
         return output;
     }
 
-    protected void dumpBasicConfig(IBasicSensorActuatorWrapperAccessor accessor, List<BasicModuleConfig> outputList)
+    protected void dumpBasicConfig(IBasicSensorActuatorWrapperAccessor aAccessor, List<BasicModuleConfig> aOutputList)
     {
-        for (int portHandle : accessor.getPortList())
+        for (int portHandle : aAccessor.getPortList())
         {
-            BasicModuleConfig config = new BasicModuleConfig(portHandle, accessor.getName(portHandle));
-            outputList.add(config);
+            BasicModuleConfig config = new BasicModuleConfig(portHandle, aAccessor.getName(portHandle));
+            aOutputList.add(config);
         }
     }
 
-    protected void dumpEncoderConfig(EncoderWrapperAccessor accessor, List<EncoderConfig> outputList)
+    protected void dumpEncoderConfig(EncoderWrapperAccessor aAccessor, List<EncoderConfig> aOutputList)
     {
-        for (int portHandle : accessor.getPortList())
+        for (int portHandle : aAccessor.getPortList())
         {
-            EncoderConfig config = new EncoderConfig(portHandle, accessor.getName(portHandle), accessor.getHookedUpId(portHandle));
-            outputList.add(config);
+            EncoderConfig config = new EncoderConfig(portHandle, aAccessor.getName(portHandle), aAccessor.getHookedUpId(portHandle));
+            aOutputList.add(config);
         }
     }
 
-    protected void dumpPwmConfig(SpeedControllerWrapperAccessor accessor, List<PwmConfig> outputList)
+    protected void dumpPwmConfig(SpeedControllerWrapperAccessor aAccessor, List<PwmConfig> aOutputList)
     {
-        for (int portHandle : accessor.getPortList())
+        for (int portHandle : aAccessor.getPortList())
         {
-            PwmConfig config = new PwmConfig(portHandle, accessor.getName(portHandle), getMotorSimConfig(accessor, portHandle),
-                    getMotorModel(accessor, portHandle));
-            outputList.add(config);
+            PwmConfig config = new PwmConfig(portHandle, aAccessor.getName(portHandle), getMotorSimConfig(aAccessor, portHandle),
+                    getMotorModel(aAccessor, portHandle));
+            aOutputList.add(config);
         }
     }
 
-    protected DcMotorModelConfig.FactoryParams getMotorModel(SpeedControllerWrapperAccessor accessor, int portHandle)
+    protected DcMotorModelConfig.FactoryParams getMotorModel(SpeedControllerWrapperAccessor aAccessor, int aPortHandle)
     {
-        DcMotorModelConfig motorConfig = accessor.getMotorConfig(portHandle);
+        DcMotorModelConfig motorConfig = aAccessor.getMotorConfig(aPortHandle);
         return motorConfig == null ? null : motorConfig.mFactoryParams;
     }
 
-    protected void dumpSimulatorComponents(SimulatorDataAccessor accessor, List<Object> outputList)
+    protected void dumpSimulatorComponents(SimulatorDataAccessor aAccessor, List<Object> aOutputList)
     {
-        for (Object config : accessor.getSimulatorComponentConfigs())
+        for (Object config : aAccessor.getSimulatorComponentConfigs())
         {
-            outputList.add(config);
+            aOutputList.add(config);
         }
     }
 
-    protected IMotorSimulatorConfig getMotorSimConfig(SpeedControllerWrapperAccessor accessor, int aPortHandle)
+    protected IMotorSimulatorConfig getMotorSimConfig(SpeedControllerWrapperAccessor aAccessor, int aPortHandle)
     {
-        MotorSimType simType = accessor.getMotorSimType(aPortHandle);
+        MotorSimType simType = aAccessor.getMotorSimType(aPortHandle);
         switch (simType)
         {
         case Simple:
-            return accessor.getMotorSimSimpleModelConfig(aPortHandle);
+            return aAccessor.getMotorSimSimpleModelConfig(aPortHandle);
         case StaticLoad:
-            return accessor.getMotorSimStaticModelConfig(aPortHandle);
+            return aAccessor.getMotorSimStaticModelConfig(aPortHandle);
         case GravitationalLoad:
-            return accessor.getMotorSimGravitationalModelConfig(aPortHandle);
+            return aAccessor.getMotorSimGravitationalModelConfig(aPortHandle);
         case RotationalLoad:
-            return accessor.getMotorSimRotationalModelConfig(aPortHandle);
+            return aAccessor.getMotorSimRotationalModelConfig(aPortHandle);
 
         case None:
         default:

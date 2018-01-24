@@ -40,9 +40,9 @@ public class SimulatorConfig
         return mDigitalIO;
     }
 
-    public void setmDigitalIO(List<BasicModuleConfig> mDigitalIO)
+    public void setmDigitalIO(List<BasicModuleConfig> aDigitalIO)
     {
-        this.mDigitalIO = mDigitalIO;
+        this.mDigitalIO = aDigitalIO;
     }
 
     public List<BasicModuleConfig> getmAnalogIO()
@@ -50,9 +50,9 @@ public class SimulatorConfig
         return mAnalogIO;
     }
 
-    public void setmAnalogIO(List<BasicModuleConfig> mAnalogIO)
+    public void setmAnalogIO(List<BasicModuleConfig> aAnalogIO)
     {
-        this.mAnalogIO = mAnalogIO;
+        this.mAnalogIO = aAnalogIO;
     }
 
     public List<BasicModuleConfig> getmRelays()
@@ -60,9 +60,9 @@ public class SimulatorConfig
         return mRelays;
     }
 
-    public void setmRelays(List<BasicModuleConfig> mRelays)
+    public void setmRelays(List<BasicModuleConfig> aRelays)
     {
-        this.mRelays = mRelays;
+        this.mRelays = aRelays;
     }
 
     public List<BasicModuleConfig> getmSolenoids()
@@ -70,9 +70,9 @@ public class SimulatorConfig
         return mSolenoids;
     }
 
-    public void setmSolenoids(List<BasicModuleConfig> mSolenoids)
+    public void setmSolenoids(List<BasicModuleConfig> aSolenoids)
     {
-        this.mSolenoids = mSolenoids;
+        this.mSolenoids = aSolenoids;
     }
 
     public List<EncoderConfig> getmEncoders()
@@ -80,9 +80,9 @@ public class SimulatorConfig
         return mEncoders;
     }
 
-    public void setmEncoders(List<EncoderConfig> mEncoders)
+    public void setmEncoders(List<EncoderConfig> aEncoders)
     {
-        this.mEncoders = mEncoders;
+        this.mEncoders = aEncoders;
     }
 
     public List<PwmConfig> getmPwm()
@@ -90,9 +90,9 @@ public class SimulatorConfig
         return mPwm;
     }
 
-    public void setmPwm(List<PwmConfig> mPwm)
+    public void setmPwm(List<PwmConfig> aPwm)
     {
-        this.mPwm = mPwm;
+        this.mPwm = aPwm;
     }
 
     public Map<Integer, String> getmDefaultI2CWrappers()
@@ -100,9 +100,9 @@ public class SimulatorConfig
         return mDefaultI2CWrappers;
     }
 
-    public void setmDefaultI2CWrappers(Map<Integer, String> mDefaultI2CWrappers)
+    public void setmDefaultI2CWrappers(Map<Integer, String> aDefaultI2CWrappers)
     {
-        this.mDefaultI2CWrappers = mDefaultI2CWrappers;
+        this.mDefaultI2CWrappers = aDefaultI2CWrappers;
     }
 
     public Map<Integer, String> getmDefaultSpiWrappers()
@@ -110,9 +110,9 @@ public class SimulatorConfig
         return mDefaultSpiWrappers;
     }
 
-    public void setmDefaultSpiWrappers(Map<Integer, String> mDefaultSpiWrappers)
+    public void setmDefaultSpiWrappers(Map<Integer, String> aDefaultSpiWrappers)
     {
-        this.mDefaultSpiWrappers = mDefaultSpiWrappers;
+        this.mDefaultSpiWrappers = aDefaultSpiWrappers;
     }
 
     public List<BasicModuleConfig> getmAccelerometers()
@@ -120,9 +120,9 @@ public class SimulatorConfig
         return mAccelerometers;
     }
 
-    public void setmAccelerometers(List<BasicModuleConfig> mAccelerometers)
+    public void setmAccelerometers(List<BasicModuleConfig> aAccelerometers)
     {
-        this.mAccelerometers = mAccelerometers;
+        this.mAccelerometers = aAccelerometers;
     }
 
     public List<BasicModuleConfig> getmGyros()
@@ -130,9 +130,9 @@ public class SimulatorConfig
         return mGyros;
     }
 
-    public void setmGyros(List<BasicModuleConfig> mGyros)
+    public void setmGyros(List<BasicModuleConfig> aGyros)
     {
-        this.mGyros = mGyros;
+        this.mGyros = aGyros;
     }
 
     public List<Object> getmSimulatorComponents()
@@ -140,9 +140,9 @@ public class SimulatorConfig
         return mSimulatorComponents;
     }
 
-    public void setmSimulatorComponents(List<Object> mSimulatorComponents)
+    public void setmSimulatorComponents(List<Object> aSimulatorComponents)
     {
-        this.mSimulatorComponents = mSimulatorComponents;
+        this.mSimulatorComponents = aSimulatorComponents;
     }
 
 }

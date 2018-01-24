@@ -64,18 +64,19 @@ public interface IMotorSimulator
         @Override
         public void reset()
         {
+            // Nothing to do
         }
 
         @Override
         public void reset(double aPosition, double aVelocity, double aCurrent)
         {
-
+            // Nothing to do
         }
 
         @Override
-        public void update(double cycleTime)
+        public void update(double aCycleTime)
         {
-
+            // Nothing to do
         }
 
     }

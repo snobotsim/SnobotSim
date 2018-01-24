@@ -34,11 +34,14 @@ import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor;
 public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
 {
     private static final Logger sLOGGER = Logger.getLogger(JavaSimulatorDataAccessor.class);
-    private static double sENABLED_TIME = -1;
+    private static final String sUNKNOWN_SPEED_CONTROLLER_TEXT = "Unknown speed controller ";
+
+    private double mEnabledTime = -1;
 
     @Override
-    public void setLogLevel(SnobotLogLevel logLevel)
+    public void setLogLevel(SnobotLogLevel aLogLevel)
     {
+        // Nothing to do
     }
 
     @Override
@@ -57,10 +60,10 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     }
 
     @Override
-    public boolean connectTankDriveSimulator(int leftEncHandle, int rightEncHandle, int gyroHandle, double turnKp)
+    public boolean connectTankDriveSimulator(int aLeftEncHandle, int aRightEncHandle, int aGyroHandle, double aTurnKp)
     {
         TankDriveGyroSimulator simulator = new TankDriveGyroSimulator(
-                new TankDriveGyroSimulator.TankDriveConfig(leftEncHandle, rightEncHandle, gyroHandle, turnKp));
+                new TankDriveGyroSimulator.TankDriveConfig(aLeftEncHandle, aRightEncHandle, aGyroHandle, aTurnKp));
 
         return simulator.isSetup();
     }
@@ -79,25 +82,25 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     }
 
     @Override
-    public DcMotorModelConfig createMotor(String motorType)
+    public DcMotorModelConfig createMotor(String aMotorType)
     {
-        if ("rs775".equals(motorType))
+        if ("rs775".equals(aMotorType))
         {
             return PublishedMotorFactory.makeRS775();
         }
         else
         {
-            return VexMotorFactory.createMotor(motorType);
+            return VexMotorFactory.createMotor(aMotorType);
         }
     }
 
     @Override
-    public DcMotorModelConfig createMotor(String motorType, int numMotors, double gearReduction, double efficiency, boolean aInverted, boolean aBrake)
+    public DcMotorModelConfig createMotor(String aMotorType, int aNumMotors, double aGearReduction, double aEfficiency, boolean aInverted, boolean aBrake)
     {
-        DcMotorModelConfig config=  createMotor(motorType);
+        DcMotorModelConfig config = createMotor(aMotorType);
         config.mFactoryParams.mHasBrake = aBrake;
         config.mFactoryParams.mInverted = aInverted;
-        return MakeTransmission.makeTransmission(config, numMotors, gearReduction, efficiency);
+        return MakeTransmission.makeTransmission(config, aNumMotors, aGearReduction, aEfficiency);
     }
 
     @Override
@@ -106,71 +109,71 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
         boolean success = false;
 
         PwmWrapper speedController = SensorActuatorRegistry.get().getSpeedControllers().get(aScHandle);
-        if (speedController != null)
+        if (speedController == null)
+        {
+            sLOGGER.log(Level.ERROR, sUNKNOWN_SPEED_CONTROLLER_TEXT + aScHandle);
+        }
+        else
         {
             speedController.setMotorSimulator(new SimpleMotorSimulator(aConfig));
             success = true;
         }
+
+        return success;
+    }
+
+    @Override
+    public boolean setSpeedControllerModel_Static(int aScHandle, DcMotorModelConfig aMotorConfig, StaticLoadMotorSimulationConfig aConfig)
+    {
+        boolean success = false;
+        PwmWrapper wrapper = SensorActuatorRegistry.get().getSpeedControllers().get(aScHandle);
+        IMotorSimulator motorModel = new StaticLoadDcMotorSim(new DcMotorModel(aMotorConfig), aConfig);
+        if (wrapper == null)
+        {
+            sLOGGER.log(Level.ERROR, sUNKNOWN_SPEED_CONTROLLER_TEXT + aScHandle);
+        }
         else
         {
-            sLOGGER.log(Level.ERROR, "Unknown speed controller " + aScHandle);
+            wrapper.setMotorSimulator(motorModel);
+            success = true;
         }
 
         return success;
     }
 
     @Override
-    public boolean setSpeedControllerModel_Static(int aScHandle, DcMotorModelConfig motorConfig, StaticLoadMotorSimulationConfig aConfig)
+    public boolean setSpeedControllerModel_Gravitational(int aScHandle, DcMotorModelConfig aMotorConfig, GravityLoadMotorSimulationConfig aConfig)
     {
         boolean success = false;
         PwmWrapper wrapper = SensorActuatorRegistry.get().getSpeedControllers().get(aScHandle);
-        IMotorSimulator motorModel = new StaticLoadDcMotorSim(new DcMotorModel(motorConfig), aConfig);
-        if (wrapper != null)
+        IMotorSimulator motorModel = new GravityLoadDcMotorSim(new DcMotorModel(aMotorConfig), aConfig);
+        if (wrapper == null)
         {
-            wrapper.setMotorSimulator(motorModel);
-            success = true;
+            sLOGGER.log(Level.ERROR, sUNKNOWN_SPEED_CONTROLLER_TEXT + aScHandle);
         }
         else
         {
-            sLOGGER.log(Level.ERROR, "Unknown speed controller " + aScHandle);
+            wrapper.setMotorSimulator(motorModel);
+            success = true;
         }
 
         return success;
     }
 
     @Override
-    public boolean setSpeedControllerModel_Gravitational(int aScHandle, DcMotorModelConfig motorConfig, GravityLoadMotorSimulationConfig aConfig)
+    public boolean setSpeedControllerModel_Rotational(int aScHandle, DcMotorModelConfig aMotorConfig, RotationalLoadMotorSimulationConfig aConfig)
     {
         boolean success = false;
         PwmWrapper wrapper = SensorActuatorRegistry.get().getSpeedControllers().get(aScHandle);
-        IMotorSimulator motorModel = new GravityLoadDcMotorSim(new DcMotorModel(motorConfig), aConfig);
-        if (wrapper != null)
+        IMotorSimulator motorModel = new RotationalLoadDcMotorSim(new DcMotorModel(aMotorConfig), wrapper, aConfig);
+        if (wrapper == null)
         {
-            wrapper.setMotorSimulator(motorModel);
-            success = true;
+            sLOGGER.log(Level.ERROR, sUNKNOWN_SPEED_CONTROLLER_TEXT + aScHandle);
         }
         else
         {
-            sLOGGER.log(Level.ERROR, "Unknown speed controller " + aScHandle);
-        }
-
-        return success;
-    }
-
-    @Override
-    public boolean setSpeedControllerModel_Rotational(int aScHandle, DcMotorModelConfig motorConfig, RotationalLoadMotorSimulationConfig aConfig)
-    {
-        boolean success = false;
-        PwmWrapper wrapper = SensorActuatorRegistry.get().getSpeedControllers().get(aScHandle);
-        IMotorSimulator motorModel = new RotationalLoadDcMotorSim(new DcMotorModel(motorConfig), wrapper, aConfig);
-        if (wrapper != null)
-        {
             wrapper.setMotorSimulator(motorModel);
             success = true;
-        }
-        else
-        {
-            sLOGGER.log(Level.ERROR, "Unknown speed controller " + aScHandle);
         }
 
         return success;
@@ -180,14 +183,14 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     public void setDisabled(boolean aDisabled)
     {
         DriverStationSimulatorJni.setEnabled(!aDisabled);
-        sENABLED_TIME = System.currentTimeMillis() * 1e-3;
+        mEnabledTime = System.currentTimeMillis() * 1e-3;
     }
 
     @Override
     public void setAutonomous(boolean aAuton)
     {
         DriverStationSimulatorJni.setAutonomous(aAuton);
-        sENABLED_TIME = System.currentTimeMillis() * 1e-3;
+        mEnabledTime = System.currentTimeMillis() * 1e-3;
     }
 
     @Override
@@ -230,9 +233,9 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     }
 
     @Override
-    public void setMatchInfo(String eventName, MatchType matchType, int matchNumber, int replayNumber, String gameSpecificMessage)
+    public void setMatchInfo(String aEventName, MatchType aMatchType, int aMatchNumber, int aReplayNumber, String aGameSpecificMessage)
     {
-        DriverStationSimulatorJni.setMatchInfo(eventName, matchType.ordinal(), matchNumber, replayNumber, gameSpecificMessage);
+        DriverStationSimulatorJni.setMatchInfo(aEventName, aMatchType.ordinal(), aMatchNumber, aReplayNumber, aGameSpecificMessage);
     }
 
     @Override
@@ -272,11 +275,11 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     }
 
     @Override
-    public void removeSimulatorComponent(Object comp)
+    public void removeSimulatorComponent(Object aComponent)
     {
         for (ISimulatorUpdater sim : SensorActuatorRegistry.get().getSimulatorComponents())
         {
-            if (sim.getConfig().equals(comp))
+            if (sim.getConfig().equals(aComponent))
             {
                 SensorActuatorRegistry.get().getSimulatorComponents().remove(sim);
                 break;
@@ -287,10 +290,8 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     @Override
     public double getTimeSinceEnabled()
     {
-        double currentTime = (System.currentTimeMillis() * 1e-3);
-        double diff = currentTime - sENABLED_TIME;
-        System.out.println(currentTime + ", " + sENABLED_TIME + ", " + diff);
-        return diff;
+        double currentTime = System.currentTimeMillis() * 1e-3;
+        return currentTime - mEnabledTime;
     }
 
 }

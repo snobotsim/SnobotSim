@@ -7,9 +7,9 @@ public class ControllerConfiguration
     public Controller mController;
     public Class<? extends IMockJoystick> mSpecialization;
 
-    public ControllerConfiguration(Controller controller, Class<? extends IMockJoystick> specializationClass)
+    public ControllerConfiguration(Controller aController, Class<? extends IMockJoystick> aSpecializationClass)
     {
-        mController = controller;
-        mSpecialization = specializationClass;
+        mController = aController;
+        mSpecialization = aSpecializationClass;
     }
 }

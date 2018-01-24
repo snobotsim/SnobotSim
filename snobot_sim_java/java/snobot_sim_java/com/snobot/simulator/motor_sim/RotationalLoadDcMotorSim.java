@@ -4,7 +4,7 @@ import com.snobot.simulator.module_wrapper.PwmWrapper;
 
 public class RotationalLoadDcMotorSim extends BaseDcMotorSimulator
 {
-    protected final static double sGRAVITY = 9.8;
+    protected static final double sGRAVITY = 9.8;
 
     protected final RotationalLoadMotorSimulationConfig mConfig;
 
@@ -41,7 +41,7 @@ public class RotationalLoadDcMotorSim extends BaseDcMotorSimulator
 
 
     @Override
-    public void update(double cycleTime)
+    public void update(double aCycleTime)
     {
         double position = mSpeedController.getPosition();
         double gravityTorque = mGravityBasedTorqueFactor * Math.sin(position);
@@ -50,7 +50,7 @@ public class RotationalLoadDcMotorSim extends BaseDcMotorSimulator
 
         double inVolts = mVoltagePercentage * 12;
 
-        mMotorModel.step(inVolts, mArmInertia, gravityTorque, cycleTime);
+        mMotorModel.step(inVolts, mArmInertia, gravityTorque, aCycleTime);
     }
 
     public RotationalLoadMotorSimulationConfig getConfig()

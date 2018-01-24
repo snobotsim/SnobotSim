@@ -8,42 +8,47 @@ import com.snobot.simulator.jni.HalCallbackValue;
 import com.snobot.simulator.module_wrapper.DigitalSourceWrapper;
 import com.snobot.simulator.module_wrapper.DigitalSourceWrapper.StateSetterHelper;
 
-public class DigitalCallbackJni
+public final class DigitalCallbackJni
 {
     private static final Logger sLOGGER = Logger.getLogger(DigitalCallbackJni.class);
 
+    private DigitalCallbackJni()
+    {
+
+    }
+
     public static native void setDigitalInput(int aHandle, boolean aState);
 
-    public static native void registerDigitalCallback(String functionName);
-
-    public static native void reset();
+    public static native void registerDigitalCallback(String aFunctionName);
 
     public static void registerDigitalCallback()
     {
         registerDigitalCallback("digitalCallback");
     }
 
-    public static void digitalCallback(String callbackType, int port, HalCallbackValue halValue)
+    public static native void reset();
+
+    public static void digitalCallback(String aCallbackType, int aPort, HalCallbackValue aHalValue)
     {
-        if ("Initialized".equals(callbackType))
+        if ("Initialized".equals(aCallbackType))
         {
-            SensorActuatorRegistry.get().register(new DigitalSourceWrapper(port, new StateSetterHelper()
+            SensorActuatorRegistry.get().register(new DigitalSourceWrapper(aPort, new StateSetterHelper()
             {
 
                 @Override
                 public void setState(boolean aState)
                 {
-                    setDigitalInput(port, aState);
+                    setDigitalInput(aPort, aState);
                 }
-            }), port);
+            }), aPort);
         }
-        else if ("Value".equals(callbackType))
+        else if ("Value".equals(aCallbackType))
         {
-            SensorActuatorRegistry.get().getDigitalSources().get(port).set(halValue.mBoolean);
+            SensorActuatorRegistry.get().getDigitalSources().get(aPort).set(aHalValue.mBoolean);
         }
         else
         {
-            sLOGGER.log(Level.ERROR, "Unknown Digital callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown Digital callback " + aCallbackType + " - " + aHalValue);
         }
     }
 }

@@ -12,6 +12,9 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'jacoco'
 apply plugin: 'application'
+apply plugin: 'checkstyle'
+apply plugin: 'pmd'
+apply plugin: 'findbugs'
 
 sourceSets {
     main {
@@ -176,3 +179,33 @@ distributions {
 }
 
 ///////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////////
+// Style/Formatting stuff
+checkstyle {
+    toolVersion = "8.1"
+    configFile = new File(rootDir, "styleguide/checkstyle.xml")
+    ignoreFailures = true
+}
+
+pmd {
+    consoleOutput  = true
+    reportsDir = file("${project.buildDir}/reports/pmd")
+    ruleSetFiles = files(file("$rootDir/styleguide/pmd-ruleset.xml"))
+    ruleSets = []
+    ignoreFailures = true
+}
+
+findbugs {
+    excludeFilter = file("$rootDir/styleguide/findbugs_suppressions.xml")
+    effort = "max"
+    ignoreFailures = true
+}
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled false
+        html.enabled true
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////

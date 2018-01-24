@@ -7,36 +7,41 @@ import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.HalCallbackValue;
 import com.snobot.simulator.module_wrapper.PwmWrapper;
 
-public class PwmCallbackJni
+public final class PwmCallbackJni
 {
     private static final Logger sLOGGER = Logger.getLogger(PwmCallbackJni.class);
 
-    public static native void registerPwmCallback(String functionName);
+    private PwmCallbackJni()
+    {
+
+    }
 
     public static native void reset();
+
+    public static native void registerPwmCallback(String aFunctionName);
 
     public static void registerPwmCallback()
     {
         registerPwmCallback("pwmCallback");
     }
 
-    public static void pwmCallback(String callbackType, int port, HalCallbackValue halValue)
+    public static void pwmCallback(String aCallbackType, int aPort, HalCallbackValue aHalValue)
     {
-        if ("Initialized".equals(callbackType))
+        if ("Initialized".equals(aCallbackType))
         {
-            SensorActuatorRegistry.get().register(new PwmWrapper(port), port);
+            SensorActuatorRegistry.get().register(new PwmWrapper(aPort), aPort);
         }
-        else if ("Speed".equals(callbackType))
+        else if ("Speed".equals(aCallbackType))
         {
-            SensorActuatorRegistry.get().getSpeedControllers().get(port).set(halValue.mDouble);
+            SensorActuatorRegistry.get().getSpeedControllers().get(aPort).set(aHalValue.mDouble);
         }
-        else if ("ZeroLatch".equals(callbackType))
+        else if ("ZeroLatch".equals(aCallbackType))
         {
             sLOGGER.log(Level.DEBUG, "ZeroLatch ignored");
         }
         else
         {
-            sLOGGER.log(Level.ERROR, "Unknown PWM callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown PWM callback " + aCallbackType + " - " + aHalValue);
         }
     }
 

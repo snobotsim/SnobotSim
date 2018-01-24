@@ -2,17 +2,17 @@ package com.snobot.simulator.module_wrapper;
 
 public class DigitalSourceWrapper extends ASensorWrapper
 {
+    private final StateSetterHelper mSetterHelper;
+    private boolean mState;
+
     public static interface StateSetterHelper
     {
         public void setState(boolean aState);
     }
 
-    private final StateSetterHelper mSetterHelper;
-    private boolean mState;
-
-    public DigitalSourceWrapper(int index, StateSetterHelper aSetterHelper)
+    public DigitalSourceWrapper(int aIndex, StateSetterHelper aSetterHelper)
     {
-        super("Digital Source" + index);
+        super("Digital Source" + aIndex);
 
         mSetterHelper = aSetterHelper;
         mState = true;

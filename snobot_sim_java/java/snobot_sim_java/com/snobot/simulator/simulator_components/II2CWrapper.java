@@ -7,8 +7,8 @@ public interface II2CWrapper
 
     void shutdown();
 
-    void handleRead(ByteBuffer buffer);
+    void handleRead(ByteBuffer aBuffer);
 
-    void handleWrite(ByteBuffer buffer);
+    void handleWrite(ByteBuffer aBuffer);
 
 }

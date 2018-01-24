@@ -89,21 +89,21 @@ class SolenoidDisplay extends JPanel
     }
 
     @Override
-    public void paint(Graphics g)
+    public void paint(Graphics aGraphics)
     {
-        g.clearRect(0, 0, getWidth(), getHeight());
+        aGraphics.clearRect(0, 0, getWidth(), getHeight());
 
-        g.fillRect(0, 0, sCYLINDER_WIDTH, sHEIGHT);
+        aGraphics.fillRect(0, 0, sCYLINDER_WIDTH, sHEIGHT);
 
         if (mState)
         {
-            g.fillRect(sCYLINDER_WIDTH, sHEIGHT / 2, sWIDTH, sPOLE_SIZE);
-            g.fillRect(sWIDTH - sPLUNGER_SIZE, 0, sPLUNGER_SIZE, sHEIGHT);
+            aGraphics.fillRect(sCYLINDER_WIDTH, sHEIGHT / 2, sWIDTH, sPOLE_SIZE);
+            aGraphics.fillRect(sWIDTH - sPLUNGER_SIZE, 0, sPLUNGER_SIZE, sHEIGHT);
         }
         else
         {
-            g.fillRect(sCYLINDER_WIDTH, sHEIGHT / 2, sSHORT_POLE_WIDTH, sPOLE_SIZE);
-            g.fillRect(sCYLINDER_WIDTH + sSHORT_POLE_WIDTH, 0, sPLUNGER_SIZE, sHEIGHT);
+            aGraphics.fillRect(sCYLINDER_WIDTH, sHEIGHT / 2, sSHORT_POLE_WIDTH, sPOLE_SIZE);
+            aGraphics.fillRect(sCYLINDER_WIDTH + sSHORT_POLE_WIDTH, 0, sPLUNGER_SIZE, sHEIGHT);
         }
     }
 }

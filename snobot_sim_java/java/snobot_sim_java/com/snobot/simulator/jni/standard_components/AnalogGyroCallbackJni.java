@@ -7,35 +7,40 @@ import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.HalCallbackValue;
 import com.snobot.simulator.simulator_components.gyro.AnalogGyroWrapper;
 
-public class AnalogGyroCallbackJni
+public final class AnalogGyroCallbackJni
 {
     private static final Logger sLOGGER = Logger.getLogger(AnalogGyroCallbackJni.class);
 
+    private AnalogGyroCallbackJni()
+    {
+
+    }
+
     public static native void setAnalogGyroAngle(int aHandle, double aAngle);
 
-    public static native void registerAnalogGyroCallback(String functionName);
-
-    public static native void reset();
+    public static native void registerAnalogGyroCallback(String aFunctionName);
 
     public static void registerAnalogGyroCallback()
     {
         registerAnalogGyroCallback("analogGyroCallback");
     }
 
-    public static void analogGyroCallback(String callbackType, int port, HalCallbackValue halValue)
+    public static native void reset();
+
+    public static void analogGyroCallback(String aCallbackType, int aPort, HalCallbackValue aHalValue)
     {
-        if ("Initialized".equals(callbackType))
+        if ("Initialized".equals(aCallbackType))
         {
-            AnalogGyroWrapper wrapper = new AnalogGyroWrapper(port, "Analog Gyro");
-            SensorActuatorRegistry.get().register(wrapper, port);
+            AnalogGyroWrapper wrapper = new AnalogGyroWrapper(aPort, "Analog Gyro");
+            SensorActuatorRegistry.get().register(wrapper, aPort);
         }
-        else if ("Angle".equals(callbackType))
+        else if ("Angle".equals(aCallbackType))
         {
-            SensorActuatorRegistry.get().getGyros().get(port).setAngle(halValue.mDouble);
+            SensorActuatorRegistry.get().getGyros().get(aPort).setAngle(aHalValue.mDouble);
         }
         else
         {
-            sLOGGER.log(Level.ERROR, "Unknown AnalogGyro callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown AnalogGyro callback " + aCallbackType + " - " + aHalValue);
         }
     }
 }

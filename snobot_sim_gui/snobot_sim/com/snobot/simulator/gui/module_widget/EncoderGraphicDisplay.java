@@ -36,7 +36,7 @@ public class EncoderGraphicDisplay extends BaseWidgetDisplay<Integer, EncoderWra
     }
 
     @Override
-    protected EncoderWrapperDisplay createWidget(Integer pair)
+    protected EncoderWrapperDisplay createWidget(Integer aPair)
     {
         return new EncoderWrapperDisplay();
     }

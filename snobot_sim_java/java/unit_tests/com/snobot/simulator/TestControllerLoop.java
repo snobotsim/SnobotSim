@@ -22,9 +22,9 @@ public class TestControllerLoop extends BaseSimulatorTest
 {
     private class TestRobot extends IterativeRobot
     {
-        public int disabledCtr = 0;
-        public int enabledCtr = 0;
-        public int autonCtr = 0;
+        public int mDisabledCtr = 0;
+        public int mEnabledCtr = 0;
+        public int mAutonCtr = 0;
 
         private SpeedController mSpeedController0;
         private SpeedController mSpeedController1;
@@ -43,19 +43,19 @@ public class TestControllerLoop extends BaseSimulatorTest
 
         public void disabledPeriodic()
         {
-            ++disabledCtr;
+            ++mDisabledCtr;
         }
 
         public void autonomousPeriodic()
         {
-            ++autonCtr;
+            ++mAutonCtr;
             mRelay.set(Value.kOff);
             mSpeedController0.set(1);
         }
 
         public void teleopPeriodic()
         {
-            ++enabledCtr;
+            ++mEnabledCtr;
 
             mRelay.set(Value.kForward);
             mSpeedController0.set(0);
@@ -69,7 +69,7 @@ public class TestControllerLoop extends BaseSimulatorTest
     @Test
     public void testControlLoop() throws Exception
     {
-        double DOUBLE_EPSILON = .1;
+        final double DOUBLE_EPSILON = .1;
         TestRobot robot = new TestRobot();
 
         Thread thread = new Thread(new Runnable()
@@ -82,9 +82,9 @@ public class TestControllerLoop extends BaseSimulatorTest
                 {
                     robot.startCompetition();
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
-                    
+                    e.printStackTrace(); // NOPMD
                 }
             }
         });
@@ -108,7 +108,7 @@ public class TestControllerLoop extends BaseSimulatorTest
             DataAccessorFactory.getInstance().getSimulatorDataAccessor().waitForNextUpdateLoop(waitForDataPeriod);
         });
         Assert.assertEquals(.5, DataAccessorFactory.getInstance().getSimulatorDataAccessor().getMatchTime(), DOUBLE_EPSILON);
-        Assert.assertTrue(robot.disabledCtr > 0);
+        Assert.assertTrue(robot.mDisabledCtr > 0);
         Assert.assertEquals(Relay.Value.kOff, robot.mRelay.get());
         Assert.assertEquals(0, robot.mSpeedController0.get(), DOUBLE_EPSILON);
         Assert.assertEquals(0, robot.mSpeedController1.get(), DOUBLE_EPSILON);
@@ -124,7 +124,7 @@ public class TestControllerLoop extends BaseSimulatorTest
             DataAccessorFactory.getInstance().getSimulatorDataAccessor().waitForNextUpdateLoop(waitForDataPeriod);
         });
         Assert.assertEquals(1, DataAccessorFactory.getInstance().getSimulatorDataAccessor().getMatchTime(), DOUBLE_EPSILON);
-        Assert.assertTrue(robot.enabledCtr > 0);
+        Assert.assertTrue(robot.mEnabledCtr > 0);
         Assert.assertEquals(Relay.Value.kForward, robot.mRelay.get());
         Assert.assertEquals(0, robot.mSpeedController0.get(), DOUBLE_EPSILON);
         Assert.assertEquals(0, robot.mSpeedController1.get(), DOUBLE_EPSILON);
@@ -140,7 +140,7 @@ public class TestControllerLoop extends BaseSimulatorTest
             DataAccessorFactory.getInstance().getSimulatorDataAccessor().waitForNextUpdateLoop(waitForDataPeriod);
         });
         Assert.assertEquals(1.5, DataAccessorFactory.getInstance().getSimulatorDataAccessor().getMatchTime(), DOUBLE_EPSILON);
-        Assert.assertTrue(robot.autonCtr > 0);
+        Assert.assertTrue(robot.mAutonCtr > 0);
         Assert.assertEquals(Relay.Value.kOff, robot.mRelay.get());
         Assert.assertEquals(1, robot.mSpeedController0.get(), DOUBLE_EPSILON);
         Assert.assertEquals(0, robot.mSpeedController1.get(), DOUBLE_EPSILON);

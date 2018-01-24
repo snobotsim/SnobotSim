@@ -30,13 +30,13 @@ public abstract class BaseWidgetDisplay<KeyType, WidgetType extends Container> e
 
     protected Map<KeyType, WidgetType> mWidgetMap;
     protected Map<KeyType, JLabel> mLabelMap;
-    protected List<JButton> settingsButtons;
+    protected List<JButton> mSettingsButtons;
 
     public BaseWidgetDisplay(Collection<KeyType> aKeys)
     {
         setLayout(new GridBagLayout());
 
-        settingsButtons = new ArrayList<>();
+        mSettingsButtons = new ArrayList<>();
         mWidgetMap = new HashMap<>();
         mLabelMap = new HashMap<>();
 
@@ -68,12 +68,12 @@ public abstract class BaseWidgetDisplay<KeyType, WidgetType extends Container> e
                 if (settingsDialog != null)
                 {
                     settingsDialog.setModal(true);
-                    settingsButtons.add(settingsButton);
+                    mSettingsButtons.add(settingsButton);
 
                     settingsButton.addActionListener(new ActionListener()
                     {
                         @Override
-                        public void actionPerformed(ActionEvent e)
+                        public void actionPerformed(ActionEvent aEvent)
                         {
                             settingsDialog.setLocationRelativeTo(BaseWidgetDisplay.this);
                             settingsDialog.setVisible(true);
@@ -121,7 +121,7 @@ public abstract class BaseWidgetDisplay<KeyType, WidgetType extends Container> e
 
     public void showSettingsButtons(boolean aShow)
     {
-        for (JButton btn : settingsButtons)
+        for (JButton btn : mSettingsButtons)
         {
             btn.setVisible(aShow);
         }

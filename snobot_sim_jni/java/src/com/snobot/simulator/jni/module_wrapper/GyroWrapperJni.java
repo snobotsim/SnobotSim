@@ -3,8 +3,12 @@ package com.snobot.simulator.jni.module_wrapper;
 
 import com.snobot.simulator.jni.BaseSimulatorJni;
 
-public class GyroWrapperJni extends BaseSimulatorJni
+public final class GyroWrapperJni extends BaseSimulatorJni
 {
+    private GyroWrapperJni()
+    {
+
+    }
     
     public static void register(int aPort)
     {

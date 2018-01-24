@@ -73,10 +73,10 @@ public class Simulator
         USER_CONFIG_DIRECTORY = aUserConfigDir;
         PROPERTIES_FILE = USER_CONFIG_DIRECTORY + "simulator_config.properties";
 
-        File config_dir = new File(aUserConfigDir);
-        if (!Files.exists(config_dir.toPath()))
+        File configDir = new File(aUserConfigDir);
+        if (!Files.exists(configDir.toPath()))
         {
-            config_dir.mkdir();
+            configDir.mkdir();
         }
     }
 
@@ -229,11 +229,11 @@ public class Simulator
         }
     }
 
-    protected void setFrameVisible(SimulatorFrame frame)
+    protected void setFrameVisible(SimulatorFrame aFrame)
     {
-        frame.pack();
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        aFrame.pack();
+        aFrame.setVisible(true);
+        aFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     private void sendJoystickUpdate()

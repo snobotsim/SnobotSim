@@ -5,15 +5,16 @@ import com.snobot.simulator.simulator_components.IMotorFeedbackSensor;
 
 public class EncoderWrapper extends ASensorWrapper implements IMotorFeedbackSensor
 {
-    public static interface DistanceSetterHelper
-    {
-        public void setDistance(double aDistance);
-    }
 
     private final DistanceSetterHelper mSetterHelper;
     private double mDistancePerTick;
     private double mEncodingFactor;
     private double mPosition;
+
+    public static interface DistanceSetterHelper
+    {
+        public void setDistance(double aDistance);
+    }
 
     public EncoderWrapper(int aIndex, DistanceSetterHelper aSetterHelper)
     {
@@ -32,7 +33,7 @@ public class EncoderWrapper extends ASensorWrapper implements IMotorFeedbackSens
 
     public int getRaw()
     {
-        return (int) (getPosition() / (mEncodingFactor));
+        return (int) (getPosition() / mEncodingFactor);
     }
 
     @Override

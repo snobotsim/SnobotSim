@@ -46,10 +46,10 @@ public class ASimulator implements ISimulatorUpdater
     public void setRobot(IRobotClassContainer aRobot)
     {
         mRunning = true;
-        updateMotorsThread.start();
+        mUpdateMotorsThread.start();
     }
 
-    protected Thread updateMotorsThread = new Thread(new Runnable()
+    protected final Thread mUpdateMotorsThread = new Thread(new Runnable()
     {
 
         @Override
@@ -79,7 +79,7 @@ public class ASimulator implements ISimulatorUpdater
         mRunning = false;
         try
         {
-            updateMotorsThread.join();
+            mUpdateMotorsThread.join();
         }
         catch (InterruptedException e)
         {

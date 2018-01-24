@@ -19,23 +19,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class ExampleRobot extends IterativeRobot
 {
-	public Joystick mJoystick;
+    public Joystick mJoystick;
     public Solenoid mSolenoid;
-	public SpeedController mLeftDrive;
-	public SpeedController mRightDrive;
+    public SpeedController mLeftDrive;
+    public SpeedController mRightDrive;
     public Encoder mLeftDriveEncoder;
     public Encoder mRightDriveEncoder;
 
     public Timer mAutoTimer;
-	
-	@Override
-	public void robotInit()
-	{
-		mJoystick = new Joystick(0);
+
+    @Override
+    public void robotInit()
+    {
+        mJoystick = new Joystick(0);
 
         mSolenoid = new Solenoid(0);
-		mLeftDrive = new VictorSP(0);
-		mRightDrive = new VictorSP(1);
+        mLeftDrive = new VictorSP(0);
+        mRightDrive = new VictorSP(1);
         mLeftDriveEncoder = new Encoder(0, 1);
         mRightDriveEncoder = new Encoder(2, 3);
 
@@ -43,12 +43,12 @@ public class ExampleRobot extends IterativeRobot
         mRightDriveEncoder.setDistancePerPulse(.01);
 
         mAutoTimer = new Timer();
-        
+
         String errorMessage = "Warning, this is the example robot bundled with the simulator!\n";
-        errorMessage += "To configure this for your robot, change <project_dir>/simulator_config/simulator_config.properties, and update the robot_class field"; 
+        errorMessage += "To configure this for your robot, change <project_dir>/simulator_config/simulator_config.properties, and update the robot_class field";
 
         System.err.println(errorMessage);
-	}
+    }
 
     @Override
     public void autonomousInit()
@@ -80,16 +80,16 @@ public class ExampleRobot extends IterativeRobot
         }
     }
 
-	@Override
-	public void teleopPeriodic()
-	{
-		mLeftDrive.set(mJoystick.getRawAxis(0));
-		mRightDrive.set(-mJoystick.getRawAxis(0));
-		
-		mSolenoid.set(mJoystick.getRawButton(1));
+    @Override
+    public void teleopPeriodic()
+    {
+        mLeftDrive.set(mJoystick.getRawAxis(0));
+        mRightDrive.set(-mJoystick.getRawAxis(0));
+
+        mSolenoid.set(mJoystick.getRawButton(1));
 
         SmartDashboard.putNumber("Left Enc", mLeftDriveEncoder.getDistance());
         SmartDashboard.putNumber("Right Enc", mRightDriveEncoder.getDistance());
-	}
+    }
 
 }

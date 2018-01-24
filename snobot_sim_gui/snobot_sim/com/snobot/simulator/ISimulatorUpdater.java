@@ -7,5 +7,5 @@ public interface ISimulatorUpdater
 
     public abstract void update();
 
-    public abstract void setRobot(IRobotClassContainer mRobot);
+    public abstract void setRobot(IRobotClassContainer aRobot);
 }

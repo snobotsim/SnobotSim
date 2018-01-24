@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE suppressions PUBLIC
+        "-//Puppy Crawl//DTD Suppressions 1.1//EN"
+        "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
+<suppressions>
+    <suppress files="com.snobot.simulator.wrapper_accessors.java.JaveSimulatorVersion" checks="[a-zA-Z0-9]*"/>
+    <suppress files="com.snobot.simulator.SnobotSimGuiVersion" checks="[a-zA-Z0-9]*"/>
+    
+    <suppress files="com.snobot.simulator.gui.module_widget.settings.DcMotorConfigPanel" checks="[a-zA-Z0-9]*"/>
+    
+    <suppress files="com.kauailabs.navx.frc.*" checks="[a-zA-Z0-9]*"/>
+    <suppress files="edu.wpi.first.wpilibj.*" checks="[a-zA-Z0-9]*"/>
+    
+</suppressions>

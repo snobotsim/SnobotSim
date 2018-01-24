@@ -3,8 +3,12 @@ package com.snobot.simulator.jni.module_wrapper;
 
 import com.snobot.simulator.jni.BaseSimulatorJni;
 
-public class DigitalSourceWrapperJni extends BaseSimulatorJni
+public final class DigitalSourceWrapperJni extends BaseSimulatorJni
 {
+    private DigitalSourceWrapperJni()
+    {
+
+    }
     
     public static native void setName(int aPort, String aName);
     

@@ -10,10 +10,10 @@ import edu.wpi.first.wpilibj.hal.HAL;
 public class TestLinking extends BaseSimulatorTest
 {
     @Test
-	public void testHalLinking()
-	{
-		Assert.assertTrue(HAL.initialize(0, 0));
-	}
+    public void testHalLinking()
+    {
+        Assert.assertTrue(HAL.initialize(0, 0));
+    }
 
     @Test
     public void testSnobotSimLinking()

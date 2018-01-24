@@ -84,10 +84,10 @@ class MotorDisplay extends JPanel
     }
 
     @Override
-    public void paint(Graphics g)
+    public void paint(Graphics aGraphics)
     {
-        g.clearRect(0, 0, getWidth(), getHeight());
-        g.setColor(Util.getMotorColor(mMotorSpeed));
-        g.fillOval(0, 0, sDOT_SIZE, sDOT_SIZE);
+        aGraphics.clearRect(0, 0, getWidth(), getHeight());
+        aGraphics.setColor(Util.getMotorColor(mMotorSpeed));
+        aGraphics.fillOval(0, 0, sDOT_SIZE, sDOT_SIZE);
     }
 }

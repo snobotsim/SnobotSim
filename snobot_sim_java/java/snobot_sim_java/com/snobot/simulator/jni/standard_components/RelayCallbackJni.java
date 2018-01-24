@@ -7,40 +7,45 @@ import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.HalCallbackValue;
 import com.snobot.simulator.module_wrapper.RelayWrapper;
 
-public class RelayCallbackJni
+public final class RelayCallbackJni
 {
     private static final Logger sLOGGER = Logger.getLogger(RelayCallbackJni.class);
 
-    public static native void registerRelayCallback(String functionName);
+    private RelayCallbackJni()
+    {
+
+    }
 
     public static native void reset();
+
+    public static native void registerRelayCallback(String aFunctionName);
 
     public static void registerRelayCallback()
     {
         registerRelayCallback("relayCallback");
     }
 
-    public static void relayCallback(String callbackType, int port, HalCallbackValue halValue)
+    public static void relayCallback(String aCallbackType, int aPort, HalCallbackValue aHalValue)
     {
-        if ("InitializedForward".equals(callbackType))
+        if ("InitializedForward".equals(aCallbackType))
         {
-            SensorActuatorRegistry.get().register(new RelayWrapper(port), port);
+            SensorActuatorRegistry.get().register(new RelayWrapper(aPort), aPort);
         }
-        else if ("InitializedReverse".equals(callbackType))
-        {
+        else if ("InitializedReverse".equals(aCallbackType))
+        { // NOPMD
             // Nothing to do, assume it was initialized in forwards call
         }
-        else if ("Forward".equals(callbackType))
+        else if ("Forward".equals(aCallbackType))
         {
-            SensorActuatorRegistry.get().getRelays().get(port).setRelayForwards(halValue.mBoolean);
+            SensorActuatorRegistry.get().getRelays().get(aPort).setRelayForwards(aHalValue.mBoolean);
         }
-        else if ("Reverse".equals(callbackType))
+        else if ("Reverse".equals(aCallbackType))
         {
-            SensorActuatorRegistry.get().getRelays().get(port).setRelayReverse(halValue.mBoolean);
+            SensorActuatorRegistry.get().getRelays().get(aPort).setRelayReverse(aHalValue.mBoolean);
         }
         else
         {
-            sLOGGER.log(Level.ERROR, "Unknown Relay callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown Relay callback " + aCallbackType + " - " + aHalValue);
         }
     }
 

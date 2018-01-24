@@ -23,11 +23,11 @@ public class Main
 
     private static final PrintStream VERSION_PRINTER = System.out;
 
-    public static void main(String[] args)
+    public static void main(String[] aArgs)
     {
         DefaultDataAccessorFactory.initalize();
         
-        Collection<String> argList = Arrays.asList(args);
+        Collection<String> argList = Arrays.asList(aArgs);
 
         if (argList.contains("version"))
         {
@@ -47,9 +47,9 @@ public class Main
         }
         catch (ClassNotFoundException e)
         {
-            sLOGGER.log(Level.FATAL, "Class not found exception.  You either have an error in your properties file, " +
-                    "or the project is not set up to be able to find the robot project you are attempting to create" + 
-                    "\nerror: " + e, e);
+            sLOGGER.log(Level.FATAL, "Class not found exception.  You either have an error in your properties file, " 
+                    + "or the project is not set up to be able to find the robot project you are attempting to create" 
+                    +  "\nerror: " + e, e);
 
             System.exit(-1);
         }
@@ -67,11 +67,11 @@ public class Main
         }
     }
     
-    private static SnobotLogLevel parseLogLevel(Collection<String> argList)
+    private static SnobotLogLevel parseLogLevel(Collection<String> aArgList)
     {
         int logLevel = 0;
 
-        for (String arg : argList)
+        for (String arg : aArgList)
         {
             if (arg.startsWith("log_level="))
             {
@@ -83,7 +83,7 @@ public class Main
     }
 
     private static void printVersions()
-	{
+    {
         VERSION_PRINTER.println("Versions:");
         VERSION_PRINTER.println("Wpilib Java    : " + WPILibVersion.Version);
         VERSION_PRINTER.println("SnobotSim HAL  : " + DataAccessorFactory.getInstance().getSimulatorDataAccessor().getNativeBuildVersion());

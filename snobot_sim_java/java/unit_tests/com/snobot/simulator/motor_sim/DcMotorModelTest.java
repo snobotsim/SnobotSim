@@ -11,7 +11,7 @@ import com.snobot.simulator.motor_sim.motor_factory.PublishedMotorFactory;
 public class DcMotorModelTest
 {
 
-    private final double EPS = 1E-9;
+    private static final double EPS = 1E-9;
 
     @Test
     public void testGettersSetters()

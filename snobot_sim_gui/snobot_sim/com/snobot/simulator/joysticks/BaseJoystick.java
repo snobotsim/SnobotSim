@@ -52,7 +52,7 @@ public class BaseJoystick implements IMockJoystick
     }
 
     @Override
-    public void setRumble(short s)
+    public void setRumble(short aRumble)
     {
         // TODO implement rumble...
     }
@@ -99,7 +99,7 @@ public class BaseJoystick implements IMockJoystick
                 if (component != null)
                 {
                     int pressed = component.getPollData() == 0 ? 0 : 1;
-                    output += (pressed << i);
+                    output += pressed << i;
                 }
             }
         }

@@ -43,39 +43,39 @@ public class XboxPanel extends JPanel
         repaint();
     }
 
-    public void paint(Graphics g)
+    public void paint(Graphics aGraphics)
     {
         if (mControllerImage == null)
         {
             return;
         }
 
-        g.clearRect(0, 0, getWidth(), getHeight());
-        g.drawImage(mControllerImage, 0, 0, null);
+        aGraphics.clearRect(0, 0, getWidth(), getHeight());
+        aGraphics.drawImage(mControllerImage, 0, 0, null);
 
-        colorButton(g, mJoystick.getRawButton(XboxButtonMap.X_BUTTON - 1), 490, 218);
-        colorButton(g, mJoystick.getRawButton(XboxButtonMap.Y_BUTTON - 1), 550, 170);
-        colorButton(g, mJoystick.getRawButton(XboxButtonMap.B_BUTTON - 1), 602, 215);
-        colorButton(g, mJoystick.getRawButton(XboxButtonMap.A_BUTTON - 1), 540, 260);
-        colorBumper(g, mJoystick.getRawButton(XboxButtonMap.LB_BUTTON - 1), 95, 95);
-        colorBumper(g, mJoystick.getRawButton(XboxButtonMap.RB_BUTTON - 1), 510, 95);
+        colorButton(aGraphics, mJoystick.getRawButton(XboxButtonMap.X_BUTTON - 1), 490, 218);
+        colorButton(aGraphics, mJoystick.getRawButton(XboxButtonMap.Y_BUTTON - 1), 550, 170);
+        colorButton(aGraphics, mJoystick.getRawButton(XboxButtonMap.B_BUTTON - 1), 602, 215);
+        colorButton(aGraphics, mJoystick.getRawButton(XboxButtonMap.A_BUTTON - 1), 540, 260);
+        colorBumper(aGraphics, mJoystick.getRawButton(XboxButtonMap.LB_BUTTON - 1), 95, 95);
+        colorBumper(aGraphics, mJoystick.getRawButton(XboxButtonMap.RB_BUTTON - 1), 510, 95);
 
-        colorButton(g, mJoystick.getRawButton(XboxButtonMap.BACK_BUTTON - 1), 265, 220);
-        colorButton(g, mJoystick.getRawButton(XboxButtonMap.START_BUTTON - 1), 415, 220);
-        colorButton(g, mJoystick.getRawButton(XboxButtonMap.XBOX_BUTTON), 340, 217);
+        colorButton(aGraphics, mJoystick.getRawButton(XboxButtonMap.BACK_BUTTON - 1), 265, 220);
+        colorButton(aGraphics, mJoystick.getRawButton(XboxButtonMap.START_BUTTON - 1), 415, 220);
+        colorButton(aGraphics, mJoystick.getRawButton(XboxButtonMap.XBOX_BUTTON), 340, 217);
 
-        drawJoystick(g, mJoystick.getRawButton(XboxButtonMap.L3_BUTTON - 1), mJoystick.getRawAxis(XboxButtonMap.LEFT_X_AXIS),
+        drawJoystick(aGraphics, mJoystick.getRawButton(XboxButtonMap.L3_BUTTON - 1), mJoystick.getRawAxis(XboxButtonMap.LEFT_X_AXIS),
                 mJoystick.getRawAxis(XboxButtonMap.LEFT_Y_AXIS), 115, 228);
-        drawJoystick(g, mJoystick.getRawButton(XboxButtonMap.R3_BUTTON - 1), mJoystick.getRawAxis(XboxButtonMap.RIGHT_X_AXIS),
+        drawJoystick(aGraphics, mJoystick.getRawButton(XboxButtonMap.R3_BUTTON - 1), mJoystick.getRawAxis(XboxButtonMap.RIGHT_X_AXIS),
                 mJoystick.getRawAxis(XboxButtonMap.RIGHT_Y_AXIS), 420, 330);
 
-        drawTrigger(g, mJoystick.getRawAxis(XboxButtonMap.LEFT_TRIGGER), 155, 40);
-        drawTrigger(g, mJoystick.getRawAxis(XboxButtonMap.RIGHT_TRIGGER), 530, 40);
+        drawTrigger(aGraphics, mJoystick.getRawAxis(XboxButtonMap.LEFT_TRIGGER), 155, 40);
+        drawTrigger(aGraphics, mJoystick.getRawAxis(XboxButtonMap.RIGHT_TRIGGER), 530, 40);
 
-        drawPOV(g, mJoystick.getPovValues());
+        drawPOV(aGraphics, mJoystick.getPovValues());
     }
 
-    private void drawPOV(Graphics g, short[] aPov)
+    private void drawPOV(Graphics aGraphics, short[] aPov)
     {
         if (aPov.length != 0)
         {
@@ -84,32 +84,32 @@ public class XboxPanel extends JPanel
             switch (pov)
             {
             case 0:
-                drawPOV(g, 250, 300);
+                drawPOV(aGraphics, 250, 300);
                 break;
             case 45:
-                drawPOV(g, 250, 300);
-                drawPOV(g, 288, 340);
+                drawPOV(aGraphics, 250, 300);
+                drawPOV(aGraphics, 288, 340);
                 break;
             case 90:
-                drawPOV(g, 288, 340);
+                drawPOV(aGraphics, 288, 340);
                 break;
             case 135:
-                drawPOV(g, 288, 340);
-                drawPOV(g, 250, 365);
+                drawPOV(aGraphics, 288, 340);
+                drawPOV(aGraphics, 250, 365);
                 break;
             case 180:
-                drawPOV(g, 250, 365);
+                drawPOV(aGraphics, 250, 365);
                 break;
             case 225:
-                drawPOV(g, 250, 365);
-                drawPOV(g, 210, 340);
+                drawPOV(aGraphics, 250, 365);
+                drawPOV(aGraphics, 210, 340);
                 break;
             case 270:
-                drawPOV(g, 210, 340);
+                drawPOV(aGraphics, 210, 340);
                 break;
             case -45:
-                drawPOV(g, 210, 340);
-                drawPOV(g, 250, 300);
+                drawPOV(aGraphics, 210, 340);
+                drawPOV(aGraphics, 250, 300);
                 break;
             case -1:
                 break;
@@ -119,58 +119,58 @@ public class XboxPanel extends JPanel
         }
     }
 
-    private void drawPOV(Graphics g, int x, int y)
+    private void drawPOV(Graphics aGraphics, int aX, int aY)
     {
-        g.setColor(Color.red);
-        g.fillRect(x, y, 40, 40);
+        aGraphics.setColor(Color.red);
+        aGraphics.fillRect(aX, aY, 40, 40);
     }
 
-    private void drawTrigger(Graphics g, double value, int x, int y)
+    private void drawTrigger(Graphics aGraphics, double aValue, int aX, int aY)
     {
-        Color color = Util.alphaColor(Util.colorGetShadedColor(value, 1, -1), 40);
+        Color color = Util.alphaColor(Util.colorGetShadedColor(aValue, 1, -1), 40);
 
-        g.setColor(color);
-        g.fillRect(x, y, 60, 60);
+        aGraphics.setColor(color);
+        aGraphics.fillRect(aX, aY, 60, 60);
     }
 
-    private void drawJoystick(Graphics g, boolean pressed, double xAxis, double yAxis, int x, int y)
+    private void drawJoystick(Graphics aGraphics, boolean aPressed, double aXAxis, double aYAxis, int aX, int aY)
     {
-        int WIDTH = 98;
-        int HEIGHT = 80;
+        int width = 98;
+        int height = 80;
 
-        if (pressed)
+        if (aPressed)
         {
-            g.setColor(sPRESSED_BTN_COLOR);
+            aGraphics.setColor(sPRESSED_BTN_COLOR);
         }
         else
         {
-            g.setColor(sJOYSTICK_BACKGROUND);
+            aGraphics.setColor(sJOYSTICK_BACKGROUND);
         }
-        g.fillRect(x, y, WIDTH, HEIGHT);
+        aGraphics.fillRect(aX, aY, width, height);
 
-        int xAxisSpot = (int) (xAxis * WIDTH * .5 + WIDTH * .5 + x);
-        int yAxisSpot = (int) (yAxis * HEIGHT * .5 + HEIGHT * .5 + y);
+        int xAxisSpot = (int) (aXAxis * width * .5 + width * .5 + aX);
+        int yAxisSpot = (int) (aYAxis * height * .5 + height * .5 + aY);
 
-        g.setColor(Color.black);
-        g.fillOval(xAxisSpot, yAxisSpot, 5, 5);
+        aGraphics.setColor(Color.black);
+        aGraphics.fillOval(xAxisSpot, yAxisSpot, 5, 5);
 
     }
 
-    private void colorBumper(Graphics g, boolean pressed, int x, int y)
+    private void colorBumper(Graphics aGraphics, boolean aPressed, int aX, int aY)
     {
-        if (pressed)
+        if (aPressed)
         {
-            g.setColor(sPRESSED_BTN_COLOR);
-            g.fillRect(x, y, 140, 55);
+            aGraphics.setColor(sPRESSED_BTN_COLOR);
+            aGraphics.fillRect(aX, aY, 140, 55);
         }
     }
 
-    private void colorButton(Graphics g, boolean pressed, int x, int y)
+    private void colorButton(Graphics aGraphics, boolean aPressed, int aX, int aY)
     {
-        if (pressed)
+        if (aPressed)
         {
-            g.setColor(sPRESSED_BTN_COLOR);
-            g.fillOval(x, y, 60, 60);
+            aGraphics.setColor(sPRESSED_BTN_COLOR);
+            aGraphics.fillOval(aX, aY, 60, 60);
         }
     }
 }

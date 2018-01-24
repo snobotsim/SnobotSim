@@ -2,8 +2,7 @@ package com.snobot.simulator.motor_sim;
 
 public class SimpleMotorSimulator implements IMotorSimulator
 {
-
-    private SimpleMotorSimulationConfig mConfig;
+    private final SimpleMotorSimulationConfig mConfig;
 
     private double mVoltagePercent;
     private double mVelocity;
@@ -15,9 +14,9 @@ public class SimpleMotorSimulator implements IMotorSimulator
     }
 
     @Override
-    public void setVoltagePercentage(double speed)
+    public void setVoltagePercentage(double aSpeed)
     {
-        mVoltagePercent = speed;
+        mVoltagePercent = aSpeed;
     }
 
     @Override

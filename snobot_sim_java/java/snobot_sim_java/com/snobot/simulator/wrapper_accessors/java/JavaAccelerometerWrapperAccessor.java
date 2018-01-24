@@ -12,7 +12,7 @@ public class JavaAccelerometerWrapperAccessor extends BaseWrapperAccessor<IAccel
     @Override
     public void register(int aPort, String aName)
     {
-
+        // Nothing to do
     }
 
     @Override
