@@ -1,5 +1,6 @@
 package com.snobot.simulator.example_robot;
 
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -8,6 +9,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -25,6 +27,7 @@ public class ExampleRobot extends IterativeRobot
     public SpeedController mRightDrive;
     public Encoder mLeftDriveEncoder;
     public Encoder mRightDriveEncoder;
+    public Gyro mGyro;
 
     public Timer mAutoTimer;
 
@@ -41,6 +44,8 @@ public class ExampleRobot extends IterativeRobot
 
         mLeftDriveEncoder.setDistancePerPulse(.01);
         mRightDriveEncoder.setDistancePerPulse(.01);
+
+        mGyro = new AnalogGyro(0);
 
         mAutoTimer = new Timer();
 

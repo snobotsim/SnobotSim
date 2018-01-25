@@ -59,7 +59,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_DriverStationSimulatorJni_d
 {
     if(aDelayPeriod > 0)
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds((int) (aDelayPeriod * 1000)));
+//        std::this_thread::sleep_for(std::chrono::milliseconds((int) (aDelayPeriod * 1000)));
         HALSIM_SetDriverStationMatchTime(HALSIM_GetDriverStationMatchTime() + aDelayPeriod);
         HALSIM_NotifyDriverStationNewData();
     }

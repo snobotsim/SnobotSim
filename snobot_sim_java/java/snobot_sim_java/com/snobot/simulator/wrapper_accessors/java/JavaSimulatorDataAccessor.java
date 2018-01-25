@@ -220,9 +220,30 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
         }
     }
 
+    private double mNextExpectedTime = System.nanoTime() * 1e-9;
+
     @Override
     public void waitForNextUpdateLoop(double aUpdatePeriod)
     {
+        double currentTime = System.nanoTime() * 1e-9;
+        double diff = currentTime - mNextExpectedTime;
+        double timeToWait = aUpdatePeriod - diff;
+
+        mNextExpectedTime += aUpdatePeriod;
+
+        try
+        {
+            if (timeToWait > 0)
+            {
+                Thread.sleep((long) (timeToWait * 1000));
+            }
+
+        }
+        catch (Exception e)
+        {
+            sLOGGER.log(Level.ERROR, e);
+        }
+
         DriverStationSimulatorJni.delayForNextUpdateLoop(aUpdatePeriod);
     }
 

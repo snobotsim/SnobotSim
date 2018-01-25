@@ -67,7 +67,7 @@ public interface SimulatorDataAccessor
      */
     default void waitForNextUpdateLoop()
     {
-        waitForNextUpdateLoop(.002);
+        waitForNextUpdateLoop(.02);
     }
 
     /**
