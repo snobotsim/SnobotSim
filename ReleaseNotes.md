@@ -1,4 +1,9 @@
 
+# [0.8.0](https://github.com/pjreiniger/SnobotSim/releases/tag/0.8.0) (improvments also include 7.1, 7.2, 7.3 because I forgot)
+* Fixed issues with match time and the frequency loops were being called
+* Added Linux version of the Eclipse Boilerplate.  Due to compilation flags being different on build machines vs. your machine, your miliage might vary
+* CTRE 5.2.1.1
+* Added static analysis tools to the build process (PMD, checkstyle, fixbugs)
 
 # [0.7.0](https://github.com/pjreiniger/SnobotSim/releases/tag/0.7.0)
 First release of the 2018 Season.  Anything releases before this were experimental and not recommended for usage.
