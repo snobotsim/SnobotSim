@@ -15,6 +15,9 @@ apply plugin: 'visual-studio'
 apply plugin: 'edu.wpi.first.NativeUtils'
 apply plugin: 'java'
 apply plugin: 'jacoco'
+apply plugin: 'checkstyle'
+apply plugin: 'pmd'
+apply plugin: 'findbugs'
 
 apply from: '../config.gradle'
 
@@ -205,5 +208,31 @@ model {
         }
     }
 }
+
+/////////////////////////////////////////////////////////////////////////////////
+// Style/Formatting stuff
+checkstyle {
+    toolVersion = "8.1"
+    configFile = new File(rootDir, "styleguide/checkstyle.xml")
+}
+
+pmd {
+    consoleOutput  = true
+    reportsDir = file("${project.buildDir}/reports/pmd")
+    ruleSetFiles = files(file("$rootDir/styleguide/pmd-ruleset.xml"))
+    ruleSets = []
+}
+
+findbugs {
+    excludeFilter = file("$rootDir/styleguide/findbugs_suppressions.xml")
+    effort = "max"
+}
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled false
+        html.enabled true
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////
 
 apply from: "publish.gradle"

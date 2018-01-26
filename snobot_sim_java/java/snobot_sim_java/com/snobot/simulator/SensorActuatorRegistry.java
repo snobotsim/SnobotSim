@@ -17,23 +17,23 @@ import com.snobot.simulator.simulator_components.ISpiWrapper;
 import com.snobot.simulator.simulator_components.accelerometer.IAccelerometerWrapper;
 import com.snobot.simulator.simulator_components.gyro.IGyroWrapper;
 
-public class SensorActuatorRegistry
+public final class SensorActuatorRegistry
 {
     private static SensorActuatorRegistry mInstance = new SensorActuatorRegistry();
 
-    private Map<Integer, PwmWrapper> mSpeedControllerMap = new HashMap<>();
-    private Map<Integer, RelayWrapper> mRelayWrapperMap = new HashMap<>();
-    private Map<Integer, DigitalSourceWrapper> mDigitalSourceWrapperMap = new HashMap<>();
-    private Map<Integer, AnalogWrapper> mAnalogSourceWrapperMap = new HashMap<>();
-    private Map<Integer, SolenoidWrapper> mSolenoidWrapperMap = new HashMap<>();
-    private Map<Integer, EncoderWrapper> mEncoderWrapperMap = new HashMap<>();
+    private final Map<Integer, PwmWrapper> mSpeedControllerMap = new HashMap<>();
+    private final Map<Integer, RelayWrapper> mRelayWrapperMap = new HashMap<>();
+    private final Map<Integer, DigitalSourceWrapper> mDigitalSourceWrapperMap = new HashMap<>();
+    private final Map<Integer, AnalogWrapper> mAnalogSourceWrapperMap = new HashMap<>();
+    private final Map<Integer, SolenoidWrapper> mSolenoidWrapperMap = new HashMap<>();
+    private final Map<Integer, EncoderWrapper> mEncoderWrapperMap = new HashMap<>();
 
-    private Map<Integer, IGyroWrapper> mGyroWrapperMap = new HashMap<>();
-    private Map<Integer, IAccelerometerWrapper> mAccelerometerWrapperMap = new HashMap<>();
-    private Map<Integer, II2CWrapper> mI2CWrapperMap = new HashMap<>();
-    private Map<Integer, ISpiWrapper> mSpiWrapperMap = new HashMap<>();
+    private final Map<Integer, IGyroWrapper> mGyroWrapperMap = new HashMap<>();
+    private final Map<Integer, IAccelerometerWrapper> mAccelerometerWrapperMap = new HashMap<>();
+    private final Map<Integer, II2CWrapper> mI2CWrapperMap = new HashMap<>();
+    private final Map<Integer, ISpiWrapper> mSpiWrapperMap = new HashMap<>();
 
-    private Collection<ISimulatorUpdater> mSimulatorComponents = new ArrayList<>();
+    private final Collection<ISimulatorUpdater> mSimulatorComponents = new ArrayList<>();
 
     private SensorActuatorRegistry()
     {

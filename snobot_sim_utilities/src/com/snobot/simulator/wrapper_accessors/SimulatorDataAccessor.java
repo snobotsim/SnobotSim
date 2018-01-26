@@ -67,7 +67,7 @@ public interface SimulatorDataAccessor
      */
     default void waitForNextUpdateLoop()
     {
-        waitForNextUpdateLoop(.002);
+        waitForNextUpdateLoop(.02);
     }
 
     /**
@@ -102,5 +102,7 @@ public interface SimulatorDataAccessor
     void setMatchInfo(String eventName, MatchType matchType, int matchNumber, int replayNumber, String gameSpecificMessage);
 
     void removeSimulatorComponent(Object comp);
+
+    double getTimeSinceEnabled();
 
 }

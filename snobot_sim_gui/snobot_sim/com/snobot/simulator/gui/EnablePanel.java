@@ -49,8 +49,8 @@ public class EnablePanel extends JPanel
         mTimeLabel.setText("Time: " + df.format(aTime));
     }
 
-    public void setRobotEnabled(boolean state)
+    public void setRobotEnabled(boolean aState)
     {
-        mEnableButton.setSelected(state);
+        mEnableButton.setSelected(aState);
     }
 }

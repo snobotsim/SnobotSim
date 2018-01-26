@@ -2,7 +2,7 @@ package com.snobot.simulator.motor_sim;
 
 public class GravityLoadDcMotorSim extends BaseDcMotorSimulator
 {
-    protected final static double sGRAVITY = 9.8;
+    protected static final double sGRAVITY = 9.8;
 
     protected final GravityLoadMotorSimulationConfig mConfig;
 
@@ -15,11 +15,11 @@ public class GravityLoadDcMotorSim extends BaseDcMotorSimulator
 
 
     @Override
-    public void update(double cycleTime)
+    public void update(double aCycleTime)
     {
         double extraAcceleration = -sGRAVITY;
 
-        mMotorModel.step(mVoltagePercentage * 12, mConfig.mLoad, extraAcceleration, cycleTime);
+        mMotorModel.step(mVoltagePercentage * 12, mConfig.mLoad, extraAcceleration, aCycleTime);
     }
 
     public GravityLoadMotorSimulationConfig getConfig()

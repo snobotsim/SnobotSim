@@ -47,8 +47,8 @@ public class TestADXL345_I2CAccelerometer extends BaseSimulatorTest
     @Test
     public void testADXL345_I2C()
     {
-        double DOUBLE_EPSILON = 1 / 256.0; // Resoultion isn't as good as normal
-                                           // sensors
+        final double DOUBLE_EPSILON = 1 / 256.0; // Resoultion isn't as good as
+                                                 // normal sensors
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultI2CSimulator(mPort.value, "ADXL345");
         ADXL345_I2C accel = new ADXL345_I2C(mPort, mRange);
         ADXL345_I2C.AllAxes axes = null;

@@ -38,7 +38,7 @@ public class AdvancedSettingsPanel extends JPanel
             {
 
                 @Override
-                public void actionPerformed(ActionEvent e)
+                public void actionPerformed(ActionEvent aEvent)
                 {
 
                     aDialog.pack();

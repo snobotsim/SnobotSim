@@ -15,8 +15,8 @@ public class TankDriveGyroSimulator implements ISimulatorUpdater
     private final EncoderWrapper mLeftEncoder;
     private final EncoderWrapper mRightEncoder;
     private final IGyroWrapper mGyroWrapper;
-    private double mKP;
-    private boolean mIsSetup;
+    private final double mKP;
+    private final boolean mIsSetup;
 
     private double mAngle; // degrees
 
@@ -51,7 +51,7 @@ public class TankDriveGyroSimulator implements ISimulatorUpdater
             double rightDist = mRightEncoder.getPosition();
             double leftDist = mLeftEncoder.getPosition();
 
-            mAngle = (leftDist - rightDist) / (Math.PI * mKP) * (180.0);
+            mAngle = (leftDist - rightDist) / (Math.PI * mKP) * 180.0;
 
             mGyroWrapper.setAngle(mAngle);
             sLOGGER.log(Level.TRACE,
@@ -95,9 +95,9 @@ public class TankDriveGyroSimulator implements ISimulatorUpdater
             return mLeftEncoderHandle;
         }
 
-        public void setmLeftEncoderHandle(int mLeftEncoderHandle)
+        public void setmLeftEncoderHandle(int aLeftEncoderHandle)
         {
-            this.mLeftEncoderHandle = mLeftEncoderHandle;
+            this.mLeftEncoderHandle = aLeftEncoderHandle;
         }
 
         public int getmRightEncoderHandle()
@@ -105,9 +105,9 @@ public class TankDriveGyroSimulator implements ISimulatorUpdater
             return mRightEncoderHandle;
         }
 
-        public void setmRightEncoderHandle(int mRightEncoderHandle)
+        public void setmRightEncoderHandle(int aRightEncoderHandle)
         {
-            this.mRightEncoderHandle = mRightEncoderHandle;
+            this.mRightEncoderHandle = aRightEncoderHandle;
         }
 
         public int getmGyroHandle()
@@ -115,9 +115,9 @@ public class TankDriveGyroSimulator implements ISimulatorUpdater
             return mGyroHandle;
         }
 
-        public void setmGyroHandle(int mGyroHandle)
+        public void setmGyroHandle(int aGyroHandle)
         {
-            this.mGyroHandle = mGyroHandle;
+            this.mGyroHandle = aGyroHandle;
         }
 
         public double getmTurnKp()
@@ -125,9 +125,9 @@ public class TankDriveGyroSimulator implements ISimulatorUpdater
             return mTurnKp;
         }
 
-        public void setmTurnKp(double mTurnKp)
+        public void setmTurnKp(double aTurnKp)
         {
-            this.mTurnKp = mTurnKp;
+            this.mTurnKp = aTurnKp;
         }
 
     }

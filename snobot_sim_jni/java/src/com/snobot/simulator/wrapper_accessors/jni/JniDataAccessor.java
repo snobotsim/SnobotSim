@@ -14,29 +14,29 @@ import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor;
 
 public class JniDataAccessor implements IDataAccessor
 {
-    private AccelerometerWrapperAccessor accelerometer;
-    private GyroWrapperAccessor gyro;
-    private AnalogSourceWrapperAccessor analog;
-    private DigitalSourceWrapperAccessor digital;
-    private EncoderWrapperAccessor encoder;
-    private RelayWrapperAccessor relay;
-    private SolenoidWrapperAccessor solenoid;
-    private SpeedControllerWrapperAccessor pwm;
-    private SimulatorDataAccessor simulator;
+    private final AccelerometerWrapperAccessor mAccelerometer;
+    private final GyroWrapperAccessor mGyro;
+    private final AnalogSourceWrapperAccessor mAnalog;
+    private final DigitalSourceWrapperAccessor mDigital;
+    private final EncoderWrapperAccessor mEncoder;
+    private final RelayWrapperAccessor mRelay;
+    private final SolenoidWrapperAccessor mSolenoid;
+    private final SpeedControllerWrapperAccessor mPwm;
+    private final SimulatorDataAccessor mSimulator;
 
     public JniDataAccessor()
     {
         LogConfigurator.loadLog4jConfig();
 
-        accelerometer = new JniAccelerometerWrapperAccessor();
-        gyro = new JniGyroWrapperAccessor();
-        analog = new JniAnalogSourceWrapperAccessor();
-        digital = new JniDigitalSourceWrapperAccessor();
-        encoder = new JniEncoderWrapperAccessor();
-        relay = new JniRelayWrapperAccessor();
-        solenoid = new JniSolenoidWrapperAccessor();
-        pwm = new JniSpeedControllerWrapperAccessor();
-        simulator = new JniSimulatorDataAccessor();
+        mAccelerometer = new JniAccelerometerWrapperAccessor();
+        mGyro = new JniGyroWrapperAccessor();
+        mAnalog = new JniAnalogSourceWrapperAccessor();
+        mDigital = new JniDigitalSourceWrapperAccessor();
+        mEncoder = new JniEncoderWrapperAccessor();
+        mRelay = new JniRelayWrapperAccessor();
+        mSolenoid = new JniSolenoidWrapperAccessor();
+        mPwm = new JniSpeedControllerWrapperAccessor();
+        mSimulator = new JniSimulatorDataAccessor();
     }
 
     @Override
@@ -48,55 +48,55 @@ public class JniDataAccessor implements IDataAccessor
     @Override
     public AccelerometerWrapperAccessor getAccelerometerAccessor()
     {
-        return accelerometer;
+        return mAccelerometer;
     }
 
     @Override
     public GyroWrapperAccessor getGyroAccessor()
     {
-        return gyro;
+        return mGyro;
     }
 
     @Override
     public AnalogSourceWrapperAccessor getAnalogAccessor()
     {
-        return analog;
+        return mAnalog;
     }
 
     @Override
     public DigitalSourceWrapperAccessor getDigitalAccessor()
     {
-        return digital;
+        return mDigital;
     }
 
     @Override
     public EncoderWrapperAccessor getEncoderAccessor()
     {
-        return encoder;
+        return mEncoder;
     }
 
     @Override
     public RelayWrapperAccessor getRelayAccessor()
     {
-        return relay;
+        return mRelay;
     }
 
     @Override
     public SolenoidWrapperAccessor getSolenoidAccessor()
     {
-        return solenoid;
+        return mSolenoid;
     }
 
     @Override
     public SpeedControllerWrapperAccessor getSpeedControllerAccessor()
     {
-        return pwm;
+        return mPwm;
     }
 
     @Override
     public SimulatorDataAccessor getSimulatorDataAccessor()
     {
-        return simulator;
+        return mSimulator;
     }
 
 }

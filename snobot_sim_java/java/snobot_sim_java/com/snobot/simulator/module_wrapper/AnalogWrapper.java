@@ -2,13 +2,14 @@ package com.snobot.simulator.module_wrapper;
 
 public class AnalogWrapper extends ASensorWrapper
 {
+
+    protected final VoltageSetterHelper mSetterHelper;
+    protected double mVoltage;
+
     public static interface VoltageSetterHelper
     {
         public void setVoltage(double aVoltage);
     }
-
-    protected final VoltageSetterHelper mSetterHelper;
-    protected double mVoltage;
 
     public AnalogWrapper(int aIndex, VoltageSetterHelper aSetterHelper)
     {

@@ -3,8 +3,12 @@ package com.snobot.simulator.jni.module_wrapper;
 
 import com.snobot.simulator.jni.BaseSimulatorJni;
 
-public class RelayWrapperJni extends BaseSimulatorJni
+public final class RelayWrapperJni extends BaseSimulatorJni
 {
+    private RelayWrapperJni()
+    {
+
+    }
     
     public static native void setName(int aPort, String aName);
     

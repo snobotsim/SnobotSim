@@ -6,10 +6,10 @@ import com.snobot.simulator.module_wrapper.PwmWrapper;
 
 public class PotentiometerSimulator implements ISimulatorUpdater
 {
-    private AnalogWrapper mAnalogWrapper;
-    private PwmWrapper mSpeedController;
+    private final AnalogWrapper mAnalogWrapper;
+    private final PwmWrapper mSpeedController;
 
-    private final boolean isSetup;
+    private final boolean mIsSetup;
     private double mPositionThrow;
     private double mMinVoltage;
     private double mMaxVoltage;
@@ -19,7 +19,7 @@ public class PotentiometerSimulator implements ISimulatorUpdater
         mAnalogWrapper = aWrapper;
         mSpeedController = aSpeedController;
 
-        isSetup = (mAnalogWrapper != null) && (mSpeedController != null);
+        mIsSetup = (mAnalogWrapper != null) && (mSpeedController != null);
 
         mPositionThrow = mMaxVoltage = mMinVoltage = 1;
 
@@ -42,7 +42,7 @@ public class PotentiometerSimulator implements ISimulatorUpdater
 
     public boolean isSetup()
     {
-        return isSetup;
+        return mIsSetup;
     }
 
     @Override

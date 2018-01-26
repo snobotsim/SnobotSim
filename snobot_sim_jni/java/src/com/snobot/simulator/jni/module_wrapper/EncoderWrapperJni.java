@@ -3,9 +3,13 @@ package com.snobot.simulator.jni.module_wrapper;
 
 import com.snobot.simulator.jni.BaseSimulatorJni;
 
-public class EncoderWrapperJni extends BaseSimulatorJni
+public final class EncoderWrapperJni extends BaseSimulatorJni
 {
-	
+    private EncoderWrapperJni()
+    {
+
+    }
+
     public static native int getHandle(int aPortA, int aPortB);
     
     public static native void setName(int aPort, String aName);

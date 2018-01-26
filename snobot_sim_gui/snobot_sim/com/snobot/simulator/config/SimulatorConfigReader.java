@@ -116,47 +116,57 @@ public class SimulatorConfigReader
         }
     }
 
-    protected void createBasicSimulatorComponents(IBasicSensorActuatorWrapperAccessor accessor, List<? extends BasicModuleConfig> inputList)
+    protected void setupSimulatorComponents(Object aConfig)
     {
-        for (BasicModuleConfig config : inputList)
+        if (aConfig instanceof TankDriveGyroSimulator.TankDriveConfig)
+        {
+            TankDriveGyroSimulator.TankDriveConfig config = (TankDriveGyroSimulator.TankDriveConfig) aConfig;
+            DataAccessorFactory.getInstance().getSimulatorDataAccessor().connectTankDriveSimulator(config.getmLeftEncoderHandle(),
+                    config.getmRightEncoderHandle(), config.getmGyroHandle(), config.getmTurnKp());
+        }
+    }
+
+    protected void createBasicSimulatorComponents(IBasicSensorActuatorWrapperAccessor aAccessor, List<? extends BasicModuleConfig> aInputList)
+    {
+        for (BasicModuleConfig config : aInputList)
         {
             int handle = config.getmHandle();
             if (handle != -1 && config.getmName() != null)
             {
-                accessor.setName(handle, config.getmName());
+                aAccessor.setName(handle, config.getmName());
             }
         }
     }
 
-    protected void createEncoders(EncoderWrapperAccessor accessor, List<EncoderConfig> inputList)
+    protected void createEncoders(EncoderWrapperAccessor aAccessor, List<EncoderConfig> aInputList)
     {
-        for (EncoderConfig config : inputList)
+        for (EncoderConfig config : aInputList)
         {
             int handle = config.getmHandle();
             if (handle != -1)
             {
                 if (config.getmName() != null)
                 {
-                    accessor.setName(handle, config.getmName());
+                    aAccessor.setName(handle, config.getmName());
                 }
                 if (config.getmConnectedSpeedControllerHandle() != -1)
                 {
-                    accessor.connectSpeedController(handle, config.getmConnectedSpeedControllerHandle());
+                    aAccessor.connectSpeedController(handle, config.getmConnectedSpeedControllerHandle());
                 }
             }
         }
     }
 
-    protected void createPwms(SpeedControllerWrapperAccessor accessor, List<PwmConfig> inputList)
+    protected void createPwms(SpeedControllerWrapperAccessor aAccessor, List<PwmConfig> aInputList)
     {
-        for (PwmConfig config : inputList)
+        for (PwmConfig config : aInputList)
         {
             int handle = config.getmHandle();
             if (handle != -1)
             {
                 if (config.getmName() != null)
                 {
-                    accessor.setName(handle, config.getmName());
+                    aAccessor.setName(handle, config.getmName());
                 }
 
                 setupMotorSimulator(config, handle);
@@ -199,16 +209,6 @@ public class SimulatorConfigReader
             {
                 simulatorAccessor.setSpeedControllerModel_Rotational(aPwmHandle, motorConfig, (RotationalLoadMotorSimulationConfig) baseMotorConfig);
             }
-        }
-    }
-
-    protected void setupSimulatorComponents(Object aConfig)
-    {
-        if (aConfig instanceof TankDriveGyroSimulator.TankDriveConfig)
-        {
-            TankDriveGyroSimulator.TankDriveConfig config = (TankDriveGyroSimulator.TankDriveConfig) aConfig;
-            DataAccessorFactory.getInstance().getSimulatorDataAccessor().connectTankDriveSimulator(config.getmLeftEncoderHandle(),
-                    config.getmRightEncoderHandle(), config.getmGyroHandle(), config.getmTurnKp());
         }
     }
 }

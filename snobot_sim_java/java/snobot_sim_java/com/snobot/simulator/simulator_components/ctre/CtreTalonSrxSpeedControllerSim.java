@@ -1,6 +1,5 @@
 package com.snobot.simulator.simulator_components.ctre;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,6 +19,9 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
 {
     private static final Logger sLOGGER = Logger.getLogger(CtreTalonSrxSpeedControllerSim.class);
 
+    private boolean mLoggedCantOverrideFwdLimitSwitch = false;
+    private boolean mLoggedCantOverrideRevLimitSwitch = false;
+
     public enum ControlType
     {
         Raw, Position, Speed, MotionMagic, MotionProfile
@@ -30,7 +32,7 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
         QuadEncoder, Encoder, Analog
     }
 
-    protected class PIDFConstants
+    protected static class PIDFConstants
     {
         public double mP;
         public double mI;
@@ -73,7 +75,7 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
     protected ControlType mControlType;
 
     // Feedback control
-    protected PIDFConstants[] mPidConstants= {new PIDFConstants(), new PIDFConstants()};
+    protected PIDFConstants[] mPidConstants = {new PIDFConstants(), new PIDFConstants()}; 
     protected int mCurrentPidProfile;
     protected FeedbackDevice mFeedbackDevice;
     protected double mControlGoal;
@@ -158,10 +160,10 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
         mControlGoal = goal;
     }
 
-    public void setMotionProfilingCommand(int demand)
+    public void setMotionProfilingCommand(int aDemand)
     {
         mControlType = ControlType.MotionProfile;
-        mControlGoal = demand;
+        mControlGoal = aDemand;
     }
 
     @Override
@@ -236,10 +238,9 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
 
         mLastError = error;
         
-        sLOGGER.log(Level.DEBUG,
-                "Updating CAN PID: Error: " + error + ", Output: " + output + 
-                " (Cur: " + aCurrent + ", Goal: " + aGoal + ") " + 
-                " (P: " + pComp + ", I: " + iComp + ", D: " + dComp + ", F: " + fComp+ ")");
+        sLOGGER.log(Level.DEBUG, "Updating CAN PID: Error: " + error + ", Output: " + output 
+                + " (Cur: " + aCurrent + ", Goal: " + aGoal + ") " 
+                + " (P: " + pComp + ", I: " + iComp + ", D: " + dComp + ", F: " + fComp + ")");
 
         return output;
 
@@ -259,10 +260,6 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
     {
         double error = aControlGoal - aCurrentPosition;
         double dErr = error - mLastError;
-
-        double time_to_stop = aCurrentVelocity / mMotionMagicMaxAcceleration;
-        double time_to_destination = error / aCurrentVelocity;
-        
 
         double pComp = mPidConstants[mCurrentPidProfile].mP * error;
         double iComp = mPidConstants[mCurrentPidProfile].mI * mSumError;
@@ -320,17 +317,17 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
     {
         double error = aGoalPosition - aCurrentPosition;
 
-        double p_term = error * mPidConstants[mCurrentPidProfile].mP;
-        double d_term = 0;// mPidConstants.mD * ((error - last_error_) /
+        double pTerm = error * mPidConstants[mCurrentPidProfile].mP;
+        double dTerm = 0; // mPidConstants.mD * ((error - last_error_) /
                           // segment.dt - segment.vel);
-        double v_term = mPidConstants[mCurrentPidProfile].mF * aGoalVelocity;
-        double output = p_term + d_term + v_term;
+        double vTerm = mPidConstants[mCurrentPidProfile].mF * aGoalVelocity;
+        double output = pTerm + dTerm + vTerm;
 
-        DecimalFormat df = new DecimalFormat("#.##");
-        System.out.println(output + "  (" + "P: " + df.format(aCurrentPosition) + ", " + "V: " + df.format(aCurrentVelocity) + " - " + "GP: "
-                + aGoalPosition + ", GV: " + aGoalVelocity + ") " + "P: " + p_term + ", V: " + v_term);
+//        DecimalFormat df = new DecimalFormat("#.##");
+//        System.out.println(output + "  (" + "P: " + df.format(aCurrentPosition) + ", " + "V: " + df.format(aCurrentVelocity) + " - " + "GP: "
+//                + aGoalPosition + ", GV: " + aGoalVelocity + ") " + "P: " + pTerm + ", V: " + vTerm);
 
-        return output;
+        return output; // NOPMD
     }
 
     public double getLastClosedLoopError()
@@ -372,33 +369,30 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
         mFollowers.add(aWrapper);
     }
 
-    private static boolean sLOGGED_CANT_OVERRIDE_FWD_LIMIT_SWITCH = false;
-    private static boolean sLOGGED_CANT_OVERRIDE_REV_LIMIT_SWITCH = false;
-
-    public void setLimitSwitchOverride(boolean overrideFwdLimitSwitch, boolean overrideRevLimitSwitch)
+    public void setLimitSwitchOverride(boolean aOverrideFwdLimitSwitch, boolean aOverrideRevLimitSwitch)
     {
-        if (overrideFwdLimitSwitch && !sLOGGED_CANT_OVERRIDE_FWD_LIMIT_SWITCH)
+        if (aOverrideFwdLimitSwitch && !mLoggedCantOverrideFwdLimitSwitch)
         {
-            sLOGGED_CANT_OVERRIDE_FWD_LIMIT_SWITCH = true;
+            mLoggedCantOverrideFwdLimitSwitch = true;
             sLOGGER.log(Level.WARN, "Cannot override forward limit switches");
         }
 
-        if (overrideRevLimitSwitch && !sLOGGED_CANT_OVERRIDE_REV_LIMIT_SWITCH)
+        if (aOverrideRevLimitSwitch && !mLoggedCantOverrideRevLimitSwitch)
         {
-            sLOGGED_CANT_OVERRIDE_REV_LIMIT_SWITCH = true;
+            mLoggedCantOverrideRevLimitSwitch = true;
             sLOGGER.log(Level.WARN, "Cannot override reverse limit switch");
         }
     }
 
-    public void setCurrentProfile(byte profileSelect)
+    public void setCurrentProfile(byte aProfileSelect)
     {
-        mCurrentPidProfile = profileSelect;
+        mCurrentPidProfile = aProfileSelect;
     }
 
-    public void setCanFeedbackDevice(byte feedbackDevice)
+    public void setCanFeedbackDevice(byte aFeedbackDevice)
     {
         FeedbackDevice newDevice = null;
-        switch (feedbackDevice)
+        switch (aFeedbackDevice)
         {
         // Default feedback sensor, handle with care
         case 0:
@@ -413,21 +407,22 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
             newDevice = FeedbackDevice.Encoder;
             break;
         default:
-            sLOGGER.log(Level.WARN, "Unsupported feedback device " + feedbackDevice);
+            sLOGGER.log(Level.WARN, "Unsupported feedback device " + aFeedbackDevice);
+            break;
         }
 
         if (newDevice != mFeedbackDevice)
         {
-            if (mFeedbackDevice != null)
-            {
-                sLOGGER.log(Level.ERROR, "The simulator does not like you changing the feedback device attached to talon " + mCanHandle + " from "
-                        + mFeedbackDevice + " to " + newDevice);
-            }
-            else
+            if (mFeedbackDevice == null)
             {
                 mFeedbackDevice = newDevice;
                 registerFeedbackSensor();
                 sLOGGER.log(Level.DEBUG, "Setting feedback device to " + newDevice);
+            }
+            else
+            {
+                sLOGGER.log(Level.ERROR, "The simulator does not like you changing the feedback device attached to talon " + mCanHandle + " from "
+                        + mFeedbackDevice + " to " + newDevice);
             }
             // if (mFeedbackDevice != null && mFeedbackDevice !=
             // FeedbackDevice.QuadEncoder)
@@ -468,6 +463,7 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
                 @Override
                 public void setDistance(double aDistance)
                 {
+                    // Nothing to do
                 }
             }), getHandle());
 
@@ -480,12 +476,14 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
                 @Override
                 public void setVoltage(double aVoltage)
                 {
+                    // Nothing to do
                 }
             }), getHandle());
             sLOGGER.log(Level.INFO, "Created CAN Analog Device for port " + mCanHandle);
             break;
         default:
             sLOGGER.log(Level.ERROR, "Unsupported feedback device " + mFeedbackDevice);
+            break;
         }
     }
 

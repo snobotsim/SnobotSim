@@ -1,7 +1,12 @@
 package com.snobot.simulator.jni.navx;
 
-public class NavxSimulatorJni
+public final class NavxSimulatorJni
 {
+    private NavxSimulatorJni()
+    {
+
+    }
+
     public enum DataType
     {
         X, Y, Z, Yaw, Pitch, Roll
@@ -11,18 +16,18 @@ public class NavxSimulatorJni
 
     public static native void deleteNavx(String aType, long aNativePointer);
 
-    public static native double getNavxData(String aType, long aNativePointer, int dataType);
+    public static native double getNavxData(String aType, long aNativePointer, int aDataType);
 
-    public static native void setNavxData(String aType, long aNativePointer, int dataType, double aValue);
-
-    public static double getNavxData(String aType, long aNativePointer, DataType dataType)
+    public static double getNavxData(String aType, long aNativePointer, DataType aDataType)
     {
-        return getNavxData(aType, aNativePointer, dataType.ordinal());
+        return getNavxData(aType, aNativePointer, aDataType.ordinal());
     }
 
-    public static void setNavxData(String aType, long aNativePointer, DataType dataType, double aValue)
+    public static native void setNavxData(String aType, long aNativePointer, int aDataType, double aValue);
+
+    public static void setNavxData(String aType, long aNativePointer, DataType aDataType, double aValue)
     {
-        setNavxData(aType, aNativePointer, dataType.ordinal(), aValue);
+        setNavxData(aType, aNativePointer, aDataType.ordinal(), aValue);
     }
 
 }

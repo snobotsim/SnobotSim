@@ -2,8 +2,9 @@ package com.snobot.simulator.simulator_components;
 
 public interface IMotorFeedbackSensor
 {
-    public void setPosition(double aPosition);
-    public double getPosition();
+    void setPosition(double aPosition);
+
+    double getPosition();
 
     public static class NullFeedbackSensor implements IMotorFeedbackSensor
     {
@@ -16,7 +17,7 @@ public interface IMotorFeedbackSensor
         @Override
         public void setPosition(double aPosition)
         {
-
+            // Nothing to do
         }
     }
 

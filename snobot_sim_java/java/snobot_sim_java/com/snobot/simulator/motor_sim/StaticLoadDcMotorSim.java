@@ -12,9 +12,9 @@ public class StaticLoadDcMotorSim extends BaseDcMotorSimulator
     }
 
     @Override
-    public void update(double cycleTime)
+    public void update(double aCycleTime)
     {
-        mMotorModel.step(mVoltagePercentage * 12, mConfig.mLoad, 0, cycleTime);
+        mMotorModel.step(mVoltagePercentage * 12, mConfig.mLoad, 0, aCycleTime);
     }
 
     public StaticLoadMotorSimulationConfig getConfig()

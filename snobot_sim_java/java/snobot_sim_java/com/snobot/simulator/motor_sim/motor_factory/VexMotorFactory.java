@@ -5,20 +5,26 @@ import java.util.Map;
 
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 
-public class VexMotorFactory
+public final class VexMotorFactory
 {
-    private final static double NOMINAL_VOLTAGE = 12;
+    private static final double NOMINAL_VOLTAGE = 12;
 
-    protected static final Map<String, DcMotorModelConfig.MotorParams> sMOTOR_PARAMS;
+    private static final Map<String, DcMotorModelConfig.MotorParams> sMOTOR_PARAMS;
 
-    protected static final DcMotorModelConfig.MotorParams MOTOR_PARAMS_CIM = new DcMotorModelConfig.MotorParams(NOMINAL_VOLTAGE, 5330, 2.7, 2.41, 131);
-    protected static final DcMotorModelConfig.MotorParams MOTOR_PARAMS_MINI_CIM = new DcMotorModelConfig.MotorParams(NOMINAL_VOLTAGE, 5840, 3, 1.41, 89);
-    protected static final DcMotorModelConfig.MotorParams MOTOR_PARAMS_BAG = new DcMotorModelConfig.MotorParams(NOMINAL_VOLTAGE, 13180, 1.8, .43, 53);
-    protected static final DcMotorModelConfig.MotorParams MOTOR_PARAMS_775PRO = new DcMotorModelConfig.MotorParams(NOMINAL_VOLTAGE, 18730, .7, .71, 134);
-    protected static final DcMotorModelConfig.MotorParams MOTOR_PARAMS_AM_775_125 = new DcMotorModelConfig.MotorParams(NOMINAL_VOLTAGE, 5800, 1.6, .28, 18);
-    protected static final DcMotorModelConfig.MotorParams MOTOR_PARAMS_BB_RS775 = new DcMotorModelConfig.MotorParams(NOMINAL_VOLTAGE, 13050, 2.7, .72, 97);
-    protected static final DcMotorModelConfig.MotorParams MOTOR_PARAMS_AM_9015 = new DcMotorModelConfig.MotorParams(NOMINAL_VOLTAGE, 14270, 3.7, .36, 71);
-    protected static final DcMotorModelConfig.MotorParams MOTOR_PARAMS_BB_RS550 = new DcMotorModelConfig.MotorParams(NOMINAL_VOLTAGE, 19000, .4, .38, 84);
+    private static final DcMotorModelConfig.MotorParams MOTOR_PARAMS_CIM = new DcMotorModelConfig.MotorParams(NOMINAL_VOLTAGE, 5330, 2.7, 2.41, 131);
+    private static final DcMotorModelConfig.MotorParams MOTOR_PARAMS_MINI_CIM = new DcMotorModelConfig.MotorParams(NOMINAL_VOLTAGE, 5840, 3, 1.41,
+            89);
+    private static final DcMotorModelConfig.MotorParams MOTOR_PARAMS_BAG = new DcMotorModelConfig.MotorParams(NOMINAL_VOLTAGE, 13180, 1.8, .43, 53);
+    private static final DcMotorModelConfig.MotorParams MOTOR_PARAMS_775PRO = new DcMotorModelConfig.MotorParams(NOMINAL_VOLTAGE, 18730, .7, .71,
+            134);
+    private static final DcMotorModelConfig.MotorParams MOTOR_PARAMS_AM_775_125 = new DcMotorModelConfig.MotorParams(NOMINAL_VOLTAGE, 5800, 1.6, .28,
+            18);
+    private static final DcMotorModelConfig.MotorParams MOTOR_PARAMS_BB_RS775 = new DcMotorModelConfig.MotorParams(NOMINAL_VOLTAGE, 13050, 2.7, .72,
+            97);
+    private static final DcMotorModelConfig.MotorParams MOTOR_PARAMS_AM_9015 = new DcMotorModelConfig.MotorParams(NOMINAL_VOLTAGE, 14270, 3.7, .36,
+            71);
+    private static final DcMotorModelConfig.MotorParams MOTOR_PARAMS_BB_RS550 = new DcMotorModelConfig.MotorParams(NOMINAL_VOLTAGE, 19000, .4, .38,
+            84);
 
     static
     {
@@ -31,6 +37,11 @@ public class VexMotorFactory
         sMOTOR_PARAMS.put("Banebots RS 775", MOTOR_PARAMS_BB_RS775);
         sMOTOR_PARAMS.put("Andymark 9015", MOTOR_PARAMS_AM_9015);
         sMOTOR_PARAMS.put("Banebots RS 550", MOTOR_PARAMS_BB_RS550);
+    }
+
+    private VexMotorFactory()
+    {
+
     }
 
     public static DcMotorModelConfig createMotor(String aMotorName)

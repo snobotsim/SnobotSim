@@ -44,7 +44,7 @@ public class PythonRobotContainer implements IRobotClassContainer
         // mRobot.invoke("startCompetition");
     }
 
-    public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException,
+    public static void main(String[] aArgs) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException,
             SecurityException, IllegalArgumentException, InvocationTargetException
     {
         PythonRobotContainer container = new PythonRobotContainer("C:/Users/PJ/workspace/first_2017/PythonRobot--PjsTestRobot");

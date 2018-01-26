@@ -39,7 +39,7 @@ public abstract class SimpleSettingsDialog extends JDialog
         {
 
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent aEvent)
             {
                 onSubmit();
                 dispose();

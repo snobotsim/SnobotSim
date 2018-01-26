@@ -38,17 +38,17 @@ public class RelayGraphicDisplay extends BaseWidgetDisplay<Integer, RelayDisplay
         }
     }
 
-    private Value convertValue(boolean forwards, boolean reverse)
+    private Value convertValue(boolean aForwards, boolean aReverse)
     {
-        if (forwards && !reverse)
+        if (aForwards && !aReverse)
         {
             return Value.kForward;
         }
-        else if (!forwards && reverse)
+        else if (!aForwards && aReverse)
         {
             return Value.kReverse;
         }
-        else if (forwards && reverse)
+        else if (aForwards && aReverse)
         {
             return Value.kOn;
         }
@@ -104,35 +104,35 @@ class RelayDisplay extends JPanel
         mValue = Value.kOff;
     }
 
-    public void updateDisplay(Value value)
+    public void updateDisplay(Value aValue)
     {
-        mValue = value;
+        mValue = aValue;
     }
 
     @Override
-    public void paint(Graphics g)
+    public void paint(Graphics aGraphics)
     {
-        g.clearRect(0, 0, getWidth(), getHeight());
-        g.drawRect(0, 0, getWidth(), getHeight());
+        aGraphics.clearRect(0, 0, getWidth(), getHeight());
+        aGraphics.drawRect(0, 0, getWidth(), getHeight());
 
         switch (mValue)
         {
         case kOff:
             break;
         case kOn:
-            g.setColor(Color.green);
-            g.fillRect(0, 0, sWIDTH / 2, sHEIGHT);
+            aGraphics.setColor(Color.green);
+            aGraphics.fillRect(0, 0, sWIDTH / 2, sHEIGHT);
 
-            g.setColor(Color.red);
-            g.fillRect(sWIDTH / 2, 0, sWIDTH, sHEIGHT);
+            aGraphics.setColor(Color.red);
+            aGraphics.fillRect(sWIDTH / 2, 0, sWIDTH, sHEIGHT);
             break;
         case kForward:
-            g.setColor(Color.green);
-            g.fillRect(0, 0, sWIDTH, sHEIGHT);
+            aGraphics.setColor(Color.green);
+            aGraphics.fillRect(0, 0, sWIDTH, sHEIGHT);
             break;
         case kReverse:
-            g.setColor(Color.red);
-            g.fillRect(0, 0, sWIDTH, sHEIGHT);
+            aGraphics.setColor(Color.red);
+            aGraphics.fillRect(0, 0, sWIDTH, sHEIGHT);
             break;
         }
     }

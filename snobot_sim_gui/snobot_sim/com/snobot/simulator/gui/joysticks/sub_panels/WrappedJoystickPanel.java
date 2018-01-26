@@ -19,8 +19,8 @@ public class WrappedJoystickPanel extends JPanel
     private static final Logger sLOGGER = Logger.getLogger(WrappedJoystickPanel.class);
 
     private IMockJoystick mJoystick;
-    private JPanel digitalPanel;
-    private JPanel analogPanel;
+    private JPanel mDigitalPanel;
+    private JPanel mAnalogPanel;
     private List<AnalogControllerInputPanel> mAnalogDisplays;
     private List<DigitalControllerInputPanel> mDigitalDisplays;
 
@@ -40,8 +40,8 @@ public class WrappedJoystickPanel extends JPanel
     public void setJoystick(IMockJoystick aJoystick)
     {
         mJoystick = aJoystick;
-        analogPanel.removeAll();
-        digitalPanel.removeAll();
+        mAnalogPanel.removeAll();
+        mDigitalPanel.removeAll();
 
         if (mJoystick != null)
         {
@@ -52,13 +52,13 @@ public class WrappedJoystickPanel extends JPanel
             {
                 AnalogControllerInputPanel panel = new AnalogControllerInputPanel(i);
                 mAnalogDisplays.add(panel);
-                analogPanel.add(panel);
+                mAnalogPanel.add(panel);
             }
             for (int i = 0; i < mJoystick.getButtonCount(); ++i)
             {
                 DigitalControllerInputPanel panel = new DigitalControllerInputPanel(i);
                 mDigitalDisplays.add(panel);
-                digitalPanel.add(panel);
+                mDigitalPanel.add(panel);
             }
         }
 
@@ -92,19 +92,19 @@ public class WrappedJoystickPanel extends JPanel
 
     private void initComponents()
     {
-        digitalPanel = new JPanel();
-        analogPanel = new JPanel();
+        mDigitalPanel = new JPanel();
+        mAnalogPanel = new JPanel();
 
         GroupLayout groupLayout = new GroupLayout(this);
         groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
                 .addGroup(groupLayout.createSequentialGroup()
                         .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-                                .addComponent(analogPanel, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE).addComponent(digitalPanel,
+                                .addComponent(mAnalogPanel, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE).addComponent(mDigitalPanel,
                                         GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE))
                         .addGap(0)));
         groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-                .addGroup(groupLayout.createSequentialGroup().addComponent(analogPanel, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
-                        .addPreferredGap(ComponentPlacement.RELATED).addComponent(digitalPanel, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                .addGroup(groupLayout.createSequentialGroup().addComponent(mAnalogPanel, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+                        .addPreferredGap(ComponentPlacement.RELATED).addComponent(mDigitalPanel, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                         .addGap(0)));
         setLayout(groupLayout);
     }

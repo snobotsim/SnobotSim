@@ -13,8 +13,8 @@ import net.java.games.input.Controller;
 public class RawJoystickPanel extends JPanel
 {
     private Controller mJoystick;
-    private JPanel digitalPanel;
-    private JPanel analogPanel;
+    private JPanel mDigitalPanel;
+    private JPanel mAnalogPanel;
     private List<AnalogControllerInputPanel> mAnalogDisplays;
     private List<DigitalControllerInputPanel> mDigitalDisplays;
     private List<Component> mAnalogComponents;
@@ -25,8 +25,8 @@ public class RawJoystickPanel extends JPanel
         initComponents();
         setBackground(Color.green);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        add(analogPanel);
-        add(digitalPanel);
+        add(mAnalogPanel);
+        add(mDigitalPanel);
 
         mJoystick = aJoystick;
 
@@ -56,13 +56,13 @@ public class RawJoystickPanel extends JPanel
             {
                 AnalogControllerInputPanel panel = new AnalogControllerInputPanel(i);
                 mAnalogDisplays.add(panel);
-                analogPanel.add(panel);
+                mAnalogPanel.add(panel);
             }
             for (int i = 0; i < mDigitalComponents.size(); ++i)
             {
                 DigitalControllerInputPanel panel = new DigitalControllerInputPanel(i);
                 mDigitalDisplays.add(panel);
-                digitalPanel.add(panel);
+                mDigitalPanel.add(panel);
             }
         }
     }
@@ -92,8 +92,8 @@ public class RawJoystickPanel extends JPanel
 
     private void initComponents()
     {
-        digitalPanel = new JPanel();
-        analogPanel = new JPanel();
+        mDigitalPanel = new JPanel();
+        mAnalogPanel = new JPanel();
     }
 
 }

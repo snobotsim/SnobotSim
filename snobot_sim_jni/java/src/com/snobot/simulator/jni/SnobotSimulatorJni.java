@@ -1,10 +1,14 @@
 
 package com.snobot.simulator.jni;
 
-public class SnobotSimulatorJni extends BaseSimulatorJni
+public final class SnobotSimulatorJni extends BaseSimulatorJni
 {
+    private SnobotSimulatorJni()
+    {
 
-	public static native void initializeSimulator();
+    }
+
+    public static native void initializeSimulator();
 
     public static native void reset();
 

@@ -2,23 +2,26 @@ package com.snobot.simulator.motor_sim.motor_factory;
 
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 
-public class MakeTransmission
+public final class MakeTransmission
 {
-    public static DcMotorModelConfig makeTransmission(DcMotorModelConfig motor, int num_motors, double gear_reduction, double efficiency)
+    private MakeTransmission()
     {
-        DcMotorModelConfig.FactoryParams factoryParams = new DcMotorModelConfig.FactoryParams(motor.mFactoryParams.mMotorType, num_motors,
-                gear_reduction, efficiency, motor.mFactoryParams.mInverted, motor.mFactoryParams.mHasBrake);
+
+    }
+
+    public static DcMotorModelConfig makeTransmission(DcMotorModelConfig aMotor, int aNumMotors, double aGearReduction, double aEfficiency)
+    {
+        DcMotorModelConfig.FactoryParams factoryParams = new DcMotorModelConfig.FactoryParams(aMotor.mFactoryParams.mMotorType, aNumMotors,
+                aGearReduction, aEfficiency, aMotor.mFactoryParams.mInverted, aMotor.mFactoryParams.mHasBrake);
         DcMotorModelConfig.MotorParams modifiedMotorParams = new DcMotorModelConfig.MotorParams(
-                motor.mMotorParams.NOMINAL_VOLTAGE,
-                motor.mMotorParams.FREE_SPEED_RPM / gear_reduction,
-                motor.mMotorParams.FREE_CURRENT  * num_motors,
-                motor.mMotorParams.STALL_TORQUE  * num_motors,
-                motor.mMotorParams.STALL_CURRENT * num_motors,
-                motor.mMotorParams.MOTOR_INERTIA * num_motors * gear_reduction * gear_reduction,
-                efficiency * num_motors * gear_reduction);
+                aMotor.mMotorParams.NOMINAL_VOLTAGE,
+                aMotor.mMotorParams.FREE_SPEED_RPM / aGearReduction,
+                aMotor.mMotorParams.FREE_CURRENT  * aNumMotors,
+                aMotor.mMotorParams.STALL_TORQUE  * aNumMotors,
+                aMotor.mMotorParams.STALL_CURRENT * aNumMotors,
+                aMotor.mMotorParams.MOTOR_INERTIA * aNumMotors * aGearReduction * aGearReduction,
+                aEfficiency * aNumMotors * aGearReduction);
 
-        DcMotorModelConfig output = new DcMotorModelConfig(factoryParams, modifiedMotorParams);
-
-        return output;
+        return new DcMotorModelConfig(factoryParams, modifiedMotorParams);
     }
 }

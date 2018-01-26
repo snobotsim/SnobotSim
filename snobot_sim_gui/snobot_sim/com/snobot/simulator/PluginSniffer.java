@@ -62,20 +62,20 @@ public class PluginSniffer
     /**
      * Loads all the plugins in the plugin directory. Does not search recursivly
      * 
-     * @param pluginDir
+     * @param aPluginDir
      *            The directory to search.
      * @throws Exception
      *             Thrown if the plugin loading fails
      */
-    public void loadPlugins(File pluginDir) throws Exception
+    public void loadPlugins(File aPluginDir) throws Exception
     {
-        sLOGGER.log(Level.INFO, "Searching for robot plugins in " + pluginDir.getAbsolutePath());
-        mDiscoveredJars = pluginDir.listFiles(new FilenameFilter()
+        sLOGGER.log(Level.INFO, "Searching for robot plugins in " + aPluginDir.getAbsolutePath());
+        mDiscoveredJars = aPluginDir.listFiles(new FilenameFilter()
         {
 
-            public boolean accept(File dir, String name)
+            public boolean accept(File aDir, String aName)
             {
-                return name.endsWith(".jar");
+                return aName.endsWith(".jar");
             }
         });
 
@@ -110,9 +110,9 @@ public class PluginSniffer
         }
     }
 
-    private void findRobots(File file) throws Exception
+    private void findRobots(File aFile) throws Exception
     {
-        JarFile jar = new JarFile(file);
+        JarFile jar = new JarFile(aFile);
 
         Enumeration<JarEntry> entries = jar.entries();
         while (entries.hasMoreElements())
@@ -128,7 +128,7 @@ public class PluginSniffer
                 Class<?> clazz = Class.forName(name);
                 if (name.startsWith("com.snobot.simulator.cpp_wrapper."))
                 {
-                    tryToAddCppRobot(file, clazz, name);
+                    tryToAddCppRobot(aFile, clazz, name);
                 }
                 else if (RobotBase.class.isAssignableFrom(clazz))
                 {
@@ -142,24 +142,25 @@ public class PluginSniffer
 
     }
 
-    private void tryToAddCppRobot(File file, Class<?> clazz, String name) throws ClassNotFoundException
+    private void tryToAddCppRobot(File aFile, Class<?> aClazz, String aWName) throws ClassNotFoundException
+
     {
 
         try
         {
-            Method createRobotMethod = clazz.getMethod("createRobot");
-            Method getLibraryNameMethod = clazz.getMethod("getLibraryName");
-            Method startCompetitionMethod = clazz.getMethod("startCompetition");
+            Method createRobotMethod = aClazz.getMethod("createRobot");
+            Method getLibraryNameMethod = aClazz.getMethod("getLibraryName");
+            Method startCompetitionMethod = aClazz.getMethod("startCompetition");
 
             if (createRobotMethod != null && getLibraryNameMethod != null && startCompetitionMethod != null)
             {
-                mCppRobots.add(clazz);
+                mCppRobots.add(aClazz);
             }
         }
         catch (Exception e)
         {
             sLOGGER.log(Level.WARN,
-                    "Thought we had a C++ robot in " + file + ", but couldn't find required items: " + e.getMessage(), e);
+                    "Thought we had a C++ robot in " + aFile + ", but couldn't find required items: " + e.getMessage(), e);
         }
     }
 }

@@ -14,15 +14,16 @@ import com.snobot.simulator.simulator_components.II2CWrapper;
 import com.snobot.simulator.simulator_components.components_factory.DefaultI2CSimulatorFactory;
 import com.snobot.simulator.simulator_components.components_factory.II2cSimulatorFactory;
 
-public class I2CCallbackJni
+public final class I2CCallbackJni
 {
     private static final Logger sLOGGER = Logger.getLogger(I2CCallbackJni.class);
     private static II2cSimulatorFactory sI2C_FACTORY = new DefaultI2CSimulatorFactory();
     private static final Map<Integer, II2CWrapper> sCUSTOM_WRAPPERS = new HashMap<>();
 
-    public static native void registerI2CCallback(String functionName);
+    private I2CCallbackJni()
+    {
 
-    public static native void registerReadWriteCallbacks(int port);
+    }
 
     public static native void resetNative();
 
@@ -37,10 +38,14 @@ public class I2CCallbackJni
         sI2C_FACTORY = aFactory;
     }
 
+    public static native void registerI2CCallback(String aFunctionName);
+
     public static void registerI2CCallback()
     {
         registerI2CCallback("i2cCallback");
     }
+
+    public static native void registerReadWriteCallbacks(int aPort);
 
     public static void registerReadWriteCallbacks(int aPort, II2CWrapper aWrapper)
     {
@@ -48,41 +53,41 @@ public class I2CCallbackJni
         sCUSTOM_WRAPPERS.put(aPort, aWrapper);
     }
 
-    public static void i2cCallback(String callbackType, int port, ByteBuffer buffer)
+    public static void i2cCallback(String aCallbackType, int aPort, ByteBuffer aBuffer)
     {
-        if (sCUSTOM_WRAPPERS.containsKey(port))
+        if (sCUSTOM_WRAPPERS.containsKey(aPort))
         {
-            II2CWrapper wrapper = sCUSTOM_WRAPPERS.get(port);
-            if ("Read".equals(callbackType))
+            II2CWrapper wrapper = sCUSTOM_WRAPPERS.get(aPort);
+            if ("Read".equals(aCallbackType))
             {
-                wrapper.handleRead(buffer);
+                wrapper.handleRead(aBuffer);
             }
-            else if ("Write".equals(callbackType))
+            else if ("Write".equals(aCallbackType))
             {
-                wrapper.handleWrite(buffer);
+                wrapper.handleWrite(aBuffer);
             }
             else
             {
-                sLOGGER.log(Level.ERROR, "Unknown I2C callback " + callbackType);
+                sLOGGER.log(Level.ERROR, "Unknown I2C callback " + aCallbackType);
             }
 
         }
         else
         {
-            sLOGGER.log(Level.ERROR, "Calling read/write for unregistered wrapper " + port);
+            sLOGGER.log(Level.ERROR, "Calling read/write for unregistered wrapper " + aPort);
         }
     }
 
-    public static void i2cCallback(String callbackType, int port, HalCallbackValue halValue)
+    public static void i2cCallback(String aCallbackType, int aPort, HalCallbackValue aHalValue)
     {
-        if ("Initialized".equals(callbackType))
+        if ("Initialized".equals(aCallbackType))
         {
-            II2CWrapper wrapper = sI2C_FACTORY.createI2CWrapper(port);
-            SensorActuatorRegistry.get().register(wrapper, port);
+            II2CWrapper wrapper = sI2C_FACTORY.createI2CWrapper(aPort);
+            SensorActuatorRegistry.get().register(wrapper, aPort);
         }
         else
         {
-            sLOGGER.log(Level.ERROR, "Unknown I2C callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown I2C callback " + aCallbackType + " - " + aHalValue);
         }
     }
 

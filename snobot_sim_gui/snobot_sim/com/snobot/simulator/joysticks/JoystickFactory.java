@@ -29,13 +29,13 @@ public class JoystickFactory
     private static final JoystickFactory sINSTANCE = new JoystickFactory();
     private static final String sKEY = "Joystick_";
 
+    private IMockJoystick[] mJoystickMap;
+    private Map<String, ControllerConfiguration> mControllerConfig;
+
     public static JoystickFactory get()
     {
         return sINSTANCE;
     }
-
-    private IMockJoystick[] mJoystickMap;
-    private Map<String, ControllerConfiguration> mControllerConfig;
 
     private JoystickFactory()
     {
@@ -96,10 +96,10 @@ public class JoystickFactory
 
         try
         {
-            InputStream input_stream = new FileInputStream(sJOYSTICK_CONFIG_FILE);
+            InputStream inputStream = new FileInputStream(sJOYSTICK_CONFIG_FILE);
             Properties properties = new Properties();
-            properties.load(input_stream);
-            input_stream.close();
+            properties.load(inputStream);
+            inputStream.close();
 
             for (Entry<Object, Object> i : properties.entrySet())
             {

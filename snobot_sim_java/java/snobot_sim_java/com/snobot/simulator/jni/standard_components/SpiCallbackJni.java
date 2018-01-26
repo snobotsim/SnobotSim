@@ -14,20 +14,21 @@ import com.snobot.simulator.simulator_components.ISpiWrapper;
 import com.snobot.simulator.simulator_components.components_factory.DefaultSpiSimulatorFactory;
 import com.snobot.simulator.simulator_components.components_factory.ISpiSimulatorFactory;
 
-public class SpiCallbackJni
+public final class SpiCallbackJni
 {
     private static final Logger sLOGGER = Logger.getLogger(SpiCallbackJni.class);
     private static ISpiSimulatorFactory sSPI_FACTORY = new DefaultSpiSimulatorFactory();
     private static final Map<Integer, ISpiWrapper> sCUSTOM_WRAPPERS = new HashMap<>();
 
+    private SpiCallbackJni()
+    {
+
+    }
+
     public static void setSpiFactory(ISpiSimulatorFactory aFactory)
     {
         sSPI_FACTORY = aFactory;
     }
-
-    public static native void registerSpiCallback(String functionName);
-
-    public static native void registerSpiReadWriteCallback(int port);
 
     public static native void resetNative();
 
@@ -37,10 +38,14 @@ public class SpiCallbackJni
         resetNative();
     }
 
+    public static native void registerSpiCallback(String aFunctionName);
+
     public static void registerSpiCallback()
     {
         registerSpiCallback("spiCallback");
     }
+
+    public static native void registerSpiReadWriteCallback(int aPort);
 
     public static void registerSpiReadWriteCallback(int aPort, ISpiWrapper aWrapper)
     {
@@ -48,41 +53,41 @@ public class SpiCallbackJni
         sCUSTOM_WRAPPERS.put(aPort, aWrapper);
     }
 
-    public static void spiCallback(String callbackType, int port, HalCallbackValue halValue)
+    public static void spiCallback(String aCallbackType, int aPort, HalCallbackValue aHalValue)
     {
-        if ("Initialized".equals(callbackType))
+        if ("Initialized".equals(aCallbackType))
         {
-            ISpiWrapper wrapper = sSPI_FACTORY.createSpiWrapper(port);
-            SensorActuatorRegistry.get().register(wrapper, port);
+            ISpiWrapper wrapper = sSPI_FACTORY.createSpiWrapper(aPort);
+            SensorActuatorRegistry.get().register(wrapper, aPort);
         }
         else
         {
-            sLOGGER.log(Level.ERROR, "Unknown SPI callback " + callbackType + " - " + halValue);
+            sLOGGER.log(Level.ERROR, "Unknown SPI callback " + aCallbackType + " - " + aHalValue);
         }
     }
 
-    public static void spiCallback(String callbackType, int port, ByteBuffer buffer)
+    public static void spiCallback(String aCallbackType, int aPort, ByteBuffer aBuffer)
     {
-        if (sCUSTOM_WRAPPERS.containsKey(port))
+        if (sCUSTOM_WRAPPERS.containsKey(aPort))
         {
-            ISpiWrapper wrapper = sCUSTOM_WRAPPERS.get(port);
-            if ("Read".equals(callbackType))
+            ISpiWrapper wrapper = sCUSTOM_WRAPPERS.get(aPort);
+            if ("Read".equals(aCallbackType))
             {
-                wrapper.handleRead(buffer);
+                wrapper.handleRead(aBuffer);
             }
-            else if ("Write".equals(callbackType))
+            else if ("Write".equals(aCallbackType))
             {
-                wrapper.handleWrite(buffer);
+                wrapper.handleWrite(aBuffer);
             }
             else
             {
-                sLOGGER.log(Level.ERROR, "Unknown SPI callback " + callbackType);
+                sLOGGER.log(Level.ERROR, "Unknown SPI callback " + aCallbackType);
             }
 
         }
         else
         {
-            sLOGGER.log(Level.ERROR, "Calling read/write for unregistered wrapper " + port);
+            sLOGGER.log(Level.ERROR, "Calling read/write for unregistered wrapper " + aPort);
         }
     }
 

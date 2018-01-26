@@ -9,16 +9,16 @@ public class PwmWrapper extends ASensorWrapper
     private IMotorSimulator mMotorSimulator;
     private IMotorFeedbackSensor mFeedbackSensor;
 
-    public PwmWrapper(int index)
+    public PwmWrapper(int aIndex)
     {
-        this(index, "Speed Controller " + index);
+        this(aIndex, "Speed Controller " + aIndex);
     }
 
-    public PwmWrapper(int index, String aName)
+    public PwmWrapper(int aIndex, String aName)
     {
         super(aName);
 
-        mHandle = index;
+        mHandle = aIndex;
         mMotorSimulator = new IMotorSimulator.NullMotorSimulator();
         mFeedbackSensor = new IMotorFeedbackSensor.NullFeedbackSensor();
     }
@@ -38,9 +38,9 @@ public class PwmWrapper extends ASensorWrapper
         return mMotorSimulator.getVoltagePercentage();
     }
 
-    public void set(double speed)
+    public void set(double aSpeed)
     {
-        mMotorSimulator.setVoltagePercentage(speed);
+        mMotorSimulator.setVoltagePercentage(aSpeed);
     }
 
     public void update(double aWaitTime)

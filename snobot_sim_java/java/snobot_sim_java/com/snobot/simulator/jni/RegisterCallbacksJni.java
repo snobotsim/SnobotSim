@@ -12,8 +12,13 @@ import com.snobot.simulator.jni.standard_components.PwmCallbackJni;
 import com.snobot.simulator.jni.standard_components.RelayCallbackJni;
 import com.snobot.simulator.jni.standard_components.SpiCallbackJni;
 
-public class RegisterCallbacksJni extends BaseSnobotJni
+public final class RegisterCallbacksJni extends BaseSnobotJni
 {
+    private RegisterCallbacksJni()
+    {
+
+    }
+
     public static void reset()
     {
         resetWpiHal();

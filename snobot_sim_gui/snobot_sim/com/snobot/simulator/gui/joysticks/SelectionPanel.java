@@ -53,7 +53,7 @@ public class SelectionPanel extends JPanel
         }
     }
 
-    private List<SinglePanel> panels = new ArrayList<>();
+    private List<SinglePanel> mPanels = new ArrayList<>();
 
     public SelectionPanel(Collection<String> aControllerNames, IMockJoystick[] aSelectedJoysticks)
     {
@@ -62,7 +62,7 @@ public class SelectionPanel extends JPanel
         for (int i = 0; i < DriverStation.kJoystickPorts; ++i)
         {
             SinglePanel panel = new SinglePanel(i);
-            panels.add(panel);
+            mPanels.add(panel);
             add(panel);
 
             panel.setNames(aControllerNames);
@@ -72,11 +72,11 @@ public class SelectionPanel extends JPanel
             {
 
                 @Override
-                public void itemStateChanged(ItemEvent e)
+                public void itemStateChanged(ItemEvent aEvent)
                 {
-                    if (e.getStateChange() == ItemEvent.SELECTED)
+                    if (aEvent.getStateChange() == ItemEvent.SELECTED)
                     {
-                        JoystickFactory.get().setJoysticks(panel.mJoystickIndex, e.getItem().toString());
+                        JoystickFactory.get().setJoysticks(panel.mJoystickIndex, aEvent.getItem().toString());
                     }
                 }
             });

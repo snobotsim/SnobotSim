@@ -87,9 +87,9 @@ class AccelerometerDisplay extends JPanel
     }
 
     @Override
-    public void paint(Graphics g)
+    public void paint(Graphics aGraphics)
     {
-        g.clearRect(0, 0, getWidth(), getHeight());
+        aGraphics.clearRect(0, 0, getWidth(), getHeight());
 
         int halfway = getWidth() / 2;
 
@@ -101,17 +101,17 @@ class AccelerometerDisplay extends JPanel
             offset = 1;
         }
 
-        g.setColor(Color.black);
-        g.drawRect(0, 0, getWidth(), getHeight());
+        aGraphics.setColor(Color.black);
+        aGraphics.drawRect(0, 0, getWidth(), getHeight());
 
-        g.setColor(Color.blue);
+        aGraphics.setColor(Color.blue);
         if (mAcceleration < 0)
         {
-            g.fillRect(halfway - offset, 0, offset, getHeight());
+            aGraphics.fillRect(halfway - offset, 0, offset, getHeight());
         }
         else
         {
-            g.fillRect(halfway, 0, offset, getHeight());
+            aGraphics.fillRect(halfway, 0, offset, getHeight());
         }
     }
 }

@@ -11,14 +11,14 @@ public class RelayWrapper extends ASensorWrapper
         super("Relay " + aPort);
     }
 
-    public void setRelayForwards(boolean b)
+    public void setRelayForwards(boolean aForwards)
     {
-        mForwards = b;
+        mForwards = aForwards;
     }
 
-    public void setRelayReverse(boolean b)
+    public void setRelayReverse(boolean aReverse)
     {
-        mReverse = b;
+        mReverse = aReverse;
     }
 
     public boolean getRelayForwards()

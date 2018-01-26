@@ -102,9 +102,9 @@ public class JoystickManagerDialog extends JDialog
                         {
                             Thread.sleep(sUPDATE_TIME);
                         }
-                        catch (InterruptedException e)
+                        catch (InterruptedException aEvent)
                         {
-                            sLOGGER.log(Level.ERROR, e);
+                            sLOGGER.log(Level.ERROR, aEvent);
                         }
                     }
                 }
@@ -123,7 +123,7 @@ public class JoystickManagerDialog extends JDialog
     private WindowListener mCloseListener = new WindowAdapter()
     {
         @Override
-        public void windowClosing(WindowEvent e)
+        public void windowClosing(WindowEvent aEvent)
         {
             close();
         }

@@ -18,9 +18,9 @@ public class GameSpecificDataPanel extends JPanel
     {
 
         @Override
-        public void itemStateChanged(ItemEvent e)
+        public void itemStateChanged(ItemEvent aEvent)
         {
-            if (e.getStateChange() == ItemEvent.SELECTED)
+            if (aEvent.getStateChange() == ItemEvent.SELECTED)
             {
                 handleUpdate();
             }

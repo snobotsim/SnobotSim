@@ -48,9 +48,9 @@ public class GraphicalSensorDisplayPanel extends JPanel
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         
-        for(BaseWidgetDisplay<?, ?> panel : mDisplayPanels)
+        for (BaseWidgetDisplay<?, ?> panel : mDisplayPanels)
         {
-            if(!panel.isEmpty())
+            if (!panel.isEmpty())
             {
                 add(panel);
             }
@@ -62,7 +62,7 @@ public class GraphicalSensorDisplayPanel extends JPanel
 
     public void update()
     {
-        for(BaseWidgetDisplay<?, ?> panel : mDisplayPanels)
+        for (BaseWidgetDisplay<?, ?> panel : mDisplayPanels)
         {
             panel.update();
         }
@@ -72,7 +72,7 @@ public class GraphicalSensorDisplayPanel extends JPanel
 
     public void showSettingsButtons(boolean aShow)
     {
-        for(BaseWidgetDisplay<?, ?> panel : mDisplayPanels)
+        for (BaseWidgetDisplay<?, ?> panel : mDisplayPanels)
         {
             panel.showSettingsButtons(aShow);
         }

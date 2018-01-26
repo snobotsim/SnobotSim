@@ -1,8 +1,12 @@
 
 package com.snobot.simulator.jni;
 
-public class SimulationConnectorJni extends BaseSimulatorJni
+public final class SimulationConnectorJni extends BaseSimulatorJni
 {
+    private SimulationConnectorJni()
+    {
+
+    }
     
     public static native void updateLoop();
 

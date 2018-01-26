@@ -4,8 +4,13 @@ package com.snobot.simulator.jni.module_wrapper;
 import com.snobot.simulator.jni.BaseSimulatorJni;
 import com.snobot.simulator.jni.LocalDcMotorModelConfig;
 
-public class SpeedControllerWrapperJni extends BaseSimulatorJni
+public final class SpeedControllerWrapperJni extends BaseSimulatorJni
 {
+    private SpeedControllerWrapperJni()
+    {
+
+    }
+
     public static native void setName(int aPort, String aName);
 
     public static native String getName(int aPort);

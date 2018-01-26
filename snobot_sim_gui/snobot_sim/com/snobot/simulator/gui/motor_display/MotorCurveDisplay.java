@@ -75,7 +75,7 @@ public class MotorCurveDisplay extends JPanel
                 aModel.mMotorParams.STALL_CURRENT, aModel.mMotorParams.FREE_CURRENT, aModel.mMotorParams.STALL_TORQUE);
     }
 
-    public void setCurveParams(String motorName, double aNominalVoltage, double aFreeSpeedRpm, double aStallCurrent, double aFreeCurrent, double aStallTorque)
+    public void setCurveParams(String aMotorName, double aNominalVoltage, double aFreeSpeedRpm, double aStallCurrent, double aFreeCurrent, double aStallTorque)
     {
         SwingUtilities.invokeLater(new Runnable()
         {
@@ -83,7 +83,7 @@ public class MotorCurveDisplay extends JPanel
             @Override
             public void run()
             {
-                mChart.setTitle(motorName);
+                mChart.setTitle(aMotorName);
 
                 mCurrentPoints.clear();
                 mTorquePoints.clear();

@@ -28,9 +28,9 @@ public class BasicModuleConfig
         return mHandle;
     }
 
-    public void setmHandle(int mHandle)
+    public void setmHandle(int aHandle)
     {
-        this.mHandle = mHandle;
+        this.mHandle = aHandle;
     }
 
     public String getmName()
@@ -38,8 +38,8 @@ public class BasicModuleConfig
         return mName;
     }
 
-    public void setmName(String mName)
+    public void setmName(String aName)
     {
-        this.mName = mName;
+        this.mName = aName;
     }
 }

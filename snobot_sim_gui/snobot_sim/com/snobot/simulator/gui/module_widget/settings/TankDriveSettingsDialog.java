@@ -48,7 +48,7 @@ public class TankDriveSettingsDialog extends JDialog
         {
 
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent aEvent)
             {
                 handleAdd();
             }
@@ -59,7 +59,7 @@ public class TankDriveSettingsDialog extends JDialog
         {
 
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent aEvent)
             {
                 onSubmit();
                 dispose();
@@ -114,17 +114,17 @@ public class TankDriveSettingsDialog extends JDialog
         pack();
     }
 
-    private void handleRemove(TankDriveSettingsPanel panel, TankDriveConfig config)
+    private void handleRemove(TankDriveSettingsPanel aPanel, TankDriveConfig aConfig)
     {
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().removeSimulatorComponent(config);
-        mPanels.remove(panel);
-        mComponentPanel.remove(panel);
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().removeSimulatorComponent(aConfig);
+        mPanels.remove(aPanel);
+        mComponentPanel.remove(aPanel);
         pack();
     }
 
-    private void addPanel(TankDriveConfig config)
+    private void addPanel(TankDriveConfig aConfig)
     {
-        TankDriveSettingsPanel panel = new TankDriveSettingsPanel(config);
+        TankDriveSettingsPanel panel = new TankDriveSettingsPanel(aConfig);
         mPanels.add(panel);
         mComponentPanel.add(panel);
     }
@@ -137,13 +137,13 @@ public class TankDriveSettingsDialog extends JDialog
         protected JTextField mKpField;
         protected JButton mRemoveButton;
 
-        public TankDriveSettingsPanel(TankDriveConfig comp)
+        public TankDriveSettingsPanel(TankDriveConfig aComp)
         {
             setLayout(new GridBagLayout());
             mLeftMotorSelection = new JComboBox<>();
             mRightMotorSelection = new JComboBox<>();
             mGyroSelection = new JComboBox<>();
-            mKpField = new JTextField("" + comp.getmTurnKp(), 10);
+            mKpField = new JTextField("" + aComp.getmTurnKp(), 10);
             mRemoveButton = new JButton("Remove");
 
             List<Integer> speedControllers = DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList();
@@ -154,12 +154,12 @@ public class TankDriveSettingsDialog extends JDialog
                 mLeftMotorSelection.addItem(option);
                 mRightMotorSelection.addItem(option);
 
-                if (option.mHandle == comp.getmLeftEncoderHandle())
+                if (option.mHandle == aComp.getmLeftEncoderHandle())
                 {
                     mLeftMotorSelection.setSelectedItem(option);
                 }
 
-                if (option.mHandle == comp.getmRightEncoderHandle())
+                if (option.mHandle == aComp.getmRightEncoderHandle())
                 {
                     mRightMotorSelection.setSelectedItem(option);
                 }
@@ -170,7 +170,7 @@ public class TankDriveSettingsDialog extends JDialog
                 SensorHandleOption option = new SensorHandleOption(handle, DataAccessorFactory.getInstance().getGyroAccessor().getName(handle));
                 mGyroSelection.addItem(option);
 
-                if (option.mHandle == comp.getmGyroHandle())
+                if (option.mHandle == aComp.getmGyroHandle())
                 {
                     mGyroSelection.setSelectedItem(option);
                 }
@@ -222,7 +222,7 @@ public class TankDriveSettingsDialog extends JDialog
                 @Override
                 public void actionPerformed(ActionEvent e)
                 {
-                    handleRemove(TankDriveSettingsPanel.this, comp);
+                    handleRemove(TankDriveSettingsPanel.this, aComp);
                 }
             });
         }

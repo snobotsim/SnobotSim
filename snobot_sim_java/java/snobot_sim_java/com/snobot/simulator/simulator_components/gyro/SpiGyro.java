@@ -45,13 +45,13 @@ public class SpiGyro extends ASensorWrapper implements IGyroWrapper, ISpiWrapper
     }
 
     @Override
-    public void handleRead(ByteBuffer buffer)
+    public void handleRead(ByteBuffer aBuffer)
     {
         sLOGGER.log(Level.ERROR, "This shouldn't be called directly");
     }
 
     @Override
-    public void handleWrite(ByteBuffer buffer)
+    public void handleWrite(ByteBuffer aBuffer)
     {
         sLOGGER.log(Level.ERROR, "This shouldn't be called directly");
     }

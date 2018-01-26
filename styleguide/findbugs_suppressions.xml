@@ -1,0 +1,6 @@
+<FindBugsFilter>
+    <Match>
+        <Class name="com.snobot.simulator.jni.BaseSnobotJni"/>
+        <Bug pattern="IC_SUPERCLASS_USES_SUBCLASS_DURING_INITIALIZATION" />
+    </Match>
+</FindBugsFilter>

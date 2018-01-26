@@ -43,7 +43,7 @@ public class SimulatorFrame extends JFrame
     public void updateLoop()
     {
         mBasicPanel.update();
-        mEnablePanel.setTime(DataAccessorFactory.getInstance().getSimulatorDataAccessor().getMatchTime());
+        mEnablePanel.setTime(DataAccessorFactory.getInstance().getSimulatorDataAccessor().getTimeSinceEnabled());
     }
 
     private void initComponenents()
@@ -55,7 +55,7 @@ public class SimulatorFrame extends JFrame
         {
 
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent aEvent)
             {
                 DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDisabled(!mEnablePanel.isEnabled());
                 DataAccessorFactory.getInstance().getSimulatorDataAccessor().setAutonomous(mEnablePanel.isAuton());
@@ -67,7 +67,7 @@ public class SimulatorFrame extends JFrame
         {
 
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent aEvent)
             {
                 showJoystickDialog();
             }
@@ -80,7 +80,7 @@ public class SimulatorFrame extends JFrame
         {
 
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent aEvent)
             {
                 changeSettingsBtn.setVisible(false);
                 saveSettingsBtn.setVisible(true);
@@ -93,7 +93,7 @@ public class SimulatorFrame extends JFrame
         {
 
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent aEvent)
             {
                 changeSettingsBtn.setVisible(true);
                 saveSettingsBtn.setVisible(false);
@@ -111,13 +111,13 @@ public class SimulatorFrame extends JFrame
         buttonPanel.add(configureJoystickBtn, BorderLayout.NORTH);
         buttonPanel.add(settingsPanel, BorderLayout.SOUTH);
         
-        JScrollPane scrollPane = new JScrollPane(mBasicPanel);
 
         JPanel driverStationPanel = new JPanel();
         driverStationPanel.setLayout(new BoxLayout(driverStationPanel, BoxLayout.Y_AXIS));
         driverStationPanel.add(mEnablePanel);
         driverStationPanel.add(new GameSpecificDataPanel());
 
+        JScrollPane scrollPane = new JScrollPane(mBasicPanel);
         add(scrollPane, BorderLayout.CENTER);
         add(driverStationPanel, BorderLayout.NORTH);
         add(buttonPanel, BorderLayout.SOUTH);
@@ -135,11 +135,11 @@ public class SimulatorFrame extends JFrame
         
         String dumpFile = null;
         
-        if(mSimulatorConfigFile == null)
+        if (mSimulatorConfigFile == null)
         {
             JFileChooser fc = new JFileChooser(".");
             int result = fc.showSaveDialog(this);
-            if(result == JFileChooser.APPROVE_OPTION)
+            if (result == JFileChooser.APPROVE_OPTION)
             {
                 dumpFile = fc.getSelectedFile().toString();
             }
@@ -149,7 +149,7 @@ public class SimulatorFrame extends JFrame
             dumpFile = mSimulatorConfigFile;
         }
         
-        if(dumpFile != null)
+        if (dumpFile != null)
         {
             sLOGGER.log(Level.INFO, "Saving to '" + dumpFile + "'");
             if (mSimulatorConfigFile == null)

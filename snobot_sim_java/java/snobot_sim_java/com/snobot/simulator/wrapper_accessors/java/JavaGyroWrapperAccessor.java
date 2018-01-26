@@ -24,7 +24,7 @@ public class JavaGyroWrapperAccessor extends BaseWrapperAccessor<IGyroWrapper> i
     @Override
     public void reset(int aPort)
     {
-
+        // Nothing to do
     }
 
     @Override

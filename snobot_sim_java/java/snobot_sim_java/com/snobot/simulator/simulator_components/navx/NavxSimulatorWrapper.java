@@ -18,7 +18,7 @@ public class NavxSimulatorWrapper implements ISpiWrapper, II2CWrapper
 {
     private static final Logger sLOGGER = Logger.getLogger(NavxSimulatorWrapper.class);
 
-    private class NavxAccelWrapper extends ASensorWrapper implements IAccelerometerWrapper
+    private static class NavxAccelWrapper extends ASensorWrapper implements IAccelerometerWrapper
     {
         private final long mNativePointer;
         private final String mType;
@@ -47,7 +47,7 @@ public class NavxSimulatorWrapper implements ISpiWrapper, II2CWrapper
 
     }
 
-    private class NavxGyroWrapper extends ASensorWrapper implements IGyroWrapper
+    private static class NavxGyroWrapper extends ASensorWrapper implements IGyroWrapper
     {
         private final long mNativePointer;
         private final String mType;
@@ -112,13 +112,13 @@ public class NavxSimulatorWrapper implements ISpiWrapper, II2CWrapper
     }
 
     @Override
-    public void handleRead(ByteBuffer buffer)
+    public void handleRead(ByteBuffer aBuffer)
     {
         sLOGGER.log(Level.ERROR, "This shouldn't be called directly");
     }
 
     @Override
-    public void handleWrite(ByteBuffer buffer)
+    public void handleWrite(ByteBuffer aBuffer)
     {
         sLOGGER.log(Level.ERROR, "This shouldn't be called directly");
     }

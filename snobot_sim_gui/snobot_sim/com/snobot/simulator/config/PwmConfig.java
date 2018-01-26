@@ -26,9 +26,9 @@ public class PwmConfig extends BasicModuleConfig
         return mMotorSimConfig;
     }
 
-    public void setmMotorSimConfig(IMotorSimulatorConfig mMotorSimConfig)
+    public void setmMotorSimConfig(IMotorSimulatorConfig aMotorSimConfig)
     {
-        this.mMotorSimConfig = mMotorSimConfig;
+        this.mMotorSimConfig = aMotorSimConfig;
     }
 
     public DcMotorModelConfig.FactoryParams getmMotorModelConfig()
@@ -36,9 +36,9 @@ public class PwmConfig extends BasicModuleConfig
         return mMotorModelConfig;
     }
 
-    public void setmMotorModelConfig(DcMotorModelConfig.FactoryParams mMotorModelConfig)
+    public void setmMotorModelConfig(DcMotorModelConfig.FactoryParams aMotorModelConfig)
     {
-        this.mMotorModelConfig = mMotorModelConfig;
+        this.mMotorModelConfig = aMotorModelConfig;
     }
 
 }

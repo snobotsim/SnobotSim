@@ -56,7 +56,6 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 }
 
 task createSimpleEclipseProject {
-    println "CREATING ECLISPE FPROJEC JAR"
 
     doLast {
         // Copy the canned eclipse .project and .classpath
@@ -106,6 +105,7 @@ task createSimpleEclipseProject {
 }
 
 task zipEclipseProject(type: Zip, dependsOn: createSimpleEclipseProject) {
+    classifier = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
     from project.buildDir.toString() + "/EclipseProject"
 }
 

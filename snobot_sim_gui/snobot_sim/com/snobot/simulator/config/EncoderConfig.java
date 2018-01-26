@@ -21,9 +21,9 @@ public class EncoderConfig extends BasicModuleConfig
         return mConnectedSpeedControllerHandle;
     }
 
-    public void setmConnectedSpeedControllerHandle(int mConnectedSpeedControllerHandle)
+    public void setmConnectedSpeedControllerHandle(int aConnectedSpeedControllerHandle)
     {
-        this.mConnectedSpeedControllerHandle = mConnectedSpeedControllerHandle;
+        this.mConnectedSpeedControllerHandle = aConnectedSpeedControllerHandle;
     }
 
 }

@@ -33,7 +33,7 @@ public class GyroGraphicDisplay extends BaseWidgetDisplay<Integer, GyroWrapperDi
     }
 
     @Override
-    protected GyroWrapperDisplay createWidget(Integer pair)
+    protected GyroWrapperDisplay createWidget(Integer aPair)
     {
         return new GyroWrapperDisplay();
     }

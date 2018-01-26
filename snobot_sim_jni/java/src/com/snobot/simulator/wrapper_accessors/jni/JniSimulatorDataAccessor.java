@@ -23,9 +23,9 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
 {
 
     @Override
-    public void setLogLevel(SnobotLogLevel logLevel)
+    public void setLogLevel(SnobotLogLevel aLogLevel)
     {
-        SnobotSimulatorJni.initializeLogging(logLevel.ordinal());
+        SnobotSimulatorJni.initializeLogging(aLogLevel.ordinal());
     }
 
     @Override
@@ -41,32 +41,30 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
     }
 
     @Override
-    public boolean connectTankDriveSimulator(int leftEncHandle, int rightEncHandle, int aGyroHandle, double turnKp)
+    public boolean connectTankDriveSimulator(int aLeftEncHandle, int aRightEncHandle, int aGyroHandle, double aTurnKp)
     {
-        return SimulationConnectorJni.connectTankDriveSimulator(leftEncHandle, rightEncHandle, aGyroHandle, turnKp);
+        return SimulationConnectorJni.connectTankDriveSimulator(aLeftEncHandle, aRightEncHandle, aGyroHandle, aTurnKp);
     }
 
     @Override
     public Collection<Object> getSimulatorComponentConfigs()
     {
-        Collection<Object> output = new ArrayList<>();
-
-        return output;
+        return new ArrayList<>();
     }
 
     @Override
-    public DcMotorModelConfig createMotor(String motorType, int numMotors, double gearReduction, double efficiency, boolean aInverted, boolean aBrake)
+    public DcMotorModelConfig createMotor(String aMotorType, int aNumMotors, double aGearReduction, double aEfficiency, boolean aInverted, boolean aBrake)
     {
-        LocalDcMotorModelConfig config = MotorConfigFactoryJni.createMotor(motorType, numMotors, gearReduction, efficiency);
+        LocalDcMotorModelConfig config = MotorConfigFactoryJni.createMotor(aMotorType, aNumMotors, aGearReduction, aEfficiency);
         config.getConfig().mFactoryParams.mHasBrake = aBrake;
         config.getConfig().mFactoryParams.mInverted = aInverted;
         return config.getConfig();
     }
 
     @Override
-    public DcMotorModelConfig createMotor(String motorType)
+    public DcMotorModelConfig createMotor(String aMotorType)
     {
-        LocalDcMotorModelConfig config = MotorConfigFactoryJni.createMotor(motorType);
+        LocalDcMotorModelConfig config = MotorConfigFactoryJni.createMotor(aMotorType);
         return config.getConfig();
     }
 
@@ -136,9 +134,9 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
     }
 
     @Override
-    public void setJoystickInformation(int i, float[] axisValues, short[] povValues, int buttonCount, int buttonMask)
+    public void setJoystickInformation(int aIndex, float[] aAxisValues, short[] aPovValues, int aButtonCount, int aButtonMask)
     {
-        JoystickJni.setJoystickInformation(i, axisValues, povValues, buttonCount, buttonMask);
+        JoystickJni.setJoystickInformation(aIndex, aAxisValues, aPovValues, aButtonCount, aButtonMask);
     }
 
     @Override
@@ -180,17 +178,24 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
     }
 
     @Override
-    public void setMatchInfo(String eventName, MatchType matchType, int matchNumber, int replayNumber, String gameSpecificMessage)
+    public void setMatchInfo(String aEventName, MatchType aMatchType, int aMatchNumber, int aReplayNumber, String aGameSpecificMessage)
     {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void removeSimulatorComponent(Object comp)
+    public void removeSimulatorComponent(Object aComp)
     {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public double getTimeSinceEnabled()
+    {
+        // TODO Auto-generated method stub
+        return -1;
     }
 
 }

@@ -12,26 +12,26 @@ public class DcMotorModel
     protected double mCurrent;
 
 
-    public DcMotorModel(DcMotorModelConfig motorConfig)
+    public DcMotorModel(DcMotorModelConfig aMotorConfig)
     {
-        mConfig = motorConfig;
+        mConfig = aMotorConfig;
     }
 
     /**
      * Reset the motor to a specified state.
      * 
-     * @param position
+     * @param aPosition
      *            The new position
-     * @param velocity
+     * @param aVelocity
      *            The new velocity
-     * @param current
+     * @param aCurrent
      *            The new current
      */
-    public void reset(double position, double velocity, double current)
+    public void reset(double aPosition, double aVelocity, double aCurrent)
     {
-        mPosition = position;
-        mVelocity = velocity;
-        mCurrent = current;
+        mPosition = aPosition;
+        mVelocity = aVelocity;
+        mCurrent = aCurrent;
         mAcceleration = 0;
     }
 
@@ -39,16 +39,16 @@ public class DcMotorModel
      * Simulate applying a given voltage and load for a specified period of
      * time.
      * 
-     * @param load
+     * @param aLoad
      *            Load applied to the motor (kg*m^2)
-     * @param timestep
+     * @param aTimestep
      *            How long the input is applied (s)
      */
-    public void step(double applied_voltage, double load, double external_torque, double timestep)
+    public void step(double aAppliedVoltage, double aLoad, double aExternalTorque, double aTimestep) // NOPMD
     {
         if (mConfig.mFactoryParams.mInverted)
         {
-            applied_voltage *= -1;
+            aAppliedVoltage *= -1;
         }
 
         /*
@@ -60,7 +60,7 @@ public class DcMotorModel
          * dw/dt = (V - Kv * w) * Kt / (R * J) - external_torque / J
          */
 
-        if (mConfig.mFactoryParams.mHasBrake && applied_voltage == 0)
+        if (mConfig.mFactoryParams.mHasBrake && aAppliedVoltage == 0)
         {
             mAcceleration = 0;
             mVelocity = 0;
@@ -68,12 +68,12 @@ public class DcMotorModel
         }
         else
         {
-            load += mConfig.mMotorParams.MOTOR_INERTIA;
-            mAcceleration = (applied_voltage - mVelocity / mConfig.mMotorParams.mKV) * mConfig.mMotorParams.mKT
-                    / (mConfig.mMotorParams.mResistance * load) + external_torque / load;
-            mVelocity += mAcceleration * timestep;
-            mPosition += mVelocity * timestep + .5 * mAcceleration * timestep * timestep;
-            mCurrent = load * mAcceleration * Math.signum(applied_voltage) / mConfig.mMotorParams.mKT;
+            aLoad += mConfig.mMotorParams.MOTOR_INERTIA;
+            mAcceleration = (aAppliedVoltage - mVelocity / mConfig.mMotorParams.mKV) * mConfig.mMotorParams.mKT
+                    / (mConfig.mMotorParams.mResistance * aLoad) + aExternalTorque / aLoad;
+            mVelocity += mAcceleration * aTimestep;
+            mPosition += mVelocity * aTimestep + .5 * mAcceleration * aTimestep * aTimestep;
+            mCurrent = aLoad * mAcceleration * Math.signum(aAppliedVoltage) / mConfig.mMotorParams.mKT;
         }
     }
 

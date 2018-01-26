@@ -16,7 +16,7 @@ public class SpiI2CAccelerometer implements ISpiWrapper, II2CWrapper
 {
     private static final Logger sLOGGER = Logger.getLogger(SpiI2CAccelerometer.class);
 
-    private class AdxAccelWrapper extends ASensorWrapper implements IAccelerometerWrapper
+    private static class AdxAccelWrapper extends ASensorWrapper implements IAccelerometerWrapper
     {
         private final long mNativePointer;
         private final String mType;
@@ -68,13 +68,13 @@ public class SpiI2CAccelerometer implements ISpiWrapper, II2CWrapper
     }
 
     @Override
-    public void handleRead(ByteBuffer buffer)
+    public void handleRead(ByteBuffer aBuffer)
     {
         sLOGGER.log(Level.ERROR, "This shouldn't be called directly");
     }
 
     @Override
-    public void handleWrite(ByteBuffer buffer)
+    public void handleWrite(ByteBuffer aBuffer)
     {
         sLOGGER.log(Level.ERROR, "This shouldn't be called directly");
     }

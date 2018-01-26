@@ -95,7 +95,7 @@ public class SpiAndI2CSettingsDialog extends JDialog
         {
 
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent aEvent)
             {
                 onSubmit();
                 dispose();
@@ -140,22 +140,22 @@ public class SpiAndI2CSettingsDialog extends JDialog
         private JComboBox<String> mSelection;
         private JLabel mLabel;
 
-        public ComponentRow(String name, Collection<String> options, String selectedValue)
+        public ComponentRow(String aName, Collection<String> aOptions, String aSelectedValue)
         {
-            mLabel = new JLabel(name);
+            mLabel = new JLabel(aName);
             mSelection = new JComboBox<>();
-            for (String option : options)
+            for (String option : aOptions)
             {
                 mSelection.addItem(option);
             }
 
-            if (selectedValue == null)
+            if (aSelectedValue == null)
             {
                 mSelection.setSelectedItem("None");
             }
             else
             {
-                mSelection.setSelectedItem(selectedValue);
+                mSelection.setSelectedItem(aSelectedValue);
             }
 
         }

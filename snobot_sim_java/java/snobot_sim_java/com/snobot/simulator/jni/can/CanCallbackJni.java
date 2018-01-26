@@ -8,24 +8,29 @@ import org.apache.log4j.Logger;
 import com.snobot.simulator.jni.HalCallbackValue;
 import com.snobot.simulator.simulator_components.ctre.CtreManager;
 
-public class CanCallbackJni
+public final class CanCallbackJni
 {
     private static final Logger sLOGGER = Logger.getLogger(CanCallbackJni.class);
 
     public static final CtreManager sCAN_MANAGER = new CtreManager();
 
-    public static native void registerCanCallback(String functionName);
-
-    public static native void reset();
-
-    public static void canCallback(String callbackType, int port, HalCallbackValue halValue)
+    private CanCallbackJni()
     {
-        sLOGGER.log(Level.ERROR, "Unsupported");
+
     }
+
+    public static native void registerCanCallback(String aFunctionName);
 
     public static void registerCanCallback()
     {
         registerCanCallback("canCallback");
+    }
+
+    public static native void reset();
+
+    public static void canCallback(String aCallbackType, int aPort, HalCallbackValue aHalValue)
+    {
+        sLOGGER.log(Level.ERROR, "Unsupported");
     }
 
     public static void canCallbackMotorController(String aName, int aPort, ByteBuffer aData)
