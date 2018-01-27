@@ -5,16 +5,17 @@ apply plugin: 'maven-publish'
 
 task gatherWpiLibs(type: Zip) {
     def os_name = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
-
+    
     classifier = "wpi_native-" + os_name;
     destinationDir = file("build")
-    
+
     from('build/dependencies/wpiutil-cpp/' + os_name + 'x86-64/' + os_name + '/x86-64/shared') {
         into "lib"
         
         include "*.dll"
         include "*.lib"
         include "*.so"
+        include "*.dylib"
     }
     from('build/dependencies/ntcore-cpp/' + os_name + 'x86-64/' + os_name + '/x86-64/shared') {
         into "lib"
@@ -22,6 +23,7 @@ task gatherWpiLibs(type: Zip) {
         include "*.dll"
         include "*.lib"
         include "*.so"
+        include "*.dylib"
     }
     from('build/dependencies/wpilibc/lib/' + os_name + '/x86-64/shared') {
         into "lib"
@@ -29,6 +31,7 @@ task gatherWpiLibs(type: Zip) {
         include "*.dll"
         include "*.lib"
         include "*.so"
+        include "*.dylib"
     }
 }
     
@@ -66,7 +69,10 @@ publishing {
 
     publications {
         wpilibCopies(MavenPublication) {
-            artifact gatherWpiLibs
+            if(!org.gradle.internal.os.OperatingSystem.current().isMacOsX())
+            {
+                artifact gatherWpiLibs
+            }
             artifact gatherWpiHeaders
         
             groupId 'com.snobot.simulator'
