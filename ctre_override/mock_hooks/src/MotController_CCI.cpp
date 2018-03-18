@@ -623,10 +623,10 @@ extern "C"{
     }
     ctre::phoenix::ErrorCode c_MotController_ConfigMotionProfileTrajectoryPeriod(
             void *handle, int durationMs, int timeoutMs)
-	{
+    {
         LOG_UNSUPPORTED_CAN_FUNC("");
         return (ctre::phoenix::ErrorCode) 0;
-	}
+    }
     ctre::phoenix::ErrorCode c_MotController_GetLastError(void *handle)
     {
         return (ctre::phoenix::ErrorCode) 0;

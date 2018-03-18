@@ -17,8 +17,8 @@
 class AdxGyroWrapper : public ISpiWrapper, public IGyroWrapper
 {
 public:
-	AdxGyroWrapper(int aPort);
-	virtual ~AdxGyroWrapper();
+    AdxGyroWrapper(int aPort);
+    virtual ~AdxGyroWrapper();
 
 
     void SetAngle(double aAngle) override;

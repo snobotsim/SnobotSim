@@ -9,13 +9,13 @@
 #include "SnobotSim/SensorActuatorRegistry.h"
 
 BaseAdxAccelWrapper::BaseAdxAccelWrapper(int aBasePort, const std::shared_ptr<hal::ThreeAxisAccelerometerData>& aAccel) :
-	mXWrapper(new AccelerometerWrapper(AccelerometerWrapper::AXIS_X, aAccel)),
-	mYWrapper(new AccelerometerWrapper(AccelerometerWrapper::AXIS_Y, aAccel)),
-	mZWrapper(new AccelerometerWrapper(AccelerometerWrapper::AXIS_Z, aAccel))
+    mXWrapper(new AccelerometerWrapper(AccelerometerWrapper::AXIS_X, aAccel)),
+    mYWrapper(new AccelerometerWrapper(AccelerometerWrapper::AXIS_Y, aAccel)),
+    mZWrapper(new AccelerometerWrapper(AccelerometerWrapper::AXIS_Z, aAccel))
 {
-	SensorActuatorRegistry::Get().Register(aBasePort + 0, mXWrapper);
-	SensorActuatorRegistry::Get().Register(aBasePort + 1, mYWrapper);
-	SensorActuatorRegistry::Get().Register(aBasePort + 2, mZWrapper);
+    SensorActuatorRegistry::Get().Register(aBasePort + 0, mXWrapper);
+    SensorActuatorRegistry::Get().Register(aBasePort + 1, mYWrapper);
+    SensorActuatorRegistry::Get().Register(aBasePort + 2, mZWrapper);
 }
 
 BaseAdxAccelWrapper::~BaseAdxAccelWrapper() {
@@ -24,9 +24,9 @@ BaseAdxAccelWrapper::~BaseAdxAccelWrapper() {
 
 
 BaseAdxAccelWrapper::AccelerometerWrapper::AccelerometerWrapper(AxisType aAxisType, const std::shared_ptr<hal::ThreeAxisAccelerometerData>& aAccel) :
-	IAccelerometerWrapper("Hello"),
-	mAxisType(aAxisType),
-	mAccel(aAccel)
+    IAccelerometerWrapper("Hello"),
+    mAxisType(aAxisType),
+    mAccel(aAccel)
 {
 
 }
@@ -36,11 +36,11 @@ void BaseAdxAccelWrapper::AccelerometerWrapper::SetAcceleration(double aAccelera
     switch(mAxisType)
     {
     case AXIS_X:
-    	mAccel->SetX(aAcceleration);
+        mAccel->SetX(aAcceleration);
     case AXIS_Y:
-    	mAccel->SetY(aAcceleration);
+        mAccel->SetY(aAcceleration);
     case AXIS_Z:
-    	mAccel->SetZ(aAcceleration);
+        mAccel->SetZ(aAcceleration);
     }
 }
 
@@ -56,5 +56,5 @@ double BaseAdxAccelWrapper::AccelerometerWrapper::GetAcceleration()
     case AXIS_Z:
         return mAccel->GetZ();
     }
-	return 0;
+    return 0;
 }

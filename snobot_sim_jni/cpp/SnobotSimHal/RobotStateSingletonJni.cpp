@@ -69,7 +69,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RobotStateSingletonJni_wait
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RobotStateSingletonJni_waitForNextUpdateLoop
   (JNIEnv *, jclass, jdouble aUpdatePeriod)
 {
-	RobotStateSingleton::Get().WaitForNextControlLoop(aUpdatePeriod);
+    RobotStateSingleton::Get().WaitForNextControlLoop(aUpdatePeriod);
 }
 
 /*
@@ -80,7 +80,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RobotStateSingletonJni_wait
 JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_RobotStateSingletonJni_getCycleTime
   (JNIEnv *, jclass)
 {
-	return .02;
+    return .02;
 }
 
 }

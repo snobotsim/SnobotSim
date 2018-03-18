@@ -30,12 +30,12 @@ extern "C"
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SnobotSimulatorJni_initializeSimulator
   (JNIEnv *, jclass)
 {
-	if(!HAL_Initialize(0, 0))
-	{
-    	SNOBOT_LOG(SnobotLogging::CRITICAL, "Couldn't initialize!!!");
-	}
+    if(!HAL_Initialize(0, 0))
+    {
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Couldn't initialize!!!");
+    }
 
-	SnobotSim::InitializeSnobotCallbacks();
+    SnobotSim::InitializeSnobotCallbacks();
 }
 
 /*
@@ -47,7 +47,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SnobotSimulatorJni_reset
   (JNIEnv *, jclass)
 {
     SensorActuatorRegistry::Get().Reset();
-	SnobotSim::ResetSnobotCallbacks();
+    SnobotSim::ResetSnobotCallbacks();
     I2CWrapperFactory::Get().ResetDefaults();
     SpiWrapperFactory::Get().ResetDefaults();
 }

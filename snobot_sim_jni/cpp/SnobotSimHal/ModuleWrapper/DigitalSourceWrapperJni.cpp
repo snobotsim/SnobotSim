@@ -71,7 +71,7 @@ JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_Digital
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_DigitalSourceWrapperJni_setState
   (JNIEnv *, jclass, jint portHandle, jboolean value)
 {
-	HALSIM_SetDIOValue(portHandle, value);
+    HALSIM_SetDIOValue(portHandle, value);
 }
 
 /*

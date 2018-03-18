@@ -13,11 +13,11 @@
 class EXPORT_ IGyroWrapper: public AModuleWrapper
 {
 public:
-	IGyroWrapper(const std::string& aName) :
+    IGyroWrapper(const std::string& aName) :
         AModuleWrapper(aName)
-	{
+    {
 
-	}
+    }
     virtual ~IGyroWrapper()
     {
 

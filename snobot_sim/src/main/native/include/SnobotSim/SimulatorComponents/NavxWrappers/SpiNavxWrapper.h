@@ -14,8 +14,8 @@
 class SpiNavxWrapper : public ISpiWrapper, public BaseNavxWrapper
 {
 public:
-	SpiNavxWrapper(int aPort);
-	virtual ~SpiNavxWrapper();
+    SpiNavxWrapper(int aPort);
+    virtual ~SpiNavxWrapper();
 };
 
 #endif /* SPINAVXWRAPPER_H_ */

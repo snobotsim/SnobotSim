@@ -13,11 +13,11 @@
 class EXPORT_ IAccelerometerWrapper: public AModuleWrapper
 {
 public:
-	IAccelerometerWrapper(const std::string& aName):
-    	AModuleWrapper(aName)
-	{
+    IAccelerometerWrapper(const std::string& aName):
+        AModuleWrapper(aName)
+    {
 
-	}
+    }
 
     virtual ~IAccelerometerWrapper()
     {

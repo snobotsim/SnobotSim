@@ -195,8 +195,8 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_adx_1family_SpiI2CSimulator
 
     if(type == "SPI ADXRS450")
     {
-    	ADXRS450_SpiGyroWrapper* sim = (ADXRS450_SpiGyroWrapper*) aPointerAddress;
-    	delete sim;
+        ADXRS450_SpiGyroWrapper* sim = (ADXRS450_SpiGyroWrapper*) aPointerAddress;
+        delete sim;
     }
     else
     {

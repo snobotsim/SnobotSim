@@ -102,7 +102,7 @@ void CtreTalonSrxDeviceManager::HandleTx1(const uint8_t* aData, int aPort)
     }
     else
     {
-    	SNOBOT_LOG(SnobotLogging::CRITICAL, "Unsupported tx1 command 0x" << std::hex << ((int) command) << std::dec);
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unsupported tx1 command 0x" << std::hex << ((int) command) << std::dec);
     }
 }
 
@@ -142,15 +142,15 @@ void CtreTalonSrxDeviceManager::HandleSetDemandCommand(const uint8_t* aData, int
     }
     else if (commandType == 0x05)
     {
-    	SNOBOT_LOG(SnobotLogging::DEBUG, "Setting by Motion Follower");
+        SNOBOT_LOG(SnobotLogging::DEBUG, "Setting by Motion Follower");
     }
     else if (commandType == 0x06)
     {
-    	SNOBOT_LOG(SnobotLogging::DEBUG, "Setting by Motion Profile");
+        SNOBOT_LOG(SnobotLogging::DEBUG, "Setting by Motion Profile");
     }
     else if (commandType == 0x07)
     {
-    	SNOBOT_LOG(SnobotLogging::DEBUG, "Setting by Motion Magic");
+        SNOBOT_LOG(SnobotLogging::DEBUG, "Setting by Motion Magic");
     }
     else if (commandType == 0x0F)
     {
@@ -158,7 +158,7 @@ void CtreTalonSrxDeviceManager::HandleSetDemandCommand(const uint8_t* aData, int
     }
     else
     {
-    	SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown command type 0x" << std::hex << ((int) commandType) << std::dec);
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown command type 0x" << std::hex << ((int) commandType) << std::dec);
     }
 }
 
@@ -198,7 +198,7 @@ void CtreTalonSrxDeviceManager::HandleSetParamCommand(const uint8_t* aData, int 
     }
     else
     {
-    	SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown SetParam command " << std::hex << ((int) commandType) << std::dec);
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown SetParam command " << std::hex << ((int) commandType) << std::dec);
     }
 }
 
@@ -238,7 +238,7 @@ void CtreTalonSrxDeviceManager::HandleParamRequest(const uint8_t* aData, int aPo
     }
     else
     {
-    	SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown GetParam command " << std::hex << ((int) commandType) << std::dec);
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown GetParam command " << std::hex << ((int) commandType) << std::dec);
     }
     int rawValue;
     if(isFloat)

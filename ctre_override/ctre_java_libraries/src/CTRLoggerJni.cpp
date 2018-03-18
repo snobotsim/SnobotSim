@@ -14,5 +14,5 @@
 JNIEXPORT jint JNICALL Java_com_ctre_phoenix_CTRLoggerJNI_JNI_1Logger_1Log
   (JNIEnv *, jclass, jint, jstring, jstring)
 {
-	return 0;
+    return 0;
 }

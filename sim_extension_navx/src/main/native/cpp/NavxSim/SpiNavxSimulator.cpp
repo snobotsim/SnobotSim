@@ -15,23 +15,23 @@ static void NavxSPIReadBufferCallback(const char* name, void* param,
 }
 
 static void NavxSPIWriteBufferCallback(const char* name, void* param,
-		const uint8_t* buffer, uint32_t count) {
+        const uint8_t* buffer, uint32_t count) {
     SpiNavxSimulator* sim = static_cast<SpiNavxSimulator*>(param);
     sim->HandleWrite(buffer, count);
 }
 
 SpiNavxSimulator::SpiNavxSimulator(int port) :
     NavxSimulator(),
-	mPort(port)
+    mPort(port)
 {
-	mReadCallbackId = HALSIM_RegisterSPIReadCallback(port, NavxSPIReadBufferCallback, this);
-	mWriteCallbackId = HALSIM_RegisterSPIWriteCallback(port, NavxSPIWriteBufferCallback, this);
+    mReadCallbackId = HALSIM_RegisterSPIReadCallback(port, NavxSPIReadBufferCallback, this);
+    mWriteCallbackId = HALSIM_RegisterSPIWriteCallback(port, NavxSPIWriteBufferCallback, this);
 }
 
 SpiNavxSimulator::~SpiNavxSimulator()
 {
-	HALSIM_CancelSPIReadCallback(mPort, mReadCallbackId);
-	HALSIM_CancelSPIWriteCallback(mPort, mWriteCallbackId);
+    HALSIM_CancelSPIReadCallback(mPort, mReadCallbackId);
+    HALSIM_CancelSPIWriteCallback(mPort, mWriteCallbackId);
 }
 
 void SpiNavxSimulator::HandleWrite(const uint8_t* buffer, uint32_t count)

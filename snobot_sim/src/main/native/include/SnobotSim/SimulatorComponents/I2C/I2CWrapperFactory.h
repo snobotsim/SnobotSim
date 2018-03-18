@@ -16,8 +16,8 @@
 class EXPORT_ I2CWrapperFactory {
 
 private:
-	I2CWrapperFactory();
-	virtual ~I2CWrapperFactory();
+    I2CWrapperFactory();
+    virtual ~I2CWrapperFactory();
 
 public:
     static const std::string I2C_ACCELEROMETER_NAME;

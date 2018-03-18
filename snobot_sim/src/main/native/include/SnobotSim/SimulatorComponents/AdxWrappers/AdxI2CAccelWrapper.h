@@ -16,8 +16,8 @@
 class AdxI2CAccelWrapper : public II2CWrapper, public BaseAdxAccelWrapper
 {
 public:
-	AdxI2CAccelWrapper(int aPort);
-	virtual ~AdxI2CAccelWrapper();
+    AdxI2CAccelWrapper(int aPort);
+    virtual ~AdxI2CAccelWrapper();
 };
 
 #endif /* ADXI2CACCELWRAPPER_H_ */

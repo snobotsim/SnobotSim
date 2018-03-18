@@ -126,7 +126,7 @@ static CppWrapper_${robotName}* wrapper = NULL;
 JNIEXPORT void JNICALL Java_com_snobot_simulator_cpp_1wrapper_${robotName}_${robotName}SimulatorJni_createRobot
 (JNIEnv *, jclass)
 {
-	wrapper = new CppWrapper_${robotName}();
+    wrapper = new CppWrapper_${robotName}();
 }
 
 JNIEXPORT void JNICALL Java_com_snobot_simulator_cpp_1wrapper_${robotName}_${robotName}SimulatorJni_startCompetition

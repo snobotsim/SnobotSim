@@ -14,8 +14,8 @@
 class I2CNavxWrapper : public II2CWrapper, public BaseNavxWrapper
 {
 public:
-	I2CNavxWrapper(int aPort);
-	virtual ~I2CNavxWrapper();
+    I2CNavxWrapper(int aPort);
+    virtual ~I2CNavxWrapper();
 };
 
 #endif /* I2CNAVXWRAPPER_H_ */

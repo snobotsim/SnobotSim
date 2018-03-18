@@ -30,13 +30,13 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_RegisterCallbacksJni_resetW
 
     if(!sINITIALIZED)
     {
-    	sINITIALIZED = true;
-    	SNOBOT_LOG(SnobotLogging::INFO, "Initializing the simulator");
+        sINITIALIZED = true;
+        SNOBOT_LOG(SnobotLogging::INFO, "Initializing the simulator");
 
-    	if(!HAL_Initialize(0, 0))
-    	{
-        	SNOBOT_LOG(SnobotLogging::CRITICAL, "Couldn't initialize!!!");
-    	}
+        if(!HAL_Initialize(0, 0))
+        {
+            SNOBOT_LOG(SnobotLogging::CRITICAL, "Couldn't initialize!!!");
+        }
     }
 
     hal::HandleBase::ResetGlobalHandles();

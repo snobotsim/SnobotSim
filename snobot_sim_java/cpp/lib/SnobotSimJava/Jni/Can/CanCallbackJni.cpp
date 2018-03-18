@@ -25,37 +25,37 @@ CanCallbackHelperContainer gCanCallbackContainer;
 
 void CtreCallback(const char* name, uint32_t messageId, uint8_t* buffer, const jmethodID& aMethodId)
 {
-	const jclass& aClazz = gCanCallbackContainer.mClazz;
+    const jclass& aClazz = gCanCallbackContainer.mClazz;
 
-	JavaVMAttachArgs args = {JNI_VERSION_1_2, 0, 0};
-	JNIEnv* aEnv;
-	gJvm->AttachCurrentThread((void**) &aEnv, &args);
+    JavaVMAttachArgs args = {JNI_VERSION_1_2, 0, 0};
+    JNIEnv* aEnv;
+    gJvm->AttachCurrentThread((void**) &aEnv, &args);
 
-	if(aEnv == NULL || aClazz == NULL || aMethodId == NULL)
-	{
-		SNOBOT_LOG(SnobotLogging::CRITICAL, "JNI Components not setup yet " << aEnv << ", " << aClazz << ", " << aMethodId);
-		return;
-	}
+    if(aEnv == NULL || aClazz == NULL || aMethodId == NULL)
+    {
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "JNI Components not setup yet " << aEnv << ", " << aClazz << ", " << aMethodId);
+        return;
+    }
 
-	jstring nameString = MakeJString(aEnv, name);
+    jstring nameString = MakeJString(aEnv, name);
 
-	jobject dataBuffer = aEnv->NewDirectByteBuffer(const_cast<uint8_t*>(buffer), (uint32_t) 100);
-	aEnv->CallStaticVoidMethod(aClazz, aMethodId, nameString, messageId, dataBuffer);
+    jobject dataBuffer = aEnv->NewDirectByteBuffer(const_cast<uint8_t*>(buffer), (uint32_t) 100);
+    aEnv->CallStaticVoidMethod(aClazz, aMethodId, nameString, messageId, dataBuffer);
 
-	if (aEnv->ExceptionCheck())
-	{
-		aEnv->ExceptionDescribe();
-	}
+    if (aEnv->ExceptionCheck())
+    {
+        aEnv->ExceptionDescribe();
+    }
 }
 
 void CtreMotorControllerCallback(const char* name, uint32_t messageId, uint8_t* buffer)
 {
-	CtreCallback(name, messageId, buffer, gCanCallbackContainer.mMotorControllerCallback);
+    CtreCallback(name, messageId, buffer, gCanCallbackContainer.mMotorControllerCallback);
 }
 
 void CtrePigeonCallback(const char* name, uint32_t messageId, uint8_t* buffer)
 {
-	CtreCallback(name, messageId, buffer, gCanCallbackContainer.mPigeonCallback);
+    CtreCallback(name, messageId, buffer, gCanCallbackContainer.mPigeonCallback);
 }
 
 

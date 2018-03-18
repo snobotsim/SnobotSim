@@ -15,49 +15,49 @@
 
 class BaseNavxWrapper {
 public:
-	BaseNavxWrapper(int aBasePort, const std::shared_ptr<NavxSimulator>& aNavx);
-	virtual ~BaseNavxWrapper();
+    BaseNavxWrapper(int aBasePort, const std::shared_ptr<NavxSimulator>& aNavx);
+    virtual ~BaseNavxWrapper();
 
-	class AccelerometerWrapper : public IAccelerometerWrapper
-	{
-	public:
+    class AccelerometerWrapper : public IAccelerometerWrapper
+    {
+    public:
 
-		enum AxisType
-		{
-			AXIS_X,
-			AXIS_Y,
-			AXIS_Z
-		};
+        enum AxisType
+        {
+            AXIS_X,
+            AXIS_Y,
+            AXIS_Z
+        };
 
-		AccelerometerWrapper(AxisType aAxisType, const std::shared_ptr<NavxSimulator>& aNavx);
+        AccelerometerWrapper(AxisType aAxisType, const std::shared_ptr<NavxSimulator>& aNavx);
 
-	    void SetAcceleration(double aAcceleration) override;
+        void SetAcceleration(double aAcceleration) override;
 
-	    double GetAcceleration() override;
+        double GetAcceleration() override;
 
-	    AxisType mAxisType;
-	    std::shared_ptr<NavxSimulator> mNavx;
-	};
-	class GyroWrapper : public IGyroWrapper
-	{
-	public:
+        AxisType mAxisType;
+        std::shared_ptr<NavxSimulator> mNavx;
+    };
+    class GyroWrapper : public IGyroWrapper
+    {
+    public:
 
-		enum AxisType
-		{
-			AXIS_YAW,
-			AXIS_PITCH,
-			AXIS_ROLL
-		};
+        enum AxisType
+        {
+            AXIS_YAW,
+            AXIS_PITCH,
+            AXIS_ROLL
+        };
 
-		GyroWrapper(AxisType aAxisType, const std::shared_ptr<NavxSimulator>& aAccel);
+        GyroWrapper(AxisType aAxisType, const std::shared_ptr<NavxSimulator>& aAccel);
 
-	    void SetAngle(double aAngle) override;
+        void SetAngle(double aAngle) override;
 
-	    double GetAngle() override;
+        double GetAngle() override;
 
-	    AxisType mAxisType;
-	    std::shared_ptr<NavxSimulator> mNavx;
-	};
+        AxisType mAxisType;
+        std::shared_ptr<NavxSimulator> mNavx;
+    };
 
     std::shared_ptr<AccelerometerWrapper> mXWrapper;
     std::shared_ptr<AccelerometerWrapper> mYWrapper;

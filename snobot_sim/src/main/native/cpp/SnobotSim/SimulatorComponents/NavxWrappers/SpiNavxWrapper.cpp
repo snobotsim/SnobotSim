@@ -9,7 +9,7 @@
 #include "NavxSim/SpiNavxSimulator.h"
 
 SpiNavxWrapper::SpiNavxWrapper(int aPort) :
-	BaseNavxWrapper(200 + aPort * 3, std::shared_ptr<NavxSimulator>(new SpiNavxSimulator(aPort)))
+    BaseNavxWrapper(200 + aPort * 3, std::shared_ptr<NavxSimulator>(new SpiNavxSimulator(aPort)))
 {
 
 }

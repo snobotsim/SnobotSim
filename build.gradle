@@ -65,7 +65,11 @@ ext.getNavxVersion = {
 }
 
 ext.getJaci3rdPartyMirror = {
-	return 'https://raw.githubusercontent.com/Open-RIO/Maven-Mirror/master/m2'
+    return 'https://raw.githubusercontent.com/Open-RIO/Maven-Mirror/master/m2'
+}
+
+ext.getJaci3rdPartyMirror = {
+    return 'https://raw.githubusercontent.com/Open-RIO/Maven-Mirror/master/m2'
 }
 
 /////////////////////////////////////////

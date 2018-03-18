@@ -14,8 +14,8 @@
 class AdxSpi362AccelWrapper : public ISpiWrapper, public BaseAdxAccelWrapper
 {
 public:
-	AdxSpi362AccelWrapper(int aPort);
-	virtual ~AdxSpi362AccelWrapper();
+    AdxSpi362AccelWrapper(int aPort);
+    virtual ~AdxSpi362AccelWrapper();
 };
 
 #endif /* ADXSPI363ACCELWRAPPER_H_ */

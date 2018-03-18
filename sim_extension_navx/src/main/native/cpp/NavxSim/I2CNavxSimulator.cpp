@@ -28,8 +28,8 @@ I2CNavxSimulator::I2CNavxSimulator(int port) : mPort(port)
 
 I2CNavxSimulator::~I2CNavxSimulator()
 {
-	HALSIM_CancelI2CReadCallback(mPort, mReadCallbackId);
-	HALSIM_CancelI2CWriteCallback(mPort, mWriteCallbackId);
+    HALSIM_CancelI2CReadCallback(mPort, mReadCallbackId);
+    HALSIM_CancelI2CWriteCallback(mPort, mWriteCallbackId);
 }
 
 void I2CNavxSimulator::HandleWrite(const uint8_t* buffer, uint32_t count)
