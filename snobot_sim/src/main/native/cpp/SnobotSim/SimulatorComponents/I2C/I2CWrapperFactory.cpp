@@ -18,12 +18,10 @@ I2CWrapperFactory I2CWrapperFactory::sINSTANCE;
 
 I2CWrapperFactory::I2CWrapperFactory()
 {
-
 }
 
 I2CWrapperFactory::~I2CWrapperFactory()
 {
-
 }
 
 I2CWrapperFactory& I2CWrapperFactory::Get()
@@ -45,7 +43,7 @@ void I2CWrapperFactory::ResetDefaults()
 std::shared_ptr<II2CWrapper> I2CWrapperFactory::GetI2CWrapper(int aPort)
 {
     std::shared_ptr<II2CWrapper> i2cWrapper = GetSensorActuatorHelper::GetII2CWrapper(aPort);
-    if(i2cWrapper)
+    if (i2cWrapper)
     {
         // Already exists, and there is no auto-discovery so just return that, even if it is null
     }
@@ -53,7 +51,7 @@ std::shared_ptr<II2CWrapper> I2CWrapperFactory::GetI2CWrapper(int aPort)
     else
     {
         std::map<int, std::string>::iterator iter = mDefaultsMap.find(aPort);
-        if(iter != mDefaultsMap.end())
+        if (iter != mDefaultsMap.end())
         {
             SNOBOT_LOG(SnobotLogging::INFO, "Using specified default '" << iter->second << "' on port " << aPort);
             i2cWrapper = CreateWrapper(aPort, iter->second);
@@ -70,12 +68,12 @@ std::shared_ptr<II2CWrapper> I2CWrapperFactory::GetI2CWrapper(int aPort)
 
 std::shared_ptr<II2CWrapper> I2CWrapperFactory::CreateWrapper(int aPort, const std::string& aType)
 {
-    if(aType == NAVX)
+    if (aType == NAVX)
     {
         return std::shared_ptr<II2CWrapper>(new I2CNavxWrapper(aPort));
     }
 
-    if(aType == I2C_ACCELEROMETER_NAME)
+    if (aType == I2C_ACCELEROMETER_NAME)
     {
         return std::shared_ptr<II2CWrapper>(new AdxI2CAccelWrapper(aPort));
     }

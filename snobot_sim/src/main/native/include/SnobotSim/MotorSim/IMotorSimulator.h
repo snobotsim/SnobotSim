@@ -15,7 +15,6 @@
 class EXPORT_ IMotorSimulator
 {
 public:
-
     virtual ~IMotorSimulator()
     {
     }
@@ -41,16 +40,12 @@ public:
     virtual void Update(double aCycleTime) = 0;
 };
 
-
-
-class NullMotorSimulator: public IMotorSimulator
+class NullMotorSimulator : public IMotorSimulator
 {
 public:
-
     NullMotorSimulator() :
             mSpeed(0)
     {
-
     }
 
     virtual ~NullMotorSimulator()
@@ -68,49 +63,45 @@ public:
         mSpeed = aSpeed;
     }
 
-    virtual double GetVoltagePercentage() override
+    double GetVoltagePercentage() override
     {
         return mSpeed;
     }
 
-    virtual double GetAcceleration() override
+    double GetAcceleration() override
     {
         return 0;
     }
 
-    virtual double GetVelocity() override
+    double GetVelocity() override
     {
         return 0;
     }
 
-    virtual double GetPosition() override
+    double GetPosition() override
     {
         return 0;
     }
 
-    virtual double GetCurrent() override
+    double GetCurrent() override
     {
         return 0;
     }
 
-    virtual void Reset() override
+    void Reset() override
     {
-
     }
 
-    virtual void Reset(double aPosition, double aVelocity, double aCurrent) override
+    void Reset(double aPosition, double aVelocity, double aCurrent) override
     {
-
     }
 
-    virtual void Update(double aCycleTime) override
+    void Update(double aCycleTime) override
     {
-
     }
 
 protected:
-
     double mSpeed;
 };
 
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MOTORSIM_IMOTORSIMULATOR_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MOTORSIM_IMOTORSIMULATOR_H_

@@ -10,12 +10,12 @@
 #include "SnobotSim/SensorActuatorRegistry.h"
 
 CtrePigeonImuSimulator::CtrePigeonImuSimulator(int aPort) :
-    mXWrapper(new PigeonAccelWrapper),
-    mYWrapper(new PigeonAccelWrapper),
-    mZWrapper(new PigeonAccelWrapper),
-    mYawWrapper(new PigeonGyroWrapper),
-    mPitchWrapper(new PigeonGyroWrapper),
-    mRollWrapper(new PigeonGyroWrapper)
+        mXWrapper(new PigeonAccelWrapper),
+        mYWrapper(new PigeonAccelWrapper),
+        mZWrapper(new PigeonAccelWrapper),
+        mYawWrapper(new PigeonGyroWrapper),
+        mPitchWrapper(new PigeonGyroWrapper),
+        mRollWrapper(new PigeonGyroWrapper)
 {
     SensorActuatorRegistry::Get().Register(aPort + 0, mXWrapper);
     SensorActuatorRegistry::Get().Register(aPort + 1, mYWrapper);
@@ -28,9 +28,7 @@ CtrePigeonImuSimulator::CtrePigeonImuSimulator(int aPort) :
 
 CtrePigeonImuSimulator::~CtrePigeonImuSimulator()
 {
-
 }
-
 
 std::shared_ptr<IAccelerometerWrapper> CtrePigeonImuSimulator::GetXWrapper()
 {
@@ -62,12 +60,10 @@ std::shared_ptr<IGyroWrapper> CtrePigeonImuSimulator::GetRollWrapper()
     return mRollWrapper;
 }
 
-
 CtrePigeonImuSimulator::PigeonAccelWrapper::PigeonAccelWrapper() :
-    IAccelerometerWrapper(""),
-    mAcceleration(0)
+        IAccelerometerWrapper(""),
+        mAcceleration(0)
 {
-
 }
 
 void CtrePigeonImuSimulator::PigeonAccelWrapper::SetAcceleration(double aAcceleration)
@@ -80,13 +76,10 @@ double CtrePigeonImuSimulator::PigeonAccelWrapper::GetAcceleration()
     return mAcceleration;
 }
 
-
-
 CtrePigeonImuSimulator::PigeonGyroWrapper::PigeonGyroWrapper() :
         IGyroWrapper(""),
         mAngle(0)
 {
-
 }
 
 void CtrePigeonImuSimulator::PigeonGyroWrapper::SetAngle(double aAngle)

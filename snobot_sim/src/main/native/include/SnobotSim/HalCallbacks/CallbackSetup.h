@@ -2,13 +2,12 @@
 #ifndef SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_HALCALLBACKS_CALLBACKSETUP_H_
 #define SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_HALCALLBACKS_CALLBACKSETUP_H_
 
-
 #include "SnobotSim/ExportHelper.h"
 
 namespace SnobotSim
 {
-    EXPORT_ void InitializeSnobotCallbacks();
-    EXPORT_ void ResetSnobotCallbacks();
-}  // namespace SnobotSim
+EXPORT_ void InitializeSnobotCallbacks();
+EXPORT_ void ResetSnobotCallbacks();
+} // namespace SnobotSim
 
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_HALCALLBACKS_CALLBACKSETUP_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_HALCALLBACKS_CALLBACKSETUP_H_

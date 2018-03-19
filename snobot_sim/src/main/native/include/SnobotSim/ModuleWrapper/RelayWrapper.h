@@ -10,10 +10,10 @@
 
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 
-class EXPORT_ RelayWrapper: public AModuleWrapper
+class EXPORT_ RelayWrapper : public AModuleWrapper
 {
 public:
-    RelayWrapper(int aPort);
+    explicit RelayWrapper(int aPort);
     virtual ~RelayWrapper();
 
     void SetRelayForwards(bool aOn);
@@ -27,4 +27,4 @@ protected:
     bool mReverse;
 };
 
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MODULEWRAPPER_RELAYWRAPPER_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MODULEWRAPPER_RELAYWRAPPER_H_

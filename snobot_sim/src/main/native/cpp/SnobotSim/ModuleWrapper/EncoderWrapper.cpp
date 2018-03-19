@@ -13,7 +13,6 @@
 EncoderWrapper::EncoderWrapper(int aPortA, int aPortB) :
         EncoderWrapper(aPortA, "Encoder " + std::to_string(UnwrapPort(aPortA)))
 {
-
 }
 
 EncoderWrapper::EncoderWrapper(int aHandle, const std::string& aName) :
@@ -22,14 +21,11 @@ EncoderWrapper::EncoderWrapper(int aHandle, const std::string& aName) :
         mDistancePerTick(1),
         mHandle(aHandle)
 {
-
 }
 
 EncoderWrapper::~EncoderWrapper()
 {
-
 }
-
 
 void EncoderWrapper::Reset()
 {
@@ -41,7 +37,7 @@ void EncoderWrapper::Reset()
 
 int EncoderWrapper::GetRaw()
 {
-    return (int) (GetDistance() / (mEncodingFactor * mDistancePerTick));
+    return static_cast<int>(GetDistance() / (mEncodingFactor * mDistancePerTick));
 }
 
 double EncoderWrapper::GetDistance()
@@ -56,7 +52,6 @@ double EncoderWrapper::GetDistance()
     }
 }
 
-
 double EncoderWrapper::GetPosition()
 {
     return GetDistance();
@@ -64,9 +59,8 @@ double EncoderWrapper::GetPosition()
 
 void EncoderWrapper::SetPosition(double aPosition)
 {
-    HALSIM_SetEncoderCount(mHandle, (int) aPosition);
+    HALSIM_SetEncoderCount(mHandle, static_cast<int>(aPosition));
 }
-
 
 double EncoderWrapper::GetVelocity()
 {
@@ -94,7 +88,6 @@ void EncoderWrapper::SetSpeedController(const std::shared_ptr<SpeedControllerWra
     mMotorWrapper = aMotorWrapper;
     mMotorWrapper->SetFeedbackSensor(shared_from_this());
 }
-
 
 const std::shared_ptr<SpeedControllerWrapper>& EncoderWrapper::GetSpeedController()
 {

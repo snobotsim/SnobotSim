@@ -1,6 +1,7 @@
 
-#include <assert.h>
 #include <jni.h>
+
+#include <cassert>
 
 #include "HAL/HAL.h"
 #include "SnobotSim/HalCallbacks/CallbackSetup.h"

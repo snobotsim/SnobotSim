@@ -7,41 +7,38 @@
 
 #include "SnobotSim/MotorSim/RotationalLoadDcMotorSim.h"
 
-#include <math.h>
+#include <cmath>
 
 const double RotationalLoadDcMotorSim::sGRAVITY = 9.8;
 
 RotationalLoadDcMotorSim::RotationalLoadDcMotorSim(const DcMotorModel& aMotorModel, const std::shared_ptr<SpeedControllerWrapper>& aSpeedController,
         double aArmCenterOfMass, double aArmMass, double aConstantAssistTorque, double aOverCenterAssistTorque) :
-    BaseDcMotorSimulator("Rotational Load", aMotorModel),
-    mSpeedController(aSpeedController),
-    mArmInertia(aArmMass * aArmCenterOfMass * aArmCenterOfMass),
-    mGravityBasedTorqueFactor(aArmMass * aArmCenterOfMass * sGRAVITY),
-    mConstantAssistTorque(aConstantAssistTorque),
-    mOverCenterAssistTorque(aOverCenterAssistTorque),
-    mArmCenterOfMass(aArmCenterOfMass),
-    mArmMass(aArmMass)
+        BaseDcMotorSimulator("Rotational Load", aMotorModel),
+        mSpeedController(aSpeedController),
+        mArmInertia(aArmMass * aArmCenterOfMass * aArmCenterOfMass),
+        mGravityBasedTorqueFactor(aArmMass * aArmCenterOfMass * sGRAVITY),
+        mConstantAssistTorque(aConstantAssistTorque),
+        mOverCenterAssistTorque(aOverCenterAssistTorque),
+        mArmCenterOfMass(aArmCenterOfMass),
+        mArmMass(aArmMass)
 {
-
 }
 
 RotationalLoadDcMotorSim::~RotationalLoadDcMotorSim()
 {
-
 }
 
 void RotationalLoadDcMotorSim::Update(double cycleTime)
 {
     double position = mSpeedController->GetPosition();
-    double gravityTorque = mGravityBasedTorqueFactor * sin(position);
+    double gravityTorque = mGravityBasedTorqueFactor * std::sin(position);
     gravityTorque += mConstantAssistTorque;
-    gravityTorque += mOverCenterAssistTorque * sin(position);
+    gravityTorque += mOverCenterAssistTorque * std::sin(position);
 
     double inVolts = mVoltagePercentage * 12;
 
     mMotorModel.Step(inVolts, mArmInertia, gravityTorque, cycleTime);
 }
-
 
 double RotationalLoadDcMotorSim::GetArmCenterOfMass()
 {

@@ -15,12 +15,10 @@ SimpleMotorSimulator::SimpleMotorSimulator(double aMaxSpeed) :
         mVelocity(0),
         mPosition(0)
 {
-
 }
 
 SimpleMotorSimulator::~SimpleMotorSimulator()
 {
-
 }
 
 const std::string& SimpleMotorSimulator::GetSimulatorType()

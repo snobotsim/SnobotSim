@@ -11,74 +11,70 @@
 #define _USE_MATH_DEFINES
 #endif
 
+#include <cmath>
 #include <math.h>
 
-#include <cmath>
-
 DcMotorModelConfig::DcMotorModelConfig(
-            const FactoryParams& aFactoryParams,
-            double aNominalVoltage,
-            double aFreeSpeedRpm,
-            double aFreeCurrent,
-            double aStallTorque,
-            double aStallCurrent,
-            double aMotorInertia,
-            bool aHasBrake,
-            bool aInverted):
+        const FactoryParams& aFactoryParams,
+        double aNominalVoltage,
+        double aFreeSpeedRpm,
+        double aFreeCurrent,
+        double aStallTorque,
+        double aStallCurrent,
+        double aMotorInertia,
+        bool aHasBrake,
+        bool aInverted) :
 
-            DcMotorModelConfig(
-                    aFactoryParams,
-                    aNominalVoltage,
-                    aFreeSpeedRpm,
-                    aFreeCurrent,
-                    aStallTorque,
-                    aStallCurrent,
-                    aMotorInertia,
-                    aHasBrake,
-                    aInverted,
-                    aStallTorque / aStallCurrent,
-                    (aFreeSpeedRpm / aNominalVoltage) * (M_PI * 2.0) / 60.0,
-                    aNominalVoltage / aStallCurrent)
+        DcMotorModelConfig(
+                aFactoryParams,
+                aNominalVoltage,
+                aFreeSpeedRpm,
+                aFreeCurrent,
+                aStallTorque,
+                aStallCurrent,
+                aMotorInertia,
+                aHasBrake,
+                aInverted,
+                aStallTorque / aStallCurrent,
+                (aFreeSpeedRpm / aNominalVoltage) * (M_PI * 2.0) / 60.0,
+                aNominalVoltage / aStallCurrent)
 {
-
 }
 
-
 DcMotorModelConfig::DcMotorModelConfig(
-            const FactoryParams& aFactoryParams,
-            double aNominalVoltage,
-            double aFreeSpeedRpm,
-            double aFreeCurrent,
-            double aStallTorque,
-            double aStallCurrent,
-            double aMotorInertia,
+        const FactoryParams& aFactoryParams,
+        double aNominalVoltage,
+        double aFreeSpeedRpm,
+        double aFreeCurrent,
+        double aStallTorque,
+        double aStallCurrent,
+        double aMotorInertia,
 
-            bool aHasBrake,
-            bool aInverted,
+        bool aHasBrake,
+        bool aInverted,
 
-            double aKT,
-            double aKV,
-            double aResistance):
+        double aKT,
+        double aKV,
+        double aResistance) :
 
-    mFactoryParams(aFactoryParams),
+        mFactoryParams(aFactoryParams),
 
-    NOMINAL_VOLTAGE(aNominalVoltage),
-    FREE_SPEED_RPM(aFreeSpeedRpm),
-    FREE_CURRENT(aFreeCurrent),
-    STALL_TORQUE(aStallTorque),
-    STALL_CURRENT(aStallCurrent),
+        NOMINAL_VOLTAGE(aNominalVoltage),
+        FREE_SPEED_RPM(aFreeSpeedRpm),
+        FREE_CURRENT(aFreeCurrent),
+        STALL_TORQUE(aStallTorque),
+        STALL_CURRENT(aStallCurrent),
 
-    mKT(aKT),
-    mKV(aKV),
-    mResistance(aResistance),
-    mMotorInertia(aMotorInertia),
+        mKT(aKT),
+        mKV(aKV),
+        mResistance(aResistance),
+        mMotorInertia(aMotorInertia),
 
-    mInverted(aInverted),
-    mHasBrake(aHasBrake)
+        mInverted(aInverted),
+        mHasBrake(aHasBrake)
 {
-
 }
 
-DcMotorModelConfig::~DcMotorModelConfig() {
-
+DcMotorModelConfig::~DcMotorModelConfig()
+{
 }

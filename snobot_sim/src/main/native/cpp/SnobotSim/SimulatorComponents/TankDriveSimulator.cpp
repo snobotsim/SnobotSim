@@ -13,30 +13,29 @@ TankDriveSimulator::TankDriveSimulator(
         const std::shared_ptr<EncoderWrapper>& aLeftEncoder,
         const std::shared_ptr<EncoderWrapper>& aRightEncoder,
         const std::shared_ptr<IGyroWrapper>& aGyroWrapper,
-        double aTurnKp):
+        double aTurnKp) :
 
-    mLeftEncoder(aLeftEncoder),
-    mRightEncoder(aRightEncoder),
-    mGyroWrapper(aGyroWrapper),
-    mTurnKp(aTurnKp)
+        mLeftEncoder(aLeftEncoder),
+        mRightEncoder(aRightEncoder),
+        mGyroWrapper(aGyroWrapper),
+        mTurnKp(aTurnKp)
 {
     mIsSetup = mLeftEncoder && mRightEncoder && mGyroWrapper;
 
-    if(!mIsSetup)
+    if (!mIsSetup)
     {
         SNOBOT_LOG(SnobotLogging::CRITICAL, "Tank drive simulator is not set up! Will not update gyro!");
     }
 }
 
-TankDriveSimulator::~TankDriveSimulator() {
-
+TankDriveSimulator::~TankDriveSimulator()
+{
 }
 
 void TankDriveSimulator::Update()
 {
     if (mIsSetup)
     {
-
         double rightDist = mRightEncoder->GetDistance();
         double leftDist = mLeftEncoder->GetDistance();
 

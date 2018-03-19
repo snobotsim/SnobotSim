@@ -1,6 +1,7 @@
 
-#include <assert.h>
 #include <jni.h>
+
+#include <cassert>
 
 #include "SnobotSim/GetSensorActuatorHelper.h"
 #include "SnobotSim/ModuleWrapper/RelayWrapper.h"

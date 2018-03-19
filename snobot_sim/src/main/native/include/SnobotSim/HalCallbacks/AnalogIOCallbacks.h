@@ -6,8 +6,8 @@
 
 namespace SnobotSim
 {
-    EXPORT_ void InitializeAnalogIOCallbacks();
-    EXPORT_ void ResetAnalogIOCallbacks();
-}  // namespace SnobotSim
+EXPORT_ void InitializeAnalogIOCallbacks();
+EXPORT_ void ResetAnalogIOCallbacks();
+} // namespace SnobotSim
 
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_HALCALLBACKS_ANALOGIOCALLBACKS_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_HALCALLBACKS_ANALOGIOCALLBACKS_H_

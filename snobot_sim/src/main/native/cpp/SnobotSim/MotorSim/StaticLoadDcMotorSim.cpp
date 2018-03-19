@@ -8,14 +8,13 @@
 #include "SnobotSim/MotorSim/StaticLoadDcMotorSim.h"
 
 StaticLoadDcMotorSim::StaticLoadDcMotorSim(const DcMotorModel& aMotorModel, double aLoad, double aConversionFactor) :
-        BaseDcMotorSimulator("Static Load", aMotorModel, aConversionFactor), mLoad(aLoad)
+        BaseDcMotorSimulator("Static Load", aMotorModel, aConversionFactor),
+        mLoad(aLoad)
 {
-
 }
 
 StaticLoadDcMotorSim::~StaticLoadDcMotorSim()
 {
-
 }
 
 double StaticLoadDcMotorSim::GetLoad()

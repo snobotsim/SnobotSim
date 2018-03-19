@@ -17,7 +17,6 @@
 class CanManager
 {
 public:
-
     CanManager();
     virtual ~CanManager();
 
@@ -28,7 +27,6 @@ public:
     void HandleCloseStream(uint32_t aSessionHandle);
 
 protected:
-
     typedef std::map<uint32_t, std::shared_ptr<ICanDeviceManager>> IdToDeviceManagerMap_t;
     IdToDeviceManagerMap_t mMessageIdToDeviceManagerMap;
     IdToDeviceManagerMap_t mStreamIdToDeviceManagerMap;
@@ -43,4 +41,4 @@ protected:
     static int sSTREAM_CTR;
 };
 
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_CTRE_CANMANAGER_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_CTRE_CANMANAGER_H_

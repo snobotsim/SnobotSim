@@ -184,9 +184,11 @@ protected:
     __try { \
       throw 0; \
     } __except( ( (pExp = GetExceptionInformation()) ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_EXECUTE_HANDLER)) {} \
-    if (pExp != NULL) \
-      memcpy(&c, pExp->ContextRecord, sizeof(CONTEXT)); \
-      c.ContextFlags = contextFlags; \
+    if (pExp != NULL)
+    {
+      memcpy(&c, pExp->ContextRecord, sizeof(CONTEXT));
+      c.ContextFlags = contextFlags;
+    }
   } while(0);
 #else
 // The following should be enough for walking the callstack...

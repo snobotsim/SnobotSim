@@ -1,9 +1,14 @@
 
+
+#ifndef SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SNOBOTSIMHALVERSION_H_
+#define SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SNOBOTSIMHALVERSION_H_
+
 #include "SnobotSim/ExportHelper.h"
 
 namespace SnobotSim
 {
-    EXPORT_ const char* GetSnobotSimVersion();
+EXPORT_ const char* GetSnobotSimVersion();
 
+} // namespace SnobotSim
 
-}  // namespace SnobotSim
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SNOBOTSIMHALVERSION_H_

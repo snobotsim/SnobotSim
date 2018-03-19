@@ -16,8 +16,8 @@
 class AdxI2CAccelWrapper : public II2CWrapper, public BaseAdxAccelWrapper
 {
 public:
-    AdxI2CAccelWrapper(int aPort);
+    explicit AdxI2CAccelWrapper(int aPort);
     virtual ~AdxI2CAccelWrapper();
 };
 
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_ADXWRAPPERS_ADXI2CACCELWRAPPER_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_ADXWRAPPERS_ADXI2CACCELWRAPPER_H_

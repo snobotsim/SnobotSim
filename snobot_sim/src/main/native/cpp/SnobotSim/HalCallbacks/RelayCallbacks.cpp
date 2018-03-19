@@ -10,26 +10,25 @@
 void RelayCallback(const char* name, void* param, const struct HAL_Value* value)
 {
     std::string nameStr = name;
-    int port = *((int*) param);
+    int port = *reinterpret_cast<int*>(param);
 
-    if(nameStr == "InitializedForward")
+    if (nameStr == "InitializedForward")
     {
         SensorActuatorRegistry::Get().Register(port,
-                std::shared_ptr < RelayWrapper
-                        > (new RelayWrapper(port)));
+                std::shared_ptr<RelayWrapper>(new RelayWrapper(port)));
     }
-    else if(nameStr == "InitializedReverse")
+    else if (nameStr == "InitializedReverse")
     {
-//        SensorActuatorRegistry::Get().Register(port,
-//                std::shared_ptr < RelayWrapper
-//                        > (new RelayWrapper(port)));
+        //        SensorActuatorRegistry::Get().Register(port,
+        //                std::shared_ptr < RelayWrapper
+        //                        > (new RelayWrapper(port)));
     }
-    else if(nameStr == "Forward")
+    else if (nameStr == "Forward")
     {
         bool on = value->data.v_boolean;
         SensorActuatorRegistry::Get().GetRelayWrapper(port)->SetRelayForwards(on);
     }
-    else if(nameStr == "Reverse")
+    else if (nameStr == "Reverse")
     {
         bool on = value->data.v_boolean;
         SensorActuatorRegistry::Get().GetRelayWrapper(port)->SetRelayReverse(on);
@@ -44,7 +43,7 @@ int gRelayArrayIndices[20];
 
 void SnobotSim::InitializeRelayCallbacks()
 {
-    for(int i = 0; i < HAL_GetNumRelayHeaders(); ++i)
+    for (int i = 0; i < HAL_GetNumRelayHeaders(); ++i)
     {
         gRelayArrayIndices[i] = i;
         HALSIM_RegisterRelayInitializedForwardCallback(i, &RelayCallback, &gRelayArrayIndices[i], false);
@@ -56,7 +55,7 @@ void SnobotSim::InitializeRelayCallbacks()
 
 void SnobotSim::ResetRelayCallbacks()
 {
-    for(int i = 0; i < HAL_GetNumRelayHeaders(); ++i)
+    for (int i = 0; i < HAL_GetNumRelayHeaders(); ++i)
     {
         HALSIM_ResetRelayData(i);
     }

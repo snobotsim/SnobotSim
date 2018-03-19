@@ -1,6 +1,7 @@
 
-#include <assert.h>
 #include <jni.h>
+
+#include <cassert>
 
 #include "MockData/DIOData.h"
 #include "SnobotSim/GetSensorActuatorHelper.h"

@@ -24,7 +24,6 @@ private:
     static RobotStateSingleton sINSTANCE;
 
 public:
-
     static RobotStateSingleton& Get();
 
     void Reset();
@@ -36,8 +35,7 @@ public:
     void WaitForNextControlLoop(double aWaitTime);
 
 protected:
-
     std::chrono::time_point<std::chrono::system_clock> mTimeEnabled;
 };
 
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_ROBOTSTATESINGLETON_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_ROBOTSTATESINGLETON_H_

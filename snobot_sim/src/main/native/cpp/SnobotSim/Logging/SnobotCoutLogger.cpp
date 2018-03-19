@@ -18,7 +18,7 @@ SnobotCoutLogger::SnobotCoutLogger()
     std::string thisFile = FixWindowsSlashes(__FILE__);
     int filenamePos = thisFile.find("snobot_sim/cpp/lib/SnobotSim/Logging/SnobotCoutLogger.cpp");
 
-    if(filenamePos != -1)
+    if (filenamePos != -1)
     {
         mDirectorySubstring = thisFile.substr(0, filenamePos);
     }
@@ -26,9 +26,7 @@ SnobotCoutLogger::SnobotCoutLogger()
 
 SnobotCoutLogger::~SnobotCoutLogger()
 {
-
 }
-
 
 std::string SnobotCoutLogger::FixWindowsSlashes(const std::string& aInput)
 {
@@ -37,9 +35,9 @@ std::string SnobotCoutLogger::FixWindowsSlashes(const std::string& aInput)
     // Stupid windows
     // https://stackoverflow.com/questions/20406744/how-to-find-and-replace-all-occurrences-of-a-substring-in-a-string
     std::string::size_type n = 0;
-    while ((n = output.find("\\", n )) != std::string::npos )
+    while ((n = output.find("\\", n)) != std::string::npos)
     {
-        output.replace( n, 1, "/");
+        output.replace(n, 1, "/");
         n += 1;
     }
 
@@ -52,14 +50,14 @@ void SnobotCoutLogger::Log(
         const std::string& aFileName,
         const std::string& aMessage)
 {
-    if(aLogLevel < mLogLevel)
+    if (aLogLevel < mLogLevel)
     {
         return;
     }
 
     std::stringstream logLevelStr;
 
-    switch(aLogLevel)
+    switch (aLogLevel)
     {
     case DEBUG:
         logLevelStr << "Debug  ";
@@ -81,12 +79,12 @@ void SnobotCoutLogger::Log(
     std::string shortenedFileName = FixWindowsSlashes(aFileName);
 
     int filenamePos = shortenedFileName.find(mDirectorySubstring);
-    if(filenamePos != -1)
+    if (filenamePos != -1)
     {
         shortenedFileName = shortenedFileName.substr(mDirectorySubstring.size());
     }
 
-    if(aLogLevel <= INFO)
+    if (aLogLevel <= INFO)
     {
         std::cout << logLevelStr.str() << " " << shortenedFileName << ":" << aLineNumber << " - " << aMessage << std::endl;
     }

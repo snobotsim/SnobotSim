@@ -12,44 +12,44 @@
 #include "SnobotSim/StackHelper/StackWalker.h"
 namespace StackTraceHelper
 {
-    class MyStackWalker : public StackWalker
+class MyStackWalker : public StackWalker
+{
+public:
+    MyStackWalker() :
+            mIsCallstackEntry(false)
     {
-    public:
-        MyStackWalker() :
-            mIsCallstackEntry (false)
-        {
-        }
-        virtual void OnCallstackEntry(CallstackEntryType eType, CallstackEntry &entry)
-        {
-            mIsCallstackEntry = true;
-            StackWalker::OnCallstackEntry(eType, entry);
-            mIsCallstackEntry = false;
-        }
-      virtual void OnOutput(LPCSTR szText)
-      {
-          std::string message = szText;
-          mFullStream << message;
-          if(mIsCallstackEntry)//message.find("ERROR") == std::string::npos)
-          {
-              mFilteredStream << message;
-          }
-      }
-      std::stringstream mFullStream;
-      std::stringstream mFilteredStream;
-      bool mIsCallstackEntry;
-    };
-    void PrintStackTracker()
-    {
-        std::string fullDumpFilename = "callstack_dump.txt";
-        MyStackWalker sw;
-        sw.ShowCallstack();
-        std::ofstream fullDump(fullDumpFilename);
-        fullDump << sw.mFullStream.str() << std::endl;
-        SNOBOT_LOG(SnobotLogging::CRITICAL,
-                "\nDumping stack trace... Full windows trace can be seen at " << fullDumpFilename << ".\n\n" <<
-                sw.mFilteredStream.str())
     }
-    /*
+    virtual void OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)
+    {
+        mIsCallstackEntry = true;
+        StackWalker::OnCallstackEntry(eType, entry);
+        mIsCallstackEntry = false;
+    }
+    virtual void OnOutput(LPCSTR szText)
+    {
+        std::string message = szText;
+        mFullStream << message;
+        if (mIsCallstackEntry) // message.find("ERROR") == std::string::npos)
+        {
+            mFilteredStream << message;
+        }
+    }
+    std::stringstream mFullStream;
+    std::stringstream mFilteredStream;
+    bool mIsCallstackEntry;
+};
+void PrintStackTracker()
+{
+    std::string fullDumpFilename = "callstack_dump.txt";
+    MyStackWalker sw;
+    sw.ShowCallstack();
+    std::ofstream fullDump(fullDumpFilename);
+    fullDump << sw.mFullStream.str() << std::endl;
+    SNOBOT_LOG(SnobotLogging::CRITICAL,
+            "\nDumping stack trace... Full windows trace can be seen at " << fullDumpFilename << ".\n\n"
+                                                                          << sw.mFilteredStream.str())
+}
+/*
 struct module_data {
     std::string image_name;
     std::string module_name;
@@ -149,7 +149,7 @@ class symbol {
     static const int max_name_len = 1024;
 public:
     symbol(HANDLE process, DWORD64 address) : sym((sym_type *)::operator new(sizeof(*sym) + max_name_len)) {
-        memset(sym, '\0', sizeof(*sym) + max_name_len);
+        std::memset(sym, '\0', sizeof(*sym) + max_name_len);
         sym->SizeOfStruct = sizeof(*sym);
         sym->MaxNameLength = max_name_len;
         DWORD64 displacement;
@@ -160,7 +160,7 @@ public:
     std::string undecorated_name() {
         std::vector<char> und_name(max_name_len);
         UnDecorateSymbolName(sym->Name, &und_name[0], max_name_len, UNDNAME_COMPLETE);
-        return std::string(&und_name[0], strlen(&und_name[0]));
+        return std::string(&und_name[0], std::strlen(&und_name[0]));
     }
 };
 bool show_stack(std::ostream &os, HANDLE hThread, CONTEXT& c) {
@@ -223,13 +223,13 @@ void *load_modules_symbols(HANDLE process, DWORD pid) {
     return modules[0].base_address;
 }
 */
-}  // namespace StackTraceHelper
+} // namespace StackTraceHelper
 #else
 namespace StackTraceHelper
 {
-    void PrintStackTracker()
-    {
-        LOG_UNSUPPORTED();
-    }
-}  // namespace StackTraceHelper
+void PrintStackTracker()
+{
+    LOG_UNSUPPORTED();
+}
+} // namespace StackTraceHelper
 #endif

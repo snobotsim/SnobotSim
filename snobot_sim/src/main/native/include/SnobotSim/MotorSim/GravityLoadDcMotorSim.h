@@ -10,10 +10,9 @@
 
 #include "SnobotSim/MotorSim/BaseDcMotorSimulator.h"
 
-class EXPORT_ GravityLoadDcMotorSim: public BaseDcMotorSimulator
+class EXPORT_ GravityLoadDcMotorSim : public BaseDcMotorSimulator
 {
 public:
-
     GravityLoadDcMotorSim(const DcMotorModel& aMotorModel, double aLoad);
     virtual ~GravityLoadDcMotorSim();
 
@@ -27,4 +26,4 @@ protected:
     static const double sGRAVITY;
 };
 
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MOTORSIM_GRAVITYLOADDCMOTORSIM_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MOTORSIM_GRAVITYLOADDCMOTORSIM_H_

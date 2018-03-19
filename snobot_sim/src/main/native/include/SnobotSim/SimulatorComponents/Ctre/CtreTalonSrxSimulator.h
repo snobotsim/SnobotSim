@@ -13,7 +13,6 @@
 class CtreTalonSrxSimulator : public SpeedControllerWrapper
 {
 public:
-
     struct PIDFConstants
     {
         double mP;
@@ -23,19 +22,17 @@ public:
         double mIZone;
 
         PIDFConstants() :
-            mP(0),
-            mI(0),
-            mD(0),
-            mF(0),
-            mIZone(0)
+                mP(0),
+                mI(0),
+                mD(0),
+                mF(0),
+                mIZone(0)
         {
-
         }
     };
 
-    CtreTalonSrxSimulator(int aPort);
+    explicit CtreTalonSrxSimulator(int aPort);
     virtual ~CtreTalonSrxSimulator();
-
 
     void SetPGain(double aP);
     void SetIGain(double aI);
@@ -50,12 +47,14 @@ public:
     const PIDFConstants& GetPidConstants();
 
     // Overrides
-    virtual void Update(double aWaitTime) override;
+    void Update(double aWaitTime) override;
 
 protected:
     enum ControlType
     {
-        Raw, Position, Speed
+        Raw,
+        Position,
+        Speed
     };
 
     double CalculateFeedbackOutput(double aCurrent, double aGoal);
@@ -67,4 +66,4 @@ protected:
     double mLastError;
 };
 
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_CTRE_CTRETALONSRXSIMULATOR_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_CTRE_CTRETALONSRXSIMULATOR_H_

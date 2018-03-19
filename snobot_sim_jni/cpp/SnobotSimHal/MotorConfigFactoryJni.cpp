@@ -1,6 +1,7 @@
 
-#include <assert.h>
 #include <jni.h>
+
+#include <cassert>
 
 #include "ConversionUtils.h"
 #include "SnobotSim/MotorFactory/VexMotorFactory.h"

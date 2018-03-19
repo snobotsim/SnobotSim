@@ -14,22 +14,19 @@
 #include "SnobotSim/ModuleWrapper/AnalogSourceWrapper.h"
 #include "SnobotSim/SimulatorComponents/Gyro/IGyroWrapper.h"
 
-class EXPORT_ AnalogGyroWrapper: public IGyroWrapper
+class EXPORT_ AnalogGyroWrapper : public IGyroWrapper
 {
 public:
-    AnalogGyroWrapper(const std::shared_ptr<AnalogSourceWrapper>& aAnalogWrapper);
+    explicit AnalogGyroWrapper(const std::shared_ptr<AnalogSourceWrapper>& aAnalogWrapper);
     virtual ~AnalogGyroWrapper();
-
 
     void SetAngle(double aAngle) override;
 
     double GetAngle() override;
 
 protected:
-
     std::shared_ptr<AnalogSourceWrapper> mAnalogWrapper;
     double mAngle;
-
 };
 
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_GYRO_ANALOGGYROWRAPPER_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_GYRO_ANALOGGYROWRAPPER_H_

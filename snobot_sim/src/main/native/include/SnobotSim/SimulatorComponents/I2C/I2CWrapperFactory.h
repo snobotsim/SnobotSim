@@ -14,8 +14,8 @@
 
 #include "SnobotSim/SimulatorComponents/I2C/II2CWrapper.h"
 
-class EXPORT_ I2CWrapperFactory {
-
+class EXPORT_ I2CWrapperFactory
+{
 private:
     I2CWrapperFactory();
     virtual ~I2CWrapperFactory();
@@ -32,7 +32,6 @@ public:
     void ResetDefaults();
 
 protected:
-
     std::shared_ptr<II2CWrapper> CreateWrapper(int aPort, const std::string& aType);
 
     std::map<int, std::string> mDefaultsMap;
@@ -40,4 +39,4 @@ protected:
     static I2CWrapperFactory sINSTANCE;
 };
 
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_I2C_I2CWRAPPERFACTORY_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_I2C_I2CWRAPPERFACTORY_H_

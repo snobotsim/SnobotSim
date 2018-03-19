@@ -15,14 +15,13 @@
 class AModuleWrapper
 {
 public:
-    AModuleWrapper(const std::string& aName) :
-            mName(aName), mWantsHidden(false)
+    explicit AModuleWrapper(const std::string& aName) :
+            mName(aName),
+            mWantsHidden(false)
     {
-
     }
     virtual ~AModuleWrapper()
     {
-
     }
 
     const std::string& GetName()
@@ -46,9 +45,8 @@ public:
     }
 
 protected:
-
     std::string mName;
     bool mWantsHidden;
 };
 
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MODULEWRAPPER_AMODULEWRAPPER_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MODULEWRAPPER_AMODULEWRAPPER_H_

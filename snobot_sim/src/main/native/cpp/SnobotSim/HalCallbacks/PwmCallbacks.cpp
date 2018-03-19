@@ -10,15 +10,14 @@
 void PwmCallback(const char* name, void* param, const struct HAL_Value* value)
 {
     std::string nameStr = name;
-    int port = *((int*) param);
+    int port = *reinterpret_cast<int*>(param);
 
-    if(nameStr == "Initialized")
+    if (nameStr == "Initialized")
     {
         SensorActuatorRegistry::Get().Register(port,
-                std::shared_ptr < SpeedControllerWrapper
-                        > (new SpeedControllerWrapper(port)));
+                std::shared_ptr<SpeedControllerWrapper>(new SpeedControllerWrapper(port)));
     }
-    else if(nameStr == "Speed")
+    else if (nameStr == "Speed")
     {
         double speed = value->data.v_double;
         SensorActuatorRegistry::Get().GetSpeedControllerWrapper(port)->SetVoltagePercentage(speed);
@@ -33,7 +32,7 @@ int gPwmArrayIndices[26];
 
 void SnobotSim::InitializePwmCallbacks()
 {
-    for(int i = 0; i < HAL_GetNumPWMChannels(); ++i)
+    for (int i = 0; i < HAL_GetNumPWMChannels(); ++i)
     {
         gPwmArrayIndices[i] = i;
         HALSIM_RegisterPWMInitializedCallback(i, &PwmCallback, &gPwmArrayIndices[i], false);
@@ -45,7 +44,7 @@ void SnobotSim::InitializePwmCallbacks()
 
 void SnobotSim::ResetPwmCallbacks()
 {
-    for(int i = 0; i < HAL_GetNumPWMChannels(); ++i)
+    for (int i = 0; i < HAL_GetNumPWMChannels(); ++i)
     {
         HALSIM_ResetPWMData(i);
     }

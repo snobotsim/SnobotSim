@@ -10,18 +10,17 @@
 
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 
-class EXPORT_ DigitalSourceWrapper: public AModuleWrapper
+class EXPORT_ DigitalSourceWrapper : public AModuleWrapper
 {
 public:
-    DigitalSourceWrapper(int aPort);
+    explicit DigitalSourceWrapper(int aPort);
     virtual ~DigitalSourceWrapper();
 
     bool Get();
     void Set(bool aState);
 
 protected:
-
     bool mState;
 };
 
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MODULEWRAPPER_DIGITALSOURCEWRAPPER_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MODULEWRAPPER_DIGITALSOURCEWRAPPER_H_

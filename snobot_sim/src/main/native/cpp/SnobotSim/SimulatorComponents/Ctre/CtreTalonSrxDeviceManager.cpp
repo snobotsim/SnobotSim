@@ -20,15 +20,11 @@ std::shared_ptr<CtreTalonSrxSimulator> GetWrapperHelper(int aPort)
 
 CtreTalonSrxDeviceManager::CtreTalonSrxDeviceManager()
 {
-
 }
 
 CtreTalonSrxDeviceManager::~CtreTalonSrxDeviceManager()
 {
-
 }
-
-
 
 void CtreTalonSrxDeviceManager::HandleSend(uint32_t aCanMessageId, uint32_t aCanPort, const uint8_t* aData, uint32_t aDataSize)
 {
@@ -76,7 +72,7 @@ void CtreTalonSrxDeviceManager::HandleReceive(uint32_t aCanMessageId, uint32_t a
         SNOBOT_LOG(SnobotLogging::CRITICAL, "Unsupported recv " << std::hex << aCanMessageId << std::dec);
     }
 
-    if(success)
+    if (success)
     {
         aOutDataSize = 8;
     }
@@ -93,7 +89,7 @@ void CtreTalonSrxDeviceManager::HandleTx1(const uint8_t* aData, int aPort)
 {
     uint8_t command = aData[5] & 0xF0;
 
-    if(command == 0x00)
+    if (command == 0x00)
     {
         std::shared_ptr<CtreTalonSrxSimulator> newSimulator(new CtreTalonSrxSimulator(aPort));
         SensorActuatorRegistry::Get().Register(aPort + 100, newSimulator);
@@ -104,7 +100,7 @@ void CtreTalonSrxDeviceManager::HandleTx1(const uint8_t* aData, int aPort)
     }
     else
     {
-        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unsupported tx1 command 0x" << std::hex << ((int) command) << std::dec);
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unsupported tx1 command 0x" << std::hex << static_cast<int>(command) << std::dec);
     }
 }
 
@@ -160,7 +156,7 @@ void CtreTalonSrxDeviceManager::HandleSetDemandCommand(const uint8_t* aData, int
     }
     else
     {
-        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown command type 0x" << std::hex << ((int) commandType) << std::dec);
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown command type 0x" << std::hex << static_cast<int>(commandType) << std::dec);
     }
 }
 
@@ -200,7 +196,7 @@ void CtreTalonSrxDeviceManager::HandleSetParamCommand(const uint8_t* aData, int 
     }
     else
     {
-        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown SetParam command " << std::hex << ((int) commandType) << std::dec);
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown SetParam command " << std::hex << static_cast<int>(commandType) << std::dec);
     }
 }
 
@@ -240,16 +236,16 @@ void CtreTalonSrxDeviceManager::HandleParamRequest(const uint8_t* aData, int aPo
     }
     else
     {
-        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown GetParam command " << std::hex << ((int) commandType) << std::dec);
+        SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown GetParam command " << std::hex << static_cast<int>(commandType) << std::dec);
     }
     int rawValue;
-    if(isFloat)
+    if (isFloat)
     {
-        rawValue = (int) (floatValue / 0.0000002384185791015625);
+        rawValue = static_cast<int>(floatValue / 0.0000002384185791015625);
     }
     else
     {
-        rawValue = (int) floatValue;
+        rawValue = static_cast<int>(floatValue);
     }
 
     mStreamMessage.messageID = 0x2041840 | aPort;
@@ -264,7 +260,7 @@ void CtreTalonSrxDeviceManager::PopulateStatus1(int aPort, uint8_t* aData)
 {
     std::shared_ptr<CtreTalonSrxSimulator> wrapper = GetWrapperHelper(aPort);
 
-    short value = (short) (wrapper->GetVoltagePercentage() * 1023);
+    int16_t value = static_cast<int16_t>(wrapper->GetVoltagePercentage() * 1023);
     aData[3] = (value >> 8) & 0xFF;
     aData[4] = (value >> 0) & 0xFF;
 }
@@ -273,8 +269,8 @@ void CtreTalonSrxDeviceManager::PopulateStatus2(int aPort, uint8_t* aData)
 {
     std::shared_ptr<CtreTalonSrxSimulator> wrapper = GetWrapperHelper(aPort);
 
-    int binnedPosition = (int) (wrapper->GetPosition() * 4096);
-    int binnedVelocity = (int) (wrapper->GetVelocity() * 6.9);
+    int binnedPosition = static_cast<int>(wrapper->GetPosition() * 4096);
+    int binnedVelocity = static_cast<int>(wrapper->GetVelocity() * 6.9);
 
     aData[0] = ((binnedPosition >> 0) & 0xFF);
     aData[1] = ((binnedPosition >> 8) & 0xFF);
@@ -287,8 +283,8 @@ void CtreTalonSrxDeviceManager::PopulateStatus3(int aPort, uint8_t* aData)
 {
     std::shared_ptr<CtreTalonSrxSimulator> wrapper = GetWrapperHelper(aPort);
 
-    int binnedPosition = (int) wrapper->GetPosition();
-    int binnedVelocity = (int) wrapper->GetVelocity();
+    int binnedPosition = static_cast<int>(wrapper->GetPosition());
+    int binnedVelocity = static_cast<int>(wrapper->GetVelocity());
 
     aData[0] = ((binnedPosition >> 0) & 0xFF);
     aData[1] = ((binnedPosition >> 8) & 0xFF);
@@ -306,8 +302,8 @@ void CtreTalonSrxDeviceManager::PopulateStatus4(int aPort, uint8_t* aData)
     uint8_t batterBinned = ((batteryVoltage - 4) / 0.05);
 
     std::shared_ptr<CtreTalonSrxSimulator> wrapper = GetWrapperHelper(aPort);
-    int binnedPosition = (int) wrapper->GetPosition();
-    int binnedVelocity = (int) wrapper->GetVelocity();
+    int binnedPosition = static_cast<int>(wrapper->GetPosition());
+    int binnedVelocity = static_cast<int>(wrapper->GetVelocity());
 
     aData[0] = ((binnedPosition >> 0) & 0xFF);
     aData[1] = ((binnedPosition >> 8) & 0xFF);

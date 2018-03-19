@@ -14,8 +14,8 @@
 class AdxSpi345AccelWrapper : public ISpiWrapper, public BaseAdxAccelWrapper
 {
 public:
-    AdxSpi345AccelWrapper(int aPort);
+    explicit AdxSpi345AccelWrapper(int aPort);
     virtual ~AdxSpi345AccelWrapper();
 };
 
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_ADXWRAPPERS_ADXSPI345ACCELWRAPPER_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_ADXWRAPPERS_ADXSPI345ACCELWRAPPER_H_

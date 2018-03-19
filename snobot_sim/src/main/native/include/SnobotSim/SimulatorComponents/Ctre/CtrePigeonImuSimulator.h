@@ -16,7 +16,7 @@
 class CtrePigeonImuSimulator
 {
 public:
-    CtrePigeonImuSimulator(int aPort);
+    explicit CtrePigeonImuSimulator(int aPort);
     virtual ~CtrePigeonImuSimulator();
 
     std::shared_ptr<IAccelerometerWrapper> GetXWrapper();
@@ -31,7 +31,6 @@ protected:
     class PigeonAccelWrapper : public IAccelerometerWrapper
     {
     public:
-
         PigeonAccelWrapper();
 
         virtual void SetAcceleration(double aAcceleration);
@@ -45,7 +44,6 @@ protected:
     class PigeonGyroWrapper : public IGyroWrapper
     {
     public:
-
         PigeonGyroWrapper();
 
         virtual void SetAngle(double aAngle);
@@ -65,4 +63,4 @@ protected:
     std::shared_ptr<IGyroWrapper> mRollWrapper;
 };
 
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_CTRE_CTREPIGEONIMUSIMULATOR_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_CTRE_CTREPIGEONIMUSIMULATOR_H_

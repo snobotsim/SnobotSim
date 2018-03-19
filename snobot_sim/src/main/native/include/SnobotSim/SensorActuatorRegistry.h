@@ -36,7 +36,6 @@ class CanManager;
     const std::map<int, std::shared_ptr<ItemType>>& Get##ItemType##Map() const; \
     std::map<int, std::shared_ptr<ItemType>>& Get##ItemType##Map();
 
-
 class EXPORT_ SensorActuatorRegistry
 {
 private:
@@ -68,15 +67,14 @@ public:
     ACTUATOR_GETTERS(II2CWrapper)
 
 protected:
-
-    template<typename ItemType>
+    template <typename ItemType>
     bool RegisterItem(int aPort, std::shared_ptr<ItemType> aItem,
             std::map<int, std::shared_ptr<ItemType>>& aMap, const std::string& aType,
             bool aOverwriteOnConflict)
     {
         if (aMap.find(aPort) != aMap.end())
         {
-            if(aOverwriteOnConflict)
+            if (aOverwriteOnConflict)
             {
                 SNOBOT_LOG(SnobotLogging::INFO, "Overwriting registration of " << aType << " on port " << aPort);
             }
@@ -94,12 +92,11 @@ protected:
         return true;
     }
 
-    template<typename ItemType>
+    template <typename ItemType>
     std::shared_ptr<ItemType> GetItem(int aPort,
             const std::map<int, std::shared_ptr<ItemType>>& aMap, const std::string& aType, bool logError)
     {
-        typename std::map<int, std::shared_ptr<ItemType>>::const_iterator iter =
-                aMap.find(aPort);
+        typename std::map<int, std::shared_ptr<ItemType>>::const_iterator iter = aMap.find(aPort);
         if (iter == aMap.end())
         {
             if (logError)
@@ -132,4 +129,4 @@ protected:
 
 #undef ACTUATOR_GETTERS
 
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SENSORACTUATORREGISTRY_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SENSORACTUATORREGISTRY_H_

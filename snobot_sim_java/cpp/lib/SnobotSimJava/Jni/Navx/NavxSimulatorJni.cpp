@@ -1,7 +1,7 @@
 
-#include <assert.h>
 #include <jni.h>
 
+#include <cassert>
 #include <cstring>
 
 #include "NavxSim/I2CNavxSimulator.h"

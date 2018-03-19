@@ -8,10 +8,12 @@
 #ifndef SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MOTORSIM_BASEDCMOTORSIMULATOR_H_
 #define SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MOTORSIM_BASEDCMOTORSIMULATOR_H_
 
+#include <string>
+
 #include "SnobotSim/MotorSim/DcMotorModel.h"
 #include "SnobotSim/MotorSim/IMotorSimulator.h"
 
-class EXPORT_ BaseDcMotorSimulator: public IMotorSimulator
+class EXPORT_ BaseDcMotorSimulator : public IMotorSimulator
 {
 public:
     BaseDcMotorSimulator(
@@ -20,34 +22,31 @@ public:
             double aConversionFactor = 1);
     virtual ~BaseDcMotorSimulator();
 
-    virtual const std::string& GetSimulatorType() override;
+    const std::string& GetSimulatorType() override;
 
-    virtual void SetVoltagePercentage(double aSpeed) override;
+    void SetVoltagePercentage(double aSpeed) override;
 
-    virtual double GetVoltagePercentage() override;
+    double GetVoltagePercentage() override;
 
-    virtual double GetAcceleration() override;
+    double GetAcceleration() override;
 
-    virtual double GetVelocity() override;
+    double GetVelocity() override;
 
-    virtual double GetPosition() override;
+    double GetPosition() override;
 
-    virtual double GetCurrent() override;
+    double GetCurrent() override;
 
-    virtual void Reset() override;
+    void Reset() override;
 
-    virtual void Reset(double aPosition, double aVelocity, double aCurrent) override;
+    void Reset(double aPosition, double aVelocity, double aCurrent) override;
 
     virtual const DcMotorModel& GetMotorModel();
 
 protected:
-
     std::string mSimulatorType;
     DcMotorModel mMotorModel;
     const double mConversionFactor;
     double mVoltagePercentage;
 };
 
-
-
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MOTORSIM_BASEDCMOTORSIMULATOR_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MOTORSIM_BASEDCMOTORSIMULATOR_H_

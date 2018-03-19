@@ -9,27 +9,25 @@
 
 #include "SnobotSim/Logging/SnobotLogger.h"
 
-const std::string VexMotorFactory::MOTOR_NAME_CIM            = "CIM";
-const std::string VexMotorFactory::MOTOR_NAME_MINI_CIM       = "Mini CIM";
-const std::string VexMotorFactory::MOTOR_NAME_BAG            = "Bag";
-const std::string VexMotorFactory::MOTOR_NAME_775_PRO        = "775 Pro";
-const std::string VexMotorFactory::MOTOR_NAME_AM_RS_775_125  = "Andymark RS 775-125";
-const std::string VexMotorFactory::MOTOR_NAME_BB_RS_775      = "Banebots RS 775";
-const std::string VexMotorFactory::MOTOR_NAME_AM_9015        = "Andymark 9015";
-const std::string VexMotorFactory::MOTOR_NAME_BB_RS_550      = "Banebots RS 550";
+const std::string VexMotorFactory::MOTOR_NAME_CIM = "CIM";
+const std::string VexMotorFactory::MOTOR_NAME_MINI_CIM = "Mini CIM";
+const std::string VexMotorFactory::MOTOR_NAME_BAG = "Bag";
+const std::string VexMotorFactory::MOTOR_NAME_775_PRO = "775 Pro";
+const std::string VexMotorFactory::MOTOR_NAME_AM_RS_775_125 = "Andymark RS 775-125";
+const std::string VexMotorFactory::MOTOR_NAME_BB_RS_775 = "Banebots RS 775";
+const std::string VexMotorFactory::MOTOR_NAME_AM_9015 = "Andymark 9015";
+const std::string VexMotorFactory::MOTOR_NAME_BB_RS_550 = "Banebots RS 550";
 
-const std::string VexMotorFactory::MOTOR_NAME_RS775          = "rs775";
+const std::string VexMotorFactory::MOTOR_NAME_RS775 = "rs775";
 
 #define OZIN_TO_NM 0.00706155183333
 
 VexMotorFactory::VexMotorFactory()
 {
-
 }
 
 VexMotorFactory::~VexMotorFactory()
 {
-
 }
 
 DcMotorModelConfig VexMotorFactory::MakeTransmission(
@@ -45,14 +43,12 @@ DcMotorModelConfig VexMotorFactory::MakeTransmission(
             factoryParams,
             aMotorConfig.NOMINAL_VOLTAGE,
             aMotorConfig.FREE_SPEED_RPM / aReduction,
-            aMotorConfig.FREE_CURRENT  * aNumMotors,
-            aMotorConfig.STALL_TORQUE  * aNumMotors,
+            aMotorConfig.FREE_CURRENT * aNumMotors,
+            aMotorConfig.STALL_TORQUE * aNumMotors,
             aMotorConfig.STALL_CURRENT * aNumMotors,
             aMotorConfig.mMotorInertia * aNumMotors * aReduction * aReduction,
             aMotorConfig.mHasBrake,
-            aMotorConfig.mInverted
-            );
-
+            aMotorConfig.mInverted);
 
     output.mKT *= aEfficiency * aNumMotors * aReduction;
 
@@ -70,7 +66,7 @@ DcMotorModelConfig VexMotorFactory::CreateMotor(
     factoryParams.mGearReduction = 1;
     factoryParams.mTransmissionEfficiency = 1;
 
-    if(aName == MOTOR_NAME_CIM)
+    if (aName == MOTOR_NAME_CIM)
     {
         const double FREE_SPEED_RPM = 5330;
         const double FREE_CURRENT = 2.7;
@@ -79,7 +75,7 @@ DcMotorModelConfig VexMotorFactory::CreateMotor(
 
         return DcMotorModelConfig(factoryParams, NOMINAL_VOLTAGE, FREE_SPEED_RPM, FREE_CURRENT, STALL_TORQUE, STALL_CURRENT, 0);
     }
-    else if(aName == MOTOR_NAME_MINI_CIM)
+    else if (aName == MOTOR_NAME_MINI_CIM)
     {
         const double FREE_SPEED_RPM = 5840;
         const double FREE_CURRENT = 3;
@@ -88,7 +84,7 @@ DcMotorModelConfig VexMotorFactory::CreateMotor(
 
         return DcMotorModelConfig(factoryParams, NOMINAL_VOLTAGE, FREE_SPEED_RPM, FREE_CURRENT, STALL_TORQUE, STALL_CURRENT, 0);
     }
-    else if(aName == MOTOR_NAME_BAG)
+    else if (aName == MOTOR_NAME_BAG)
     {
         const double FREE_SPEED_RPM = 13180;
         const double FREE_CURRENT = 1.8;
@@ -97,7 +93,7 @@ DcMotorModelConfig VexMotorFactory::CreateMotor(
 
         return DcMotorModelConfig(factoryParams, NOMINAL_VOLTAGE, FREE_SPEED_RPM, FREE_CURRENT, STALL_TORQUE, STALL_CURRENT, 0);
     }
-    else if(aName == MOTOR_NAME_775_PRO)
+    else if (aName == MOTOR_NAME_775_PRO)
     {
         const double FREE_SPEED_RPM = 18730;
         const double FREE_CURRENT = .7;
@@ -106,7 +102,7 @@ DcMotorModelConfig VexMotorFactory::CreateMotor(
 
         return DcMotorModelConfig(factoryParams, NOMINAL_VOLTAGE, FREE_SPEED_RPM, FREE_CURRENT, STALL_TORQUE, STALL_CURRENT, 0);
     }
-    else if(aName == MOTOR_NAME_AM_RS_775_125)
+    else if (aName == MOTOR_NAME_AM_RS_775_125)
     {
         const double FREE_SPEED_RPM = 5800;
         const double FREE_CURRENT = 1.6;
@@ -115,7 +111,7 @@ DcMotorModelConfig VexMotorFactory::CreateMotor(
 
         return DcMotorModelConfig(factoryParams, NOMINAL_VOLTAGE, FREE_SPEED_RPM, FREE_CURRENT, STALL_TORQUE, STALL_CURRENT, 0);
     }
-    else if(aName == MOTOR_NAME_BB_RS_775)
+    else if (aName == MOTOR_NAME_BB_RS_775)
     {
         const double FREE_SPEED_RPM = 13050;
         const double FREE_CURRENT = 2.7;
@@ -124,7 +120,7 @@ DcMotorModelConfig VexMotorFactory::CreateMotor(
 
         return DcMotorModelConfig(factoryParams, NOMINAL_VOLTAGE, FREE_SPEED_RPM, FREE_CURRENT, STALL_TORQUE, STALL_CURRENT, 0);
     }
-    else if(aName == MOTOR_NAME_AM_9015)
+    else if (aName == MOTOR_NAME_AM_9015)
     {
         const double FREE_SPEED_RPM = 14270;
         const double FREE_CURRENT = 3.7;
@@ -133,7 +129,7 @@ DcMotorModelConfig VexMotorFactory::CreateMotor(
 
         return DcMotorModelConfig(factoryParams, NOMINAL_VOLTAGE, FREE_SPEED_RPM, FREE_CURRENT, STALL_TORQUE, STALL_CURRENT, 0);
     }
-    else if(aName == MOTOR_NAME_BB_RS_550)
+    else if (aName == MOTOR_NAME_BB_RS_550)
     {
         const double FREE_SPEED_RPM = 19000;
         const double FREE_CURRENT = .4;
@@ -142,7 +138,7 @@ DcMotorModelConfig VexMotorFactory::CreateMotor(
 
         return DcMotorModelConfig(factoryParams, NOMINAL_VOLTAGE, FREE_SPEED_RPM, FREE_CURRENT, STALL_TORQUE, STALL_CURRENT, 0);
     }
-    else if(aName == MOTOR_NAME_RS775)
+    else if (aName == MOTOR_NAME_RS775)
     {
         const double FREE_SPEED_RPM = 19500;
         const double FREE_CURRENT = 2.7;

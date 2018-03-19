@@ -1,7 +1,7 @@
 
-#include <assert.h>
 #include <jni.h>
 
+#include <cassert>
 #include <chrono>
 
 #include "MockData/DriverStationData.h"
@@ -104,7 +104,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_DriverStationSimulatorJni_s
     }
     env->ReleaseFloatArrayElements(aAxes, axes, 0);
 
-    short* povs = env->GetShortArrayElements(aPovs, NULL);
+    int16_t* povs = env->GetShortArrayElements(aPovs, NULL);
     newPov.count = env->GetArrayLength(aPovs);
     for (int i = 0; i < newPov.count; ++i)
     {

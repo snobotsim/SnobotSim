@@ -233,6 +233,3 @@ snobot_sim_java/java/snobot_sim_java/com/snobot/simulator/wrapper_accessors/java
 snobot_sim/src/main/native/cpp/SnobotSim/SnobotSimHalVersion.cpp
 maven_repo
 !scripts/boilerplates/
-
-.styleguide
-.styleguide-license

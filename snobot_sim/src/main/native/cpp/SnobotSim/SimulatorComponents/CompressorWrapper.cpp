@@ -9,15 +9,11 @@
 
 CompressorWrapper::CompressorWrapper()
 {
-
 }
 
 CompressorWrapper::~CompressorWrapper()
 {
-
 }
-
-
 
 bool CompressorWrapper::IsPressureSwitchFull()
 {

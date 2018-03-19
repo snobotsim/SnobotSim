@@ -13,14 +13,13 @@
 class I2CNavxSimulator : public NavxSimulator
 {
 public:
-    I2CNavxSimulator(int port);
+    explicit I2CNavxSimulator(int port);
     virtual ~I2CNavxSimulator();
 
     virtual void HandleRead(uint8_t* buffer, uint32_t count);
     virtual void HandleWrite(const uint8_t* buffer, uint32_t count);
 
 protected:
-
     uint8_t mLastWriteAddress;
 
     int32_t mPort;
@@ -28,4 +27,4 @@ protected:
     int32_t mWriteCallbackId;
 };
 
-#endif  // SNOBOTSIM_SIM_EXTENSION_NAVX_SRC_MAIN_NATIVE_INCLUDE_NAVXSIM_I2CNAVXSIMULATOR_H_
+#endif // SNOBOTSIM_SIM_EXTENSION_NAVX_SRC_MAIN_NATIVE_INCLUDE_NAVXSIM_I2CNAVXSIMULATOR_H_

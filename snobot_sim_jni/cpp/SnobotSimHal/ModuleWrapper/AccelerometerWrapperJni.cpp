@@ -1,6 +1,7 @@
 
-#include <assert.h>
 #include <jni.h>
+
+#include <cassert>
 
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/SimulatorComponents/Accelerometer/IAccelerometerWrapper.h"

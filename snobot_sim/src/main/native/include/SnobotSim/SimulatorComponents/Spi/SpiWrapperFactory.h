@@ -16,7 +16,6 @@
 
 class EXPORT_ SpiWrapperFactory
 {
-
 private:
     SpiWrapperFactory();
     virtual ~SpiWrapperFactory();
@@ -36,8 +35,6 @@ public:
     void ResetDefaults();
 
 protected:
-
-
     std::shared_ptr<ISpiWrapper> CreateWrapper(int aPort, const std::string& aType);
 
     std::map<int, std::string> mDefaultsMap;
@@ -45,4 +42,4 @@ protected:
     static SpiWrapperFactory sINSTANCE;
 };
 
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_SPI_SPIWRAPPERFACTORY_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_SPI_SPIWRAPPERFACTORY_H_

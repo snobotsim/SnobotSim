@@ -1,7 +1,7 @@
 
-#include <assert.h>
 #include <jni.h>
 
+#include <cassert>
 #include <memory>
 #include <vector>
 

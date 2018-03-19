@@ -12,7 +12,7 @@ inline int UnwrapPort(int aInPort)
 {
     int output;
 
-    if((aInPort & 0x2000000) == 0)
+    if ((aInPort & 0x2000000) == 0)
     {
         output = aInPort;
     }
@@ -32,7 +32,4 @@ inline int WrapPort(int aInPort)
     return output;
 }
 
-
-
-
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_PORTUNWRAPPER_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_PORTUNWRAPPER_H_

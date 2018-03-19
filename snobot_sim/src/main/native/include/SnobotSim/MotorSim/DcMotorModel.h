@@ -13,7 +13,7 @@
 class EXPORT_ DcMotorModel
 {
 public:
-    DcMotorModel(const DcMotorModelConfig& aModelConfig);
+    explicit DcMotorModel(const DcMotorModelConfig& aModelConfig);
     virtual ~DcMotorModel();
 
     const DcMotorModelConfig& GetModelConfig() const;
@@ -28,7 +28,6 @@ public:
     double GetAcceleration();
 
 protected:
-
     DcMotorModelConfig mModelConfig;
     double mPosition;
     double mVelocity;
@@ -36,4 +35,4 @@ protected:
     double mCurrent;
 };
 
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MOTORSIM_DCMOTORMODEL_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MOTORSIM_DCMOTORMODEL_H_

@@ -17,7 +17,7 @@
 void SpiCallback(const char* name, void* param, const struct HAL_Value* value)
 {
     std::string nameStr = name;
-    int port = *((int*) param);
+    int port = *reinterpret_cast<int*>(param);
 
     if ("Initialized" == nameStr)
     {
@@ -34,7 +34,7 @@ int gSpiInArrayIndices[5];
 
 void SnobotSim::InitializeSpiCallbacks()
 {
-    for(int i = 0; i < 5; ++i)
+    for (int i = 0; i < 5; ++i)
     {
         gSpiInArrayIndices[i] = i;
         HALSIM_RegisterSPIInitializedCallback(i, &SpiCallback, &gSpiInArrayIndices[i], false);
@@ -43,7 +43,7 @@ void SnobotSim::InitializeSpiCallbacks()
 
 void SnobotSim::ResetSpiCallbacks()
 {
-    for(int i = 0; i < 5; ++i)
+    for (int i = 0; i < 5; ++i)
     {
         HALSIM_ResetSPIData(i);
     }

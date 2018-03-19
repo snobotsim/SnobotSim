@@ -26,7 +26,7 @@ void CtreCallback(const char* name, uint32_t messageId, uint8_t* buffer, const j
 
     JavaVMAttachArgs args = {JNI_VERSION_1_2, 0, 0};
     JNIEnv* aEnv;
-    gJvm->AttachCurrentThread((void**) &aEnv, &args);
+    gJvm->AttachCurrentThread(reinterpret_cast<void**>(&aEnv), &args);
 
     if(aEnv == NULL || aClazz == NULL || aMethodId == NULL)
     {
@@ -36,7 +36,7 @@ void CtreCallback(const char* name, uint32_t messageId, uint8_t* buffer, const j
 
     jstring nameString = MakeJString(aEnv, name);
 
-    jobject dataBuffer = aEnv->NewDirectByteBuffer(const_cast<uint8_t*>(buffer), (uint32_t) 100);
+    jobject dataBuffer = aEnv->NewDirectByteBuffer(const_cast<uint8_t*>(buffer), static_cast<uint32_t>(100));
     aEnv->CallStaticVoidMethod(aClazz, aMethodId, nameString, messageId, dataBuffer);
 
     if (aEnv->ExceptionCheck())

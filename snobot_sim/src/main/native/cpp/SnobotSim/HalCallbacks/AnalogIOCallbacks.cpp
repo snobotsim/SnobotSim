@@ -10,12 +10,12 @@
 void AnalogIOCallback(const char* name, void* param, const struct HAL_Value* value)
 {
     std::string nameStr = name;
-    int port = *((int*) param);
+    int port = *reinterpret_cast<int*>(param);
 
-    if(nameStr == "Initialized")
+    if (nameStr == "Initialized")
     {
         SensorActuatorRegistry::Get().Register(port,
-                std::shared_ptr<AnalogSourceWrapper> (new AnalogSourceWrapper(port)));
+                std::shared_ptr<AnalogSourceWrapper>(new AnalogSourceWrapper(port)));
     }
     else
     {
@@ -28,13 +28,13 @@ int gAnalogOutArrayIndices[26];
 
 void SnobotSim::InitializeAnalogIOCallbacks()
 {
-    for(int i = 0; i < HAL_GetNumAnalogInputs(); ++i)
+    for (int i = 0; i < HAL_GetNumAnalogInputs(); ++i)
     {
         gAnalogInArrayIndices[i] = i;
         HALSIM_RegisterAnalogInInitializedCallback(i, &AnalogIOCallback, &gAnalogInArrayIndices[i], false);
     }
 
-    for(int i = 0; i < HAL_GetNumAnalogOutputs(); ++i)
+    for (int i = 0; i < HAL_GetNumAnalogOutputs(); ++i)
     {
         gAnalogOutArrayIndices[i] = i;
         HALSIM_RegisterAnalogOutInitializedCallback(i, &AnalogIOCallback, &gAnalogOutArrayIndices[i], false);
@@ -43,11 +43,11 @@ void SnobotSim::InitializeAnalogIOCallbacks()
 
 void SnobotSim::ResetAnalogIOCallbacks()
 {
-    for(int i = 0; i < HAL_GetNumAnalogInputs(); ++i)
+    for (int i = 0; i < HAL_GetNumAnalogInputs(); ++i)
     {
         HALSIM_ResetAnalogInData(i);
     }
-    for(int i = 0; i < HAL_GetNumAnalogOutputs(); ++i)
+    for (int i = 0; i < HAL_GetNumAnalogOutputs(); ++i)
     {
         HALSIM_ResetAnalogOutData(i);
     }

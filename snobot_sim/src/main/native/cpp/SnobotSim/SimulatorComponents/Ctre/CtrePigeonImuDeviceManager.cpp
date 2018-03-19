@@ -11,18 +11,14 @@
 
 CtrePigeonImuDeviceManager::CtrePigeonImuDeviceManager()
 {
-
 }
 
 CtrePigeonImuDeviceManager::~CtrePigeonImuDeviceManager()
 {
-
 }
-
 
 void CtrePigeonImuDeviceManager::HandleSend(uint32_t aCanMessageId, uint32_t aCanPort, const uint8_t* aData, uint32_t aDataSize)
 {
-
     if (aCanMessageId == 0x15042800 || aCanMessageId == 0x2042800)
     {
         std::shared_ptr<CtrePigeonImuSimulator> sim(new CtrePigeonImuSimulator(400 + aCanPort * 3));
@@ -39,7 +35,7 @@ void CtrePigeonImuDeviceManager::HandleReceive(uint32_t aCanMessageId, uint32_t 
     if (aCanMessageId == 0x15041C40 || aCanMessageId == 0x2041C40)
     {
         PigeonMap_t::iterator findIter = mPigeons.find(aCanPort);
-        if(findIter != mPigeons.end())
+        if (findIter != mPigeons.end())
         {
             std::shared_ptr<CtrePigeonImuSimulator> sim = findIter->second;
             DumpAngles(sim, aData, aCanPort, 16.4, 2);
@@ -47,7 +43,6 @@ void CtrePigeonImuDeviceManager::HandleReceive(uint32_t aCanMessageId, uint32_t 
     }
     else if (aCanMessageId == 0x15042140 || aCanMessageId == 0x2042140)
     {
-
     }
     else
     {
@@ -63,17 +58,15 @@ uint32_t CtrePigeonImuDeviceManager::ReadStreamSession(uint32_t aSessionHandle, 
     return 0;
 }
 
-
-
 void CtrePigeonImuDeviceManager::DumpAngles(std::shared_ptr<CtrePigeonImuSimulator>& aSimulator, uint8_t* aData, int aPort, double aScaler, int aBytes)
 {
     double yaw = aSimulator->GetYawWrapper()->GetAngle();
     double pitch = aSimulator->GetPitchWrapper()->GetAngle();
     double roll = aSimulator->GetRollWrapper()->GetAngle();
 
-    int binnedYaw = (int) (yaw * aScaler);
-    int binnedPitch = (int) (pitch * aScaler);
-    int binnedRoll = (int) (roll * aScaler);
+    int binnedYaw = static_cast<int>(yaw * aScaler);
+    int binnedPitch = static_cast<int>(pitch * aScaler);
+    int binnedRoll = static_cast<int>(roll * aScaler);
 
     int ctr = 0;
 

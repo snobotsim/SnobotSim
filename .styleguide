@@ -1,0 +1,42 @@
+cppHeaderFileInclude {
+  \.h$
+  \.hpp$
+  \.inc$
+}
+
+cppSrcFileInclude {
+  \.cpp$
+}
+
+# Extra "/" used by unit tests
+generatedFileExclude {
+}
+
+modifiableFileExclude {
+  \.zip$
+  \.png$
+  \jni.h$
+  \jni_md.h$
+  snobot_sim_java.*$
+  snobot_sim_jni.*$
+  ctre_override/ctre_libraries
+  ctre_override/ctre_source/java/src
+  ctre_override/mock_hooks/include
+  snobot_sim_java/java/unit_tests/com/kauailabs/navx/frc
+  \SnobotSimHalVersion.h$
+  \StackWalker.h$
+  \StackWalker.cpp$
+}
+
+licenseUpdateExclude {
+
+}
+
+includeGuardRoots {
+
+}
+
+# Used by unit tests
+includeProject {
+
+}

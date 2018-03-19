@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 1996, 2013, Oracle and/or its affiliates. All rights reserved.
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS std::FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -36,8 +36,8 @@
 #ifndef SNOBOTSIM_SNOBOT_SIM_GUI_SRC_ARM_LINUX_JNI_JNI_H_
 #define SNOBOTSIM_SNOBOT_SIM_GUI_SRC_ARM_LINUX_JNI_JNI_H_
 
-#include <stdarg.h>
-#include <stdio.h>
+#include <cstdarg>
+#include <cstdio>
 
 /* jni_md.h contains the machine-dependent typedefs for jbyte, jint
    and jlong */

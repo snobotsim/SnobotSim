@@ -17,17 +17,15 @@
 class AdxGyroWrapper : public ISpiWrapper, public IGyroWrapper
 {
 public:
-    AdxGyroWrapper(int aPort);
+    explicit AdxGyroWrapper(int aPort);
     virtual ~AdxGyroWrapper();
-
 
     void SetAngle(double aAngle) override;
 
     double GetAngle() override;
 
 protected:
-
     std::shared_ptr<hal::ADXRS450_SpiGyroWrapper> mGyro;
 };
 
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_ADXWRAPPERS_ADXGYROWRAPPER_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_ADXWRAPPERS_ADXGYROWRAPPER_H_

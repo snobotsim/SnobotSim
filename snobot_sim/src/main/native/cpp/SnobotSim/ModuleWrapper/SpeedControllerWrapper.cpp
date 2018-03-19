@@ -15,14 +15,11 @@ SpeedControllerWrapper::SpeedControllerWrapper(int aPort) :
         mMotorSimulator(new NullMotorSimulator),
         mFeedbackSensor(new NullFeedbackSensor)
 {
-
 }
 
 SpeedControllerWrapper::~SpeedControllerWrapper()
 {
-
 }
-
 
 int SpeedControllerWrapper::GetId()
 {
@@ -35,12 +32,10 @@ void SpeedControllerWrapper::SetMotorSimulator(
     mMotorSimulator = aSimulator;
 }
 
-
 const std::shared_ptr<IMotorSimulator>& SpeedControllerWrapper::GetMotorSimulator()
 {
     return mMotorSimulator;
 }
-
 
 void SpeedControllerWrapper::SetFeedbackSensor(const std::shared_ptr<IFeedbackSensor>& aFeedbackSensor)
 {

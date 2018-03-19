@@ -8,19 +8,23 @@
 #include "SnobotSim/MotorSim/DcMotorModel.h"
 
 // http://stackoverflow.com/questions/1903954/is-there-a-standard-sign-function-signum-sgn-in-c-c
-template <typename T> int sgn(T val) {
+template <typename T>
+int sgn(T val)
+{
     return (T(0) < val) - (val < T(0));
 }
 
 DcMotorModel::DcMotorModel(const DcMotorModelConfig& aModelConfig) :
-        mModelConfig(aModelConfig), mPosition(0), mVelocity(0), mAcceleration(0), mCurrent(0)
+        mModelConfig(aModelConfig),
+        mPosition(0),
+        mVelocity(0),
+        mAcceleration(0),
+        mCurrent(0)
 {
-
 }
 
 DcMotorModel::~DcMotorModel()
 {
-
 }
 
 const DcMotorModelConfig& DcMotorModel::GetModelConfig() const

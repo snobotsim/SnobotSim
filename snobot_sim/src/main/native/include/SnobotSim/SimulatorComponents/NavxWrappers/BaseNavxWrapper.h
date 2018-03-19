@@ -12,7 +12,8 @@
 #include "SnobotSim/SimulatorComponents/Accelerometer/IAccelerometerWrapper.h"
 #include "SnobotSim/SimulatorComponents/Gyro/IGyroWrapper.h"
 
-class BaseNavxWrapper {
+class BaseNavxWrapper
+{
 public:
     BaseNavxWrapper(int aBasePort, const std::shared_ptr<NavxSimulator>& aNavx);
     virtual ~BaseNavxWrapper();
@@ -20,7 +21,6 @@ public:
     class AccelerometerWrapper : public IAccelerometerWrapper
     {
     public:
-
         enum AxisType
         {
             AXIS_X,
@@ -40,7 +40,6 @@ public:
     class GyroWrapper : public IGyroWrapper
     {
     public:
-
         enum AxisType
         {
             AXIS_YAW,
@@ -67,4 +66,4 @@ public:
     std::shared_ptr<GyroWrapper> mRollWrapper;
 };
 
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_NAVXWRAPPERS_BASENAVXWRAPPER_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_NAVXWRAPPERS_BASENAVXWRAPPER_H_

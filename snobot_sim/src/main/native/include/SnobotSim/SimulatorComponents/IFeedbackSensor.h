@@ -19,7 +19,6 @@ class NullFeedbackSensor : public IFeedbackSensor
 {
     void SetPosition(double aPosition)
     {
-
     }
     double GetPosition()
     {
@@ -27,5 +26,4 @@ class NullFeedbackSensor : public IFeedbackSensor
     }
 };
 
-
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_IFEEDBACKSENSOR_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_IFEEDBACKSENSOR_H_

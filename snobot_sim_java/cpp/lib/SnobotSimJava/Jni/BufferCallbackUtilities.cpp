@@ -13,7 +13,7 @@ namespace SnobotSimJava
     {
         JavaVMAttachArgs args = {JNI_VERSION_1_2, 0, 0};
         JNIEnv* aEnv;
-        gJvm->AttachCurrentThread((void**) &aEnv, &args);
+        gJvm->AttachCurrentThread(reinterpret_cast<void**>(&aEnv), &args);
 
         if(aEnv == NULL || aClazz == NULL || aMethodId == NULL)
         {
@@ -21,7 +21,7 @@ namespace SnobotSimJava
             return;
         }
 
-        int port = *((int*) param);
+        int port = *reinterpret_cast<int*>(param);
         jstring nameString = MakeJString(aEnv, name);
 
         jobject data = aEnv->NewDirectByteBuffer(buffer, count);

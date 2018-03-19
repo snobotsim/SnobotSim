@@ -12,9 +12,9 @@
 #include "SnobotSim/ModuleWrapper/SpeedControllerWrapper.h"
 #include "SnobotSim/SimulatorComponents/IFeedbackSensor.h"
 
-class EXPORT_ EncoderWrapper: public std::enable_shared_from_this<EncoderWrapper>,
-                              public AModuleWrapper,
-                              public IFeedbackSensor
+class EXPORT_ EncoderWrapper : public std::enable_shared_from_this<EncoderWrapper>,
+                               public AModuleWrapper,
+                               public IFeedbackSensor
 {
 public:
     EncoderWrapper(int aPortA, int aPortB);
@@ -44,11 +44,10 @@ public:
     void SetPosition(double aPosition) override;
 
 protected:
-
     std::shared_ptr<SpeedControllerWrapper> mMotorWrapper;
     double mEncodingFactor;
     double mDistancePerTick;
     const int mHandle;
 };
 
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MODULEWRAPPER_ENCODERWRAPPER_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MODULEWRAPPER_ENCODERWRAPPER_H_

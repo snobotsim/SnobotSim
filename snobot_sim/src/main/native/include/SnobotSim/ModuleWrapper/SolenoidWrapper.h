@@ -10,10 +10,10 @@
 
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 
-class EXPORT_ SolenoidWrapper: public AModuleWrapper
+class EXPORT_ SolenoidWrapper : public AModuleWrapper
 {
 public:
-    SolenoidWrapper(int aPort);
+    explicit SolenoidWrapper(int aPort);
     virtual ~SolenoidWrapper();
 
     void SetState(bool aOn);
@@ -24,4 +24,4 @@ protected:
     bool mState;
 };
 
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MODULEWRAPPER_SOLENOIDWRAPPER_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MODULEWRAPPER_SOLENOIDWRAPPER_H_

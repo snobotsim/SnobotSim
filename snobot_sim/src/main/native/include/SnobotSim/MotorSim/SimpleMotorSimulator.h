@@ -8,33 +8,35 @@
 #ifndef SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MOTORSIM_SIMPLEMOTORSIMULATOR_H_
 #define SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MOTORSIM_SIMPLEMOTORSIMULATOR_H_
 
+#include <string>
+
 #include "SnobotSim/MotorSim/IMotorSimulator.h"
 
-class EXPORT_ SimpleMotorSimulator: public IMotorSimulator
+class EXPORT_ SimpleMotorSimulator : public IMotorSimulator
 {
 public:
-    SimpleMotorSimulator(double aMaxSpeed);
+    explicit SimpleMotorSimulator(double aMaxSpeed);
     virtual ~SimpleMotorSimulator();
 
     const std::string& GetSimulatorType() override;
 
     void SetVoltagePercentage(double aSpeed) override;
 
-    virtual double GetVoltagePercentage() override;
+    double GetVoltagePercentage() override;
 
-    virtual double GetAcceleration() override;
+    double GetAcceleration() override;
 
-    virtual double GetVelocity() override;
+    double GetVelocity() override;
 
-    virtual double GetPosition() override;
+    double GetPosition() override;
 
-    virtual double GetCurrent() override;
+    double GetCurrent() override;
 
-    virtual void Reset() override;
+    void Reset() override;
 
-    virtual void Reset(double aPosition, double aVelocity, double aCurrent) override;
+    void Reset(double aPosition, double aVelocity, double aCurrent) override;
 
-    virtual void Update(double aCycleTime) override;
+    void Update(double aCycleTime) override;
 
     double GetMaxSpeed();
 
@@ -48,4 +50,4 @@ protected:
     static const std::string SIMULATOR_TYPE;
 };
 
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MOTORSIM_SIMPLEMOTORSIMULATOR_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MOTORSIM_SIMPLEMOTORSIMULATOR_H_

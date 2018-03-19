@@ -37,7 +37,6 @@ void SnobotSim::ResetSnobotCallbacks()
     ResetSolenoidCallbacks();
     ResetSpiCallbacks();
 
-
     // Re-initialize after you are done
     InitializeSnobotCallbacks();
 }

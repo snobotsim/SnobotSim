@@ -10,10 +10,10 @@
 
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 
-class EXPORT_ AnalogSourceWrapper: public AModuleWrapper
+class EXPORT_ AnalogSourceWrapper : public AModuleWrapper
 {
 public:
-    AnalogSourceWrapper(int aPort);
+    explicit AnalogSourceWrapper(int aPort);
     virtual ~AnalogSourceWrapper();
 
     void SetVoltage(double aVoltage);
@@ -22,9 +22,8 @@ public:
     int GetHandle();
 
 protected:
-
     int mPort;
     double mVoltage;
 };
 
-#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MODULEWRAPPER_ANALOGSOURCEWRAPPER_H_
+#endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MODULEWRAPPER_ANALOGSOURCEWRAPPER_H_

@@ -96,6 +96,6 @@ void EXPORT_ SetPigeonCallback(CTRE_CallbackFunc callback);
 //    }
 //};
 
-}
+} // namespace SnobotSim
 
 #endif  // SNOBOTSIM_CTRE_OVERRIDE_MOCK_HOOKS_INCLUDE_MOCKHOOKS_H_

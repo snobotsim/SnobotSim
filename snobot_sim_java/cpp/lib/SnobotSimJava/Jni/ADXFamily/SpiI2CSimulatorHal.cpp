@@ -1,6 +1,7 @@
 
-#include <assert.h>
 #include <jni.h>
+
+#include <cassert>
 
 #include "ADXL345_I2CAccelerometerData.h"
 #include "ADXL345_SpiAccelerometerData.h"
@@ -33,7 +34,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_adx_1family_SpiI2CSimulator
 
     if(type == "I2C ADXL345" || type == "SPI ADXL345" || type == "SPI ADXL362")
     {
-        ThreeAxisAccelerometerData* accel = (ThreeAxisAccelerometerData*) aPointerAddress;
+        ThreeAxisAccelerometerData* accel = reinterpret_cast<ThreeAxisAccelerometerData*>(aPointerAddress);
         switch(aDataType)
         {
         case 0:
@@ -68,7 +69,7 @@ JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_adx_1family_SpiI2CSimula
 
     if(type == "I2C ADXL345" || type == "SPI ADXL345" || type == "SPI ADXL362")
     {
-        ThreeAxisAccelerometerData* accel = (ThreeAxisAccelerometerData*) aPointerAddress;
+        ThreeAxisAccelerometerData* accel = reinterpret_cast<ThreeAxisAccelerometerData*>(aPointerAddress);
         switch(aDataType)
         {
         case 0:
@@ -192,7 +193,7 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_adx_1family_SpiI2CSimulator
 
     if(type == "SPI ADXRS450")
     {
-        ADXRS450_SpiGyroWrapper* sim = (ADXRS450_SpiGyroWrapper*) aPointerAddress;
+        ADXRS450_SpiGyroWrapper* sim = reinterpret_cast<ADXRS450_SpiGyroWrapper*>(aPointerAddress);
         delete sim;
     }
     else
@@ -234,7 +235,7 @@ JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_adx_1family_SpiI2CSimula
 
     if(type == "SPI ADXRS450")
     {
-        return ((ADXRS450_SpiGyroWrapper*)aPointerAddress)->GetAngle();
+        return reinterpret_cast<ADXRS450_SpiGyroWrapper*>(aPointerAddress)->GetAngle();
     }
     else
     {

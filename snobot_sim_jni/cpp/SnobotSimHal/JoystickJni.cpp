@@ -1,6 +1,7 @@
 
-#include <assert.h>
 #include <jni.h>
+
+#include <cassert>
 
 #include "MockData/DriverStationData.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
