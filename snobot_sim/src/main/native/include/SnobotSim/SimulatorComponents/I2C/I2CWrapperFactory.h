@@ -5,13 +5,14 @@
  *      Author: PJ
  */
 
-#ifndef I2CWRAPPERFACTORY_H_
-#define I2CWRAPPERFACTORY_H_
+#ifndef SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_I2C_I2CWRAPPERFACTORY_H_
+#define SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_I2C_I2CWRAPPERFACTORY_H_
+
+#include <map>
+#include <memory>
+#include <string>
 
 #include "SnobotSim/SimulatorComponents/I2C/II2CWrapper.h"
-#include <string>
-#include <memory>
-#include <map>
 
 class EXPORT_ I2CWrapperFactory {
 
@@ -39,4 +40,4 @@ protected:
     static I2CWrapperFactory sINSTANCE;
 };
 
-#endif /* I2CWRAPPERFACTORY_H_ */
+#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_I2C_I2CWRAPPERFACTORY_H_

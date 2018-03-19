@@ -6,6 +6,7 @@
  */
 
 #include "NavxSim/NavxSimulator.h"
+
 #include "MockData/NotifyCallbackHelpers.h"
 
 NavxSimulator::NavxSimulator()
@@ -293,5 +294,3 @@ void NavxSimulator::SetRoll(double roll) {
     InvokeRollCallback(MakeDouble(roll));
   }
 }
-
-

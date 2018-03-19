@@ -15,7 +15,7 @@ public class JniSolenoidWrapperAccessor implements SolenoidWrapperAccessor
     {
         SolenoidWrapperJni.setName(aPort, aName);
     }
-    
+
     @Override
     public String getName(int aPort)
     {
@@ -27,13 +27,13 @@ public class JniSolenoidWrapperAccessor implements SolenoidWrapperAccessor
     {
         return SolenoidWrapperJni.getWantsHidden(aPort);
     }
-    
+
     @Override
     public boolean get(int aPort)
     {
         return SolenoidWrapperJni.get(aPort);
     }
-    
+
     @Override
     public List<Integer> getPortList()
     {

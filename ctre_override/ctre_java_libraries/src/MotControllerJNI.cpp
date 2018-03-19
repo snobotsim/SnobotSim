@@ -1,10 +1,9 @@
 
-#include <jni.h>
 #include <assert.h>
+#include <jni.h>
 
 #include "com_ctre_phoenix_motorcontrol_can_MotControllerJNI.h"
 #include "ctre/phoenix/CCI/MotController_CCI.h"
-
 
 /*
  * Class:     com_ctre_phoenix_motorcontrol_can_MotControllerJNI
@@ -267,7 +266,7 @@ JNIEXPORT jint JNICALL Java_com_ctre_phoenix_motorcontrol_can_MotControllerJNI_C
   (JNIEnv *, jclass, jlong handle, jint, jint, jint)
 {
     LOG_UNSUPPORTED_CAN_FUNC("");
-    return 0;  
+    return 0;
 }
 
 /*
@@ -1183,4 +1182,3 @@ JNIEXPORT jint JNICALL Java_com_ctre_phoenix_motorcontrol_can_MotControllerJNI_E
 {
     return (jint) c_MotController_EnableHeadingHold(&handle, value);
 }
-

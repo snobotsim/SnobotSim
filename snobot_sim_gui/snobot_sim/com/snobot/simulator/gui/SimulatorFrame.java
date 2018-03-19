@@ -21,7 +21,7 @@ import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 /**
  * Top level frame that displays all of the simulation displays
- * 
+ *
  * @author PJ
  *
  */
@@ -110,7 +110,7 @@ public class SimulatorFrame extends JFrame
         JPanel buttonPanel = new JPanel(new BorderLayout());
         buttonPanel.add(configureJoystickBtn, BorderLayout.NORTH);
         buttonPanel.add(settingsPanel, BorderLayout.SOUTH);
-        
+
 
         JPanel driverStationPanel = new JPanel();
         driverStationPanel.setLayout(new BoxLayout(driverStationPanel, BoxLayout.Y_AXIS));
@@ -132,9 +132,9 @@ public class SimulatorFrame extends JFrame
     private void saveSettings()
     {
         SimulatorConfigWriter writer = new SimulatorConfigWriter();
-        
+
         String dumpFile = null;
-        
+
         if (mSimulatorConfigFile == null)
         {
             JFileChooser fc = new JFileChooser(".");
@@ -148,7 +148,7 @@ public class SimulatorFrame extends JFrame
         {
             dumpFile = mSimulatorConfigFile;
         }
-        
+
         if (dumpFile != null)
         {
             sLOGGER.log(Level.INFO, "Saving to '" + dumpFile + "'");
@@ -166,7 +166,7 @@ public class SimulatorFrame extends JFrame
         {
             sLOGGER.log(Level.INFO, "User cancelled save!");
         }
-        
+
         showSettingsOptions(false);
     }
 

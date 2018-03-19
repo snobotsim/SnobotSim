@@ -4,7 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * Interface that provides a wrapper around a robot class
- * 
+ *
  * @author PJ
  *
  */

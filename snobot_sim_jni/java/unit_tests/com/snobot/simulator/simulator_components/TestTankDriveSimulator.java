@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 public class TestTankDriveSimulator extends BaseSimulatorTest
 {
-
     @Test
     public void testTankDrive()
     {

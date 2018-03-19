@@ -63,7 +63,7 @@ public class TankDriveGyroSimulator implements ISimulatorUpdater
     {
         return mIsSetup;
     }
-    
+
     public Object getConfig()
     {
         return mConfig;
@@ -71,7 +71,6 @@ public class TankDriveGyroSimulator implements ISimulatorUpdater
 
     public static class TankDriveConfig
     {
-
         private int mLeftEncoderHandle;
         private int mRightEncoderHandle;
         private int mGyroHandle;

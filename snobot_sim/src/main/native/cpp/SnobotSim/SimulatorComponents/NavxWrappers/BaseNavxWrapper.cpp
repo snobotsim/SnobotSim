@@ -6,6 +6,7 @@
  */
 
 #include "SnobotSim/SimulatorComponents/NavxWrappers/BaseNavxWrapper.h"
+
 #include "SnobotSim/SensorActuatorRegistry.h"
 
 BaseNavxWrapper::BaseNavxWrapper(int aBasePort, const std::shared_ptr<NavxSimulator>& aNavx)  :
@@ -114,7 +115,3 @@ double BaseNavxWrapper::GyroWrapper::GetAngle()
     }
     return 0;
 }
-
-
-
-

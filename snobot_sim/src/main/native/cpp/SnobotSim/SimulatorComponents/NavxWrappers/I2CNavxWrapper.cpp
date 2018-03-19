@@ -6,6 +6,7 @@
  */
 
 #include "SnobotSim/SimulatorComponents/NavxWrappers/I2CNavxWrapper.h"
+
 #include "NavxSim/I2CNavxSimulator.h"
 
 I2CNavxWrapper::I2CNavxWrapper(int aPort) :
@@ -17,4 +18,3 @@ I2CNavxWrapper::I2CNavxWrapper(int aPort) :
 I2CNavxWrapper::~I2CNavxWrapper() {
 
 }
-

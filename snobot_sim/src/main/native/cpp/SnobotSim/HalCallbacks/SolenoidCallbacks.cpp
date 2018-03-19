@@ -1,12 +1,11 @@
 
 
-#include "MockData/PCMData.h"
-
 #include "SnobotSim/HalCallbacks/SolenoidCallbacks.h"
-#include "SnobotSim/SensorActuatorRegistry.h"
-#include "SnobotSim/ModuleWrapper/SolenoidWrapper.h"
-#include "SnobotSim/Logging/SnobotLogger.h"
 
+#include "MockData/PCMData.h"
+#include "SnobotSim/Logging/SnobotLogger.h"
+#include "SnobotSim/ModuleWrapper/SolenoidWrapper.h"
+#include "SnobotSim/SensorActuatorRegistry.h"
 
 void SolenoidCallback(const char* name, void* param, const struct HAL_Value* value)
 {

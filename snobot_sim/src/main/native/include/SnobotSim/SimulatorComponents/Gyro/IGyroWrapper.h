@@ -5,8 +5,8 @@
  *      Author: PJ
  */
 
-#ifndef GYROWRAPPER_HPP_
-#define GYROWRAPPER_HPP_
+#ifndef SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_GYRO_IGYROWRAPPER_H_
+#define SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_GYRO_IGYROWRAPPER_H_
 
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 
@@ -22,12 +22,12 @@ public:
     {
 
     }
-    
+
     virtual void SetAngle(double aAngle) = 0;
-    
+
     virtual double GetAngle() = 0;
 };
 
 
 
-#endif /* GYROWRAPPER_HPP_ */
+#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_GYRO_IGYROWRAPPER_H_

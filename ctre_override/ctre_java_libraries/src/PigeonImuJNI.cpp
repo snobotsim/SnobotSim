@@ -1,6 +1,6 @@
 
-#include <jni.h>
 #include <assert.h>
+#include <jni.h>
 
 #include "com_ctre_phoenix_sensors_PigeonImuJNI.h"
 #include "ctre/phoenix/CCI/PigeonIMU_CCI.h"

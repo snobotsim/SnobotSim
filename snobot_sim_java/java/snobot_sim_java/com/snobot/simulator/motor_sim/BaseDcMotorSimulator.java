@@ -2,7 +2,6 @@ package com.snobot.simulator.motor_sim;
 
 public abstract class BaseDcMotorSimulator implements IMotorSimulator
 {
-
     protected final DcMotorModel mMotorModel;
     protected final double mConversionFactor;
     protected double mVoltagePercentage;

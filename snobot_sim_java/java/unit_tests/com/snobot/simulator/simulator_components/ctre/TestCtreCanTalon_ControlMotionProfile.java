@@ -56,7 +56,7 @@ public class TestCtreCanTalon_ControlMotionProfile extends BaseSimulatorTest
         talon.config_kP(0, .045, 5);
         talon.config_kF(0, 0.018, 5);
         talon.config_IntegralZone(0, 1, 5);
-        
+
 
         MotionProfileStatus status = new MotionProfileStatus();
         talon.getMotionProfileStatus(status);

@@ -124,4 +124,3 @@ double CtreTalonSrxSimulator::CalculateFeedbackOutput(double aCurrent, double aG
     return output;
 
 }
-

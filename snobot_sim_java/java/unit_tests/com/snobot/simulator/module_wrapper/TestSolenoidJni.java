@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.Solenoid;
 
 public class TestSolenoidJni extends BaseSimulatorTest
 {
-
     @Test
     public void testCreateSolenoid()
     {

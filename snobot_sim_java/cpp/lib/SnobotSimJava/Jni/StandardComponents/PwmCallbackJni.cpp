@@ -1,10 +1,8 @@
 
-#include "com_snobot_simulator_jni_standard_components_PwmCallbackJni.h"
-
-#include "MockData/PWMData.h"
 #include "HAL/handles/HandlesInternal.h"
-
+#include "MockData/PWMData.h"
 #include "SnobotSimJava/Jni/RegisterJniUtilities.h"
+#include "com_snobot_simulator_jni_standard_components_PwmCallbackJni.h"
 
 int gPwmArrayIndices[26];
 SnobotSimJava::CallbackHelperContainer gPwmCallbackContainer;

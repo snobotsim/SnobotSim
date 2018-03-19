@@ -6,13 +6,13 @@
  */
 
 #include "SnobotSim/SimulatorComponents/Ctre/CanManager.h"
-#include "MockData/CanData.h"
-
-#include "SnobotSim/SimulatorComponents/Ctre/CtrePigeonImuDeviceManager.h"
-#include "SnobotSim/SimulatorComponents/Ctre/CtreTalonSrxDeviceManager.h"
-#include "SnobotSim/Logging/SnobotLogger.h"
 
 #include <cstring>
+
+#include "MockData/CanData.h"
+#include "SnobotSim/Logging/SnobotLogger.h"
+#include "SnobotSim/SimulatorComponents/Ctre/CtrePigeonImuDeviceManager.h"
+#include "SnobotSim/SimulatorComponents/Ctre/CtreTalonSrxDeviceManager.h"
 
 void CanSendMessageCallback(
         const char* name, void* param,

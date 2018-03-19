@@ -17,8 +17,6 @@ import edu.wpi.first.wpilibj.Relay.Value;
 
 public class RelayGraphicDisplay extends BaseWidgetDisplay<Integer, RelayDisplay>
 {
-
-
     public RelayGraphicDisplay(Collection<Integer> aKeys)
     {
         super(aKeys);

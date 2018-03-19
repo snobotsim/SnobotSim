@@ -6,8 +6,8 @@
  */
 
 #include "SnobotSimJava/Logging/SnobotCoutLogger.h"
-#include <iostream>
 
+#include <iostream>
 
 using namespace SnobotLogging;
 

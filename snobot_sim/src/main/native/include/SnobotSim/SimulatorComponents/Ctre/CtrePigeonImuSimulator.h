@@ -5,13 +5,13 @@
  *      Author: PJ
  */
 
-#ifndef CTREPIGEONIMUSIMULATOR_H_
-#define CTREPIGEONIMUSIMULATOR_H_
+#ifndef SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_CTRE_CTREPIGEONIMUSIMULATOR_H_
+#define SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_CTRE_CTREPIGEONIMUSIMULATOR_H_
 
 #include <memory>
 
-#include "SnobotSim/SimulatorComponents/Gyro/IGyroWrapper.h"
 #include "SnobotSim/SimulatorComponents/Accelerometer/IAccelerometerWrapper.h"
+#include "SnobotSim/SimulatorComponents/Gyro/IGyroWrapper.h"
 
 class CtrePigeonImuSimulator
 {
@@ -65,4 +65,4 @@ protected:
     std::shared_ptr<IGyroWrapper> mRollWrapper;
 };
 
-#endif /* CTREPIGEONIMUSIMULATOR_H_ */
+#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_CTRE_CTREPIGEONIMUSIMULATOR_H_

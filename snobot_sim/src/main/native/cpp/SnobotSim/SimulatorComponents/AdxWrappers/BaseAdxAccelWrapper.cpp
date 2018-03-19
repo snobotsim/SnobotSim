@@ -6,6 +6,7 @@
  */
 
 #include "SnobotSim/SimulatorComponents/AdxWrappers/BaseAdxAccelWrapper.h"
+
 #include "SnobotSim/SensorActuatorRegistry.h"
 
 BaseAdxAccelWrapper::BaseAdxAccelWrapper(int aBasePort, const std::shared_ptr<hal::ThreeAxisAccelerometerData>& aAccel) :

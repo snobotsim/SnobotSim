@@ -33,11 +33,11 @@
  * Copyright (c) 1996 Netscape Communications Corporation. All rights reserved.
  *****************************************************************************/
 
-#ifndef _JAVASOFT_JNI_H_
-#define _JAVASOFT_JNI_H_
+#ifndef SNOBOTSIM_SNOBOT_SIM_GUI_SRC_ARM_LINUX_JNI_JNI_H_
+#define SNOBOTSIM_SNOBOT_SIM_GUI_SRC_ARM_LINUX_JNI_JNI_H_
 
-#include <stdio.h>
 #include <stdarg.h>
+#include <stdio.h>
 
 /* jni_md.h contains the machine-dependent typedefs for jbyte, jint
    and jlong */
@@ -783,7 +783,7 @@ struct JNIEnv_ {
     const struct JNINativeInterface_ *functions;
 #ifdef __cplusplus
 
-    jint GetVersion() {
+    jint GetVersion(void) {
         return functions->GetVersion(this);
     }
     jclass DefineClass(const char *name, jobject loader, const jbyte *buf,
@@ -821,13 +821,13 @@ struct JNIEnv_ {
     jint ThrowNew(jclass clazz, const char *msg) {
         return functions->ThrowNew(this, clazz, msg);
     }
-    jthrowable ExceptionOccurred() {
+    jthrowable ExceptionOccurred(void) {
         return functions->ExceptionOccurred(this);
     }
-    void ExceptionDescribe() {
+    void ExceptionDescribe(void) {
         functions->ExceptionDescribe(this);
     }
-    void ExceptionClear() {
+    void ExceptionClear(void) {
         functions->ExceptionClear(this);
     }
     void FatalError(const char *msg) {
@@ -1840,7 +1840,7 @@ struct JNIEnv_ {
         functions->DeleteWeakGlobalRef(this,ref);
     }
 
-    jboolean ExceptionCheck() {
+    jboolean ExceptionCheck(void) {
         return functions->ExceptionCheck(this);
     }
 
@@ -1907,13 +1907,13 @@ struct JavaVM_ {
     const struct JNIInvokeInterface_ *functions;
 #ifdef __cplusplus
 
-    jint DestroyJavaVM() {
+    jint DestroyJavaVM(void) {
         return functions->DestroyJavaVM(this);
     }
     jint AttachCurrentThread(void **penv, void *args) {
         return functions->AttachCurrentThread(this, penv, args);
     }
-    jint DetachCurrentThread() {
+    jint DetachCurrentThread(void) {
         return functions->DetachCurrentThread(this);
     }
 
@@ -1954,7 +1954,7 @@ JNI_OnUnload(JavaVM *vm, void *reserved);
 #define JNI_VERSION_1_8 0x00010008
 
 #ifdef __cplusplus
-} /* extern "C" */
+}  // extern "C"
 #endif /* __cplusplus */
 
-#endif /* !_JAVASOFT_JNI_H_ */
+#endif  // SNOBOTSIM_SNOBOT_SIM_GUI_SRC_ARM_LINUX_JNI_JNI_H_

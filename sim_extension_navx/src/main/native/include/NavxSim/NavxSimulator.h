@@ -5,14 +5,14 @@
  *      Author: PJ
  */
 
-#ifndef NAVXSIMULATOR_H_
-#define NAVXSIMULATOR_H_
-
-#include <atomic>
-#include <memory>
-#include <cstring>
+#ifndef SNOBOTSIM_SIM_EXTENSION_NAVX_SRC_MAIN_NATIVE_INCLUDE_NAVXSIM_NAVXSIMULATOR_H_
+#define SNOBOTSIM_SIM_EXTENSION_NAVX_SRC_MAIN_NATIVE_INCLUDE_NAVXSIM_NAVXSIMULATOR_H_
 
 #include <support/mutex.h>
+
+#include <atomic>
+#include <cstring>
+#include <memory>
 
 #include "MockData/NotifyListenerVector.h"
 
@@ -110,4 +110,4 @@ protected:
     std::shared_ptr<hal::NotifyListenerVector> mRollCallbacks = nullptr;
 };
 
-#endif /* NAVXSIMULATOR_H_ */
+#endif  // SNOBOTSIM_SIM_EXTENSION_NAVX_SRC_MAIN_NATIVE_INCLUDE_NAVXSIM_NAVXSIMULATOR_H_

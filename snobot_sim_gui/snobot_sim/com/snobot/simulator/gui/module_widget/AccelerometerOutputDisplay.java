@@ -15,7 +15,6 @@ import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 public class AccelerometerOutputDisplay extends BaseWidgetDisplay<Integer, AccelerometerDisplay>
 {
-
     public AccelerometerOutputDisplay(Collection<Integer> aKeys)
     {
         super(aKeys);

@@ -1,16 +1,14 @@
 
 #include <assert.h>
 #include <jni.h>
-#include "support/jni_util.h"
 
 #include <chrono>
 
-#include "com_snobot_simulator_jni_DriverStationSimulatorJni.h"
-
 #include "MockData/DriverStationData.h"
 #include "MockData/MockHooks.h"
-
 #include "SnobotSimJava/Logging/SnobotLogger.h"
+#include "com_snobot_simulator_jni_DriverStationSimulatorJni.h"
+#include "support/jni_util.h"
 
 extern "C"
 {
@@ -140,4 +138,4 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_DriverStationSimulatorJni_s
     HALSIM_SetMatchInfo(&matchInfo);
 }
 
-} // extern c
+}  // extern "C"

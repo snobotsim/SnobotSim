@@ -15,13 +15,13 @@ public class JniAccelerometerWrapperAccessor implements AccelerometerWrapperAcce
     {
         AccelerometerWrapperJni.register(aPort, aName);
     }
-    
+
     @Override
     public void setName(int aPort, String aName)
     {
         AccelerometerWrapperJni.setName(aPort, aName);
     }
-    
+
     @Override
     public String getName(int aPort)
     {
@@ -33,7 +33,7 @@ public class JniAccelerometerWrapperAccessor implements AccelerometerWrapperAcce
     {
         return AccelerometerWrapperJni.getWantsHidden(aPort);
     }
-    
+
     @Override
     public double getAcceleration(int aPort)
     {
@@ -45,7 +45,7 @@ public class JniAccelerometerWrapperAccessor implements AccelerometerWrapperAcce
     {
         AccelerometerWrapperJni.setAcceleration(aPort, aAcceleration);
     }
-    
+
     @Override
     public List<Integer> getPortList()
     {

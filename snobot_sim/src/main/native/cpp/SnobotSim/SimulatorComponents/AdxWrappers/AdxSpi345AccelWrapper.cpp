@@ -18,4 +18,3 @@ AdxSpi345AccelWrapper::AdxSpi345AccelWrapper(int aPort)  :
 AdxSpi345AccelWrapper::~AdxSpi345AccelWrapper() {
 
 }
-

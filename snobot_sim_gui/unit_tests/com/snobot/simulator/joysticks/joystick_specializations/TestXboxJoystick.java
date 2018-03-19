@@ -6,7 +6,6 @@ import com.snobot.test.utilities.MockController;
 
 public class TestXboxJoystick
 {
-
     @Test
     public void testKeyboardJoystick() throws Exception
     {

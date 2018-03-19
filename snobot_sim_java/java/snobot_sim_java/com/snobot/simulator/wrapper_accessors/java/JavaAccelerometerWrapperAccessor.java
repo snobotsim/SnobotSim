@@ -8,7 +8,6 @@ import com.snobot.simulator.wrapper_accessors.AccelerometerWrapperAccessor;
 
 public class JavaAccelerometerWrapperAccessor extends BaseWrapperAccessor<IAccelerometerWrapper> implements AccelerometerWrapperAccessor
 {
-
     @Override
     public void register(int aPort, String aName)
     {

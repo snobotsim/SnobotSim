@@ -6,12 +6,13 @@
  */
 
 #include "SnobotSim/RobotStateSingleton.h"
-#include "SnobotSim/SensorActuatorRegistry.h"
-#include "SnobotSim/Logging/SnobotLogger.h"
-#include "MockData/DriverStationData.h"
 
 #include <chrono>
 #include <future>
+
+#include "MockData/DriverStationData.h"
+#include "SnobotSim/Logging/SnobotLogger.h"
+#include "SnobotSim/SensorActuatorRegistry.h"
 
 RobotStateSingleton RobotStateSingleton::sINSTANCE;
 

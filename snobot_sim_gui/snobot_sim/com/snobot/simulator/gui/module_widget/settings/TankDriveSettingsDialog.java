@@ -252,4 +252,3 @@ public class TankDriveSettingsDialog extends JDialog
     }
 
 }
-

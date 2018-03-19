@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
 
 public class TestI2CFactory extends BaseSimulatorTest
 {
-
     @Test
     public void testAvailableDataTypes()
     {

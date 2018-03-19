@@ -2,7 +2,6 @@ package com.snobot.simulator.config;
 
 public class EncoderConfig extends BasicModuleConfig
 {
-
     private int mConnectedSpeedControllerHandle;
 
     public EncoderConfig()

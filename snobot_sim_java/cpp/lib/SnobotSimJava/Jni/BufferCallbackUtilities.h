@@ -18,4 +18,4 @@ namespace SnobotSimJava
 
 
 
-}
+}  // namespace SnobotSimJava

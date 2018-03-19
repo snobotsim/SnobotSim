@@ -9,7 +9,6 @@ import net.java.games.input.Controller;
 
 public class Ps4Joystick extends BaseJoystick
 {
-
     private static final Identifier[] sAXIS = new Identifier[]
     {
         Identifier.Axis.X, // Left x
@@ -39,8 +38,8 @@ public class Ps4Joystick extends BaseJoystick
         Identifier.Button._12, // ps4 button
     };
 
-    private static final Identifier[] sPOV = new Identifier[] 
-    {  
+    private static final Identifier[] sPOV = new Identifier[]
+    {
             Identifier.Axis.POV
     };
 

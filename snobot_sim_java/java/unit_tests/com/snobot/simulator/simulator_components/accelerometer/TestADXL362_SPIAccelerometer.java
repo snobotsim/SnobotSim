@@ -40,7 +40,7 @@ public class TestADXL362_SPIAccelerometer extends BaseSimulatorTest
         mPort = aPort;
         mRange = aRange;
     }
-    
+
     @Test
     public void testADXL362_SPI()
     {

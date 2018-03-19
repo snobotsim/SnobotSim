@@ -1,17 +1,14 @@
 
 #include <assert.h>
 #include <jni.h>
-#include "support/jni_util.h"
-
-
-#include "com_snobot_simulator_jni_adx_family_SpiI2CSimulatorJni.h"
 
 #include "ADXL345_I2CAccelerometerData.h"
 #include "ADXL345_SpiAccelerometerData.h"
 #include "ADXL362_SpiAccelerometerData.h"
 #include "ADXRS450_SpiGyroWrapperData.h"
-
 #include "SnobotSimJava/Logging/SnobotLogger.h"
+#include "com_snobot_simulator_jni_adx_family_SpiI2CSimulatorJni.h"
+#include "support/jni_util.h"
 
 using namespace hal;
 
@@ -247,4 +244,4 @@ JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_adx_1family_SpiI2CSimula
     return -1;
 }
 
-} // extern c
+}  // extern "C"

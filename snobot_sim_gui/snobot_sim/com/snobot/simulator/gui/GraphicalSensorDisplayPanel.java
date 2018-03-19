@@ -19,7 +19,7 @@ import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 /**
  * This is the top level panel that shows all of the simulator components
- * 
+ *
  * @author PJ
  *
  */
@@ -47,7 +47,7 @@ public class GraphicalSensorDisplayPanel extends JPanel
         mDisplayPanels.add(new AccelerometerOutputDisplay(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList()));
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        
+
         for (BaseWidgetDisplay<?, ?> panel : mDisplayPanels)
         {
             if (!panel.isEmpty())

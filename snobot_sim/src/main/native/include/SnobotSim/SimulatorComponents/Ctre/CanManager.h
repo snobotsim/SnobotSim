@@ -5,15 +5,14 @@
  *      Author: PJ
  */
 
-#ifndef CANMANAGER_H_
-#define CANMANAGER_H_
+#ifndef SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_CTRE_CANMANAGER_H_
+#define SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_CTRE_CANMANAGER_H_
 
 #include <map>
 #include <memory>
 
-#include "SnobotSim/SimulatorComponents/Ctre/ICanDeviceManager.h"
-
 #include "MockData/NotifyListenerVector.h"
+#include "SnobotSim/SimulatorComponents/Ctre/ICanDeviceManager.h"
 
 class CanManager
 {
@@ -44,4 +43,4 @@ protected:
     static int sSTREAM_CTR;
 };
 
-#endif /* CANMANAGER_H_ */
+#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_CTRE_CANMANAGER_H_

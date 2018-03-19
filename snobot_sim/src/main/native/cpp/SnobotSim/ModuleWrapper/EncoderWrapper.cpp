@@ -6,8 +6,9 @@
  */
 
 #include "SnobotSim/ModuleWrapper/EncoderWrapper.h"
-#include "SnobotSim/PortUnwrapper.h"
+
 #include "MockData/EncoderData.h"
+#include "SnobotSim/PortUnwrapper.h"
 
 EncoderWrapper::EncoderWrapper(int aPortA, int aPortB) :
         EncoderWrapper(aPortA, "Encoder " + std::to_string(UnwrapPort(aPortA)))

@@ -10,7 +10,6 @@ import net.java.games.input.Component.Identifier;
 
 public class TestKeyboardJoystick
 {
-
     @Test
     public void testKeyboardJoystick() throws Exception
     {

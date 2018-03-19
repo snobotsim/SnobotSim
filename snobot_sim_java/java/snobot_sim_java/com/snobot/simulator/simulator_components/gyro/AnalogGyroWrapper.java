@@ -5,7 +5,6 @@ import com.snobot.simulator.module_wrapper.ASensorWrapper;
 
 public class AnalogGyroWrapper extends ASensorWrapper implements IGyroWrapper
 {
-
     protected final int mPort;
     protected double mAngle;
 

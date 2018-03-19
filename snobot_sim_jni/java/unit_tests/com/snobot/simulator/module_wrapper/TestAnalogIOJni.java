@@ -25,7 +25,7 @@ public class TestAnalogIOJni extends BaseSimulatorTest
         Assert.assertEquals(2, DataAccessorFactory.getInstance().getAnalogAccessor().getPortList().size());
         Assert.assertEquals("Analog 3", DataAccessorFactory.getInstance().getAnalogAccessor().getName(3));
         Assert.assertFalse(DataAccessorFactory.getInstance().getAnalogAccessor().getWantsHidden(3));
-        
+
         DataAccessorFactory.getInstance().getAnalogAccessor().setName(3, "NewNameFor3");
         Assert.assertEquals("NewNameFor3", DataAccessorFactory.getInstance().getAnalogAccessor().getName(3));
 

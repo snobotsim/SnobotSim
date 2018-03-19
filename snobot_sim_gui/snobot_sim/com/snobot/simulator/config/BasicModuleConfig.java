@@ -3,7 +3,7 @@ package com.snobot.simulator.config;
 /**
  * Base class for config objects. Holds the ID handle and the name of the
  * configurable module
- * 
+ *
  * @author PJ
  *
  */

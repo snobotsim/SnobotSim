@@ -23,4 +23,3 @@ bool CompressorWrapper::IsPressureSwitchFull()
 {
     return true;
 }
-

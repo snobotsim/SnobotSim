@@ -1,11 +1,9 @@
 
-#include "com_snobot_simulator_jni_standard_components_SpiCallbackJni.h"
-
 #include "MockData/SPIData.h"
-
-#include "SnobotSimJava/Jni/RegisterJniUtilities.h"
 #include "SnobotSimJava/Jni/BufferCallbackUtilities.h"
+#include "SnobotSimJava/Jni/RegisterJniUtilities.h"
 #include "SnobotSimJava/Logging/SnobotCoutLogger.h"
+#include "com_snobot_simulator_jni_standard_components_SpiCallbackJni.h"
 
 int gSpiInArrayIndices[5];
 SnobotSimJava::BufferCallbackHelperContainer gSpiCallbackContainer;
@@ -80,4 +78,3 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_SpiCal
         HALSIM_RegisterSPIInitializedCallback(i, &SpiCallback, &gSpiInArrayIndices[i], false);
     }
 }
-

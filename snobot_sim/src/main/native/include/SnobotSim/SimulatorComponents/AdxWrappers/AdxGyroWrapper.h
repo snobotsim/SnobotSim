@@ -5,14 +5,14 @@
  *      Author: PJ
  */
 
-#ifndef ADXGYROWRAPPER_H_
-#define ADXGYROWRAPPER_H_
+#ifndef SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_ADXWRAPPERS_ADXGYROWRAPPER_H_
+#define SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_ADXWRAPPERS_ADXGYROWRAPPER_H_
 
 #include <memory>
 
-#include "SnobotSim/SimulatorComponents/Spi/ISpiWrapper.h"
-#include "SnobotSim/SimulatorComponents/Gyro/IGyroWrapper.h"
 #include "ADXRS450_SpiGyroWrapperData.h"
+#include "SnobotSim/SimulatorComponents/Gyro/IGyroWrapper.h"
+#include "SnobotSim/SimulatorComponents/Spi/ISpiWrapper.h"
 
 class AdxGyroWrapper : public ISpiWrapper, public IGyroWrapper
 {
@@ -30,4 +30,4 @@ protected:
     std::shared_ptr<hal::ADXRS450_SpiGyroWrapper> mGyro;
 };
 
-#endif /* ADXGYROWRAPPER_H_ */
+#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_ADXWRAPPERS_ADXGYROWRAPPER_H_

@@ -15,7 +15,6 @@ import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 public class SpeedControllerGraphicDisplay extends BaseWidgetDisplay<Integer, MotorDisplay>
 {
-
     public SpeedControllerGraphicDisplay(Collection<Integer> aKeys)
     {
         super(aKeys);

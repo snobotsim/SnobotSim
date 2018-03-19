@@ -9,7 +9,6 @@ import com.snobot.test.utilities.MockIJoystick;
 
 public class TestWrappedJoystickPanel extends BaseGuiSimulatorTest
 {
-
     @Test
     public void testJoystickManagerDialog() throws Exception
     {

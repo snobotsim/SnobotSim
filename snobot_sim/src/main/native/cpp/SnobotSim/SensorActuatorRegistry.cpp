@@ -6,8 +6,9 @@
  */
 
 #include "SnobotSim/SensorActuatorRegistry.h"
-#include "SnobotSim/SimulatorComponents/CompressorWrapper.h"
+
 #include "HAL/handles/HandlesInternal.h"
+#include "SnobotSim/SimulatorComponents/CompressorWrapper.h"
 #include "SnobotSim/SimulatorComponents/Ctre/CanManager.h"
 
 SensorActuatorRegistry* SensorActuatorRegistry::sInstance =
@@ -18,7 +19,7 @@ SensorActuatorRegistry& SensorActuatorRegistry::Get()
 {
     return *sInstance;
 }
-    
+
 SensorActuatorRegistry::SensorActuatorRegistry() :
         mCompressor(new CompressorWrapper)
 {

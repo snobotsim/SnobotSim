@@ -15,7 +15,6 @@ import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 public class DigitalSourceGraphicDisplay extends BaseWidgetDisplay<Integer, DigitalSourceWrapperDisplay>
 {
-
     public DigitalSourceGraphicDisplay(Collection<Integer> aKeys)
     {
         super(aKeys);

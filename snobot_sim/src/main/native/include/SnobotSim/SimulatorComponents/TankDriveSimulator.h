@@ -5,12 +5,12 @@
  *      Author: PJ
  */
 
-#ifndef TANKDRIVESIMULATOR_H_
-#define TANKDRIVESIMULATOR_H_
+#ifndef SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_TANKDRIVESIMULATOR_H_
+#define SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_TANKDRIVESIMULATOR_H_
 
 #include "SnobotSim/ModuleWrapper/EncoderWrapper.h"
-#include "SnobotSim/SimulatorComponents/ISimulatorUpdater.h"
 #include "SnobotSim/SimulatorComponents/Gyro/IGyroWrapper.h"
+#include "SnobotSim/SimulatorComponents/ISimulatorUpdater.h"
 
 class EXPORT_ TankDriveSimulator: public ISimulatorUpdater
 {
@@ -36,4 +36,4 @@ protected:
 
 };
 
-#endif /* TANKDRIVESIMULATOR_H_ */
+#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_TANKDRIVESIMULATOR_H_

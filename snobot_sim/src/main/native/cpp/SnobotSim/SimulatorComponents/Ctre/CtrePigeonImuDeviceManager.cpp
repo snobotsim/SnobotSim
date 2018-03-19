@@ -6,6 +6,7 @@
  */
 
 #include "SnobotSim/SimulatorComponents/Ctre/CtrePigeonImuDeviceManager.h"
+
 #include <iostream>
 
 CtrePigeonImuDeviceManager::CtrePigeonImuDeviceManager()

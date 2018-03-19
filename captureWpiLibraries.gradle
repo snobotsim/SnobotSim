@@ -30,15 +30,15 @@ task extractWpilibjJniShared(type: Copy) {
 task captureWpiLibraries(type: Jar, dependsOn: extractWpilibjJniShared) {
 
     def os_name = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
-    
+
     destinationDir = file("$rootDir/build/wpi_libraries")
     classifier = "wpi_native-" + os_name;
-    
+
     def libraries = ["wpilibj-jniShared",
                      "wpiutil-cpp",
                      "halsim-adx_gyro_accelerometer",
                      "hal"]
-                 
+
     libraries.each{
         def full_path = "$rootDir/build/dependencies/" + it + "/" + os_name + "x86-64/" + os_name + "/x86-64/shared"
         println full_path
@@ -49,7 +49,7 @@ task captureWpiLibraries(type: Jar, dependsOn: extractWpilibjJniShared) {
             include "*.dylib"
         }
     }
-                 
+
     libraries.each{
         def full_path = "$rootDir/build/dependencies/" + it + "/" + os_name + "x86/" + os_name + "/x86/shared"
         println full_path

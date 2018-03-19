@@ -52,7 +52,7 @@ model {
             sourceSets = [ project.sourceSets.main ]
         }
     }
-    
+
     components {
         simulatorRobotWrapperShared(NativeLibrarySpec) {
             binaries {
@@ -60,7 +60,7 @@ model {
                    it.lib library: 'CppRobot', linkage: 'static'
                 }
             }
-            
+
             baseName = 'snobotSimJavaJni'
             sources {
                 cpp {
@@ -71,7 +71,7 @@ model {
                     exportedHeaders {
                         srcDirs = ["${wrapperDir}/cpp",
                                    // Temp
-                                   "${extractWplibcHeadersZip.libsdir}", 
+                                   "${extractWplibcHeadersZip.libsdir}",
                                    "${extractHalHeadersZip.libsdir}",]
                     }
                 }
@@ -86,7 +86,7 @@ jar {
     duplicatesStrategy = 'exclude'
 
     dependsOn { classes }
-    
+
     model {
         binaries {
             withType(SharedLibraryBinarySpec) { binary ->

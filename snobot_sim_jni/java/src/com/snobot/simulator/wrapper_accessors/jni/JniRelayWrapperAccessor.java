@@ -15,7 +15,7 @@ public class JniRelayWrapperAccessor implements RelayWrapperAccessor
     {
         RelayWrapperJni.setName(aPort, aName);
     }
-    
+
     @Override
     public String getName(int aPort)
     {
@@ -33,13 +33,13 @@ public class JniRelayWrapperAccessor implements RelayWrapperAccessor
     {
         return RelayWrapperJni.getFowardValue(aPort);
     }
-    
+
     @Override
     public boolean getReverseValue(int aPort)
     {
         return RelayWrapperJni.getReverseValue(aPort);
     }
-    
+
     @Override
     public List<Integer> getPortList()
     {

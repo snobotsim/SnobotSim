@@ -1,10 +1,11 @@
 
 #include <assert.h>
 #include <jni.h>
-#include "com_snobot_simulator_jni_RobotStateSingletonJni.h"
-#include "SnobotSim/RobotStateSingleton.h"
-#include "MockData/MockHooks.h"
+
 #include "MockData/DriverStationData.h"
+#include "MockData/MockHooks.h"
+#include "SnobotSim/RobotStateSingleton.h"
+#include "com_snobot_simulator_jni_RobotStateSingletonJni.h"
 
 extern "C"
 {
@@ -83,4 +84,4 @@ JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_RobotStateSingletonJni_g
     return .02;
 }
 
-}
+}  // extern "C"

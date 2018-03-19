@@ -21,7 +21,7 @@ import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor.Mot
 
 /**
  * This class writes the configuration information to a config file
- * 
+ *
  * @author PJ
  *
  */
@@ -32,7 +32,7 @@ public class SimulatorConfigWriter
     /**
      * Looks at all of the loaded simulator components and writes the config to
      * a file
-     * 
+     *
      * @param aOutFile
      *            The output configuration file path
      * @return True if the write was successful

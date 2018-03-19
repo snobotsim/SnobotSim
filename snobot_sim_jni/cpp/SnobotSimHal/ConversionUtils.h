@@ -5,18 +5,19 @@
  *      Author: preiniger
  */
 
-#ifndef CONVERSIONUTILS_H_
-#define CONVERSIONUTILS_H_
+#ifndef SNOBOTSIM_SNOBOT_SIM_JNI_CPP_SNOBOTSIMHAL_CONVERSIONUTILS_H_
+#define SNOBOTSIM_SNOBOT_SIM_JNI_CPP_SNOBOTSIMHAL_CONVERSIONUTILS_H_
 
 #include <jni.h>
-#include "support/jni_util.h"
+
 #include "SnobotSim/MotorSim/DcMotorModelConfig.h"
+#include "support/jni_util.h"
 
 namespace ConversionUtils
 {
     DcMotorModelConfig ConvertDcMotorModelConfig(JNIEnv * env, jobject& aJavaModelConfig);
 
     jobject ConvertDcMotorModelConfig(JNIEnv *env, const DcMotorModelConfig& aConfig);
-}
+}  // namespace ConversionUtils
 
-#endif /* CONVERSIONUTILS_H_ */
+#endif  // SNOBOTSIM_SNOBOT_SIM_JNI_CPP_SNOBOTSIMHAL_CONVERSIONUTILS_H_

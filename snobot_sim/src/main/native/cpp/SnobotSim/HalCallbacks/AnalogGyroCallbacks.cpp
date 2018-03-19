@@ -6,12 +6,11 @@
  */
 
 #include "SnobotSim/HalCallbacks/AnalogGyroCallbacks.h"
+
 #include "MockData/AnalogGyroData.h"
-
-#include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
+#include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/SimulatorComponents/Gyro/AnalogGyroWrapper.h"
-
 
 void AnalogGyroCallback(const char* name, void* param, const struct HAL_Value* value)
 {
@@ -57,5 +56,3 @@ void SnobotSim::ResetAnalogGyroCallbacks()
         HALSIM_ResetAnalogGyroData(i);
     }
 }
-
-

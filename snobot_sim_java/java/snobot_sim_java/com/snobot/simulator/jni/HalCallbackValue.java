@@ -2,7 +2,6 @@ package com.snobot.simulator.jni;
 
 public class HalCallbackValue
 {
-
     public int mType;
     public boolean mBoolean;
     public int mInt;
@@ -28,6 +27,6 @@ public class HalCallbackValue
     {
         return "HalCallbackValue [mType=" + mType + ", mBoolean=" + mBoolean + ", mInt=" + mInt + ", mLong=" + mLong + ", mDouble=" + mDouble + "]";
     }
-    
-    
+
+
 }

@@ -1,9 +1,7 @@
 
-#include "com_snobot_simulator_jni_standard_components_EncoderCallbackJni.h"
-
 #include "MockData/EncoderData.h"
-
 #include "SnobotSimJava/Jni/RegisterJniUtilities.h"
+#include "com_snobot_simulator_jni_standard_components_EncoderCallbackJni.h"
 
 int gEncoderArrayIndices[26];
 SnobotSimJava::CallbackHelperContainer gEncoderCallbackContainer;

@@ -9,7 +9,6 @@ import net.java.games.input.Controller;
 
 public class GenericGamepadJoystick extends BaseJoystick
 {
-
     public GenericGamepadJoystick(Controller aController)
     {
         this(aController, "Generic Gamepad");

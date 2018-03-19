@@ -6,6 +6,7 @@
  */
 
 #include "NavxSim/I2CNavxSimulator.h"
+
 #include "MockData/I2CData.h"
 
 static void NavxI2CReadBufferCallback(const char* name, void* param,

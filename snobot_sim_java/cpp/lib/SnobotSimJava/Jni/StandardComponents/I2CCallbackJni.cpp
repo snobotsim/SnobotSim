@@ -1,11 +1,9 @@
 
-#include "com_snobot_simulator_jni_standard_components_I2CCallbackJni.h"
-
 #include "MockData/I2CData.h"
-
-#include "SnobotSimJava/Jni/RegisterJniUtilities.h"
 #include "SnobotSimJava/Jni/BufferCallbackUtilities.h"
+#include "SnobotSimJava/Jni/RegisterJniUtilities.h"
 #include "SnobotSimJava/Logging/SnobotCoutLogger.h"
+#include "com_snobot_simulator_jni_standard_components_I2CCallbackJni.h"
 
 int gI2CInArrayIndices[2];
 SnobotSimJava::BufferCallbackHelperContainer gI2CCallbackContainer;

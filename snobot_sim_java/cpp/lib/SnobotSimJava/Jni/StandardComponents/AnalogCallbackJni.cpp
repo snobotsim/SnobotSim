@@ -1,10 +1,8 @@
 
-#include "com_snobot_simulator_jni_standard_components_AnalogCallbackJni.h"
-
 #include "MockData/AnalogInData.h"
 #include "MockData/AnalogOutData.h"
-
 #include "SnobotSimJava/Jni/RegisterJniUtilities.h"
+#include "com_snobot_simulator_jni_standard_components_AnalogCallbackJni.h"
 
 int gAnalogInArrayIndices[26];
 int gAnalogOutArrayIndices[26];
@@ -71,5 +69,3 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_Analog
         HALSIM_RegisterAnalogOutInitializedCallback(i, &AnalogIOCallback, &gAnalogOutArrayIndices[i], false);
     }
 }
-
-

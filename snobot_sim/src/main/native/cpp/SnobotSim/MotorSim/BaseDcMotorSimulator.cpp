@@ -8,7 +8,6 @@
 
 #include "SnobotSim/MotorSim/BaseDcMotorSimulator.h"
 
-
 BaseDcMotorSimulator::BaseDcMotorSimulator(
         const std::string& aSimulatorType,
         const DcMotorModel& aMotorModel,

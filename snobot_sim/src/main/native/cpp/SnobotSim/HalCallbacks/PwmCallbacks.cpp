@@ -1,12 +1,11 @@
 
 
-#include "MockData/PWMData.h"
-
 #include "SnobotSim/HalCallbacks/PwmCallbacks.h"
-#include "SnobotSim/SensorActuatorRegistry.h"
-#include "SnobotSim/ModuleWrapper/SpeedControllerWrapper.h"
-#include "SnobotSim/Logging/SnobotLogger.h"
 
+#include "MockData/PWMData.h"
+#include "SnobotSim/Logging/SnobotLogger.h"
+#include "SnobotSim/ModuleWrapper/SpeedControllerWrapper.h"
+#include "SnobotSim/SensorActuatorRegistry.h"
 
 void PwmCallback(const char* name, void* param, const struct HAL_Value* value)
 {
@@ -51,4 +50,3 @@ void SnobotSim::ResetPwmCallbacks()
         HALSIM_ResetPWMData(i);
     }
 }
-

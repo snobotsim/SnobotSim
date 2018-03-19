@@ -6,6 +6,7 @@
  */
 
 #include "SnobotSim/ModuleWrapper/SolenoidWrapper.h"
+
 #include "SnobotSim/PortUnwrapper.h"
 
 SolenoidWrapper::SolenoidWrapper(int aPort) :

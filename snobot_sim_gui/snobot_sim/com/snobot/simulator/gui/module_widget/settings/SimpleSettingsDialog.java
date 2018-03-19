@@ -28,7 +28,7 @@ public abstract class SimpleSettingsDialog extends JDialog
         JPanel namePanel = new JPanel();
         namePanel.add(new JLabel("Display Name"));
         namePanel.add(mNameField);
-        
+
         JPanel contentPane = new JPanel(new BorderLayout());
         contentPane.add(namePanel, BorderLayout.NORTH);
         contentPane.add(mSubmitButton, BorderLayout.SOUTH);

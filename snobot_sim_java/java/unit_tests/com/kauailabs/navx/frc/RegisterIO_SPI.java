@@ -4,7 +4,7 @@
 /* Created in support of Team 2465 (Kauaibots).  Go Purple Wave!              */
 /*                                                                            */
 /* Open Source Software - may be modified and shared by FRC teams. Any        */
-/* modifications to this code must be accompanied by the \License.txt file    */ 
+/* modifications to this code must be accompanied by the \License.txt file    */
 /* in the root directory of the project.                                      */
 /*----------------------------------------------------------------------------*/
 package com.kauailabs.navx.frc;
@@ -15,27 +15,26 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 
 class RegisterIO_SPI implements IRegisterIO{
-
     SPI port;
     int bitrate;
     boolean trace = false;
-    
+
     static final int   DEFAULT_SPI_BITRATE_HZ         = 500000;
-    
+
     public RegisterIO_SPI( SPI spi_port ) {
         port = spi_port;
         bitrate = DEFAULT_SPI_BITRATE_HZ;
     }
-    
+
     public void enableLogging(boolean enable) {
     	trace = enable;
     }
-    
+
     public RegisterIO_SPI( SPI spi_port, int bitrate ) {
         port = spi_port;
         this.bitrate = bitrate;
     }
-    
+
     @Override
     public boolean init() {
         port.setClockRate(bitrate);
@@ -83,7 +82,7 @@ class RegisterIO_SPI implements IRegisterIO{
 	        }
 	        byte crc = AHRSProtocol.getCRC(received_data, received_data.length - 1);
 	        if ( crc != received_data[received_data.length-1] ) {
-	            if (trace) System.out.println("navX-MXP SPI Read:  CRC error");        	
+	            if (trace) System.out.println("navX-MXP SPI Read:  CRC error");
 	            return false; // CRC ERROR
 	        }
 	        System.arraycopy(received_data, 0, buffer, 0, received_data.length - 1);

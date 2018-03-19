@@ -12,14 +12,15 @@
 #endif
 
 #include <math.h>
+
 #include <cmath>
 
 DcMotorModelConfig::DcMotorModelConfig(
             const FactoryParams& aFactoryParams,
-            double aNominalVoltage, 
-            double aFreeSpeedRpm, 
-            double aFreeCurrent, 
-            double aStallTorque, 
+            double aNominalVoltage,
+            double aFreeSpeedRpm,
+            double aFreeCurrent,
+            double aStallTorque,
             double aStallCurrent,
             double aMotorInertia,
             bool aHasBrake,
@@ -81,4 +82,3 @@ DcMotorModelConfig::DcMotorModelConfig(
 DcMotorModelConfig::~DcMotorModelConfig() {
 
 }
-

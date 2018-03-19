@@ -1,11 +1,9 @@
 
-#include "com_snobot_simulator_jni_RegisterCallbacksJni.h"
-
 #include "HAL/HAL.h"
 #include "HAL/handles/HandlesInternal.h"
-
-#include "SnobotSimJava/Logging/SnobotLogger.h"
 #include "SnobotSimJava/Logging/SnobotCoutLogger.h"
+#include "SnobotSimJava/Logging/SnobotLogger.h"
+#include "com_snobot_simulator_jni_RegisterCallbacksJni.h"
 
 static SnobotLogging::ISnobotLogger* sSnobotLogger = NULL;
 static bool sINITIALIZED = false;

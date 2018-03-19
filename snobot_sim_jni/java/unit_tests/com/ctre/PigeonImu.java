@@ -28,7 +28,7 @@ import java.nio.ByteBuffer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.can.CANJNI;
 
-/** 
+/**
  * Pigeon IMU Class.
  * Class supports communicating over CANbus and over ribbon-cable (CAN Talon SRX).
  */
@@ -53,7 +53,7 @@ public class PigeonImu extends CtreCanMap
 		Magnetometer360(3),
 		Accelerometer(5),
 		Unknown(-1);
-		private int value; private CalibrationMode(int value) { this.value = value; } 
+		private int value; private CalibrationMode(int value) { this.value = value; }
 
 		public static CalibrationMode getEnum(int value) {
 			for (CalibrationMode e : CalibrationMode.values()) {
@@ -165,7 +165,7 @@ public class PigeonImu extends CtreCanMap
 		StatusFrameRate(169),
 		AccumZ(170),
 		TempCompDisable(171);
-		private int value; private ParamEnum(int value) { this.value = value; } 
+		private int value; private ParamEnum(int value) { this.value = value; }
 	};
 	/**
 	 * Enumerated types for frame rate ms.
@@ -219,7 +219,7 @@ public class PigeonImu extends CtreCanMap
 		Calibration (15),
 		LedInstrum (16),
 		Error (31);
-		private int value; private MotionDriverState(int value) { this.value = value; } 
+		private int value; private MotionDriverState(int value) { this.value = value; }
 
 		public static MotionDriverState getEnum(int value) {
 			for (MotionDriverState e : MotionDriverState.values()) {
@@ -236,7 +236,7 @@ public class PigeonImu extends CtreCanMap
 		AddOffset (0x01),
 		MatchCompass (0x02),
 		SetOffset (0xFF);
-		private int value; private TareType(int value) { this.value = value; } 
+		private int value; private TareType(int value) { this.value = value; }
 	};
 	/** data storage for reset signals */
 	private class ResetStats {
@@ -279,7 +279,7 @@ public class PigeonImu extends CtreCanMap
 	private static final int COND_STATUS_9 = 0x00042200;
 	private static final int COND_STATUS_10 = 0x00042240;
 	private static final int COND_STATUS_11 = 0x00042280;
-	
+
 
 	private static final int CONTROL_1 = 0x00042800;
 
@@ -309,7 +309,7 @@ public class PigeonImu extends CtreCanMap
 	public PigeonImu(CANTalon talonSrx)
 	{
 		_deviceId = (int)0x02000000 | talonSrx.getDeviceID();
-	
+
 		SendCAN(CONTROL_1 | _deviceId, 0x00000000, 0, 100);
 	}
 
@@ -446,7 +446,7 @@ public class PigeonImu extends CtreCanMap
 	public int GetGeneralStatus(GeneralStatus statusToFill)
 	{
 		int errCode= ReceiveCAN(COND_STATUS_1);
-	
+
 		int b3 = (int)(_cache >> 0x18) & 0xFF;
 		int b5 = (int)(_cache >> 0x28) & 0xFF;
 
@@ -564,7 +564,7 @@ public class PigeonImu extends CtreCanMap
 	int SendCAN(int arbId, long data, int dataSize, int periodMs)
 	{
 		int retval = 0; /* no means of getting error info for now */
-		
+
         ByteBuffer trustedBuffer = ByteBuffer.allocateDirect(dataSize);
 
 		switch (dataSize) {
@@ -582,7 +582,7 @@ public class PigeonImu extends CtreCanMap
         byte[] bytes = new byte[trustedBuffer.capacity()];
         trustedBuffer.get(bytes);
         CANJNI.FRCNetCommCANSessionMuxSendMessage(arbId, bytes, periodMs);
-        
+
         return retval;
     }
 	/**
@@ -623,7 +623,7 @@ public class PigeonImu extends CtreCanMap
 
 		return errCode;
 	}
-	
+
 	private int GetThreeParam16(int arbId, double [] signals, double scalar)
 	{
 		short word_p1;
@@ -781,16 +781,16 @@ public class PigeonImu extends CtreCanMap
 		int raw;
 		double retval;
 		int errCode = ReceiveCAN(COND_STATUS_2);
-	
+
 		raw = (int) ((_cache >> 0x30) & 0xFF);
 		raw <<= 8;
 		raw |= ((_cache >> 0x38) & 0xFF);
-		
+
 		/* throw out the rotation count */
 		raw &= 0x1FFF;
-	
+
 		retval = raw * (360. / 8192.);
-	
+
 		HandleError(errCode);
 		return retval;
 	}
@@ -806,7 +806,7 @@ public class PigeonImu extends CtreCanMap
 		int  h4 =  (int) ((_cache >> 0x28) & 0xF);
 		int  m8 =  (int) ((_cache >> 0x30) & 0xFF);
 		int  l8 =  (int) ((_cache >> 0x38) & 0xFF);
-	
+
 		raw = h4;
 		raw <<= 8;
 		raw |= m8;
@@ -816,9 +816,9 @@ public class PigeonImu extends CtreCanMap
 		/* sign extend */
 		raw <<= (32 - 20);
 		raw >>= (32 - 20);
-	
+
 		retval = raw * (360. / 8192.);
-	
+
 		HandleError(errCode);
 		return retval;
 	}
@@ -862,7 +862,7 @@ public class PigeonImu extends CtreCanMap
 		} else {
 			/* good frame */
 			byte b2 = (byte)(statusFrame >> 0x10);
-		
+
 			MotionDriverState mds = MotionDriverState.getEnum(b2 & 0x1f);
 			switch (mds) {
 				case Error:
@@ -937,14 +937,14 @@ public class PigeonImu extends CtreCanMap
 		int errCode = GetThreeParam16(BIASED_STATUS_2, xyz_dps, 1.0f / 16.4f);
 		return HandleError(errCode);
 	}
-	
+
 	public int GetAccelerometerAngles(double [] tiltAngles)
 	{
 		int errCode = GetThreeBoundedAngles(COND_STATUS_3, tiltAngles);
 		return HandleError(errCode);
 	}
 	/**
-	 * @param status 	object reference to fill with fusion status flags.  
+	 * @param status 	object reference to fill with fusion status flags.
 	 *					Caller may pass null if flags are not needed.
 	 * @return fused heading in degrees.
 	 */
@@ -956,7 +956,7 @@ public class PigeonImu extends CtreCanMap
 		int errCode = GetThreeParam20(COND_STATUS_6, _cache_prec, 360. / 8192.);
 		fusedHeading = _cache_prec[0];
 		byte b2 = (byte)(_cache >> 16);
-		
+
 		String description;
 
 		if (errCode != 0) {
@@ -970,7 +970,7 @@ public class PigeonImu extends CtreCanMap
 			} else {
 				bIsFusing = false;
 			}
-	
+
 			if ((b2 & 0x8) == 0) {
 				bIsValid = false;
 			} else {
@@ -985,7 +985,7 @@ public class PigeonImu extends CtreCanMap
 				description = "Fused Heading is valid and is fusing compass.";
 			}
 		}
-				
+
 		if (status != null) {
 			/* fill caller's struct */
 			status.heading = fusedHeading;

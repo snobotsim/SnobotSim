@@ -1,22 +1,22 @@
 
 #include <assert.h>
 #include <jni.h>
-#include "SnobotSim/RobotStateSingleton.h"
-#include "SnobotSim/SensorActuatorRegistry.h"
+
+#include <memory>
+#include <vector>
+
+#include "ConversionUtils.h"
+#include "SnobotSim/GetSensorActuatorHelper.h"
 #include "SnobotSim/MotorSim/DcMotorModelConfig.h"
 #include "SnobotSim/MotorSim/GravityLoadDcMotorSim.h"
 #include "SnobotSim/MotorSim/RotationalLoadDcMotorSim.h"
-#include "SnobotSim/MotorSim/StaticLoadDcMotorSim.h"
 #include "SnobotSim/MotorSim/SimpleMotorSimulator.h"
+#include "SnobotSim/MotorSim/StaticLoadDcMotorSim.h"
+#include "SnobotSim/RobotStateSingleton.h"
+#include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/SimulatorComponents/Gyro/IGyroWrapper.h"
 #include "SnobotSim/SimulatorComponents/ISimulatorUpdater.h"
 #include "SnobotSim/SimulatorComponents/TankDriveSimulator.h"
-#include "SnobotSim/SimulatorComponents/Gyro/IGyroWrapper.h"
-#include "ConversionUtils.h"
-#include <vector>
-#include <memory>
-
-
-#include "SnobotSim/GetSensorActuatorHelper.h"
 
 using namespace GetSensorActuatorHelper;
 
@@ -126,7 +126,7 @@ JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_
           jint aLeftEncHandle,
           jint aRightEncHandle,
           jint aGyroHandle, jdouble aTurnKp)
-{    
+{
     std::shared_ptr<EncoderWrapper> leftEncoder = GetEncoderWrapper(aLeftEncHandle);
     std::shared_ptr<EncoderWrapper> rightEncoder = GetEncoderWrapper(aRightEncHandle);
     std::shared_ptr<IGyroWrapper> gyro = GetIGyroWrapper(aGyroHandle);
@@ -138,4 +138,4 @@ JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_
     return leftEncoder && rightEncoder && gyro;
 }
 
-}
+}  // extern "C"

@@ -3,9 +3,9 @@ apply plugin: 'maven-publish'
 
 task cppSourcesZip(type: Zip) {
     destinationDir = project.buildDir
-    
+
     classifier = "sources"
-    
+
     from('src/main/native') {
         into 'SnobotSim'
     }
@@ -22,9 +22,9 @@ publishing {
             groupId 'com.snobot.simulator'
             artifactId 'snobot_sim'
             version maven_version
-            
+
             artifact cppSourcesZip
-    
+
         }
     }
 

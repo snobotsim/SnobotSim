@@ -6,7 +6,7 @@ apply plugin: 'java'
 task javadoc(type: Javadoc, overwrite: true) {
     source = sourceSets.main.allJava
     classpath = configurations.compile
-    
+
     javadoc.options.links("http://docs.oracle.com/javase/8/docs/api/")
     options.addStringOption "tag", "pre:a:Pre-Condition"
     options.addStringOption('Xdoclint:accessibility,syntax,reference,html', '-quiet')
@@ -33,7 +33,7 @@ publishing {
             groupId 'com.snobot.simulator'
             artifactId 'snobot_sim_utilites'
             version maven_version
-            
+
             artifact jar
             artifact javadocJar
             artifact sourcesJar

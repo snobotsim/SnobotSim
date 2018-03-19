@@ -6,4 +6,4 @@ namespace SnobotSim
     EXPORT_ const char* GetSnobotSimVersion();
 
 
-}
+}  // namespace SnobotSim

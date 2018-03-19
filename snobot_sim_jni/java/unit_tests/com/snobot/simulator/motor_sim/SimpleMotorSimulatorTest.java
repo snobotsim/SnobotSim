@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.Talon;
 
 public class SimpleMotorSimulatorTest extends BaseSimulatorTest
 {
-
     @Test
     public void testSimpleSimulator()
     {

@@ -6,6 +6,7 @@
  */
 
 #include "SnobotSim/ModuleWrapper/DigitalSourceWrapper.h"
+
 #include "SnobotSim/PortUnwrapper.h"
 
 DigitalSourceWrapper::DigitalSourceWrapper(int aPort) :

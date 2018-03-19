@@ -24,7 +24,7 @@ import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor;
 
 /**
  * Class to read the configuration file and set up the simulator components
- * 
+ *
  * @author PJ
  *
  */
@@ -44,7 +44,7 @@ public class SimulatorConfigReader
      * not actually make any of the {@code setName()} or
      * {@code hookUpSpeedController()} calls, as the robot may not be set up
      * yet. It will however setup the SPI and I2C factories
-     * 
+     *
      * @param aConfigFile
      *            The config file to load
      * @return True if the config was loaded succesfully
@@ -90,7 +90,7 @@ public class SimulatorConfigReader
 
     /**
      * Returns the config loaded during the {@link #loadConfig} function
-     * 
+     *
      * @return The config
      */
     public SimulatorConfig getConfig()

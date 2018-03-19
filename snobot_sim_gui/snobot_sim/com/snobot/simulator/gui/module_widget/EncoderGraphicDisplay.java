@@ -14,7 +14,6 @@ import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 public class EncoderGraphicDisplay extends BaseWidgetDisplay<Integer, EncoderWrapperDisplay>
 {
-
     public EncoderGraphicDisplay(Collection<Integer> aKeys, String aString)
     {
         super(aKeys);
@@ -73,7 +72,6 @@ public class EncoderGraphicDisplay extends BaseWidgetDisplay<Integer, EncoderWra
 
 class EncoderWrapperDisplay extends JPanel
 {
-
     private JTextField mRawField;
     private JTextField mDistanceField;
 

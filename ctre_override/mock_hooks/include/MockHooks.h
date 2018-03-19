@@ -1,7 +1,11 @@
 
-#include <stdint.h>
-#include "MockHookUtilities.h"
+#ifndef SNOBOTSIM_CTRE_OVERRIDE_MOCK_HOOKS_INCLUDE_MOCKHOOKS_H_
+#define SNOBOTSIM_CTRE_OVERRIDE_MOCK_HOOKS_INCLUDE_MOCKHOOKS_H_
 
+
+#include <stdint.h>
+
+#include "MockHookUtilities.h"
 
 namespace SnobotSim
 {
@@ -93,3 +97,5 @@ void EXPORT_ SetPigeonCallback(CTRE_CallbackFunc callback);
 //};
 
 }
+
+#endif  // SNOBOTSIM_CTRE_OVERRIDE_MOCK_HOOKS_INCLUDE_MOCKHOOKS_H_

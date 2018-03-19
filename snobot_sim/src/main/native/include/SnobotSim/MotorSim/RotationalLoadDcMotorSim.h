@@ -5,12 +5,13 @@
  *      Author: preiniger
  */
 
-#ifndef ROTATIONALLOADDCMOTORSIM_H_
-#define ROTATIONALLOADDCMOTORSIM_H_
+#ifndef SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MOTORSIM_ROTATIONALLOADDCMOTORSIM_H_
+#define SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MOTORSIM_ROTATIONALLOADDCMOTORSIM_H_
 
 #include <memory>
-#include "SnobotSim/MotorSim/BaseDcMotorSimulator.h"
+
 #include "SnobotSim/ModuleWrapper/SpeedControllerWrapper.h"
+#include "SnobotSim/MotorSim/BaseDcMotorSimulator.h"
 
 class EXPORT_ RotationalLoadDcMotorSim: public BaseDcMotorSimulator
 {
@@ -41,4 +42,4 @@ protected:
     const double mArmMass;
 };
 
-#endif /* ROTATIONALLOADDCMOTORSIM_H_ */
+#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MOTORSIM_ROTATIONALLOADDCMOTORSIM_H_

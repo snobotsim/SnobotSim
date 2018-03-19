@@ -7,7 +7,7 @@ echo "Cloned repo"
 ./gradlew build publish -Pmaven_repo=../../pjreiniger/maven_repo
 echo "Ran publish"
 pwd
-ls 
+ls
 ls ..
 ls ../..
 cd ../../pjreiniger/maven_repo

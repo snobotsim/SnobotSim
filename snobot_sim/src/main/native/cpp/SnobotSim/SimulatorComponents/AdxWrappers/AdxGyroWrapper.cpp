@@ -27,4 +27,3 @@ double AdxGyroWrapper::GetAngle()
 {
     return mGyro->GetAngle();
 }
-

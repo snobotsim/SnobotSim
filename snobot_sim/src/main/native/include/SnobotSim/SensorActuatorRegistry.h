@@ -5,15 +5,16 @@
  *      Author: PJ
  */
 
-#ifndef INCLUDE_SNOBOTSIM_SENSORACTUATORREGISTRY_H_
-#define INCLUDE_SNOBOTSIM_SENSORACTUATORREGISTRY_H_
+#ifndef SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SENSORACTUATORREGISTRY_H_
+#define SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SENSORACTUATORREGISTRY_H_
 
 #include <map>
 #include <memory>
 #include <vector>
+
 #include "SnobotSim/ExportHelper.h"
-#include "SnobotSim/SimulatorComponents/ISimulatorUpdater.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
+#include "SnobotSim/SimulatorComponents/ISimulatorUpdater.h"
 #include "SnobotSim/StackHelper/StackTraceHelper.h"
 
 class SpeedControllerWrapper;
@@ -131,4 +132,4 @@ protected:
 
 #undef ACTUATOR_GETTERS
 
-#endif /* INCLUDE_SNOBOTSIM_SENSORACTUATORREGISTRY_H_ */
+#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SENSORACTUATORREGISTRY_H_

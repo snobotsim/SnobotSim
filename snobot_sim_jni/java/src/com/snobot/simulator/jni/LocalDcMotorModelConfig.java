@@ -9,19 +9,19 @@ public class LocalDcMotorModelConfig
     protected final DcMotorModelConfig mConfig;
 
     public LocalDcMotorModelConfig(
-            String aMotorType, 
-            int aNumMotors, 
-            double aGearReduction, 
+            String aMotorType,
+            int aNumMotors,
+            double aGearReduction,
             double aGearboxEfficiency,
 
-            double aNominalVoltage, 
-            double aFreeSpeedRpm, 
-            double aFreeCurrent, 
-            double aStallTorque, 
-            double aStallCurrent, 
+            double aNominalVoltage,
+            double aFreeSpeedRpm,
+            double aFreeCurrent,
+            double aStallTorque,
+            double aStallCurrent,
             double aMotorInertia,
             boolean aInverted,
-            boolean aHasBrake, 
+            boolean aHasBrake,
 
             double aKt, double aKv, double aResistance)
     {

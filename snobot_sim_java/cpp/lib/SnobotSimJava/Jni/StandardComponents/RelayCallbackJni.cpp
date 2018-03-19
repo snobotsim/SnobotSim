@@ -1,9 +1,7 @@
 
-#include "com_snobot_simulator_jni_standard_components_RelayCallbackJni.h"
-
 #include "MockData/RelayData.h"
-
 #include "SnobotSimJava/Jni/RegisterJniUtilities.h"
+#include "com_snobot_simulator_jni_standard_components_RelayCallbackJni.h"
 
 int gRelayArrayIndices[20];
 SnobotSimJava::CallbackHelperContainer gRelayCallbackContainer;

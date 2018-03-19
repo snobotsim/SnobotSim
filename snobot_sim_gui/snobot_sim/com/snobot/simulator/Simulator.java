@@ -29,9 +29,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 /**
  * The actual simulator. Runs the robot and the GUI threads. The GUI will appear
  * after receiving the signal that the robot code has started
- * 
+ *
  * @author PJ
- * 
+ *
  */
 public class Simulator
 {
@@ -53,7 +53,7 @@ public class Simulator
 
     /**
      * Constructor
-     * 
+     *
      * @param aLogLevel
      *            The log level to set up the simulator with
      * @param aPluginDirectory
@@ -180,7 +180,7 @@ public class Simulator
 
     /**
      * Starts the simulation by starting the robot and the GUI
-     * 
+     *
      * @throws InstantiationException
      *             Thrown the robot class could not be started with reflection
      * @throws IllegalAccessException

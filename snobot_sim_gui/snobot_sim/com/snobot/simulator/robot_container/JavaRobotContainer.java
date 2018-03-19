@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 
 /**
  * Wrapper class around a Java robot
- * 
+ *
  * @author PJ
  *
  */

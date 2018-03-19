@@ -21,7 +21,7 @@ public class JniSpeedControllerWrapperAccessor implements SpeedControllerWrapper
     {
         SpeedControllerWrapperJni.setName(aPort, aName);
     }
-    
+
     @Override
     public String getName(int aPort)
     {
@@ -33,13 +33,13 @@ public class JniSpeedControllerWrapperAccessor implements SpeedControllerWrapper
     {
         return SpeedControllerWrapperJni.getWantsHidden(aPort);
     }
-    
+
     @Override
     public double getVoltagePercentage(int aPort)
     {
         return SpeedControllerWrapperJni.getVoltagePercentage(aPort);
     }
-    
+
     @Override
     public List<Integer> getPortList()
     {

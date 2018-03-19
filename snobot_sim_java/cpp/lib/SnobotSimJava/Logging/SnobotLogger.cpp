@@ -7,7 +7,6 @@
 
 #include "SnobotSimJava/Logging/SnobotLogger.h"
 
-
 namespace SnobotLogging
 {
     ISnobotLogger* sLogger = NULL;
@@ -29,10 +28,4 @@ namespace SnobotLogging
         }
     }
 
-}
-
-
-
-
-
-
+}  // namespace SnobotLogging

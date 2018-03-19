@@ -28,7 +28,7 @@ public class MotorCurveDisplay extends JPanel
     protected final XYSeries mPowerPoints;
     protected final XYSeries mEfficiencyPoints;
     protected final JFreeChart mChart;
-    
+
     protected final int mNumPoints;
 
     public MotorCurveDisplay()
@@ -47,11 +47,11 @@ public class MotorCurveDisplay extends JPanel
         series.addSeries(mEfficiencyPoints);
 
         mChart = ChartFactory.createXYLineChart(
-                "Unknown Motor", 
-                "RPM", 
-                "Data", 
-                series, 
-                PlotOrientation.VERTICAL, true, 
+                "Unknown Motor",
+                "RPM",
+                "Data",
+                series,
+                PlotOrientation.VERTICAL, true,
                 true,
                 false);
 
@@ -106,9 +106,9 @@ public class MotorCurveDisplay extends JPanel
             }
         });
     }
-    
+
     private void addPoint(
-            double aNominalVoltage, double aStallCurrent, double aStallTorque, 
+            double aNominalVoltage, double aStallCurrent, double aStallTorque,
             int rpm, double currentSlope, double torqueSlope)
     {
         double omega = 2 * rpm * Math.PI / 60;

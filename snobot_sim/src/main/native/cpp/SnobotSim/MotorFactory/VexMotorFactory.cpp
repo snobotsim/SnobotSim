@@ -6,8 +6,8 @@
  */
 
 #include "SnobotSim/MotorFactory/VexMotorFactory.h"
-#include "SnobotSim/Logging/SnobotLogger.h"
 
+#include "SnobotSim/Logging/SnobotLogger.h"
 
 const std::string VexMotorFactory::MOTOR_NAME_CIM            = "CIM";
 const std::string VexMotorFactory::MOTOR_NAME_MINI_CIM       = "Mini CIM";
@@ -160,4 +160,3 @@ DcMotorModelConfig VexMotorFactory::CreateMotor(
     factoryParams.mMotorName = "";
     return DcMotorModelConfig(factoryParams, 0, 0, 0, 0, 0, 0);
 }
-

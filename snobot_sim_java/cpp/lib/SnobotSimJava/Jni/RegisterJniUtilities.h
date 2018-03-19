@@ -2,6 +2,7 @@
 #pragma once
 
 #include <jni.h>
+
 #include <string>
 
 #include "MockData/HAL_Value.h"
@@ -30,4 +31,4 @@ namespace SnobotSimJava
     jobject ConvertHalValue(JNIEnv* env, const struct HAL_Value* value);
 
     void CallJavaCallback(const CallbackHelperContainer& callbackHelper, const char* name, void* param, const struct HAL_Value* value);
-}
+}  // namespace SnobotSimJava

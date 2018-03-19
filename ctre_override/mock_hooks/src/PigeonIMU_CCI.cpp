@@ -1,9 +1,9 @@
 
+#include <cstring>
+#include <vector>
+
 #include "MockHooks.h"
 #include "ctre/phoenix/CCI/PigeonIMU_CCI.h"
-#include <vector>
-#include <cstring>
-
 
 #define RECEIVE_HELPER(paramName, size)                                   \
     PigeonImuSimulatorWrapper* wrapper = ConvertToPigeonWrapper(handle);  \
@@ -467,4 +467,4 @@ PigeonImuSimulatorWrapper* ConvertToPigeonWrapper(void* param)
         wrapper->Send("SetControlFramePeriod", frame, periodMs);
         return (ctre::phoenix::ErrorCode) 0;
     }
-}
+}  // extern "C"

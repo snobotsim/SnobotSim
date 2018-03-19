@@ -1,19 +1,18 @@
 
 #include <assert.h>
 #include <jni.h>
-#include "support/jni_util.h"
 
-#include "com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni.h"
-#include "SnobotSim/ModuleWrapper/SpeedControllerWrapper.h"
-#include "SnobotSim/SensorActuatorRegistry.h"
+#include "../ConversionUtils.h"
 #include "SnobotSim/GetSensorActuatorHelper.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
-#include "../ConversionUtils.h"
-
+#include "SnobotSim/ModuleWrapper/SpeedControllerWrapper.h"
 #include "SnobotSim/MotorSim/GravityLoadDcMotorSim.h"
 #include "SnobotSim/MotorSim/RotationalLoadDcMotorSim.h"
-#include "SnobotSim/MotorSim/StaticLoadDcMotorSim.h"
 #include "SnobotSim/MotorSim/SimpleMotorSimulator.h"
+#include "SnobotSim/MotorSim/StaticLoadDcMotorSim.h"
+#include "SnobotSim/SensorActuatorRegistry.h"
+#include "com_snobot_simulator_jni_module_wrapper_SpeedControllerWrapperJni.h"
+#include "support/jni_util.h"
 
 using namespace wpi::java;
 
@@ -356,4 +355,4 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_SpeedContro
 }
 
 
-}
+}  // extern "C"

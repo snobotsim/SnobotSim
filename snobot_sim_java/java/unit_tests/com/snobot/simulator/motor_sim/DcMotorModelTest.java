@@ -10,7 +10,6 @@ import com.snobot.simulator.motor_sim.motor_factory.PublishedMotorFactory;
 // https://github.com/Team254/Sim-FRC-2015/blob/master/test/com/team254/frc2015/sim/TestDCMotor.java
 public class DcMotorModelTest
 {
-
     private static final double EPS = 1E-9;
 
     @Test

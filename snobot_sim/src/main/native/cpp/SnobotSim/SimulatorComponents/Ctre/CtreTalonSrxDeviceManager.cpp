@@ -6,9 +6,11 @@
  */
 
 #include "SnobotSim/SimulatorComponents/Ctre/CtreTalonSrxDeviceManager.h"
-#include "SnobotSim/SimulatorComponents/Ctre/CtreTalonSrxSimulator.h"
-#include "SnobotSim/SensorActuatorRegistry.h"
+
 #include <cstring>
+
+#include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/SimulatorComponents/Ctre/CtreTalonSrxSimulator.h"
 
 std::shared_ptr<CtreTalonSrxSimulator> GetWrapperHelper(int aPort)
 {

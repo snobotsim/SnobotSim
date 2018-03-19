@@ -1,9 +1,7 @@
 
-#include "com_snobot_simulator_jni_standard_components_DigitalCallbackJni.h"
-
 #include "MockData/DIOData.h"
-
 #include "SnobotSimJava/Jni/RegisterJniUtilities.h"
+#include "com_snobot_simulator_jni_standard_components_DigitalCallbackJni.h"
 
 int gDigitalInArrayIndices[26];
 int gDigitalOutArrayIndices[26];
@@ -57,5 +55,3 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_Digita
         HALSIM_RegisterDIOAllCallbacks(i, &DigitalIOCallback, &gDigitalInArrayIndices[i], false);
     }
 }
-
-

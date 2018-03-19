@@ -7,7 +7,7 @@ import com.snobot.simulator.JniLibraryResourceLoader;
 
 /**
  * Wrapper class around a C++ robot's code
- * 
+ *
  * @author PJ
  *
  */

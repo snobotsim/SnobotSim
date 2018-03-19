@@ -10,13 +10,12 @@ import com.snobot.simulator.wrapper_accessors.EncoderWrapperAccessor;
 
 public class JniEncoderWrapperAccessor implements EncoderWrapperAccessor
 {
-    
     @Override
     public void setName(int aPort, String aName)
     {
         EncoderWrapperJni.setName(aPort, aName);
     }
-    
+
     @Override
     public String getName(int aPort)
     {
@@ -28,7 +27,7 @@ public class JniEncoderWrapperAccessor implements EncoderWrapperAccessor
     {
         return EncoderWrapperJni.getWantsHidden(aPort);
     }
-    
+
     @Override
     public boolean connectSpeedController(int aEncoderHandle, int aSpeedControllerHandle)
     {
@@ -40,7 +39,7 @@ public class JniEncoderWrapperAccessor implements EncoderWrapperAccessor
     {
         return EncoderWrapperJni.isHookedUp(aPort);
     }
-    
+
     @Override
     public int getHookedUpId(int aPort)
     {
@@ -52,13 +51,13 @@ public class JniEncoderWrapperAccessor implements EncoderWrapperAccessor
     {
         return EncoderWrapperJni.getRaw(aPort);
     }
-    
+
     @Override
     public double getDistance(int aPort)
     {
         return EncoderWrapperJni.getDistance(aPort);
     }
-    
+
     @Override
     public List<Integer> getPortList()
     {

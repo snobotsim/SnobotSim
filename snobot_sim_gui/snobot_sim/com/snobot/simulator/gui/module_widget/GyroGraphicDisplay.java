@@ -13,7 +13,6 @@ import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 public class GyroGraphicDisplay extends BaseWidgetDisplay<Integer, GyroWrapperDisplay>
 {
-
     public GyroGraphicDisplay(Collection<Integer> aKeys)
     {
         super(aKeys);
@@ -67,7 +66,6 @@ public class GyroGraphicDisplay extends BaseWidgetDisplay<Integer, GyroWrapperDi
 
 class GyroWrapperDisplay extends JPanel
 {
-
     private JTextField mAngleField;
 
     public GyroWrapperDisplay()

@@ -47,7 +47,7 @@ public class TestJoystickFactory extends BaseSimulatorTest
         config.put("X", new ControllerConfiguration(new MockController(), XboxJoystick.class));
         config.put("Y", new ControllerConfiguration(new MockController(), Ps4Joystick.class));
         config.put("Z", new ControllerConfiguration(new MockController(), KeyboardJoystick.class));
-        
+
         factory.setJoysticks(0, "X");
         factory.setJoysticks(3, "Y");
         factory.setJoysticks(5, "Z");

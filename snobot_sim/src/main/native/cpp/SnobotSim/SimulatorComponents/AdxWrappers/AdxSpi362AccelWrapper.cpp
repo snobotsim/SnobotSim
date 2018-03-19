@@ -19,4 +19,3 @@ AdxSpi362AccelWrapper::~AdxSpi362AccelWrapper()
 {
 
 }
-

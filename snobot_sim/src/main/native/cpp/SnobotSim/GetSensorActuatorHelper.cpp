@@ -6,6 +6,7 @@
  */
 
 #include "SnobotSim/GetSensorActuatorHelper.h"
+
 #include "SnobotSim/PortUnwrapper.h"
 
 #define FIND_MODULE_FUNC(WrapperType) \
@@ -35,5 +36,4 @@ namespace GetSensorActuatorHelper
     FIND_MODULE_FUNC(EncoderWrapper)
     FIND_MODULE_FUNC(ISpiWrapper)
     FIND_MODULE_FUNC(II2CWrapper)
-}
-
+}  // namespace GetSensorActuatorHelper

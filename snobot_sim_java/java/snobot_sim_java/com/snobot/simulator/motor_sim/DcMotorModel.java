@@ -19,7 +19,7 @@ public class DcMotorModel
 
     /**
      * Reset the motor to a specified state.
-     * 
+     *
      * @param aPosition
      *            The new position
      * @param aVelocity
@@ -38,7 +38,7 @@ public class DcMotorModel
     /**
      * Simulate applying a given voltage and load for a specified period of
      * time.
-     * 
+     *
      * @param aLoad
      *            Load applied to the motor (kg*m^2)
      * @param aTimestep
@@ -54,9 +54,9 @@ public class DcMotorModel
         /*
          * Using the 971-style first order system model. V = I * R + Kv * w
          * torque = Kt * I
-         * 
+         *
          * V = torque / Kt * R + Kv * w torque = J * dw/dt + external_torque
-         * 
+         *
          * dw/dt = (V - Kv * w) * Kt / (R * J) - external_torque / J
          */
 

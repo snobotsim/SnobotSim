@@ -1,15 +1,16 @@
 
 #include <assert.h>
 #include <jni.h>
-#include "support/jni_util.h"
 
-#include "com_snobot_simulator_jni_module_wrapper_EncoderWrapperJni.h"
-#include "SnobotSim/ModuleWrapper/EncoderWrapper.h"
-#include "SnobotSim/SensorActuatorRegistry.h"
-#include "SnobotSim/PortUnwrapper.h"
+#include <sstream>
+
 #include "SnobotSim/GetSensorActuatorHelper.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
-#include <sstream>
+#include "SnobotSim/ModuleWrapper/EncoderWrapper.h"
+#include "SnobotSim/PortUnwrapper.h"
+#include "SnobotSim/SensorActuatorRegistry.h"
+#include "com_snobot_simulator_jni_module_wrapper_EncoderWrapperJni.h"
+#include "support/jni_util.h"
 
 using namespace wpi::java;
 
@@ -218,4 +219,4 @@ JNIEXPORT jintArray JNICALL Java_com_snobot_simulator_jni_module_1wrapper_Encode
 }
 
 
-}
+}  // extern "C"

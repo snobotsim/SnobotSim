@@ -8,7 +8,6 @@ import com.snobot.test.utilities.BaseSimulatorTest;
 
 public class TestCompressorWrapper extends BaseSimulatorTest
 {
-
     @Test
     public void testCompressorWrapper()
     {

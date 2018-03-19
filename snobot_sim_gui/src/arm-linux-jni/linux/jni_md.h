@@ -23,8 +23,8 @@
  * questions.
  */
 
-#ifndef _JAVASOFT_JNI_MD_H_
-#define _JAVASOFT_JNI_MD_H_
+#ifndef SNOBOTSIM_SNOBOT_SIM_GUI_SRC_ARM_LINUX_JNI_LINUX_JNI_MD_H_
+#define SNOBOTSIM_SNOBOT_SIM_GUI_SRC_ARM_LINUX_JNI_LINUX_JNI_MD_H_
 
 #ifndef __has_attribute
   #define __has_attribute(x) 0
@@ -40,6 +40,10 @@
 #define JNICALL
 
 typedef int jint;
+
+
+
+
 #ifdef _LP64 /* 64-bit Solaris */
 typedef long jlong;
 #else
@@ -48,4 +52,4 @@ typedef long long jlong;
 
 typedef signed char jbyte;
 
-#endif /* !_JAVASOFT_JNI_MD_H_ */
+#endif  // SNOBOTSIM_SNOBOT_SIM_GUI_SRC_ARM_LINUX_JNI_LINUX_JNI_MD_H_

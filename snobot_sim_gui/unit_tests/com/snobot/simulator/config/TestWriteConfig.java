@@ -14,7 +14,6 @@ import com.snobot.test.utilities.MockRobot;
 
 public class TestWriteConfig extends BaseSimulatorTest
 {
-
     @Test
     public void testWriteConfig()
     {

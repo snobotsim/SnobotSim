@@ -5,8 +5,8 @@
  *      Author: preiniger
  */
 
-#ifndef SRC_GETSENSORACTUATORHELPER_H_
-#define SRC_GETSENSORACTUATORHELPER_H_
+#ifndef SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_GETSENSORACTUATORHELPER_H_
+#define SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_GETSENSORACTUATORHELPER_H_
 
 #include "SnobotSim/SensorActuatorRegistry.h"
 
@@ -21,6 +21,6 @@ namespace GetSensorActuatorHelper
     EXPORT_ std::shared_ptr<EncoderWrapper> GetEncoderWrapper(int aHandle, bool aLogOnMissing=true);
     EXPORT_ std::shared_ptr<ISpiWrapper> GetISpiWrapper(int aHandle, bool aLogOnMissing=false);
     EXPORT_ std::shared_ptr<II2CWrapper> GetII2CWrapper(int aHandle, bool aLogOnMissing=false);
-}
+}  // namespace GetSensorActuatorHelper
 
-#endif /* SRC_GETSENSORACTUATORHELPER_H_ */
+#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_GETSENSORACTUATORHELPER_H_

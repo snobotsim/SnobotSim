@@ -7,7 +7,6 @@ import org.junit.Test;
 
 public class TestPluginSniffer
 {
-
     @Test
     public void testPluginSnifferWithNoPlugins() throws Exception
     {

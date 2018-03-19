@@ -53,7 +53,7 @@ public class SpiAndI2CSettingsDialog extends JDialog
 
         availableI2COptions.add("None");
         availableI2COptions.addAll(DataAccessorFactory.getInstance().getSimulatorDataAccessor().getAvailableI2CSimulators());
-        
+
         int rowCtr = 0;
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.ipadx = 5;

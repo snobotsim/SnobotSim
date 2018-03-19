@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * Example robot used in the event that no robot to simulate is specified. Does
  * a simple simulation by hooking up a few commonly used components
- * 
+ *
  * @author PJ
  *
  */

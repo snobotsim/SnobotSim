@@ -11,7 +11,6 @@ import com.snobot.test.utilities.MockRobot;
 
 public class TestASimulator extends BaseSimulatorTest
 {
-
     @Test
     public void testASimulator()
     {

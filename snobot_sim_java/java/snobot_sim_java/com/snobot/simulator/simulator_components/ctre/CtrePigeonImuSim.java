@@ -7,7 +7,6 @@ import com.snobot.simulator.simulator_components.gyro.IGyroWrapper;
 
 public class CtrePigeonImuSim
 {
-
     private final PigeonAccelWrapper mXAccel;
     private final PigeonAccelWrapper mYAccel;
     private final PigeonAccelWrapper mZAccel;

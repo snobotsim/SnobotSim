@@ -6,6 +6,7 @@
  */
 
 #include "NavxSim/SpiNavxSimulator.h"
+
 #include "MockData/SPIData.h"
 
 static void NavxSPIReadBufferCallback(const char* name, void* param,
@@ -75,4 +76,3 @@ uint8_t SpiNavxSimulator::GetCRC(uint8_t* buffer, int length)
     }
     return crc;
 }
-

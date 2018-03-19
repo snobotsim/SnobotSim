@@ -6,6 +6,7 @@
  */
 
 #include "SnobotSim/ModuleWrapper/AnalogSourceWrapper.h"
+
 #include "SnobotSim/PortUnwrapper.h"
 
 AnalogSourceWrapper::AnalogSourceWrapper(int aPort) :

@@ -26,7 +26,7 @@ public interface SpeedControllerWrapperAccessor extends IBasicSensorActuatorWrap
             return mDisplayName;
         }
     }
-    
+
     public double getVoltagePercentage(int aPort);
 
     public DcMotorModelConfig getMotorConfig(int aPort);

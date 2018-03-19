@@ -6,8 +6,8 @@
  */
 
 #include "SnobotSim/SimulatorComponents/TankDriveSimulator.h"
-#include "SnobotSim/Logging/SnobotLogger.h"
 
+#include "SnobotSim/Logging/SnobotLogger.h"
 
 TankDriveSimulator::TankDriveSimulator(
         const std::shared_ptr<EncoderWrapper>& aLeftEncoder,
@@ -36,13 +36,12 @@ void TankDriveSimulator::Update()
 {
     if (mIsSetup)
     {
-    
+
         double rightDist = mRightEncoder->GetDistance();
         double leftDist = mLeftEncoder->GetDistance();
-    
+
         double angle = (leftDist - rightDist) / (3.14159 * mTurnKp) * (180.0);
-    
+
         mGyroWrapper->SetAngle(angle);
     }
 }
-

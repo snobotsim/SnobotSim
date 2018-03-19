@@ -14,7 +14,6 @@ import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 public class SolenoidGraphicDisplay extends BaseWidgetDisplay<Integer, SolenoidDisplay>
 {
-
     public SolenoidGraphicDisplay(Collection<Integer> aKeys)
     {
         super(aKeys);

@@ -1,10 +1,8 @@
 
-#include "com_snobot_simulator_jni_standard_components_AnalogGyroCallbackJni.h"
-
-#include "MockData/AnalogGyroData.h"
 #include "HAL/handles/HandlesInternal.h"
-
+#include "MockData/AnalogGyroData.h"
 #include "SnobotSimJava/Jni/RegisterJniUtilities.h"
+#include "com_snobot_simulator_jni_standard_components_AnalogGyroCallbackJni.h"
 
 int gAnalogGyroArrayIndices[26];
 SnobotSimJava::CallbackHelperContainer gAnalogGyroCallbackContainer;
@@ -59,4 +57,3 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_Analog
         HALSIM_RegisterAnalogGyroAllCallbacks(i, &AnalogGyroCallback, &gAnalogGyroArrayIndices[i], false);
     }
 }
-

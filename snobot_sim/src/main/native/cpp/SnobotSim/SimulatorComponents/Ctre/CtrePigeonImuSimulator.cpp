@@ -6,6 +6,7 @@
  */
 
 #include "SnobotSim/SimulatorComponents/Ctre/CtrePigeonImuSimulator.h"
+
 #include "SnobotSim/SensorActuatorRegistry.h"
 
 CtrePigeonImuSimulator::CtrePigeonImuSimulator(int aPort) :

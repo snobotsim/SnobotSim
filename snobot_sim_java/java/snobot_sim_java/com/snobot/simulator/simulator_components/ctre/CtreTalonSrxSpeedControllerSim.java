@@ -75,7 +75,7 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
     protected ControlType mControlType;
 
     // Feedback control
-    protected PIDFConstants[] mPidConstants = {new PIDFConstants(), new PIDFConstants()}; 
+    protected PIDFConstants[] mPidConstants = {new PIDFConstants(), new PIDFConstants()};
     protected int mCurrentPidProfile;
     protected FeedbackDevice mFeedbackDevice;
     protected double mControlGoal;
@@ -219,7 +219,7 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
     {
         double error = aGoal - aCurrent;
         double dErr = error - mLastError;
-        
+
         mSumError += error;
         if (error > mPidConstants[mCurrentPidProfile].mIZone)
         {
@@ -230,16 +230,16 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
         double iComp = mPidConstants[mCurrentPidProfile].mI * mSumError;
         double dComp = mPidConstants[mCurrentPidProfile].mD * dErr;
         double fComp = mPidConstants[mCurrentPidProfile].mF * aGoal;
-        
+
         double output = pComp + iComp + dComp + fComp;
 
         output = Math.min(output, 1.0);
         output = Math.max(output, -1.0);
 
         mLastError = error;
-        
-        sLOGGER.log(Level.DEBUG, "Updating CAN PID: Error: " + error + ", Output: " + output 
-                + " (Cur: " + aCurrent + ", Goal: " + aGoal + ") " 
+
+        sLOGGER.log(Level.DEBUG, "Updating CAN PID: Error: " + error + ", Output: " + output
+                + " (Cur: " + aCurrent + ", Goal: " + aGoal + ") "
                 + " (P: " + pComp + ", I: " + iComp + ", D: " + dComp + ", F: " + fComp + ")");
 
         return output;
@@ -272,15 +272,15 @@ public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
         output = Math.max(output, -1.0);
 
         mLastError = error;
-        
+
         if (sLOGGER.isDebugEnabled())
         {
             DecimalFormat df = new DecimalFormat("#.##");
-            sLOGGER.log(Level.DEBUG, "Motion Magic... " 
-                    + "Goal: " + aControlGoal + ", " 
-                    + "CurPos: " + df.format(aCurrentPosition) + ", " 
-                    + "CurVel: " + df.format(aCurrentVelocity) + ", " 
-                    + "err: " + df.format(error) + ", " 
+            sLOGGER.log(Level.DEBUG, "Motion Magic... "
+                    + "Goal: " + aControlGoal + ", "
+                    + "CurPos: " + df.format(aCurrentPosition) + ", "
+                    + "CurVel: " + df.format(aCurrentVelocity) + ", "
+                    + "err: " + df.format(error) + ", "
                     + "maxa: " + df.format(mMotionMagicMaxAcceleration) + ", " + "maxv: " + df.format(mMotionMagicMaxVelocity));
         }
 

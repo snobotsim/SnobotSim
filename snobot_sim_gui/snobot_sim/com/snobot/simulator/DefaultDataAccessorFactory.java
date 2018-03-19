@@ -5,7 +5,7 @@ import com.snobot.simulator.wrapper_accessors.java.JavaDataAccessor;
 
 /**
  * Helper class that sets up the data accessor abstraction layer
- * 
+ *
  * @author PJ
  *
  */

@@ -1,16 +1,14 @@
 
 #include <assert.h>
 #include <jni.h>
-#include "support/jni_util.h"
 
-
-#include "com_snobot_simulator_jni_navx_NavxSimulatorJni.h"
+#include <cstring>
 
 #include "NavxSim/I2CNavxSimulator.h"
 #include "NavxSim/SpiNavxSimulator.h"
-
 #include "SnobotSimJava/Logging/SnobotLogger.h"
-#include <cstring>
+#include "com_snobot_simulator_jni_navx_NavxSimulatorJni.h"
+#include "support/jni_util.h"
 
 /*
  * Class:     com_snobot_simulator_jni_NavxSimulatorHal

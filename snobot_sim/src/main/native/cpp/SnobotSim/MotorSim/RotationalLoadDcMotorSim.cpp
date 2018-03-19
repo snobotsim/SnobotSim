@@ -6,17 +6,18 @@
  */
 
 #include "SnobotSim/MotorSim/RotationalLoadDcMotorSim.h"
+
 #include <math.h>
 
 const double RotationalLoadDcMotorSim::sGRAVITY = 9.8;
 
 RotationalLoadDcMotorSim::RotationalLoadDcMotorSim(const DcMotorModel& aMotorModel, const std::shared_ptr<SpeedControllerWrapper>& aSpeedController,
-        double aArmCenterOfMass, double aArmMass, double aConstantAssistTorque, double aOverCenterAssistTorque) :    
+        double aArmCenterOfMass, double aArmMass, double aConstantAssistTorque, double aOverCenterAssistTorque) :
     BaseDcMotorSimulator("Rotational Load", aMotorModel),
-    mSpeedController(aSpeedController), 
-    mArmInertia(aArmMass * aArmCenterOfMass * aArmCenterOfMass), 
+    mSpeedController(aSpeedController),
+    mArmInertia(aArmMass * aArmCenterOfMass * aArmCenterOfMass),
     mGravityBasedTorqueFactor(aArmMass * aArmCenterOfMass * sGRAVITY),
-    mConstantAssistTorque(aConstantAssistTorque), 
+    mConstantAssistTorque(aConstantAssistTorque),
     mOverCenterAssistTorque(aOverCenterAssistTorque),
     mArmCenterOfMass(aArmCenterOfMass),
     mArmMass(aArmMass)

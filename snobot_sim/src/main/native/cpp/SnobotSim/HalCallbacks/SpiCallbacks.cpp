@@ -6,14 +6,13 @@
  */
 
 #include "SnobotSim/HalCallbacks/SpiCallbacks.h"
-#include "SnobotSim/SimulatorComponents/Spi/ISpiWrapper.h"
-#include "SnobotSim/SimulatorComponents/Spi/SpiWrapperFactory.h"
-#include "MockData/SPIData.h"
 
-#include "SnobotSim/SensorActuatorRegistry.h"
+#include "MockData/SPIData.h"
 #include "SnobotSim/GetSensorActuatorHelper.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
-
+#include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/SimulatorComponents/Spi/ISpiWrapper.h"
+#include "SnobotSim/SimulatorComponents/Spi/SpiWrapperFactory.h"
 
 void SpiCallback(const char* name, void* param, const struct HAL_Value* value)
 {

@@ -8,7 +8,6 @@ import java.util.Map;
 import edu.wpi.first.wpilibj.can.CANJNI;
 
 public class CtreCanMap {
-
 	public class RxEvent {
 		public long _data = 0;
 		public long _time = 0;
@@ -26,7 +25,7 @@ public class CtreCanMap {
 		public RxEvent clone() {
 			return new RxEvent(_data, _time, _len);
 		}
-		
+
 		public void Copy(RxEvent src)
 		{
 			_data = src._data;
@@ -47,14 +46,14 @@ public class CtreCanMap {
 
 		/* call into JNI to get message */
 		try {
-	
+
 		    ByteBuffer targetedMessageID = ByteBuffer.allocateDirect(4);
 		    targetedMessageID.order(ByteOrder.LITTLE_ENDIAN);
-		    
+
 		    targetedMessageID.asIntBuffer().put(0, arbId);
-		
+
 		    ByteBuffer timeStamp = ByteBuffer.allocateDirect(4);
-		 
+
 		    // Get the data.
 		    ByteBuffer dataBuffer =
                     ByteBuffer.wrap(CANJNI.FRCNetCommCANSessionMuxReceiveMessage(targetedMessageID.asIntBuffer(), 0xFFFFFFFF, timeStamp));
@@ -64,7 +63,7 @@ public class CtreCanMap {
 		    	toFill._len = dataBuffer.capacity();
 		    	toFill._data = 0;
 		    	if(toFill._len > 0){
-		    		int lenMinusOne = toFill._len - 1; 
+		    		int lenMinusOne = toFill._len - 1;
 		    		for (int i = 0; i < toFill._len; i++) {
 		    			/* grab byte without sign extensions */
 		    			long aByte = dataBuffer.get(lenMinusOne-i);
@@ -80,7 +79,7 @@ public class CtreCanMap {
 				_map.put(arbId, toFill.clone());
 				retval = CTR_Code.CTR_OKAY;
 		    }
-		    else 
+		    else
 		    {
 		    	/* no message */
 		    	retval = CTR_Code.CTR_RxTimeout;
@@ -102,17 +101,17 @@ public class CtreCanMap {
 				{
 					/* leave retval nonzero */
 				}
-				else 
+				else
 				{
 					/* check how old the object is */
 					long now  = System.currentTimeMillis();
 					long timeSince = now - lookup._time;
-					
+
 					if(timeSince > timeoutMs)
 					{
 						/* at least copy the last received despite being old */
 						toFill.Copy(lookup);
-	
+
 						/* too old, leave retval nonzero */
 					}
 					else
@@ -121,8 +120,8 @@ public class CtreCanMap {
 						toFill.Copy(lookup);
 						retval = CTR_Code.CTR_OKAY;
 					}
-				}	
-			}	
+				}
+			}
 		}
 		return retval.IntValue();
 	}

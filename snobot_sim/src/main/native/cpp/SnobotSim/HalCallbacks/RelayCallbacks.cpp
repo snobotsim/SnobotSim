@@ -1,12 +1,11 @@
 
 
-#include "MockData/RelayData.h"
-
 #include "SnobotSim/HalCallbacks/RelayCallbacks.h"
-#include "SnobotSim/SensorActuatorRegistry.h"
-#include "SnobotSim/ModuleWrapper/RelayWrapper.h"
-#include "SnobotSim/Logging/SnobotLogger.h"
 
+#include "MockData/RelayData.h"
+#include "SnobotSim/Logging/SnobotLogger.h"
+#include "SnobotSim/ModuleWrapper/RelayWrapper.h"
+#include "SnobotSim/SensorActuatorRegistry.h"
 
 void RelayCallback(const char* name, void* param, const struct HAL_Value* value)
 {

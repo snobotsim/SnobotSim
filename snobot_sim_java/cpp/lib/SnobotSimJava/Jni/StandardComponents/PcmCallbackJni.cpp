@@ -1,10 +1,8 @@
 
-#include "com_snobot_simulator_jni_standard_components_PcmCallbackJni.h"
-
-#include "MockData/PCMData.h"
 #include "HAL/handles/HandlesInternal.h"
-
+#include "MockData/PCMData.h"
 #include "SnobotSimJava/Jni/RegisterJniUtilities.h"
+#include "com_snobot_simulator_jni_standard_components_PcmCallbackJni.h"
 
 int gSolenoidArrayIndices[20];
 SnobotSimJava::CallbackHelperContainer gPcmCallbackContainer;

@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.Talon;
 
 public class MotorFactoryTest extends BaseSimulatorTest
 {
-
     @Test
     public void testInvalidMotorName()
     {

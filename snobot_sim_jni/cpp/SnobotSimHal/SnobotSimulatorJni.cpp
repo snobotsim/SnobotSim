@@ -1,19 +1,18 @@
 
 #include <assert.h>
 #include <jni.h>
-#include "support/jni_util.h"
 
-#include "com_snobot_simulator_jni_SnobotSimulatorJni.h"
+#include "HAL/HAL.h"
 #include "SnobotSim/HalCallbacks/CallbackSetup.h"
+#include "SnobotSim/Logging/SnobotCoutLogger.h"
+#include "SnobotSim/Logging/SnobotLogger.h"
+#include "SnobotSim/RobotStateSingleton.h"
+#include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/SimulatorComponents/I2C/I2CWrapperFactory.h"
 #include "SnobotSim/SimulatorComponents/Spi/SpiWrapperFactory.h"
-#include "SnobotSim/SensorActuatorRegistry.h"
-#include "SnobotSim/SensorActuatorRegistry.h"
-#include "SnobotSim/RobotStateSingleton.h"
 #include "SnobotSim/SnobotSimHalVersion.h"
-#include "SnobotSim/Logging/SnobotLogger.h"
-#include "SnobotSim/Logging/SnobotCoutLogger.h"
-#include "HAL/HAL.h"
+#include "com_snobot_simulator_jni_SnobotSimulatorJni.h"
+#include "support/jni_util.h"
 
 using namespace wpi::java;
 
@@ -127,4 +126,4 @@ JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_
     return true;
 }
 
-}
+}  // extern "C"

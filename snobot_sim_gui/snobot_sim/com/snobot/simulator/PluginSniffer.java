@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 /**
  * Class that loads any of the jar files in the plugin directory. Also can
  * search for C++/Java robot classes
- * 
+ *
  * @author PJ
  *
  */
@@ -40,7 +40,7 @@ public class PluginSniffer
     /**
      * Gets the list of C++ robots discovered. Note: Must call
      * {@link findRobots} before this list gets populated
-     * 
+     *
      * @return The C++ robots
      */
     public List<Class<?>> getCppRobots()
@@ -51,7 +51,7 @@ public class PluginSniffer
     /**
      * Gets the list of Java robots discovered. Note: Must call
      * {@link findRobots} before this list gets populated
-     * 
+     *
      * @return The Java robots
      */
     public List<Class<?>> getJavaRobots()
@@ -61,7 +61,7 @@ public class PluginSniffer
 
     /**
      * Loads all the plugins in the plugin directory. Does not search recursivly
-     * 
+     *
      * @param aPluginDir
      *            The directory to search.
      * @throws Exception
@@ -95,7 +95,7 @@ public class PluginSniffer
 
     /**
      * Finds any robot classes available in the plugin directory
-     * 
+     *
      * @throws Exception
      *             Thrown if the plugin loading fails
      */

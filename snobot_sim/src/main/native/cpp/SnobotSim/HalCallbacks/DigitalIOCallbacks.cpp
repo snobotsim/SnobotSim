@@ -1,11 +1,10 @@
 
-#include "MockData/DIOData.h"
-
 #include "SnobotSim/HalCallbacks/DigitalIOCallbacks.h"
-#include "SnobotSim/SensorActuatorRegistry.h"
-#include "SnobotSim/ModuleWrapper/DigitalSourceWrapper.h"
-#include "SnobotSim/Logging/SnobotLogger.h"
 
+#include "MockData/DIOData.h"
+#include "SnobotSim/Logging/SnobotLogger.h"
+#include "SnobotSim/ModuleWrapper/DigitalSourceWrapper.h"
+#include "SnobotSim/SensorActuatorRegistry.h"
 
 void DigitalIOCallback(const char* name, void* param, const struct HAL_Value* value)
 {

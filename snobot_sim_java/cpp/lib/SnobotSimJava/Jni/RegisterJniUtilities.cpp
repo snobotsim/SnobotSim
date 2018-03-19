@@ -1,7 +1,7 @@
 
 #include "SnobotSimJava/Jni/RegisterJniUtilities.h"
-#include "SnobotSimJava/Logging/SnobotLogger.h"
 
+#include "SnobotSimJava/Logging/SnobotLogger.h"
 #include "support/jni_util.h"
 
 using namespace wpi::java;
@@ -69,5 +69,4 @@ namespace SnobotSimJava
             aEnv->ExceptionDescribe();
         }
     }
-}
-
+}  // namespace SnobotSimJava

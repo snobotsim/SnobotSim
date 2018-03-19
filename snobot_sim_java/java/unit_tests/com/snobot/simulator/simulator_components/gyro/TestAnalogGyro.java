@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 
 public class TestAnalogGyro extends BaseSimulatorTest
 {
-
     @Test
     public void testAnalogGyro()
     {

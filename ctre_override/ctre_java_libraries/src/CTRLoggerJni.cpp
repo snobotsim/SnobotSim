@@ -1,10 +1,8 @@
 
-#include <jni.h>
 #include <assert.h>
-
+#include <jni.h>
 
 #include "com_ctre_phoenix_CTRLoggerJNI.h"
-
 
 /*
  * Class:     com_ctre_phoenix_CTRLoggerJNI

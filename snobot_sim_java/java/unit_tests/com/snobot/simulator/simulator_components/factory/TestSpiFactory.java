@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
 
 public class TestSpiFactory extends BaseSimulatorTest
 {
-
     @Test
     public void testAvailableDataTypes()
     {

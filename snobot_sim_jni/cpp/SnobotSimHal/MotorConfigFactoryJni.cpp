@@ -1,12 +1,11 @@
 
 #include <assert.h>
 #include <jni.h>
-#include "support/jni_util.h"
 
-#include "com_snobot_simulator_jni_MotorConfigFactoryJni.h"
-#include "SnobotSim/MotorFactory/VexMotorFactory.h"
 #include "ConversionUtils.h"
-
+#include "SnobotSim/MotorFactory/VexMotorFactory.h"
+#include "com_snobot_simulator_jni_MotorConfigFactoryJni.h"
+#include "support/jni_util.h"
 
 extern "C"
 {
@@ -27,4 +26,4 @@ JNIEXPORT jobject JNICALL Java_com_snobot_simulator_jni_MotorConfigFactoryJni_cr
     return ConversionUtils::ConvertDcMotorModelConfig(env, config);
 }
 
-}
+}  // extern "C"

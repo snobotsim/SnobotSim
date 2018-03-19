@@ -1,13 +1,10 @@
 
-#include "com_snobot_simulator_jni_can_CanCallbackJni.h"
-
 #include "MockData/CanData.h"
-
-#include "SnobotSimJava/Logging/SnobotLogger.h"
-#include "SnobotSimJava/Jni/RegisterJniUtilities.h"
-#include "ctre/phoenix/CCI/MotController_CCI.h"
 #include "MockHooks.h"
-
+#include "SnobotSimJava/Jni/RegisterJniUtilities.h"
+#include "SnobotSimJava/Logging/SnobotLogger.h"
+#include "com_snobot_simulator_jni_can_CanCallbackJni.h"
+#include "ctre/phoenix/CCI/MotController_CCI.h"
 #include "support/jni_util.h"
 
 using namespace wpi::java;

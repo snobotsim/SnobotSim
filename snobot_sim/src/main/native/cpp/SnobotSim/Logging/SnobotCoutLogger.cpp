@@ -6,8 +6,8 @@
  */
 
 #include "SnobotSim/Logging/SnobotCoutLogger.h"
-#include <iostream>
 
+#include <iostream>
 
 using namespace SnobotLogging;
 

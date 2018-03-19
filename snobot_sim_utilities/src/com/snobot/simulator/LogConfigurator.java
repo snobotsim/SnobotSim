@@ -8,7 +8,6 @@ import org.apache.log4j.PropertyConfigurator;
 
 public class LogConfigurator
 {
-
     public static void loadLog4jConfig()
     {
         String logFile = new File("log4j.properties").getAbsolutePath();

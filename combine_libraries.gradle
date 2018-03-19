@@ -2,7 +2,7 @@
 task tempCombineWindowsAndLinuxHalLibraries(type: Zip) {
    destinationDir(file('temp_libs'))
    classifier "hal-ABCD-all"
-   
+
    from(zipTree('temp_libs/hal-ABCD-windowsx86-64.zip'))
    from(zipTree('temp_libs/hal-ABCD-linuxx86-64.zip'))
 }
@@ -10,7 +10,7 @@ task tempCombineWindowsAndLinuxHalLibraries(type: Zip) {
 task tempCombineWindowsAndLinuxWpilibjLibraries(type: Jar) {
    destinationDir(file('temp_libs'))
    classifier "wpilibj-jni-ABCD-all"
-   
+
    from(zipTree('temp_libs/wpilibj-jni-ABCD-windowsx86-64.jar'))
    from(zipTree('temp_libs/wpilibj-jni-ABCD-linuxx86-64.jar'))
 }
@@ -19,8 +19,7 @@ task tempCombineWindowsAndLinuxWpilibjLibraries(type: Jar) {
 task tempCombineWindowsAndLinuxWpilibcLibraries(type: Zip) {
    destinationDir(file('temp_libs'))
    classifier "wpilibc-ABCD-all"
-   
+
    from(zipTree('temp_libs/wpilibc-ABCD-windowsx86-64.zip'))
    from(zipTree('temp_libs/wpilibc-ABCD-linuxx86-64.zip'))
 }
-

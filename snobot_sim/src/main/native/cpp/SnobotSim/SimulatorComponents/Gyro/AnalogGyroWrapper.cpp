@@ -6,6 +6,7 @@
  */
 
 #include "SnobotSim/SimulatorComponents/Gyro/AnalogGyroWrapper.h"
+
 #include "MockData/AnalogGyroData.h"
 
 AnalogGyroWrapper::AnalogGyroWrapper(const std::shared_ptr<AnalogSourceWrapper>& aAnalogWrapper):

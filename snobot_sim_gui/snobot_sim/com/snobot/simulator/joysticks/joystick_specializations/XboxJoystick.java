@@ -9,9 +9,8 @@ import net.java.games.input.Controller;
 
 public class XboxJoystick extends BaseJoystick
 {
-
     private static final Identifier[] sAXIS = new Identifier[]
-    { 
+    {
         Identifier.Axis.X, // Left x
         Identifier.Axis.Y, // Left Y
         Identifier.Axis.Z, // Left Trigger
@@ -21,7 +20,7 @@ public class XboxJoystick extends BaseJoystick
     };
 
     private static final Identifier[] sBUTTONS = new Identifier[]
-    { 
+    {
         Identifier.Button._0, // A
         Identifier.Button._1, // B
         Identifier.Button._2, // X
@@ -35,8 +34,8 @@ public class XboxJoystick extends BaseJoystick
     };
 
     private static final Identifier[] sPOV = new Identifier[]
-    { 
-            Identifier.Axis.POV 
+    {
+            Identifier.Axis.POV
     };
 
     public XboxJoystick(Controller aController)
@@ -66,7 +65,7 @@ public class XboxJoystick extends BaseJoystick
             output[3] = 0;
         }
 
-        
+
         return output;
     }
 }

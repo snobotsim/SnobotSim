@@ -5,11 +5,11 @@
  *      Author: PJ
  */
 
-#ifndef SNOBOTLOGGER_H_
-#define SNOBOTLOGGER_H_
+#ifndef SNOBOTSIM_SNOBOT_SIM_JAVA_CPP_LIB_SNOBOTSIMJAVA_LOGGING_SNOBOTLOGGER_H_
+#define SNOBOTSIM_SNOBOT_SIM_JAVA_CPP_LIB_SNOBOTSIMJAVA_LOGGING_SNOBOTLOGGER_H_
 
-#include <string>
 #include <sstream>
+#include <string>
 
 namespace SnobotLogging
 {
@@ -49,7 +49,7 @@ namespace SnobotLogging
             int aLineNumber,
             const std::string& aFileName,
             const std::string& aMessage);
-}
+}  // namespace SnobotLogging
 
 
 #ifndef __FUNCTION_NAME__
@@ -73,4 +73,4 @@ namespace SnobotLogging
 #define LOG_UNSUPPORTED_WITH_LEVEL_AND_MSG(level, message)  SNOBOT_LOG(level,                   "Unsupported function " << __FUNCTION_NAME__ << " " << message);
 
 
-#endif /* SNOBOTLOGGER_H_ */
+#endif  // SNOBOTSIM_SNOBOT_SIM_JAVA_CPP_LIB_SNOBOTSIMJAVA_LOGGING_SNOBOTLOGGER_H_

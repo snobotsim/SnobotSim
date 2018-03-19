@@ -159,26 +159,26 @@ public class DcMotorModelConfig
         }
 
         public MotorParams(
-                double aNominalVoltage, 
-                double aFreeSpeedRpm, 
-                double aFreeCurrent, 
-                double aStallTorque, 
+                double aNominalVoltage,
+                double aFreeSpeedRpm,
+                double aFreeCurrent,
+                double aStallTorque,
                 double aStallCurrent,
                 double aMotorInertia,
                 double aKtScaler)
         {
-            this(aNominalVoltage, aFreeSpeedRpm, aFreeCurrent, aStallTorque, aStallCurrent, 
-                    aMotorInertia, 
-                    (aStallTorque / aStallCurrent) * aKtScaler, 
+            this(aNominalVoltage, aFreeSpeedRpm, aFreeCurrent, aStallTorque, aStallCurrent,
+                    aMotorInertia,
+                    (aStallTorque / aStallCurrent) * aKtScaler,
                     (aFreeSpeedRpm / aNominalVoltage) * (Math.PI * 2.0) / 60.0,
                     aNominalVoltage / aStallCurrent);
         }
 
         public MotorParams(
-                double aNominalVoltage, 
-                double aFreeSpeedRpm, 
-                double aFreeCurrent, 
-                double aStallTorque, 
+                double aNominalVoltage,
+                double aFreeSpeedRpm,
+                double aFreeCurrent,
+                double aStallTorque,
                 double aStallCurrent,
                 double aMotorInertia,
                 double aKt,

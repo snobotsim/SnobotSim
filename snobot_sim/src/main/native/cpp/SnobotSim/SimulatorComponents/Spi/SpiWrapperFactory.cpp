@@ -7,11 +7,11 @@
 
 #include "SnobotSim/SimulatorComponents/Spi/SpiWrapperFactory.h"
 
+#include "SnobotSim/GetSensorActuatorHelper.h"
 #include "SnobotSim/SimulatorComponents/AdxWrappers/AdxGyroWrapper.h"
 #include "SnobotSim/SimulatorComponents/AdxWrappers/AdxSpi345AccelWrapper.h"
 #include "SnobotSim/SimulatorComponents/AdxWrappers/AdxSpi362AccelWrapper.h"
 #include "SnobotSim/SimulatorComponents/NavxWrappers/SpiNavxWrapper.h"
-#include "SnobotSim/GetSensorActuatorHelper.h"
 
 const std::string SpiWrapperFactory::AUTO_DISCOVER_NAME = "AutoDiscover";
 const std::string SpiWrapperFactory::ADXRS450_GYRO_NAME = "ADXRS450";
@@ -101,6 +101,3 @@ std::shared_ptr<ISpiWrapper> SpiWrapperFactory::CreateWrapper(int aPort, const s
     SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown simulator type '" << aType << "', defaulting to null");
     return std::shared_ptr<ISpiWrapper>(new NullSpiWrapper);
 }
-
-
-

@@ -11,13 +11,13 @@ public class RotationalLoadDcMotorSim extends BaseDcMotorSimulator
     protected final PwmWrapper mSpeedController;
     protected final double mArmInertia;
     protected final double mGravityBasedTorqueFactor;
-    
+
     //Helper springs
     protected final double mConstantAssistTorque;
     protected final double mOverCenterAssistTorque;
 
     /**
-     * 
+     *
      * @param aModel
      *            The motor model
      * @param aSpeedController

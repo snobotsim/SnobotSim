@@ -6,6 +6,7 @@
  */
 
 #include "SnobotSim/ModuleWrapper/RelayWrapper.h"
+
 #include "SnobotSim/PortUnwrapper.h"
 
 RelayWrapper::RelayWrapper(int aPort) :

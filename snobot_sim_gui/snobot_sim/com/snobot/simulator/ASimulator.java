@@ -7,7 +7,7 @@ import com.snobot.simulator.robot_container.IRobotClassContainer;
 
 /**
  * Base class for a custom simulator.
- * 
+ *
  * @author PJ
  *
  */

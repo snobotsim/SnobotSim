@@ -10,19 +10,18 @@ import com.snobot.simulator.wrapper_accessors.GyroWrapperAccessor;
 
 public class JniGyroWrapperAccessor implements GyroWrapperAccessor
 {
-    
     @Override
     public void register(int aPort, String aName)
     {
         GyroWrapperJni.register(aPort, aName);
     }
-    
+
     @Override
     public void setName(int aPort, String aName)
     {
         GyroWrapperJni.setName(aPort, aName);
     }
-    
+
     @Override
     public String getName(int aPort)
     {
@@ -34,7 +33,7 @@ public class JniGyroWrapperAccessor implements GyroWrapperAccessor
     {
         return GyroWrapperJni.getWantsHidden(aPort);
     }
-    
+
     @Override
     public double getAngle(int aPort)
     {
@@ -46,13 +45,13 @@ public class JniGyroWrapperAccessor implements GyroWrapperAccessor
     {
         GyroWrapperJni.setAngle(aPort, aAngle);
     }
-    
+
     @Override
     public void reset(int aPort)
     {
         GyroWrapperJni.reset(aPort);
     }
-    
+
     @Override
     public List<Integer> getPortList()
     {

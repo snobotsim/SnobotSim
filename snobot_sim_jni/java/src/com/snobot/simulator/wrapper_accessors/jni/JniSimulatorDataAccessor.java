@@ -21,7 +21,6 @@ import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor;
 
 public class JniSimulatorDataAccessor implements SimulatorDataAccessor
 {
-
     @Override
     public void setLogLevel(SnobotLogLevel aLogLevel)
     {

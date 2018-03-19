@@ -128,7 +128,7 @@ public class TestUnsupportedTalonOperations extends BaseSimulatorTest
         motorToTest.valueUpdated();
         motorToTest.getSensorCollection();
         motorToTest.getControlMode();
-        
+
         // Enhanced Motor Controller
         motorToTest.setStatusFramePeriod(StatusFrameEnhanced.Status_11_UartGadgeteer, 0, 0);
         motorToTest.getStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 0);

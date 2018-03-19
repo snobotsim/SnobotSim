@@ -75,4 +75,4 @@ namespace ConversionUtils
                 aConfig.mKV,
                 aConfig.mResistance);
     }
-}
+}  // namespace ConversionUtils

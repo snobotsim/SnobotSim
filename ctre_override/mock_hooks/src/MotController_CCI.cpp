@@ -1,12 +1,12 @@
 
 
-#include "ctre/phoenix/CCI/MotController_CCI.h"
-#include "MockHooks.h"
-
+#include <cstring>
 #include <iostream>
 #include <string>
 #include <vector>
-#include <cstring>
+
+#include "MockHooks.h"
+#include "ctre/phoenix/CCI/MotController_CCI.h"
 
 #define RECEIVE_HELPER(paramName, size)                                         \
     MotorControllerWrapper* wrapper = ConvertToMotorControllerWrapper(handle);  \
@@ -865,4 +865,4 @@ extern "C"{
         LOG_UNSUPPORTED_CAN_FUNC("");
         return (ctre::phoenix::ErrorCode) 0;
     }
-}
+}  // extern "C"

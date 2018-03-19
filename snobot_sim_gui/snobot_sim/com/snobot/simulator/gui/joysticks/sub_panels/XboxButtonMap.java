@@ -3,13 +3,12 @@ package com.snobot.simulator.gui.joysticks.sub_panels;
 /**
  * Button Map for Xbox controller. When calling buttons or axis on an Xbox, use
  * this class.
- * 
+ *
  * @author ayush_000
  *
  */
 public class XboxButtonMap
 {
-
     // Axis
     public static final int LEFT_X_AXIS = 0;
     public static final int LEFT_Y_AXIS = 1;

@@ -5,13 +5,14 @@
  *      Author: preiniger
  */
 
-#ifndef ROBOTSTATESINGLETON_H_
-#define ROBOTSTATESINGLETON_H_
+#ifndef SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_ROBOTSTATESINGLETON_H_
+#define SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_ROBOTSTATESINGLETON_H_
 
 #include <chrono>
-#include <mutex>
 #include <condition_variable>
+#include <mutex>
 #include <thread>
+
 #include "SnobotSim/ExportHelper.h"
 
 class EXPORT_ RobotStateSingleton
@@ -31,7 +32,7 @@ public:
     void UpdateLoop();
 
     double GetMatchTime() const;
-    
+
     void WaitForNextControlLoop(double aWaitTime);
 
 protected:
@@ -39,4 +40,4 @@ protected:
     std::chrono::time_point<std::chrono::system_clock> mTimeEnabled;
 };
 
-#endif /* ROBOTSTATESINGLETON_H_ */
+#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_ROBOTSTATESINGLETON_H_

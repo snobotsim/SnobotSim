@@ -1,10 +1,10 @@
 
 #include <assert.h>
 #include <jni.h>
-#include "com_snobot_simulator_jni_JoystickJni.h"
-#include "SnobotSim/Logging/SnobotLogger.h"
-#include "MockData/DriverStationData.h"
 
+#include "MockData/DriverStationData.h"
+#include "SnobotSim/Logging/SnobotLogger.h"
+#include "com_snobot_simulator_jni_JoystickJni.h"
 
 extern "C"
 {
@@ -14,7 +14,7 @@ extern "C"
  * Signature: (I[F[S[Z)V
  */
 JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_JoystickJni_setJoystickInformation
-  (JNIEnv * env, jclass, 
+  (JNIEnv * env, jclass,
    jint aHandle, jfloatArray aAxes, jshortArray aPovs, jint aButtonCount, jint aButtonMask)
 {
     HAL_JoystickAxes newAxes;
@@ -44,4 +44,4 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_JoystickJni_setJoystickInfo
     HALSIM_SetJoystickPOVs(aHandle, &newPov);
     HALSIM_SetJoystickButtons(aHandle, &newButtons);
 }
-}
+}  // extern "C"

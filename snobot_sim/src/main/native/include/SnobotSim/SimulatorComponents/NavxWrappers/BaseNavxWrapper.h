@@ -5,11 +5,10 @@
  *      Author: PJ
  */
 
-#ifndef BASENAVXWRAPPER_H_
-#define BASENAVXWRAPPER_H_
+#ifndef SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_NAVXWRAPPERS_BASENAVXWRAPPER_H_
+#define SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_NAVXWRAPPERS_BASENAVXWRAPPER_H_
 
 #include "NavxSim/NavxSimulator.h"
-
 #include "SnobotSim/SimulatorComponents/Accelerometer/IAccelerometerWrapper.h"
 #include "SnobotSim/SimulatorComponents/Gyro/IGyroWrapper.h"
 
@@ -68,4 +67,4 @@ public:
     std::shared_ptr<GyroWrapper> mRollWrapper;
 };
 
-#endif /* BASENAVXWRAPPER_H_ */
+#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_NAVXWRAPPERS_BASENAVXWRAPPER_H_

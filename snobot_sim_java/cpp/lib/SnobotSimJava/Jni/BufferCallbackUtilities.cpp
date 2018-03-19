@@ -1,7 +1,7 @@
 
 #include "SnobotSimJava/Jni/BufferCallbackUtilities.h"
-#include "SnobotSimJava/Logging/SnobotLogger.h"
 
+#include "SnobotSimJava/Logging/SnobotLogger.h"
 #include "support/jni_util.h"
 
 using namespace wpi::java;
@@ -44,4 +44,4 @@ namespace SnobotSimJava
         CallJavaBufferCallback(callbackHelper.mClazz, callbackHelper.mWriteBufferMethodId, name, param, const_cast<uint8_t*>(buffer), count);
     }
 
-}
+}  // namespace SnobotSimJava

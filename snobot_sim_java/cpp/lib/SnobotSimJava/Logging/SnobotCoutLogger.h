@@ -5,8 +5,8 @@
  *      Author: PJ
  */
 
-#ifndef SNOBOTCOUTLOGGER_H_
-#define SNOBOTCOUTLOGGER_H_
+#ifndef SNOBOTSIM_SNOBOT_SIM_JAVA_CPP_LIB_SNOBOTSIMJAVA_LOGGING_SNOBOTCOUTLOGGER_H_
+#define SNOBOTSIM_SNOBOT_SIM_JAVA_CPP_LIB_SNOBOTSIMJAVA_LOGGING_SNOBOTCOUTLOGGER_H_
 
 #include "SnobotSimJava/Logging/SnobotLogger.h"
 
@@ -30,5 +30,5 @@ namespace SnobotLogging
 
         std::string mDirectorySubstring;
     };
-}
-#endif /* SNOBOTCOUTLOGGER_H_ */
+}  // namespace SnobotLogging
+#endif  // SNOBOTSIM_SNOBOT_SIM_JAVA_CPP_LIB_SNOBOTSIMJAVA_LOGGING_SNOBOTCOUTLOGGER_H_

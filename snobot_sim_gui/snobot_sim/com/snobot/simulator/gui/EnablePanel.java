@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 
 /**
  * This panel shows the Enable and Autonomous buttons
- * 
+ *
  * @author PJ
  *
  */

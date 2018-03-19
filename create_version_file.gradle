@@ -2,10 +2,10 @@
 
 ext.getVersionName = { ->
     def output = "Unknown"
-    
+
     if(System.getenv('APPVEYOR_BUILD_NUMBER') != null)
     {
-        output = "Appveyor build #" + System.getenv('APPVEYOR_BUILD_NUMBER') + 
+        output = "Appveyor build #" + System.getenv('APPVEYOR_BUILD_NUMBER') +
             " for commit " + System.getenv('APPVEYOR_REPO_COMMIT')
     }
     else if(System.getenv('TRAVIS_BUILD_NUMBER') != null)
@@ -28,13 +28,13 @@ ext.getVersionName = { ->
             e.printStackTrace()
         }
     }
-    
+
     return output
 }
 
 
 ext.createJavaVersion  = { destinationDir, className, thePackage, version ->
-    
+
     def versionClass = """
 package ${thePackage};
 
@@ -47,10 +47,10 @@ public final class ${className} {
     public static final String Version = "${version}";
 }
     """.trim()
-    
+
     def versionFile = file(new File(destinationDir, className + ".java"))
-    
-    
+
+
     if (versionFile.exists()) {
         versionFile.delete()
     }
@@ -58,7 +58,7 @@ public final class ${className} {
 }
 
 ext.createCppVersion  = { destinationDir, namespace, className, version ->
-    
+
     def versionClass = """
 
 /*
@@ -71,10 +71,10 @@ const char* ${namespace}::GetSnobotSimVersion()
     return "${version}";;
 }
 """.trim()
-    
+
     def versionFile = file(new File(destinationDir, className + ".cpp"))
-    
-    
+
+
     if (versionFile.exists()) {
         versionFile.delete()
     }

@@ -12,7 +12,6 @@
 #include "SnobotSim/HalCallbacks/SpiCallbacks.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
 
-
 void SnobotSim::InitializeSnobotCallbacks()
 {
     InitializeAnalogGyroCallbacks();

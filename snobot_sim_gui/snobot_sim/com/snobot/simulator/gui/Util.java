@@ -43,7 +43,7 @@ public class Util
 
     /**
      * Modifies the color to make it more see through
-     * 
+     *
      * @param aColor
      *            The color to modify
      * @param aAlpha

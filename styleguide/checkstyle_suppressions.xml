@@ -6,10 +6,10 @@
 <suppressions>
     <suppress files="com.snobot.simulator.wrapper_accessors.java.JaveSimulatorVersion" checks="[a-zA-Z0-9]*"/>
     <suppress files="com.snobot.simulator.SnobotSimGuiVersion" checks="[a-zA-Z0-9]*"/>
-    
+
     <suppress files="com.snobot.simulator.gui.module_widget.settings.DcMotorConfigPanel" checks="[a-zA-Z0-9]*"/>
-    
+
     <suppress files="com.kauailabs.navx.frc.*" checks="[a-zA-Z0-9]*"/>
     <suppress files="edu.wpi.first.wpilibj.*" checks="[a-zA-Z0-9]*"/>
-    
+
 </suppressions>

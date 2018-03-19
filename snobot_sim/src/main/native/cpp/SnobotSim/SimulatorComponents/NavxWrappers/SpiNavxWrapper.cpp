@@ -6,6 +6,7 @@
  */
 
 #include "SnobotSim/SimulatorComponents/NavxWrappers/SpiNavxWrapper.h"
+
 #include "NavxSim/SpiNavxSimulator.h"
 
 SpiNavxWrapper::SpiNavxWrapper(int aPort) :
@@ -17,4 +18,3 @@ SpiNavxWrapper::SpiNavxWrapper(int aPort) :
 SpiNavxWrapper::~SpiNavxWrapper() {
 
 }
-

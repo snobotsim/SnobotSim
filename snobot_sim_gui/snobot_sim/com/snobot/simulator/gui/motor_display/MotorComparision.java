@@ -19,17 +19,16 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 public class MotorComparision extends JPanel
 {
-
     public void plotSeries(XYSeriesCollection aSeries)
     {
 
         final JFreeChart chart = ChartFactory.createXYLineChart(
-                "Motion Profile", 
-                "Time (sec)", 
-                "Data", 
-                aSeries, 
-                PlotOrientation.VERTICAL, 
-                true, 
+                "Motion Profile",
+                "Time (sec)",
+                "Data",
+                aSeries,
+                PlotOrientation.VERTICAL,
+                true,
                 true,
                 false);
 

@@ -5,7 +5,6 @@ import com.snobot.simulator.simulator_components.IMotorFeedbackSensor;
 
 public class EncoderWrapper extends ASensorWrapper implements IMotorFeedbackSensor
 {
-
     private final DistanceSetterHelper mSetterHelper;
     private final ResetHelper mResetHelper;
     private double mDistancePerTick;

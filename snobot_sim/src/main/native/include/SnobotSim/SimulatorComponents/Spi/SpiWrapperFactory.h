@@ -5,14 +5,14 @@
  *      Author: PJ
  */
 
-#ifndef SPIWRAPPERFACTORY_H_
-#define SPIWRAPPERFACTORY_H_
+#ifndef SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_SPI_SPIWRAPPERFACTORY_H_
+#define SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_SPI_SPIWRAPPERFACTORY_H_
+
+#include <map>
+#include <memory>
+#include <string>
 
 #include "SnobotSim/SimulatorComponents/Spi/ISpiWrapper.h"
-#include <string>
-#include <memory>
-#include <map>
-
 
 class EXPORT_ SpiWrapperFactory
 {
@@ -45,4 +45,4 @@ protected:
     static SpiWrapperFactory sINSTANCE;
 };
 
-#endif /* SPIWRAPPERFACTORY_H_ */
+#endif  // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_SPI_SPIWRAPPERFACTORY_H_

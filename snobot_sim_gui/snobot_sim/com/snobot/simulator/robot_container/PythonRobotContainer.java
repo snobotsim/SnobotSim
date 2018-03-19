@@ -4,10 +4,10 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * Wrapper around a python robot.
- * 
+ *
  * @deprecated This isn't currently hooked up, because the Jython library is
  *             humongous and robotpy isn't updated yet
- * 
+ *
  * @author PJ
  *
  */

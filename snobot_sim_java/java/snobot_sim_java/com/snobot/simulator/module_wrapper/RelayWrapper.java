@@ -2,7 +2,6 @@ package com.snobot.simulator.module_wrapper;
 
 public class RelayWrapper extends ASensorWrapper
 {
-
     private boolean mForwards;
     private boolean mReverse;
 

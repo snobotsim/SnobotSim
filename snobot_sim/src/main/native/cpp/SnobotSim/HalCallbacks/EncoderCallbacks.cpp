@@ -1,11 +1,10 @@
 
-#include "MockData/EncoderData.h"
-
 #include "SnobotSim/HalCallbacks/EncoderCallbacks.h"
-#include "SnobotSim/SensorActuatorRegistry.h"
-#include "SnobotSim/ModuleWrapper/EncoderWrapper.h"
-#include "SnobotSim/Logging/SnobotLogger.h"
 
+#include "MockData/EncoderData.h"
+#include "SnobotSim/Logging/SnobotLogger.h"
+#include "SnobotSim/ModuleWrapper/EncoderWrapper.h"
+#include "SnobotSim/SensorActuatorRegistry.h"
 
 void EncoderCallback(const char* name, void* param, const struct HAL_Value* value)
 {

@@ -4,5 +4,4 @@ import com.snobot.test.utilities.BaseSimulatorTest;
 
 public class TestGyroWrapper extends BaseSimulatorTest
 {
-
 }

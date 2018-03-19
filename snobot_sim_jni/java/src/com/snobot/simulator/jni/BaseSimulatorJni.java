@@ -4,7 +4,6 @@ import com.snobot.simulator.JniLibraryResourceLoader;
 
 public abstract class BaseSimulatorJni // NOPMD
 {
-
     static
     {
         initilaize();

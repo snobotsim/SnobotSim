@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 public class TestPdpCallback extends BaseSimulatorTest
 {
-
     @Test
     public void testPdp()
     {

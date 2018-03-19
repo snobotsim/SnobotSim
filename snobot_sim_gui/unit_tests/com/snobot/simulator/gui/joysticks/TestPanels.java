@@ -7,7 +7,6 @@ import com.snobot.test.utilities.BaseGuiSimulatorTest;
 
 public class TestPanels extends BaseGuiSimulatorTest
 {
-
     @Test
     public void testJoystickManagerDialog() throws Exception
     {

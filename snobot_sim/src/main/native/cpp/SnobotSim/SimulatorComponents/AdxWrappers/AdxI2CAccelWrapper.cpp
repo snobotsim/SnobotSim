@@ -10,7 +10,6 @@
 
 #include "ADXL345_I2CAccelerometerData.h"
 
-
 AdxI2CAccelWrapper::AdxI2CAccelWrapper(int aPort) :
     BaseAdxAccelWrapper(50 + aPort * 3, std::shared_ptr<hal::ThreeAxisAccelerometerData>(new hal::ADXL345_I2CData(aPort)))
 {
@@ -20,4 +19,3 @@ AdxI2CAccelWrapper::AdxI2CAccelWrapper(int aPort) :
 AdxI2CAccelWrapper::~AdxI2CAccelWrapper() {
 
 }
-

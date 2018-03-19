@@ -6,14 +6,12 @@
  */
 
 #include "SnobotSim/HalCallbacks/I2CCallbacks.h"
-#include "SnobotSim/SimulatorComponents/I2C/II2CWrapper.h"
-#include "SnobotSim/SimulatorComponents/I2C/I2CWrapperFactory.h"
+
 #include "MockData/I2CData.h"
-
-#include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
-
-
+#include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/SimulatorComponents/I2C/I2CWrapperFactory.h"
+#include "SnobotSim/SimulatorComponents/I2C/II2CWrapper.h"
 
 void I2CCallback(const char* name, void* param, const struct HAL_Value* value)
 {

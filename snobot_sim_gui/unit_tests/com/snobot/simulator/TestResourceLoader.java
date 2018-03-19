@@ -10,7 +10,6 @@ import com.snobot.test.utilities.BaseSimulatorTest;
 
 public class TestResourceLoader extends BaseSimulatorTest
 {
-
     @Test
     public void testLoadMissingResource()
     {
