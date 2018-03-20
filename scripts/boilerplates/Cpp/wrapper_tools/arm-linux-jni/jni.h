@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 1996, 2013, Oracle and/or its affiliates. All rights reserved.
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS std::FILE HEADER.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -33,11 +33,11 @@
  * Copyright (c) 1996 Netscape Communications Corporation. All rights reserved.
  *****************************************************************************/
 
-#ifndef SNOBOTSIM_SCRIPTS_BOILERPLATES_CPP_WRAPPER_TOOLS_ARM_LINUX_JNI_JNI_H_
-#define SNOBOTSIM_SCRIPTS_BOILERPLATES_CPP_WRAPPER_TOOLS_ARM_LINUX_JNI_JNI_H_
+#ifndef _JAVASOFT_JNI_H_
+#define _JAVASOFT_JNI_H_
 
-#include <cstdarg>
-#include <cstdio>
+#include <stdio.h>
+#include <stdarg.h>
 
 /* jni_md.h contains the machine-dependent typedefs for jbyte, jint
    and jlong */
@@ -783,7 +783,7 @@ struct JNIEnv_ {
     const struct JNINativeInterface_ *functions;
 #ifdef __cplusplus
 
-    jint GetVersion(void) {
+    jint GetVersion() {
         return functions->GetVersion(this);
     }
     jclass DefineClass(const char *name, jobject loader, const jbyte *buf,
@@ -821,13 +821,13 @@ struct JNIEnv_ {
     jint ThrowNew(jclass clazz, const char *msg) {
         return functions->ThrowNew(this, clazz, msg);
     }
-    jthrowable ExceptionOccurred(void) {
+    jthrowable ExceptionOccurred() {
         return functions->ExceptionOccurred(this);
     }
-    void ExceptionDescribe(void) {
+    void ExceptionDescribe() {
         functions->ExceptionDescribe(this);
     }
-    void ExceptionClear(void) {
+    void ExceptionClear() {
         functions->ExceptionClear(this);
     }
     void FatalError(const char *msg) {
@@ -1840,7 +1840,7 @@ struct JNIEnv_ {
         functions->DeleteWeakGlobalRef(this,ref);
     }
 
-    jboolean ExceptionCheck(void) {
+    jboolean ExceptionCheck() {
         return functions->ExceptionCheck(this);
     }
 
@@ -1907,13 +1907,13 @@ struct JavaVM_ {
     const struct JNIInvokeInterface_ *functions;
 #ifdef __cplusplus
 
-    jint DestroyJavaVM(void) {
+    jint DestroyJavaVM() {
         return functions->DestroyJavaVM(this);
     }
     jint AttachCurrentThread(void **penv, void *args) {
         return functions->AttachCurrentThread(this, penv, args);
     }
-    jint DetachCurrentThread(void) {
+    jint DetachCurrentThread() {
         return functions->DetachCurrentThread(this);
     }
 
@@ -1954,7 +1954,7 @@ JNI_OnUnload(JavaVM *vm, void *reserved);
 #define JNI_VERSION_1_8 0x00010008
 
 #ifdef __cplusplus
-}  // extern "C"
+} /* extern "C" */
 #endif /* __cplusplus */
 
-#endif  // SNOBOTSIM_SCRIPTS_BOILERPLATES_CPP_WRAPPER_TOOLS_ARM_LINUX_JNI_JNI_H_
+#endif /* !_JAVASOFT_JNI_H_ */
