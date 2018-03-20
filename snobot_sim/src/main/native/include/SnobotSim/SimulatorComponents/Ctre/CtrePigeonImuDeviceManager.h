@@ -9,6 +9,7 @@
 #define SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_CTRE_CTREPIGEONIMUDEVICEMANAGER_H_
 
 #include <map>
+#include <memory>
 
 #include "SnobotSim/SimulatorComponents/Ctre/CtrePigeonImuSimulator.h"
 #include "SnobotSim/SimulatorComponents/Ctre/ICanDeviceManager.h"

@@ -8,6 +8,9 @@
 #ifndef SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MODULEWRAPPER_ENCODERWRAPPER_H_
 #define SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_MODULEWRAPPER_ENCODERWRAPPER_H_
 
+#include <memory>
+#include <string>
+
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 #include "SnobotSim/ModuleWrapper/SpeedControllerWrapper.h"
 #include "SnobotSim/SimulatorComponents/IFeedbackSensor.h"

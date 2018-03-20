@@ -10,6 +10,7 @@
 
 #include <map>
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "SnobotSim/ExportHelper.h"
