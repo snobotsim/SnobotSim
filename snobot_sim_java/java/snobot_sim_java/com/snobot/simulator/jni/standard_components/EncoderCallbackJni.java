@@ -18,7 +18,9 @@ public final class EncoderCallbackJni
 
     }
 
-    public static native void setEncoderDistance(int aHandle, double aAngle);
+    public static native void setEncoderDistance(int aHandle, double aDistance);
+
+    public static native void setEncoderVelocity(int aHandle, double aVelocity);
 
     public static native void registerEncoderCallback(String aFunctionName);
 
@@ -40,6 +42,12 @@ public final class EncoderCallbackJni
                 public void setDistance(double aDistance)
                 {
                     setEncoderDistance(aPort, aDistance);
+                }
+
+                @Override
+                public void setVelocity(double aDistance)
+                {
+                    setEncoderVelocity(aPort, aDistance);
                 }
             };
 

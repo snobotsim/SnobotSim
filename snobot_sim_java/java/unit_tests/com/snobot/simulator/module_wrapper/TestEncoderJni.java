@@ -69,11 +69,13 @@ public class TestEncoderJni extends BaseSimulatorTest
         });
 
         Assert.assertEquals(12.0, encoder.getDistance(), DOUBLE_EPSILON);
+        Assert.assertEquals(12.0, encoder.getRate(), DOUBLE_EPSILON);
         Assert.assertEquals(12.0, DataAccessorFactory.getInstance().getEncoderAccessor().getDistance(0), DOUBLE_EPSILON);
         Assert.assertEquals(12.0 / 4, DataAccessorFactory.getInstance().getEncoderAccessor().getRaw(0), DOUBLE_EPSILON);
 
         encoder.reset();
         Assert.assertEquals(0.0, encoder.getDistance(), DOUBLE_EPSILON);
+        Assert.assertEquals(0.0, encoder.getRate(), DOUBLE_EPSILON);
         Assert.assertEquals(0.0, DataAccessorFactory.getInstance().getEncoderAccessor().getDistance(0), DOUBLE_EPSILON);
         Assert.assertEquals(0.0, DataAccessorFactory.getInstance().getEncoderAccessor().getRaw(0), DOUBLE_EPSILON);
     }
@@ -102,11 +104,13 @@ public class TestEncoderJni extends BaseSimulatorTest
         });
 
         Assert.assertEquals(12.0, encoder.getDistance(), DOUBLE_EPSILON);
+        Assert.assertEquals(12.0, encoder.getRate(), DOUBLE_EPSILON);
         Assert.assertEquals(12.0, DataAccessorFactory.getInstance().getEncoderAccessor().getDistance(0), DOUBLE_EPSILON);
         Assert.assertEquals(12.0 / 4, DataAccessorFactory.getInstance().getEncoderAccessor().getRaw(0), DOUBLE_EPSILON);
 
         encoder.reset();
         Assert.assertEquals(0.0, encoder.getDistance(), DOUBLE_EPSILON);
+        Assert.assertEquals(0.0, encoder.getRate(), DOUBLE_EPSILON);
         Assert.assertEquals(0.0, DataAccessorFactory.getInstance().getEncoderAccessor().getDistance(0), DOUBLE_EPSILON);
         Assert.assertEquals(0.0, DataAccessorFactory.getInstance().getEncoderAccessor().getRaw(0), DOUBLE_EPSILON);
 

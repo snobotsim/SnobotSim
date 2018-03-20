@@ -47,6 +47,7 @@ public class PwmWrapper extends ASensorWrapper
     {
         mMotorSimulator.update(aWaitTime);
         mFeedbackSensor.setPosition(mMotorSimulator.getPosition());
+        mFeedbackSensor.setVelocity(mMotorSimulator.getVelocity());
     }
 
     public double getPosition()

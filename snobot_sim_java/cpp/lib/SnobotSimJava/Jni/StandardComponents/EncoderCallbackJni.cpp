@@ -2,6 +2,7 @@
 #include "MockData/EncoderData.h"
 #include "SnobotSimJava/Jni/RegisterJniUtilities.h"
 #include "com_snobot_simulator_jni_standard_components_EncoderCallbackJni.h"
+#include <iostream>
 
 int gEncoderArrayIndices[26];
 SnobotSimJava::CallbackHelperContainer gEncoderCallbackContainer;
@@ -20,6 +21,18 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_Encode
   (JNIEnv *, jclass, jint aHandle, jdouble aDistance)
 {
     HALSIM_SetEncoderCount(aHandle, (int) aDistance);
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_standard_components_EncoderCallbackJni
+ * Method:    setEncoderVelocity
+ * Signature: (ID)V
+ */
+JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_standard_1components_EncoderCallbackJni_setEncoderVelocity
+  (JNIEnv *, jclass, jint aHandle, jdouble aVelocity)
+{
+    std::cout << "Setting velocity : " << aVelocity << std::endl;
+    HALSIM_SetEncoderPeriod(aHandle, 1 / aVelocity);
 }
 
 /*
