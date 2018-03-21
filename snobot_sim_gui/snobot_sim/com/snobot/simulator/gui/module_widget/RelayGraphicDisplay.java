@@ -132,6 +132,8 @@ class RelayDisplay extends JPanel
             aGraphics.setColor(Color.red);
             aGraphics.fillRect(0, 0, sWIDTH, sHEIGHT);
             break;
+        default:
+            break;
         }
     }
 }

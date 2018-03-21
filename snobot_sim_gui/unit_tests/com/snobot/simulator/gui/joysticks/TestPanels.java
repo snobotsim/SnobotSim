@@ -1,5 +1,7 @@
 package com.snobot.simulator.gui.joysticks;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -17,9 +19,9 @@ public class TestPanels extends BaseGuiSimulatorTest
         {
             dialog.setVisible(true);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-
+            LogManager.getLogger().log(Level.ERROR, ex);
         }
         finally
         {

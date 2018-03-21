@@ -58,9 +58,9 @@ public class SpeedControllerSettingsDialog extends SimpleSettingsDialog
         {
 
             @Override
-            public void itemStateChanged(ItemEvent e)
+            public void itemStateChanged(ItemEvent aEvent)
             {
-                simOptionsLayout.show(mSimOptionsPanel, e.getItem().toString());
+                simOptionsLayout.show(mSimOptionsPanel, aEvent.getItem().toString());
             }
         });
 
@@ -80,7 +80,7 @@ public class SpeedControllerSettingsDialog extends SimpleSettingsDialog
     {
         for (Component comp : mSimOptionsPanel.getComponents())
         {
-            if (comp.isVisible() == true)
+            if (comp.isVisible())
             {
                 SubmitableMotorSimulator motorSimulatorPanel = (SubmitableMotorSimulator) comp;
                 motorSimulatorPanel.submit();
@@ -140,7 +140,7 @@ class SimpleSimConfigPanel extends JPanel implements SubmitableMotorSimulator
         if (aVisible)
         {
             SimpleMotorSimulationConfig config = DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimSimpleModelConfig(mHandle);
-            mMaxSpeedField.setText("" + config.mMaxSpeed);
+            mMaxSpeedField.setText(Double.toString(config.mMaxSpeed));
         }
 
         super.setVisible(aVisible);
@@ -207,7 +207,7 @@ class StaticLoadSimConfigPanel extends MotorSimWithModelPanel
     protected void updateSimulatorParams()
     {
         StaticLoadMotorSimulationConfig config = DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimStaticModelConfig(mHandle);
-        mLoadField.setText("" + config.mLoad);
+        mLoadField.setText(Double.toString(config.mLoad));
     }
 }
 
@@ -228,7 +228,7 @@ class RotationalLoadSimConfigPanel extends MotorSimWithModelPanel
     @Override
     protected void updateSimulatorParams()
     {
-
+        // Nothing to do
     }
 }
 
@@ -263,6 +263,6 @@ class GravitationalLoadSimConfigPanel extends MotorSimWithModelPanel
     {
         GravityLoadMotorSimulationConfig config = DataAccessorFactory.getInstance().getSpeedControllerAccessor()
                 .getMotorSimGravitationalModelConfig(mHandle);
-        mLoadField.setText("" + config.mLoad);
+        mLoadField.setText(Double.toString(config.mLoad));
     }
 }

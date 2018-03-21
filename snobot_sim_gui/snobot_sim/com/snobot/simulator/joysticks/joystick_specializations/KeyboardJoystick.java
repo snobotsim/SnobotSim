@@ -3,8 +3,8 @@ package com.snobot.simulator.joysticks.joystick_specializations;
 import java.util.Arrays;
 
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.snobot.simulator.gui.joysticks.sub_panels.XboxButtonMap;
 import com.snobot.simulator.joysticks.BaseJoystick;
@@ -45,7 +45,7 @@ public class KeyboardJoystick extends BaseJoystick
     };
 
     private static final Identifier[] sPOV = new Identifier[] {
-            Identifier.Key._0,
+        Identifier.Key._0,
     };
 
     public KeyboardJoystick(Controller aController)
@@ -61,16 +61,20 @@ public class KeyboardJoystick extends BaseJoystick
     @Override
     public float[] getAxisValues()
     {
-        if (mController != null)
+        if (mController == null)
+        {
+            sLOGGER.log(Level.ERROR, "Controller is null.  The simulator could not setup a controller of type [" + mName + "]");
+        }
+        else
         {
             mController.poll();
 
             // Left Y
-            if (mController.getComponent(Identifier.Key.W).getPollData() != 0)
+            if (mController.getComponent(Identifier.Key.W).getPollData() != 0) // NOPMD
             {
                 mAxisValues[XboxButtonMap.LEFT_Y_AXIS] = sPOSITIVE_VALUE;
             }
-            else if (mController.getComponent(Identifier.Key.S).getPollData() != 0)
+            else if (mController.getComponent(Identifier.Key.S).getPollData() != 0) // NOPMD
             {
                 mAxisValues[XboxButtonMap.LEFT_Y_AXIS] = sNEGATIVE_VALUE;
             }
@@ -80,11 +84,11 @@ public class KeyboardJoystick extends BaseJoystick
             }
 
             // Left X
-            if (mController.getComponent(Identifier.Key.A).getPollData() != 0)
+            if (mController.getComponent(Identifier.Key.A).getPollData() != 0) // NOPMD
             {
                 mAxisValues[XboxButtonMap.LEFT_X_AXIS] = sPOSITIVE_VALUE;
             }
-            else if (mController.getComponent(Identifier.Key.D).getPollData() != 0)
+            else if (mController.getComponent(Identifier.Key.D).getPollData() != 0) // NOPMD
             {
                 mAxisValues[XboxButtonMap.LEFT_X_AXIS] = sNEGATIVE_VALUE;
             }
@@ -94,11 +98,11 @@ public class KeyboardJoystick extends BaseJoystick
             }
 
             // Right Y
-            if (mController.getComponent(Identifier.Key.I).getPollData() != 0)
+            if (mController.getComponent(Identifier.Key.I).getPollData() != 0) // NOPMD
             {
                 mAxisValues[XboxButtonMap.RIGHT_Y_AXIS] = sPOSITIVE_VALUE;
             }
-            else if (mController.getComponent(Identifier.Key.K).getPollData() != 0)
+            else if (mController.getComponent(Identifier.Key.K).getPollData() != 0) // NOPMD
             {
                 mAxisValues[XboxButtonMap.RIGHT_Y_AXIS] = sNEGATIVE_VALUE;
             }
@@ -108,11 +112,11 @@ public class KeyboardJoystick extends BaseJoystick
             }
 
             // Right X
-            if (mController.getComponent(Identifier.Key.J).getPollData() != 0)
+            if (mController.getComponent(Identifier.Key.J).getPollData() != 0) // NOPMD
             {
                 mAxisValues[XboxButtonMap.RIGHT_X_AXIS] = sPOSITIVE_VALUE;
             }
-            else if (mController.getComponent(Identifier.Key.L).getPollData() != 0)
+            else if (mController.getComponent(Identifier.Key.L).getPollData() != 0) // NOPMD
             {
                 mAxisValues[XboxButtonMap.RIGHT_X_AXIS] = sNEGATIVE_VALUE;
             }
@@ -122,7 +126,7 @@ public class KeyboardJoystick extends BaseJoystick
             }
 
             // Left Trigger
-            if (mController.getComponent(Identifier.Key.C).getPollData() != 0)
+            if (mController.getComponent(Identifier.Key.C).getPollData() != 0) // NOPMD
             {
                 mAxisValues[XboxButtonMap.LEFT_TRIGGER] = sPOSITIVE_VALUE;
             }
@@ -132,7 +136,7 @@ public class KeyboardJoystick extends BaseJoystick
             }
 
             // Right Trigger
-            if (mController.getComponent(Identifier.Key.N).getPollData() != 0)
+            if (mController.getComponent(Identifier.Key.N).getPollData() != 0) // NOPMD
             {
                 mAxisValues[XboxButtonMap.RIGHT_TRIGGER] = sPOSITIVE_VALUE;
             }
@@ -140,11 +144,6 @@ public class KeyboardJoystick extends BaseJoystick
             {
                 mAxisValues[XboxButtonMap.RIGHT_TRIGGER] = sNEGATIVE_VALUE;
             }
-        }
-        else
-        {
-            sLOGGER.log(Level.ERROR,
-                    "Controller is null.  The simulator could not setup a controller of type [" + mName + "]");
         }
 
         return mAxisValues;

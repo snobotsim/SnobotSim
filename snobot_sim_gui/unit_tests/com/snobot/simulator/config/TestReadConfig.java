@@ -16,7 +16,7 @@ public class TestReadConfig extends BaseSimulatorTest
     public static final int sTEST_PARAMETER = 5;
 
     @Before
-    public void setup()
+    public void setup() // NOPMD
     {
         DefaultDataAccessorFactory.initalize();
     }

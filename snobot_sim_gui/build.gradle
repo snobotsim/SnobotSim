@@ -188,7 +188,6 @@ distributions {
 checkstyle {
     toolVersion = "8.1"
     configFile = new File(rootDir, "styleguide/checkstyle.xml")
-    ignoreFailures = true
 }
 
 pmd {
@@ -196,7 +195,6 @@ pmd {
     reportsDir = file("${project.buildDir}/reports/pmd")
     ruleSetFiles = files(file("$rootDir/styleguide/pmd-ruleset.xml"))
     ruleSets = []
-    ignoreFailures = true
 }
 
 findbugs {

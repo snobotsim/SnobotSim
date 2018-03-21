@@ -6,7 +6,7 @@ import java.awt.Color;
  *
  * @author PJ
  */
-public class Util
+public final class Util
 {
     private Util()
     {
@@ -18,7 +18,7 @@ public class Util
         return colorGetShadedColor(aSpeed, 1, -1);
     }
 
-    public static Color colorGetShadedColor(double aSpeed, double aMax, double aMin)
+    public static Color colorGetShadedColor(double aSpeed, double aMax, double aMin) // NOPMD
     {
         if (Double.isNaN(aSpeed))
         {

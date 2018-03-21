@@ -1,13 +1,14 @@
 package com.snobot.simulator.config;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.List;
 
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
@@ -53,7 +54,11 @@ public class SimulatorConfigWriter
             options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
 
             Yaml yaml = new Yaml(options);
-            yaml.dump(output, new FileWriter(file));
+
+            try (OutputStreamWriter fw = new OutputStreamWriter(new FileOutputStream(file), "UTF-8"))
+            {
+                yaml.dump(output, fw);
+            }
 
             success = true;
         }

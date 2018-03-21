@@ -17,8 +17,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.snobot.simulator.gui.motor_display.MotorCurveDisplay;
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
@@ -45,7 +45,7 @@ public class DcMotorConfigPanel extends JPanel
 
     private MotorCurveDisplay mMotorCurveDisplay;
 
-    private DecimalFormat mDecimalFormat;
+    private final DecimalFormat mDecimalFormat;
     private boolean mUpdatingMotorParams;
     private JLabel lblMotorType;
     private JPanel panel;
@@ -56,8 +56,8 @@ public class DcMotorConfigPanel extends JPanel
         initComponents();
 
         mNumMotors.setValue(1);
-        mGearReduction.setText("1.0");
-        mGearboxEfficiency.setText("1.0");
+        mGearReduction.setText("1.0"); // NOPMD
+        mGearboxEfficiency.setText("1.0"); // NOPMD
         setLayout(new MigLayout("", "[65px][4px][172px][316px,grow]", "[25px][6px][98px][6px][203px,grow]"));
         add(lblMotorType, "cell 0 0,alignx right,aligny center");
         add(mMotorSelectionBox, "cell 2 0,growx,aligny bottom");
@@ -82,12 +82,18 @@ public class DcMotorConfigPanel extends JPanel
         if (!mUpdatingMotorParams)
         {
             mUpdatingMotorParams = true;
-            if (aConfig != null)
+            if (aConfig == null)
+            {
+                mNumMotors.setValue(1);
+                mGearReduction.setText("1.0"); // NOPMD
+                mGearboxEfficiency.setText("1.0"); // NOPMD
+            }
+            else
             {
                 mMotorSelectionBox.setSelectedItem(aConfig.mFactoryParams.mMotorType);
                 mNumMotors.setValue(aConfig.mFactoryParams.mNumMotors);
-                mGearReduction.setText("" + aConfig.mFactoryParams.mGearReduction);
-                mGearboxEfficiency.setText("" + aConfig.mFactoryParams.mGearboxEfficiency);
+                mGearReduction.setText(Double.toString(aConfig.mFactoryParams.mGearReduction));
+                mGearboxEfficiency.setText(Double.toString(aConfig.mFactoryParams.mGearboxEfficiency));
 
                 mMotorParams_NominalVoltage.setText(mDecimalFormat.format(aConfig.mMotorParams.NOMINAL_VOLTAGE));
                 mMotorParams_FreeSpeedRpm.setText(mDecimalFormat.format(aConfig.mMotorParams.FREE_SPEED_RPM));
@@ -98,12 +104,6 @@ public class DcMotorConfigPanel extends JPanel
                 mMotorParams_Brake.setSelected(aConfig.mFactoryParams.mHasBrake);
 
                 mMotorCurveDisplay.setCurveParams(aConfig);
-            }
-            else
-            {
-                mNumMotors.setValue(1);
-                mGearReduction.setText("1.0");
-                mGearboxEfficiency.setText("1.0");
             }
             mUpdatingMotorParams = false;
         }
@@ -273,7 +273,7 @@ public class DcMotorConfigPanel extends JPanel
         @Override
         public void focusGained(FocusEvent e)
         {
-
+            // Nothing to do
         }
     }
 }

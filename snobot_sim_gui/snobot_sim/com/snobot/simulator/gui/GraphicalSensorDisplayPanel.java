@@ -33,7 +33,7 @@ public class GraphicalSensorDisplayPanel extends JPanel
     protected List<BaseWidgetDisplay<?, ?>> mDisplayPanels;
     protected AdvancedSettingsPanel mAdvancedSettingsPanel;
 
-    public void create()
+    private void create()
     {
         mDisplayPanels = new ArrayList<>();
 

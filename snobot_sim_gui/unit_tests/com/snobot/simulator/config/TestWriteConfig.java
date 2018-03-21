@@ -17,7 +17,7 @@ public class TestWriteConfig extends BaseSimulatorTest
     @Test
     public void testWriteConfig()
     {
-        String dump_file = "test_output/testWriteFile.yml";
+        String dumpFile = "test_output/testWriteFile.yml";
 
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(0, "ADXRS450");
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(1, "ADXL345");
@@ -50,15 +50,15 @@ public class TestWriteConfig extends BaseSimulatorTest
                 new RotationalLoadMotorSimulationConfig(1, 1));
 
         SimulatorConfigWriter writer = new SimulatorConfigWriter();
-        Assert.assertTrue(writer.writeConfig(dump_file));
+        Assert.assertTrue(writer.writeConfig(dumpFile));
     }
 
     @Test
     public void testWriteConfigToNonExistingDirectory()
     {
-        String dump_file = "directory_does_not_exist/testWriteFile.yml";
+        String dumpFile = "directory_does_not_exist/testWriteFile.yml";
 
         SimulatorConfigWriter writer = new SimulatorConfigWriter();
-        Assert.assertFalse(writer.writeConfig(dump_file));
+        Assert.assertFalse(writer.writeConfig(dumpFile));
     }
 }

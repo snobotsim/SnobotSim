@@ -7,7 +7,7 @@ import com.kauailabs.navx.frc.AHRS;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
-import edu.wpi.first.wpilibj.I2C;;
+import edu.wpi.first.wpilibj.I2C;
 
 public class TestI2CNavx extends BaseSimulatorTest
 {

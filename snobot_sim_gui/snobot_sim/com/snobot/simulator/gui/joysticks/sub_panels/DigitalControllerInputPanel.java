@@ -6,17 +6,16 @@ import javax.swing.JPanel;
 
 public class DigitalControllerInputPanel extends JPanel
 {
-    private JCheckBox mCheckbox;
-    private JLabel mLabel;
+    private final JCheckBox mCheckbox;
 
     public DigitalControllerInputPanel(int aIndex)
     {
         mCheckbox = new JCheckBox();
         mCheckbox.setEnabled(false);
 
-        mLabel = new JLabel("" + aIndex);
+        JLabel label = new JLabel(Integer.toString(aIndex));
 
-        add(mLabel);
+        add(label);
         add(mCheckbox);
     }
 

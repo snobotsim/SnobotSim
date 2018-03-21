@@ -2,6 +2,8 @@ package com.snobot.test.utilities;
 
 import java.io.File;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
 import org.junit.Before;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
@@ -14,10 +16,15 @@ public class BaseSimulatorTest
     private static boolean INITIALIZED = false;
     protected static final double DOUBLE_EPSILON = .00001;
 
-    private void delete(File path)
+    private void delete(File aPath)
     {
-        File[] l = path.listFiles();
-        for (File f : l)
+        File[] files = aPath.listFiles();
+        if (files == null)
+        {
+            return;
+        }
+
+        for (File f : files)
         {
             if (f.isDirectory())
             {
@@ -25,10 +32,16 @@ public class BaseSimulatorTest
             }
             else
             {
-                f.delete();
+                if (!f.delete())
+                {
+                    LogManager.getLogger().log(Level.WARN, "Could not delete file " + f);
+                }
             }
         }
-        path.delete();
+        if (!aPath.delete())
+        {
+            LogManager.getLogger().log(Level.WARN, "Could not delete file " + aPath);
+        }
     }
 
     @Before
@@ -43,7 +56,11 @@ public class BaseSimulatorTest
             {
                 delete(directory);
             }
-            directory.mkdirs();
+
+            if (!directory.mkdirs())
+            {
+                LogManager.getLogger().log(Level.WARN, "Could not make directory at " + directory);
+            }
             INITIALIZED = true;
         }
 
@@ -52,16 +69,16 @@ public class BaseSimulatorTest
         RobotBase.initializeHardwareConfiguration();
     }
 
-    protected void simulateForTime(double aSeconds, Runnable task)
+    protected void simulateForTime(double aSeconds, Runnable aTask)
     {
-        simulateForTime(aSeconds, .02, task);
+        simulateForTime(aSeconds, .02, aTask);
     }
 
     protected void simulateForTime(double aSeconds, double aUpdatePeriod, Runnable aTask)
     {
-        double update_frequency = 1 / aUpdatePeriod;
+        double updateFrequency = 1 / aUpdatePeriod;
 
-        for (int i = 0; i < update_frequency * aSeconds; ++i)
+        for (int i = 0; i < updateFrequency * aSeconds; ++i)
         {
             aTask.run();
             DataAccessorFactory.getInstance().getSimulatorDataAccessor().updateSimulatorComponents(aUpdatePeriod);

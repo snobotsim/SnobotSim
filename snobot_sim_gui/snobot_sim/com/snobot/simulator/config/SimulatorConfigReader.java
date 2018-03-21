@@ -1,13 +1,16 @@
 package com.snobot.simulator.config;
 
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.List;
 import java.util.Map.Entry;
 
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
@@ -65,7 +68,11 @@ public class SimulatorConfigReader
             File file = new File(aConfigFile);
             sLOGGER.log(Level.INFO, "Loading " + file.getAbsolutePath());
             Yaml yaml = new Yaml();
-            mConfig = (SimulatorConfig) yaml.load(new FileReader(file));
+
+            try (Reader fr = new InputStreamReader(new FileInputStream(file), "UTF-8"))
+            {
+                mConfig = (SimulatorConfig) yaml.load(fr);
+            }
 
             if (mConfig != null)
             {
@@ -81,9 +88,9 @@ public class SimulatorConfigReader
 
             success = true;
         }
-        catch (Exception e)
+        catch (IOException ex)
         {
-            sLOGGER.log(Level.ERROR, e);
+            sLOGGER.log(Level.WARN, ex);
         }
 
         return success;
@@ -181,15 +188,15 @@ public class SimulatorConfigReader
         IMotorSimulatorConfig baseMotorConfig = aPwmConfig.getmMotorSimConfig();
         DcMotorModelConfig.FactoryParams motorConfigFactoryParams = aPwmConfig.getmMotorModelConfig();
         DcMotorModelConfig motorConfig;
-        if (motorConfigFactoryParams != null)
+        if (motorConfigFactoryParams == null)
+        {
+            motorConfig = new DcMotorModelConfig(motorConfigFactoryParams, null);
+        }
+        else
         {
             motorConfig = simulatorAccessor.createMotor(motorConfigFactoryParams.mMotorType, motorConfigFactoryParams.mNumMotors,
                     motorConfigFactoryParams.mGearReduction, motorConfigFactoryParams.mGearboxEfficiency, motorConfigFactoryParams.mInverted,
                     motorConfigFactoryParams.mHasBrake);
-        }
-        else
-        {
-            motorConfig = new DcMotorModelConfig(motorConfigFactoryParams, null);
         }
 
         if (baseMotorConfig != null)

@@ -87,7 +87,7 @@ task createSimpleEclipseProject {
             from unzipNativeLibraries.outputs
             into destinationDir.toString() + "/dependencies/native"
         }
-        
+
         copy {
             def destinationDir = new File(project.buildDir.toString() + "/EclipseProject")
             println project.buildDir.toString() + "/../../ctre_override/build/libs/ctreMockHooks/shared/x86-64"

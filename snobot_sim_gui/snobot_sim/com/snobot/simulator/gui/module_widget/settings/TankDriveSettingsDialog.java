@@ -17,8 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.snobot.simulator.simulator_components.TankDriveGyroSimulator;
 import com.snobot.simulator.simulator_components.TankDriveGyroSimulator.TankDriveConfig;
@@ -28,10 +28,8 @@ public class TankDriveSettingsDialog extends JDialog
 {
     private static final Logger sLOGGER = LogManager.getLogger(TankDriveSettingsDialog.class);
 
-    private JButton mSubmitButton;
-    private JButton mAddButton;
     private List<TankDriveSettingsPanel> mPanels;
-    private JPanel mComponentPanel = new JPanel();
+    private final JPanel mComponentPanel = new JPanel();
 
     public TankDriveSettingsDialog()
     {
@@ -44,8 +42,8 @@ public class TankDriveSettingsDialog extends JDialog
     {
         setLayout(new BorderLayout());
 
-        mAddButton = new JButton("Add Simulator");
-        mAddButton.addActionListener(new ActionListener()
+        JButton addButton = new JButton("Add Simulator");
+        addButton.addActionListener(new ActionListener()
         {
 
             @Override
@@ -55,8 +53,8 @@ public class TankDriveSettingsDialog extends JDialog
             }
         });
 
-        mSubmitButton = new JButton("Submit changes");
-        mSubmitButton.addActionListener(new ActionListener()
+        JButton submitButton = new JButton("Submit changes");
+        submitButton.addActionListener(new ActionListener()
         {
 
             @Override
@@ -78,9 +76,9 @@ public class TankDriveSettingsDialog extends JDialog
             }
         }
 
-        add(mAddButton, BorderLayout.NORTH);
+        add(addButton, BorderLayout.NORTH);
         add(mComponentPanel, BorderLayout.CENTER);
-        add(mSubmitButton, BorderLayout.SOUTH);
+        add(submitButton, BorderLayout.SOUTH);
     }
 
     private void onSubmit()
@@ -144,7 +142,7 @@ public class TankDriveSettingsDialog extends JDialog
             mLeftMotorSelection = new JComboBox<>();
             mRightMotorSelection = new JComboBox<>();
             mGyroSelection = new JComboBox<>();
-            mKpField = new JTextField("" + aComp.getmTurnKp(), 10);
+            mKpField = new JTextField(Double.toString(aComp.getmTurnKp()), 10);
             mRemoveButton = new JButton("Remove");
 
             List<Integer> speedControllers = DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList();
@@ -221,7 +219,7 @@ public class TankDriveSettingsDialog extends JDialog
             {
 
                 @Override
-                public void actionPerformed(ActionEvent e)
+                public void actionPerformed(ActionEvent aEvent)
                 {
                     handleRemove(TankDriveSettingsPanel.this, aComp);
                 }

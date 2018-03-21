@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.RobotBase;
  */
 public class JavaRobotContainer implements IRobotClassContainer
 {
-    private String mRobotClassName;
+    private final String mRobotClassName;
     private RobotBase mRobot;
 
     public JavaRobotContainer(String aRobotClassName)

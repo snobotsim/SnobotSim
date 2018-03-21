@@ -101,14 +101,14 @@ public class TestCtreCanTalon_ControlMotionProfile extends BaseSimulatorTest
         });
     }
 
-    private List<TrajectoryPoint> generatePoints(double t1, double t2, double t3, double aMaxVelocity, double aMaxAccel, double aPosition, double aDt)
+    private List<TrajectoryPoint> generatePoints(double aT1, double aT2, double aT3, double aMaxVelocity, double aMaxAccel, double aPosition, double aDt)
     {
         List<TrajectoryPoint> output = new ArrayList<>();
 
         double pos = 0.0;
         double vel = 0.0;
 
-        for (double t = 0; t < t1; t += aDt)
+        for (double t = 0; t < aT1; t += aDt)
         {
             pos = .5 * aMaxAccel * (t * t);
             vel = aMaxAccel * t;
@@ -122,7 +122,7 @@ public class TestCtreCanTalon_ControlMotionProfile extends BaseSimulatorTest
             output.add(point);
         }
 
-        for (double t = t1; t < t2; t += aDt)
+        for (double t = aT1; t < aT2; t += aDt)
         {
             pos = .5 * ((aMaxVelocity * aMaxVelocity) / aMaxAccel) + aMaxVelocity * (t - (aMaxVelocity / aMaxAccel));
             vel = aMaxVelocity;
@@ -136,9 +136,9 @@ public class TestCtreCanTalon_ControlMotionProfile extends BaseSimulatorTest
             output.add(point);
         }
 
-        for (double t = t2; t < t3; t += aDt)
+        for (double t = aT2; t < aT3; t += aDt)
         {
-            pos = aPosition - .5 * aMaxAccel * Math.pow((t - (t1 + t2)), 2);
+            pos = aPosition - .5 * aMaxAccel * Math.pow(t - (aT1 + aT2), 2);
             vel = aMaxAccel * ((aMaxVelocity / aMaxAccel) + (aPosition / aMaxVelocity) - t);
 
             TrajectoryPoint point = new TrajectoryPoint();
@@ -153,20 +153,20 @@ public class TestCtreCanTalon_ControlMotionProfile extends BaseSimulatorTest
         return output;
     }
 
-    @SuppressWarnings("unused")
-    private void printMotionProfileStatus(TalonSRX talon, MotionProfileStatus status)
+    @SuppressWarnings({"unused", "PMD.SystemPrintln"})
+    private void printMotionProfileStatus(TalonSRX aTalon, MotionProfileStatus aStatus)
     {
         System.out.println("Getting status...");
 
-        System.out.println("  btmBufferCnt     : " + status.btmBufferCnt);
-        System.out.println("  topBufferCnt     : " + status.topBufferCnt);
-        System.out.println("  topBufferRem     : " + status.topBufferRem);
-        System.out.println("  activePointValid : " + status.activePointValid);
-        System.out.println("  hasUnderrun      : " + status.hasUnderrun);
-        System.out.println("  isUnderrun       : " + status.isUnderrun);
-        System.out.println("  outputEnable     : " + status.outputEnable);
+        System.out.println("  btmBufferCnt     : " + aStatus.btmBufferCnt);
+        System.out.println("  topBufferCnt     : " + aStatus.topBufferCnt);
+        System.out.println("  topBufferRem     : " + aStatus.topBufferRem);
+        System.out.println("  activePointValid : " + aStatus.activePointValid);
+        System.out.println("  hasUnderrun      : " + aStatus.hasUnderrun);
+        System.out.println("  isUnderrun       : " + aStatus.isUnderrun);
+        System.out.println("  outputEnable     : " + aStatus.outputEnable);
         System.out.println("  point            :");
-        System.out.println("      position          : " + talon.getActiveTrajectoryPosition());
-        System.out.println("      velocity          : " + talon.getActiveTrajectoryVelocity());
+        System.out.println("      position          : " + aTalon.getActiveTrajectoryPosition());
+        System.out.println("      velocity          : " + aTalon.getActiveTrajectoryVelocity());
     }
 }

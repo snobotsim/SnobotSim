@@ -21,7 +21,7 @@ import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 
 public class MotorCurveDisplay extends JPanel
 {
-    private ValueMarker mRpmMarker;
+    private final ValueMarker mRpmMarker;
 
     protected final XYSeries mCurrentPoints;
     protected final XYSeries mTorquePoints;
@@ -109,19 +109,19 @@ public class MotorCurveDisplay extends JPanel
 
     private void addPoint(
             double aNominalVoltage, double aStallCurrent, double aStallTorque,
-            int rpm, double currentSlope, double torqueSlope)
+            int aRpm, double aCurrentSlope, double aTorqueSlope)
     {
-        double omega = 2 * rpm * Math.PI / 60;
-        double current = aStallCurrent + rpm * currentSlope;
-        double torque = aStallTorque + rpm * torqueSlope;
-        double input_power = aNominalVoltage * current;
-        double output_power = torque * omega;
-        double efficiency = output_power / input_power * 100;
+        double omega = 2 * aRpm * Math.PI / 60;
+        double current = aStallCurrent + aRpm * aCurrentSlope;
+        double torque = aStallTorque + aRpm * aTorqueSlope;
+        double inputPower = aNominalVoltage * current;
+        double outputPower = torque * omega;
+        double efficiency = outputPower / inputPower * 100;
 
-        mCurrentPoints.add(rpm, current);
-        mTorquePoints.add(rpm, torque);
-        mPowerPoints.add(rpm, output_power);
-        mEfficiencyPoints.add(rpm, efficiency);
+        mCurrentPoints.add(aRpm, current);
+        mTorquePoints.add(aRpm, torque);
+        mPowerPoints.add(aRpm, outputPower);
+        mEfficiencyPoints.add(aRpm, efficiency);
     }
 
     public void setCurrentRpm(double aRpm)

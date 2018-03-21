@@ -35,7 +35,7 @@ public class XboxJoystick extends BaseJoystick
 
     private static final Identifier[] sPOV = new Identifier[]
     {
-            Identifier.Axis.POV
+        Identifier.Axis.POV
     };
 
     public XboxJoystick(Controller aController)

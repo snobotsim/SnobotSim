@@ -16,9 +16,9 @@ public class BaseSimulatorTest
     private static boolean INITIALIZED = false;
     protected static final double DOUBLE_EPSILON = .00001;
 
-    protected final void delete(File path)
+    protected final void delete(File aPath)
     {
-        File[] l = path.listFiles();
+        File[] l = aPath.listFiles();
         for (File f : l)
         {
             if (f.isDirectory())
@@ -30,7 +30,7 @@ public class BaseSimulatorTest
                 f.delete();
             }
         }
-        path.delete();
+        aPath.delete();
     }
 
     @Before
@@ -57,6 +57,6 @@ public class BaseSimulatorTest
     @After
     public void cleanup()
     {
-
+        // Nothing to do
     }
 }

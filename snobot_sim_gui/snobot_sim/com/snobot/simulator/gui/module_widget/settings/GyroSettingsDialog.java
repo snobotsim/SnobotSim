@@ -34,17 +34,11 @@ public class GyroSettingsDialog extends SimpleSettingsDialog
     }
 
     @Override
-    public void setVisible(boolean aVisible)
-    {
-        super.setVisible(aVisible);
-    }
-
-    @Override
     protected void onSubmit()
     {
-        SensorHandleOption option = (SensorHandleOption) mSpeedControllerSelection.getSelectedItem();
-        int scId = option == null ? -1 : option.mHandle;
-
+        // SensorHandleOption option = (SensorHandleOption) mSpeedControllerSelection.getSelectedItem();
+        // int scId = option == null ? -1 : option.mHandle;
+        //
         // EncoderWrapperJni.connectSpeedController(mHandle, scId);
     }
 

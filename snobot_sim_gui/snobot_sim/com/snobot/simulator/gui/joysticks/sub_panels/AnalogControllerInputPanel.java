@@ -6,16 +6,15 @@ import javax.swing.JSlider;
 
 public class AnalogControllerInputPanel extends JPanel
 {
-    private JSlider mSlider;
-    private JLabel mLabel;
+    private final JSlider mSlider;
 
     public AnalogControllerInputPanel(int aIndex)
     {
         mSlider = new JSlider(-127, 127);
         mSlider.setEnabled(false);
-        mLabel = new JLabel("" + aIndex);
+        JLabel label = new JLabel(Integer.toString(aIndex));
 
-        add(mLabel);
+        add(label);
         add(mSlider);
     }
 

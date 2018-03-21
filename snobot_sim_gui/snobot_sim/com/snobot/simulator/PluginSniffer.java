@@ -14,7 +14,6 @@ import java.util.jar.JarFile;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 
 import edu.wpi.first.wpilibj.RobotBase;
 
@@ -30,8 +29,8 @@ public class PluginSniffer
     private static final Logger sLOGGER = LogManager.getLogger(PluginSniffer.class);
 
     private File[] mDiscoveredJars;
-    private List<Class<?>> mCppRobots;
-    private List<Class<?>> mJavaRobots;
+    private final List<Class<?>> mCppRobots;
+    private final List<Class<?>> mJavaRobots;
 
     public PluginSniffer()
     {

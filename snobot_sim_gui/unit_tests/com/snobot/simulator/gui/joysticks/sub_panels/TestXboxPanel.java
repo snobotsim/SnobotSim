@@ -47,12 +47,12 @@ public class TestXboxPanel extends BaseGuiSimulatorTest
         updatePov(panel, joystick, 69);
     }
 
-    private void updatePov(XboxPanel aPanel, MockIJoystick joystick, int aPov) throws InterruptedException
+    private void updatePov(XboxPanel aPanel, MockIJoystick aJoystick, int aPov) throws InterruptedException
     {
 
-        for (int i = 0; i < joystick.mPovValues.length; ++i)
+        for (int i = 0; i < aJoystick.mPovValues.length; ++i)
         {
-            joystick.mPovValues[i] = (short) aPov;
+            aJoystick.mPovValues[i] = (short) aPov;
         }
         updateDisplay(aPanel);
     }

@@ -92,6 +92,7 @@ public class TestCtreCanTalon_ControlPosition extends BaseSimulatorTest
             break;
         default:
             Assert.assertTrue(false);
+            break;
         }
     }
 }

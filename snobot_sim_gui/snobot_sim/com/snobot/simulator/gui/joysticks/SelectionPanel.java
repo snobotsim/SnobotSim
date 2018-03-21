@@ -19,10 +19,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 public class SelectionPanel extends JPanel
 {
-    private class SinglePanel extends JPanel
+    private static class SinglePanel extends JPanel
     {
-        private int mJoystickIndex;
-        private JComboBox<String> mComboBox;
+        private final int mJoystickIndex;
+        private final JComboBox<String> mComboBox;
 
         public SinglePanel(int aIndex)
         {
@@ -53,9 +53,9 @@ public class SelectionPanel extends JPanel
         }
     }
 
-    private List<SinglePanel> mPanels = new ArrayList<>();
+    private final List<SinglePanel> mPanels = new ArrayList<>();
 
-    public SelectionPanel(Collection<String> aControllerNames, IMockJoystick[] aSelectedJoysticks)
+    public SelectionPanel(Collection<String> aControllerNames, IMockJoystick[] aSelectedJoysticks) // NOPMD
     {
         setLayout(new GridLayout(0, 1, 0, 0));
 
@@ -76,7 +76,7 @@ public class SelectionPanel extends JPanel
                 {
                     if (aEvent.getStateChange() == ItemEvent.SELECTED)
                     {
-                        JoystickFactory.get().setJoysticks(panel.mJoystickIndex, aEvent.getItem().toString());
+                        JoystickFactory.getInstance().setJoysticks(panel.mJoystickIndex, aEvent.getItem().toString());
                     }
                 }
             });

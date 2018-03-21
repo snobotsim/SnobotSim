@@ -2,7 +2,6 @@ package com.snobot.simulator;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.config.SimulatorConfigReader;
 import com.snobot.simulator.robot_container.IRobotClassContainer;
@@ -26,22 +25,20 @@ public class ASimulator implements ISimulatorUpdater
 
     public boolean loadConfig(String aConfigFile)
     {
-        boolean success = mConfigReader.loadConfig(aConfigFile);
-
-        return success;
+        return mConfigReader.loadConfig(aConfigFile);
     }
 
 
     @Override
     public void update()
     {
-
+        // Nothing to do
     }
 
     @Override
     public void setRobot(IRobotClassContainer aRobot)
     {
-
+        // Nothing to do
     }
 
     public void createSimulatorComponents()

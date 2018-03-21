@@ -3,8 +3,9 @@ package com.snobot.simulator.gui.motor_display;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,25 +52,24 @@ public class MotorComparision extends JPanel
         output.put("Velocity", velocitySeries);
         output.put("Current", currentSeries);
 
-        BufferedReader br = new BufferedReader(new FileReader(aFilename));
-
-        String line;
-
-        while ((line = br.readLine()) != null)
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(aFilename), "UTF-8")))
         {
-            String[] parts = line.split(",");
+            String line;
 
-            double dt = Double.parseDouble(parts[0]);
-            double pos = Double.parseDouble(parts[1]);
-            double vel = Double.parseDouble(parts[2]);
-            double cur = Double.parseDouble(parts[3]);
+            while ((line = br.readLine()) != null)
+            {
+                String[] parts = line.split(",");
 
-            positionSeries.add(dt, pos);
-            velocitySeries.add(dt, vel);
-            currentSeries.add(dt, cur);
+                double dt = Double.parseDouble(parts[0]);
+                double pos = Double.parseDouble(parts[1]);
+                double vel = Double.parseDouble(parts[2]);
+                double cur = Double.parseDouble(parts[3]);
+
+                positionSeries.add(dt, pos);
+                velocitySeries.add(dt, vel);
+                currentSeries.add(dt, cur);
+            }
         }
-
-        br.close();
 
         return output;
     }

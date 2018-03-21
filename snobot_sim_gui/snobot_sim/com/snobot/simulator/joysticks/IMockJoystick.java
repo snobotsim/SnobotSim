@@ -9,7 +9,7 @@ public interface IMockJoystick
 
     int getButtonCount();
 
-    void setRumble(short s);
+    void setRumble(short aRumble);
 
     float[] getAxisValues();
 

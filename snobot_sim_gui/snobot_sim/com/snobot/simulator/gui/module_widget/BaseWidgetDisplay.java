@@ -22,8 +22,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public abstract class BaseWidgetDisplay<KeyType, WidgetType extends Container> extends JPanel
 {
@@ -82,7 +82,7 @@ public abstract class BaseWidgetDisplay<KeyType, WidgetType extends Container> e
                     });
                 }
 
-                JLabel label = new JLabel("" + getName(key));
+                JLabel label = new JLabel(getName(key));
 
                 mWidgetMap.put(key, panelPair);
                 mLabelMap.put(key, label);

@@ -150,7 +150,11 @@ public class SimulatorFrame extends JFrame
             dumpFile = mSimulatorConfigFile;
         }
 
-        if (dumpFile != null)
+        if (dumpFile == null)
+        {
+            sLOGGER.log(Level.INFO, "User cancelled save!");
+        }
+        else
         {
             sLOGGER.log(Level.INFO, "Saving to '" + dumpFile + "'");
             if (mSimulatorConfigFile == null)
@@ -162,10 +166,6 @@ public class SimulatorFrame extends JFrame
             }
 
             writer.writeConfig(dumpFile);
-        }
-        else
-        {
-            sLOGGER.log(Level.INFO, "User cancelled save!");
         }
 
         showSettingsOptions(false);

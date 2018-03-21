@@ -12,7 +12,7 @@ import net.java.games.input.Controller;
 
 public class RawJoystickPanel extends JPanel
 {
-    private Controller mJoystick;
+    private final Controller mJoystick;
     private JPanel mDigitalPanel;
     private JPanel mAnalogPanel;
     private List<AnalogControllerInputPanel> mAnalogDisplays;

@@ -16,20 +16,21 @@ import com.snobot.test.utilities.BaseSimulatorTest;
 public class TestSimulator extends BaseSimulatorTest
 {
     private static final long TIME_TO_RUN_MS = 10;
+    private static final String sTEST_PLUGIN_DIR = "test_files/plugins";
 
     @Rule
-    public TestName name = new TestName();
+    public TestName mTestName = new TestName();
 
     @Before
-    public void setup()
+    public void setup() // NOPMD
     {
-        System.out.println("\n******************************\n" + name.getMethodName() + "\n******************************\n");
+        System.out.println("\n******************************\n" + mTestName.getMethodName() + "\n******************************\n"); // NOPMD
         super.setup();
     }
 
     public class MockSimulator extends Simulator
     {
-        boolean error = false;
+        boolean mError = false;
 
         public MockSimulator(SnobotLogLevel aLogLevel, File aPluginDirectory, String aUserConfigDir) throws Exception
         {
@@ -37,17 +38,17 @@ public class TestSimulator extends BaseSimulatorTest
         }
 
         @Override
-        protected void setFrameVisible(SimulatorFrame frame)
+        protected void setFrameVisible(SimulatorFrame aFrame)
         {
-
+            // Nothing to do
         }
 
         @Override
         protected void exitWithError()
         {
-            error = true;
+            mError = true;
             stop();
-            System.out.println("Exiting with error");
+            System.out.println("Exiting with error"); // NOPMD
         }
 
         protected void runTestForTime(long aMilliseconds) throws Exception
@@ -62,36 +63,36 @@ public class TestSimulator extends BaseSimulatorTest
     @Test
     public void testStartSimulator() throws Exception
     {
-        MockSimulator simulator = new MockSimulator(SnobotLogLevel.DEBUG, new File("test_files/plugins"), "test_output/test_start_simulator/");
+        MockSimulator simulator = new MockSimulator(SnobotLogLevel.DEBUG, new File(sTEST_PLUGIN_DIR), "test_output/test_start_simulator/");
         simulator.runTestForTime(TIME_TO_RUN_MS);
-        Assert.assertFalse(simulator.error);
+        Assert.assertFalse(simulator.mError);
     }
 
     @Test
     public void testValidUserConfig() throws Exception
     {
-        MockSimulator simulator = new MockSimulator(SnobotLogLevel.DEBUG, new File("test_files/plugins"),
+        MockSimulator simulator = new MockSimulator(SnobotLogLevel.DEBUG, new File(sTEST_PLUGIN_DIR),
                 "test_files/SimulatorTest/TestValidUserConfig/");
         simulator.runTestForTime(TIME_TO_RUN_MS);
-        Assert.assertFalse(simulator.error);
+        Assert.assertFalse(simulator.mError);
     }
 
     @Test
     public void testInvalidSimulatorName() throws Exception
     {
-        MockSimulator simulator = new MockSimulator(SnobotLogLevel.DEBUG, new File("test_files/plugins"),
+        MockSimulator simulator = new MockSimulator(SnobotLogLevel.DEBUG, new File(sTEST_PLUGIN_DIR),
                 "test_files/SimulatorTest/InvalidSimulatorName/");
         simulator.runTestForTime(TIME_TO_RUN_MS);
-        Assert.assertTrue(simulator.error);
+        Assert.assertTrue(simulator.mError);
     }
 
     @Ignore
     @Test
     public void testCustomSimulatorName() throws Exception
     {
-        MockSimulator simulator = new MockSimulator(SnobotLogLevel.DEBUG, new File("test_files/plugins"),
+        MockSimulator simulator = new MockSimulator(SnobotLogLevel.DEBUG, new File(sTEST_PLUGIN_DIR),
                 "test_files/SimulatorTest/CustomSimulatorName/");
         simulator.runTestForTime(TIME_TO_RUN_MS);
-        Assert.assertFalse(simulator.error);
+        Assert.assertFalse(simulator.mError);
     }
 }

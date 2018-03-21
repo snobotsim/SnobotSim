@@ -4,15 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
-import java.util.Map.Entry;
 
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.snobot.simulator.gui.joysticks.sub_panels.RawJoystickPanel;
 import com.snobot.simulator.gui.joysticks.sub_panels.WrappedJoystickPanel;
@@ -35,8 +34,8 @@ public class JoystickTabPanel extends JPanel
     private WrappedJoystickPanel mWrappedPanel;
     private XboxPanel mXboxPanel;
 
-    private Controller mController;
-    private String mJoystickName;
+    private final Controller mController;
+    private final String mJoystickName;
 
     public JoystickTabPanel(String aJoystickName, Controller aController, Class<?> aDefaultSpecialization) throws IOException
     {
@@ -45,9 +44,9 @@ public class JoystickTabPanel extends JPanel
 
         initComponents();
 
-        if (JoystickDiscoverer.sAVAILABLE_SPECIALIZATIONS.containsKey(aDefaultSpecialization))
+        if (JoystickDiscoverer.getSpecializationTypes().contains(aDefaultSpecialization))
         {
-            mSelectInterperetTypeBox.setSelectedItem(JoystickDiscoverer.sAVAILABLE_SPECIALIZATIONS.get(aDefaultSpecialization));
+            mSelectInterperetTypeBox.setSelectedItem(JoystickDiscoverer.getSpecialization(aDefaultSpecialization));
             handleWrapperSelected(mSelectInterperetTypeBox.getSelectedItem().toString());
         }
         else
@@ -87,7 +86,7 @@ public class JoystickTabPanel extends JPanel
         }
         else
         {
-            for (String name : JoystickDiscoverer.sAVAILABLE_SPECIALIZATIONS.values())
+            for (String name : JoystickDiscoverer.getJoystickNames())
             {
                 mSelectInterperetTypeBox.addItem(name);
             }
@@ -112,14 +111,15 @@ public class JoystickTabPanel extends JPanel
         IMockJoystick wrappedJoystick = null;
 
         // Assuming values are unique as well as keys
-        for (Entry<Class<? extends IMockJoystick>, String> pair : JoystickDiscoverer.sAVAILABLE_SPECIALIZATIONS.entrySet())
+        for (Class<? extends IMockJoystick> specializationType : JoystickDiscoverer.getSpecializationTypes())
         {
-            if (pair.getValue().equals(aType))
+            String value = JoystickDiscoverer.getSpecialization(specializationType);
+            if (value.equals(aType))
             {
                 try
                 {
-                    JoystickFactory.get().setSpecialization(mJoystickName, pair.getKey());
-                    wrappedJoystick = pair.getKey().getDeclaredConstructor(Controller.class).newInstance(mController);
+                    JoystickFactory.getInstance().setSpecialization(mJoystickName, specializationType);
+                    wrappedJoystick = specializationType.getDeclaredConstructor(Controller.class).newInstance(mController);
                 }
                 catch (Exception e)
                 {

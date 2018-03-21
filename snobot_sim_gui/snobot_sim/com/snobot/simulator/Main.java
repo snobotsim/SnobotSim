@@ -14,12 +14,18 @@ import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor.SnobotLogLev
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.util.WPILibVersion;
 
-public class Main
+public final class Main
 {
     private static final File DEFAULT_PLUGIN_DIR = new File("user_libs");
     private static final String sUSER_CONFIG_DIR = "simulator_config/";
 
     private static final PrintStream VERSION_PRINTER = System.out;
+    private static final String sROBOT_DELIMETER = "################################\n";
+
+    private Main()
+    {
+
+    }
 
     public static void main(String[] aArgs)
     {
@@ -98,44 +104,45 @@ public class Main
             sniffer.loadPlugins(DEFAULT_PLUGIN_DIR);
             sniffer.findRobots();
 
-            StringBuilder output = new StringBuilder();
-            output.append("\n\n\n\n");
-            output.append("# <--------------------------------------->\n");
-            output.append("# <- Here is a config script you can use ->\n");
-            output.append("# <--------------------------------------->\n");
-            output.append("\n\n\n\n");
+            StringBuilder output = new StringBuilder(200);
+            output.append("\n\n\n\n") // NOPMD
+                .append("# <--------------------------------------->\n")
+                .append("# <- Here is a config script you can use ->\n")
+                .append("# <--------------------------------------->\n")
+                .append("\n\n\n\n");
 
             if (!sniffer.getCppRobots().isEmpty())
             {
-                output.append("################################\n");
-                output.append("#          CPP Robots          #\n");
-                output.append("################################\n");
-                output.append("\n\n");
+                output.append(sROBOT_DELIMETER)
+                        .append("#          CPP Robots          #\n")
+                        .append(sROBOT_DELIMETER)
+                        .append("\n\n");
 
                 for (Class<?> clazzName : sniffer.getCppRobots())
                 {
-                    output.append("# " + clazzName.getSimpleName() + "\n");
-                    output.append("robot_class      : " + clazzName.getName() + "\n");
-                    output.append("robot_type       : cpp\n");
-                    output.append("simulator_class  :\n");
-                    output.append("simulator_config : simulator_config/2016-TeamXXXX.yml\n");
-                    output.append("\n\n");
+                    output.append("# ").append(clazzName.getSimpleName()).append("\n") // NOPMD
+                            .append("robot_class      : ").append(clazzName.getName())
+                            .append('\n') // NOPMD
+                            .append("robot_type       : cpp\n") // NOPMD
+                            .append("simulator_class  :\n") // NOPMD
+                            .append("simulator_config : simulator_config/2016-TeamXXXX.yml\n") // NOPMD
+                            .append("\n\n");
                 }
             }
 
             if (!sniffer.getJavaRobots().isEmpty())
             {
-                output.append("################################\n");
+                output.append(sROBOT_DELIMETER);
                 output.append("#          Java Robots         #\n");
-                output.append("################################\n");
+                output.append(sROBOT_DELIMETER);
 
                 for (Class<?> clazzName : sniffer.getJavaRobots())
                 {
-                    output.append("# " + clazzName.getSimpleName() + "\n");
-                    output.append("robot_class     : " + clazzName.getName() + "\n");
-                    output.append("robot_type      : java\n");
-                    output.append("simulator_class :\n");
-                    output.append("\n\n");
+                    output.append("# ").append(clazzName.getSimpleName()).append("\n") // NOPMD
+                            .append("robot_class     : ").append(clazzName.getName()).append("\n") // NOPMD
+                            .append("robot_type      : java\n") // NOPMD
+                            .append("simulator_class :\n") // NOPMD
+                            .append("\n\n");
                 }
             }
 

@@ -103,44 +103,44 @@ public class TestKeyboardJoystick
         testPovs(joystick, -45);
     }
 
-    private void reset(MockController controller)
+    private void reset(MockController aController)
     {
-        controller.setValueForComponent(Identifier.Key.W, 0);
-        controller.setValueForComponent(Identifier.Key.A, 0);
-        controller.setValueForComponent(Identifier.Key.S, 0);
-        controller.setValueForComponent(Identifier.Key.D, 0);
+        aController.setValueForComponent(Identifier.Key.W, 0);
+        aController.setValueForComponent(Identifier.Key.A, 0);
+        aController.setValueForComponent(Identifier.Key.S, 0);
+        aController.setValueForComponent(Identifier.Key.D, 0);
 
-        controller.setValueForComponent(Identifier.Key.I, 0);
-        controller.setValueForComponent(Identifier.Key.J, 0);
-        controller.setValueForComponent(Identifier.Key.K, 0);
-        controller.setValueForComponent(Identifier.Key.L, 0);
+        aController.setValueForComponent(Identifier.Key.I, 0);
+        aController.setValueForComponent(Identifier.Key.J, 0);
+        aController.setValueForComponent(Identifier.Key.K, 0);
+        aController.setValueForComponent(Identifier.Key.L, 0);
 
-        controller.setValueForComponent(Identifier.Key.C, 0);
-        controller.setValueForComponent(Identifier.Key.N, 0);
+        aController.setValueForComponent(Identifier.Key.C, 0);
+        aController.setValueForComponent(Identifier.Key.N, 0);
 
-        controller.setValueForComponent(Identifier.Key.UP, 0);
-        controller.setValueForComponent(Identifier.Key.DOWN, 0);
-        controller.setValueForComponent(Identifier.Key.LEFT, 0);
-        controller.setValueForComponent(Identifier.Key.RIGHT, 0);
+        aController.setValueForComponent(Identifier.Key.UP, 0);
+        aController.setValueForComponent(Identifier.Key.DOWN, 0);
+        aController.setValueForComponent(Identifier.Key.LEFT, 0);
+        aController.setValueForComponent(Identifier.Key.RIGHT, 0);
     }
 
-    private void testAxis(IMockJoystick joystick, double a0, double a1, double a2, double a3, double a4, double a5)
+    private void testAxis(IMockJoystick aJoystick, double aAxis0, double aAxis1, double aAxis2, double aAxis3, double aAxis4, double aAxis5)
     {
-        float[] axisValues = joystick.getAxisValues();
+        float[] axisValues = aJoystick.getAxisValues();
 
-        Assert.assertEquals(a0, axisValues[0], .0001);
-        Assert.assertEquals(a1, axisValues[1], .0001);
-        Assert.assertEquals(a2, axisValues[2], .0001);
-        Assert.assertEquals(a3, axisValues[3], .0001);
-        Assert.assertEquals(a4, axisValues[4], .0001);
-        Assert.assertEquals(a5, axisValues[5], .0001);
+        Assert.assertEquals(aAxis0, axisValues[0], .0001);
+        Assert.assertEquals(aAxis1, axisValues[1], .0001);
+        Assert.assertEquals(aAxis2, axisValues[2], .0001);
+        Assert.assertEquals(aAxis3, axisValues[3], .0001);
+        Assert.assertEquals(aAxis4, axisValues[4], .0001);
+        Assert.assertEquals(aAxis5, axisValues[5], .0001);
     }
 
-    private void testPovs(IMockJoystick joystick, int pov0)
+    private void testPovs(IMockJoystick aJoystick, int aPov0)
     {
-        joystick.getController().poll();
-        short[] povValues = joystick.getPovValues();
+        aJoystick.getController().poll();
+        short[] povValues = aJoystick.getPovValues();
 
-        Assert.assertEquals(pov0, povValues[0]);
+        Assert.assertEquals(aPov0, povValues[0]);
     }
 }

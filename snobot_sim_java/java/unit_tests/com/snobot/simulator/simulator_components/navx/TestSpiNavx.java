@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.SPI;
 public class TestSpiNavx extends BaseSimulatorTest
 {
     private static final long SHUTDOWN_TIME = 200;
+    private static final String sNAVX_TYPE = "NavX";
 
     @Test
     public void testConstruction() throws InterruptedException
@@ -20,7 +21,7 @@ public class TestSpiNavx extends BaseSimulatorTest
 
         // Port = 0
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(0, "NavX");
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(0, sNAVX_TYPE);
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
 
         navx = new AHRS(SPI.Port.kOnboardCS0);
@@ -33,7 +34,7 @@ public class TestSpiNavx extends BaseSimulatorTest
 
         // Port = 1
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(1, "NavX");
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(1, sNAVX_TYPE);
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
 
         navx = new AHRS(SPI.Port.kOnboardCS1);
@@ -46,7 +47,7 @@ public class TestSpiNavx extends BaseSimulatorTest
 
         // Port = 2
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(2, "NavX");
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(2, sNAVX_TYPE);
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
 
         navx = new AHRS(SPI.Port.kOnboardCS2);
@@ -59,7 +60,7 @@ public class TestSpiNavx extends BaseSimulatorTest
 
         // Port = 3
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(3, "NavX");
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(3, sNAVX_TYPE);
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
 
         navx = new AHRS(SPI.Port.kOnboardCS3);
@@ -72,7 +73,7 @@ public class TestSpiNavx extends BaseSimulatorTest
 
         // Port = 4
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(4, "NavX");
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(4, sNAVX_TYPE);
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
 
         navx = new AHRS(SPI.Port.kMXP);
@@ -87,7 +88,7 @@ public class TestSpiNavx extends BaseSimulatorTest
     @Test
     public void testSpiNavx() throws InterruptedException
     {
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(1, "NavX");
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(1, sNAVX_TYPE);
 
         final int sleepTime = 100;
         AHRS navx = new AHRS(SPI.Port.kOnboardCS1);

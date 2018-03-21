@@ -72,9 +72,8 @@ public class MockController extends AbstractController
     }
 
     @Override
-    protected boolean getNextDeviceEvent(Event event) throws IOException
+    protected boolean getNextDeviceEvent(Event aEvent) throws IOException
     {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -82,9 +81,9 @@ public class MockController extends AbstractController
     {
         private float mPollValue;
 
-        protected MockComponent(Identifier id)
+        protected MockComponent(Identifier aId)
         {
-            super("Mock", id);
+            super("Mock", aId);
         }
 
         @Override

@@ -66,7 +66,7 @@ public class GyroGraphicDisplay extends BaseWidgetDisplay<Integer, GyroWrapperDi
 
 class GyroWrapperDisplay extends JPanel
 {
-    private JTextField mAngleField;
+    private final JTextField mAngleField;
 
     public GyroWrapperDisplay()
     {
@@ -76,6 +76,6 @@ class GyroWrapperDisplay extends JPanel
 
     public void updateDisplay(double aAngle)
     {
-        mAngleField.setText("" + aAngle);
+        mAngleField.setText(Double.toString(aAngle));
     }
 }

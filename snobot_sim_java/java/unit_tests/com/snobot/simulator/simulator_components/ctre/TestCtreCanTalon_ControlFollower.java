@@ -17,6 +17,8 @@ import com.snobot.test.utilities.BaseSimulatorTest;
 @RunWith(value = Parameterized.class)
 public class TestCtreCanTalon_ControlFollower extends BaseSimulatorTest
 {
+    private static final double sDOUBLE_EPSILON = 1.0 / 1023;
+
     @Parameters(name = "Test: {index} CanPort={0}")
     public static Collection<Integer> data()
     {
@@ -40,8 +42,6 @@ public class TestCtreCanTalon_ControlFollower extends BaseSimulatorTest
     @Test
     public void testSetWithFollower()
     {
-        double DOUBLE_EPSILON = 1.0 / 1023;
-
         int leadTalonId = 5;
         if (mCanHandle == leadTalonId)
         {
@@ -57,7 +57,7 @@ public class TestCtreCanTalon_ControlFollower extends BaseSimulatorTest
 
         leadTalon.set(ControlMode.PercentOutput, .5);
 
-        Assert.assertEquals(.5, talon.getMotorOutputPercent(), DOUBLE_EPSILON);
-        Assert.assertEquals(leadTalon.getMotorOutputPercent(), talon.getMotorOutputPercent(), DOUBLE_EPSILON);
+        Assert.assertEquals(.5, talon.getMotorOutputPercent(), sDOUBLE_EPSILON);
+        Assert.assertEquals(leadTalon.getMotorOutputPercent(), talon.getMotorOutputPercent(), sDOUBLE_EPSILON);
     }
 }

@@ -24,7 +24,7 @@ public class TestADXL362_SPIAccelerometer extends BaseSimulatorTest
     {
         Collection<Object[]> output = new ArrayList<>();
 
-        for(SPI.Port port : SPI.Port.values())
+        for (SPI.Port port : SPI.Port.values())
         {
             output.add(new Object[]{port, Range.k2G});
         }

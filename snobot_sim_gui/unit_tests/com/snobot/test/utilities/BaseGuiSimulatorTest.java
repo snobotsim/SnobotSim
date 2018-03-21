@@ -41,7 +41,7 @@ public class BaseGuiSimulatorTest extends BaseSimulatorTest
         sleepForVisualDebugging(1000);
     }
 
-    protected void sleepForVisualDebugging(long milliseconds)
+    protected void sleepForVisualDebugging(long aMilliseconds)
     {
         // try
         // {

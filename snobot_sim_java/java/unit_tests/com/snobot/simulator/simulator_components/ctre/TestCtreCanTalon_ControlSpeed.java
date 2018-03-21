@@ -86,6 +86,7 @@ public class TestCtreCanTalon_ControlSpeed extends BaseSimulatorTest
             break;
         default:
             Assert.assertTrue(false);
+            break;
         }
     }
 }

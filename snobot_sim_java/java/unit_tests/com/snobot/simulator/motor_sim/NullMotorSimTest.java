@@ -44,6 +44,7 @@ public class NullMotorSimTest extends BaseSimulatorTest
     public void testInvalidSetup()
     {
         SpeedController sc = new Talon(0);
+        Assert.assertNotNull(sc); // suppress findbugs
         DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimSimpleModelConfig(0);
         DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimStaticModelConfig(0);
         DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimGravitationalModelConfig(0);

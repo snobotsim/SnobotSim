@@ -9,9 +9,14 @@ import com.snobot.simulator.wrapper_accessors.java.JavaDataAccessor;
  * @author PJ
  *
  */
-public class DefaultDataAccessorFactory
+public final class DefaultDataAccessorFactory
 {
     private static final boolean sINITIALIZED = false;
+
+    private DefaultDataAccessorFactory()
+    {
+
+    }
 
     public static void initalize()
     {

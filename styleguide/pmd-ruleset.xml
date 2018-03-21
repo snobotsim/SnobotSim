@@ -4,6 +4,10 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
 
+    <exclude-pattern>.*/com/kauailabs/navx/frc/.*</exclude-pattern>
+    <exclude-pattern>.*/edu/wpi/first/wpilibj/.*</exclude-pattern>
+    <exclude-pattern>.*/com/snobot/test/utilities/MockRobot.*</exclude-pattern>
+
     <rule ref="rulesets/java/basic.xml"/>
     <rule ref="rulesets/java/braces.xml"/>
     <rule ref="rulesets/java/design.xml">
@@ -28,7 +32,9 @@
     </rule>
     <rule ref="rulesets/java/strings.xml"/>
     <rule ref="rulesets/java/imports.xml"/>
-    <rule ref="rulesets/java/junit.xml"/>
+    <rule ref="rulesets/java/junit.xml">
+        <exclude name="JUnitTestContainsTooManyAsserts"/>
+    </rule>
     <rule ref="rulesets/java/unnecessary.xml">
         <exclude name="UselessParentheses"/>
         <exclude name="UnnecessaryModifier"/>

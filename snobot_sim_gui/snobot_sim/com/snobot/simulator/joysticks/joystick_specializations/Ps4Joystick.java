@@ -40,7 +40,7 @@ public class Ps4Joystick extends BaseJoystick
 
     private static final Identifier[] sPOV = new Identifier[]
     {
-            Identifier.Axis.POV
+        Identifier.Axis.POV
     };
 
     public Ps4Joystick(Controller aController)

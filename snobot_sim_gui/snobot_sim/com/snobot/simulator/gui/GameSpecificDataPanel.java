@@ -11,10 +11,10 @@ import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor.MatchType;
 
 public class GameSpecificDataPanel extends JPanel
 {
-    private JComboBox<String> mGameDataCB;
-    private JComboBox<MatchType> mMatchTypeCB;
+    private final JComboBox<String> mGameDataCB;
+    private final JComboBox<MatchType> mMatchTypeCB;
 
-    private ItemListener mItemListener = new ItemListener()
+    private final ItemListener mItemListener = new ItemListener()
     {
 
         @Override

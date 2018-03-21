@@ -30,9 +30,9 @@ public class MockIJoystick implements IMockJoystick
     }
 
     @Override
-    public void setRumble(short s)
+    public void setRumble(short aRumble)
     {
-
+        // Nothing to do
     }
 
     @Override

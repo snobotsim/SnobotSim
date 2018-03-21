@@ -20,17 +20,17 @@ import edu.wpi.first.wpilibj.Victor;
 
 public class TestControllerLoop extends BaseSimulatorTest
 {
-    private class TestRobot extends IterativeRobot
+    private static class TestRobot extends IterativeRobot
     {
         public int mDisabledCtr = 0;
         public int mEnabledCtr = 0;
         public int mAutonCtr = 0;
 
-        private SpeedController mSpeedController0;
-        private SpeedController mSpeedController1;
-        private Relay mRelay;
-        private Solenoid mSolenoid;
-        private Joystick mJoystick;
+        private final SpeedController mSpeedController0;
+        private final SpeedController mSpeedController1;
+        private final Relay mRelay;
+        private final Solenoid mSolenoid;
+        private final Joystick mJoystick;
 
         public TestRobot()
         {

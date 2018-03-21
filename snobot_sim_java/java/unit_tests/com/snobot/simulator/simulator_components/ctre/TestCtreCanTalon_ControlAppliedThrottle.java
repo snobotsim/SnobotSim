@@ -17,6 +17,8 @@ import com.snobot.test.utilities.BaseSimulatorTest;
 @RunWith(value = Parameterized.class)
 public class TestCtreCanTalon_ControlAppliedThrottle extends BaseSimulatorTest
 {
+    private static final double sDOUBLE_EPSILON = 1.0 / 1023;
+
     private final int mCanHandle;
     private final int mRawHandle;
 
@@ -42,40 +44,39 @@ public class TestCtreCanTalon_ControlAppliedThrottle extends BaseSimulatorTest
     @Test
     public void testSetWithAppliedThrottle()
     {
-        double DOUBLE_EPSILON = 1.0 / 1023;
 
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
         TalonSRX canTalon1 = new TalonSRX(mCanHandle);
         Assert.assertEquals(1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
 
-        Assert.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(mRawHandle), DOUBLE_EPSILON);
+        Assert.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(mRawHandle), sDOUBLE_EPSILON);
 
         canTalon1.set(ControlMode.PercentOutput, -1.0);
-        Assert.assertEquals(-1.0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(mRawHandle), DOUBLE_EPSILON);
-        Assert.assertEquals(-1.0, canTalon1.getMotorOutputPercent(), DOUBLE_EPSILON);
+        Assert.assertEquals(-1.0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(mRawHandle), sDOUBLE_EPSILON);
+        Assert.assertEquals(-1.0, canTalon1.getMotorOutputPercent(), sDOUBLE_EPSILON);
 
         canTalon1.set(ControlMode.PercentOutput, -0.5);
-        Assert.assertEquals(-0.5, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(mRawHandle), DOUBLE_EPSILON);
-        Assert.assertEquals(-0.5, canTalon1.getMotorOutputPercent(), DOUBLE_EPSILON);
+        Assert.assertEquals(-0.5, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(mRawHandle), sDOUBLE_EPSILON);
+        Assert.assertEquals(-0.5, canTalon1.getMotorOutputPercent(), sDOUBLE_EPSILON);
 
         canTalon1.set(ControlMode.PercentOutput, -0.1);
-        Assert.assertEquals(-0.1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(mRawHandle), DOUBLE_EPSILON);
-        Assert.assertEquals(-0.1, canTalon1.getMotorOutputPercent(), DOUBLE_EPSILON);
+        Assert.assertEquals(-0.1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(mRawHandle), sDOUBLE_EPSILON);
+        Assert.assertEquals(-0.1, canTalon1.getMotorOutputPercent(), sDOUBLE_EPSILON);
 
         canTalon1.set(ControlMode.PercentOutput, 0);
-        Assert.assertEquals(0.0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(mRawHandle), DOUBLE_EPSILON);
-        Assert.assertEquals(0.0, canTalon1.getMotorOutputPercent(), DOUBLE_EPSILON);
+        Assert.assertEquals(0.0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(mRawHandle), sDOUBLE_EPSILON);
+        Assert.assertEquals(0.0, canTalon1.getMotorOutputPercent(), sDOUBLE_EPSILON);
 
         canTalon1.set(ControlMode.PercentOutput, .1);
-        Assert.assertEquals(0.1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(mRawHandle), DOUBLE_EPSILON);
-        Assert.assertEquals(0.1, canTalon1.getMotorOutputPercent(), DOUBLE_EPSILON);
+        Assert.assertEquals(0.1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(mRawHandle), sDOUBLE_EPSILON);
+        Assert.assertEquals(0.1, canTalon1.getMotorOutputPercent(), sDOUBLE_EPSILON);
 
         canTalon1.set(ControlMode.PercentOutput, .5);
-        Assert.assertEquals(0.5, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(mRawHandle), DOUBLE_EPSILON);
-        Assert.assertEquals(0.5, canTalon1.getMotorOutputPercent(), DOUBLE_EPSILON);
+        Assert.assertEquals(0.5, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(mRawHandle), sDOUBLE_EPSILON);
+        Assert.assertEquals(0.5, canTalon1.getMotorOutputPercent(), sDOUBLE_EPSILON);
 
         canTalon1.set(ControlMode.PercentOutput, 1);
-        Assert.assertEquals(1.0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(mRawHandle), DOUBLE_EPSILON);
-        Assert.assertEquals(1.0, canTalon1.getMotorOutputPercent(), DOUBLE_EPSILON);
+        Assert.assertEquals(1.0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(mRawHandle), sDOUBLE_EPSILON);
+        Assert.assertEquals(1.0, canTalon1.getMotorOutputPercent(), sDOUBLE_EPSILON);
     }
 }

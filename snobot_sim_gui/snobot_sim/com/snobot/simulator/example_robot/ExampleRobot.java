@@ -50,9 +50,9 @@ public class ExampleRobot extends IterativeRobot
         mAutoTimer = new Timer();
 
         String errorMessage = "Warning, this is the example robot bundled with the simulator!\n";
-        errorMessage += "To configure this for your robot, change <project_dir>/simulator_config/simulator_config.properties, and update the robot_class field";
+        errorMessage += "To configure this for your robot, change <project_dir>/simulator_config/simulator_config.properties, and update the robot_class field"; // NOPMD
 
-        System.err.println(errorMessage);
+        System.err.println(errorMessage); // NOPMD
     }
 
     @Override
@@ -62,12 +62,12 @@ public class ExampleRobot extends IterativeRobot
         mRightDriveEncoder.reset();
         mAutoTimer.start();
 
-        System.out.println("Game Information: ");
-        System.out.println("  Match Number : " + DriverStation.getInstance().getMatchNumber());
-        System.out.println("  Match Replay : " + DriverStation.getInstance().getReplayNumber());
-        System.out.println("  Match Type   : " + DriverStation.getInstance().getMatchType());
-        System.out.println("  Event Name   : " + DriverStation.getInstance().getEventName());
-        System.out.println("  Game Info    : " + DriverStation.getInstance().getGameSpecificMessage());
+        System.out.println("Game Information: "); // NOPMD
+        System.out.println("  Match Number : " + DriverStation.getInstance().getMatchNumber()); // NOPMD
+        System.out.println("  Match Replay : " + DriverStation.getInstance().getReplayNumber()); // NOPMD
+        System.out.println("  Match Type   : " + DriverStation.getInstance().getMatchType()); // NOPMD
+        System.out.println("  Event Name   : " + DriverStation.getInstance().getEventName()); // NOPMD
+        System.out.println("  Game Info    : " + DriverStation.getInstance().getGameSpecificMessage()); // NOPMD
     }
 
     @Override
@@ -95,6 +95,7 @@ public class ExampleRobot extends IterativeRobot
 
         SmartDashboard.putNumber("Left Enc", mLeftDriveEncoder.getDistance());
         SmartDashboard.putNumber("Right Enc", mRightDriveEncoder.getDistance());
+        SmartDashboard.putNumber("Gyro", mGyro.getAngle());
     }
 
 }

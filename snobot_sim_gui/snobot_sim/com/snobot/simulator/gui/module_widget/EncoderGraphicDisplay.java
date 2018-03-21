@@ -72,8 +72,8 @@ public class EncoderGraphicDisplay extends BaseWidgetDisplay<Integer, EncoderWra
 
 class EncoderWrapperDisplay extends JPanel
 {
-    private JTextField mRawField;
-    private JTextField mDistanceField;
+    private final JTextField mRawField;
+    private final JTextField mDistanceField;
 
     public EncoderWrapperDisplay()
     {
@@ -88,7 +88,7 @@ class EncoderWrapperDisplay extends JPanel
         if (aHasConnection)
         {
             DecimalFormat df = new DecimalFormat("#.###");
-            mRawField.setText("" + aRaw);
+            mRawField.setText(Double.toString(aRaw));
             mDistanceField.setText(df.format(aDistance));
         }
         else

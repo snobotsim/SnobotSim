@@ -1,6 +1,52 @@
 <FindBugsFilter>
+
+    <!-- Test Classes -->
+
+    <Match>
+        <Package name="com.kauailabs.navx.frc"/>
+    </Match>
+    <Match>
+        <Package name="edu.wpi.first.wpilibj"/>
+    </Match>
+
+    <!-- snobot_sim_gui -->
+    <Match>
+        <Package name="~com\.snobot\.simulator\.joysticks.*"/>
+        <Bug pattern="EI_EXPOSE_REP" />
+    </Match>
+    <Match>
+        <Package name="~com\.snobot\.simulator\.gui\.joysticks.*"/>
+       <Or>
+        <Bug pattern="EI_EXPOSE_REP" />
+        <Bug pattern="SE_BAD_FIELD_STORE" />
+       </Or>
+    </Match>
+    <Match>
+        <Class name="com.snobot.simulator.gui.GameSpecificDataPanel"/>
+        <Bug pattern="SE_BAD_FIELD_STORE" />
+    </Match>
+    <Match>
+        <Class name="com.snobot.simulator.robot_container.PythonRobotContainer"/>
+    </Match>
+    <Match>
+        <Class name="com.snobot.simulator.config.SimulatorConfigReader"/>
+        <Method name="setupMotorSimulator"/>
+        <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE" />
+    </Match>
+
+    <!-- snobot_sim_jni -->
     <Match>
         <Class name="com.snobot.simulator.jni.BaseSnobotJni"/>
         <Bug pattern="IC_SUPERCLASS_USES_SUBCLASS_DURING_INITIALIZATION" />
+    </Match>
+    <Match>
+        <Class name="com.snobot.simulator.jni.TestRegisterJavaCallback"/>
+        <Bug pattern="DLS_DEAD_LOCAL_STORE" />
+    </Match>
+
+    <!-- unit tests -->
+    <Match>
+        <Class name="com.snobot.test.utilities.BaseSimulatorTest"/>
+        <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD" />
     </Match>
 </FindBugsFilter>

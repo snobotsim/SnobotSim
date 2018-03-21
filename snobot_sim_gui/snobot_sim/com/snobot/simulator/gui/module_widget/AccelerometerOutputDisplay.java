@@ -72,7 +72,7 @@ class AccelerometerDisplay extends JPanel
     private static final int sHEIGHT = 15;
 
     private double mAcceleration;
-    private double mMaxAcceleration;
+    private final double mMaxAcceleration;
 
     public AccelerometerDisplay()
     {

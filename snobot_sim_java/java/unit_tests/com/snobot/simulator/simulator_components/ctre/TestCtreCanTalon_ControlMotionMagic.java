@@ -71,7 +71,7 @@ public class TestCtreCanTalon_ControlMotionMagic extends BaseSimulatorTest
 
         simulateForTime(8, () ->
         {
-            System.out.println(talon.getClosedLoopError(0));
+            System.out.println(talon.getClosedLoopError(0)); // NOPMD
         });
 
         Assert.assertEquals(0, talon.getClosedLoopError(0), 2 * 4096);

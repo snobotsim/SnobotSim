@@ -25,7 +25,8 @@ import edu.wpi.first.wpilibj.SPI;
 
 public class SpiAndI2CSettingsDialog extends JDialog
 {
-    private JButton mSubmitButton;
+    private static final String sDEFAULT_ITEM = "None";
+
     private Map<Integer, ComponentRow> mSpiSettings;
     private Map<Integer, ComponentRow> mI2CSettings;
 
@@ -48,10 +49,10 @@ public class SpiAndI2CSettingsDialog extends JDialog
         Collection<String> availableSpiOptions = new ArrayList<>();
         Collection<String> availableI2COptions = new ArrayList<>();
 
-        availableSpiOptions.add("None");
+        availableSpiOptions.add(sDEFAULT_ITEM);
         availableSpiOptions.addAll(DataAccessorFactory.getInstance().getSimulatorDataAccessor().getAvailableSpiSimulators());
 
-        availableI2COptions.add("None");
+        availableI2COptions.add(sDEFAULT_ITEM);
         availableI2COptions.addAll(DataAccessorFactory.getInstance().getSimulatorDataAccessor().getAvailableI2CSimulators());
 
         int rowCtr = 0;
@@ -90,8 +91,8 @@ public class SpiAndI2CSettingsDialog extends JDialog
             container.add(row.mSelection, constraints);
         }
 
-        mSubmitButton = new JButton("Submit");
-        mSubmitButton.addActionListener(new ActionListener()
+        JButton submitButton = new JButton("Submit");
+        submitButton.addActionListener(new ActionListener()
         {
 
             @Override
@@ -103,7 +104,7 @@ public class SpiAndI2CSettingsDialog extends JDialog
         });
 
         add(container, BorderLayout.CENTER);
-        add(mSubmitButton, BorderLayout.SOUTH);
+        add(submitButton, BorderLayout.SOUTH);
     }
 
     private void onSubmit()
@@ -112,7 +113,7 @@ public class SpiAndI2CSettingsDialog extends JDialog
         {
             Object selected = pair.getValue().mSelection.getSelectedItem();
             String value = null;
-            if (selected != null && !"None".equals(selected))
+            if (selected != null && !sDEFAULT_ITEM.equals(selected))
             {
                 value = selected.toString();
             }
@@ -123,7 +124,7 @@ public class SpiAndI2CSettingsDialog extends JDialog
         {
             Object selected = pair.getValue().mSelection.getSelectedItem();
             String value = null;
-            if (selected != null && "None".equals(selected))
+            if (selected != null && selected.equals(sDEFAULT_ITEM))
             {
                 value = selected.toString();
             }
@@ -135,10 +136,10 @@ public class SpiAndI2CSettingsDialog extends JDialog
                 JOptionPane.WARNING_MESSAGE);
     }
 
-    private class ComponentRow
+    private static class ComponentRow
     {
-        private JComboBox<String> mSelection;
-        private JLabel mLabel;
+        private final JComboBox<String> mSelection;
+        private final JLabel mLabel;
 
         public ComponentRow(String aName, Collection<String> aOptions, String aSelectedValue)
         {
@@ -151,7 +152,7 @@ public class SpiAndI2CSettingsDialog extends JDialog
 
             if (aSelectedValue == null)
             {
-                mSelection.setSelectedItem("None");
+                mSelection.setSelectedItem(sDEFAULT_ITEM);
             }
             else
             {

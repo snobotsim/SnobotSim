@@ -48,5 +48,7 @@ public class NullMotorSimTest extends BaseSimulatorTest
         DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimStaticModelConfig(0);
         DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimGravitationalModelConfig(0);
         DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorSimRotationalModelConfig(0);
+
+        Assert.assertNotNull(sc); // findbugs supression
     }
 }

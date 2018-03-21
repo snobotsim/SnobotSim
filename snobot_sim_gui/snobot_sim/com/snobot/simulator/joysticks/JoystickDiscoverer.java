@@ -1,6 +1,7 @@
 package com.snobot.simulator.joysticks;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -10,8 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.snobot.simulator.joysticks.joystick_specializations.GenericGamepadJoystick;
 import com.snobot.simulator.joysticks.joystick_specializations.KeyboardJoystick;
@@ -22,12 +23,12 @@ import net.java.games.input.Controller;
 import net.java.games.input.Controller.Type;
 import net.java.games.input.ControllerEnvironment;
 
-public class JoystickDiscoverer
+public final class JoystickDiscoverer
 {
     private static final Logger sLOGGER = LogManager.getLogger(JoystickDiscoverer.class);
     private static final List<Type> sTYPES_TO_IGNORE = Arrays.asList(Type.UNKNOWN, Type.MOUSE);
 
-    public static final Map<Class<? extends IMockJoystick>, String> sAVAILABLE_SPECIALIZATIONS;
+    private static final Map<Class<? extends IMockJoystick>, String> sAVAILABLE_SPECIALIZATIONS;
 
     static
     {
@@ -41,6 +42,21 @@ public class JoystickDiscoverer
     private JoystickDiscoverer()
     {
 
+    }
+
+    public static Collection<Class<? extends IMockJoystick>> getSpecializationTypes()
+    {
+        return sAVAILABLE_SPECIALIZATIONS.keySet();
+    }
+
+    public static Collection<String> getJoystickNames()
+    {
+        return sAVAILABLE_SPECIALIZATIONS.values();
+    }
+
+    public static String getSpecialization(Class<?> aDefaultSpecialization)
+    {
+        return sAVAILABLE_SPECIALIZATIONS.get(aDefaultSpecialization);
     }
 
     public static Map<String, ControllerConfiguration> rediscoverJoysticks()
@@ -78,11 +94,11 @@ public class JoystickDiscoverer
         List<Map.Entry<String, ControllerConfiguration>> list = new LinkedList<Map.Entry<String, ControllerConfiguration>>(aMap.entrySet());
         Collections.sort(list, new Comparator<Map.Entry<String, ControllerConfiguration>>()
         {
-            public int compare(Map.Entry<String, ControllerConfiguration> o1, Map.Entry<String, ControllerConfiguration> o2)
+            public int compare(Map.Entry<String, ControllerConfiguration> aObject1, Map.Entry<String, ControllerConfiguration> aObject2)
             {
                 // Hacky sort, we just want the keyboard to bubble down
-                Class<? extends IMockJoystick> clazz1 = o1.getValue().mSpecialization;
-                Class<? extends IMockJoystick> clazz2 = o2.getValue().mSpecialization;
+                Class<? extends IMockJoystick> clazz1 = aObject1.getValue().mSpecialization;
+                Class<? extends IMockJoystick> clazz2 = aObject2.getValue().mSpecialization;
 
                 int clazz1Value = KeyboardJoystick.class.equals(clazz1) ? -1 : 1;
                 int clazz2Value = KeyboardJoystick.class.equals(clazz2) ? -1 : 1;
@@ -113,21 +129,17 @@ public class JoystickDiscoverer
         }
         else if (type == Type.GAMEPAD)
         {
-            switch (name)
-            {
-            default:
-                sLOGGER.log(Level.ERROR, "Unknown joystick name " + name);
-                output = GenericGamepadJoystick.class;
-            }
+            sLOGGER.log(Level.ERROR, "Unknown joystick name " + name);
+            output = GenericGamepadJoystick.class;
         }
         else if (type == Type.STICK)
         {
-            switch (name)
+            if ("Wireless Controller".equals(name))
             {
-            case "Wireless Controller":
                 output = Ps4Joystick.class;
-                break;
-            default:
+            }
+            else
+            {
                 sLOGGER.log(Level.ERROR, "Unknown joystick name " + name);
                 output = GenericGamepadJoystick.class;
             }

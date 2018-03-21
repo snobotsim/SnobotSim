@@ -10,8 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.snobot.simulator.joysticks.IMockJoystick;
 
@@ -38,7 +38,7 @@ public class WrappedJoystickPanel extends JPanel
         setJoystick(aJoystick);
     }
 
-    public void setJoystick(IMockJoystick aJoystick)
+    public final void setJoystick(IMockJoystick aJoystick)
     {
         mJoystick = aJoystick;
         mAnalogPanel.removeAll();
@@ -68,7 +68,11 @@ public class WrappedJoystickPanel extends JPanel
 
     public void updateDisplay()
     {
-        if (mJoystick != null)
+        if (mJoystick == null)
+        {
+            sLOGGER.log(Level.WARN, "Joystick is null");
+        }
+        else
         {
             float[] axisValues = mJoystick.getAxisValues();
             int buttonMask = mJoystick.getButtonMask();
@@ -84,10 +88,6 @@ public class WrappedJoystickPanel extends JPanel
                 boolean active = (buttonMask & (1 << i)) != 0;
                 panel.setValue(active);
             }
-        }
-        else
-        {
-            sLOGGER.log(Level.WARN, "Joystick is null");
         }
     }
 

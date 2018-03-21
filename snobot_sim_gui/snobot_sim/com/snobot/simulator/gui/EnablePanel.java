@@ -15,9 +15,9 @@ import javax.swing.JPanel;
  */
 public class EnablePanel extends JPanel
 {
-    private JCheckBox mEnableButton = new JCheckBox("Enabled");
-    private JCheckBox mAutonButton = new JCheckBox("Autonomous");
-    private JLabel mTimeLabel = new JLabel("Time: 000.00");
+    private final JCheckBox mEnableButton = new JCheckBox("Enabled");
+    private final JCheckBox mAutonButton = new JCheckBox("Autonomous");
+    private final JLabel mTimeLabel = new JLabel("Time: 000.00");
 
     public EnablePanel()
     {
