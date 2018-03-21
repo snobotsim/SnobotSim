@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.AnalogWrapper;
@@ -17,7 +18,7 @@ import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 public class CtreTalonSrxSpeedControllerSim extends PwmWrapper
 {
-    private static final Logger sLOGGER = Logger.getLogger(CtreTalonSrxSpeedControllerSim.class);
+    private static final Logger sLOGGER = LogManager.getLogger(CtreTalonSrxSpeedControllerSim.class);
 
     private boolean mLoggedCantOverrideFwdLimitSwitch = false;
     private boolean mLoggedCantOverrideRevLimitSwitch = false;

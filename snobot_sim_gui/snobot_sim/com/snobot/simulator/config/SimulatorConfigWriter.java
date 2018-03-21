@@ -5,8 +5,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
@@ -27,7 +28,7 @@ import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor.Mot
  */
 public class SimulatorConfigWriter
 {
-    private static final Logger sLOGGER = Logger.getLogger(SimulatorConfigWriter.class);
+    private static final Logger sLOGGER = LogManager.getLogger(SimulatorConfigWriter.class);
 
     /**
      * Looks at all of the loaded simulator components and writes the config to

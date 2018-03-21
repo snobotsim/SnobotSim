@@ -5,15 +5,16 @@ import java.nio.ByteOrder;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.simulator_components.ctre.CtreTalonSrxSpeedControllerSim.MotionProfilePoint;
 
 public class CtreManager
 {
-    private static final Logger sLOGGER = Logger.getLogger(CtreManager.class);
+    private static final Logger sLOGGER = LogManager.getLogger(CtreManager.class);
 
     private final Map<Integer, CtrePigeonImuSim> mPigeonMap;
 

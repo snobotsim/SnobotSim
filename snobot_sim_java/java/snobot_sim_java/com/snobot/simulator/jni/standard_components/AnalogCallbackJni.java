@@ -1,7 +1,8 @@
 package com.snobot.simulator.jni.standard_components;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.HalCallbackValue;
@@ -10,7 +11,7 @@ import com.snobot.simulator.module_wrapper.AnalogWrapper.VoltageSetterHelper;
 
 public final class AnalogCallbackJni
 {
-    private static final Logger sLOGGER = Logger.getLogger(AnalogCallbackJni.class);
+    private static final Logger sLOGGER = LogManager.getLogger(AnalogCallbackJni.class);
 
     private AnalogCallbackJni()
     {

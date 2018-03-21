@@ -12,8 +12,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.config.SimulatorConfigWriter;
 import com.snobot.simulator.gui.joysticks.JoystickManagerDialog;
@@ -27,7 +28,7 @@ import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
  */
 public class SimulatorFrame extends JFrame
 {
-    private static final Logger sLOGGER = Logger.getLogger(SimulatorFrame.class);
+    private static final Logger sLOGGER = LogManager.getLogger(SimulatorFrame.class);
 
     private GraphicalSensorDisplayPanel mBasicPanel;
     private EnablePanel mEnablePanel;

@@ -5,8 +5,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.jni.adx_family.SpiI2CSimulatorJni;
 import com.snobot.simulator.jni.navx.NavxSimulatorJni;
@@ -16,7 +17,7 @@ import com.snobot.simulator.simulator_components.navx.NavxSimulatorWrapper;
 
 public class DefaultI2CSimulatorFactory implements II2cSimulatorFactory
 {
-    private static final Logger sLOGGER = Logger.getLogger(DefaultI2CSimulatorFactory.class);
+    private static final Logger sLOGGER = LogManager.getLogger(DefaultI2CSimulatorFactory.class);
     protected Map<Integer, String> mDefaults;
 
     public DefaultI2CSimulatorFactory()

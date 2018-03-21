@@ -2,8 +2,9 @@ package com.snobot.simulator.simulator_components.navx;
 
 import java.nio.ByteBuffer;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.navx.NavxSimulatorJni;
@@ -16,7 +17,7 @@ import com.snobot.simulator.simulator_components.gyro.IGyroWrapper;
 
 public class NavxSimulatorWrapper implements ISpiWrapper, II2CWrapper
 {
-    private static final Logger sLOGGER = Logger.getLogger(NavxSimulatorWrapper.class);
+    private static final Logger sLOGGER = LogManager.getLogger(NavxSimulatorWrapper.class);
 
     private static class NavxAccelWrapper extends ASensorWrapper implements IAccelerometerWrapper
     {

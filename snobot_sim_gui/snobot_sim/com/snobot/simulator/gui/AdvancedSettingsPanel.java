@@ -13,15 +13,16 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.gui.module_widget.settings.SpiAndI2CSettingsDialog;
 import com.snobot.simulator.gui.module_widget.settings.TankDriveSettingsDialog;
 
 public class AdvancedSettingsPanel extends JPanel
 {
-    private static final Logger sLOGGER = Logger.getLogger(AdvancedSettingsPanel.class);
+    private static final Logger sLOGGER = LogManager.getLogger(AdvancedSettingsPanel.class);
 
     private List<ButtonDialogPair> mDialogs;
 

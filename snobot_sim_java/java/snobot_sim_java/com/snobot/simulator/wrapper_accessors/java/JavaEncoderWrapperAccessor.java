@@ -2,8 +2,9 @@ package com.snobot.simulator.wrapper_accessors.java;
 
 import java.util.Map;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.EncoderWrapper;
@@ -12,7 +13,7 @@ import com.snobot.simulator.wrapper_accessors.EncoderWrapperAccessor;
 
 public class JavaEncoderWrapperAccessor extends BaseWrapperAccessor<EncoderWrapper> implements EncoderWrapperAccessor
 {
-    private static final Logger sLOGGER = Logger.getLogger(JavaEncoderWrapperAccessor.class);
+    private static final Logger sLOGGER = LogManager.getLogger(JavaEncoderWrapperAccessor.class);
 
     @Override
     protected Map<Integer, EncoderWrapper> getMap()

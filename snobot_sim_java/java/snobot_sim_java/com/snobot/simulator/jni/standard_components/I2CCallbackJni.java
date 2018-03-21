@@ -5,8 +5,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.HalCallbackValue;
@@ -16,7 +17,7 @@ import com.snobot.simulator.simulator_components.components_factory.II2cSimulato
 
 public final class I2CCallbackJni
 {
-    private static final Logger sLOGGER = Logger.getLogger(I2CCallbackJni.class);
+    private static final Logger sLOGGER = LogManager.getLogger(I2CCallbackJni.class);
     private static II2cSimulatorFactory sI2C_FACTORY = new DefaultI2CSimulatorFactory();
     private static final Map<Integer, II2CWrapper> sCUSTOM_WRAPPERS = new HashMap<>();
 

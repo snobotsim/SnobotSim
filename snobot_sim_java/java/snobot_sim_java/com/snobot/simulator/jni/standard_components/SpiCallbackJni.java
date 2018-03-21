@@ -5,8 +5,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.HalCallbackValue;
@@ -16,7 +17,7 @@ import com.snobot.simulator.simulator_components.components_factory.ISpiSimulato
 
 public final class SpiCallbackJni
 {
-    private static final Logger sLOGGER = Logger.getLogger(SpiCallbackJni.class);
+    private static final Logger sLOGGER = LogManager.getLogger(SpiCallbackJni.class);
     private static ISpiSimulatorFactory sSPI_FACTORY = new DefaultSpiSimulatorFactory();
     private static final Map<Integer, ISpiWrapper> sCUSTOM_WRAPPERS = new HashMap<>();
 

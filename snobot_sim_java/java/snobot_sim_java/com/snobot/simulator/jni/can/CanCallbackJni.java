@@ -2,15 +2,16 @@ package com.snobot.simulator.jni.can;
 
 import java.nio.ByteBuffer;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.jni.HalCallbackValue;
 import com.snobot.simulator.simulator_components.ctre.CtreManager;
 
 public final class CanCallbackJni
 {
-    private static final Logger sLOGGER = Logger.getLogger(CanCallbackJni.class);
+    private static final Logger sLOGGER = LogManager.getLogger(CanCallbackJni.class);
 
     public static final CtreManager sCAN_MANAGER = new CtreManager();
 

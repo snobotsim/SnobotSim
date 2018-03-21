@@ -2,8 +2,9 @@ package com.snobot.simulator.simulator_components.accelerometer;
 
 import java.nio.ByteBuffer;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.adx_family.SpiI2CSimulatorJni;
@@ -14,7 +15,7 @@ import com.snobot.simulator.simulator_components.ISpiWrapper;
 
 public class SpiI2CAccelerometer implements ISpiWrapper, II2CWrapper
 {
-    private static final Logger sLOGGER = Logger.getLogger(SpiI2CAccelerometer.class);
+    private static final Logger sLOGGER = LogManager.getLogger(SpiI2CAccelerometer.class);
 
     private static class AdxAccelWrapper extends ASensorWrapper implements IAccelerometerWrapper
     {

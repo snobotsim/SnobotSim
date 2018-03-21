@@ -16,8 +16,9 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.gui.motor_display.MotorCurveDisplay;
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
@@ -27,7 +28,7 @@ import net.miginfocom.swing.MigLayout;
 
 public class DcMotorConfigPanel extends JPanel
 {
-    private static final Logger sLOGGER = Logger.getLogger(DcMotorConfigPanel.class);
+    private static final Logger sLOGGER = LogManager.getLogger(DcMotorConfigPanel.class);
 
     private JComboBox<String> mMotorSelectionBox;
     private JSpinner mNumMotors;

@@ -5,8 +5,9 @@ import java.io.FileReader;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.yaml.snakeyaml.Yaml;
 
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
@@ -30,7 +31,7 @@ import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor;
  */
 public class SimulatorConfigReader
 {
-    private static final Logger sLOGGER = Logger.getLogger(SimulatorConfigReader.class);
+    private static final Logger sLOGGER = LogManager.getLogger(SimulatorConfigReader.class);
 
     private SimulatorConfig mConfig;
 

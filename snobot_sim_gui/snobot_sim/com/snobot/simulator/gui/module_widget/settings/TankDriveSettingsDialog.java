@@ -16,8 +16,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.simulator_components.TankDriveGyroSimulator;
 import com.snobot.simulator.simulator_components.TankDriveGyroSimulator.TankDriveConfig;
@@ -25,7 +26,7 @@ import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 public class TankDriveSettingsDialog extends JDialog
 {
-    private static final Logger sLOGGER = Logger.getLogger(TankDriveSettingsDialog.class);
+    private static final Logger sLOGGER = LogManager.getLogger(TankDriveSettingsDialog.class);
 
     private JButton mSubmitButton;
     private JButton mAddButton;

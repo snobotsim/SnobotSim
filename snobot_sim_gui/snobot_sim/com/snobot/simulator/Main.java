@@ -5,8 +5,8 @@ import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor.SnobotLogLevel;
@@ -16,8 +16,6 @@ import edu.wpi.first.wpilibj.util.WPILibVersion;
 
 public class Main
 {
-    private static final Logger sLOGGER = Logger.getLogger(Main.class);
-
     private static final File DEFAULT_PLUGIN_DIR = new File("user_libs");
     private static final String sUSER_CONFIG_DIR = "simulator_config/";
 
@@ -47,7 +45,7 @@ public class Main
         }
         catch (ClassNotFoundException e)
         {
-            sLOGGER.log(Level.FATAL, "Class not found exception.  You either have an error in your properties file, "
+            LogManager.getLogger().log(Level.FATAL, "Class not found exception.  You either have an error in your properties file, "
                     + "or the project is not set up to be able to find the robot project you are attempting to create"
                     +  "\nerror: " + e, e);
 
@@ -55,14 +53,14 @@ public class Main
         }
         catch (UnsatisfiedLinkError e)
         {
-            sLOGGER.log(Level.FATAL, "Unsatisfied link error.  This likely means that there is a native "
+            LogManager.getLogger().log(Level.FATAL, "Unsatisfied link error.  This likely means that there is a native "
                     + "call in WpiLib or the NetworkTables libraries.  Please tell PJ so he can mock it out.\n\nError Message: " + e, e);
 
             System.exit(-1);
         }
         catch (Exception e)
         {
-            sLOGGER.log(Level.ERROR, e);
+            LogManager.getLogger().log(Level.ERROR, e);
             System.exit(1);
         }
     }
@@ -145,7 +143,7 @@ public class Main
         }
         catch (Exception e)
         {
-            sLOGGER.log(Level.ERROR, e);
+            LogManager.getLogger().log(Level.ERROR, e);
             System.exit(-1);
         }
     }

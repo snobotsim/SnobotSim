@@ -9,8 +9,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.joysticks.joystick_specializations.GenericGamepadJoystick;
 import com.snobot.simulator.joysticks.joystick_specializations.KeyboardJoystick;
@@ -23,7 +24,7 @@ import net.java.games.input.ControllerEnvironment;
 
 public class JoystickDiscoverer
 {
-    private static final Logger sLOGGER = Logger.getLogger(JoystickDiscoverer.class);
+    private static final Logger sLOGGER = LogManager.getLogger(JoystickDiscoverer.class);
     private static final List<Type> sTYPES_TO_IGNORE = Arrays.asList(Type.UNKNOWN, Type.MOUSE);
 
     public static final Map<Class<? extends IMockJoystick>, String> sAVAILABLE_SPECIALIZATIONS;

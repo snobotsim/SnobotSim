@@ -12,8 +12,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.joysticks.joystick_specializations.NullJoystick;
 
@@ -24,7 +25,7 @@ public class JoystickFactory
 {
     public static final String sJOYSTICK_CONFIG_FILE = "simulator_config/joystick_config.properties";
 
-    private static final Logger sLOGGER = Logger.getLogger(JoystickFactory.class);
+    private static final Logger sLOGGER = LogManager.getLogger(JoystickFactory.class);
 
     private static final JoystickFactory sINSTANCE = new JoystickFactory();
     private static final String sKEY = "Joystick_";

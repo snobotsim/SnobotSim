@@ -10,8 +10,9 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.gui.joysticks.sub_panels.RawJoystickPanel;
 import com.snobot.simulator.gui.joysticks.sub_panels.WrappedJoystickPanel;
@@ -26,7 +27,7 @@ import net.java.games.input.Controller.Type;
 
 public class JoystickTabPanel extends JPanel
 {
-    private static final Logger sLOGGER = Logger.getLogger(JoystickTabPanel.class);
+    private static final Logger sLOGGER = LogManager.getLogger(JoystickTabPanel.class);
 
     private RawJoystickPanel mRawPanel;
 

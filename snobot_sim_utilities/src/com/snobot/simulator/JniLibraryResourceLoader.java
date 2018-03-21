@@ -9,14 +9,16 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import edu.wpi.first.wpiutil.RuntimeDetector;
 
 public class JniLibraryResourceLoader
 {
-    private static final Logger sLOGGER = Logger.getLogger(JniLibraryResourceLoader.class);
+    private static final Logger sLOGGER = LogManager.getLogger(JniLibraryResourceLoader.class);
 
     private static final File TEMP_DIR_ROOT;
     private static final File TEMP_DIR;

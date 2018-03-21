@@ -1,7 +1,8 @@
 package com.snobot.simulator.simulator_components;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.EncoderWrapper;
@@ -9,7 +10,7 @@ import com.snobot.simulator.simulator_components.gyro.IGyroWrapper;
 
 public class TankDriveGyroSimulator implements ISimulatorUpdater
 {
-    private static final Logger sLOGGER = Logger.getLogger(TankDriveGyroSimulator.class);
+    private static final Logger sLOGGER = LogManager.getLogger(TankDriveGyroSimulator.class);
 
     private final TankDriveConfig mConfig;
     private final EncoderWrapper mLeftEncoder;

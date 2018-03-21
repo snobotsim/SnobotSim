@@ -1,7 +1,8 @@
 package com.snobot.simulator.jni.standard_components;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.HalCallbackValue;
@@ -11,7 +12,7 @@ import com.snobot.simulator.module_wrapper.EncoderWrapper.ResetHelper;
 
 public final class EncoderCallbackJni
 {
-    private static final Logger sLOGGER = Logger.getLogger(EncoderCallbackJni.class);
+    private static final Logger sLOGGER = LogManager.getLogger(EncoderCallbackJni.class);
 
     private EncoderCallbackJni()
     {

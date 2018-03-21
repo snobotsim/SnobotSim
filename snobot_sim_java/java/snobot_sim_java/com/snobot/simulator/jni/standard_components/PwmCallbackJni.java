@@ -1,7 +1,8 @@
 package com.snobot.simulator.jni.standard_components;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.HalCallbackValue;
@@ -9,7 +10,7 @@ import com.snobot.simulator.module_wrapper.PwmWrapper;
 
 public final class PwmCallbackJni
 {
-    private static final Logger sLOGGER = Logger.getLogger(PwmCallbackJni.class);
+    private static final Logger sLOGGER = LogManager.getLogger(PwmCallbackJni.class);
 
     private PwmCallbackJni()
     {

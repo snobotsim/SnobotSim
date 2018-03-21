@@ -9,14 +9,15 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.joysticks.IMockJoystick;
 
 public class WrappedJoystickPanel extends JPanel
 {
-    private static final Logger sLOGGER = Logger.getLogger(WrappedJoystickPanel.class);
+    private static final Logger sLOGGER = LogManager.getLogger(WrappedJoystickPanel.class);
 
     private IMockJoystick mJoystick;
     private JPanel mDigitalPanel;

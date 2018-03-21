@@ -10,15 +10,16 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.gui.Util;
 import com.snobot.simulator.joysticks.IMockJoystick;
 
 public class XboxPanel extends JPanel
 {
-    private static final Logger sLOGGER = Logger.getLogger(XboxPanel.class);
+    private static final Logger sLOGGER = LogManager.getLogger(XboxPanel.class);
     private static final Color sPRESSED_BTN_COLOR = new Color(0, 255, 0, 180);
     private static final Color sJOYSTICK_BACKGROUND = new Color(255, 255, 255, 180);
 

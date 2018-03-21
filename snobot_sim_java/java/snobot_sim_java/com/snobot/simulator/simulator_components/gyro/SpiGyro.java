@@ -2,8 +2,9 @@ package com.snobot.simulator.simulator_components.gyro;
 
 import java.nio.ByteBuffer;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.adx_family.SpiI2CSimulatorJni;
@@ -12,7 +13,7 @@ import com.snobot.simulator.simulator_components.ISpiWrapper;
 
 public class SpiGyro extends ASensorWrapper implements IGyroWrapper, ISpiWrapper
 {
-    private static final Logger sLOGGER = Logger.getLogger(SpiGyro.class);
+    private static final Logger sLOGGER = LogManager.getLogger(SpiGyro.class);
 
     private final String mType;
     private final long mNativePointer;

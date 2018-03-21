@@ -2,8 +2,9 @@ package com.snobot.simulator.joysticks;
 
 import java.util.List;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import net.java.games.input.Component;
 import net.java.games.input.Component.Identifier;
@@ -11,7 +12,7 @@ import net.java.games.input.Controller;
 
 public class BaseJoystick implements IMockJoystick
 {
-    private static final Logger sLOGGER = Logger.getLogger(BaseJoystick.class);
+    private static final Logger sLOGGER = LogManager.getLogger(BaseJoystick.class);
 
     protected final String mName;
     protected final List<Identifier> mAxis;

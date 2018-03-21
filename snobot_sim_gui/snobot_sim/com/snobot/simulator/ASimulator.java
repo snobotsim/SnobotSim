@@ -1,6 +1,8 @@
 package com.snobot.simulator;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.config.SimulatorConfigReader;
 import com.snobot.simulator.robot_container.IRobotClassContainer;
@@ -13,7 +15,7 @@ import com.snobot.simulator.robot_container.IRobotClassContainer;
  */
 public class ASimulator implements ISimulatorUpdater
 {
-    private static final Logger sLOGGER = Logger.getLogger(ASimulator.class);
+    private static final Logger sLOGGER = LogManager.getLogger(ASimulator.class);
 
     private final SimulatorConfigReader mConfigReader;
 

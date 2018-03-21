@@ -71,7 +71,8 @@ dependencies {
     native3rdPartyDeps  'net.java.jinput:jinput:2.0.7'
     compile 'jfree:jcommon:1.0.16'
     compile 'jfree:jfreechart:1.0.13'
-    compile "log4j:log4j:1.2.16"
+    compile 'org.apache.logging.log4j:log4j-api:2.11.0'
+    compile 'org.apache.logging.log4j:log4j-core:2.11.0'
     compile 'org.yaml:snakeyaml:1.18'
     compile 'com.miglayout:miglayout-swing:4.2'
     //compile 'org.python:jython:2.7.1b3'

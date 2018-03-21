@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.DriverStationSimulatorJni;
@@ -33,7 +34,7 @@ import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor;
 
 public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
 {
-    private static final Logger sLOGGER = Logger.getLogger(JavaSimulatorDataAccessor.class);
+    private static final Logger sLOGGER = LogManager.getLogger(JavaSimulatorDataAccessor.class);
     private static final String sUNKNOWN_SPEED_CONTROLLER_TEXT = "Unknown speed controller ";
 
     private double mEnabledTime = -1;

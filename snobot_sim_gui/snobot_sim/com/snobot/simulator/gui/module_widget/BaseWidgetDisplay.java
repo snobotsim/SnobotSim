@@ -21,12 +21,13 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 public abstract class BaseWidgetDisplay<KeyType, WidgetType extends Container> extends JPanel
 {
-    private static final Logger sLOGGER = Logger.getLogger(BaseWidgetDisplay.class);
+    private static final Logger sLOGGER = LogManager.getLogger(BaseWidgetDisplay.class);
 
     protected Map<KeyType, WidgetType> mWidgetMap;
     protected Map<KeyType, JLabel> mLabelMap;
