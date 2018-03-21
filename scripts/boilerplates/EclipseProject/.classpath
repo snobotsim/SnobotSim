@@ -9,7 +9,8 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="lib" path="dependencies/jfreechart-1.0.13.jar"/>
 	<classpathentry kind="lib" path="dependencies/jutils-1.0.0.jar"/>
-	<classpathentry kind="lib" path="dependencies/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="dependencies/log4j-api-2.11.0.jar"/>
+	<classpathentry kind="lib" path="dependencies/log4j-core-2.11.0.jar"/>
 	<classpathentry kind="lib" path="dependencies/miglayout-core-4.2.jar"/>
 	<classpathentry kind="lib" path="dependencies/miglayout-swing-4.2.jar"/>
 	<classpathentry kind="lib" path="dependencies/snakeyaml-1.18.jar"/>
