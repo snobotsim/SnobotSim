@@ -15,7 +15,7 @@ import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
 @RunWith(value = Parameterized.class)
-public class TestCtreCanTalon_ControlAppliedThrottle extends BaseSimulatorTest
+public class TestCtreCanTalonControlAppliedThrottle extends BaseSimulatorTest
 {
     private static final double sDOUBLE_EPSILON = 1.0 / 1023;
 
@@ -35,7 +35,7 @@ public class TestCtreCanTalon_ControlAppliedThrottle extends BaseSimulatorTest
         return output;
     }
 
-    public TestCtreCanTalon_ControlAppliedThrottle(int aCanHandle)
+    public TestCtreCanTalonControlAppliedThrottle(int aCanHandle)
     {
         mCanHandle = aCanHandle;
         mRawHandle = mCanHandle + 100;

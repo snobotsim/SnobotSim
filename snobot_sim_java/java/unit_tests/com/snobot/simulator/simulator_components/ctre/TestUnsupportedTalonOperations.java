@@ -28,8 +28,8 @@ public class TestUnsupportedTalonOperations extends BaseSimulatorTest
     @Test
     public void testAllFunctions()
     {
-        TalonSRX motorToFollow = new TalonSRX(0);
-        TalonSRX motorToTest = new TalonSRX(11);
+        final TalonSRX motorToFollow = new TalonSRX(0);
+        final TalonSRX motorToTest = new TalonSRX(11);
 
         motorToTest.getDeviceID();
         for (ControlMode mode : ControlMode.values())

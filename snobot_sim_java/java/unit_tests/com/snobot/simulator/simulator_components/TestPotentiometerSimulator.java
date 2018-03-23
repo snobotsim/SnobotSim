@@ -24,7 +24,7 @@ public class TestPotentiometerSimulator extends BaseSimulatorTest
         double range = 83;
         double offset = 0;
 
-        Potentiometer potentiometer = new AnalogPotentiometer(0, range, offset);
+        final Potentiometer potentiometer = new AnalogPotentiometer(0, range, offset);
         SpeedController sc = new Talon(0);
 
         AnalogWrapper analogWrapper = SensorActuatorRegistry.get().getAnalog().get(0);

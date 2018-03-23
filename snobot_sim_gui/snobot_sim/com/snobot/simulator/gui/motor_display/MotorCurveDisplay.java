@@ -111,12 +111,12 @@ public class MotorCurveDisplay extends JPanel
             double aNominalVoltage, double aStallCurrent, double aStallTorque,
             int aRpm, double aCurrentSlope, double aTorqueSlope)
     {
-        double omega = 2 * aRpm * Math.PI / 60;
-        double current = aStallCurrent + aRpm * aCurrentSlope;
-        double torque = aStallTorque + aRpm * aTorqueSlope;
-        double inputPower = aNominalVoltage * current;
-        double outputPower = torque * omega;
-        double efficiency = outputPower / inputPower * 100;
+        final double omega = 2 * aRpm * Math.PI / 60;
+        final double current = aStallCurrent + aRpm * aCurrentSlope;
+        final double torque = aStallTorque + aRpm * aTorqueSlope;
+        final double inputPower = aNominalVoltage * current;
+        final double outputPower = torque * omega;
+        final double efficiency = outputPower / inputPower * 100;
 
         mCurrentPoints.add(aRpm, current);
         mTorquePoints.add(aRpm, torque);

@@ -18,8 +18,12 @@ import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
 @RunWith(value = Parameterized.class)
-public class TestCtreCanTalon_ControlPosition extends BaseSimulatorTest
+public class TestCtreCanTalonControlMotionMagic extends BaseSimulatorTest
 {
+    private final int mCanHandle;
+    private final int mRawHandle;
+    private final FeedbackDevice mFeedbackDevice;
+
     @Parameters(name = "{index}: Port={0}, Device={1}")
     public static Collection<Object[]> ddata()
     {
@@ -35,11 +39,7 @@ public class TestCtreCanTalon_ControlPosition extends BaseSimulatorTest
         return output;
     }
 
-    private final int mCanHandle;
-    private final int mRawHandle;
-    private final FeedbackDevice mFeedbackDevice;
-
-    public TestCtreCanTalon_ControlPosition(int aCanHandle, FeedbackDevice aFeedbackDevice)
+    public TestCtreCanTalonControlMotionMagic(int aCanHandle, FeedbackDevice aFeedbackDevice)
     {
         mCanHandle = aCanHandle;
         mRawHandle = mCanHandle + 100;
@@ -47,52 +47,34 @@ public class TestCtreCanTalon_ControlPosition extends BaseSimulatorTest
     }
 
     @Test
-    public void testSetWithPosition()
+    public void testSetWithMotionMagic()
     {
+
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
         TalonSRX talon = new TalonSRX(mCanHandle);
         Assert.assertEquals(1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
 
-        talon.configSelectedFeedbackSensor(mFeedbackDevice, 0, 5);
-        checkForFeedbackDevice();
-
-        // Simulate CIM drivetrain
+        // Hookup motor config
         DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("CIM", 1, 10, 1);
         Assert.assertTrue(DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(mRawHandle, motorConfig,
-                new StaticLoadMotorSimulationConfig(0.01)));
+                new StaticLoadMotorSimulationConfig(.2)));
 
         talon.config_kP(0, .11, 5);
         talon.config_kI(0, .005, 5);
+        talon.config_kF(0, 0.018, 5);
         talon.config_IntegralZone(0, 2, 5);
 
-        talon.set(ControlMode.Position, 36 * 4096);
+        talon.configSelectedFeedbackSensor(mFeedbackDevice, 0, 5);
+        talon.configMotionCruiseVelocity(12 * 600, 0);
+        talon.configMotionAcceleration(24 * 600, 0);
+        talon.set(ControlMode.MotionMagic, 30 * 12 * 4096);
 
-        simulateForTime(1, () ->
+        simulateForTime(8, () ->
         {
+            System.out.println(talon.getClosedLoopError(0)); // NOPMD
         });
 
-        Assert.assertEquals(36, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPosition(mRawHandle), .5);
-        Assert.assertEquals(36, talon.getSelectedSensorPosition(0) / 4096.0, .5);
-
-        talon.setSelectedSensorPosition(0, 0, 0);
-        Assert.assertEquals(0, talon.getSelectedSensorPosition(0), .000001);
+        Assert.assertEquals(0, talon.getClosedLoopError(0), 2 * 4096);
     }
 
-    private void checkForFeedbackDevice()
-    {
-        switch (mFeedbackDevice)
-        {
-        case QuadEncoder:
-            Assert.assertTrue(DataAccessorFactory.getInstance().getEncoderAccessor().getPortList().contains(mRawHandle));
-            Assert.assertEquals("CAN Encoder (" + mCanHandle + ")", DataAccessorFactory.getInstance().getEncoderAccessor().getName(mRawHandle));
-            break;
-        case Analog:
-            Assert.assertTrue(DataAccessorFactory.getInstance().getAnalogAccessor().getPortList().contains(mRawHandle));
-            Assert.assertEquals("CAN Analog (" + mCanHandle + ")", DataAccessorFactory.getInstance().getAnalogAccessor().getName(mRawHandle));
-            break;
-        default:
-            Assert.assertTrue(false);
-            break;
-        }
-    }
 }

@@ -15,7 +15,7 @@ import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
 @RunWith(value = Parameterized.class)
-public class TestCtreCanTalon_ControlFollower extends BaseSimulatorTest
+public class TestCtreCanTalonControlFollower extends BaseSimulatorTest
 {
     private static final double sDOUBLE_EPSILON = 1.0 / 1023;
 
@@ -34,7 +34,7 @@ public class TestCtreCanTalon_ControlFollower extends BaseSimulatorTest
 
     private final int mCanHandle;
 
-    public TestCtreCanTalon_ControlFollower(int aCanHandle)
+    public TestCtreCanTalonControlFollower(int aCanHandle)
     {
         mCanHandle = aCanHandle;
     }

@@ -66,9 +66,6 @@ public class TestPigeonImu extends BaseSimulatorTest
         int yPort = basePort + 1;
         int zPort = basePort + 2;
 
-        double[] rawAngles = new double[3];
-        FusionStatus fusionStatus = new FusionStatus();
-
         Assert.assertEquals(3, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
         Assert.assertEquals(3, DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().size());
         Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(yawPort));
@@ -77,6 +74,9 @@ public class TestPigeonImu extends BaseSimulatorTest
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(xPort));
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(yPort));
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(zPort));
+
+        double[] rawAngles = new double[3];
+        FusionStatus fusionStatus = new FusionStatus();
 
         aImu.getRawGyro(rawAngles);
         aImu.getFusedHeading(fusionStatus);

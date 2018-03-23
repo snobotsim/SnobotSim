@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
 
 @RunWith(value = Parameterized.class)
-public class TestADXL362_SPIAccelerometer extends BaseSimulatorTest
+public class TestADXL362SPIAccelerometer extends BaseSimulatorTest
 {
     @Parameters()
     public static Collection<Object[]> data()
@@ -35,7 +35,7 @@ public class TestADXL362_SPIAccelerometer extends BaseSimulatorTest
     private final SPI.Port mPort;
     private final Range mRange;
 
-    public TestADXL362_SPIAccelerometer(SPI.Port aPort, Range aRange)
+    public TestADXL362SPIAccelerometer(SPI.Port aPort, Range aRange)
     {
         mPort = aPort;
         mRange = aRange;
@@ -47,7 +47,6 @@ public class TestADXL362_SPIAccelerometer extends BaseSimulatorTest
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(mPort.value, "ADXL362");
 
         ADXL362 accel = new ADXL362(mPort, mRange);
-        ADXL362.AllAxes axes = null;
 
         int xHandle = 150 + mPort.value * 3;
         int yHandle = 151 + mPort.value * 3;
@@ -70,7 +69,7 @@ public class TestADXL362_SPIAccelerometer extends BaseSimulatorTest
         DataAccessorFactory.getInstance().getAccelerometerAccessor().setAcceleration(xHandle, 0);
         DataAccessorFactory.getInstance().getAccelerometerAccessor().setAcceleration(yHandle, 1);
         DataAccessorFactory.getInstance().getAccelerometerAccessor().setAcceleration(zHandle, 2);
-        axes = accel.getAccelerations();
+        ADXL362.AllAxes axes = accel.getAccelerations();
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getAccelerometerAccessor().getAcceleration(xHandle), DOUBLE_EPSILON);
         Assert.assertEquals(1, DataAccessorFactory.getInstance().getAccelerometerAccessor().getAcceleration(yHandle), DOUBLE_EPSILON);
         Assert.assertEquals(2, DataAccessorFactory.getInstance().getAccelerometerAccessor().getAcceleration(zHandle), DOUBLE_EPSILON);

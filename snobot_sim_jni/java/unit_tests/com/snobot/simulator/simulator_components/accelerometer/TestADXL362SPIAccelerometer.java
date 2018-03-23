@@ -12,50 +12,45 @@ import org.junit.runners.Parameterized.Parameters;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
-import edu.wpi.first.wpilibj.ADXL345_I2C;
-import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.ADXL362;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
 
 @RunWith(value = Parameterized.class)
-public class TestADXL345_I2CAccelerometer extends BaseSimulatorTest
+public class TestADXL362SPIAccelerometer extends BaseSimulatorTest
 {
     @Parameters()
     public static Collection<Object[]> data()
     {
         Collection<Object[]> output = new ArrayList<>();
 
-        for (I2C.Port port : I2C.Port.values())
+        for (SPI.Port port : SPI.Port.values())
         {
-            for (Range range : Range.values())
-            {
-                output.add(new Object[]{ port, range });
-            }
+            output.add(new Object[]{port, Range.k2G});
         }
 
         return output;
     }
 
-    private final I2C.Port mPort;
+    private final SPI.Port mPort;
     private final Range mRange;
 
-    public TestADXL345_I2CAccelerometer(I2C.Port aPort, Range aRange)
+    public TestADXL362SPIAccelerometer(SPI.Port aPort, Range aRange)
     {
         mPort = aPort;
         mRange = aRange;
     }
 
     @Test
-    public void testADXL345_I2C()
+    public void testADXL362_SPI()
     {
-        final double DOUBLE_EPSILON = 1 / 256.0; // Resoultion isn't as good as
-                                                 // normal sensors
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultI2CSimulator(mPort.value, "ADXL345");
-        ADXL345_I2C accel = new ADXL345_I2C(mPort, mRange);
-        ADXL345_I2C.AllAxes axes = null;
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(mPort.value, "ADXL362");
 
-        int xHandle = 50 + mPort.value * 3;
-        int yHandle = 51 + mPort.value * 3;
-        int zHandle = 52 + mPort.value * 3;
+        ADXL362 accel = new ADXL362(mPort, mRange);
+
+        int xHandle = 150 + mPort.value * 3;
+        int yHandle = 151 + mPort.value * 3;
+        int zHandle = 152 + mPort.value * 3;
 
         Assert.assertEquals(3, DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().size());
         Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(xHandle));
@@ -74,7 +69,7 @@ public class TestADXL345_I2CAccelerometer extends BaseSimulatorTest
         DataAccessorFactory.getInstance().getAccelerometerAccessor().setAcceleration(xHandle, 0);
         DataAccessorFactory.getInstance().getAccelerometerAccessor().setAcceleration(yHandle, 1);
         DataAccessorFactory.getInstance().getAccelerometerAccessor().setAcceleration(zHandle, 2);
-        axes = accel.getAccelerations();
+        ADXL362.AllAxes axes = accel.getAccelerations();
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getAccelerometerAccessor().getAcceleration(xHandle), DOUBLE_EPSILON);
         Assert.assertEquals(1, DataAccessorFactory.getInstance().getAccelerometerAccessor().getAcceleration(yHandle), DOUBLE_EPSILON);
         Assert.assertEquals(2, DataAccessorFactory.getInstance().getAccelerometerAccessor().getAcceleration(zHandle), DOUBLE_EPSILON);

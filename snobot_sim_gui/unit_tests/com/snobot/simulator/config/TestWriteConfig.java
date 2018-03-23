@@ -17,7 +17,6 @@ public class TestWriteConfig extends BaseSimulatorTest
     @Test
     public void testWriteConfig()
     {
-        String dumpFile = "test_output/testWriteFile.yml";
 
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(0, "ADXRS450");
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(1, "ADXL345");
@@ -50,6 +49,8 @@ public class TestWriteConfig extends BaseSimulatorTest
                 new RotationalLoadMotorSimulationConfig(1, 1));
 
         SimulatorConfigWriter writer = new SimulatorConfigWriter();
+
+        String dumpFile = "test_output/testWriteFile.yml";
         Assert.assertTrue(writer.writeConfig(dumpFile));
     }
 

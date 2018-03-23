@@ -15,7 +15,7 @@ public class TestRelayWidgetPanel extends BaseGuiSimulatorTest
     @Test
     public void testPanel()
     {
-        Relay relay = new Relay(1);
+        final Relay relay = new Relay(1);
         RelayGraphicDisplay panel = new RelayGraphicDisplay(DataAccessorFactory.getInstance().getRelayAccessor().getPortList());
 
         JFrame frame = getFrame();

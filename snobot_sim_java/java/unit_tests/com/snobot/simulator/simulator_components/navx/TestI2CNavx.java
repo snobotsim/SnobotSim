@@ -16,19 +16,17 @@ public class TestI2CNavx extends BaseSimulatorTest
     @Test
     public void testConstruction() throws InterruptedException
     {
-        AHRS navx;
-
         // Port = 0
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultI2CSimulator(0, "NavX");
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
 
-        navx = new AHRS(I2C.Port.kOnboard);
+        final AHRS navxOnboard = new AHRS(I2C.Port.kOnboard);
         Assert.assertEquals(3, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
         Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(250));
         Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(251));
         Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(252));
-        navx.free();
+        navxOnboard.free();
         Thread.sleep(SHUTDOWN_TIME);
 
         // Port = 1
@@ -36,12 +34,12 @@ public class TestI2CNavx extends BaseSimulatorTest
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultI2CSimulator(1, "NavX");
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
 
-        navx = new AHRS(I2C.Port.kMXP);
+        final AHRS navxMxp = new AHRS(I2C.Port.kMXP);
         Assert.assertEquals(3, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
         Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(253));
         Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(254));
         Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(255));
-        navx.free();
+        navxMxp.free();
         Thread.sleep(SHUTDOWN_TIME);
     }
 
@@ -54,13 +52,12 @@ public class TestI2CNavx extends BaseSimulatorTest
         AHRS navx = new AHRS(I2C.Port.kOnboard);
         navx.enableLogging(true);
 
+        Assert.assertEquals(3, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
+        Thread.sleep(500);
+
         int yawHandle = 250;
         int pitchHandle = 251;
         int rollHandle = 252;
-
-        Assert.assertEquals(3, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
-
-        Thread.sleep(500);
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(yawHandle), DOUBLE_EPSILON);
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(pitchHandle), DOUBLE_EPSILON);
         Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(rollHandle), DOUBLE_EPSILON);

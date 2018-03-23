@@ -48,11 +48,11 @@ public class TestEncoderJni extends BaseSimulatorTest
     @Test
     public void testSpeedControllerFeedback()
     {
-        SpeedController sc = new Talon(0);
+        final SpeedController sc = new Talon(0);
         Assert.assertFalse(DataAccessorFactory.getInstance().getEncoderAccessor().isHookedUp(0));
         Assert.assertEquals(-1, DataAccessorFactory.getInstance().getEncoderAccessor().getHookedUpId(0));
 
-        Encoder encoder = new Encoder(1, 2);
+        final Encoder encoder = new Encoder(1, 2);
         Assert.assertFalse(DataAccessorFactory.getInstance().getEncoderAccessor().isHookedUp(0));
         Assert.assertEquals(-1, DataAccessorFactory.getInstance().getEncoderAccessor().getHookedUpId(0));
 

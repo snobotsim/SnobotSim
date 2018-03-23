@@ -15,7 +15,7 @@ import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
 @RunWith(value = Parameterized.class)
-public class TestCtreCanTalon_ControlCurrent extends BaseSimulatorTest
+public class TestCtreCanTalonControlCurrent extends BaseSimulatorTest
 {
     @Parameters(name = "Test: {index} CanPort={0}")
     public static Collection<Integer> data()
@@ -32,7 +32,7 @@ public class TestCtreCanTalon_ControlCurrent extends BaseSimulatorTest
 
     private final int mCanHandle;
 
-    public TestCtreCanTalon_ControlCurrent(int aCanHandle)
+    public TestCtreCanTalonControlCurrent(int aCanHandle)
     {
         mCanHandle = aCanHandle;
     }

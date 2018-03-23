@@ -22,7 +22,6 @@ public abstract class SimpleSettingsDialog extends JDialog
 
         mHandle = aHandle;
         mNameField = new JTextField(aName, 20);
-        JButton submitButton = new JButton("Submit");
 
         JPanel namePanel = new JPanel();
         namePanel.add(new JLabel("Display Name"));
@@ -30,6 +29,8 @@ public abstract class SimpleSettingsDialog extends JDialog
 
         JPanel contentPane = new JPanel(new BorderLayout());
         contentPane.add(namePanel, BorderLayout.NORTH);
+
+        JButton submitButton = new JButton("Submit");
         contentPane.add(submitButton, BorderLayout.SOUTH);
 
         setContentPane(contentPane);

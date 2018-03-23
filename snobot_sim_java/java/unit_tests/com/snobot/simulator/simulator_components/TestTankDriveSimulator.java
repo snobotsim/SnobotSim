@@ -21,11 +21,11 @@ public class TestTankDriveSimulator extends BaseSimulatorTest
     @Test
     public void testTankDrive()
     {
-        SpeedController rightSC = new Talon(0);
-        SpeedController leftSC = new Talon(1);
-        Encoder rightEnc = new Encoder(0, 1);
-        Encoder leftEnc = new Encoder(2, 3);
-        Gyro gyro = new AnalogGyro(0);
+        final SpeedController rightSC = new Talon(0);
+        final SpeedController leftSC = new Talon(1);
+        final Encoder rightEnc = new Encoder(0, 1);
+        final Encoder leftEnc = new Encoder(2, 3);
+        final Gyro gyro = new AnalogGyro(0);
 
         Assert.assertTrue(DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(0, 0));
         Assert.assertTrue(DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(1, 1));

@@ -18,7 +18,7 @@ import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
 @RunWith(value = Parameterized.class)
-public class TestCtreCanTalon_ControlSpeed extends BaseSimulatorTest
+public class TestCtreCanTalonControlSpeed extends BaseSimulatorTest
 {
     @Parameters(name = "{index}: Port={0}, Device={1}")
     public static Collection<Object[]> ddata()
@@ -37,7 +37,7 @@ public class TestCtreCanTalon_ControlSpeed extends BaseSimulatorTest
     private final int mRawHandle;
     private final FeedbackDevice mFeedbackDevice;
 
-    public TestCtreCanTalon_ControlSpeed(int aCanHandle, FeedbackDevice aFeedbackDevice)
+    public TestCtreCanTalonControlSpeed(int aCanHandle, FeedbackDevice aFeedbackDevice)
     {
         mCanHandle = aCanHandle;
         mRawHandle = mCanHandle + 100;

@@ -14,7 +14,7 @@ public class TestSolenoidSourceWidgetPanel extends BaseGuiSimulatorTest
     @Test
     public void testPanel()
     {
-        Solenoid solenoid = new Solenoid(1);
+        final Solenoid solenoid = new Solenoid(1);
         SolenoidGraphicDisplay panel = new SolenoidGraphicDisplay(DataAccessorFactory.getInstance().getSolenoidAccessor().getPortList());
 
         JFrame frame = getFrame();

@@ -21,7 +21,7 @@ import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
 
 @RunWith(value = Parameterized.class)
-public class TestCtreCanTalon_ControlMotionProfile extends BaseSimulatorTest
+public class TestCtreCanTalonControlMotionProfile extends BaseSimulatorTest
 {
     @Parameters(name = "Test: {index} CanPort={0}")
     public static Collection<Integer> data()
@@ -39,7 +39,7 @@ public class TestCtreCanTalon_ControlMotionProfile extends BaseSimulatorTest
     private final int mCanHandle;
     private final int mRawHandle;
 
-    public TestCtreCanTalon_ControlMotionProfile(int aCanHandle)
+    public TestCtreCanTalonControlMotionProfile(int aCanHandle)
     {
         mCanHandle = aCanHandle;
         mRawHandle = mCanHandle + 100;

@@ -15,7 +15,7 @@ public class TestSpeedControllerWidgetPanel extends BaseGuiSimulatorTest
     @Test
     public void testPanel()
     {
-        SpeedController sc = new Victor(1);
+        final SpeedController sc = new Victor(1);
         SpeedControllerGraphicDisplay panel = new SpeedControllerGraphicDisplay(
                 DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList());
 

@@ -29,11 +29,11 @@ public class SpeedControllerSettingsDialog extends SimpleSettingsDialog
     {
         super(aTitle, aKey, aName);
 
-        JPanel nullSimPanel = new NullSimConfigPanel(mHandle);
-        JPanel simpleSimPanel = new SimpleSimConfigPanel(mHandle);
-        JPanel staticLoadSimPanel = new StaticLoadSimConfigPanel(mHandle);
-        JPanel rotationalLoadSimPanel = new RotationalLoadSimConfigPanel(mHandle);
-        JPanel gravitationalLoadSimPanel = new GravitationalLoadSimConfigPanel(mHandle);
+        final JPanel nullSimPanel = new NullSimConfigPanel(mHandle);
+        final JPanel simpleSimPanel = new SimpleSimConfigPanel(mHandle);
+        final JPanel staticLoadSimPanel = new StaticLoadSimConfigPanel(mHandle);
+        final JPanel rotationalLoadSimPanel = new RotationalLoadSimConfigPanel(mHandle);
+        final JPanel gravitationalLoadSimPanel = new GravitationalLoadSimConfigPanel(mHandle);
 
         CardLayout simOptionsLayout = new CardLayout();
         mSimOptionsPanel = new JPanel(simOptionsLayout);
