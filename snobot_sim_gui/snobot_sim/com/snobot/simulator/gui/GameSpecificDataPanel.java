@@ -41,19 +41,19 @@ public class GameSpecificDataPanel extends JPanel
 
     private final DocumentListener mTextChangeListener = new DocumentListener()
     {
-        
+
         @Override
         public void removeUpdate(DocumentEvent aEvent)
         {
             handleUpdate();
         }
-        
+
         @Override
         public void insertUpdate(DocumentEvent aEvent)
         {
             handleUpdate();
         }
-        
+
         @Override
         public void changedUpdate(DocumentEvent aEvent)
         {
@@ -170,7 +170,7 @@ public class GameSpecificDataPanel extends JPanel
     private void handleUpdate()
     {
         int matchNumber = 1;
-        
+
         try
         {
             matchNumber = Integer.parseInt(mMatchNumberField.getText());
@@ -181,9 +181,9 @@ public class GameSpecificDataPanel extends JPanel
         }
 
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setMatchInfo(
-                mEventNameField.getText(), 
-                (MatchType) mMatchTypeCB.getSelectedItem(), 
-                matchNumber, 
+                mEventNameField.getText(),
+                (MatchType) mMatchTypeCB.getSelectedItem(),
+                matchNumber,
                 0,
                 (String) mGameDataCB.getSelectedItem());
     }
