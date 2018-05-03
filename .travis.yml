@@ -40,10 +40,10 @@ cache:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
 script:
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then python3.5 -m wpiformat -y 2018 -clang 5.0; fi;
-- git --no-pager diff --exit-code HEAD  # Ensure formatter made no changes
+#- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then python3.5 -m wpiformat -y 2018 -clang 5.0; fi;
+#- git --no-pager diff --exit-code HEAD  # Ensure formatter made no changes
 - git clone --depth=50 --branch=master https://github.com/pjreiniger/maven_repo.git ../../pjreiniger/maven_repo
-- "./gradlew build -i jacocoTestReport publish --refresh-dependencies -Pmaven_repo=../../pjreiniger/maven_repo -x test -x checkstyleTest -x findbugsTest -x pmdTest"
+- "./gradlew :temp_hal_sim:build build -i jacocoTestReport publish --refresh-dependencies -Pmaven_repo=../../pjreiniger/maven_repo -x test -x checkstyleTest -x findbugsTest -x pmdTest"
 - echo "built..."
 - ls
 - ls ..
@@ -60,6 +60,11 @@ deploy:
     skip_cleanup: true
     on:
       branch: master
+  - provider: script
+    script: pwd; cd ../../pjreiniger/maven_repo; pwd; ls; chmod +x commit_updates.sh; ./commit_updates.sh
+    skip_cleanup: true
+    on:
+      branch: dev-2019
 
 env:
   global:

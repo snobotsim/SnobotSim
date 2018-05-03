@@ -5,11 +5,10 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.snobot.simulator.SensorActuatorRegistry;
-import com.snobot.simulator.jni.DriverStationSimulatorJni;
 import com.snobot.simulator.jni.RegisterCallbacksJni;
 import com.snobot.simulator.jni.standard_components.I2CCallbackJni;
 import com.snobot.simulator.jni.standard_components.SpiCallbackJni;
@@ -31,6 +30,9 @@ import com.snobot.simulator.motor_sim.motor_factory.VexMotorFactory;
 import com.snobot.simulator.simulator_components.ISimulatorUpdater;
 import com.snobot.simulator.simulator_components.TankDriveGyroSimulator;
 import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor;
+
+import edu.wpi.first.hal.sim.mockdata.DriverStationDataJNI;
+import edu.wpi.first.hal.sim.mockdata.SimulatorJNI;
 
 public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
 {
@@ -99,8 +101,8 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     public DcMotorModelConfig createMotor(String aMotorType, int aNumMotors, double aGearReduction, double aEfficiency, boolean aInverted, boolean aBrake)
     {
         DcMotorModelConfig config = createMotor(aMotorType);
-        config.mFactoryParams.mHasBrake = aBrake;
-        config.mFactoryParams.mInverted = aInverted;
+        config.mFactoryParams.setHasBrake(aBrake);
+        config.mFactoryParams.setInverted(aInverted);
         return MakeTransmission.makeTransmission(config, aNumMotors, aGearReduction, aEfficiency);
     }
 
@@ -183,27 +185,28 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     @Override
     public void setDisabled(boolean aDisabled)
     {
-        DriverStationSimulatorJni.setEnabled(!aDisabled);
+        DriverStationDataJNI.setEnabled(!aDisabled);
+        DriverStationDataJNI.setDsAttached(!aDisabled);
         mEnabledTime = System.currentTimeMillis() * 1e-3;
     }
 
     @Override
     public void setAutonomous(boolean aAuton)
     {
-        DriverStationSimulatorJni.setAutonomous(aAuton);
+        DriverStationDataJNI.setAutonomous(aAuton);
         mEnabledTime = System.currentTimeMillis() * 1e-3;
     }
 
     @Override
     public double getMatchTime()
     {
-        return DriverStationSimulatorJni.getMatchTime();
+        return DriverStationDataJNI.getMatchTime();
     }
 
     @Override
     public void waitForProgramToStart()
     {
-        DriverStationSimulatorJni.waitForProgramToStart();
+        SimulatorJNI.waitForProgramStart();
     }
 
     @Override
@@ -212,7 +215,6 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
         for (PwmWrapper wrapper : SensorActuatorRegistry.get().getSpeedControllers().values())
         {
             wrapper.update(aUpdatePeriod);
-            // tankDriveSimulator.update();
         }
 
         for (ISimulatorUpdater updater : SensorActuatorRegistry.get().getSimulatorComponents())
@@ -245,19 +247,23 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
             sLOGGER.log(Level.ERROR, e);
         }
 
-        DriverStationSimulatorJni.delayForNextUpdateLoop(aUpdatePeriod);
+        DriverStationDataJNI.notifyNewData();
+        DriverStationDataJNI.setMatchTime(DriverStationDataJNI.getMatchTime() + aUpdatePeriod);
+        // DriverStationSimulatorJni.delayForNextUpdateLoop(aUpdatePeriod);
     }
 
     @Override
     public void setJoystickInformation(int aJoystickHandle, float[] aAxesArray, short[] aPovsArray, int aButtonCount, int aButtonMask)
     {
-        DriverStationSimulatorJni.setJoystickInformation(aJoystickHandle, aAxesArray, aPovsArray, aButtonCount, aButtonMask);
+        DriverStationDataJNI.setJoystickAxes((byte) aJoystickHandle, aAxesArray);
+        DriverStationDataJNI.setJoystickPOVs((byte) aJoystickHandle, aPovsArray);
+        DriverStationDataJNI.setJoystickButtons((byte) aJoystickHandle, aButtonMask, aButtonCount);
     }
 
     @Override
     public void setMatchInfo(String aEventName, MatchType aMatchType, int aMatchNumber, int aReplayNumber, String aGameSpecificMessage)
     {
-        DriverStationSimulatorJni.setMatchInfo(aEventName, aMatchType.ordinal(), aMatchNumber, aReplayNumber, aGameSpecificMessage);
+        DriverStationDataJNI.setMatchInfo(aEventName, aMatchType.ordinal(), aMatchNumber, aReplayNumber, aGameSpecificMessage);
     }
 
     @Override
