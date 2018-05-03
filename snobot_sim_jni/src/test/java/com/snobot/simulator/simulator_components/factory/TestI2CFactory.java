@@ -6,13 +6,13 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJniTest;
 
 import edu.wpi.first.wpilibj.ADXL345_I2C;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
 
-public class TestI2CFactory extends BaseSimulatorTest
+public class TestI2CFactory extends BaseSimulatorJniTest
 {
     @Test
     public void testAvailableDataTypes()

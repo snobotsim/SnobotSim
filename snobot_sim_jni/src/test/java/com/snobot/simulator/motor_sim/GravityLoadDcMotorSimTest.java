@@ -5,12 +5,12 @@ import org.junit.Test;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor.MotorSimType;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJniTest;
 
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 
-public class GravityLoadDcMotorSimTest extends BaseSimulatorTest
+public class GravityLoadDcMotorSimTest extends BaseSimulatorJniTest
 {
     @Test
     public void testMotor()

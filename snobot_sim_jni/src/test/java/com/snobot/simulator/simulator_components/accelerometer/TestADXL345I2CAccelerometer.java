@@ -10,14 +10,14 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJniTest;
 
 import edu.wpi.first.wpilibj.ADXL345_I2C;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
 
 @RunWith(value = Parameterized.class)
-public class TestADXL345I2CAccelerometer extends BaseSimulatorTest
+public class TestADXL345I2CAccelerometer extends BaseSimulatorJniTest
 {
     private static final double sDOUBLE_EPSILON = 1 / 256.0; // Resoultion isn't as good as normal sensors
 

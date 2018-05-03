@@ -4,11 +4,11 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJniTest;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
 
-public class TestAnalogGyro extends BaseSimulatorTest
+public class TestAnalogGyro extends BaseSimulatorJniTest
 {
     @Test
     public void testAnalogGyro()

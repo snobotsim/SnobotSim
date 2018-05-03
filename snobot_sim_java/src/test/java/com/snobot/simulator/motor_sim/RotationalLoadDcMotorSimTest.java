@@ -7,12 +7,12 @@ import org.junit.Test;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor.MotorSimType;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJavaTest;
 
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 
-public class RotationalLoadDcMotorSimTest extends BaseSimulatorTest
+public class RotationalLoadDcMotorSimTest extends BaseSimulatorJavaTest
 {
     @Test
     public void testMotor() throws IOException

@@ -11,13 +11,13 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJniTest;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
 
 @RunWith(value = Parameterized.class)
-public class TestSpiGyro extends BaseSimulatorTest
+public class TestSpiGyro extends BaseSimulatorJniTest
 {
     @Parameters()
     public static Collection<SPI.Port> data()

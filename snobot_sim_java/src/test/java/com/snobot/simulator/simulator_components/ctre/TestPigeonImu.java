@@ -13,10 +13,10 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU.FusionStatus;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJavaTest;
 
 @RunWith(value = Parameterized.class)
-public class TestPigeonImu extends BaseSimulatorTest
+public class TestPigeonImu extends BaseSimulatorJavaTest
 {
     private final int mDeviceId;
 

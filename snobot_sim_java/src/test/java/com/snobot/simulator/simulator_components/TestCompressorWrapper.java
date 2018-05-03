@@ -3,10 +3,10 @@ package com.snobot.simulator.simulator_components;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJavaTest;
 
 
-public class TestCompressorWrapper extends BaseSimulatorTest
+public class TestCompressorWrapper extends BaseSimulatorJavaTest
 {
     @Test
     public void testCompressorWrapper()

@@ -21,9 +21,9 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.StickyFaults;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJavaTest;
 
-public class TestUnsupportedTalonOperations extends BaseSimulatorTest
+public class TestUnsupportedTalonOperations extends BaseSimulatorJavaTest
 {
     @Test
     public void testAllFunctions()

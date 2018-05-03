@@ -4,12 +4,12 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJavaTest;
 
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Relay.Value;
 
-public class TestRelayJni extends BaseSimulatorTest
+public class TestRelayJni extends BaseSimulatorJavaTest
 {
     @Test
     public void testCreateRelays()

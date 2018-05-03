@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJniTest;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 
-public class TestTankDriveSimulator extends BaseSimulatorTest
+public class TestTankDriveSimulator extends BaseSimulatorJniTest
 {
     @Test
     public void testTankDrive()

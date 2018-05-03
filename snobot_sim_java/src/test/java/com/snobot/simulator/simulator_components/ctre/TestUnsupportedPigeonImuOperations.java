@@ -11,9 +11,9 @@ import com.ctre.phoenix.sensors.PigeonIMU_ControlFrame;
 import com.ctre.phoenix.sensors.PigeonIMU_Faults;
 import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
 import com.ctre.phoenix.sensors.PigeonIMU_StickyFaults;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJavaTest;
 
-public class TestUnsupportedPigeonImuOperations extends BaseSimulatorTest
+public class TestUnsupportedPigeonImuOperations extends BaseSimulatorJavaTest
 {
     @Test
     public void testAllFunctions()

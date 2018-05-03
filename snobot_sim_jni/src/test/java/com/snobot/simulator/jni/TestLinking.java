@@ -4,11 +4,11 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJniTest;
 
 import edu.wpi.first.wpilibj.hal.HAL;
 
-public class TestLinking extends BaseSimulatorTest
+public class TestLinking extends BaseSimulatorJniTest
 {
     @Test
     public void testHalLinking()

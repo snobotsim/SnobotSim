@@ -25,9 +25,9 @@ public class GravityLoadMotorSimulationConfig implements IMotorSimulatorConfig
         return mLoad;
     }
 
-    public void setmLoad(double mLoad)
+    public void setmLoad(double aLoad)
     {
-        this.mLoad = mLoad;
+        this.mLoad = aLoad;
     }
 
 }

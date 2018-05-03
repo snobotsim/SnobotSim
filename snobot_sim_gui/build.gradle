@@ -105,10 +105,10 @@ if(build_simulator_java)
 jar {
    baseName = "snobotSim"
 
-   from("${rootDir}/snobot_sim_gui/snobot_sim") {
+   from("${rootDir}/snobot_sim_gui/src/main/java") {
       include  '**/*.png'
    }
-   from("${rootDir}/snobot_sim_gui/snobot_sim") {
+   from("${rootDir}/snobot_sim_gui/src/main/java") {
       include  '**/*.properties'
    }
 }

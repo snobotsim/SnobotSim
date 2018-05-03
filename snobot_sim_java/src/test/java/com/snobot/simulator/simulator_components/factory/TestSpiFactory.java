@@ -7,13 +7,13 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJavaTest;
 
 import edu.wpi.first.wpilibj.ADXL345_SPI;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
 
-public class TestSpiFactory extends BaseSimulatorTest
+public class TestSpiFactory extends BaseSimulatorJavaTest
 {
     @Test
     public void testAvailableDataTypes()

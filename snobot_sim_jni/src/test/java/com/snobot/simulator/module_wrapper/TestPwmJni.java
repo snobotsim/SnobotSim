@@ -4,12 +4,12 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJniTest;
 
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Talon;
 
-public class TestPwmJni extends BaseSimulatorTest
+public class TestPwmJni extends BaseSimulatorJniTest
 {
     @Test
     public void testCreatePwm()

@@ -12,10 +12,10 @@ import org.junit.runners.Parameterized.Parameters;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJavaTest;
 
 @RunWith(value = Parameterized.class)
-public class TestCtreCanTalonControlFollower extends BaseSimulatorTest
+public class TestCtreCanTalonControlFollower extends BaseSimulatorJavaTest
 {
     private static final double sDOUBLE_EPSILON = 1.0 / 1023;
 

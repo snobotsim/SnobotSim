@@ -10,14 +10,14 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJavaTest;
 
 import edu.wpi.first.wpilibj.ADXL362;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
 
 @RunWith(value = Parameterized.class)
-public class TestADXL362SPIAccelerometer extends BaseSimulatorTest
+public class TestADXL362SPIAccelerometer extends BaseSimulatorJavaTest
 {
     @Parameters()
     public static Collection<Object[]> data()

@@ -7,11 +7,11 @@ import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
 import com.snobot.simulator.motor_sim.motor_factory.VexMotorFactory;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJavaTest;
 
 import edu.wpi.first.wpilibj.Talon;
 
-public class MotorFactoryTest extends BaseSimulatorTest
+public class MotorFactoryTest extends BaseSimulatorJavaTest
 {
     @Test
     public void testInvalidMotorName()

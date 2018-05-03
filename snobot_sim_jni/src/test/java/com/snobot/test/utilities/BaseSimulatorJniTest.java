@@ -12,7 +12,7 @@ import com.snobot.simulator.wrapper_accessors.jni.JniDataAccessor;
 
 import edu.wpi.first.wpilibj.RobotBase;
 
-public class BaseSimulatorTest
+public class BaseSimulatorJniTest
 {
     private static boolean INITIALIZED = false;
     protected static final double DOUBLE_EPSILON = .0002;

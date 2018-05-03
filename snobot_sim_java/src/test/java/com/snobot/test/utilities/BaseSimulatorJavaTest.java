@@ -11,7 +11,7 @@ import com.snobot.simulator.wrapper_accessors.java.JavaDataAccessor;
 
 import edu.wpi.first.wpilibj.RobotBase;
 
-public class BaseSimulatorTest
+public class BaseSimulatorJavaTest
 {
     private static boolean INITIALIZED = false;
     protected static final double DOUBLE_EPSILON = .00001;

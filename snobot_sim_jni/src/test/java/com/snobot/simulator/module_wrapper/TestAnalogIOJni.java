@@ -4,12 +4,12 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJniTest;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogOutput;
 
-public class TestAnalogIOJni extends BaseSimulatorTest
+public class TestAnalogIOJni extends BaseSimulatorJniTest
 {
     @Test
     public void testCreateAnalogIn()

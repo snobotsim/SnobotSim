@@ -5,12 +5,12 @@ import org.junit.Test;
 
 import com.snobot.simulator.simulator_components.IMotorFeedbackSensor;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJavaTest;
 
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Talon;
 
-public class TestPwmJni extends BaseSimulatorTest
+public class TestPwmJni extends BaseSimulatorJavaTest
 {
     @Test
     public void testCreatePwm()

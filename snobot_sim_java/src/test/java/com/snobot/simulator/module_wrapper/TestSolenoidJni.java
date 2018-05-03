@@ -4,13 +4,13 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJavaTest;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Solenoid;
 
-public class TestSolenoidJni extends BaseSimulatorTest
+public class TestSolenoidJni extends BaseSimulatorJavaTest
 {
     @Test
     public void testCreateSolenoid()

@@ -6,7 +6,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJavaTest;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
 
-public class TestControllerLoop extends BaseSimulatorTest
+public class TestControllerLoop extends BaseSimulatorJavaTest
 {
     private static class TestRobot extends IterativeRobot
     {

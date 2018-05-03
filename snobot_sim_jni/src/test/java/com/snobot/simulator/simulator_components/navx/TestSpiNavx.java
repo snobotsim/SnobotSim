@@ -5,11 +5,11 @@ import org.junit.Test;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJniTest;
 
 import edu.wpi.first.wpilibj.SPI;
 
-public class TestSpiNavx extends BaseSimulatorTest
+public class TestSpiNavx extends BaseSimulatorJniTest
 {
     private static final long SHUTDOWN_TIME = 200;
     private static final String sNAVX_TYPE = "NavX";

@@ -15,10 +15,10 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJavaTest;
 
 @RunWith(value = Parameterized.class)
-public class TestCtreCanTalonControlPosition extends BaseSimulatorTest
+public class TestCtreCanTalonControlPosition extends BaseSimulatorJavaTest
 {
     @Parameters(name = "{index}: Port={0}, Device={1}")
     public static Collection<Object[]> ddata()

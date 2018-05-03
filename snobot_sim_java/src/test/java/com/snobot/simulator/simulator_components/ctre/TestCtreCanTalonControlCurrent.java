@@ -12,10 +12,10 @@ import org.junit.runners.Parameterized.Parameters;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJavaTest;
 
 @RunWith(value = Parameterized.class)
-public class TestCtreCanTalonControlCurrent extends BaseSimulatorTest
+public class TestCtreCanTalonControlCurrent extends BaseSimulatorJavaTest
 {
     @Parameters(name = "Test: {index} CanPort={0}")
     public static Collection<Integer> data()

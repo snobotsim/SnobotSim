@@ -5,12 +5,12 @@ import org.junit.Test;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
-import com.snobot.test.utilities.BaseSimulatorTest;
+import com.snobot.test.utilities.BaseSimulatorJavaTest;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogOutput;
 
-public class TestAnalogIOJni extends BaseSimulatorTest
+public class TestAnalogIOJni extends BaseSimulatorJavaTest
 {
     @Test
     public void testCreateAnalogIn()
