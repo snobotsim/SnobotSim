@@ -6,21 +6,7 @@ ext
     baseId = "snobot_sim_gui"
 }
 
-apply plugin: 'application'
 apply from: "${rootDir}/common/base_java_script.gradle"
-
-sourceSets {
-    main {
-        java {
-            srcDirs = ["snobot_sim"]
-        }
-    }
-    test {
-        java {
-            srcDirs = ["unit_tests"]
-        }
-    }
-}
 
 configurations {
     native3rdPartyDeps
@@ -129,34 +115,14 @@ jar {
 
 compileJava {
     apply from: "../create_version_file.gradle"
-    createJavaVersion("snobot_sim/com/snobot/simulator", "SnobotSimGuiVersion", "com.snobot.simulator", getVersionName())
+    createJavaVersion("src/main/java/com/snobot/simulator", "SnobotSimGuiVersion", "com.snobot.simulator", getVersionName())
 }
     
 clean {
-    delete "snobot_sim/com/snobot/simulator/SnobotSimGuiVersion.java"
+    delete "src/main/java/com/snobot/simulator/SnobotSimGuiVersion.java"
 }
 
 
 findbugs {
     ignoreFailures = true
 }
-
-///////////////////////////////////////////////////////////
-// Build Application
-mainClassName = "com.snobot.simulator.Main"
-applicationDefaultJvmArgs = ["-Djava.library.path=../lib"]
-
-
-distributions {
-    main {
-        contents {
-            from(".") {
-                into "bin"
-                include "open_smart_dashboard.*"
-            }
-        }
-    }
-
-}
-
-///////////////////////////////////////////////////////////

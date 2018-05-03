@@ -4,14 +4,6 @@ import org.gradle.internal.os.OperatingSystem
 
 evaluationDependsOn(':temp_hal_sim')
 
-
-repositories {
-    mavenCentral()
-    maven {
-        url getJaci3rdPartyMirror()
-    }
-}
-
 ext {
     baseId = "snobot_sim_java"
 }
@@ -19,23 +11,7 @@ ext {
 apply from: "${rootDir}/common/base_java_script.gradle"
 
 apply from: "../create_version_file.gradle"
-createJavaVersion("java/snobot_sim_java/com/snobot/simulator/wrapper_accessors/java", "JaveSimulatorVersion", "com.snobot.simulator.wrapper_accessors.java", getVersionName())
-
-sourceSets {
-    main {
-        java {
-            srcDirs = ["java/snobot_sim_java"]
-        }
-    }
-    test {
-        java {
-            srcDirs = ["java/unit_tests"]
-        }
-    }
-}
-test {
-    ignoreFailures = OperatingSystem.current().isLinux()
-}
+createJavaVersion("src/main/java/com/snobot/simulator/wrapper_accessors/java", "JaveSimulatorVersion", "com.snobot.simulator.wrapper_accessors.java", getVersionName())
 
 apply from: "$rootDir/captureWpiLibraries.gradle"
 dependencies {

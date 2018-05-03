@@ -37,22 +37,6 @@ ext
 
 apply from: "${rootDir}/common/base_jni_script.gradle"
 
-
-sourceSets {
-    main {
-        java {
-            srcDirs = ["java/src"]
-        }
-    }
-    test {
-        java {
-            srcDirs = ["java/unit_tests"]
-            exclude '**/simulator_components/ctre/**'
-            exclude '**/com/ctre/**'
-        }
-    }
-}
-
 apply from: "$rootDir/captureWpiLibraries.gradle"
 
 task combineNativeLibrariesIntoOne(type: Jar) {
