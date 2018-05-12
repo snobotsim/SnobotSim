@@ -23,7 +23,8 @@ public final class RegisterCallbacksJni extends BaseSnobotJni
 
     public static void reset()
     {
-        SimulatorJNI.initialize();
+        SimulatorJNI.resetHandles();
+        // SimulatorJNI.initialize();
 
         AnalogCallbackJni.reset();
         AnalogGyroCallbackJni.reset();

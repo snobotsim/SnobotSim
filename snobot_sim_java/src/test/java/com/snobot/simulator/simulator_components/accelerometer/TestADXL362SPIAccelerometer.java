@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -16,6 +17,7 @@ import edu.wpi.first.wpilibj.ADXL362;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
 
+@Ignore
 @RunWith(value = Parameterized.class)
 public class TestADXL362SPIAccelerometer extends BaseSimulatorJavaTest
 {

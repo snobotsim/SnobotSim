@@ -2,8 +2,6 @@ import edu.wpi.first.nativeutils.NativeUtils
 import org.gradle.api.file.FileCollection
 import org.gradle.internal.os.OperatingSystem
 
-evaluationDependsOn(':temp_hal_sim')
-
 ext {
     baseId = "snobot_sim_java"
 }
@@ -17,13 +15,15 @@ apply from: "$rootDir/captureWpiLibraries.gradle"
 dependencies {
     compile 'edu.wpi.first.ntcore:ntcore-java:' + getNtCoreVersion()
     compile 'edu.wpi.first.cscore:cscore-java:' + getCsCoreVersion()
+    compile 'edu.wpi.first.cameraserver:cameraserver-java:' + getCsCoreVersion()
+    compile 'edu.wpi.first.hal:hal-java:' + getHalHeadersVersion()
+    compile 'edu.wpi.first.hal:hal-jni:' + getHalHeadersVersion() + ':all'
     compile 'org.apache.logging.log4j:log4j-api:2.11.0'
     compile 'org.apache.logging.log4j:log4j-core:2.11.0'
     compile project(":snobot_sim_utilities")
     compile project(':ctre_override')
     compile project(':sim_adx_family')
     compile project(':sim_extension_navx')
-    compile project(':temp_hal_sim')
     compile 'edu.wpi.first.wpilibj:wpilibj-java:' + getWpilibjVersion()
     
     testCompile 'junit:junit:4.12'
@@ -39,7 +39,6 @@ dependencies {
     testRuntime project(':ctre_override').packageNativeCtreSimulationFilesInJar.outputs.files
     testRuntime project(':sim_extension_navx').packageNativenavx_simulator_jniFilesInJar.outputs.files
     testRuntime project(':sim_adx_family').packageNativeadx_family_jniFilesInJar.outputs.files
-    testRuntime project(':temp_hal_sim').packageNativetempHalSimSharedFilesInJar.outputs.files
 }
 
 tasks.withType(Test) {

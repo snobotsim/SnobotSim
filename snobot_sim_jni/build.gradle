@@ -114,7 +114,7 @@ model {
         }
         halsim(DependencyConfig) {
             groupId = 'edu.wpi.first.hal'
-            artifactId = 'hal'
+            artifactId = 'hal-cpp'
             headerClassifier = 'headers'
             ext = 'zip'
             version = getHalHeadersVersion()

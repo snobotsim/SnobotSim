@@ -5,7 +5,7 @@
 
 #include "com_ctre_phoenix_CANifierJNI.h"
 #include "ctre/phoenix/CCI/CANifier_CCI.h"
-#include "MockHookUtilities.h"
+#include "CtreSimMocks/MockHookUtilities.h"
 
 /*
  * Class:     com_ctre_phoenix_CANifierJNI

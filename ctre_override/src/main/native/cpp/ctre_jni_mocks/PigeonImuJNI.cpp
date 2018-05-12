@@ -5,7 +5,7 @@
 
 #include "com_ctre_phoenix_Sensors_PigeonImuJNI.h"
 #include "ctre/phoenix/CCI/PigeonIMU_CCI.h"
-#include "MockHookUtilities.h"
+#include "CtreSimMocks/MockHookUtilities.h"
 
 #define GET_THREE_AXIS(type, capType, funcName, size)      \
                                                            \

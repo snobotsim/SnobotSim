@@ -9,6 +9,7 @@ apply plugin: 'eclipse'
 
 repositories {
     mavenCentral()
+    mavenLocal()
 
     maven {
         url "http://dev.imjac.in/maven/"

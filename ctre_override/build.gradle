@@ -12,11 +12,9 @@ ext
     
     libraryBaseName = 'CTRE_PhoenixCCI'
     librarySrcDirs = [ "src/main/native/cpp"]
-    libraryHeaderDirs = [ "src/main/native/include/CtreSimMocks", 
+    libraryHeaderDirs = [ "src/main/native/include", 
                           ctreHeaders, 
-                          ctreHeaders + "/ctre/phoenix/jni",
-                          "${rootDir}/snobot_sim_gui/src/arm-linux-jni",
-                          "${rootDir}/snobot_sim_gui/src/arm-linux-jni/linux", ]
+                          ctreHeaders + "/ctre/phoenix/jni"]
                           
     baseId = "ctre_override"
     baseArtifactId = 'ctre_override'

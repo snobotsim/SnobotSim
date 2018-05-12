@@ -92,17 +92,15 @@ public final class EncoderCallbackJni
             EncoderDataJNI.resetData(i);
 
             EncoderCallback callback = new EncoderCallback(i);
-            // EncoderDataJNI.registerInitializedCallback(i, callback, false);
-            // EncoderDataJNI.registerCountCallback(i, callback, false);
-            // EncoderDataJNI.registerPeriodCallback(i, callback, false);
-            // EncoderDataJNI.registerResetCallback(i, callback, false);
-            // EncoderDataJNI.registerMaxPeriodCallback(i, callback, false);
-            // EncoderDataJNI.registerDirectionCallback(i, callback, false);
-            // EncoderDataJNI.registerReverseDirectionCallback(i, callback,
-            // false);
-            // EncoderDataJNI.registerSamplesToAverageCallback(i, callback,
-            // false);
-            EncoderDataJNI.registerAllCallbacks(i, callback, false);
+            EncoderDataJNI.registerInitializedCallback(i, callback, false);
+            EncoderDataJNI.registerCountCallback(i, callback, false);
+            EncoderDataJNI.registerPeriodCallback(i, callback, false);
+            EncoderDataJNI.registerResetCallback(i, callback, false);
+            EncoderDataJNI.registerMaxPeriodCallback(i, callback, false);
+            EncoderDataJNI.registerDirectionCallback(i, callback, false);
+            EncoderDataJNI.registerReverseDirectionCallback(i, callback, false);
+            EncoderDataJNI.registerSamplesToAverageCallback(i, callback, false);
+            EncoderDataJNI.registerDistancePerTickCallback(i, callback, false);
         }
     }
 

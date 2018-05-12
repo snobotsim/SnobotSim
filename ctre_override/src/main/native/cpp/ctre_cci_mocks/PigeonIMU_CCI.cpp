@@ -4,7 +4,7 @@
 #include <cstring>
 #include <vector>
 
-#include "MockHooks.h"
+#include "CtreSimMocks/MockHooks.h"
 
 #define RECEIVE_HELPER(paramName, size)                                  \
     PigeonImuSimulatorWrapper* wrapper = ConvertToPigeonWrapper(handle); \

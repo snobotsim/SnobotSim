@@ -2,6 +2,7 @@
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven {
         url "http://first.wpi.edu/FRC/roborio/maven/release/"
     }
@@ -12,7 +13,7 @@ configurations {
 }
 
 dependencies {
-    wpilibjJni 'edu.wpi.first.wpilibj:wpilibj-jniShared:' + getWpilibjVersion() + ':all'
+    wpilibjJni 'edu.wpi.first.hal:hal-jni:' + getWpilibjVersion() + ':all'
 }
 
 task extractWpilibjJniShared(type: Copy) {
@@ -20,6 +21,8 @@ task extractWpilibjJniShared(type: Copy) {
 
     destinationDir = file("$rootDir/build/dependencies/wpilibj-jniShared")
     configurations.wpilibjJni.each {
+        println "XXX"
+        println it
         from(zipTree(it)) {
             into os_name + "x86-64/"
         }
@@ -35,10 +38,7 @@ task captureWpiLibraries(type: Jar, dependsOn: extractWpilibjJniShared) {
     destinationDir = file("$rootDir/build/wpi_libraries")
     classifier = "wpi_native-" + os_name;
 
-    def libraries = ["wpilibj-jniShared",
-                     "wpiutil-cpp",
-                     "halsim-adx_gyro_accelerometer",
-                     "hal"]
+    def libraries = ["wpiutil-cpp", "halsim_adx_gyro_accelerometer"]
 
     libraries.each{
         def full_path = "$rootDir/build/dependencies/" + it + "/" + os_name + "x86-64/" + os_name + "/x86-64/shared"

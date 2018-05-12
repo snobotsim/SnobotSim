@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "MockHooks.h"
+#include "CtreSimMocks/MockHooks.h"
 
 #define RECEIVE_HELPER(paramName, size)                                        \
     MotorControllerWrapper* wrapper = ConvertToMotorControllerWrapper(handle); \

@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-#include "MockHooks.h"
+#include "CtreSimMocks/MockHooks.h"
 #include "com_snobot_simulator_ctre_CtreJni.h"
 
 using namespace wpi::java;

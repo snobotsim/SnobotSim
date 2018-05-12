@@ -200,7 +200,8 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     @Override
     public double getMatchTime()
     {
-        return DriverStationDataJNI.getMatchTime();
+        // return DriverStationDataJNI.getMatchTime();
+        return 0;
     }
 
     @Override
@@ -248,7 +249,7 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
         }
 
         DriverStationDataJNI.notifyNewData();
-        DriverStationDataJNI.setMatchTime(DriverStationDataJNI.getMatchTime() + aUpdatePeriod);
+//        DriverStationDataJNI.setMatchTime(DriverStationDataJNI.getMatchTime() + aUpdatePeriod);
         // DriverStationSimulatorJni.delayForNextUpdateLoop(aUpdatePeriod);
     }
 
@@ -263,7 +264,7 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     @Override
     public void setMatchInfo(String aEventName, MatchType aMatchType, int aMatchNumber, int aReplayNumber, String aGameSpecificMessage)
     {
-        DriverStationDataJNI.setMatchInfo(aEventName, aMatchType.ordinal(), aMatchNumber, aReplayNumber, aGameSpecificMessage);
+//        DriverStationDataJNI.setMatchInfo(aEventName, aMatchType.ordinal(), aMatchNumber, aReplayNumber, aGameSpecificMessage);
     }
 
     @Override

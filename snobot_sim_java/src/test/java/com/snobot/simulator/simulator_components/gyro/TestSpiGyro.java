@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -16,6 +17,7 @@ import com.snobot.test.utilities.BaseSimulatorJavaTest;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
 
+@Ignore
 @RunWith(value = Parameterized.class)
 public class TestSpiGyro extends BaseSimulatorJavaTest
 {

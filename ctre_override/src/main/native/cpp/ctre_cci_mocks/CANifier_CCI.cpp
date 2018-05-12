@@ -6,8 +6,8 @@
 #include <string>
 #include <vector>
 
-#include "MockHooks.h"
-#include "MockHookUtilities.h"
+#include "CtreSimMocks/MockHooks.h"
+#include "CtreSimMocks/MockHookUtilities.h"
 
 
 extern "C"{
