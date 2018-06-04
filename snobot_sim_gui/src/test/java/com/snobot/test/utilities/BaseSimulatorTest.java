@@ -2,8 +2,8 @@ package com.snobot.test.utilities;
 
 import java.io.File;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.snobot.simulator.DefaultDataAccessorFactory;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
@@ -33,7 +33,7 @@ public class BaseSimulatorTest
         aPath.delete();
     }
 
-    @Before
+    @BeforeEach
     public void setup()
     {
         if (!INITIALIZED)
@@ -54,7 +54,7 @@ public class BaseSimulatorTest
         RobotBase.initializeHardwareConfiguration();
     }
 
-    @After
+    @AfterEach
     public void cleanup()
     {
         // Nothing to do

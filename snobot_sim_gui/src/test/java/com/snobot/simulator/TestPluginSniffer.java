@@ -2,8 +2,8 @@ package com.snobot.simulator;
 
 import java.io.File;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class TestPluginSniffer
 {
@@ -13,7 +13,7 @@ public class TestPluginSniffer
         PluginSniffer sniffer = new PluginSniffer();
         sniffer.loadPlugins(new File("test_files/plugins"));
 
-        Assert.assertEquals(0, sniffer.getCppRobots().size());
-        Assert.assertEquals(0, sniffer.getJavaRobots().size());
+        Assertions.assertEquals(0, sniffer.getCppRobots().size());
+        Assertions.assertEquals(0, sniffer.getJavaRobots().size());
     }
 }

@@ -10,7 +10,7 @@
 #include "ADXL345_SpiAccelerometerData.h"
 
 AdxSpi345AccelWrapper::AdxSpi345AccelWrapper(int aPort) :
-        BaseAdxAccelWrapper(100 + aPort * 3, std::shared_ptr<hal::ThreeAxisAccelerometerData>(new hal::ADXL345_SpiAccelerometer(aPort)))
+        BaseAdxAccelWrapper(100 + aPort * 3/*, std::shared_ptr<hal::ThreeAxisAccelerometerData>(new hal::ADXL345_SpiAccelerometer(aPort))*/)
 {
 }
 

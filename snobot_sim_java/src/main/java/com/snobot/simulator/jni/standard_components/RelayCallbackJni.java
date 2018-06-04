@@ -8,7 +8,7 @@ import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.RelayWrapper;
 
 import edu.wpi.first.hal.sim.mockdata.RelayDataJNI;
-import edu.wpi.first.wpilibj.SensorBase;
+import edu.wpi.first.wpilibj.SensorUtil;
 import edu.wpi.first.wpilibj.sim.SimValue;
 
 public final class RelayCallbackJni
@@ -55,7 +55,7 @@ public final class RelayCallbackJni
 
     public static void reset()
     {
-        for (int i = 0; i < SensorBase.kRelayChannels; ++i)
+        for (int i = 0; i < SensorUtil.kRelayChannels; ++i)
         {
             RelayDataJNI.resetData(i);
 

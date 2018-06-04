@@ -10,7 +10,7 @@
 
 #include <memory>
 
-#include "ADXRS450_SpiGyroWrapperData.h"
+//#include "ADXRS450_SpiGyroWrapperData.h"
 #include "SnobotSim/SimulatorComponents/Gyro/IGyroWrapper.h"
 #include "SnobotSim/SimulatorComponents/Spi/ISpiWrapper.h"
 
@@ -25,7 +25,7 @@ public:
     double GetAngle() override;
 
 protected:
-    std::shared_ptr<hal::ADXRS450_SpiGyroWrapper> mGyro;
+//    std::shared_ptr<hal::ADXRS450_SpiGyroWrapper> mGyro;
 };
 
 #endif // SNOBOTSIM_SNOBOT_SIM_SRC_MAIN_NATIVE_INCLUDE_SNOBOTSIM_SIMULATORCOMPONENTS_ADXWRAPPERS_ADXGYROWRAPPER_H_

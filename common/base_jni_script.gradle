@@ -46,10 +46,6 @@ task "packageNative${libraryName}FilesInJar"(type: Jar) {
 
 build.dependsOn "packageNative${libraryName}FilesInJar"
 
-test {
-    ignoreFailures = !OperatingSystem.current().isWindows()
-}
-
 
 model {
 

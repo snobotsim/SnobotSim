@@ -30,6 +30,14 @@ jacocoTestReport {
     }
 }
 
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "failed"
+        exceptionFormat "full"
+    }
+}
+
 
 /////////////////////////////////////////////////////////////////////////////////
 // Style/Formatting stuff

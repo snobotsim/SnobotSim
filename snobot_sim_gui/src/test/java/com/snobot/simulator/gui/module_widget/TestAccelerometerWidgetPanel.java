@@ -2,7 +2,8 @@ package com.snobot.simulator.gui.module_widget;
 
 import javax.swing.JFrame;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseGuiSimulatorTest;
@@ -13,6 +14,7 @@ import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
 
 public class TestAccelerometerWidgetPanel extends BaseGuiSimulatorTest
 {
+    @Disabled
     @Test
     public void testPanel()
     {

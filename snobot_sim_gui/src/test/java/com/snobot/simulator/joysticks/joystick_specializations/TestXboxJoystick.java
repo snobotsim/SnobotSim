@@ -1,6 +1,6 @@
 package com.snobot.simulator.joysticks.joystick_specializations;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.snobot.test.utilities.MockController;
 

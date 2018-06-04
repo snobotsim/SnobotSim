@@ -4,7 +4,7 @@ import java.io.File;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.simulator.wrapper_accessors.java.JavaDataAccessor;
@@ -44,7 +44,7 @@ public class BaseSimulatorJavaTest
         }
     }
 
-    @Before
+    @BeforeEach
     public void setup()
     {
         if (!INITIALIZED)

@@ -8,7 +8,7 @@ import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.PwmWrapper;
 
 import edu.wpi.first.hal.sim.mockdata.PWMDataJNI;
-import edu.wpi.first.wpilibj.SensorBase;
+import edu.wpi.first.wpilibj.SensorUtil;
 import edu.wpi.first.wpilibj.sim.SimValue;
 
 public final class PwmCallbackJni
@@ -51,7 +51,7 @@ public final class PwmCallbackJni
 
     public static void reset()
     {
-        for (int i = 0; i < SensorBase.kPwmChannels; ++i)
+        for (int i = 0; i < SensorUtil.kPwmChannels; ++i)
         {
             PWMDataJNI.resetData(i);
 

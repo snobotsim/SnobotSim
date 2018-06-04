@@ -1,7 +1,7 @@
 package com.snobot.simulator.config;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.GravityLoadMotorSimulationConfig;
@@ -51,7 +51,7 @@ public class TestWriteConfig extends BaseSimulatorTest
         SimulatorConfigWriter writer = new SimulatorConfigWriter();
 
         String dumpFile = "test_output/testWriteFile.yml";
-        Assert.assertTrue(writer.writeConfig(dumpFile));
+        Assertions.assertTrue(writer.writeConfig(dumpFile));
     }
 
     @Test
@@ -60,6 +60,6 @@ public class TestWriteConfig extends BaseSimulatorTest
         String dumpFile = "directory_does_not_exist/testWriteFile.yml";
 
         SimulatorConfigWriter writer = new SimulatorConfigWriter();
-        Assert.assertFalse(writer.writeConfig(dumpFile));
+        Assertions.assertFalse(writer.writeConfig(dumpFile));
     }
 }

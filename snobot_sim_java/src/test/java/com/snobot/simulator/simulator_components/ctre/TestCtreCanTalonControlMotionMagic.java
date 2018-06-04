@@ -3,11 +3,10 @@ package com.snobot.simulator.simulator_components.ctre;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -17,15 +16,10 @@ import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorJavaTest;
 
-@RunWith(value = Parameterized.class)
+@Tag("CTRE")
 public class TestCtreCanTalonControlMotionMagic extends BaseSimulatorJavaTest
 {
-    private final int mCanHandle;
-    private final int mRawHandle;
-    private final FeedbackDevice mFeedbackDevice;
-
-    @Parameters(name = "{index}: Port={0}, Device={1}")
-    public static Collection<Object[]> ddata()
+    public static Collection<Object[]> getData()
     {
         Collection<Object[]> output = new ArrayList<>();
 
@@ -39,24 +33,19 @@ public class TestCtreCanTalonControlMotionMagic extends BaseSimulatorJavaTest
         return output;
     }
 
-    public TestCtreCanTalonControlMotionMagic(int aCanHandle, FeedbackDevice aFeedbackDevice)
+    @ParameterizedTest
+    @MethodSource("getData")
+    public void testSetWithMotionMagic(int aCanHandle, FeedbackDevice aFeedbackDevice)
     {
-        mCanHandle = aCanHandle;
-        mRawHandle = mCanHandle + 100;
-        mFeedbackDevice = aFeedbackDevice;
-    }
+        int rawHandle = aCanHandle + 100;
 
-    @Test
-    public void testSetWithMotionMagic()
-    {
-
-        Assert.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
-        TalonSRX talon = new TalonSRX(mCanHandle);
-        Assert.assertEquals(1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
+        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
+        TalonSRX talon = new TalonSRX(aCanHandle);
+        Assertions.assertEquals(1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
 
         // Hookup motor config
         DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("CIM", 1, 10, 1);
-        Assert.assertTrue(DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(mRawHandle, motorConfig,
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(rawHandle, motorConfig,
                 new StaticLoadMotorSimulationConfig(.2)));
 
         talon.config_kP(0, .11, 5);
@@ -64,7 +53,7 @@ public class TestCtreCanTalonControlMotionMagic extends BaseSimulatorJavaTest
         talon.config_kF(0, 0.018, 5);
         talon.config_IntegralZone(0, 2, 5);
 
-        talon.configSelectedFeedbackSensor(mFeedbackDevice, 0, 5);
+        talon.configSelectedFeedbackSensor(aFeedbackDevice, 0, 5);
         talon.configMotionCruiseVelocity(12 * 600, 0);
         talon.configMotionAcceleration(24 * 600, 0);
         talon.set(ControlMode.MotionMagic, 30 * 12 * 4096);
@@ -74,7 +63,7 @@ public class TestCtreCanTalonControlMotionMagic extends BaseSimulatorJavaTest
             System.out.println(talon.getClosedLoopError(0)); // NOPMD
         });
 
-        Assert.assertEquals(0, talon.getClosedLoopError(0), 2 * 4096);
+        Assertions.assertEquals(0, talon.getClosedLoopError(0), 2 * 4096);
     }
 
 }

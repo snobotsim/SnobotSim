@@ -1,9 +1,9 @@
 package com.snobot.simulator.config;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.snobot.simulator.DefaultDataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorTest;
@@ -15,7 +15,7 @@ public class TestReadConfig extends BaseSimulatorTest
 {
     public static final int sTEST_PARAMETER = 5;
 
-    @Before
+    @BeforeEach
     public void setup() // NOPMD
     {
         DefaultDataAccessorFactory.initalize();
@@ -26,8 +26,8 @@ public class TestReadConfig extends BaseSimulatorTest
     {
         String file = "test_files/ConfigTest/ReadConfig/testReadFile.yml";
         SimulatorConfigReader reader = new SimulatorConfigReader();
-        Assert.assertTrue(reader.loadConfig(file));
-        Assert.assertNotNull(reader.getConfig());
+        Assertions.assertTrue(reader.loadConfig(file));
+        Assertions.assertNotNull(reader.getConfig());
     }
 
     @Test
@@ -35,8 +35,8 @@ public class TestReadConfig extends BaseSimulatorTest
     {
         String file = "test_files/ConfigTest/ReadConfig/emptyFile.yml";
         SimulatorConfigReader reader = new SimulatorConfigReader();
-        Assert.assertTrue(reader.loadConfig(file));
-        Assert.assertNotNull(reader.getConfig());
+        Assertions.assertTrue(reader.loadConfig(file));
+        Assertions.assertNotNull(reader.getConfig());
     }
 
     @Test
@@ -44,8 +44,8 @@ public class TestReadConfig extends BaseSimulatorTest
     {
         String file = null;
         SimulatorConfigReader reader = new SimulatorConfigReader();
-        Assert.assertTrue(reader.loadConfig(file));
-        Assert.assertNull(reader.getConfig());
+        Assertions.assertTrue(reader.loadConfig(file));
+        Assertions.assertNull(reader.getConfig());
     }
 
     @Test
@@ -53,11 +53,11 @@ public class TestReadConfig extends BaseSimulatorTest
     {
         String file = "does_not_exist.yml";
         SimulatorConfigReader reader = new SimulatorConfigReader();
-        Assert.assertFalse(reader.loadConfig(file));
-        Assert.assertNull(reader.getConfig());
+        Assertions.assertFalse(reader.loadConfig(file));
+        Assertions.assertNull(reader.getConfig());
     }
 
-    @After
+    @AfterEach
     public void cleanup()
     {
         NetworkTableInstance.getDefault().stopServer();

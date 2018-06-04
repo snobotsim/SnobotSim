@@ -4,7 +4,7 @@ repositories {
     mavenCentral()
     mavenLocal()
     maven {
-        url "http://first.wpi.edu/FRC/roborio/maven/release/"
+        url getWpiRepo()
     }
 }
 
