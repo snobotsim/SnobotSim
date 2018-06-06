@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.snobot.simulator.ctre.CtreCallback;
+import com.snobot.simulator.ctre.CtreJni;
 import com.snobot.simulator.simulator_components.ctre.CtreManager;
 
 public final class CanCallbackJni
@@ -41,8 +42,8 @@ public final class CanCallbackJni
 
     public static void reset()
     {
-        // CtreJni.registerCanMotorCallback(MOTOR_CALL);
-        // CtreJni.registerCanPigeonImuCallback(new CtrePigeonImuCallback());
+        CtreJni.registerCanMotorCallback(MOTOR_CALL);
+        CtreJni.registerCanPigeonImuCallback(new CtrePigeonImuCallback());
     }
 
 }

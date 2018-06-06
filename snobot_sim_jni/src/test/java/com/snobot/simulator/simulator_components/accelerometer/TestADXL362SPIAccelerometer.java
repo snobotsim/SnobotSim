@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorJniTest;
@@ -15,7 +16,7 @@ import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
 
 public class TestADXL362SPIAccelerometer extends BaseSimulatorJniTest
 {
-    public static Collection<Object[]> testADXL362_SPIProvider()
+    public static Collection<Object[]> getData()
     {
         Collection<Object[]> output = new ArrayList<>();
 
@@ -28,6 +29,7 @@ public class TestADXL362SPIAccelerometer extends BaseSimulatorJniTest
     }
 
     @ParameterizedTest
+    @MethodSource("getData")
     public void testADXL362_SPI(SPI.Port aPort, Range aRange)
     {
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(aPort.value, "ADXL362");

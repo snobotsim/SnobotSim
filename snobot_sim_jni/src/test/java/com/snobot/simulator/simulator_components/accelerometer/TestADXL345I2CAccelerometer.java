@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorJniTest;
@@ -32,7 +33,8 @@ public class TestADXL345I2CAccelerometer extends BaseSimulatorJniTest
         return output;
     }
 
-    @Test
+    @ParameterizedTest
+    @MethodSource("getData")
     public void testADXL345_I2C(I2C.Port aPort, Range aRange)
     {
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultI2CSimulator(aPort.value, "ADXL345");

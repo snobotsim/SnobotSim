@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorJniTest;
@@ -17,7 +18,7 @@ public class TestADXL345SPIAccelerometer extends BaseSimulatorJniTest
 {
     private static final double sDOUBLE_EPSILON = 1 / 256.0; // Resoultion isn't as good as normal sensors
 
-    public static Collection<Object[]> testADXL345_SPIProvider()
+    public static Collection<Object[]> getData()
     {
         Collection<Object[]> output = new ArrayList<>();
 
@@ -32,7 +33,8 @@ public class TestADXL345SPIAccelerometer extends BaseSimulatorJniTest
         return output;
     }
 
-    @Test
+    @ParameterizedTest
+    @MethodSource("getData")
     public void testADXL345_SPI(SPI.Port aPort, Range aRange)
     {
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(aPort.value, "ADXL345");

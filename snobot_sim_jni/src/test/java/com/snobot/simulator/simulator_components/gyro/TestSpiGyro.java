@@ -5,7 +5,8 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorJniTest;
@@ -15,7 +16,7 @@ import edu.wpi.first.wpilibj.SPI;
 
 public class TestSpiGyro extends BaseSimulatorJniTest
 {
-    public static Collection<SPI.Port> testADXL345_I2CProvider()
+    public static Collection<SPI.Port> getData()
     {
         Collection<SPI.Port> output = new ArrayList<>();
 
@@ -24,7 +25,8 @@ public class TestSpiGyro extends BaseSimulatorJniTest
         return output;
     }
 
-    @Test
+    @ParameterizedTest
+    @MethodSource("getData")
     public void testSpiGyro(SPI.Port aPort)
     {
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(aPort.value, "ADXRS450");
