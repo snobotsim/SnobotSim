@@ -83,7 +83,7 @@ public class TestEncoderJni extends BaseSimulatorJavaTest
         Assertions.assertEquals(0.0, DataAccessorFactory.getInstance().getEncoderAccessor().getRaw(0), DOUBLE_EPSILON);
     }
 
-    @Disabled
+    @Disabled("Need to update WPILIB")
     @Test
     public void testSpeedControllerFeedbackWithDistancePerTick()
     {

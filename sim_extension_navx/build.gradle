@@ -37,7 +37,7 @@ if (!project.hasProperty('onlyAthena')) {
                 artifactId = 'wpiutil-cpp'
                 headerClassifier = 'headers'
                 ext = 'zip'
-                version = getWpiUtilVersion()
+                version = allwpilibVersion()
                 sharedConfigs = [ navx_simulator: [],
                                   navx_simulator_jni: [] ]
             }
@@ -46,7 +46,7 @@ if (!project.hasProperty('onlyAthena')) {
                 artifactId = 'hal-cpp'
                 headerClassifier = 'headers'
                 ext = 'zip'
-                version = getHalHeadersVersion()
+                version = allwpilibVersion()
                 sharedConfigs = [ navx_simulator: [],
                                   navx_simulator_jni: []  ]
             }
@@ -96,11 +96,11 @@ dependencies {
     testRuntime project(':sim_extension_navx').packageNativenavx_simulator_jniFilesInJar.outputs.files
     
     
-    testCompile 'edu.wpi.first.hal:hal-java:' + getHalHeadersVersion()
-    testCompile 'edu.wpi.first.wpilibj:wpilibj-java:' + getWpilibjVersion()
-    testRuntime 'edu.wpi.first.ntcore:ntcore-java:' + getNtCoreVersion()
-    testRuntime 'edu.wpi.first.cscore:cscore-java:' + getCsCoreVersion()
-    testRuntime 'edu.wpi.first.ntcore:ntcore-jni:' + getNtCoreVersion() + ':all'
-    testRuntime 'edu.wpi.first.cscore:cscore-jni:' + getCsCoreVersion() + ':all'
+    testCompile 'edu.wpi.first.hal:hal-java:' + allwpilibVersion()
+    testCompile 'edu.wpi.first.wpilibj:wpilibj-java:' + allwpilibVersion()
+    testRuntime 'edu.wpi.first.ntcore:ntcore-java:' + allwpilibVersion()
+    testRuntime 'edu.wpi.first.cscore:cscore-java:' + allwpilibVersion()
+    testRuntime 'edu.wpi.first.ntcore:ntcore-jni:' + allwpilibVersion() + ':all'
+    testRuntime 'edu.wpi.first.cscore:cscore-jni:' + allwpilibVersion() + ':all'
     
 }

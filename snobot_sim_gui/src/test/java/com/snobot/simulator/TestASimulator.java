@@ -1,7 +1,6 @@
 package com.snobot.simulator;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig;
@@ -12,7 +11,6 @@ import com.snobot.test.utilities.MockRobot;
 
 public class TestASimulator extends BaseSimulatorTest
 {
-    @Disabled
     @Test
     public void testASimulator()
     {

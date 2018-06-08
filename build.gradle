@@ -37,27 +37,9 @@ ext.build_simulator_java = true
 // Specify WPI Versions
 
 ext.allwpilibVersion = {
-    return 'TestMotorSim'
+    return '2018.4.1'
 }
 
-ext.getHalHeadersVersion = {
-    return allwpilibVersion()
-}
-ext.getWpilibjVersion = {
-    return allwpilibVersion()
-}
-ext.getWpilibcVersion = {
-    return allwpilibVersion()
-}
-ext.getWpiUtilVersion = {
-    return allwpilibVersion()
-}
-ext.getNtCoreVersion = {
-    return allwpilibVersion()
-}
-ext.getCsCoreVersion = {
-    return allwpilibVersion()
-}
 ext.getWpilibOpencvVersion = {
     return '3.2.0'
 }

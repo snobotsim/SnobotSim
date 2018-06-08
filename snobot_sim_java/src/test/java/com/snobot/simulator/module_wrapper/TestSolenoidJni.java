@@ -1,7 +1,6 @@
 package com.snobot.simulator.module_wrapper;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
@@ -45,7 +44,6 @@ public class TestSolenoidJni extends BaseSimulatorJavaTest
         });
     }
 
-    @Disabled
     @Test
     public void testSet()
     {
