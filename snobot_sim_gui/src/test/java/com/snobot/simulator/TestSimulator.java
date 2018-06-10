@@ -2,12 +2,9 @@ package com.snobot.simulator;
 
 import java.io.File;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import com.snobot.simulator.gui.SimulatorFrame;
 import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor.SnobotLogLevel;
@@ -17,16 +14,6 @@ public class TestSimulator extends BaseSimulatorTest
 {
     private static final long TIME_TO_RUN_MS = 10;
     private static final String sTEST_PLUGIN_DIR = "test_files/plugins";
-
-    @Rule
-    public TestName mTestName = new TestName();
-
-    @Before
-    public void setup() // NOPMD
-    {
-        System.out.println("\n******************************\n" + mTestName.getMethodName() + "\n******************************\n"); // NOPMD
-        super.setup();
-    }
 
     public class MockSimulator extends Simulator
     {
@@ -65,7 +52,7 @@ public class TestSimulator extends BaseSimulatorTest
     {
         MockSimulator simulator = new MockSimulator(SnobotLogLevel.DEBUG, new File(sTEST_PLUGIN_DIR), "test_output/test_start_simulator/");
         simulator.runTestForTime(TIME_TO_RUN_MS);
-        Assert.assertFalse(simulator.mError);
+        Assertions.assertFalse(simulator.mError);
     }
 
     @Test
@@ -74,7 +61,7 @@ public class TestSimulator extends BaseSimulatorTest
         MockSimulator simulator = new MockSimulator(SnobotLogLevel.DEBUG, new File(sTEST_PLUGIN_DIR),
                 "test_files/SimulatorTest/TestValidUserConfig/");
         simulator.runTestForTime(TIME_TO_RUN_MS);
-        Assert.assertFalse(simulator.mError);
+        Assertions.assertFalse(simulator.mError);
     }
 
     @Test
@@ -83,16 +70,16 @@ public class TestSimulator extends BaseSimulatorTest
         MockSimulator simulator = new MockSimulator(SnobotLogLevel.DEBUG, new File(sTEST_PLUGIN_DIR),
                 "test_files/SimulatorTest/InvalidSimulatorName/");
         simulator.runTestForTime(TIME_TO_RUN_MS);
-        Assert.assertTrue(simulator.mError);
+        Assertions.assertTrue(simulator.mError);
     }
 
-    @Ignore
+    @Disabled
     @Test
     public void testCustomSimulatorName() throws Exception
     {
         MockSimulator simulator = new MockSimulator(SnobotLogLevel.DEBUG, new File(sTEST_PLUGIN_DIR),
                 "test_files/SimulatorTest/CustomSimulatorName/");
         simulator.runTestForTime(TIME_TO_RUN_MS);
-        Assert.assertFalse(simulator.mError);
+        Assertions.assertFalse(simulator.mError);
     }
 }

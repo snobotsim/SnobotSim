@@ -1,6 +1,7 @@
 package com.snobot.simulator.simulator_components.ctre;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
 import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.sensors.PigeonIMU;
@@ -13,6 +14,7 @@ import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
 import com.ctre.phoenix.sensors.PigeonIMU_StickyFaults;
 import com.snobot.test.utilities.BaseSimulatorJavaTest;
 
+@Tag("CTRE")
 public class TestUnsupportedPigeonImuOperations extends BaseSimulatorJavaTest
 {
     @Test

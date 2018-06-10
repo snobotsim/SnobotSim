@@ -2,8 +2,8 @@ package com.snobot.simulator.gui.joysticks;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.snobot.test.utilities.BaseGuiSimulatorTest;
 
@@ -28,6 +28,6 @@ public class TestPanels extends BaseGuiSimulatorTest
             dialog.dispose();
         }
 
-        Assert.assertTrue(success);
+        Assertions.assertTrue(success);
     }
 }

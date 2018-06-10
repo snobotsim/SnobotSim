@@ -1,7 +1,7 @@
 package com.snobot.simulator.motor_factory;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
@@ -18,13 +18,13 @@ public class MotorFactoryTest extends BaseSimulatorJavaTest
     {
         DcMotorModelConfig config = VexMotorFactory.createMotor("DoesNotExist");
 
-        Assert.assertEquals(0, config.mMotorParams.mFreeCurrent, DOUBLE_EPSILON);
-        Assert.assertEquals(0, config.mMotorParams.mFreeSpeedRpm, DOUBLE_EPSILON);
-        Assert.assertEquals(0, config.mMotorParams.mFreeCurrent, DOUBLE_EPSILON);
-        Assert.assertEquals(0, config.mMotorParams.mStallTorque, DOUBLE_EPSILON);
-        Assert.assertEquals(0, config.mMotorParams.mStallCurrent, DOUBLE_EPSILON);
-        Assert.assertEquals(0, config.mMotorParams.mFreeCurrent, DOUBLE_EPSILON);
-        Assert.assertEquals(0, config.mMotorParams.mMortorInertia, DOUBLE_EPSILON);
+        Assertions.assertEquals(0, config.mMotorParams.mFreeCurrent, DOUBLE_EPSILON);
+        Assertions.assertEquals(0, config.mMotorParams.mFreeSpeedRpm, DOUBLE_EPSILON);
+        Assertions.assertEquals(0, config.mMotorParams.mFreeCurrent, DOUBLE_EPSILON);
+        Assertions.assertEquals(0, config.mMotorParams.mStallTorque, DOUBLE_EPSILON);
+        Assertions.assertEquals(0, config.mMotorParams.mStallCurrent, DOUBLE_EPSILON);
+        Assertions.assertEquals(0, config.mMotorParams.mFreeCurrent, DOUBLE_EPSILON);
+        Assertions.assertEquals(0, config.mMotorParams.mMortorInertia, DOUBLE_EPSILON);
     }
 
     @Test
@@ -32,11 +32,11 @@ public class MotorFactoryTest extends BaseSimulatorJavaTest
     {
         new Talon(0);
         DcMotorModelConfig motorConfig = DataAccessorFactory.getInstance().getSimulatorDataAccessor().createMotor("CIM");
-        Assert.assertTrue(DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(0, motorConfig,
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Static(0, motorConfig,
                 new StaticLoadMotorSimulationConfig(12)));
 
         DcMotorModelConfig createdConfig = DataAccessorFactory.getInstance().getSpeedControllerAccessor().getMotorConfig(0);
 
-        Assert.assertEquals(motorConfig, createdConfig);
+        Assertions.assertEquals(motorConfig, createdConfig);
     }
 }

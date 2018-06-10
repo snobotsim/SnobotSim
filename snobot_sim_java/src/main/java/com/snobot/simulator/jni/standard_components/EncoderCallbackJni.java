@@ -100,7 +100,8 @@ public final class EncoderCallbackJni
             EncoderDataJNI.registerDirectionCallback(i, callback, false);
             EncoderDataJNI.registerReverseDirectionCallback(i, callback, false);
             EncoderDataJNI.registerSamplesToAverageCallback(i, callback, false);
-            EncoderDataJNI.registerDistancePerTickCallback(i, callback, false);
+            // EncoderDataJNI.registerDistancePerTickCallback(i, callback,
+            // false);
         }
     }
 

@@ -1,7 +1,7 @@
 package com.snobot.simulator.joysticks.joystick_specializations;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.snobot.simulator.joysticks.IMockJoystick;
 import com.snobot.test.utilities.MockController;
@@ -17,7 +17,7 @@ public class TestKeyboardJoystick
         KeyboardJoystick joystick = new KeyboardJoystick(controller);
 
         short[] povValues = joystick.getPovValues();
-        Assert.assertEquals(-1, povValues[0]);
+        Assertions.assertEquals(-1, povValues[0]);
 
         testAxis(joystick, 0, 0, 1, 1, 0, 0);
 
@@ -128,12 +128,12 @@ public class TestKeyboardJoystick
     {
         float[] axisValues = aJoystick.getAxisValues();
 
-        Assert.assertEquals(aAxis0, axisValues[0], .0001);
-        Assert.assertEquals(aAxis1, axisValues[1], .0001);
-        Assert.assertEquals(aAxis2, axisValues[2], .0001);
-        Assert.assertEquals(aAxis3, axisValues[3], .0001);
-        Assert.assertEquals(aAxis4, axisValues[4], .0001);
-        Assert.assertEquals(aAxis5, axisValues[5], .0001);
+        Assertions.assertEquals(aAxis0, axisValues[0], .0001);
+        Assertions.assertEquals(aAxis1, axisValues[1], .0001);
+        Assertions.assertEquals(aAxis2, axisValues[2], .0001);
+        Assertions.assertEquals(aAxis3, axisValues[3], .0001);
+        Assertions.assertEquals(aAxis4, axisValues[4], .0001);
+        Assertions.assertEquals(aAxis5, axisValues[5], .0001);
     }
 
     private void testPovs(IMockJoystick aJoystick, int aPov0)
@@ -141,6 +141,6 @@ public class TestKeyboardJoystick
         aJoystick.getController().poll();
         short[] povValues = aJoystick.getPovValues();
 
-        Assert.assertEquals(aPov0, povValues[0]);
+        Assertions.assertEquals(aPov0, povValues[0]);
     }
 }

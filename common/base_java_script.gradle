@@ -30,6 +30,16 @@ jacocoTestReport {
     }
 }
 
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "failed"
+        exceptionFormat "full"
+    }
+    
+    ignoreFailures = org.gradle.internal.os.OperatingSystem.current().isMacOsX()
+}
+
 
 /////////////////////////////////////////////////////////////////////////////////
 // Style/Formatting stuff

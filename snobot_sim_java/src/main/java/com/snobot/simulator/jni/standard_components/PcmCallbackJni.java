@@ -8,7 +8,7 @@ import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.SolenoidWrapper;
 
 import edu.wpi.first.hal.sim.mockdata.PCMDataJNI;
-import edu.wpi.first.wpilibj.SensorBase;
+import edu.wpi.first.wpilibj.SensorUtil;
 import edu.wpi.first.wpilibj.sim.NotifyCallback;
 import edu.wpi.first.wpilibj.sim.SimValue;
 
@@ -53,11 +53,11 @@ public final class PcmCallbackJni
     public static void reset()
     {
 
-        for (int module = 0; module < SensorBase.kPCMModules; ++module)
+        for (int module = 0; module < SensorUtil.kPCMModules; ++module)
         {
             PCMDataJNI.resetData(module);
 
-            for (int channel = 0; channel < SensorBase.kSolenoidChannels; ++channel)
+            for (int channel = 0; channel < SensorUtil.kSolenoidChannels; ++channel)
             {
                 SolenoidCallback callback = new SolenoidCallback(module, channel);
                 PCMDataJNI.registerAllSolenoidCallbacks(module, channel, callback, false);

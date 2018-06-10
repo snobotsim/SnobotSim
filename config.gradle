@@ -19,9 +19,9 @@ def linux32BitArg = '-m32'
 
 def macCompilerArgs = ['-std=c++14', '-Wall', '-Wextra', '-Werror', '-pedantic-errors', '-fPIC', '-g',
                        '-Wno-unused-parameter', '-Wno-error=deprecated-declarations', '-Wno-missing-field-initializers',
-                       '-Wno-unused-private-field', '-Wno-unused-const-variable', '-pthread']
+                       '-Wno-unused-private-field', '-Wno-unused-const-variable', '-Wno-nullability-extension', '-Wno-nullability-completeness', '-pthread']
 def macCCompilerArgs = ['-Wall', '-Wextra', '-Werror', '-pedantic-errors', '-fPIC', '-g',
-                        '-Wno-unused-parameter', '-Wno-missing-field-initializers', '-Wno-unused-private-field']
+                        '-Wno-unused-parameter', '-Wno-missing-field-initializers', '-Wno-unused-private-field', '-Wno-nullability-extension', '-Wno-nullability-completeness']
 def macObjCLinkerArgs = ['-std=c++14', '-stdlib=libc++','-fobjc-arc', '-g', '-fPIC', '-Wall', '-Wextra', '-Werror']
 def macReleaseCompilerArgs = ['-O2']
 def macDebugCompilerArgs = ['-O0']
@@ -98,25 +98,6 @@ def mac32PlatformDetect = {
     }
 }
 
-if (!project.hasProperty('skipAthena')) {
-    model {
-        buildConfigs {
-            roboRio(CrossBuildConfig) {
-                architecture = 'athena'
-                operatingSystem = 'linux'
-                toolChainPrefix = 'arm-frc-linux-gnueabi-'
-                compilerArgs = linuxCompilerArgs
-                CCompilerArgs = linuxCCompilerArgs
-                linkerArgs = linuxLinkerArgs
-                debugCompilerArgs = linuxDebugCompilerArgs
-                releaseCompilerArgs = linuxReleaseCompilerArgs
-                releaseStripBinaries = true
-                compilerFamily = 'Gcc'
-            }
-        }
-    }
-}
-
 if (!project.hasProperty('onlyAthena')) {
     model {
         buildConfigs {
@@ -163,7 +144,6 @@ if (!project.hasProperty('onlyAthena')) {
                 releaseCompilerArgs = macReleaseCompilerArgs
                 objCppCompilerArgs = macObjCLinkerArgs
                 linkerArgs = macLinkerArgs
-                releaseStripBinaries = true
                 compilerFamily = 'Clang'
                 detectPlatform = mac64PlatformDetect
             }
@@ -292,6 +272,12 @@ ext.includeStandardZipFormat = { task, value ->
             if (binary instanceof SharedLibraryBinarySpec) {
                 task.dependsOn binary.buildTask
                 task.from(new File(binary.sharedLibraryFile.absolutePath + ".debug")) {
+                    into getPlatformPath(binary) + '/shared'
+                }
+                def sharedPath = binary.sharedLibraryFile.absolutePath
+                sharedPath = sharedPath.substring(0, sharedPath.length() - 4)
+
+                task.from(new File(sharedPath + '.pdb')) {
                     into getPlatformPath(binary) + '/shared'
                 }
                 task.from(binary.sharedLibraryFile) {

@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorJavaTest;
@@ -17,12 +15,10 @@ import com.snobot.test.utilities.BaseSimulatorJavaTest;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
 
-@Ignore
-@RunWith(value = Parameterized.class)
+@Tag("AdxFamily")
 public class TestSpiGyro extends BaseSimulatorJavaTest
 {
-    @Parameters()
-    public static Collection<SPI.Port> data()
+    public static Collection<SPI.Port> getData()
     {
         Collection<SPI.Port> output = new ArrayList<>();
 
@@ -31,44 +27,38 @@ public class TestSpiGyro extends BaseSimulatorJavaTest
         return output;
     }
 
-    private final SPI.Port mPort;
-
-    public TestSpiGyro(SPI.Port aPort)
+    @ParameterizedTest
+    @MethodSource("getData")
+    public void testSpiGyro(SPI.Port aPort)
     {
-        mPort = aPort;
-    }
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(aPort.value, "ADXRS450");
+        ADXRS450_Gyro gyro = new ADXRS450_Gyro(aPort);
 
-    @Test
-    public void testSpiGyro()
-    {
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(mPort.value, "ADXRS450");
-        ADXRS450_Gyro gyro = new ADXRS450_Gyro(mPort);
+        int gyroHandle = 100 + aPort.value;
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(gyroHandle));
 
-        int gyroHandle = 100 + mPort.value;
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(gyroHandle));
-
-        Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(gyroHandle), DOUBLE_EPSILON);
-        Assert.assertEquals(0, gyro.getAngle(), DOUBLE_EPSILON);
+        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(gyroHandle), DOUBLE_EPSILON);
+        Assertions.assertEquals(0, gyro.getAngle(), DOUBLE_EPSILON);
 
         DataAccessorFactory.getInstance().getGyroAccessor().setAngle(gyroHandle, 90);
-        Assert.assertEquals(90, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(gyroHandle), DOUBLE_EPSILON);
-        Assert.assertEquals(90, gyro.getAngle(), DOUBLE_EPSILON);
+        Assertions.assertEquals(90, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(gyroHandle), DOUBLE_EPSILON);
+        Assertions.assertEquals(90, gyro.getAngle(), DOUBLE_EPSILON);
 
         DataAccessorFactory.getInstance().getGyroAccessor().setAngle(gyroHandle, 192.1234);
-        Assert.assertEquals(192.1234, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(gyroHandle), DOUBLE_EPSILON);
-        Assert.assertEquals(192.1234, gyro.getAngle(), DOUBLE_EPSILON);
+        Assertions.assertEquals(192.1234, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(gyroHandle), DOUBLE_EPSILON);
+        Assertions.assertEquals(192.1234, gyro.getAngle(), DOUBLE_EPSILON);
 
         DataAccessorFactory.getInstance().getGyroAccessor().setAngle(gyroHandle, 359.9999);
-        Assert.assertEquals(359.9999, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(gyroHandle), DOUBLE_EPSILON);
-        Assert.assertEquals(359.9999, gyro.getAngle(), DOUBLE_EPSILON);
+        Assertions.assertEquals(359.9999, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(gyroHandle), DOUBLE_EPSILON);
+        Assertions.assertEquals(359.9999, gyro.getAngle(), DOUBLE_EPSILON);
 
         DataAccessorFactory.getInstance().getGyroAccessor().setAngle(gyroHandle, -421.3358);
-        Assert.assertEquals(-421.3358, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(gyroHandle), DOUBLE_EPSILON);
-        Assert.assertEquals(-421.3358, gyro.getAngle(), DOUBLE_EPSILON);
+        Assertions.assertEquals(-421.3358, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(gyroHandle), DOUBLE_EPSILON);
+        Assertions.assertEquals(-421.3358, gyro.getAngle(), DOUBLE_EPSILON);
 
         // Reset
         gyro.reset();
-        Assert.assertEquals(0, gyro.getAngle(), DOUBLE_EPSILON);
+        Assertions.assertEquals(0, gyro.getAngle(), DOUBLE_EPSILON);
     }
 
     // @Test

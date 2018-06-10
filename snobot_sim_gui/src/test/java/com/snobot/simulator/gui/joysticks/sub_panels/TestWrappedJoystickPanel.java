@@ -2,7 +2,7 @@ package com.snobot.simulator.gui.joysticks.sub_panels;
 
 import javax.swing.JFrame;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.snobot.test.utilities.BaseGuiSimulatorTest;
 import com.snobot.test.utilities.MockIJoystick;

@@ -9,7 +9,7 @@ import com.snobot.simulator.module_wrapper.DigitalSourceWrapper;
 import com.snobot.simulator.module_wrapper.DigitalSourceWrapper.StateSetterHelper;
 
 import edu.wpi.first.hal.sim.mockdata.DIODataJNI;
-import edu.wpi.first.wpilibj.SensorBase;
+import edu.wpi.first.wpilibj.SensorUtil;
 import edu.wpi.first.wpilibj.sim.SimValue;
 
 public final class DigitalCallbackJni
@@ -56,7 +56,7 @@ public final class DigitalCallbackJni
 
     public static void reset()
     {
-        for (int i = 0; i < SensorBase.kDigitalChannels; ++i)
+        for (int i = 0; i < SensorUtil.kDigitalChannels; ++i)
         {
             DIODataJNI.resetData(i);
 

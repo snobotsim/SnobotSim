@@ -2,8 +2,8 @@ package com.snobot.test.utilities;
 
 import javax.swing.JFrame;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 public class BaseGuiSimulatorTest extends BaseSimulatorTest
 {
@@ -19,13 +19,13 @@ public class BaseGuiSimulatorTest extends BaseSimulatorTest
         return mFrame;
     }
 
-    @Before
+    @BeforeEach
     public void setup()
     {
         super.setup();
     }
 
-    @After
+    @AfterEach
     public void cleanup()
     {
         super.cleanup();

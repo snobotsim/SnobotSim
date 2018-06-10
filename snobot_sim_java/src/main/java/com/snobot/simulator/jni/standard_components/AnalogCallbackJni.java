@@ -10,7 +10,7 @@ import com.snobot.simulator.module_wrapper.AnalogWrapper.VoltageSetterHelper;
 
 import edu.wpi.first.hal.sim.mockdata.AnalogInDataJNI;
 import edu.wpi.first.hal.sim.mockdata.AnalogOutDataJNI;
-import edu.wpi.first.wpilibj.SensorBase;
+import edu.wpi.first.wpilibj.SensorUtil;
 import edu.wpi.first.wpilibj.sim.SimValue;
 
 public final class AnalogCallbackJni
@@ -90,7 +90,7 @@ public final class AnalogCallbackJni
 
     public static void reset()
     {
-        for (int i = 0; i < SensorBase.kAnalogInputChannels; ++i)
+        for (int i = 0; i < SensorUtil.kAnalogInputChannels; ++i)
         {
             AnalogInDataJNI.resetData(i);
 
@@ -105,7 +105,7 @@ public final class AnalogCallbackJni
             AnalogInDataJNI.registerAccumulatorCenterCallback(i, callback, false);
             AnalogInDataJNI.registerAccumulatorDeadbandCallback(i, callback, false);
         }
-        for (int i = 0; i < SensorBase.kAnalogOutputChannels; ++i)
+        for (int i = 0; i < SensorUtil.kAnalogOutputChannels; ++i)
         {
             AnalogOutDataJNI.resetData(i);
 

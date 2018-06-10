@@ -1,7 +1,7 @@
 package com.snobot.simulator.jni;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.test.utilities.BaseSimulatorJavaTest;
@@ -18,11 +18,11 @@ public class TestRegisterJavaCallback extends BaseSimulatorJavaTest
 {
     private void checkSizes(int aAnalogSize, int aDigitalSize, int aEncoderSize, int aPcmSize, int aPdpSize, int aNumPwm)
     {
-        Assert.assertEquals(aAnalogSize, SensorActuatorRegistry.get().getAnalog().size());
-        Assert.assertEquals(aDigitalSize, SensorActuatorRegistry.get().getDigitalSources().size());
-        Assert.assertEquals(aEncoderSize, SensorActuatorRegistry.get().getEncoders().size());
-        Assert.assertEquals(aPcmSize, SensorActuatorRegistry.get().getSolenoids().size());
-        Assert.assertEquals(aNumPwm, SensorActuatorRegistry.get().getSpeedControllers().size());
+        Assertions.assertEquals(aAnalogSize, SensorActuatorRegistry.get().getAnalog().size());
+        Assertions.assertEquals(aDigitalSize, SensorActuatorRegistry.get().getDigitalSources().size());
+        Assertions.assertEquals(aEncoderSize, SensorActuatorRegistry.get().getEncoders().size());
+        Assertions.assertEquals(aPcmSize, SensorActuatorRegistry.get().getSolenoids().size());
+        Assertions.assertEquals(aNumPwm, SensorActuatorRegistry.get().getSpeedControllers().size());
     }
 
     @Test
