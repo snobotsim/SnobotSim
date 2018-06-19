@@ -21,9 +21,10 @@ dependencies {
     compile 'org.apache.logging.log4j:log4j-api:2.11.0'
     compile 'org.apache.logging.log4j:log4j-core:2.11.0'
     compile project(":snobot_sim_utilities")
-    compile project(':ctre_override')
     compile project(':sim_adx_family')
     compile project(':sim_extension_navx')
+    compile 'com.snobot.simulator:ctre_sim_override:' + getCtreSimVersion()
+    testRuntime 'com.snobot.simulator:ctre_sim_override:' + getCtreSimVersion() + ':native-all'
     
     testCompile 'org.junit.jupiter:junit-jupiter-api:5.2.0'
     testCompile 'org.junit.jupiter:junit-jupiter-params:5.2.0'
@@ -38,19 +39,20 @@ dependencies {
     testCompile "openrio.mirror.third.kauailabs:navx-java:" + getNavxVersion()
     
     testRuntime captureWpiLibraries.outputs.files
-    testRuntime project(':ctre_override').packageNativeCtreSimulationFilesInJar.outputs.files
     testRuntime project(':sim_extension_navx').packageNativenavx_simulator_jniFilesInJar.outputs.files
     testRuntime project(':sim_adx_family').packageNativeadx_family_jniFilesInJar.outputs.files
 }
 
+apply from: "$rootDir/common/prepare_ctre_library.gradle"
+compileJava.dependsOn prepareCtreLibrary
 tasks.withType(Test) {
-    systemProperty "java.library.path", "$rootDir/ctre_override/build/libs/ctreSimulation/shared"
+    systemProperty "java.library.path", getCtreNativeExtractedLocation()
 }
 
 eclipse.classpath.file.whenMerged { classpath ->
     classpath.entries.each {
-        if(it.path.contains("ctre_override")) {
-            it.setNativeLibraryLocation("$rootDir/ctre_override/build/libs/ctreSimulation/shared")
+        if(it.path.contains("ctre_sim_override")) {
+            it.setNativeLibraryLocation(getCtreNativeExtractedLocation())
         }
     }
 }
