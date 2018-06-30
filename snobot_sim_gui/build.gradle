@@ -68,7 +68,6 @@ dependencies {
     runtime 'com.snobot.simulator:ctre_sim_override:' + getCtreSimVersion() + ':native-all'
     testRuntime jar.outputs.files // Necessary for having resources in jar 
     
-    
     runtime project(':temp_hal_interface').packageNativetemp_hal_interface_jniFilesInJar.outputs.files
 }
 

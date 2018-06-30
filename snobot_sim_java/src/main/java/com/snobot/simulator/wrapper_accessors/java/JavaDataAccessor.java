@@ -8,6 +8,7 @@ import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.simulator.wrapper_accessors.DigitalSourceWrapperAccessor;
 import com.snobot.simulator.wrapper_accessors.EncoderWrapperAccessor;
 import com.snobot.simulator.wrapper_accessors.GyroWrapperAccessor;
+import com.snobot.simulator.wrapper_accessors.IBasicSensorActuatorWrapperAccessor;
 import com.snobot.simulator.wrapper_accessors.IDataAccessor;
 import com.snobot.simulator.wrapper_accessors.RelayWrapperAccessor;
 import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor;
@@ -110,83 +111,37 @@ public class JavaDataAccessor implements IDataAccessor
         return mSimulator;
     }
 
+    private String getInitializationError(String aName, IBasicSensorActuatorWrapperAccessor aAccessor)
+    {
+        StringBuilder errorMessage = new StringBuilder(64);
+
+        for (int port : aAccessor.getPortList())
+        {
+            if (!aAccessor.isInitialized(port))
+            {
+                aAccessor.removeSimluator(port);
+                errorMessage.append("  <li>").append(aName).append(port).append("</li>\n");
+            }
+        }
+
+        return errorMessage.toString();
+    }
+
     @Override
     public String getInitializationErrors()
     {
-        String notInitializedMessage = " not initialized";
         StringBuilder errorMessage = new StringBuilder(256);
 
-        for (int port : DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList())
-        {
-            if (!DataAccessorFactory.getInstance().getAccelerometerAccessor().isInitialized(port))
-            {
-                errorMessage.append("Accelerometer ").append(port).append(notInitializedMessage);
-            }
-        }
-
-        for (int port : DataAccessorFactory.getInstance().getGyroAccessor().getPortList())
-        {
-            if (!DataAccessorFactory.getInstance().getGyroAccessor().isInitialized(port))
-            {
-                errorMessage.append("Gyro ").append(port).append(notInitializedMessage);
-            }
-        }
-
-        for (int port : DataAccessorFactory.getInstance().getAnalogInAccessor().getPortList())
-        {
-            if (!DataAccessorFactory.getInstance().getAnalogInAccessor().isInitialized(port))
-            {
-                errorMessage.append("Analog In ").append(port).append(notInitializedMessage);
-            }
-        }
-
-        for (int port : DataAccessorFactory.getInstance().getAnalogOutAccessor().getPortList())
-        {
-            if (!DataAccessorFactory.getInstance().getAnalogOutAccessor().isInitialized(port))
-            {
-                errorMessage.append("Analog Out ").append(port).append(notInitializedMessage);
-            }
-        }
-
-        for (int port : DataAccessorFactory.getInstance().getDigitalAccessor().getPortList())
-        {
-            if (!DataAccessorFactory.getInstance().getDigitalAccessor().isInitialized(port))
-            {
-                errorMessage.append("Digital IO ").append(port).append(notInitializedMessage);
-            }
-        }
-
-        for (int port : DataAccessorFactory.getInstance().getEncoderAccessor().getPortList())
-        {
-            if (!DataAccessorFactory.getInstance().getEncoderAccessor().isInitialized(port))
-            {
-                errorMessage.append("Digital IO ").append(port).append(notInitializedMessage);
-            }
-        }
-
-        for (int port : DataAccessorFactory.getInstance().getRelayAccessor().getPortList())
-        {
-            if (!DataAccessorFactory.getInstance().getRelayAccessor().isInitialized(port))
-            {
-                errorMessage.append("Relay ").append(port).append(notInitializedMessage);
-            }
-        }
-
-        for (int port : DataAccessorFactory.getInstance().getSolenoidAccessor().getPortList())
-        {
-            if (!DataAccessorFactory.getInstance().getSolenoidAccessor().isInitialized(port))
-            {
-                errorMessage.append("Solenoid ").append(port).append(notInitializedMessage);
-            }
-        }
-
-        for (int port : DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList())
-        {
-            if (!DataAccessorFactory.getInstance().getSpeedControllerAccessor().isInitialized(port))
-            {
-                errorMessage.append("Speed Controller ").append(port).append(notInitializedMessage);
-            }
-        }
+        errorMessage
+                .append(getInitializationError("Accelerometer ", DataAccessorFactory.getInstance().getAccelerometerAccessor()))
+                .append(getInitializationError("Gyro ", DataAccessorFactory.getInstance().getGyroAccessor()))
+                .append(getInitializationError("Analog In ", DataAccessorFactory.getInstance().getAnalogInAccessor()))
+                .append(getInitializationError("Analog Out ", DataAccessorFactory.getInstance().getAnalogOutAccessor()))
+                .append(getInitializationError("Digital IO ", DataAccessorFactory.getInstance().getDigitalAccessor()))
+                .append(getInitializationError("Encoder ", DataAccessorFactory.getInstance().getEncoderAccessor()))
+                .append(getInitializationError("Relay ", DataAccessorFactory.getInstance().getRelayAccessor()))
+                .append(getInitializationError("Solenoid ", DataAccessorFactory.getInstance().getSolenoidAccessor()))
+                .append(getInitializationError("Speed Controller ", DataAccessorFactory.getInstance().getSpeedControllerAccessor()));
 
         return errorMessage.toString();
     }

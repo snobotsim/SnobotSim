@@ -35,6 +35,12 @@ public class JniSpeedControllerWrapperAccessor implements SpeedControllerWrapper
     }
 
     @Override
+    public void removeSimluator(int aPort)
+    {
+        // Nothing to do
+    }
+
+    @Override
     public void setName(int aPort, String aName)
     {
         SpeedControllerWrapperJni.setName(aPort, aName);
