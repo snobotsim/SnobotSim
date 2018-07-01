@@ -1,17 +1,24 @@
 package com.snobot.simulator;
 
+import java.awt.Font;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Enumeration;
 import java.util.Properties;
+import java.util.jar.Manifest;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -44,9 +51,10 @@ public class Simulator
     private final String mUserConfigDirectory;
     private final String mPropertiesFile;
 
-    // private String mSimulatorClassName; // The name of the class that
-    // represents the simulator
-    private String mSimulatorConfig;
+    private String mRobotClassName;
+    private String mRobotType;
+    private String mSimulatorConfigFile;
+
 
     private IRobotClassContainer mRobot; // The robot code to run
     private ASimulator mSimulator; // The robot code to run
@@ -71,6 +79,8 @@ public class Simulator
     {
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setLogLevel(aLogLevel);
 
+        printAsciiArt("/com/snobot/simulator/yeti_art.txt");
+
         PluginSniffer sniffer = new PluginSniffer();
         sniffer.loadPlugins(aPluginDirectory);
 
@@ -91,29 +101,7 @@ public class Simulator
         {
             if (!Files.exists(Paths.get(aFile)))
             {
-                sLOGGER.log(Level.WARN,
-                        "Could not read properties file, will use defaults and will overwrite the file if it exists");
-
-                String defaultSimConfig = mUserConfigDirectory + "simulator_config.yml";
-                Properties defaults = new Properties();
-
-                try (InputStream stream = Simulator.class.getResourceAsStream("/com/snobot/simulator/config/default_properties.properties"))
-                {
-                    defaults.load(stream);
-                }
-                defaults.putIfAbsent("simulator_config", defaultSimConfig);
-
-                File defaultConfigFile = new File(defaultSimConfig);
-                if (!defaultConfigFile.exists() && !defaultConfigFile.createNewFile())
-                {
-                    sLOGGER.log(Level.WARN, "Could not create default config file at " + defaultConfigFile);
-                }
-
-                try (OutputStreamWriter fw = new OutputStreamWriter(new FileOutputStream(aFile), "UTF-8"))
-                {
-                    defaults.store(fw, "");
-                }
-
+                createDefaultConfig(aFile);
             }
 
             Properties p = new Properties();
@@ -123,26 +111,104 @@ public class Simulator
                 p.load(fis);
             }
 
-            String robotClassName = p.getProperty("robot_class");
-            String robotType = p.getProperty("robot_type");
+            mRobotClassName = p.getProperty("robot_class");
+            mRobotType = p.getProperty("robot_type");
 
             String simulatorClassName = p.getProperty("simulator_class");
-            mSimulatorConfig = p.getProperty("simulator_config");
 
-            createSimulator(simulatorClassName, mSimulatorConfig);
-            createRobot(robotType, robotClassName);
-
-            // Change the network table preferences path. Need to start
-            // the robot, stop the server and restart it
-            NetworkTableInstance inst = NetworkTableInstance.getDefault();
-            inst.stopServer();
-            inst.startServer(mUserConfigDirectory + "networktables.ini");
+            createSimulator(simulatorClassName, p.getProperty("simulator_config"));
         }
-        catch (IOException | InstantiationException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | SecurityException
-                | IllegalArgumentException | InvocationTargetException ex)
+        catch (IOException ex)
         {
             sLOGGER.log(Level.WARN, "Could not read properties file", ex);
         }
+    }
+
+    private void createDefaultConfig(String aFile) throws IOException
+    {
+        sLOGGER.log(Level.WARN, "Could not read properties file, will use defaults and will overwrite the file if it exists");
+
+        String defaultSimConfig = mUserConfigDirectory + "simulator_config.yml";
+        Properties defaults = new Properties();
+
+        defaults.putIfAbsent("robot_class", tryLoadRobotClass());
+        defaults.putIfAbsent("robot_type", "java");
+        defaults.putIfAbsent("simulator_config", defaultSimConfig);
+
+        File defaultConfigFile = new File(defaultSimConfig);
+        if (!defaultConfigFile.exists() && !defaultConfigFile.createNewFile())
+        {
+            sLOGGER.log(Level.WARN, "Could not create default config file at " + defaultConfigFile);
+        }
+
+        try (OutputStreamWriter fw = new OutputStreamWriter(new FileOutputStream(aFile), "UTF-8"))
+        {
+            defaults.store(fw, "");
+        }
+    }
+
+    private void printAsciiArt(String aResourceFile)
+    {
+        StringBuilder builder = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(aResourceFile))))
+        {
+            String line;
+            while ((line = br.readLine()) != null)
+            {
+                builder.append(line).append('\n');
+            }
+
+            System.out.println(builder); // NOPMD
+        }
+        catch (IOException ex)
+        {
+            sLOGGER.log(Level.WARN, ex);
+        }
+    }
+
+    private String tryLoadRobotClass()
+    {
+        sLOGGER.log(Level.WARN, "Searching for robot name");
+        String robotName = null;
+        Enumeration<URL> resources = null;
+        try
+        {
+            resources = Thread.currentThread().getContextClassLoader().getResources("META-INF/MANIFEST.MF");
+        }
+        catch (IOException ex)
+        {
+            sLOGGER.log(Level.WARN, ex);
+        }
+
+        while (resources != null && resources.hasMoreElements())
+        {
+            try
+            {
+                URL element = resources.nextElement();
+                Manifest manifest = new Manifest(element.openStream());
+                String robotClass = manifest.getMainAttributes().getValue("Robot-Class");
+                if (robotClass != null)
+                {
+                    robotName = robotClass;
+                }
+            }
+            catch (IOException ex)
+            {
+                sLOGGER.log(Level.WARN, ex);
+            }
+        }
+
+        if (robotName == null)
+        {
+            robotName = "com.snobot.simulator.example_robot.ExampleRobot";
+            sLOGGER.log(Level.WARN, "Couldn't automatically find robot class, will use the example robot");
+        }
+        else
+        {
+            sLOGGER.log(Level.INFO, "Found robot name: " + robotName);
+        }
+
+        return robotName;
     }
 
     private void createRobot(String aRobotType, String aRobotClassName)
@@ -169,6 +235,12 @@ public class Simulator
         }
 
         mRobot.constructRobot();
+
+        // Change the network table preferences path. Need to start
+        // the robot, stop the server and restart it
+        NetworkTableInstance inst = NetworkTableInstance.getDefault();
+        inst.stopServer();
+        inst.startServer(mUserConfigDirectory + "networktables.ini");
     }
 
     private void createSimulator(String aSimulatorClassName, String aSimulatorConfig)
@@ -185,9 +257,11 @@ public class Simulator
             {
                 mSimulator = new ASimulator();
                 mSimulator.loadConfig(aSimulatorConfig);
+
                 sLOGGER.log(Level.DEBUG, "Created default simulator");
             }
 
+            mSimulatorConfigFile = mSimulator.getConfigFile();
         }
         catch (ClassNotFoundException | InstantiationException | IllegalAccessError | IllegalAccessException e)
         {
@@ -219,7 +293,12 @@ public class Simulator
     {
         loadConfig(mPropertiesFile);
 
+        // Force the jinput libraries to load
         sendJoystickUpdate();
+
+        printAsciiArt("/com/snobot/simulator/snobot_sim.txt");
+
+        createRobot(mRobotType, mRobotClassName);
 
         if (mSimulator != null && mRobot != null) // NOPMD
         {
@@ -253,6 +332,22 @@ public class Simulator
         aFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    protected void showInitializationMessage(String aMessage)
+    {
+        if (aMessage != null && !aMessage.isEmpty())
+        {
+            String message = "<html>Some simulator components were specified in the config file, but not in the robot.<br>"
+                    + "They will be <b>removed</b> from the simulator registery, to make it easier to fix your config file.<ul>" + aMessage
+                    + "</ul></html>";
+            JLabel label = new JLabel(message);
+            label.setFont(new Font("serif", Font.PLAIN, 14));
+
+            JOptionPane.showMessageDialog(null,
+                    label,
+                    "Config file mismatch", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     private void sendJoystickUpdate()
     {
         IMockJoystick[] joysticks = JoystickFactory.getInstance().getAll();
@@ -277,10 +372,11 @@ public class Simulator
                 {
                     DataAccessorFactory.getInstance().getSimulatorDataAccessor().waitForProgramToStart();
 
-                    mSimulator.createSimulatorComponents();
+                    String errors = DataAccessorFactory.getInstance().getInitializationErrors();
+                    showInitializationMessage(errors);
                     mSimulator.setRobot(mRobot);
 
-                    SimulatorFrame frame = new SimulatorFrame(mSimulatorConfig);
+                    SimulatorFrame frame = new SimulatorFrame(mSimulatorConfigFile);
                     setFrameVisible(frame);
 
                     while (mRunningSimulator)

@@ -2,7 +2,7 @@ package com.snobot.simulator.gui;
 
 import javax.swing.JFrame;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.snobot.test.utilities.BaseGuiSimulatorTest;
 

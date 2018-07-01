@@ -6,8 +6,8 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.snobot.simulator.joysticks.joystick_specializations.KeyboardJoystick;
 import com.snobot.simulator.joysticks.joystick_specializations.NullJoystick;
@@ -26,22 +26,22 @@ public class TestJoystickFactory extends BaseSimulatorTest
         File configFile = new File(JoystickFactory.sJOYSTICK_CONFIG_FILE);
         if (configFile.exists())
         {
-            Assert.assertTrue(configFile.delete());
+            Assertions.assertTrue(configFile.delete());
         }
 
         if (!configFile.getParentFile().exists())
         {
-            Assert.assertTrue(configFile.getParentFile().mkdirs());
+            Assertions.assertTrue(configFile.getParentFile().mkdirs());
         }
 
         JoystickFactory factory = JoystickFactory.getInstance();
 
         Map<String, ControllerConfiguration> config = factory.getControllerConfiguration();
-        Assert.assertEquals(0, config.size());
+        Assertions.assertEquals(0, config.size());
 
         for (int i = 0; i < DriverStation.kJoystickPorts; ++i)
         {
-            Assert.assertTrue(factory.get(i) instanceof NullJoystick);
+            Assertions.assertTrue(factory.get(i) instanceof NullJoystick);
         }
 
         config.put("X", new ControllerConfiguration(new MockController(), XboxJoystick.class));
@@ -52,24 +52,24 @@ public class TestJoystickFactory extends BaseSimulatorTest
         factory.setJoysticks(3, "Y");
         factory.setJoysticks(5, "Z");
 
-        Assert.assertTrue(factory.get(0) instanceof XboxJoystick);
-        Assert.assertTrue(factory.get(1) instanceof NullJoystick);
-        Assert.assertTrue(factory.get(2) instanceof NullJoystick);
-        Assert.assertTrue(factory.get(3) instanceof Ps4Joystick);
-        Assert.assertTrue(factory.get(4) instanceof NullJoystick);
-        Assert.assertTrue(factory.get(5) instanceof KeyboardJoystick);
+        Assertions.assertTrue(factory.get(0) instanceof XboxJoystick);
+        Assertions.assertTrue(factory.get(1) instanceof NullJoystick);
+        Assertions.assertTrue(factory.get(2) instanceof NullJoystick);
+        Assertions.assertTrue(factory.get(3) instanceof Ps4Joystick);
+        Assertions.assertTrue(factory.get(4) instanceof NullJoystick);
+        Assertions.assertTrue(factory.get(5) instanceof KeyboardJoystick);
 
         InputStream inputStream = new FileInputStream(JoystickFactory.sJOYSTICK_CONFIG_FILE);
         Properties properties = new Properties();
         properties.load(inputStream);
         inputStream.close();
 
-        Assert.assertEquals("X---com.snobot.simulator.joysticks.joystick_specializations.XboxJoystick", properties.getProperty("Joystick_0"));
-        Assert.assertEquals("Null Joystick---null", properties.getProperty("Joystick_1"));
-        Assert.assertEquals("Null Joystick---null", properties.getProperty("Joystick_2"));
-        Assert.assertEquals("Y---com.snobot.simulator.joysticks.joystick_specializations.Ps4Joystick", properties.getProperty("Joystick_3"));
-        Assert.assertEquals("Null Joystick---null", properties.getProperty("Joystick_4"));
-        Assert.assertEquals("Z---com.snobot.simulator.joysticks.joystick_specializations.KeyboardJoystick", properties.getProperty("Joystick_5"));
+        Assertions.assertEquals("X---com.snobot.simulator.joysticks.joystick_specializations.XboxJoystick", properties.getProperty("Joystick_0"));
+        Assertions.assertEquals("Null Joystick---null", properties.getProperty("Joystick_1"));
+        Assertions.assertEquals("Null Joystick---null", properties.getProperty("Joystick_2"));
+        Assertions.assertEquals("Y---com.snobot.simulator.joysticks.joystick_specializations.Ps4Joystick", properties.getProperty("Joystick_3"));
+        Assertions.assertEquals("Null Joystick---null", properties.getProperty("Joystick_4"));
+        Assertions.assertEquals("Z---com.snobot.simulator.joysticks.joystick_specializations.KeyboardJoystick", properties.getProperty("Joystick_5"));
     }
 
 }

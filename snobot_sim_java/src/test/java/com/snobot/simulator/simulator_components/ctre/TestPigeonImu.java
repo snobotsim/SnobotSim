@@ -3,11 +3,10 @@ package com.snobot.simulator.simulator_components.ctre;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
@@ -15,13 +14,10 @@ import com.ctre.phoenix.sensors.PigeonIMU.FusionStatus;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorJavaTest;
 
-@RunWith(value = Parameterized.class)
+@Tag("CTRE")
 public class TestPigeonImu extends BaseSimulatorJavaTest
 {
-    private final int mDeviceId;
-
-    @Parameters()
-    public static Collection<Integer> data()
+    public static Collection<Integer> getData()
     {
         Collection<Integer> output = new ArrayList<>();
 
@@ -33,31 +29,28 @@ public class TestPigeonImu extends BaseSimulatorJavaTest
         return output;
     }
 
-    public TestPigeonImu(int aDeviceId)
+    @ParameterizedTest
+    @MethodSource("getData")
+    public void testPigeonInSeries(int aDeviceId)
     {
-        mDeviceId = aDeviceId;
+        PigeonIMU imu = new PigeonIMU(aDeviceId);
+        testImu(imu, aDeviceId);
     }
 
-    @Test
-    public void testPigeonInSeries()
+    @ParameterizedTest
+    @MethodSource("getData")
+    public void testPigeonInTalon(int aDeviceId)
     {
-        PigeonIMU imu = new PigeonIMU(mDeviceId);
-        testImu(imu);
-    }
-
-    @Test
-    public void testPigeonInTalon()
-    {
-        TalonSRX talon = new TalonSRX(mDeviceId);
+        TalonSRX talon = new TalonSRX(aDeviceId);
         PigeonIMU imu = new PigeonIMU(talon);
-        testImu(imu);
+        testImu(imu, aDeviceId);
     }
 
-    private void testImu(PigeonIMU aImu)
+    private void testImu(PigeonIMU aImu, int aDeviceId)
     {
         final double ANGLE_EPSILON = 1 / 16.0;
 
-        int basePort = 400 + mDeviceId * 3;
+        int basePort = 400 + aDeviceId * 3;
 
         int yawPort = basePort + 0;
         int pitchPort = basePort + 1;
@@ -66,27 +59,27 @@ public class TestPigeonImu extends BaseSimulatorJavaTest
         int yPort = basePort + 1;
         int zPort = basePort + 2;
 
-        Assert.assertEquals(3, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
-        Assert.assertEquals(3, DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().size());
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(yawPort));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(pitchPort));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(rollPort));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(xPort));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(yPort));
-        Assert.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(zPort));
+        Assertions.assertEquals(3, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
+        Assertions.assertEquals(3, DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().size());
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(yawPort));
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(pitchPort));
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(rollPort));
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(xPort));
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(yPort));
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList().contains(zPort));
 
         double[] rawAngles = new double[3];
         FusionStatus fusionStatus = new FusionStatus();
 
         aImu.getRawGyro(rawAngles);
         aImu.getFusedHeading(fusionStatus);
-        Assert.assertEquals(0, fusionStatus.heading, ANGLE_EPSILON);
-        Assert.assertEquals(0, rawAngles[0], ANGLE_EPSILON);
-        Assert.assertEquals(0, rawAngles[1], ANGLE_EPSILON);
-        Assert.assertEquals(0, rawAngles[2], ANGLE_EPSILON);
-        Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(yawPort), ANGLE_EPSILON);
-        Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(pitchPort), ANGLE_EPSILON);
-        Assert.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(rollPort), ANGLE_EPSILON);
+        Assertions.assertEquals(0, fusionStatus.heading, ANGLE_EPSILON);
+        Assertions.assertEquals(0, rawAngles[0], ANGLE_EPSILON);
+        Assertions.assertEquals(0, rawAngles[1], ANGLE_EPSILON);
+        Assertions.assertEquals(0, rawAngles[2], ANGLE_EPSILON);
+        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(yawPort), ANGLE_EPSILON);
+        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(pitchPort), ANGLE_EPSILON);
+        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(rollPort), ANGLE_EPSILON);
 
         DataAccessorFactory.getInstance().getGyroAccessor().setAngle(yawPort, 47);
         DataAccessorFactory.getInstance().getGyroAccessor().setAngle(pitchPort, -98);
@@ -94,12 +87,12 @@ public class TestPigeonImu extends BaseSimulatorJavaTest
 
         aImu.getRawGyro(rawAngles);
         aImu.getFusedHeading(fusionStatus);
-        Assert.assertEquals(47, fusionStatus.heading, ANGLE_EPSILON);
-        Assert.assertEquals(47, rawAngles[0], ANGLE_EPSILON);
-        Assert.assertEquals(-98, rawAngles[1], ANGLE_EPSILON);
-        Assert.assertEquals(24, rawAngles[2], ANGLE_EPSILON);
-        Assert.assertEquals(47, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(yawPort), ANGLE_EPSILON);
-        Assert.assertEquals(-98, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(pitchPort), ANGLE_EPSILON);
-        Assert.assertEquals(24, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(rollPort), ANGLE_EPSILON);
+        Assertions.assertEquals(47, fusionStatus.heading, ANGLE_EPSILON);
+        Assertions.assertEquals(47, rawAngles[0], ANGLE_EPSILON);
+        Assertions.assertEquals(-98, rawAngles[1], ANGLE_EPSILON);
+        Assertions.assertEquals(24, rawAngles[2], ANGLE_EPSILON);
+        Assertions.assertEquals(47, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(yawPort), ANGLE_EPSILON);
+        Assertions.assertEquals(-98, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(pitchPort), ANGLE_EPSILON);
+        Assertions.assertEquals(24, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(rollPort), ANGLE_EPSILON);
     }
 }

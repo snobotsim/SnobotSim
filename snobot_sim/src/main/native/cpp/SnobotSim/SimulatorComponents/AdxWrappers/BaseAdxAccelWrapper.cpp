@@ -24,7 +24,7 @@ BaseAdxAccelWrapper::~BaseAdxAccelWrapper()
 }
 
 BaseAdxAccelWrapper::AccelerometerWrapper::AccelerometerWrapper(AxisType aAxisType, const std::shared_ptr<hal::ThreeAxisAccelerometerData>& aAccel) :
-        IAccelerometerWrapper("Hello"),
+        AModuleWrapper("Hello"),
         mAxisType(aAxisType),
         mAccel(aAccel)
 {
@@ -36,10 +36,13 @@ void BaseAdxAccelWrapper::AccelerometerWrapper::SetAcceleration(double aAccelera
     {
     case AXIS_X:
         mAccel->SetX(aAcceleration);
+        break;
     case AXIS_Y:
         mAccel->SetY(aAcceleration);
+        break;
     case AXIS_Z:
         mAccel->SetZ(aAcceleration);
+        break;
     }
 }
 

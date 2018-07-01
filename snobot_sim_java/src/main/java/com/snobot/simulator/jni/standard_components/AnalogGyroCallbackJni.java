@@ -5,7 +5,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.snobot.simulator.SensorActuatorRegistry;
-import com.snobot.simulator.simulator_components.gyro.AnalogGyroWrapper;
+import com.snobot.simulator.module_wrapper.wpi.WpiAnalogGyroWrapper;
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 import edu.wpi.first.hal.sim.mockdata.AnalogGyroDataJNI;
 import edu.wpi.first.wpilibj.sim.SimValue;
@@ -31,12 +32,13 @@ public final class AnalogGyroCallbackJni
         {
             if ("Initialized".equals(aCallbackType))
             {
-                AnalogGyroWrapper wrapper = new AnalogGyroWrapper(mPort, "Analog Gyro");
-                SensorActuatorRegistry.get().register(wrapper, mPort);
-            }
-            else if ("Angle".equals(aCallbackType))
-            {
-                SensorActuatorRegistry.get().getGyros().get(mPort).setAngle(aHalValue.getDouble());
+                if (!DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(mPort))
+                {
+                    DataAccessorFactory.getInstance().getGyroAccessor().createSimulator(mPort, WpiAnalogGyroWrapper.class.getName());
+                    sLOGGER.log(Level.WARN, "Simulator on port " + mPort + " was not registerd before starting the robot");
+                }
+                SensorActuatorRegistry.get().getAnalogIn().get(mPort).setWantsHidden(true);
+                SensorActuatorRegistry.get().getGyros().get(mPort).setInitialized(true);
             }
             else
             {

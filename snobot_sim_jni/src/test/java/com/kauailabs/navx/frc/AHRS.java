@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.SensorBase;
+import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
@@ -43,7 +43,7 @@ import edu.wpi.first.wpilibj.tables.ITable;
  * @author Scott
  */
 
-public class AHRS extends SensorBase implements PIDSource
+public class AHRS extends SendableBase implements PIDSource
 {
 
     /**

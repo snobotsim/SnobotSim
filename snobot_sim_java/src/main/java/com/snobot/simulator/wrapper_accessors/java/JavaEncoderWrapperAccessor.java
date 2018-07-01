@@ -7,16 +7,50 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.snobot.simulator.SensorActuatorRegistry;
-import com.snobot.simulator.module_wrapper.EncoderWrapper;
-import com.snobot.simulator.module_wrapper.PwmWrapper;
+import com.snobot.simulator.module_wrapper.factories.DefaultEncoderWrapperFactory;
+import com.snobot.simulator.module_wrapper.interfaces.IEncoderWrapper;
+import com.snobot.simulator.module_wrapper.interfaces.IPwmWrapper;
 import com.snobot.simulator.wrapper_accessors.EncoderWrapperAccessor;
 
-public class JavaEncoderWrapperAccessor extends BaseWrapperAccessor<EncoderWrapper> implements EncoderWrapperAccessor
+public class JavaEncoderWrapperAccessor extends BaseWrapperAccessor<IEncoderWrapper> implements EncoderWrapperAccessor
 {
     private static final Logger sLOGGER = LogManager.getLogger(JavaEncoderWrapperAccessor.class);
 
+    private final DefaultEncoderWrapperFactory mFactory;
+
+    public JavaEncoderWrapperAccessor()
+    {
+        mFactory = new DefaultEncoderWrapperFactory();
+    }
+
     @Override
-    protected Map<Integer, EncoderWrapper> getMap()
+    public boolean isInitialized(int aPort)
+    {
+        return getValue(aPort).isInitialized();
+    }
+
+    @Override
+    public boolean createSimulator(int aPort, String aType)
+    {
+        return mFactory.create(aPort, aType);
+    }
+
+    @Override
+    public void removeSimulator(int aPort)
+    {
+        try
+        {
+            getValue(aPort).close();
+        }
+        catch (Exception ex)
+        {
+            LogManager.getLogger().log(Level.WARN, "Could not close simulator", ex);
+        }
+        SensorActuatorRegistry.get().getEncoders().remove(aPort);
+    }
+
+    @Override
+    protected Map<Integer, IEncoderWrapper> getMap()
     {
         return SensorActuatorRegistry.get().getEncoders();
     }
@@ -26,8 +60,8 @@ public class JavaEncoderWrapperAccessor extends BaseWrapperAccessor<EncoderWrapp
     {
         boolean success = false;
 
-        EncoderWrapper encoder = SensorActuatorRegistry.get().getEncoders().get(aEncoderHandle);
-        PwmWrapper speedController = SensorActuatorRegistry.get().getSpeedControllers().get(aSpeedControllerHandle);
+        IEncoderWrapper encoder = SensorActuatorRegistry.get().getEncoders().get(aEncoderHandle);
+        IPwmWrapper speedController = SensorActuatorRegistry.get().getSpeedControllers().get(aSpeedControllerHandle);
         if (encoder == null || speedController == null)
         {
             sLOGGER.log(Level.ERROR, "Could not conenct SC to ENC... " + aEncoderHandle + ", " + aSpeedControllerHandle);
@@ -41,10 +75,10 @@ public class JavaEncoderWrapperAccessor extends BaseWrapperAccessor<EncoderWrapp
         return success;
     }
 
-    private PwmWrapper getConnectedPwm(int aPort)
+    private IPwmWrapper getConnectedPwm(int aPort)
     {
-        EncoderWrapper encWrapper = getValue(aPort);
-        for (PwmWrapper pwmWrapper : SensorActuatorRegistry.get().getSpeedControllers().values())
+        IEncoderWrapper encWrapper = getValue(aPort);
+        for (IPwmWrapper pwmWrapper : SensorActuatorRegistry.get().getSpeedControllers().values())
         {
             if (pwmWrapper.getFeedbackSensor().equals(encWrapper))
             {
@@ -63,18 +97,12 @@ public class JavaEncoderWrapperAccessor extends BaseWrapperAccessor<EncoderWrapp
     @Override
     public int getHookedUpId(int aPort)
     {
-        PwmWrapper wrapper = getConnectedPwm(aPort);
+        IPwmWrapper wrapper = getConnectedPwm(aPort);
         if (wrapper != null)
         {
             return wrapper.getHandle();
         }
         return -1;
-    }
-
-    @Override
-    public double getRaw(int aPort)
-    {
-        return getValue(aPort).getRaw();
     }
 
     @Override

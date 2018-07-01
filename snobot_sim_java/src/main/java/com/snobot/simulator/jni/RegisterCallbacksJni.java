@@ -1,8 +1,9 @@
 package com.snobot.simulator.jni;
 
 import com.snobot.simulator.jni.can.CanCallbackJni;
-import com.snobot.simulator.jni.standard_components.AnalogCallbackJni;
 import com.snobot.simulator.jni.standard_components.AnalogGyroCallbackJni;
+import com.snobot.simulator.jni.standard_components.AnalogInCallbackJni;
+import com.snobot.simulator.jni.standard_components.AnalogOutCallbackJni;
 import com.snobot.simulator.jni.standard_components.DigitalCallbackJni;
 import com.snobot.simulator.jni.standard_components.EncoderCallbackJni;
 import com.snobot.simulator.jni.standard_components.I2CCallbackJni;
@@ -23,9 +24,10 @@ public final class RegisterCallbacksJni extends BaseSnobotJni
 
     public static void reset()
     {
-        SimulatorJNI.initialize();
+        SimulatorJNI.resetHandles();
 
-        AnalogCallbackJni.reset();
+        AnalogInCallbackJni.reset();
+        AnalogOutCallbackJni.reset();
         AnalogGyroCallbackJni.reset();
         DigitalCallbackJni.reset();
         EncoderCallbackJni.reset();
@@ -38,20 +40,4 @@ public final class RegisterCallbacksJni extends BaseSnobotJni
 
         CanCallbackJni.reset();
     }
-
-    public static void registerAllCallbacks()
-    {
-        // AnalogCallbackJni.registerAnalogCallback();
-        // AnalogGyroCallbackJni.registerAnalogGyroCallback();
-        // CanCallbackJni.registerCanCallback();
-        // DigitalCallbackJni.registerDigitalCallback();
-        // EncoderCallbackJni.registerEncoderCallback();
-        // I2CCallbackJni.registerI2CCallback();
-        // PcmCallbackJni.registerPcmCallback();
-        // PdpCallbackJni.registerPdpCallback();
-        // PwmCallbackJni.registerPwmCallback();
-        // RelayCallbackJni.registerRelayCallback();
-        // SpiCallbackJni.registerSpiCallback();
-    }
-
 }

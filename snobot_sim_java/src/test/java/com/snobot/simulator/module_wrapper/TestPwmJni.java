@@ -1,8 +1,9 @@
 package com.snobot.simulator.module_wrapper;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
+import com.snobot.simulator.module_wrapper.wpi.WpiPwmWrapper;
 import com.snobot.simulator.simulator_components.IMotorFeedbackSensor;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorJavaTest;
@@ -15,57 +16,69 @@ public class TestPwmJni extends BaseSimulatorJavaTest
     @Test
     public void testCreatePwm()
     {
-        Assert.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
+        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
 
         new Jaguar(0);
-        Assert.assertEquals(1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
-        Assert.assertEquals("Speed Controller 0", DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(0));
-        Assert.assertFalse(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getWantsHidden(0));
+        Assertions.assertEquals(1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
+        Assertions.assertEquals("Speed Controller 0", DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(0));
+        Assertions.assertFalse(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getWantsHidden(0));
 
         new Talon(3);
-        Assert.assertEquals(2, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
-        Assert.assertEquals("Speed Controller 3", DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(3));
-        Assert.assertFalse(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getWantsHidden(3));
+        Assertions.assertEquals(2, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
+        Assertions.assertEquals("Speed Controller 3", DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(3));
+        Assertions.assertFalse(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getWantsHidden(3));
 
         DataAccessorFactory.getInstance().getSpeedControllerAccessor().setName(0, "NewNameFor0");
-        Assert.assertEquals("NewNameFor0", DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(0));
+        Assertions.assertEquals("NewNameFor0", DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(0));
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
+    public void testCreatePwmWithSetup()
+    {
+        DataAccessorFactory.getInstance().getSpeedControllerAccessor().createSimulator(3, WpiPwmWrapper.class.getName());
+        Assertions.assertFalse(DataAccessorFactory.getInstance().getSpeedControllerAccessor().isInitialized(3));
+
+        new Talon(3);
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getSpeedControllerAccessor().isInitialized(3));
+    }
+
     public void testReusePort()
     {
-        Assert.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
+        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
 
         new Talon(0);
-        Assert.assertEquals(1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
+        Assertions.assertEquals(1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
 
-        new Talon(0);
+        Assertions.assertThrows(RuntimeException.class, () ->
+        {
+            new Talon(0);
+        });
     }
 
     @Test
     public void testSet()
     {
-        Assert.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
+        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
 
         Talon talon = new Talon(1);
-        Assert.assertEquals(0, talon.get(), DOUBLE_EPSILON);
-        Assert.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(1), DOUBLE_EPSILON);
+        Assertions.assertEquals(0, talon.get(), DOUBLE_EPSILON);
+        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(1), DOUBLE_EPSILON);
 
         talon.set(.5);
-        Assert.assertEquals(.5, talon.get(), DOUBLE_EPSILON);
-        Assert.assertEquals(.5, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(1), DOUBLE_EPSILON);
+        Assertions.assertEquals(.5, talon.get(), DOUBLE_EPSILON);
+        Assertions.assertEquals(.5, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(1), DOUBLE_EPSILON);
 
         talon.set(-.5);
-        Assert.assertEquals(-.5, talon.get(), DOUBLE_EPSILON);
-        Assert.assertEquals(-.5, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(1), DOUBLE_EPSILON);
+        Assertions.assertEquals(-.5, talon.get(), DOUBLE_EPSILON);
+        Assertions.assertEquals(-.5, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(1), DOUBLE_EPSILON);
 
         talon.set(1.1);
-        Assert.assertEquals(1.0, talon.get(), DOUBLE_EPSILON);
-        Assert.assertEquals(1.0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(1), DOUBLE_EPSILON);
+        Assertions.assertEquals(1.0, talon.get(), DOUBLE_EPSILON);
+        Assertions.assertEquals(1.0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(1), DOUBLE_EPSILON);
 
         talon.set(-2.1);
-        Assert.assertEquals(-1.0, talon.get(), DOUBLE_EPSILON);
-        Assert.assertEquals(-1.0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(1), DOUBLE_EPSILON);
+        Assertions.assertEquals(-1.0, talon.get(), DOUBLE_EPSILON);
+        Assertions.assertEquals(-1.0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(1), DOUBLE_EPSILON);
     }
 
     @Test
@@ -74,6 +87,6 @@ public class TestPwmJni extends BaseSimulatorJavaTest
         IMotorFeedbackSensor feedbackSensor = new IMotorFeedbackSensor.NullFeedbackSensor();
 
         feedbackSensor.setPosition(10);
-        Assert.assertEquals(0, feedbackSensor.getPosition(), DOUBLE_EPSILON);
+        Assertions.assertEquals(0, feedbackSensor.getPosition(), DOUBLE_EPSILON);
     }
 }

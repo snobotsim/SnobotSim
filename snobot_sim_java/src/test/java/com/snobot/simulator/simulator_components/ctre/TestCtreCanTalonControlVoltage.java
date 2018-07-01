@@ -4,8 +4,8 @@ package com.snobot.simulator.simulator_components.ctre;
 //import java.util.ArrayList;
 //import java.util.Collection;
 //
-//import org.junit.Assert;
-//import org.junit.Test;
+//import org.junit.jupiter.api.Assertions;
+//import org.junit.jupiter.api.Test;
 //import org.junit.runner.RunWith;
 //import org.junit.runners.Parameterized;
 //import org.junit.runners.Parameterized.Parameters;
@@ -45,20 +45,20 @@ package com.snobot.simulator.simulator_components.ctre;
 //    {
 //        double DOUBLE_EPSILON = .01;
 //
-//        Assert.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
+//        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
 //        TalonSRX talon = new TalonSRX(mCanHandle);
-//        Assert.assertEquals(1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
+//        Assertions.assertEquals(1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
 //
 //        talon.set(ControlMode.10.8);
-//        Assert.assertEquals(0.9, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(mRawHandle), DOUBLE_EPSILON);
-//        Assert.assertEquals(10.8, talon.get(), DOUBLE_EPSILON);
+//        Assertions.assertEquals(0.9, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(mRawHandle), DOUBLE_EPSILON);
+//        Assertions.assertEquals(10.8, talon.get(), DOUBLE_EPSILON);
 //
 //        talon.set(-6.0);
-//        Assert.assertEquals(-0.5, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(mRawHandle), DOUBLE_EPSILON);
-//        Assert.assertEquals(-6.0, talon.get(), DOUBLE_EPSILON);
+//        Assertions.assertEquals(-0.5, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(mRawHandle), DOUBLE_EPSILON);
+//        Assertions.assertEquals(-6.0, talon.get(), DOUBLE_EPSILON);
 //
 //        talon.set(3.0);
-//        Assert.assertEquals(0.25, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(mRawHandle), DOUBLE_EPSILON);
-//        Assert.assertEquals(3.0, talon.get(), DOUBLE_EPSILON);
+//        Assertions.assertEquals(0.25, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(mRawHandle), DOUBLE_EPSILON);
+//        Assertions.assertEquals(3.0, talon.get(), DOUBLE_EPSILON);
 //    }
 //}

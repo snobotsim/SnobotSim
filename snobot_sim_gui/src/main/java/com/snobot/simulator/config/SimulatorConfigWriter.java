@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
+import com.snobot.simulator.config.v1.SimulatorConfigV1;
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.IMotorSimulatorConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
@@ -48,13 +49,12 @@ public class SimulatorConfigWriter
             File file = new File(aOutFile);
             sLOGGER.log(Level.INFO, "Writing to " + file.getAbsolutePath());
 
-            Object output = dumpConfig();
-
             DumperOptions options = new DumperOptions();
             options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
 
             Yaml yaml = new Yaml(options);
 
+            Object output = dumpConfig();
             try (OutputStreamWriter fw = new OutputStreamWriter(new FileOutputStream(file), "UTF-8"))
             {
                 yaml.dump(output, fw);
@@ -70,14 +70,15 @@ public class SimulatorConfigWriter
         return success;
     }
 
-    protected SimulatorConfig dumpConfig()
+    protected SimulatorConfigV1 dumpConfig()
     {
         // Map<String, Object> output = new LinkedHashMap<>();
 
-        SimulatorConfig output = new SimulatorConfig();
+        SimulatorConfigV1 output = new SimulatorConfigV1();
 
         dumpBasicConfig(DataAccessorFactory.getInstance().getAccelerometerAccessor(), output.getmAccelerometers());
-        dumpBasicConfig(DataAccessorFactory.getInstance().getAnalogAccessor(), output.getmAnalogIO());
+        dumpBasicConfig(DataAccessorFactory.getInstance().getAnalogInAccessor(), output.getmAnalogIn());
+        dumpBasicConfig(DataAccessorFactory.getInstance().getAnalogOutAccessor(), output.getmAnalogOut());
         dumpBasicConfig(DataAccessorFactory.getInstance().getDigitalAccessor(), output.getmDigitalIO());
         dumpBasicConfig(DataAccessorFactory.getInstance().getGyroAccessor(), output.getmGyros());
         dumpBasicConfig(DataAccessorFactory.getInstance().getRelayAccessor(), output.getmRelays());
@@ -87,8 +88,8 @@ public class SimulatorConfigWriter
         dumpPwmConfig(DataAccessorFactory.getInstance().getSpeedControllerAccessor(), output.getmPwm());
         dumpSimulatorComponents(DataAccessorFactory.getInstance().getSimulatorDataAccessor(), output.getmSimulatorComponents());
 
-        output.setmDefaultI2CWrappers(DataAccessorFactory.getInstance().getSimulatorDataAccessor().getDefaultI2CWrappers());
-        output.setmDefaultSpiWrappers(DataAccessorFactory.getInstance().getSimulatorDataAccessor().getDefaultSpiWrappers());
+        output.setmDefaultI2CWrappers(DataAccessorFactory.getInstance().getSimulatorDataAccessor().getI2CWrapperTypes());
+        output.setmDefaultSpiWrappers(DataAccessorFactory.getInstance().getSimulatorDataAccessor().getSpiWrapperTypes());
 
         return output;
     }
@@ -97,7 +98,7 @@ public class SimulatorConfigWriter
     {
         for (int portHandle : aAccessor.getPortList())
         {
-            BasicModuleConfig config = new BasicModuleConfig(portHandle, aAccessor.getName(portHandle));
+            BasicModuleConfig config = new BasicModuleConfig(portHandle, aAccessor.getName(portHandle), aAccessor.getType(portHandle));
             aOutputList.add(config);
         }
     }
@@ -106,7 +107,8 @@ public class SimulatorConfigWriter
     {
         for (int portHandle : aAccessor.getPortList())
         {
-            EncoderConfig config = new EncoderConfig(portHandle, aAccessor.getName(portHandle), aAccessor.getHookedUpId(portHandle));
+            EncoderConfig config = new EncoderConfig(portHandle, aAccessor.getName(portHandle), aAccessor.getType(portHandle),
+                    aAccessor.getHookedUpId(portHandle));
             aOutputList.add(config);
         }
     }
@@ -115,7 +117,8 @@ public class SimulatorConfigWriter
     {
         for (int portHandle : aAccessor.getPortList())
         {
-            PwmConfig config = new PwmConfig(portHandle, aAccessor.getName(portHandle), getMotorSimConfig(aAccessor, portHandle),
+            PwmConfig config = new PwmConfig(portHandle, aAccessor.getName(portHandle), aAccessor.getType(portHandle),
+                    getMotorSimConfig(aAccessor, portHandle),
                     getMotorModel(aAccessor, portHandle));
             aOutputList.add(config);
         }

@@ -1,20 +1,21 @@
 package com.snobot.simulator.simulator_components;
 
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.snobot.simulator.SensorActuatorRegistry;
-import com.snobot.simulator.module_wrapper.EncoderWrapper;
-import com.snobot.simulator.simulator_components.gyro.IGyroWrapper;
+import com.snobot.simulator.module_wrapper.interfaces.IEncoderWrapper;
+import com.snobot.simulator.module_wrapper.interfaces.IGyroWrapper;
+import com.snobot.simulator.module_wrapper.interfaces.ISimulatorUpdater;
 
 public class TankDriveGyroSimulator implements ISimulatorUpdater
 {
     private static final Logger sLOGGER = LogManager.getLogger(TankDriveGyroSimulator.class);
 
-    private final TankDriveConfig mConfig;
-    private final EncoderWrapper mLeftEncoder;
-    private final EncoderWrapper mRightEncoder;
+    private final com.snobot.simulator.simulator_components.config.TankDriveConfig mConfig;
+    private final IEncoderWrapper mLeftEncoder;
+    private final IEncoderWrapper mRightEncoder;
     private final IGyroWrapper mGyroWrapper;
     private final double mKP;
     private final boolean mIsSetup;
@@ -22,13 +23,13 @@ public class TankDriveGyroSimulator implements ISimulatorUpdater
     private double mAngle; // degrees
 
 
-    public TankDriveGyroSimulator(TankDriveConfig aConfig)
+    public TankDriveGyroSimulator(com.snobot.simulator.simulator_components.config.TankDriveConfig aConfig)
     {
         mConfig = aConfig;
         mRightEncoder = SensorActuatorRegistry.get().getEncoders().get(aConfig.getmRightEncoderHandle());
         mLeftEncoder = SensorActuatorRegistry.get().getEncoders().get(aConfig.getmLeftEncoderHandle());
         mGyroWrapper = SensorActuatorRegistry.get().getGyros().get(aConfig.getmGyroHandle());
-        mKP = aConfig.mTurnKp;
+        mKP = aConfig.getmTurnKp();
 
         mIsSetup = mLeftEncoder != null && mRightEncoder != null && mGyroWrapper != null;
 
@@ -70,65 +71,9 @@ public class TankDriveGyroSimulator implements ISimulatorUpdater
         return mConfig;
     }
 
-    public static class TankDriveConfig
+    // Backwards compatibility
+    public static class TankDriveConfig extends com.snobot.simulator.simulator_components.config.TankDriveConfig
     {
-        private int mLeftEncoderHandle;
-        private int mRightEncoderHandle;
-        private int mGyroHandle;
-        private double mTurnKp;
-
-        public TankDriveConfig()
-        {
-            this(-1, -1, -1, 1);
-        }
-
-        public TankDriveConfig(int aLeftHandle, int aRightHandle, int aGyroHandle, double aTurnKp)
-        {
-            mLeftEncoderHandle = aLeftHandle;
-            mRightEncoderHandle = aRightHandle;
-            mGyroHandle = aGyroHandle;
-            mTurnKp = aTurnKp;
-        }
-
-        public int getmLeftEncoderHandle()
-        {
-            return mLeftEncoderHandle;
-        }
-
-        public void setmLeftEncoderHandle(int aLeftEncoderHandle)
-        {
-            this.mLeftEncoderHandle = aLeftEncoderHandle;
-        }
-
-        public int getmRightEncoderHandle()
-        {
-            return mRightEncoderHandle;
-        }
-
-        public void setmRightEncoderHandle(int aRightEncoderHandle)
-        {
-            this.mRightEncoderHandle = aRightEncoderHandle;
-        }
-
-        public int getmGyroHandle()
-        {
-            return mGyroHandle;
-        }
-
-        public void setmGyroHandle(int aGyroHandle)
-        {
-            this.mGyroHandle = aGyroHandle;
-        }
-
-        public double getmTurnKp()
-        {
-            return mTurnKp;
-        }
-
-        public void setmTurnKp(double aTurnKp)
-        {
-            this.mTurnKp = aTurnKp;
-        }
 
     }
 

@@ -11,6 +11,24 @@ import com.snobot.simulator.wrapper_accessors.EncoderWrapperAccessor;
 public class JniEncoderWrapperAccessor implements EncoderWrapperAccessor
 {
     @Override
+    public boolean isInitialized(int aPort)
+    {
+        return EncoderWrapperJni.isInitialized(aPort);
+    }
+
+    @Override
+    public boolean createSimulator(int aPort, String aType)
+    {
+        return EncoderWrapperJni.createSimulator(aPort, aType);
+    }
+
+    @Override
+    public void removeSimulator(int aPort)
+    {
+        EncoderWrapperJni.removeSimluator(aPort);
+    }
+
+    @Override
     public void setName(int aPort, String aName)
     {
         EncoderWrapperJni.setName(aPort, aName);
@@ -47,12 +65,6 @@ public class JniEncoderWrapperAccessor implements EncoderWrapperAccessor
     }
 
     @Override
-    public double getRaw(int aPort)
-    {
-        return EncoderWrapperJni.getRaw(aPort);
-    }
-
-    @Override
     public double getDistance(int aPort)
     {
         return EncoderWrapperJni.getDistance(aPort);
@@ -62,5 +74,11 @@ public class JniEncoderWrapperAccessor implements EncoderWrapperAccessor
     public List<Integer> getPortList()
     {
         return IntStream.of(EncoderWrapperJni.getPortList()).boxed().collect(Collectors.toList());
+    }
+
+    @Override
+    public String getType(int aPort)
+    {
+        return null;
     }
 }

@@ -5,7 +5,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.snobot.simulator.SensorActuatorRegistry;
-import com.snobot.simulator.module_wrapper.RelayWrapper;
+import com.snobot.simulator.module_wrapper.wpi.WpiRelayWrapper;
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 import edu.wpi.first.hal.sim.mockdata.RelayDataJNI;
 import edu.wpi.first.wpilibj.SensorBase;
@@ -32,19 +33,12 @@ public final class RelayCallbackJni
         {
             if ("InitializedForward".equals(aCallbackType))
             {
-                SensorActuatorRegistry.get().register(new RelayWrapper(mPort), mPort);
-            }
-            else if ("InitializedReverse".equals(aCallbackType))
-            { // NOPMD
-              // Nothing to do, assume it was initialized in forwards call
-            }
-            else if ("Forward".equals(aCallbackType))
-            {
-                SensorActuatorRegistry.get().getRelays().get(mPort).setRelayForwards(aHalValue.getBoolean());
-            }
-            else if ("Reverse".equals(aCallbackType))
-            {
-                SensorActuatorRegistry.get().getRelays().get(mPort).setRelayReverse(aHalValue.getBoolean());
+                if (!DataAccessorFactory.getInstance().getRelayAccessor().getPortList().contains(mPort))
+                {
+                    DataAccessorFactory.getInstance().getRelayAccessor().createSimulator(mPort, WpiRelayWrapper.class.getName());
+                    sLOGGER.log(Level.WARN, "Simulator on port " + mPort + " was not registerd before starting the robot");
+                }
+                SensorActuatorRegistry.get().getRelays().get(mPort).setInitialized(true);
             }
             else
             {
@@ -61,9 +55,6 @@ public final class RelayCallbackJni
 
             RelayCallback callback = new RelayCallback(i);
             RelayDataJNI.registerInitializedForwardCallback(i, callback, false);
-            RelayDataJNI.registerInitializedReverseCallback(i, callback, false);
-            RelayDataJNI.registerForwardCallback(i, callback, false);
-            RelayDataJNI.registerReverseCallback(i, callback, false);
         }
     }
 }

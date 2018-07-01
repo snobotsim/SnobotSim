@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.simulator_components.ctre.CtreTalonSrxSpeedControllerSim.MotionProfilePoint;
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 public class CtreManager
 {
@@ -41,8 +42,14 @@ public class CtreManager
 
         if ("Create".equals(aCallback))
         {
-            CtreTalonSrxSpeedControllerSim output = new CtreTalonSrxSpeedControllerSim(aCanPort);
-            SensorActuatorRegistry.get().register(output, aCanPort + 100);
+            if (!DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList()
+                    .contains(aCanPort + CtreTalonSrxSpeedControllerSim.sCTRE_OFFSET))
+            {
+                sLOGGER.log(Level.WARN, "CTRE Motor Controller was not set up for port " + aCanPort);
+                
+                DataAccessorFactory.getInstance().getSpeedControllerAccessor().createSimulator(aCanPort + CtreTalonSrxSpeedControllerSim.sCTRE_OFFSET,
+                        CtreTalonSrxSpeedControllerSim.class.getName());
+            }
         }
         else if ("SetDemand".equals(aCallback))
         {
@@ -275,7 +282,7 @@ public class CtreManager
             aData.putDouble(wrapper.getPitchWrapper().getAngle());
             aData.putDouble(wrapper.getRollWrapper().getAngle());
         }
-        else if ("GetFusedHeading".equals(aName))
+        else if ("GetFusedHeading".equals(aName) || "GetFusedHeading1".equals(aName))
         {
             CtrePigeonImuSim wrapper = getPigeonWrapper(aPort);
 

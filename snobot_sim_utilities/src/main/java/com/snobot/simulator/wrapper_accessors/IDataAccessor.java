@@ -8,7 +8,9 @@ public interface IDataAccessor
 
     GyroWrapperAccessor getGyroAccessor();
 
-    AnalogSourceWrapperAccessor getAnalogAccessor();
+    AnalogSourceWrapperAccessor getAnalogInAccessor();
+
+    AnalogSourceWrapperAccessor getAnalogOutAccessor();
 
     DigitalSourceWrapperAccessor getDigitalAccessor();
 
@@ -21,4 +23,6 @@ public interface IDataAccessor
     SpeedControllerWrapperAccessor getSpeedControllerAccessor();
 
     SimulatorDataAccessor getSimulatorDataAccessor();
+
+    String getInitializationErrors();
 }

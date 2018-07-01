@@ -14,32 +14,32 @@ import com.snobot.simulator.gui.module_widget.settings.SimpleSettingsDialog;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 
-public class AnalogOutputDisplay extends BaseWidgetDisplay<Integer, AnalogDisplay>
+public class AnalogOutputDisplay extends BaseWidgetDisplay<Integer, AnalogOutDisplay>
 {
     public AnalogOutputDisplay(Collection<Integer> aKeys)
     {
         super(aKeys);
-        setBorder(new TitledBorder("Analog"));
+        setBorder(new TitledBorder("Analog Output"));
     }
 
     @Override
     public void update()
     {
-        for (Entry<Integer, AnalogDisplay> pair : mWidgetMap.entrySet())
+        for (Entry<Integer, AnalogOutDisplay> pair : mWidgetMap.entrySet())
         {
-            double value = DataAccessorFactory.getInstance().getAnalogAccessor().getVoltage(pair.getKey());
+            double value = DataAccessorFactory.getInstance().getAnalogInAccessor().getVoltage(pair.getKey());
             pair.getValue().updateDisplay(value);
         }
     }
 
     @Override
-    protected AnalogDisplay createWidget(Integer aKey)
+    protected AnalogOutDisplay createWidget(Integer aKey)
     {
-        if (DataAccessorFactory.getInstance().getAnalogAccessor().getWantsHidden(aKey))
+        if (DataAccessorFactory.getInstance().getAnalogInAccessor().getWantsHidden(aKey))
         {
             return null;
         }
-        return new AnalogDisplay();
+        return new AnalogOutDisplay();
     }
 
     @Override
@@ -51,7 +51,7 @@ public class AnalogOutputDisplay extends BaseWidgetDisplay<Integer, AnalogDispla
             @Override
             protected void onSubmit()
             {
-                DataAccessorFactory.getInstance().getAnalogAccessor().setName(aKey, getComponentName());
+                DataAccessorFactory.getInstance().getAnalogInAccessor().setName(aKey, getComponentName());
                 mLabelMap.get(aKey).setText(getComponentName());
             }
 
@@ -65,31 +65,31 @@ public class AnalogOutputDisplay extends BaseWidgetDisplay<Integer, AnalogDispla
     @Override
     protected String getName(Integer aKey)
     {
-        return DataAccessorFactory.getInstance().getAnalogAccessor().getName(aKey);
+        return DataAccessorFactory.getInstance().getAnalogInAccessor().getName(aKey);
     }
 }
 
-class AnalogDisplay extends JPanel
+class AnalogOutDisplay extends JPanel
 {
     private static final int sDOT_SIZE = 30;
 
-    private double mMotorSpeed;
+    private double mVoltage;
 
-    public AnalogDisplay()
+    public AnalogOutDisplay()
     {
         setPreferredSize(new Dimension(sDOT_SIZE, sDOT_SIZE));
     }
 
     public void updateDisplay(double aValue)
     {
-        mMotorSpeed = aValue;
+        mVoltage = aValue;
     }
 
     @Override
     public void paint(Graphics aGraphics)
     {
         aGraphics.clearRect(0, 0, getWidth(), getHeight());
-        aGraphics.setColor(Util.colorGetShadedColor(mMotorSpeed, 5, 0));
+        aGraphics.setColor(Util.colorGetShadedColor(mVoltage, 5, 0));
         aGraphics.fillOval(0, 0, sDOT_SIZE, sDOT_SIZE);
     }
 }

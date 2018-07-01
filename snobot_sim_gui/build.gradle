@@ -1,6 +1,12 @@
 
 import org.gradle.internal.os.OperatingSystem
 
+
+evaluationDependsOn(':snobot_sim_utilities')
+evaluationDependsOn(':sim_adx_family')
+evaluationDependsOn(':sim_extension_navx')
+evaluationDependsOn(':temp_hal_interface')
+
 ext
 {
     baseId = "snobot_sim_gui"
@@ -13,19 +19,18 @@ configurations {
     compile.extendsFrom(native3rdPartyDeps)
 }
 
-evaluationDependsOn(':temp_hal_sim')
 apply from: "$rootDir/captureWpiLibraries.gradle"
 dependencies {
     
     // WPILib
-    compile 'edu.wpi.first.ntcore:ntcore-java:' + getNtCoreVersion()
-    compile 'edu.wpi.first.wpilibj:wpilibj-java:' + getWpilibjVersion()
+    compile 'edu.wpi.first.wpilibj:wpilibj-java:' + allwpilibVersion()
     compile 'edu.wpi.first.wpiutil:wpiutil-java:' + getWpiUtilVersion()
-    compile 'org.opencv:opencv-java:' + getWpilibOpencvVersion()
     compile 'edu.wpi.first.cscore:cscore-java:' + getCsCoreVersion()
-    compile 'edu.wpi.first.cscore:cscore-jni:' + getCsCoreVersion() + ':all'
-    runtime 'org.opencv:opencv-jni:' + getWpilibOpencvVersion() + ':all'
+    runtime 'edu.wpi.first.cscore:cscore-jni:' + getCsCoreVersion() + ':all'
+    compile 'edu.wpi.first.ntcore:ntcore-java:' + getNtCoreVersion()
     runtime 'edu.wpi.first.ntcore:ntcore-jni:' + getNtCoreVersion() + ':all'
+    compile 'org.opencv:opencv-java:' + getWpilibOpencvVersion()
+    runtime 'org.opencv:opencv-jni:' + getWpilibOpencvVersion() + ':all'
     
     // 3rd Party
     native3rdPartyDeps  'net.java.jinput:jinput:2.0.7'
@@ -52,15 +57,32 @@ dependencies {
     {
         compile project(":snobot_sim_java")
         runtime captureWpiLibraries.outputs.files
-        runtime project(':ctre_override').packageNativeCtreSimulationFilesInJar.outputs.files
         runtime project(':sim_extension_navx').packageNativenavx_simulator_jniFilesInJar.outputs.files
         runtime project(':sim_adx_family').packageNativeadx_family_jniFilesInJar.outputs.files
-        runtime project(':temp_hal_sim').packageNativetempHalSimSharedFilesInJar.outputs.files
     }
     
     // Test
-    testCompile 'junit:junit:4.12'
+    testCompile 'org.junit.jupiter:junit-jupiter-api:5.2.0'
+    testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.2.0'
+    testRuntime 'org.junit.platform:junit-platform-launcher:1.2.0'
+    runtime 'com.snobot.simulator:ctre_sim_override:' + getCtreSimVersion() + ':native-all'
     testRuntime jar.outputs.files // Necessary for having resources in jar 
+    
+    runtime project(':temp_hal_interface').packageNativetemp_hal_interface_jniFilesInJar.outputs.files
+}
+
+apply from: "$rootDir/common/prepare_ctre_library.gradle"
+compileJava.dependsOn prepareCtreLibrary
+tasks.withType(Test) {
+    systemProperty "java.library.path", getCtreNativeExtractedLocation()
+}
+
+eclipse.classpath.file.whenMerged { classpath ->
+    classpath.entries.each {
+        if(it.path.contains("ctre_sim_override")) {
+            it.setNativeLibraryLocation(getCtreNativeExtractedLocation())
+        }
+    }
 }
 
 
@@ -107,9 +129,8 @@ jar {
 
    from("${rootDir}/snobot_sim_gui/src/main/java") {
       include  '**/*.png'
-   }
-   from("${rootDir}/snobot_sim_gui/src/main/java") {
       include  '**/*.properties'
+      include  '**/*.txt'
    }
 }
 

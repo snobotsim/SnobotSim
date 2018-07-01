@@ -5,8 +5,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.snobot.simulator.SensorActuatorRegistry;
-import com.snobot.simulator.module_wrapper.DigitalSourceWrapper;
-import com.snobot.simulator.module_wrapper.DigitalSourceWrapper.StateSetterHelper;
+import com.snobot.simulator.module_wrapper.wpi.WpiDigitalIoWrapper;
+import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 import edu.wpi.first.hal.sim.mockdata.DIODataJNI;
 import edu.wpi.first.wpilibj.SensorBase;
@@ -33,19 +33,12 @@ public final class DigitalCallbackJni
         {
             if ("Initialized".equals(aCallbackType))
             {
-                SensorActuatorRegistry.get().register(new DigitalSourceWrapper(mPort, new StateSetterHelper()
+                if (!DataAccessorFactory.getInstance().getDigitalAccessor().getPortList().contains(mPort))
                 {
-
-                    @Override
-                    public void setState(boolean aState)
-                    {
-                        DIODataJNI.setValue(mPort, aState);
-                    }
-                }), mPort);
-            }
-            else if ("Value".equals(aCallbackType))
-            {
-                SensorActuatorRegistry.get().getDigitalSources().get(mPort).set(aHalValue.getBoolean());
+                    DataAccessorFactory.getInstance().getDigitalAccessor().createSimulator(mPort, WpiDigitalIoWrapper.class.getName());
+                    sLOGGER.log(Level.WARN, "Simulator on port " + mPort + " was not registerd before starting the robot");
+                }
+                SensorActuatorRegistry.get().getDigitalSources().get(mPort).setInitialized(true);
             }
             else
             {
@@ -62,10 +55,6 @@ public final class DigitalCallbackJni
 
             DigitalIoCallback callback = new DigitalIoCallback(i);
             DIODataJNI.registerInitializedCallback(i, callback, false);
-            DIODataJNI.registerValueCallback(i, callback, false);
-            DIODataJNI.registerPulseLengthCallback(i, callback, false);
-            DIODataJNI.registerIsInputCallback(i, callback, false);
-            DIODataJNI.registerFilterIndexCallback(i, callback, false);
         }
 
     }

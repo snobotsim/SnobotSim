@@ -11,6 +11,24 @@ import com.snobot.simulator.wrapper_accessors.SolenoidWrapperAccessor;
 public class JniSolenoidWrapperAccessor implements SolenoidWrapperAccessor
 {
     @Override
+    public boolean isInitialized(int aPort)
+    {
+        return SolenoidWrapperJni.isInitialized(aPort);
+    }
+
+    @Override
+    public boolean createSimulator(int aPort, String aType)
+    {
+        return SolenoidWrapperJni.createSimulator(aPort, aType);
+    }
+
+    @Override
+    public void removeSimulator(int aPort)
+    {
+        SolenoidWrapperJni.removeSimluator(aPort);
+    }
+
+    @Override
     public void setName(int aPort, String aName)
     {
         SolenoidWrapperJni.setName(aPort, aName);
@@ -38,5 +56,11 @@ public class JniSolenoidWrapperAccessor implements SolenoidWrapperAccessor
     public List<Integer> getPortList()
     {
         return IntStream.of(SolenoidWrapperJni.getPortList()).boxed().collect(Collectors.toList());
+    }
+
+    @Override
+    public String getType(int aPort)
+    {
+        return null;
     }
 }

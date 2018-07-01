@@ -3,7 +3,7 @@
 
 #include "MockData/EncoderData.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
-#include "SnobotSim/ModuleWrapper/EncoderWrapper.h"
+#include "SnobotSim/ModuleWrapper/WpiWrappers/WpiEncoderWrapper.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 
 void EncoderCallback(const char* name, void* param, const struct HAL_Value* value)
@@ -13,8 +13,12 @@ void EncoderCallback(const char* name, void* param, const struct HAL_Value* valu
 
     if (nameStr == "Initialized")
     {
-        SensorActuatorRegistry::Get().Register(port,
-                std::shared_ptr<EncoderWrapper>(new EncoderWrapper(port, port)));
+        if (!SensorActuatorRegistry::Get().GetIEncoderWrapper(port, false))
+        {
+            SensorActuatorRegistry::Get().Register(port,
+                    std::shared_ptr<IEncoderWrapper>(new WpiEncoderWrapper(port, port)));
+        }
+        SensorActuatorRegistry::Get().GetIEncoderWrapper(port)->SetInitialized(true);
     }
     else
     {
@@ -29,7 +33,7 @@ void SnobotSim::InitializeEncoderCallbacks()
     for (int i = 0; i < HAL_GetNumEncoders(); ++i)
     {
         gEncoderArrayIndices[i] = i;
-        HALSIM_RegisterEncoderInitializedCallback(i, &EncoderCallback, &gEncoderArrayIndices[i], false);
+        HALSIM_RegisterEncoderAllCallbacks(i, &EncoderCallback, &gEncoderArrayIndices[i], false);
     }
 }
 

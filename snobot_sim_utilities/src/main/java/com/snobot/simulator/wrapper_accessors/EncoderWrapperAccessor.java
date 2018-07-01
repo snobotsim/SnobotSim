@@ -9,7 +9,5 @@ public interface EncoderWrapperAccessor extends IBasicSensorActuatorWrapperAcces
 
     public int getHookedUpId(int aPort);
 
-    public double getRaw(int aPort);
-
     public double getDistance(int aPort);
 }

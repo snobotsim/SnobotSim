@@ -2,7 +2,7 @@ package com.snobot.simulator.gui.module_widget;
 
 import javax.swing.JFrame;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseGuiSimulatorTest;
@@ -16,7 +16,7 @@ public class TestAccelerometerWidgetPanel extends BaseGuiSimulatorTest
     @Test
     public void testPanel()
     {
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultI2CSimulator(Port.kMXP.value, "ADXL345");
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().createI2CSimulator(Port.kMXP.value, "ADXL345");
         ADXL345_I2C accel = new ADXL345_I2C(Port.kMXP, Range.k2G);
         AccelerometerOutputDisplay panel = new AccelerometerOutputDisplay(DataAccessorFactory.getInstance().getAccelerometerAccessor().getPortList());
 

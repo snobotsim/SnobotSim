@@ -2,16 +2,19 @@ package com.snobot.simulator.wrapper_accessors.java;
 
 import java.util.Map;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+
 import com.snobot.simulator.SensorActuatorRegistry;
-import com.snobot.simulator.simulator_components.accelerometer.IAccelerometerWrapper;
+import com.snobot.simulator.module_wrapper.interfaces.IAccelerometerWrapper;
 import com.snobot.simulator.wrapper_accessors.AccelerometerWrapperAccessor;
 
 public class JavaAccelerometerWrapperAccessor extends BaseWrapperAccessor<IAccelerometerWrapper> implements AccelerometerWrapperAccessor
 {
     @Override
-    public void register(int aPort, String aName)
+    public boolean isInitialized(int aPort)
     {
-        // Nothing to do
+        return getValue(aPort).isInitialized();
     }
 
     @Override
@@ -30,6 +33,26 @@ public class JavaAccelerometerWrapperAccessor extends BaseWrapperAccessor<IAccel
     protected Map<Integer, IAccelerometerWrapper> getMap()
     {
         return SensorActuatorRegistry.get().getAccelerometers();
+    }
+
+    @Override
+    public boolean createSimulator(int aPort, String aType)
+    {
+        return false;
+    }
+
+    @Override
+    public void removeSimulator(int aPort)
+    {
+        try
+        {
+            getValue(aPort).close();
+        }
+        catch (Exception ex)
+        {
+            LogManager.getLogger().log(Level.WARN, "Could not close simulator", ex);
+        }
+        SensorActuatorRegistry.get().getAccelerometers().remove(aPort);
     }
 
 }

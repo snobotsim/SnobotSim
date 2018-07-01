@@ -1,6 +1,7 @@
 package com.snobot.simulator.simulator_components.ctre;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
 import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motion.MotionProfileStatus;
@@ -23,6 +24,7 @@ import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.snobot.test.utilities.BaseSimulatorJavaTest;
 
+@Tag("CTRE")
 public class TestUnsupportedTalonOperations extends BaseSimulatorJavaTest
 {
     @Test

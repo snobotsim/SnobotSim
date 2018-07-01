@@ -1,7 +1,7 @@
 package com.snobot.simulator.config;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.GravityLoadMotorSimulationConfig;
@@ -18,11 +18,11 @@ public class TestWriteConfig extends BaseSimulatorTest
     public void testWriteConfig()
     {
 
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(0, "ADXRS450");
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(1, "ADXL345");
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(2, "ADXL362");
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultSpiSimulator(3, "ADXRS450");
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDefaultI2CSimulator(0, "ADXL345");
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().createSpiSimulator(0, "ADXRS450");
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().createSpiSimulator(1, "ADXL345");
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().createSpiSimulator(2, "ADXL362");
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().createSpiSimulator(3, "ADXRS450");
+        DataAccessorFactory.getInstance().getSimulatorDataAccessor().createI2CSimulator(0, "ADXL345");
 
         // Used to create some components
         new MockRobot();
@@ -48,10 +48,10 @@ public class TestWriteConfig extends BaseSimulatorTest
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Rotational(3, rotationalMotorConfig,
                 new RotationalLoadMotorSimulationConfig(1, 1));
 
-        SimulatorConfigWriter writer = new SimulatorConfigWriter();
-
         String dumpFile = "test_output/testWriteFile.yml";
-        Assert.assertTrue(writer.writeConfig(dumpFile));
+
+        SimulatorConfigWriter writer = new SimulatorConfigWriter();
+        Assertions.assertTrue(writer.writeConfig(dumpFile));
     }
 
     @Test
@@ -60,6 +60,6 @@ public class TestWriteConfig extends BaseSimulatorTest
         String dumpFile = "directory_does_not_exist/testWriteFile.yml";
 
         SimulatorConfigWriter writer = new SimulatorConfigWriter();
-        Assert.assertFalse(writer.writeConfig(dumpFile));
+        Assertions.assertFalse(writer.writeConfig(dumpFile));
     }
 }

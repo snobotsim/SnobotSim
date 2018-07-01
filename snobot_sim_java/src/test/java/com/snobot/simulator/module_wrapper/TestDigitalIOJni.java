@@ -1,8 +1,9 @@
 package com.snobot.simulator.module_wrapper;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
+import com.snobot.simulator.module_wrapper.wpi.WpiDigitalIoWrapper;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorJavaTest;
 
@@ -14,32 +15,42 @@ public class TestDigitalIOJni extends BaseSimulatorJavaTest
     @Test
     public void testCreateDigitalIn()
     {
-        Assert.assertEquals(0, DataAccessorFactory.getInstance().getDigitalAccessor().getPortList().size());
+        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getDigitalAccessor().getPortList().size());
 
         new DigitalInput(0);
-        Assert.assertEquals(1, DataAccessorFactory.getInstance().getDigitalAccessor().getPortList().size());
-        Assert.assertEquals("Digital Source0", DataAccessorFactory.getInstance().getDigitalAccessor().getName(0));
-        Assert.assertFalse(DataAccessorFactory.getInstance().getDigitalAccessor().getWantsHidden(0));
+        Assertions.assertEquals(1, DataAccessorFactory.getInstance().getDigitalAccessor().getPortList().size());
+        Assertions.assertEquals("Digital IO 0", DataAccessorFactory.getInstance().getDigitalAccessor().getName(0));
+        Assertions.assertFalse(DataAccessorFactory.getInstance().getDigitalAccessor().getWantsHidden(0));
 
         new DigitalInput(3);
-        Assert.assertEquals(2, DataAccessorFactory.getInstance().getDigitalAccessor().getPortList().size());
-        Assert.assertEquals("Digital Source3", DataAccessorFactory.getInstance().getDigitalAccessor().getName(3));
-        Assert.assertFalse(DataAccessorFactory.getInstance().getDigitalAccessor().getWantsHidden(3));
+        Assertions.assertEquals(2, DataAccessorFactory.getInstance().getDigitalAccessor().getPortList().size());
+        Assertions.assertEquals("Digital IO 3", DataAccessorFactory.getInstance().getDigitalAccessor().getName(3));
+        Assertions.assertFalse(DataAccessorFactory.getInstance().getDigitalAccessor().getWantsHidden(3));
 
         DataAccessorFactory.getInstance().getDigitalAccessor().setName(3, "NewNameFor3");
-        Assert.assertEquals("NewNameFor3", DataAccessorFactory.getInstance().getDigitalAccessor().getName(3));
+        Assertions.assertEquals("NewNameFor3", DataAccessorFactory.getInstance().getDigitalAccessor().getName(3));
+    }
+
+    @Test
+    public void testCreateDigitalInWithSetup()
+    {
+        DataAccessorFactory.getInstance().getDigitalAccessor().createSimulator(3, WpiDigitalIoWrapper.class.getName());
+        Assertions.assertFalse(DataAccessorFactory.getInstance().getDigitalAccessor().isInitialized(3));
+
+        new DigitalInput(3);
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getDigitalAccessor().isInitialized(3));
     }
 
     @Test
     public void testCreateDigitalOut()
     {
-        Assert.assertEquals(0, DataAccessorFactory.getInstance().getDigitalAccessor().getPortList().size());
+        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getDigitalAccessor().getPortList().size());
 
         new DigitalOutput(0);
-        Assert.assertEquals(1, DataAccessorFactory.getInstance().getDigitalAccessor().getPortList().size());
+        Assertions.assertEquals(1, DataAccessorFactory.getInstance().getDigitalAccessor().getPortList().size());
 
         new DigitalOutput(3);
-        Assert.assertEquals(2, DataAccessorFactory.getInstance().getDigitalAccessor().getPortList().size());
+        Assertions.assertEquals(2, DataAccessorFactory.getInstance().getDigitalAccessor().getPortList().size());
     }
 
     @Test
@@ -47,12 +58,12 @@ public class TestDigitalIOJni extends BaseSimulatorJavaTest
     {
         DigitalInput input = new DigitalInput(0);
 
-        Assert.assertTrue(input.get());
-        Assert.assertTrue(DataAccessorFactory.getInstance().getDigitalAccessor().getState(0));
+        Assertions.assertTrue(input.get());
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getDigitalAccessor().getState(0));
 
         DataAccessorFactory.getInstance().getDigitalAccessor().setState(0, false);
-        Assert.assertFalse(input.get());
-        Assert.assertFalse(DataAccessorFactory.getInstance().getDigitalAccessor().getState(0));
+        Assertions.assertFalse(input.get());
+        Assertions.assertFalse(DataAccessorFactory.getInstance().getDigitalAccessor().getState(0));
     }
 
 }
