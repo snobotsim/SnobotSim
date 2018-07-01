@@ -35,7 +35,7 @@ ext
     
     baseId = "snobot_sim_jni"
     baseArtifactId = 'snobot_sim_jni'
-    artifactGroupId = 'com.snobot.simulator.snobot_sim_jni'
+    artifactGroupId = 'com.snobot.simulator'
 }
 
 
