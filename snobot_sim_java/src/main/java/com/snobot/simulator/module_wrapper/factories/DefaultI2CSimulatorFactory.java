@@ -51,12 +51,21 @@ public class DefaultI2CSimulatorFactory extends BaseWrapperFactory implements II
             return sADXL345_TYPE;
         }
 
+        sLOGGER.log(Level.WARN, "Could not convert type " + aType
+                + " to a simulator class.  If this is a custom override, make sure you override this function in your factory");
+
         return null;
     }
 
     @Override
     public boolean create(int aPort, String aType)
     {
+        if (aType == null)
+        {
+            sLOGGER.log(Level.DEBUG, "Simulator type not specified for port " + aPort + ".  Nothing will be created");
+            return false;
+        }
+
         String fullType = "I2C " + aType;
 
         II2CWrapper simulator = null;

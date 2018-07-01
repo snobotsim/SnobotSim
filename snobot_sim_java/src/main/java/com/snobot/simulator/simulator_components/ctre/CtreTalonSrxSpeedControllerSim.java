@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.ASensorWrapper;
 import com.snobot.simulator.module_wrapper.BaseEncoderWrapper;
 import com.snobot.simulator.module_wrapper.BasePwmWrapper;
@@ -474,6 +475,7 @@ public class CtreTalonSrxSpeedControllerSim extends BasePwmWrapper
                 DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(getHandle(), getHandle());
                 sLOGGER.log(Level.WARN, "CTRE Encoder on port " + mCanHandle + " was not registerd before starting the robot");
             }
+            SensorActuatorRegistry.get().getEncoders().get(getHandle()).setInitialized(true);
             break;
         case Analog:
             if (!DataAccessorFactory.getInstance().getAnalogInAccessor().getPortList().contains(mCanHandle))
@@ -481,6 +483,7 @@ public class CtreTalonSrxSpeedControllerSim extends BasePwmWrapper
                 DataAccessorFactory.getInstance().getAnalogInAccessor().createSimulator(mCanHandle, CtreAnalogIn.class.getName());
                 sLOGGER.log(Level.WARN, "CTRE Analog on port " + mCanHandle + " was not registerd before starting the robot");
             }
+            SensorActuatorRegistry.get().getAnalogIn().get(getHandle()).setInitialized(true);
             break;
         default:
             sLOGGER.log(Level.ERROR, "Unsupported feedback device " + mFeedbackDevice);

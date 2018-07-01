@@ -50,6 +50,7 @@ public class CtreManager
                 DataAccessorFactory.getInstance().getSpeedControllerAccessor().createSimulator(aCanPort + CtreTalonSrxSpeedControllerSim.sCTRE_OFFSET,
                         CtreTalonSrxSpeedControllerSim.class.getName());
             }
+            SensorActuatorRegistry.get().getSpeedControllers().get(aCanPort + CtreTalonSrxSpeedControllerSim.sCTRE_OFFSET).setInitialized(true);
         }
         else if ("SetDemand".equals(aCallback))
         {

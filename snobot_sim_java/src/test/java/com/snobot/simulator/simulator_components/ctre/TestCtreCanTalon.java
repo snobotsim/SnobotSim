@@ -5,10 +5,13 @@ import java.util.Collection;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.snobot.simulator.simulator_components.ctre.CtreTalonSrxSpeedControllerSim.CtreEncoder;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorJavaTest;
 
@@ -25,6 +28,28 @@ public class TestCtreCanTalon extends BaseSimulatorJavaTest
         }
 
         return output;
+    }
+
+    @Test
+    public void testSetup()
+    {
+        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
+        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getEncoderAccessor().getPortList().size());
+
+        TalonSRX talon1 = new TalonSRX(1);
+        talon1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+        Assertions.assertEquals(1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
+        Assertions.assertEquals(1, DataAccessorFactory.getInstance().getEncoderAccessor().getPortList().size());
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getSpeedControllerAccessor().isInitialized(101));
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getEncoderAccessor().isInitialized(101));
+
+        DataAccessorFactory.getInstance().getSpeedControllerAccessor().createSimulator(102, CtreTalonSrxSpeedControllerSim.class.getName());
+        DataAccessorFactory.getInstance().getEncoderAccessor().createSimulator(102, CtreEncoder.class.getName());
+        Assertions.assertFalse(DataAccessorFactory.getInstance().getSpeedControllerAccessor().isInitialized(102));
+        TalonSRX talon2 = new TalonSRX(2);
+        talon2.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getSpeedControllerAccessor().isInitialized(102));
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getEncoderAccessor().isInitialized(102));
     }
 
     @ParameterizedTest

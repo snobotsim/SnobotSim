@@ -43,7 +43,7 @@ deploy:
     script: pwd; cd ../../pjreiniger/maven_repo; pwd; ls; chmod +x commit_updates.sh; ./commit_updates.sh
     skip_cleanup: true
     on:
-      branch: fix_publishing
+      branch: dev-2019
 
 env:
   global:
