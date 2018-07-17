@@ -1,4 +1,5 @@
 
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 apply plugin: 'java'
 apply plugin: 'jacoco'
@@ -11,18 +12,9 @@ repositories {
     mavenCentral()
     mavenLocal()
 
-    maven {
-        url "http://dev.imjac.in/maven/"
-    }
-    maven {
-        url "http://first.wpi.edu/FRC/roborio/maven/release/"
-    }
-    maven {
-        url "http://raw.githubusercontent.com/pjreiniger/maven_repo/master/"
-    }
-    maven {
-        url getJaci3rdPartyMirror()
-    }
+    maven { url getWpiRepo() }
+    maven { url getJaci3rdPartyMirror() }
+    maven { url getCtreOverrideRepo() }
 }
 
 
@@ -36,11 +28,11 @@ jacocoTestReport {
 test {
     useJUnitPlatform()
     testLogging {
-        events "failed"
+        events TestLogEvent.FAILED,
+               TestLogEvent.SKIPPED,
+               TestLogEvent.STANDARD_OUT
         exceptionFormat "full"
     }
-
-    ignoreFailures = org.gradle.internal.os.OperatingSystem.current().isMacOsX()
 }
 
 

@@ -48,6 +48,7 @@ public class Simulator
 {
     private static final Logger sLOGGER = LogManager.getLogger(Simulator.class);
 
+    private final boolean mUseSnobotSimDriverstation;
     private final String mUserConfigDirectory;
     private final String mPropertiesFile;
 
@@ -75,7 +76,7 @@ public class Simulator
      * @throws Exception
      *             Throws an exception if the plugin loading failed
      */
-    public Simulator(SnobotLogLevel aLogLevel, File aPluginDirectory, String aUserConfigDir) throws Exception
+    public Simulator(SnobotLogLevel aLogLevel, File aPluginDirectory, String aUserConfigDir, boolean aUseSnobotSimDriverstation) throws Exception
     {
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().setLogLevel(aLogLevel);
 
@@ -84,6 +85,7 @@ public class Simulator
         PluginSniffer sniffer = new PluginSniffer();
         sniffer.loadPlugins(aPluginDirectory);
 
+        mUseSnobotSimDriverstation = aUseSnobotSimDriverstation;
         mUserConfigDirectory = aUserConfigDir;
         mPropertiesFile = mUserConfigDirectory + "simulator_config.properties";
 
@@ -350,13 +352,15 @@ public class Simulator
 
     private void sendJoystickUpdate()
     {
-        IMockJoystick[] joysticks = JoystickFactory.getInstance().getAll();
-        for (int i = 0; i < joysticks.length; ++i)
+        if (mUseSnobotSimDriverstation)
         {
-            IMockJoystick joystick = joysticks[i];
-            DataAccessorFactory.getInstance().getSimulatorDataAccessor().setJoystickInformation(i, joystick.getAxisValues(), joystick.getPovValues(),
-                    joystick.getButtonCount(),
-                    joystick.getButtonMask());
+            IMockJoystick[] joysticks = JoystickFactory.getInstance().getAll();
+            for (int i = 0; i < joysticks.length; ++i)
+            {
+                IMockJoystick joystick = joysticks[i];
+                DataAccessorFactory.getInstance().getDriverStationAccessor().setJoystickInformation(i, joystick.getAxisValues(),
+                        joystick.getPovValues(), joystick.getButtonCount(), joystick.getButtonMask());
+            }
         }
     }
 
@@ -370,18 +374,21 @@ public class Simulator
             {
                 try
                 {
-                    DataAccessorFactory.getInstance().getSimulatorDataAccessor().waitForProgramToStart();
+                    DataAccessorFactory.getInstance().getDriverStationAccessor().waitForProgramToStart();
 
                     String errors = DataAccessorFactory.getInstance().getInitializationErrors();
                     showInitializationMessage(errors);
                     mSimulator.setRobot(mRobot);
 
-                    SimulatorFrame frame = new SimulatorFrame(mSimulatorConfigFile);
+                    SimulatorFrame frame = new SimulatorFrame(mSimulatorConfigFile, mUseSnobotSimDriverstation);
                     setFrameVisible(frame);
 
                     while (mRunningSimulator)
                     {
-                        DataAccessorFactory.getInstance().getSimulatorDataAccessor().waitForNextUpdateLoop();
+                        if (mUseSnobotSimDriverstation)
+                        {
+                            DataAccessorFactory.getInstance().getDriverStationAccessor().waitForNextUpdateLoop();
+                        }
                         DataAccessorFactory.getInstance().getSimulatorDataAccessor().updateSimulatorComponents();
 
                         mSimulator.update();
@@ -410,7 +417,7 @@ public class Simulator
                 try
                 {
                     DriverStation.getInstance();
-                    DataAccessorFactory.getInstance().getSimulatorDataAccessor().waitForNextUpdateLoop();
+                    DataAccessorFactory.getInstance().getDriverStationAccessor().waitForNextUpdateLoop();
                     mRobot.startCompetition();
                 }
                 catch (UnsatisfiedLinkError e)

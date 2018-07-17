@@ -13,12 +13,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.snobot.simulator.config.SimulatorConfigWriter;
 import com.snobot.simulator.gui.joysticks.JoystickManagerDialog;
-import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 /**
  * Top level frame that displays all of the simulation displays
@@ -30,49 +29,44 @@ public class SimulatorFrame extends JFrame
 {
     private static final Logger sLOGGER = LogManager.getLogger(SimulatorFrame.class);
 
+    private final boolean mUseSnobotSim;
     private GraphicalSensorDisplayPanel mBasicPanel;
     private EnablePanel mEnablePanel;
     private String mSimulatorConfigFile;
 
-    public SimulatorFrame(String aSimulatorConfigFile)
+    public SimulatorFrame(String aSimulatorConfigFile, boolean aUseSnobotSim)
     {
-        initComponenents();
-
+        mUseSnobotSim = aUseSnobotSim;
         mSimulatorConfigFile = aSimulatorConfigFile;
+
+        initComponenents();
     }
 
     public void updateLoop()
     {
         mBasicPanel.update();
-        mEnablePanel.setTime(DataAccessorFactory.getInstance().getSimulatorDataAccessor().getTimeSinceEnabled());
+        mEnablePanel.updateLoop();
     }
 
     private void initComponenents()
     {
         mBasicPanel = new GraphicalSensorDisplayPanel();
-        mEnablePanel = new EnablePanel();
+        mEnablePanel = new EnablePanel(mUseSnobotSim);
 
-        mEnablePanel.addStateChangedListener(new ActionListener()
+        JButton configureJoystickBtn = null;
+        if (mUseSnobotSim)
         {
-
-            @Override
-            public void actionPerformed(ActionEvent aEvent)
+            configureJoystickBtn = new JButton("Configure Joysticks");
+            configureJoystickBtn.addActionListener(new ActionListener()
             {
-                DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDisabled(!mEnablePanel.isEnabled());
-                DataAccessorFactory.getInstance().getSimulatorDataAccessor().setAutonomous(mEnablePanel.isAuton());
-            }
-        });
 
-        JButton configureJoystickBtn = new JButton("Configure Joysticks");
-        configureJoystickBtn.addActionListener(new ActionListener()
-        {
-
-            @Override
-            public void actionPerformed(ActionEvent aEvent)
-            {
-                showJoystickDialog();
-            }
-        });
+                @Override
+                public void actionPerformed(ActionEvent aEvent)
+                {
+                    showJoystickDialog();
+                }
+            });
+        }
 
         JButton changeSettingsBtn = new JButton("Change Settings");
         JButton saveSettingsBtn = new JButton("Save Settings");
@@ -109,7 +103,10 @@ public class SimulatorFrame extends JFrame
         settingsPanel.add(saveSettingsBtn, BorderLayout.SOUTH);
 
         JPanel buttonPanel = new JPanel(new BorderLayout());
-        buttonPanel.add(configureJoystickBtn, BorderLayout.NORTH);
+        if (mUseSnobotSim)
+        {
+            buttonPanel.add(configureJoystickBtn, BorderLayout.NORTH);
+        }
         buttonPanel.add(settingsPanel, BorderLayout.SOUTH);
 
 
@@ -122,12 +119,6 @@ public class SimulatorFrame extends JFrame
         add(scrollPane, BorderLayout.CENTER);
         add(driverStationPanel, BorderLayout.NORTH);
         add(buttonPanel, BorderLayout.SOUTH);
-
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDisabled(false);
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setAutonomous(false);
-
-        mEnablePanel.setRobotEnabled(true);
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().setDisabled(false);
     }
 
     private void saveSettings()

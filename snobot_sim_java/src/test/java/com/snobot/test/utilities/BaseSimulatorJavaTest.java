@@ -10,7 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.simulator.wrapper_accessors.java.JavaDataAccessor;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 
 public class BaseSimulatorJavaTest
@@ -66,7 +65,7 @@ public class BaseSimulatorJavaTest
             INITIALIZED = true;
         }
 
-        DataAccessorFactory.getInstance().getSimulatorDataAccessor().waitForNextUpdateLoop();
+        DataAccessorFactory.getInstance().getDriverStationAccessor().waitForNextUpdateLoop();
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
         RobotBase.initializeHardwareConfiguration();
     }
@@ -90,7 +89,7 @@ public class BaseSimulatorJavaTest
     @AfterEach
     public void shutdown()
     {
-        DriverStation.getInstance().release();
+        // DriverStation.getInstance().release();
     }
     
 }
