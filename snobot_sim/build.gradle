@@ -45,15 +45,15 @@ model {
         }
         halsim(DependencyConfig) {
             groupId = 'edu.wpi.first.hal'
-            artifactId = 'hal'
+            artifactId = 'hal-cpp'
             headerClassifier = 'headers'
             ext = 'zip'
             version = allwpilibVersion()
-            sharedConfigs = [ snobotSimCpp: [] ]
+            sharedConfigs = [ snobotSimCpp: [], standaloneSnobotSimBase: [] ]
         }
         adxfamily(DependencyConfig) {
             groupId = 'edu.wpi.first.halsim'
-            artifactId = 'halsim-adx_gyro_accelerometer'
+            artifactId = 'halsim_adx_gyro_accelerometer'
             headerClassifier = 'headers'
             ext = 'zip'
             version = allwpilibVersion()
@@ -62,7 +62,7 @@ model {
     }
     components {
         snobotSimCpp(NativeLibrarySpec) {
-            baseName = 'snobotSimCpp'
+            baseName = 'snobot_sim'
             
             apply from: "../create_version_file.gradle"
             createCppVersion("src/main/native/cpp/SnobotSim", "SnobotSim", "SnobotSimHalVersion", getVersionName())
@@ -76,15 +76,9 @@ model {
                     exportedHeaders {
                         srcDirs = ["src/main/native/include"]
                     }
-                    lib project: ':sim_extension_navx', library: 'navx_simulator', linkage: 'shared'
+                    lib project: ':sim_extension_navx', library: 'navx_simulator_jni', linkage: 'shared'
                 }
             }
-        }
-
-    }
-    binaries {
-        withType(StaticLibraryBinarySpec) {
-            it.buildable = false
         }
     }
 }

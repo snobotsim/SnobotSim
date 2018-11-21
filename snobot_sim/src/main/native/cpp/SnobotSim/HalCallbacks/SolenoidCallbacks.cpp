@@ -2,10 +2,12 @@
 
 #include "SnobotSim/HalCallbacks/SolenoidCallbacks.h"
 
-#include "MockData/PCMData.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
+#include "SnobotSim/ModuleWrapper/Factories/FactoryContainer.h"
 #include "SnobotSim/ModuleWrapper/WpiWrappers/WpiSolenoidWrapper.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "hal/Ports.h"
+#include "mockdata/PCMData.h"
 
 void SolenoidCallback(const char* name, void* param, const struct HAL_Value* value)
 {
@@ -16,14 +18,13 @@ void SolenoidCallback(const char* name, void* param, const struct HAL_Value* val
     {
         if (!SensorActuatorRegistry::Get().GetISolenoidWrapper(port, false))
         {
-            SensorActuatorRegistry::Get().Register(port,
-                    std::shared_ptr<ISolenoidWrapper>(new WpiSolenoidWrapper(port)));
+            FactoryContainer::Get().GetSolenoidFactory()->Create(port, "WpiSolenoidWrapper");
         }
         SensorActuatorRegistry::Get().GetISolenoidWrapper(port)->SetInitialized(true);
     }
     else
     {
-        SNOBOT_LOG(SnobotLogging::WARN, "Unknown name " << nameStr);
+        SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN, "Unknown name " << nameStr);
     }
 }
 

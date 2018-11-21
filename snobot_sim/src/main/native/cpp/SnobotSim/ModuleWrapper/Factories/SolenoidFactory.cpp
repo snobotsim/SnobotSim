@@ -13,12 +13,10 @@
 
 SolenoidFactory::SolenoidFactory()
 {
-    // TODO Auto-generated constructor stub
 }
 
 SolenoidFactory::~SolenoidFactory()
 {
-    // TODO Auto-generated destructor stub
 }
 
 bool SolenoidFactory::Create(int aHandle, const std::string& aType)
@@ -27,12 +25,17 @@ bool SolenoidFactory::Create(int aHandle, const std::string& aType)
 
     if (aType == "WpiSolenoidWrapper")
     {
-        SensorActuatorRegistry::Get().Register(aHandle,
-                std::shared_ptr<ISolenoidWrapper>(new WpiSolenoidWrapper(aHandle)));
+        if (!SensorActuatorRegistry::Get().GetISolenoidWrapper(aHandle, false))
+        {
+            SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN, "Not set up before loading robot");
+
+            SensorActuatorRegistry::Get().Register(aHandle,
+                    std::shared_ptr<ISolenoidWrapper>(new WpiSolenoidWrapper(aHandle)));
+        }
     }
     else
     {
-        SNOBOT_LOG(SnobotLogging::WARN, "Unknown type " << aType);
+        SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN, "Unknown type " << aType);
         success = false;
     }
 

@@ -13,12 +13,10 @@
 
 EncoderFactory::EncoderFactory()
 {
-    // TODO Auto-generated constructor stub
 }
 
 EncoderFactory::~EncoderFactory()
 {
-    // TODO Auto-generated destructor stub
 }
 
 bool EncoderFactory::Create(int aHandle, const std::string& aType)
@@ -27,12 +25,17 @@ bool EncoderFactory::Create(int aHandle, const std::string& aType)
 
     if (aType == "WpiEncoderWrapper")
     {
-        SensorActuatorRegistry::Get().Register(aHandle,
-                std::shared_ptr<IEncoderWrapper>(new WpiEncoderWrapper(aHandle, aHandle)));
+        if (!SensorActuatorRegistry::Get().GetIEncoderWrapper(aHandle, false))
+        {
+            SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN, "Not set up before loading robot");
+
+            SensorActuatorRegistry::Get().Register(aHandle,
+                    std::shared_ptr<IEncoderWrapper>(new WpiEncoderWrapper(aHandle, aHandle)));
+        }
     }
     else
     {
-        SNOBOT_LOG(SnobotLogging::WARN, "Unknown type " << aType);
+        SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN, "Unknown type " << aType);
         success = false;
     }
 

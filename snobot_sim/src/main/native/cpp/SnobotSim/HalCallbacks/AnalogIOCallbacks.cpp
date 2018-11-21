@@ -1,12 +1,14 @@
 
 #include "SnobotSim/HalCallbacks/AnalogIOCallbacks.h"
 
-#include "MockData/AnalogInData.h"
-#include "MockData/AnalogOutData.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
+#include "SnobotSim/ModuleWrapper/Factories/FactoryContainer.h"
 #include "SnobotSim/ModuleWrapper/WpiWrappers/WpiAnalogInWrapper.h"
 #include "SnobotSim/ModuleWrapper/WpiWrappers/WpiAnalogOutWrapper.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "hal/Ports.h"
+#include "mockdata/AnalogInData.h"
+#include "mockdata/AnalogOutData.h"
 
 void AnalogInCallback(const char* name, void* param, const struct HAL_Value* value)
 {
@@ -17,14 +19,13 @@ void AnalogInCallback(const char* name, void* param, const struct HAL_Value* val
     {
         if (!SensorActuatorRegistry::Get().GetIAnalogInWrapper(port, false))
         {
-            SensorActuatorRegistry::Get().Register(port,
-                    std::shared_ptr<IAnalogInWrapper>(new WpiAnalogInWrapper(port)));
+            FactoryContainer::Get().GetAnalogInFactory()->Create(port, "WpiAnalogInWrapper");
         }
         SensorActuatorRegistry::Get().GetIAnalogInWrapper(port)->SetInitialized(true);
     }
     else
     {
-        SNOBOT_LOG(SnobotLogging::WARN, "Unknown name " << nameStr);
+        SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN, "Unknown name " << nameStr);
     }
 }
 
@@ -37,14 +38,13 @@ void AnalogOutCallback(const char* name, void* param, const struct HAL_Value* va
     {
         if (!SensorActuatorRegistry::Get().GetIAnalogOutWrapper(port, false))
         {
-            SensorActuatorRegistry::Get().Register(port,
-                    std::shared_ptr<IAnalogOutWrapper>(new WpiAnalogOutWrapper(port)));
+            FactoryContainer::Get().GetAnalogOutFactory()->Create(port, "WpiAnalogOutWrapper");
         }
         SensorActuatorRegistry::Get().GetIAnalogOutWrapper(port)->SetInitialized(true);
     }
     else
     {
-        SNOBOT_LOG(SnobotLogging::WARN, "Unknown name " << nameStr);
+        SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN, "Unknown name " << nameStr);
     }
 }
 

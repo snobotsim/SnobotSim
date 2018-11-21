@@ -7,12 +7,9 @@ ext
     libraryName = "navx_simulator_jni"
     getNativeVersion = { binary -> NativeUtils.getPlatformPath(binary) }
     jniClasses = ['com.snobot.simulator.navx.I2CNavxSimulatorJni', 'com.snobot.simulator.navx.SpiNavxSimulatorJni']
-    extra_libraries = [
-                        [':sim_extension_navx', 'navx_simulator', 'shared']
-                      ]
     
-    libraryBaseName = 'navx_simulator_jni'
-    librarySrcDirs = [ 'src/main/native/sim']
+    libraryBaseName = 'navx_simulator'
+    librarySrcDirs = [ 'src/main/native']
     libraryHeaderDirs = [ "src/main/native/include", ]
     
     baseId = "navx_simulator"
@@ -34,17 +31,15 @@ model {
             headerClassifier = 'headers'
             ext = 'zip'
             version = getWpiUtilVersion()
-            sharedConfigs = [ navx_simulator: [],
-                              navx_simulator_jni: [] ]
+            sharedConfigs = [ navx_simulator_jni: [] ]
         }
         halsim(DependencyConfig) {
             groupId = 'edu.wpi.first.hal'
-            artifactId = 'hal'
+            artifactId = 'hal-cpp'
             headerClassifier = 'headers'
             ext = 'zip'
             version = allwpilibVersion()
-            sharedConfigs = [ navx_simulator: [],
-                              navx_simulator_jni: []  ]
+            sharedConfigs = [ navx_simulator_jni: []  ]
         }
     }
     exportsConfigs {
@@ -57,21 +52,6 @@ model {
                                   '_CT??_R0?AVbad_cast',
                                   '_CT??_R0?AVruntime_error', '_CT??_R0?AVsystem_error', '_CTA5?AVfailure',
                                   '_TI5?AVfailure' ]
-        }
-    }
-    components {
-        navx_simulator(NativeLibrarySpec) {
-            sources {
-                cpp {
-                    source {
-                        srcDirs = [ 'src/main/native/cpp' ]
-                        includes = ["**/*.cpp"]
-                    }
-                    exportedHeaders {
-                        srcDirs = ["src/main/native/include"]
-                    }
-                }
-            }
         }
     }
 }
@@ -90,9 +70,10 @@ dependencies {
     wpilibNativeDeps project(':sim_extension_navx').packageNativeFiles.outputs.files
     
     
-    //testCompile 'edu.wpi.first.hal:hal-java:' + allwpilibVersion()
+    testCompile 'edu.wpi.first.hal:hal-java:' + allwpilibVersion()
     testCompile 'edu.wpi.first.wpilibj:wpilibj-java:' + allwpilibVersion()
-    //testRuntime 'edu.wpi.first.cameraserver:cameraserver-java:' + allwpilibVersion()
+    testRuntime 'edu.wpi.first.cameraserver:cameraserver-java:' + allwpilibVersion()
+    testRuntime 'edu.wpi.first.wpiutil:wpiutil-java:' + getWpiUtilVersion()
     testCompile 'edu.wpi.first.ntcore:ntcore-java:' + getNtCoreVersion()
     testRuntime 'edu.wpi.first.cscore:cscore-java:' + getCsCoreVersion()
     testRuntime 'edu.wpi.first.ntcore:ntcore-jni:' + getNtCoreVersion() + ':all'

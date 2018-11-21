@@ -2,10 +2,12 @@
 
 #include "SnobotSim/HalCallbacks/RelayCallbacks.h"
 
-#include "MockData/RelayData.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
+#include "SnobotSim/ModuleWrapper/Factories/FactoryContainer.h"
 #include "SnobotSim/ModuleWrapper/WpiWrappers/WpiRelayWrapper.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "hal/Ports.h"
+#include "mockdata/RelayData.h"
 
 void RelayCallback(const char* name, void* param, const struct HAL_Value* value)
 {
@@ -16,14 +18,13 @@ void RelayCallback(const char* name, void* param, const struct HAL_Value* value)
     {
         if (!SensorActuatorRegistry::Get().GetIRelayWrapper(port, false))
         {
-            SensorActuatorRegistry::Get().Register(port,
-                    std::shared_ptr<IRelayWrapper>(new WpiRelayWrapper(port)));
+            FactoryContainer::Get().GetRelayFactory()->Create(port, "WpiRelayWrapper");
         }
         SensorActuatorRegistry::Get().GetIRelayWrapper(port)->SetInitialized(true);
     }
     else
     {
-        SNOBOT_LOG(SnobotLogging::WARN, "Unknown name " << nameStr);
+        SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN, "Unknown name " << nameStr);
     }
 }
 

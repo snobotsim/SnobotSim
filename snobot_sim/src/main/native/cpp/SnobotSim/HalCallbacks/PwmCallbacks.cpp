@@ -2,10 +2,12 @@
 
 #include "SnobotSim/HalCallbacks/PwmCallbacks.h"
 
-#include "MockData/PWMData.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
+#include "SnobotSim/ModuleWrapper/Factories/FactoryContainer.h"
 #include "SnobotSim/ModuleWrapper/WpiWrappers/WpiSpeedControllerWrapper.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "hal/Ports.h"
+#include "mockdata/PWMData.h"
 
 void PwmCallback(const char* name, void* param, const struct HAL_Value* value)
 {
@@ -16,8 +18,7 @@ void PwmCallback(const char* name, void* param, const struct HAL_Value* value)
     {
         if (!SensorActuatorRegistry::Get().GetISpeedControllerWrapper(port, false))
         {
-            SensorActuatorRegistry::Get().Register(port,
-                    std::shared_ptr<ISpeedControllerWrapper>(new WpiSpeedControllerWrapper(port)));
+            FactoryContainer::Get().GetSpeedControllerFactory()->Create(port, "WpiPwmWrapper");
         }
         SensorActuatorRegistry::Get().GetISpeedControllerWrapper(port)->SetInitialized(true);
     }
@@ -28,7 +29,7 @@ void PwmCallback(const char* name, void* param, const struct HAL_Value* value)
     }
     else
     {
-        SNOBOT_LOG(SnobotLogging::WARN, "Unknown name " << nameStr);
+        SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN, "Unknown name " << nameStr);
     }
 }
 

@@ -1,10 +1,12 @@
 
 #include "SnobotSim/HalCallbacks/DigitalIOCallbacks.h"
 
-#include "MockData/DIOData.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
+#include "SnobotSim/ModuleWrapper/Factories/FactoryContainer.h"
 #include "SnobotSim/ModuleWrapper/WpiWrappers/WpiDigitalIoWrapper.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "hal/Ports.h"
+#include "mockdata/DIOData.h"
 
 void DigitalIOCallback(const char* name, void* param, const struct HAL_Value* value)
 {
@@ -15,14 +17,13 @@ void DigitalIOCallback(const char* name, void* param, const struct HAL_Value* va
     {
         if (!SensorActuatorRegistry::Get().GetIDigitalIoWrapper(port, false))
         {
-            SensorActuatorRegistry::Get().Register(port,
-                    std::shared_ptr<IDigitalIoWrapper>(new WpiDigitalIoWrapper(port)));
+            FactoryContainer::Get().GetDigitalIoFactory()->Create(port, "WpiDigitalIoWrapper");
         }
         SensorActuatorRegistry::Get().GetIDigitalIoWrapper(port)->SetInitialized(true);
     }
     else
     {
-        SNOBOT_LOG(SnobotLogging::WARN, "Unknown name " << nameStr);
+        SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN, "Unknown name " << nameStr);
     }
 }
 

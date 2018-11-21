@@ -3,17 +3,14 @@ package com.kauailabs.navx.frc;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 
 import com.snobot.simulator.JniLibraryResourceLoader;
 import com.snobot.simulator.navx.I2CNavxSimulator;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.HLUsageReporting;
 import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.hal.HAL;
-import edu.wpi.first.wpilibj.internal.HardwareHLUsageReporting;
-import edu.wpi.first.wpilibj.internal.HardwareTimer;
+import edu.wpi.first.hal.HAL;
 
 @Tag("NavX")
 public class TestNavx
@@ -21,6 +18,7 @@ public class TestNavx
     private static final long SHUTDOWN_TIME = 50;
     private static final String sNAVX_TYPE = "NavX";
 
+    @Disabled
     @Test
     public void testI2CNavx() throws InterruptedException
     {
@@ -52,10 +50,6 @@ public class TestNavx
         {
             throw new IllegalStateException("Failed to initialize. Terminating");
         }
-
-        // Set some implementations so that the static methods work properly
-        Timer.SetImplementation(new HardwareTimer());
-        HLUsageReporting.SetImplementation(new HardwareHLUsageReporting());
     }
 
     private void testNavx(I2CNavxSimulator sim, AHRS navx) throws InterruptedException

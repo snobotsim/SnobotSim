@@ -5,7 +5,7 @@ apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'checkstyle'
 apply plugin: 'pmd'
-apply plugin: 'findbugs'
+apply plugin: 'com.github.spotbugs'
 apply plugin: 'eclipse'
 
 repositories {
@@ -17,7 +17,9 @@ repositories {
     maven { url getCtreOverrideRepo() }
 }
 
-
+jacoco {
+    toolVersion = "0.8.2"
+}
 jacocoTestReport {
     reports {
         xml.enabled true
@@ -29,8 +31,8 @@ test {
     useJUnitPlatform()
     testLogging {
         events TestLogEvent.FAILED,
-               TestLogEvent.SKIPPED,
-               TestLogEvent.STANDARD_OUT
+               TestLogEvent.SKIPPED
+               //TestLogEvent.STANDARD_OUT
         exceptionFormat "full"
     }
 }
@@ -39,22 +41,26 @@ test {
 /////////////////////////////////////////////////////////////////////////////////
 // Style/Formatting stuff
 checkstyle {
-    toolVersion = "8.1"
-    configFile = new File(rootDir, "styleguide/checkstyle.xml")
+    toolVersion = "8.12"
+    configDir = file("${project.rootDir}/styleguide")
+    config = resources.text.fromFile(new File(configDir, "checkstyle.xml"))
 }
 
 pmd {
+    toolVersion = '6.7.0'
     consoleOutput  = true
     reportsDir = file("${project.buildDir}/reports/pmd")
     ruleSetFiles = files(file("$rootDir/styleguide/pmd-ruleset.xml"))
     ruleSets = []
 }
 
-findbugs {
-    excludeFilter = file("$rootDir/styleguide/findbugs_suppressions.xml")
-    effort = "max"
+spotbugs {
+  toolVersion = '3.1.8'
+  excludeFilter = file("$rootDir/styleguide/findbugs_suppressions.xml")
+  effort = "max"
 }
-tasks.withType(FindBugs) {
+
+tasks.withType(SpotBugsTask) {
     reports {
         xml.enabled false
         html.enabled true

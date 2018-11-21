@@ -13,12 +13,10 @@
 
 AnalogInFactory::AnalogInFactory()
 {
-    // TODO Auto-generated constructor stub
 }
 
 AnalogInFactory::~AnalogInFactory()
 {
-    // TODO Auto-generated destructor stub
 }
 
 bool AnalogInFactory::Create(int aHandle, const std::string& aType)
@@ -27,12 +25,17 @@ bool AnalogInFactory::Create(int aHandle, const std::string& aType)
 
     if (aType == "WpiAnalogInWrapper")
     {
-        SensorActuatorRegistry::Get().Register(aHandle,
-                std::shared_ptr<IAnalogInWrapper>(new WpiAnalogInWrapper(aHandle)));
+        if (!SensorActuatorRegistry::Get().GetIAnalogInWrapper(aHandle, false))
+        {
+            SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN, "Not set up before loading robot");
+
+            SensorActuatorRegistry::Get().Register(aHandle,
+                    std::shared_ptr<IAnalogInWrapper>(new WpiAnalogInWrapper(aHandle)));
+        }
     }
     else
     {
-        SNOBOT_LOG(SnobotLogging::WARN, "Unknown type " << aType);
+        SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN, "Unknown type " << aType);
         success = false;
     }
 

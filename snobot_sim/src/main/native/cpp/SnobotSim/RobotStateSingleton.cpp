@@ -10,9 +10,9 @@
 #include <chrono>
 #include <future>
 
-#include "MockData/DriverStationData.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "mockdata/DriverStationData.h"
 
 RobotStateSingleton RobotStateSingleton::sINSTANCE;
 
@@ -32,7 +32,7 @@ RobotStateSingleton& RobotStateSingleton::Get()
 
 void RobotStateSingleton::Reset()
 {
-    SNOBOT_LOG(SnobotLogging::INFO, "Resetting State Singleton");
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Resetting State Singleton");
 }
 
 void RobotStateSingleton::WaitForNextControlLoop(double aWaitTime)

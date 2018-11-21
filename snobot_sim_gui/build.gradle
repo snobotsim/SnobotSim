@@ -5,7 +5,6 @@ import org.gradle.internal.os.OperatingSystem
 evaluationDependsOn(':snobot_sim_utilities')
 evaluationDependsOn(':sim_adx_family')
 evaluationDependsOn(':sim_extension_navx')
-evaluationDependsOn(':temp_hal_interface')
 
 ext
 {
@@ -64,10 +63,8 @@ dependencies {
     testCompile 'org.junit.jupiter:junit-jupiter-api:5.2.0'
     testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.2.0'
     testRuntime 'org.junit.platform:junit-platform-launcher:1.2.0'
-    runtime 'com.snobot.simulator:ctre_sim_override:' + getCtreSimVersion() + ':native-all'
+    runtime 'com.snobot.simulator:ctre_sim_override:' + getCtreSimVersion() + ':all'
     testRuntime jar.outputs.files // Necessary for having resources in jar 
-    
-    wpilibNativeDeps project(':temp_hal_interface').packageNativeFiles.outputs.files
 }
 
 apply from: "${rootDir}/common/extract_native_libraries.gradle"
@@ -132,6 +129,6 @@ clean {
 }
 
 
-findbugs {
+spotbugs {
     ignoreFailures = true
 }

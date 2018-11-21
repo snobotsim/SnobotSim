@@ -17,11 +17,12 @@ buildscript {
 }
 
 plugins {
-    id 'net.ltgt.errorprone' version '0.0.13'
-    id 'edu.wpi.first.NativeUtils' version '1.6.7'
-    id "edu.wpi.first.GradleJni" version "0.2.2" apply false
+    id 'net.ltgt.errorprone' version '0.0.15'
+    id 'edu.wpi.first.NativeUtils' version '1.7.4'
+    id 'edu.wpi.first.GradleJni' version '0.3.0' apply false
     id "com.diffplug.gradle.spotless" version "3.10.0"
-    id 'com.gradle.build-scan' version '1.13.1'
+    id 'com.gradle.build-scan' version '1.15.1'
+    id "com.github.spotbugs" version "1.6.4"
 }
 apply plugin: 'nebula-aggregate-javadocs'
 
@@ -33,17 +34,17 @@ ext.build_simulator_java = true
 // Specify WPI Versions
 
 ext.allwpilibVersion = {
-    return '2018.4.1'
+    return '2019.1.1-beta-2'
 }
 
 ext.getWpiUtilVersion = {
-    return '3.2.0'
+    return allwpilibVersion()
 }
 ext.getNtCoreVersion = {
-    return '4.1.0'
+    return allwpilibVersion()
 }
 ext.getCsCoreVersion = {
-    return '1.3.0'
+    return allwpilibVersion()
 }
 
 ext.getWpilibOpencvVersion = {
@@ -54,7 +55,7 @@ ext.getCtreVersion = {
     //return '5.3.1.0'
 }
 ext.getCtreSimVersion = {
-    return 'V0_' + getCtreVersion()
+    return 'V1_' + getCtreVersion()
 }
 ext.getNavxVersion = {
     return '3.0.346'
@@ -82,6 +83,9 @@ repositories {
 }
 
 /////////////////////////////////////////
+ext {
+    SpotBugsTask = com.github.spotbugs.SpotBugsTask
+}
 
 def getCtreNativeExtractedLocation() {
     
@@ -99,7 +103,7 @@ def getCtreNativeExtractedLocation() {
 
 // Publshing Information
 
-ext.maven_publishing_path = 'build/maven_repo/'
+ext.maven_publishing_path = "$rootDir/build/maven_repo/"
 if(hasProperty('maven_repo'))
 {
     ext.maven_publishing_path = maven_repo
@@ -107,13 +111,13 @@ if(hasProperty('maven_repo'))
 ext.maven_publishing_path = new File(maven_publishing_path).getAbsolutePath()
 println "Publishing maven to " + ext.maven_publishing_path.toString()
 
-ext.maven_version = "2018-2.0.0"
+ext.maven_version = "2019-0.0.0"
 if(hasProperty('maven_version'))
 {
     ext.maven_version = maven_version
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.7'
+    gradleVersion = '4.9'
 }
 

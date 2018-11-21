@@ -18,8 +18,6 @@ const std::string SpiWrapperFactory::ADXL345_ACCELEROMETER_NAME = "ADXL345";
 const std::string SpiWrapperFactory::ADXL362_ACCELEROMETER_NAME = "ADXL362";
 const std::string SpiWrapperFactory::NAVX = "NavX";
 
-SpiWrapperFactory SpiWrapperFactory::sINSTANCE;
-
 SpiWrapperFactory::SpiWrapperFactory()
 {
 }
@@ -28,14 +26,9 @@ SpiWrapperFactory::~SpiWrapperFactory()
 {
 }
 
-SpiWrapperFactory& SpiWrapperFactory::Get()
-{
-    return sINSTANCE;
-}
-
 void SpiWrapperFactory::RegisterDefaultWrapperType(int aPort, const std::string& aWrapperType)
 {
-    SNOBOT_LOG(SnobotLogging::DEBUG, "Setting default for port " << aPort << " to '" << aWrapperType);
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_DEBUG, "Setting default for port " << aPort << " to '" << aWrapperType);
     mDefaultsMap[aPort] = aWrapperType;
 }
 
@@ -57,12 +50,12 @@ std::shared_ptr<ISpiWrapper> SpiWrapperFactory::GetSpiWrapper(int aPort)
         std::map<int, std::string>::iterator iter = mDefaultsMap.find(aPort);
         if (iter != mDefaultsMap.end())
         {
-            SNOBOT_LOG(SnobotLogging::INFO, "Using specified default '" << iter->second << "' on port " << aPort);
+            SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Using specified default '" << iter->second << "' on port " << aPort);
             spiWrapper = CreateWrapper(aPort, iter->second);
         }
         else
         {
-            SNOBOT_LOG(SnobotLogging::CRITICAL, "No default specified for " << aPort << ", using null wrapper");
+            SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "No default specified for " << aPort << ", using null wrapper");
             spiWrapper = std::shared_ptr<ISpiWrapper>();
         }
     }
@@ -93,6 +86,6 @@ std::shared_ptr<ISpiWrapper> SpiWrapperFactory::CreateWrapper(int aPort, const s
         return std::shared_ptr<ISpiWrapper>(new AdxSpi362AccelWrapper(aPort));
     }
 
-    SNOBOT_LOG(SnobotLogging::CRITICAL, "Unknown simulator type '" << aType << "', defaulting to null");
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Unknown simulator type '" << aType << "', defaulting to null");
     return std::shared_ptr<ISpiWrapper>();
 }
