@@ -20,7 +20,14 @@ task packageNativeFiles(type: Jar) {
 
 
     destinationDir = project.buildDir
-    classifier = org.gradle.internal.os.OperatingSystem.current().getFamilyName() + getCurrentArch();
+    if (org.gradle.internal.os.OperatingSystem.current().isMacOsX())
+    {
+        classifier = "osx" + getCurrentArch();
+    }
+    else
+    {
+        classifier = org.gradle.internal.os.OperatingSystem.current().getFamilyName() + getCurrentArch();
+    }
 
     project.model {
         binaries {
