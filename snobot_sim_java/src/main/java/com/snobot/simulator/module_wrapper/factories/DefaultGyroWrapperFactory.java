@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.jni.can.CanCallbackJni;
+import com.snobot.simulator.module_wrapper.BaseGyroWrapper;
 import com.snobot.simulator.module_wrapper.wpi.WpiAnalogGyroWrapper;
 import com.snobot.simulator.simulator_components.adx_family.ADXRS450GyroWrapper;
 import com.snobot.simulator.simulator_components.ctre.CtrePigeonImuSim;
@@ -28,6 +29,10 @@ public class DefaultGyroWrapperFactory extends BaseWrapperFactory
         {
             sLOGGER.log(Level.DEBUG, "ADXRS450GyroWrapper is set up elsewhere");
         }
+        else if (BaseGyroWrapper.class.getName().equals(aType))
+        {
+            sLOGGER.log(Level.DEBUG, "BaseGyroWrapper is set up elsewhere");
+        }
         else if (CtrePigeonImuSim.PigeonGyroWrapper.class.getName().equals(aType))
         {
             int portWithoutOffset = aPort - CtrePigeonImuSim.sCTRE_OFFSET;
@@ -35,7 +40,7 @@ public class DefaultGyroWrapperFactory extends BaseWrapperFactory
 
             if (portWithoutOffset % 3 == 0)
             {
-                CanCallbackJni.sCAN_MANAGER.createPigeon(basePort);
+                CanCallbackJni.sCTRE_MANAGER.createPigeon(basePort);
             }
             else
             {

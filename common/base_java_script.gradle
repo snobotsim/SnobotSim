@@ -15,6 +15,7 @@ repositories {
     maven { url getWpiRepo() }
     maven { url getNavxRepo() }
     maven { url getCtreRepo() }
+    maven { url getRevRepo() }
     maven { url getCtreOverrideRepo() }
 }
 
