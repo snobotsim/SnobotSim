@@ -50,7 +50,7 @@ public class TestCtreCanTalonControlMotionMagic extends BaseSimulatorJavaTest
 
         talon.config_kP(0, .11, 5);
         talon.config_kI(0, .005, 5);
-        talon.config_kF(0, 0.018, 5);
+        talon.config_kF(0, 0.08, 5);
         talon.config_IntegralZone(0, 2, 5);
 
         talon.configSelectedFeedbackSensor(aFeedbackDevice, 0, 5);
@@ -58,12 +58,20 @@ public class TestCtreCanTalonControlMotionMagic extends BaseSimulatorJavaTest
         talon.configMotionAcceleration(24 * 600, 0);
         talon.set(ControlMode.MotionMagic, 30 * 12 * 4096);
 
-        simulateForTime(8, () ->
+        simulateForTime(12, () ->
         {
             // System.out.println(talon.getClosedLoopError(0)); // NOPMD
         });
 
         Assertions.assertEquals(0, talon.getClosedLoopError(0), 2 * 4096);
+
+        // Make sure it swaps back to normal mode
+        simulateForTime(1, () ->
+        {
+            talon.set(ControlMode.PercentOutput, .75);
+            Assertions.assertEquals(ControlMode.PercentOutput, talon.getControlMode());
+            Assertions.assertEquals(.75, talon.getMotorOutputPercent());
+        });
     }
 
 }
