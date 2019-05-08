@@ -89,7 +89,7 @@ ext.getCtreOverrideRepo = {
 repositories {
     mavenCentral()
     mavenLocal()
-    
+
     maven { url getWpiRepo() }
     maven { url getNavxRepo() }
     maven { url getCtreRepo() }
@@ -117,4 +117,3 @@ if(hasProperty('maven_version'))
 wrapper {
     gradleVersion = '5.0'
 }
-
