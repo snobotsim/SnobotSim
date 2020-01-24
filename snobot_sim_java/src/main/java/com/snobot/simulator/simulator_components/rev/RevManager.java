@@ -176,15 +176,22 @@ public class RevManager
 
     protected void createSim(int aCanPort)
     {
-        if (!DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList()
-                .contains(aCanPort + BaseCanSmartSpeedController.sCAN_SC_OFFSET))
+        int simPort = aCanPort + BaseCanSmartSpeedController.sCAN_SC_OFFSET;
+        if (!DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().contains(simPort))
         {
             sLOGGER.log(Level.WARN, "REV Motor Controller is being created dynamically instead of in the config file for port " + aCanPort);
 
-            DataAccessorFactory.getInstance().getSpeedControllerAccessor().createSimulator(aCanPort + BaseCanSmartSpeedController.sCAN_SC_OFFSET,
-                    RevSpeedControllerSimWrapper.class.getName());
+            DataAccessorFactory.getInstance().getSpeedControllerAccessor().createSimulator(simPort, RevSpeedControllerSimWrapper.class.getName());
         }
-        SensorActuatorRegistry.get().getSpeedControllers().get(aCanPort + BaseCanSmartSpeedController.sCAN_SC_OFFSET).setInitialized(true);
+        else if (!(SensorActuatorRegistry.get().getSpeedControllers().get(simPort) instanceof RevSpeedControllerSimWrapper))
+        {
+            sLOGGER.log(Level.FATAL, "A pre-registered motor controller of type " + SensorActuatorRegistry.get().getSpeedControllers().get(simPort).getClass()
+                + " is the wrong type on port " + aCanPort);
+            SensorActuatorRegistry.get().getSpeedControllers().remove(simPort);
+            createSim(aCanPort);
+            return;
+        }
+        SensorActuatorRegistry.get().getSpeedControllers().get(simPort).setInitialized(true);
     }
 
     public void reset()

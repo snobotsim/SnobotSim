@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.snobot.simulator.simulator_components.smart_sc.BaseCanSmartSpeedController;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -52,15 +53,7 @@ public class CtreManager
 
         if ("Create".equals(aCallback))
         {
-            if (!DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList()
-                    .contains(aCanPort + CtreTalonSrxSpeedControllerSim.sCAN_SC_OFFSET))
-            {
-                sLOGGER.log(Level.WARN, "CTRE Motor Controller is being created dynamically instead of in the config file for port " + aCanPort);
-                
-                DataAccessorFactory.getInstance().getSpeedControllerAccessor().createSimulator(aCanPort + CtreTalonSrxSpeedControllerSim.sCAN_SC_OFFSET,
-                        CtreTalonSrxSpeedControllerSim.class.getName());
-            }
-            SensorActuatorRegistry.get().getSpeedControllers().get(aCanPort + CtreTalonSrxSpeedControllerSim.sCAN_SC_OFFSET).setInitialized(true);
+            createMotorController(aCanPort);
         }
         else if ("SetDemand".equals(aCallback))
         {
@@ -353,6 +346,26 @@ public class CtreManager
             return sim;
         }
 
+    }
+
+    public void createMotorController(int aCanPort)
+    {
+        int simPort = aCanPort + BaseCanSmartSpeedController.sCAN_SC_OFFSET;
+        if (!DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().contains(simPort))
+        {
+            sLOGGER.log(Level.WARN, "CTRE Motor Controller is being created dynamically instead of in the config file for port " + aCanPort);
+
+            DataAccessorFactory.getInstance().getSpeedControllerAccessor().createSimulator(simPort, CtreTalonSrxSpeedControllerSim.class.getName());
+        }
+        else if (!(SensorActuatorRegistry.get().getSpeedControllers().get(simPort) instanceof CtreTalonSrxSpeedControllerSim))
+        {
+            sLOGGER.log(Level.FATAL, "A pre-registered motor controller of type " + SensorActuatorRegistry.get().getSpeedControllers().get(simPort).getClass()
+                + " is the wrong type on port " + aCanPort);
+            SensorActuatorRegistry.get().getSpeedControllers().remove(simPort);
+            createMotorController(aCanPort);
+            return;
+        }
+        SensorActuatorRegistry.get().getSpeedControllers().get(aCanPort + CtreTalonSrxSpeedControllerSim.sCAN_SC_OFFSET).setInitialized(true);
     }
 
     public void handlePigeonMessage(String aName, int aPort, ByteBuffer aData)
