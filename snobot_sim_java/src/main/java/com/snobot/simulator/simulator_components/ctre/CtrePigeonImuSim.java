@@ -85,16 +85,22 @@ public class CtrePigeonImuSim extends ASensorWrapper
     public static class PigeonGyroWrapper extends ASensorWrapper implements IGyroWrapper
     {
         private double mAngle;
+        private double mAngleOffset;
 
         public PigeonGyroWrapper(String aName)
         {
             super(aName);
         }
 
+        public void setDesiredYaw(double aOffset)
+        {
+            mAngleOffset = aOffset - mAngle;
+        }
+
         @Override
         public double getAngle()
         {
-            return mAngle;
+            return mAngle + mAngleOffset;
         }
 
         @Override

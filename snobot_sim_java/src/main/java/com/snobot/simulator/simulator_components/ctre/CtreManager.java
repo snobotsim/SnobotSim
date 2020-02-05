@@ -16,6 +16,7 @@ import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.simulator_components.ctre.CtreTalonSrxSpeedControllerSim.MotionProfilePoint;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
+@SuppressWarnings({"PMD.NcssCount", "PMD.CyclomaticComplexity"})
 public class CtreManager
 {
     private static final Logger sLOGGER = LogManager.getLogger(CtreManager.class);
@@ -42,6 +43,7 @@ public class CtreManager
         return mPigeonMap.get(aCanPort);
     }
 
+    @SuppressWarnings("PMD.ExcessiveMethodLength")
     public void handleMotorControllerMessage(String aCallback, int aCanPort, ByteBuffer aData)
     {
         aData.order(ByteOrder.LITTLE_ENDIAN);
@@ -385,6 +387,12 @@ public class CtreManager
 
             pigeon.setInitialized(true);
         }
+        else if ("SetYaw".equals(aName))
+        {
+            double desiredYaw = aData.getDouble();
+            CtrePigeonImuSim wrapper = getPigeonWrapper(aPort);
+            ((CtrePigeonImuSim.PigeonGyroWrapper) wrapper.getYawWrapper()).setDesiredYaw(desiredYaw);
+        }
 
         //////////////////////////
         //
@@ -397,7 +405,7 @@ public class CtreManager
             aData.putDouble(wrapper.getPitchWrapper().getAngle());
             aData.putDouble(wrapper.getRollWrapper().getAngle());
         }
-        else if ("GetYawPitchRoll".equals(aName))
+        else if ("GetYawPitchRoll".equals(aName)) //NOPMD.AvoidLiteralsInIfCondition
         {
             CtrePigeonImuSim wrapper = getPigeonWrapper(aPort);
 
@@ -405,7 +413,7 @@ public class CtreManager
             aData.putDouble(wrapper.getPitchWrapper().getAngle());
             aData.putDouble(wrapper.getRollWrapper().getAngle());
         }
-        else if ("GetFusedHeading".equals(aName) || "GetFusedHeading1".equals(aName))
+        else if ("GetFusedHeading".equals(aName) || "GetFusedHeading1".equals(aName)) //NOPMD.AvoidLiteralsInIfCondition
         {
             CtrePigeonImuSim wrapper = getPigeonWrapper(aPort);
 
@@ -413,7 +421,7 @@ public class CtreManager
         }
         else
         {
-            sLOGGER.log(Level.ERROR, "Unknown pigeon callback: " + aName);
+            sLOGGER.log(Level.ERROR, "Unsupported option " + aName + "(" + aData.limit() + " bytes)");
         }
     }
 
