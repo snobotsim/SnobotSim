@@ -8,7 +8,6 @@
 #pragma once
 #include <memory>
 
-#include "ADXRS450_SpiGyroWrapperData.h"
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 #include "SnobotSim/ModuleWrapper/Interfaces/IGyroWrapper.h"
 #include "SnobotSim/ModuleWrapper/Interfaces/ISpiWrapper.h"
@@ -24,5 +23,4 @@ public:
     double GetAngle() override;
 
 protected:
-    std::shared_ptr<hal::ADXRS450_SpiGyroWrapper> mGyro;
 };

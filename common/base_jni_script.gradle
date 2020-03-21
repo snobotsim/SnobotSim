@@ -31,26 +31,26 @@ task packageNativeFiles(type: Jar) {
 
     project.model {
         binaries {
-            withType(SharedLibraryBinarySpec) { binary ->
-                if (binary.component.name == project.libraryName)
-                {
-                    dependsOn binary.buildTask
-                    from(binary.sharedLibraryFile) {
-                    }
-                }
-                if(project.hasProperty("extra_libraries"))
-                {
-                    project.extra_libraries.each {
-                        if (binary.component.name == it[1])
-                        {
-                            dependsOn binary.buildTask
-                            from(binary.sharedLibraryFile) {
-                                into project.getNativeVersion(binary)
-                            }
-                        }
-                    }
-                }
-            }
+            // withType(SharedLibraryBinarySpec) { binary ->
+            //     if (binary.component.name == project.libraryName)
+            //     {
+            //         dependsOn binary.buildTask
+            //         from(binary.sharedLibraryFile) {
+            //         }
+            //     }
+            //     if(project.hasProperty("extra_libraries"))
+            //     {
+            //         project.extra_libraries.each {
+            //             if (binary.component.name == it[1])
+            //             {
+            //                 dependsOn binary.buildTask
+            //                 from(binary.sharedLibraryFile) {
+            //                     into project.getNativeVersion(binary)
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
         }
     }
 }

@@ -10,12 +10,12 @@
 
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 #include "SnobotSim/ModuleWrapper/Interfaces/IAccelerometerWrapper.h"
-#include "ThreeAxisAccelerometerData.h"
+// #include "ThreeAxisAccelerometerData.h"
 
 class BaseAdxAccelWrapper
 {
 public:
-    BaseAdxAccelWrapper(int aBasePort, const std::shared_ptr<hal::ThreeAxisAccelerometerData>& aAccel);
+    BaseAdxAccelWrapper(int aBasePort);
     virtual ~BaseAdxAccelWrapper();
 
 protected:
@@ -29,14 +29,14 @@ protected:
             AXIS_Z
         };
 
-        AccelerometerWrapper(AxisType aAxisType, const std::shared_ptr<hal::ThreeAxisAccelerometerData>& aAccel);
+        AccelerometerWrapper(AxisType aAxisType);
 
         void SetAcceleration(double aAcceleration) override;
 
         double GetAcceleration() override;
 
         AxisType mAxisType;
-        std::shared_ptr<hal::ThreeAxisAccelerometerData> mAccel;
+        // std::shared_ptr<hal::ThreeAxisAccelerometerData> mAccel;
     };
 
     std::shared_ptr<AccelerometerWrapper> mXWrapper;

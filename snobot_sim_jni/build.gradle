@@ -72,7 +72,7 @@ dependencies {
     
     compile project(":snobot_sim_utilities")
 
-    wpilibNativeDeps project(':sim_extension_navx').packageNativeFiles.outputs.files
+    // wpilibNativeDeps project(':sim_extension_navx').packageNativeFiles.outputs.files
     wpilibNativeDeps project(':snobot_sim_jni').packageNativeFiles.outputs.files
     wpilibNativeDeps project(':snobot_sim').packageNativeFilesInJar.outputs.files
 }
@@ -82,34 +82,34 @@ test.dependsOn extract_wpilib
 
 
 model {
-    exportsConfigs {
-        snobotSimJni(ExportsConfig) {
-            x86SymbolFilter = { symbols->
-                def retList = []
-                return retList
-            }
-            x64SymbolFilter = { symbols->
-                def retList = []
-                return retList
-            }
-        }
-    }
-    dependencyConfigs {
-        wpiutil(DependencyConfig) {
-            groupId = 'edu.wpi.first.wpiutil'
-            artifactId = 'wpiutil-cpp'
-            headerClassifier = 'headers'
-            ext = 'zip'
-            version = getWpiUtilVersion()
-            sharedConfigs = [ snobotSimJni: [] ]
-        }
-        halsim(DependencyConfig) {
-            groupId = 'edu.wpi.first.hal'
-            artifactId = 'hal-cpp'
-            headerClassifier = 'headers'
-            ext = 'zip'
-            version = allwpilibVersion()
-            sharedConfigs = [ snobotSimJni: [] ]
-        }
-    }
+    // exportsConfigs {
+    //     snobotSimJni(ExportsConfig) {
+    //         x86SymbolFilter = { symbols->
+    //             def retList = []
+    //             return retList
+    //         }
+    //         x64SymbolFilter = { symbols->
+    //             def retList = []
+    //             return retList
+    //         }
+    //     }
+    // }
+    // dependencyConfigs {
+    //     wpiutil(DependencyConfig) {
+    //         groupId = 'edu.wpi.first.wpiutil'
+    //         artifactId = 'wpiutil-cpp'
+    //         headerClassifier = 'headers'
+    //         ext = 'zip'
+    //         version = getWpiUtilVersion()
+    //         sharedConfigs = [ snobotSimJni: [] ]
+    //     }
+    //     halsim(DependencyConfig) {
+    //         groupId = 'edu.wpi.first.hal'
+    //         artifactId = 'hal-cpp'
+    //         headerClassifier = 'headers'
+    //         ext = 'zip'
+    //         version = allwpilibVersion()
+    //         sharedConfigs = [ snobotSimJni: [] ]
+    //     }
+    // }
 }

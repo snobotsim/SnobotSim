@@ -8,8 +8,7 @@
 #include "SnobotSim/SimulatorComponents/AdxWrappers/AdxGyroWrapper.h"
 
 AdxGyroWrapper::AdxGyroWrapper(int aPort) :
-        AModuleWrapper("Gyro"),
-        mGyro(new hal::ADXRS450_SpiGyroWrapper(aPort))
+        AModuleWrapper("Gyro")
 {
 }
 
@@ -19,10 +18,11 @@ AdxGyroWrapper::~AdxGyroWrapper()
 
 void AdxGyroWrapper::SetAngle(double aAngle)
 {
-    mGyro->SetAngle(aAngle);
+    // mGyro->SetAngle(aAngle);
 }
 
 double AdxGyroWrapper::GetAngle()
 {
-    return mGyro->GetAngle();
+    return 0;
+    // return mGyro->GetAngle();
 }

@@ -14,6 +14,7 @@ import com.snobot.simulator.wrapper_accessors.SimulatorDataAccessor;
 import com.snobot.simulator.wrapper_accessors.SolenoidWrapperAccessor;
 import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor;
 import com.snobot.simulator.wrapper_accessors.SpiWrapperAccessor;
+import com.snobot.simulator.wrapper_accessors.AddressableLedWrapperAccessor;
 
 public class JniDataAccessor implements IDataAccessor
 {
@@ -136,6 +137,12 @@ public class JniDataAccessor implements IDataAccessor
 
     @Override
     public String getInitializationErrors()
+    {
+        return null;
+    }
+
+    @Override
+    public AddressableLedWrapperAccessor getAddressableLedAccessor()
     {
         return null;
     }

@@ -8,7 +8,6 @@
 #pragma once
 #include <memory>
 
-#include "NavxSim/NavxSimulator.h"
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 #include "SnobotSim/ModuleWrapper/Interfaces/IAccelerometerWrapper.h"
 #include "SnobotSim/ModuleWrapper/Interfaces/IGyroWrapper.h"
@@ -16,7 +15,7 @@
 class BaseNavxWrapper
 {
 public:
-    BaseNavxWrapper(int aBasePort, const std::shared_ptr<NavxSimulator>& aNavx);
+    BaseNavxWrapper(int aBasePort);
     virtual ~BaseNavxWrapper();
 
     class AccelerometerWrapper : public AModuleWrapper, public IAccelerometerWrapper
@@ -29,14 +28,14 @@ public:
             AXIS_Z
         };
 
-        AccelerometerWrapper(AxisType aAxisType, const std::shared_ptr<NavxSimulator>& aNavx);
+        AccelerometerWrapper(AxisType aAxisType);
 
         void SetAcceleration(double aAcceleration) override;
 
         double GetAcceleration() override;
 
         AxisType mAxisType;
-        std::shared_ptr<NavxSimulator> mNavx;
+        // std::shared_ptr<NavxSimulator> mNavx;
     };
     class GyroWrapper : public AModuleWrapper, public IGyroWrapper
     {
@@ -48,14 +47,14 @@ public:
             AXIS_ROLL
         };
 
-        GyroWrapper(AxisType aAxisType, const std::shared_ptr<NavxSimulator>& aAccel);
+        GyroWrapper(AxisType aAxisType);
 
         void SetAngle(double aAngle) override;
 
         double GetAngle() override;
 
         AxisType mAxisType;
-        std::shared_ptr<NavxSimulator> mNavx;
+        // std::shared_ptr<NavxSimulator> mNavx;
     };
 
     std::shared_ptr<AccelerometerWrapper> mXWrapper;

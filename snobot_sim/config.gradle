@@ -1,17 +1,22 @@
 import org.gradle.internal.os.OperatingSystem
 
+nativeUtils.withRoboRIO()
 nativeUtils.addWpiNativeUtils()
+nativeUtils.withRaspbian()
+// nativeUtils.withBionic() // Uncomment this to enable aarch64 bionic builds
 nativeUtils {
   wpi {
     configureDependencies {
-      wpiVersion = allwpilibVersion()
-      opencvVersion = getWpilibOpencvVersion()
+      wpiVersion = "2020.+"
+      niLibVersion = "2020.9.1"
+      opencvVersion = "3.4.7-2"
+      googleTestVersion = "1.9.0-3-437e100"
     }
   }
 }
 
-//nativeUtils.wpi.addWarnings()
-//nativeUtils.wpi.addWarningsAsErrors()
+// nativeUtils.wpi.addWarnings()
+// nativeUtils.wpi.addWarningsAsErrors()
 
 nativeUtils.setSinglePrintPerPlatform()
 
@@ -84,9 +89,9 @@ ext.createComponentZipTasks = { components, names, base, type, project, func ->
     configMap.each { key, value ->
         def task = project.tasks.create(base + "-${key}", type) {
             description = 'Creates component archive for platform ' + key
-            destinationDir = outputsFolder
+            destinationDirectory = outputsFolder
             classifier = key
-            baseName = '_M_' + base
+            archiveBaseName = '_M_' + base
             duplicatesStrategy = 'exclude'
 
             from(licenseFile) {

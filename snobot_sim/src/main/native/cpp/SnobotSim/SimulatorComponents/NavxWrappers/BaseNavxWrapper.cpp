@@ -9,14 +9,14 @@
 
 #include "SnobotSim/SensorActuatorRegistry.h"
 
-BaseNavxWrapper::BaseNavxWrapper(int aBasePort, const std::shared_ptr<NavxSimulator>& aNavx) :
-        mXWrapper(new AccelerometerWrapper(AccelerometerWrapper::AXIS_X, aNavx)),
-        mYWrapper(new AccelerometerWrapper(AccelerometerWrapper::AXIS_Y, aNavx)),
-        mZWrapper(new AccelerometerWrapper(AccelerometerWrapper::AXIS_Z, aNavx)),
+BaseNavxWrapper::BaseNavxWrapper(int aBasePort) :
+        mXWrapper(new AccelerometerWrapper(AccelerometerWrapper::AXIS_X)),
+        mYWrapper(new AccelerometerWrapper(AccelerometerWrapper::AXIS_Y)),
+        mZWrapper(new AccelerometerWrapper(AccelerometerWrapper::AXIS_Z)),
 
-        mYawWrapper(new GyroWrapper(GyroWrapper::AXIS_YAW, aNavx)),
-        mPitchWrapper(new GyroWrapper(GyroWrapper::AXIS_PITCH, aNavx)),
-        mRollWrapper(new GyroWrapper(GyroWrapper::AXIS_ROLL, aNavx))
+        mYawWrapper(new GyroWrapper(GyroWrapper::AXIS_YAW)),
+        mPitchWrapper(new GyroWrapper(GyroWrapper::AXIS_PITCH)),
+        mRollWrapper(new GyroWrapper(GyroWrapper::AXIS_ROLL))
 {
     SensorActuatorRegistry::Get().Register(aBasePort + 0, mXWrapper);
     SensorActuatorRegistry::Get().Register(aBasePort + 1, mYWrapper);
@@ -31,86 +31,84 @@ BaseNavxWrapper::~BaseNavxWrapper()
 {
 }
 
-BaseNavxWrapper::AccelerometerWrapper::AccelerometerWrapper(AxisType aAxisType, const std::shared_ptr<NavxSimulator>& aNavx) :
+BaseNavxWrapper::AccelerometerWrapper::AccelerometerWrapper(AxisType aAxisType) :
         AModuleWrapper("Hello"),
-        mAxisType(aAxisType),
-        mNavx(aNavx)
+        mAxisType(aAxisType)
 {
 }
 
 void BaseNavxWrapper::AccelerometerWrapper::SetAcceleration(double aAcceleration)
 {
-    if (!mNavx)
-    {
-        return;
-    }
+    // if (!mNavx)
+    // {
+    //     return;
+    // }
 
-    switch (mAxisType)
-    {
-    case AXIS_X:
-        mNavx->SetX(aAcceleration);
-        break;
-    case AXIS_Y:
-        mNavx->SetY(aAcceleration);
-        break;
-    case AXIS_Z:
-        mNavx->SetZ(aAcceleration);
-        break;
-    }
+    // switch (mAxisType)
+    // {
+    // case AXIS_X:
+    //     mNavx->SetX(aAcceleration);
+    //     break;
+    // case AXIS_Y:
+    //     mNavx->SetY(aAcceleration);
+    //     break;
+    // case AXIS_Z:
+    //     mNavx->SetZ(aAcceleration);
+    //     break;
+    // }
 }
 
 double BaseNavxWrapper::AccelerometerWrapper::GetAcceleration()
 {
-    if (!mNavx)
-    {
-        return 0;
-    }
+    // if (!mNavx)
+    // {
+    //     return 0;
+    // }
 
-    switch (mAxisType)
-    {
-    case AXIS_X:
-        return mNavx->GetX();
-    case AXIS_Y:
-        return mNavx->GetY();
-    case AXIS_Z:
-        return mNavx->GetZ();
-    }
+    // switch (mAxisType)
+    // {
+    // case AXIS_X:
+    //     return mNavx->GetX();
+    // case AXIS_Y:
+    //     return mNavx->GetY();
+    // case AXIS_Z:
+    //     return mNavx->GetZ();
+    // }
     return 0;
 }
 
-BaseNavxWrapper::GyroWrapper::GyroWrapper(AxisType aAxisType, const std::shared_ptr<NavxSimulator>& aNavx) :
+BaseNavxWrapper::GyroWrapper::GyroWrapper(AxisType aAxisType) :
         AModuleWrapper("Hello"),
-        mAxisType(aAxisType),
-        mNavx(aNavx)
+        mAxisType(aAxisType)
 {
 }
 
 void BaseNavxWrapper::GyroWrapper::SetAngle(double aAngle)
 {
-    switch (mAxisType)
-    {
-    case AXIS_YAW:
-        mNavx->SetYaw(aAngle);
-        break;
-    case AXIS_PITCH:
-        mNavx->SetPitch(aAngle);
-        break;
-    case AXIS_ROLL:
-        mNavx->SetRoll(aAngle);
-        break;
-    }
+    // switch (mAxisType)
+    // {
+    // case AXIS_YAW:
+    //     mNavx->SetYaw(aAngle);
+    //     break;
+    // case AXIS_PITCH:
+    //     mNavx->SetPitch(aAngle);
+    //     break;
+    // case AXIS_ROLL:
+    //     mNavx->SetRoll(aAngle);
+    //     break;
+    // }
 }
 
 double BaseNavxWrapper::GyroWrapper::GetAngle()
 {
-    switch (mAxisType)
-    {
-    case AXIS_YAW:
-        return mNavx->GetYaw();
-    case AXIS_PITCH:
-        return mNavx->GetPitch();
-    case AXIS_ROLL:
-        return mNavx->GetRoll();
-    }
+    // switch (mAxisType)
+    // {
+    // case AXIS_YAW:
+    //     return mNavx->GetYaw();
+    // case AXIS_PITCH:
+    //     return mNavx->GetPitch();
+    // case AXIS_ROLL:
+    //     return mNavx->GetRoll();
+    // }
     return 0;
 }
