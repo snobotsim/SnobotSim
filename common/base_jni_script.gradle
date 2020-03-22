@@ -70,23 +70,34 @@ model {
             jniCrossCompileOptions << JniCrossCompileOptions(nativeUtils.wpi.platforms.roborio)
             jniCrossCompileOptions << JniCrossCompileOptions(nativeUtils.wpi.platforms.raspbian)
             jniCrossCompileOptions << JniCrossCompileOptions(nativeUtils.wpi.platforms.aarch64bionic)
-            sources {
-                cpp {
-                    source {
-                        srcDirs = project.librarySrcDirs
-                        includes = ["**/*.cpp"]
-                    }
-                    exportedHeaders {
-                        srcDirs = project.libraryHeaderDirs
-                    }
-                    if(project.hasProperty("extra_libraries"))
-                    {
-                        project.extra_libraries.each {
-                             lib project: it[0], library: it[1], linkage:it[2]
+            
+            binaries.all {
+                if (it.targetPlatform.name == nativeUtils.wpi.platforms.roborio || it.targetPlatform.name == nativeUtils.wpi.platforms.raspbian) {
+                    it.buildable = false
+                    return
+                } else {
+                    it.sources {
+                        cpp(CppSourceSet) {
+                        
+                            source {
+                                srcDirs = project.librarySrcDirs
+                                includes = ["**/*.cpp"]
+                            }
+                            exportedHeaders {
+                                srcDirs = project.libraryHeaderDirs
+                            }
+                            if(project.hasProperty("extra_libraries"))
+                            {
+                                println "Has extra"
+                                project.extra_libraries.each {
+                                    lib project: it[0], library: it[1], linkage:it[2]
+                                }
+                            }
                         }
                     }
                 }
             }
+            nativeUtils.useRequiredLibrary(it, "ntcore_shared", "hal_shared", "wpiutil_shared")
         }
     }
 }

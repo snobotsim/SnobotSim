@@ -15,11 +15,11 @@ if (project.hasProperty('releaseMode')) {
     wpilibRepositories.addAllDevelopmentRepositories(project)
 }
 
-apply from: 'config.gradle'
+apply from: "${rootDir}/common/config.gradle"
 
 nativeUtils {
   exportsConfigs {
-      navx_frc {
+      snobotSimCpp {
       }
   }
 }
@@ -28,12 +28,16 @@ model {
   components {
     snobotSimCpp(NativeLibrarySpec) {
       appendDebugPathToBinaries(binaries)
+      apply from: "${rootDir}/common/create_version_file.gradle"
+      createCppVersion("SnobotSim", "SnobotSim", "SnobotSimHalVersion", getVersionName())
+      
       binaries.all {
         if (it.targetPlatform.name == nativeUtils.wpi.platforms.roborio || it.targetPlatform.name == nativeUtils.wpi.platforms.raspbian) {
-            println "Skipping platform " + it.targetPlatform.name
+            it.buildable = false
+            return
         } else {
           it.sources {
-            athenaCpp(CppSourceSet) {
+            cpp(CppSourceSet) {
               
                     source {
                         srcDirs = ['src/main/native/cpp', "$buildDir/generated/cpp"]
@@ -46,7 +50,7 @@ model {
           }
         }
       }
-      nativeUtils.useRequiredLibrary(it, "wpilibc_shared", "ntcore_shared", "hal_shared", "wpiutil_shared")
+      nativeUtils.useRequiredLibrary(it, "ntcore_shared", "hal_shared", "wpiutil_shared")
     }
   }
 }
@@ -58,7 +62,9 @@ task packageNativeFilesInJar(type: Jar) {
     project.model {
         binaries {
             withType(SharedLibraryBinarySpec) { binary ->
+                println ("Hello... " + binary.component.name)
                 if (binary.component.name == 'snobotSimCpp') {
+                    println("  Good to go...")
                     dependsOn binary.buildTask
                         into "xx" // NativeUtils.getPlatformPath(binary)
                 }
