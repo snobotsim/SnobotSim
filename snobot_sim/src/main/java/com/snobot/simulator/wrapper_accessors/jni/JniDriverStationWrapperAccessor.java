@@ -6,7 +6,6 @@ import com.snobot.simulator.wrapper_accessors.DriverStationDataAccessor;
 
 public class JniDriverStationWrapperAccessor implements DriverStationDataAccessor
 {
-
     @Override
     public void setDisabled(boolean aDisabled)
     {

@@ -8,18 +8,18 @@
 #include "com_snobot_simulator_jni_MotorConfigFactoryJni.h"
 #include "wpi/jni_util.h"
 
-extern "C"
-{
+extern "C" {
 
 /*
  * Class:     com_snobot_simulator_jni_MotorConfigFactoryJni
  * Method:    createMotor
- * Signature: (Ljava/lang/String;IDDZZ)Lcom/snobot/simulator/jni/LocalDcMotorModelConfig;
+ * Signature: (Ljava/lang/String;IDD)Ljava/lang/Object;
  */
-JNIEXPORT jobject JNICALL Java_com_snobot_simulator_jni_MotorConfigFactoryJni_createMotor
-  (JNIEnv * env, jclass, jstring aName, jint aNumMotors, jdouble aGearReduction, jdouble aTransmissionEfficiency)
+JNIEXPORT jobject JNICALL
+Java_com_snobot_simulator_jni_MotorConfigFactoryJni_createMotor
+  (JNIEnv* env, jclass, jstring aName, jint aNumMotors, jdouble aGearReduction,
+   jdouble aTransmissionEfficiency)
 {
-
     DcMotorModelConfig config = VexMotorFactory::MakeTransmission(
             VexMotorFactory::CreateMotor(env->GetStringUTFChars(aName, NULL)),
             aNumMotors, aGearReduction, aTransmissionEfficiency);
@@ -27,4 +27,4 @@ JNIEXPORT jobject JNICALL Java_com_snobot_simulator_jni_MotorConfigFactoryJni_cr
     return ConversionUtils::ConvertDcMotorModelConfig(env, config);
 }
 
-}  // extern "C"
+} // extern "C"

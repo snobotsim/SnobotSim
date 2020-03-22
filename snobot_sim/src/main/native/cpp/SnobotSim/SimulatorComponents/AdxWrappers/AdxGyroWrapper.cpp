@@ -7,7 +7,7 @@
 
 #include "SnobotSim/SimulatorComponents/AdxWrappers/AdxGyroWrapper.h"
 
-AdxGyroWrapper::AdxGyroWrapper(const std::string& aBaseName,int aPort) :
+AdxGyroWrapper::AdxGyroWrapper(const std::string& aBaseName, int aPort) :
         AModuleWrapper("Gyro"),
         mSimWrapper(aBaseName, "Angle")
 {

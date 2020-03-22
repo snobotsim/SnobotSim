@@ -31,7 +31,7 @@ public:
     void ResetDefaults();
 
     std::shared_ptr<ISpiWrapper> CreateWrapper(int aPort, const std::string& aType);
-protected:
 
+protected:
     std::map<int, std::string> mDefaultsMap;
 };

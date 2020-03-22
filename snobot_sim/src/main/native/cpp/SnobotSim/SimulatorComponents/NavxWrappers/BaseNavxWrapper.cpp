@@ -8,18 +8,16 @@
 #include "SnobotSim/SimulatorComponents/NavxWrappers/BaseNavxWrapper.h"
 
 #include "SnobotSim/SensorActuatorRegistry.h"
-#include <iostream>
 
 BaseNavxWrapper::BaseNavxWrapper(const std::string& aBaseName, const std::string& aDeviceName, int aBasePort) :
-        mXWrapper(new AccelerometerWrapper(LazySimDoubleWrapper{aDeviceName, "X Accel"})),
-        mYWrapper(new AccelerometerWrapper(LazySimDoubleWrapper{aDeviceName, "Y Accel"})),
-        mZWrapper(new AccelerometerWrapper(LazySimDoubleWrapper{aDeviceName, "Z Accel"})),
+        mXWrapper(new AccelerometerWrapper(LazySimDoubleWrapper{ aDeviceName, "X Accel" })),
+        mYWrapper(new AccelerometerWrapper(LazySimDoubleWrapper{ aDeviceName, "Y Accel" })),
+        mZWrapper(new AccelerometerWrapper(LazySimDoubleWrapper{ aDeviceName, "Z Accel" })),
 
-        mYawWrapper(new GyroWrapper(LazySimDoubleWrapper{aDeviceName, "Yaw"})),
-        mPitchWrapper(new GyroWrapper(LazySimDoubleWrapper{aDeviceName, "Pitch"})),
-        mRollWrapper(new GyroWrapper(LazySimDoubleWrapper{aDeviceName, "Roll"}))
+        mYawWrapper(new GyroWrapper(LazySimDoubleWrapper{ aDeviceName, "Yaw" })),
+        mPitchWrapper(new GyroWrapper(LazySimDoubleWrapper{ aDeviceName, "Pitch" })),
+        mRollWrapper(new GyroWrapper(LazySimDoubleWrapper{ aDeviceName, "Roll" }))
 {
-    std::cout << "Creating navx: " << std::endl;
     SensorActuatorRegistry::Get().Register(aBasePort + 0, mXWrapper);
     SensorActuatorRegistry::Get().Register(aBasePort + 1, mYWrapper);
     SensorActuatorRegistry::Get().Register(aBasePort + 2, mZWrapper);

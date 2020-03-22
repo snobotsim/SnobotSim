@@ -9,7 +9,6 @@ import com.snobot.simulator.wrapper_accessors.I2CWrapperAccessor;
 
 public class JniI2CWrapperAccessor implements I2CWrapperAccessor
 {
-
     @Override
     public Collection<String> getAvailableI2CSimulators()
     {

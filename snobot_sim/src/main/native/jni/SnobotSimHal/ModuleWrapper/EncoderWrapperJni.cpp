@@ -6,79 +6,82 @@
 
 #include "SnobotSim/GetSensorActuatorHelper.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
+#include "SnobotSim/ModuleWrapper/Factories/FactoryContainer.h"
 #include "SnobotSim/ModuleWrapper/Interfaces/IEncoderWrapper.h"
 #include "SnobotSim/PortUnwrapper.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "com_snobot_simulator_jni_module_wrapper_EncoderWrapperJni.h"
-#include "SnobotSim/ModuleWrapper/Factories/FactoryContainer.h"
 #include "wpi/jni_util.h"
 
 using namespace wpi::java;
 
-extern "C"
-{
+extern "C" {
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_EncoderWrapperJni
+ * Class:     com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni
  * Method:    isInitialized
  * Signature: (I)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_isInitialized
-  (JNIEnv *, jclass, jint aPortHandle)
+JNIEXPORT jboolean JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_isInitialized
+  (JNIEnv*, jclass, jint aPortHandle)
 {
-	return SensorActuatorRegistry::Get().GetIEncoderWrapper(aPortHandle)->IsInitialized();
+    return SensorActuatorRegistry::Get().GetIEncoderWrapper(aPortHandle)->IsInitialized();
 }
 
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_EncoderWrapperJni
+ * Class:     com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni
  * Method:    getHandle
  * Signature: (II)I
  */
-JNIEXPORT jint JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_getHandle
-  (JNIEnv *, jclass, jint handleA, jint handleB)
+JNIEXPORT jint JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_getHandle
+  (JNIEnv*, jclass, jint handleA, jint handleB)
 {
     int basicHandle = (handleA << 8) + handleB;
     std::shared_ptr<IEncoderWrapper> wrapper = SensorActuatorRegistry::Get().GetIEncoderWrapper(basicHandle, false);
-    if(wrapper)
+    if (wrapper)
     {
         return basicHandle;
     }
 
     int packedHandle = (WrapPort(handleA) << 8) + WrapPort(handleB);
     wrapper = SensorActuatorRegistry::Get().GetIEncoderWrapper(packedHandle, false);
-    if(wrapper)
+    if (wrapper)
     {
         return packedHandle;
     }
 
     SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL,
-            "Could not find encoder with ports (" << handleA << ", " << handleB << "), " <<
-            "tried " << basicHandle << " and " << packedHandle);
+            "Could not find encoder with ports (" << handleA << ", " << handleB << "), "
+                                                  << "tried " << basicHandle << " and " << packedHandle);
 
     return -1;
-
 }
 
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_EncoderWrapperJni
+ * Class:     com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni
  * Method:    setName
  * Signature: (ILjava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_setName
-  (JNIEnv * env, jclass, jint aPortHandle, jstring aName)
+JNIEXPORT void JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_setName
+  (JNIEnv* env, jclass, jint aPortHandle, jstring aName)
 {
     std::shared_ptr<IEncoderWrapper> wrapper = SensorActuatorRegistry::Get().GetIEncoderWrapper(aPortHandle);
-    if(wrapper)
+    if (wrapper)
     {
         wrapper->SetName(env->GetStringUTFChars(aName, NULL));
     }
 }
 
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_EncoderWrapperJni
+ * Class:     com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni
  * Method:    getName
- * Signature: ()Ljava/lang/String;
+ * Signature: (I)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_getName(JNIEnv * env, jclass, jint portHandle)
+JNIEXPORT jstring JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_getName
+  (JNIEnv* env, jclass, jint portHandle)
 {
     jstring output = MakeJString(env, SensorActuatorRegistry::Get().GetIEncoderWrapper(portHandle)->GetName());
 
@@ -86,57 +89,61 @@ JNIEXPORT jstring JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderW
 }
 
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_EncoderWrapperJni
+ * Class:     com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni
  * Method:    getWantsHidden
  * Signature: (I)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_getWantsHidden(JNIEnv *, jclass, jint portHandle)
+JNIEXPORT jboolean JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_getWantsHidden
+  (JNIEnv*, jclass, jint portHandle)
 {
     return SensorActuatorRegistry::Get().GetIEncoderWrapper(portHandle)->WantsHidden();
 }
 
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_EncoderWrapperJni
+ * Class:     com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni
  * Method:    createSimulator
  * Signature: (ILjava/lang/String;)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_createSimulator
-  (JNIEnv * env, jclass, jint aHandle, jstring aType)
+JNIEXPORT jboolean JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_createSimulator
+  (JNIEnv* env, jclass, jint aHandle, jstring aType)
 {
-	return FactoryContainer::Get().GetEncoderFactory()->Create(aHandle, env->GetStringUTFChars(aType, NULL));
+    return FactoryContainer::Get().GetEncoderFactory()->Create(aHandle, env->GetStringUTFChars(aType, NULL));
 }
 
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_EncoderWrapperJni
+ * Class:     com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni
  * Method:    removeSimluator
  * Signature: (I)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_removeSimluator
-  (JNIEnv *, jclass, jint)
+JNIEXPORT void JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_removeSimluator
+  (JNIEnv*, jclass, jint)
 {
-
 }
 
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_EncoderWrapperJni
+ * Class:     com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni
  * Method:    connectSpeedController
- * Signature: (II)V
+ * Signature: (II)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_connectSpeedController
-  (JNIEnv *, jclass, jint aEncoderhandle, jint aScHandle)
+JNIEXPORT jboolean JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_connectSpeedController
+  (JNIEnv*, jclass, jint aEncoderhandle, jint aScHandle)
 {
     bool success = false;
     std::shared_ptr<IEncoderWrapper> encoder = GetSensorActuatorHelper::GetIEncoderWrapper(aEncoderhandle);
 
-    if(encoder)
+    if (encoder)
     {
         std::shared_ptr<ISpeedControllerWrapper> speedController;
-        if(aScHandle != -1)
+        if (aScHandle != -1)
         {
             speedController = GetSensorActuatorHelper::GetISpeedControllerWrapper(aScHandle);
         }
 
-        if(speedController)
+        if (speedController)
         {
             encoder->SetSpeedController(speedController);
             success = true;
@@ -147,14 +154,16 @@ JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_Encoder
 }
 
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_EncoderWrapperJni
- * Method:    isConnected
+ * Class:     com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni
+ * Method:    isHookedUp
  * Signature: (I)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_isHookedUp(JNIEnv *, jclass, jint portHandle)
+JNIEXPORT jboolean JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_isHookedUp
+  (JNIEnv*, jclass, jint portHandle)
 {
     std::shared_ptr<IEncoderWrapper> encoder = GetSensorActuatorHelper::GetIEncoderWrapper(portHandle);
-    if(encoder)
+    if (encoder)
     {
         return encoder->IsHookedUp();
     }
@@ -162,20 +171,21 @@ JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_Encoder
 }
 
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_EncoderWrapperJni
+ * Class:     com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni
  * Method:    getHookedUpId
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_getHookedUpId
-  (JNIEnv *, jclass, jint portHandle)
+JNIEXPORT jint JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_getHookedUpId
+  (JNIEnv*, jclass, jint portHandle)
 {
     std::shared_ptr<IEncoderWrapper> encoder = GetSensorActuatorHelper::GetIEncoderWrapper(portHandle);
     int output = -1;
 
-    if(encoder)
+    if (encoder)
     {
         std::shared_ptr<ISpeedControllerWrapper> sc = encoder->GetSpeedController();
-        if(sc)
+        if (sc)
         {
             output = sc->GetId();
         }
@@ -185,21 +195,25 @@ JNIEXPORT jint JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrap
 }
 
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_EncoderWrapperJni
- * Method:    getVoltagePercentage
- * Signature: ()D
+ * Class:     com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni
+ * Method:    getDistance
+ * Signature: (I)D
  */
-JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_getDistance(JNIEnv *, jclass, jint portHandle)
+JNIEXPORT jdouble JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_getDistance
+  (JNIEnv*, jclass, jint portHandle)
 {
     return SensorActuatorRegistry::Get().GetIEncoderWrapper(portHandle)->GetDistance();
 }
 
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_EncoderWrapperJni
+ * Class:     com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni
  * Method:    getPortList
  * Signature: ()[I
  */
-JNIEXPORT jintArray JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_getPortList(JNIEnv * env, jclass)
+JNIEXPORT jintArray JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_getPortList
+  (JNIEnv* env, jclass)
 {
     const std::map<int, std::shared_ptr<IEncoderWrapper>>& encoders = SensorActuatorRegistry::Get().GetIEncoderWrapperMap();
 
@@ -220,5 +234,4 @@ JNIEXPORT jintArray JNICALL Java_com_snobot_simulator_jni_module_1wrapper_Encode
     return output;
 }
 
-
-}  // extern "C"
+} // extern "C"

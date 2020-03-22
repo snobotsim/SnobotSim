@@ -13,8 +13,6 @@
 #include "SnobotSim/SimulatorComponents/AdxWrappers/AdxSpi362AccelWrapper.h"
 #include "SnobotSim/SimulatorComponents/NavxWrappers/SpiNavxWrapper.h"
 
-#include <iostream>
-
 const std::string SpiWrapperFactory::ADXRS450_GYRO_NAME = "ADXRS450";
 const std::string SpiWrapperFactory::ADXL345_ACCELEROMETER_NAME = "ADXL345";
 const std::string SpiWrapperFactory::ADXL362_ACCELEROMETER_NAME = "ADXL362";
@@ -45,7 +43,7 @@ std::shared_ptr<ISpiWrapper> SpiWrapperFactory::GetSpiWrapper(int aPort)
     if (spiWrapper)
     {
         // Already exists, and there is no auto-discovery so just return that, even if it is null
-            SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Hit auto discover...");
+        SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Hit auto discover...");
     }
     // This must be an "initialize" call, it will be registered outside of this
     else
@@ -68,9 +66,7 @@ std::shared_ptr<ISpiWrapper> SpiWrapperFactory::GetSpiWrapper(int aPort)
 
 std::shared_ptr<ISpiWrapper> SpiWrapperFactory::CreateWrapper(int aPort, const std::string& aType)
 {
-    
     std::string fullType = "SPI " + aType;
-    std::cout << "Creating spi wrapper..." << std::endl;
 
     if (aType == NAVX)
     {

@@ -8,28 +8,10 @@ apply from: "${rootDir}/common/config.gradle"
 
 ext {
     baseId = nativeName
-    groupId = "edu.wpi.first.${nativeName}"
+    groupId = "com.snobot.${nativeName}"
 }
 
 apply from: "${rootDir}/common/base_java_script.gradle"
-// apply from: "${rootDir}/shared/java/javacommon.gradle"
-
-dependencies {
-    // if (!project.hasProperty('noWpiutil')) {
-    //     implementation project(':wpiutil')
-    //     devImplementation project(':wpiutil')
-    // }
-}
-
-// project(':').libraryBuild.dependsOn build
-
-// ext {
-//     staticGtestConfigs = [:]
-// }
-
-// staticGtestConfigs["${nativeName}Test"] = []
-
-// apply from: "${rootDir}/shared/googletest.gradle"
 
 model {
     components {
@@ -48,9 +30,6 @@ model {
                     }
                     exportedHeaders {
                         srcDir 'src/main/native/include'
-                        // if (project.hasProperty('generatedHeaders')) {
-                        //     srcDir generatedHeaders
-                        // }
                         include '**/*.h'
                     }
                 }
@@ -60,16 +39,6 @@ model {
                     it.buildable = false
                     return
                 }
-                if (it.targetPlatform.name == nativeUtils.wpi.platforms.roborio || it.targetPlatform.name == nativeUtils.wpi.platforms.raspbian) {
-                    it.buildable = false
-                    return
-                }
-                // if (!project.hasProperty('noWpiutil')) {
-                //     lib project: ':wpiutil', library: 'wpiutil', linkage: 'shared'
-                // }
-                // if (project.hasProperty('splitSetup')) {
-                //     splitSetup(it)
-                // }
             }
             nativeUtils.useRequiredLibrary(it, "ntcore_shared", "hal_shared", "wpiutil_shared")
         }
@@ -91,11 +60,6 @@ model {
                     }
                 }
             }
-            // if (!project.hasProperty('noWpiutil')) {
-            //     binaries.all {
-            //         lib project: ':wpiutil', library: 'wpiutil', linkage: 'shared'
-            //     }
-            // }
             appendDebugPathToBinaries(binaries)
         }
         "${nativeName}JNIShared"(JniNativeLibrarySpec) {
@@ -131,65 +95,17 @@ model {
                     it.buildable = false
                     return
                 }
-                if (it.targetPlatform.name == nativeUtils.wpi.platforms.roborio || it.targetPlatform.name == nativeUtils.wpi.platforms.raspbian) {
-                    it.buildable = false
-                    return
-                }
-                println("Lnking ${nativeName}")
-                lib library: "${nativeName}Base", linkage: 'shared'
-                // if (!project.hasProperty('noWpiutil')) {
-                //     lib project: ':wpiutil', library: 'wpiutil', linkage: 'shared'
+                // if (it.targetPlatform.name == nativeUtils.wpi.platforms.roborio || it.targetPlatform.name == nativeUtils.wpi.platforms.raspbian) {
+                //     it.buildable = false
+                //     return
                 // }
+                lib library: "${nativeName}Base", linkage: 'shared'
                 if (project.hasProperty('jniSplitSetup')) {
                     jniSplitSetup(it)
                 }
             }
             nativeUtils.useRequiredLibrary(it, "hal_shared", "wpiutil_shared")
         }
-        // "${nativeName}JNI"(JniNativeLibrarySpec) {
-        //     if (project.hasProperty('setBaseName')) {
-        //         baseName = setBaseName + 'jni'
-        //     } else {
-        //         baseName = nativeName + 'jni'
-        //     }
-
-        //     enableCheckTask true
-        //     javaCompileTasks << compileJava
-        //     jniCrossCompileOptions << JniCrossCompileOptions(nativeUtils.wpi.platforms.roborio)
-        //     jniCrossCompileOptions << JniCrossCompileOptions(nativeUtils.wpi.platforms.raspbian)
-        //     jniCrossCompileOptions << JniCrossCompileOptions(nativeUtils.wpi.platforms.aarch64bionic)
-        //     sources {
-        //         cpp {
-        //             source {
-        //                 srcDirs = ['src/main/native/cpp']
-        //                 include '**/jni/*.cpp'
-        //             }
-        //             exportedHeaders {
-        //                 srcDir 'src/main/native/include'
-        //                 if (project.hasProperty('generatedHeaders')) {
-        //                     srcDir generatedHeaders
-        //                 }
-        //                 include '**/*.h'
-        //             }
-        //         }
-        //     }
-        //     binaries.all {
-        //         if (it instanceof StaticLibraryBinarySpec) {
-        //             it.buildable = false
-        //             return
-        //         }
-        //         if (it.targetPlatform.name == nativeUtils.wpi.platforms.roborio || it.targetPlatform.name == nativeUtils.wpi.platforms.raspbian) {
-        //             it.buildable = false
-        //             return
-        //         }
-        //         // if (!project.hasProperty('noWpiutil')) {
-        //         //     lib project: ':wpiutil', library: 'wpiutil', linkage: 'static'
-        //         // }
-        //         if (project.hasProperty('jniSplitSetup')) {
-        //             jniSplitSetup(it)
-        //         }
-        //     }
-        // }
         // By default, a development executable will be generated. This is to help the case of
         // testing specific functionality of the library.
         "${nativeName}Dev"(NativeExecutableSpec) {
@@ -212,50 +128,17 @@ model {
             binaries.all {
                 lib library: "${nativeName}Base", linkage: 'shared'
                 lib library: "${nativeName}JNIShared", linkage: 'shared'
-                // if (!project.hasProperty('noWpiutil')) {
-                //     lib project: ':wpiutil', library: 'wpiutil', linkage: 'shared'
+                // if (it.targetPlatform.name == nativeUtils.wpi.platforms.roborio || it.targetPlatform.name == nativeUtils.wpi.platforms.raspbian) {
+                //     it.buildable = false
+                //     return
                 // }
-                if (it.targetPlatform.name == nativeUtils.wpi.platforms.roborio || it.targetPlatform.name == nativeUtils.wpi.platforms.raspbian) {
-                    it.buildable = false
-                    return
-                }
             }
             nativeUtils.useRequiredLibrary(it, "hal_shared", "wpiutil_shared")
         }
     }
-    // testSuites {
-    //     "${nativeName}Test"(GoogleTestTestSuiteSpec) {
-    //         for(NativeComponentSpec c : $.components) {
-    //             if (c.name == nativeName) {
-    //                 testing c
-    //                 break
-    //             }
-    //         }
-    //         sources {
-    //             cpp {
-    //                 source {
-    //                     srcDirs 'src/test/native/cpp'
-    //                     include '**/*.cpp'
-    //                 }
-    //                 exportedHeaders {
-    //                     srcDirs 'src/test/native/include', 'src/main/native/cpp'
-    //                     if (project.hasProperty('generatedHeaders')) {
-    //                         srcDir generatedHeaders
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
     binaries {
         withType(GoogleTestTestSuiteBinarySpec) {
             lib library: nativeName, linkage: 'shared'
-            if (!project.hasProperty('noWpiutil')) {
-                // lib project: ':wpiutil', library: 'wpiutil', linkage: 'shared'
-                // if (nativeName == 'hal' && it.targetPlatform.name == nativeUtils.wpi.platforms.roborio) {
-                //     nativeUtils.useRequiredLibrary(it, 'netcomm_shared', 'chipobject_shared', 'visa_shared', 'ni_runtime_shared')
-                // }
-            }
         }
     }
     tasks {
@@ -278,10 +161,6 @@ model {
                                 test.systemProperty 'java.library.path', filePath
                                 test.environment 'LD_LIBRARY_PATH', filePath
                                 test.workingDir filePath
-                                // run.dependsOn it.tasks.install
-                                // run.systemProperty 'java.library.path', filePath
-                                // run.environment 'LD_LIBRARY_PATH', filePath
-                                // run.workingDir filePath
 
                                 found = true
                             }
@@ -293,9 +172,6 @@ model {
     }
 }
 
-// apply from: "${rootDir}/shared/cppDesktopTestTask.gradle"
-// apply from: "${rootDir}/shared/javaDesktopTestTask.gradle"
-
 ext.getJniSpecClass = {
     return JniNativeLibrarySpec
 }
@@ -304,5 +180,3 @@ tasks.withType(RunTestExecutable) {
     args "--gtest_output=xml:test_detail.xml"
     outputs.dir outputDir
 }
-
-// apply from: "${rootDir}/shared/jni/publish.gradle"

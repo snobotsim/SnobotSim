@@ -5,7 +5,6 @@
  *      Author: preiniger
  */
 
-
 #pragma once
 #include <jni.h>
 
@@ -14,7 +13,7 @@
 
 namespace ConversionUtils
 {
-    DcMotorModelConfig ConvertDcMotorModelConfig(JNIEnv * env, jobject& aJavaModelConfig);
+DcMotorModelConfig ConvertDcMotorModelConfig(JNIEnv* env, jobject& aJavaModelConfig);
 
-    jobject ConvertDcMotorModelConfig(JNIEnv *env, const DcMotorModelConfig& aConfig);
-}  // namespace ConversionUtils
+jobject ConvertDcMotorModelConfig(JNIEnv* env, const DcMotorModelConfig& aConfig);
+} // namespace ConversionUtils

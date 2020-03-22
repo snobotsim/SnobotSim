@@ -9,7 +9,6 @@ import com.snobot.simulator.wrapper_accessors.SpiWrapperAccessor;
 
 public class JniSpiWrapperAccessor implements SpiWrapperAccessor
 {
-
     @Override
     public Collection<String> getAvailableSpiSimulators()
     {

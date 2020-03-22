@@ -4,149 +4,156 @@
 #include <cassert>
 
 #include "SnobotSim/GetSensorActuatorHelper.h"
-#include "SnobotSim/SensorActuatorRegistry.h"
-#include "SnobotSim/ModuleWrapper/Interfaces/IGyroWrapper.h"
 #include "SnobotSim/ModuleWrapper/Factories/FactoryContainer.h"
+#include "SnobotSim/ModuleWrapper/Interfaces/IGyroWrapper.h"
+#include "SnobotSim/SensorActuatorRegistry.h"
 #include "com_snobot_simulator_jni_module_wrapper_GyroWrapperJni.h"
 #include "wpi/jni_util.h"
 
 using namespace wpi::java;
 
-extern "C"
-{
+extern "C" {
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_GyroWrapperJni
+ * Class:     com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni
  * Method:    isInitialized
  * Signature: (I)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_isInitialized
-  (JNIEnv *, jclass, jint aPortHandle)
+JNIEXPORT jboolean JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_isInitialized
+  (JNIEnv*, jclass, jint aPortHandle)
 {
-	return SensorActuatorRegistry::Get().GetIGyroWrapper(aPortHandle)->IsInitialized();
+    return SensorActuatorRegistry::Get().GetIGyroWrapper(aPortHandle)->IsInitialized();
 }
 
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_GyroWrapperJni
+ * Class:     com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni
  * Method:    register
  * Signature: (ILjava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_register
-  (JNIEnv * env, jclass, jint aHandle, jstring aName)
+JNIEXPORT void JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_register
+  (JNIEnv* env, jclass, jint aHandle, jstring aName)
 {
-//    std::shared_ptr<GyroWrapper> gyroWrapper(new GyroWrapper(env->GetStringUTFChars(aName, NULL)));
-//    SensorActuatorRegistry::Get().Register(aHandle, gyroWrapper);
+    //    std::shared_ptr<GyroWrapper> gyroWrapper(new GyroWrapper(env->GetStringUTFChars(aName, NULL)));
+    //    SensorActuatorRegistry::Get().Register(aHandle, gyroWrapper);
 }
 
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_GyroWrapperJni
+ * Class:     com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni
  * Method:    setName
  * Signature: (ILjava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_setName
-  (JNIEnv * env, jclass, jint aPortHandle, jstring aName)
+JNIEXPORT void JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_setName
+  (JNIEnv* env, jclass, jint aPortHandle, jstring aName)
 {
     std::shared_ptr<IGyroWrapper> wrapper = GetSensorActuatorHelper::GetIGyroWrapper(aPortHandle);
-    if(wrapper)
+    if (wrapper)
     {
         wrapper->SetName(env->GetStringUTFChars(aName, NULL));
     }
 }
 
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_GyroWrapperJni
+ * Class:     com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni
  * Method:    getName
  * Signature: (I)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_getName
-  (JNIEnv * env, jclass, jint aPortHandle)
+JNIEXPORT jstring JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_getName
+  (JNIEnv* env, jclass, jint aPortHandle)
 {
     jstring output = MakeJString(env, SensorActuatorRegistry::Get().GetIGyroWrapper(aPortHandle)->GetName());
     return output;
 }
 
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_GyroWrapperJni
+ * Class:     com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni
  * Method:    getWantsHidden
  * Signature: (I)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_getWantsHidden
-  (JNIEnv *, jclass, jint aPortHandle)
+JNIEXPORT jboolean JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_getWantsHidden
+  (JNIEnv*, jclass, jint aPortHandle)
 {
     return SensorActuatorRegistry::Get().GetIGyroWrapper(aPortHandle)->WantsHidden();
 }
 
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_GyroWrapperJni
+ * Class:     com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni
  * Method:    createSimulator
  * Signature: (ILjava/lang/String;)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_createSimulator
-  (JNIEnv * env, jclass, jint aHandle, jstring aType)
+JNIEXPORT jboolean JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_createSimulator
+  (JNIEnv* env, jclass, jint aHandle, jstring aType)
 {
-	return FactoryContainer::Get().GetGyroFactory()->Create(aHandle, env->GetStringUTFChars(aType, NULL));
+    return FactoryContainer::Get().GetGyroFactory()->Create(aHandle, env->GetStringUTFChars(aType, NULL));
 }
 
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_GyroWrapperJni
+ * Class:     com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni
  * Method:    removeSimluator
  * Signature: (I)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_removeSimluator
-  (JNIEnv *, jclass, jint)
+JNIEXPORT void JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_removeSimluator
+  (JNIEnv*, jclass, jint)
 {
-
 }
 
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_GyroWrapperJni
- * Method:    getVoltagePercentage
+ * Class:     com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni
+ * Method:    getAngle
  * Signature: (I)D
  */
-JNIEXPORT jdouble JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_getAngle
-  (JNIEnv *, jclass, jint aPortHandle)
+JNIEXPORT jdouble JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_getAngle
+  (JNIEnv*, jclass, jint aPortHandle)
 {
     return SensorActuatorRegistry::Get().GetIGyroWrapper(aPortHandle)->GetAngle();
 }
 
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_GyroWrapperJni
+ * Class:     com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni
  * Method:    setAngle
  * Signature: (ID)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_setAngle
-  (JNIEnv *, jclass, jint aPortHandle, jdouble aAngle)
+JNIEXPORT void JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_setAngle
+  (JNIEnv*, jclass, jint aPortHandle, jdouble aAngle)
 {
     SensorActuatorRegistry::Get().GetIGyroWrapper(aPortHandle)->SetAngle(aAngle);
 }
 
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_GyroWrapperJni
+ * Class:     com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni
  * Method:    reset
- * Signature: (I)D
+ * Signature: (I)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_reset
-  (JNIEnv *, jclass, jint aPortHandle)
+JNIEXPORT void JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_reset
+  (JNIEnv*, jclass, jint aPortHandle)
 {
     SensorActuatorRegistry::Get().GetIGyroWrapper(aPortHandle)->SetAngle(0);
 }
 
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_GyroWrapperJni
+ * Class:     com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni
  * Method:    getPortList
  * Signature: ()[I
  */
-JNIEXPORT jintArray JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_getPortList
-  (JNIEnv * env, jclass)
+JNIEXPORT jintArray JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_getPortList
+  (JNIEnv* env, jclass)
 {
-    const std::map<int, std::shared_ptr<IGyroWrapper>>& gyroWrappers =
-            SensorActuatorRegistry::Get().GetIGyroWrapperMap();
+    const std::map<int, std::shared_ptr<IGyroWrapper>>& gyroWrappers = SensorActuatorRegistry::Get().GetIGyroWrapperMap();
 
     jintArray output = env->NewIntArray(gyroWrappers.size());
 
     jint values[30];
 
-    std::map<int, std::shared_ptr<IGyroWrapper>>::const_iterator iter =
-            gyroWrappers.begin();
+    std::map<int, std::shared_ptr<IGyroWrapper>>::const_iterator iter = gyroWrappers.begin();
 
     int ctr = 0;
     for (; iter != gyroWrappers.end(); ++iter)
@@ -159,4 +166,4 @@ JNIEXPORT jintArray JNICALL Java_com_snobot_simulator_jni_module_1wrapper_GyroWr
     return output;
 }
 
-}  // extern "C"
+} // extern "C"

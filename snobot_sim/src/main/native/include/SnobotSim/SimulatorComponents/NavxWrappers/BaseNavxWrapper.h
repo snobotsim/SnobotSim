@@ -7,6 +7,7 @@
 
 #pragma once
 #include <memory>
+#include <string>
 
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 #include "SnobotSim/ModuleWrapper/Interfaces/IAccelerometerWrapper.h"
@@ -22,7 +23,7 @@ public:
     class AccelerometerWrapper : public AModuleWrapper, public IAccelerometerWrapper
     {
     public:
-        AccelerometerWrapper(const LazySimDoubleWrapper& aSimWrapper);
+        explicit AccelerometerWrapper(const LazySimDoubleWrapper& aSimWrapper);
 
         void SetAcceleration(double aAcceleration) override;
 
@@ -33,8 +34,7 @@ public:
     class GyroWrapper : public AModuleWrapper, public IGyroWrapper
     {
     public:
-
-        GyroWrapper(const LazySimDoubleWrapper& aSimWrapper);
+        explicit GyroWrapper(const LazySimDoubleWrapper& aSimWrapper);
 
         void SetAngle(double aAngle) override;
 

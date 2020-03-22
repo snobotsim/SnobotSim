@@ -6,6 +6,8 @@
  */
 
 #pragma once
+#include <string>
+
 #include "SnobotSim/ModuleWrapper/Interfaces/II2CWrapper.h"
 #include "SnobotSim/SimulatorComponents/NavxWrappers/BaseNavxWrapper.h"
 

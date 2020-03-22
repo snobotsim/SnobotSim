@@ -7,8 +7,6 @@
 
 #include "SnobotSim/SimulatorComponents/AdxWrappers/AdxI2CAccelWrapper.h"
 
-// #include "ADXL345_I2CAccelerometerData.h"
-
 AdxI2CAccelWrapper::AdxI2CAccelWrapper(const std::string& aBaseName, const std::string& aDeviceName, int aPort) :
         BaseAdxAccelWrapper(aBaseName, aDeviceName, 50 + aPort * 3)
 {

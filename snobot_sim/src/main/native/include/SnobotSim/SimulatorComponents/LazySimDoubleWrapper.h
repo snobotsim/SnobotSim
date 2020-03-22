@@ -10,7 +10,6 @@
 #include <string>
 
 #include "SnobotSim/ExportHelper.h"
-
 #include "simulation/SimDeviceSim.h"
 
 class EXPORT_ LazySimDoubleWrapper
@@ -27,14 +26,12 @@ public:
     void set(double aValue);
 
 protected:
-
-    
     void setupDeviceSim();
     void setupSimValue();
 
     std::string mDeviceName;
     std::string mValueName;
 
-    HAL_SimDeviceHandle mDeviceSimHandle{0};
+    HAL_SimDeviceHandle mDeviceSimHandle{ 0 };
     hal::SimDouble mSimDouble;
 };

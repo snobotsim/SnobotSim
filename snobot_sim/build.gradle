@@ -1,9 +1,5 @@
-plugins {
-  id 'cpp'
-//   id 'edu.wpi.first.wpilib.repositories.WPILibRepositoriesPlugin' version '2020.2'
-//   id 'edu.wpi.first.NativeUtils' version '2020.7.2'
-//   id 'edu.wpi.first.GradleVsCode' version '0.12.0'
-}
+
+apply plugin: 'cpp'
 apply plugin: 'edu.wpi.first.NativeUtils'
 
 repositories {
@@ -22,15 +18,18 @@ ext {
 
 apply from: "${rootDir}/common/base_jni_script.gradle"
 
+apply from: "${rootDir}/common/create_version_file.gradle"
+createCppVersion("SnobotSim", "SnobotSim", "SnobotSimHalVersion", getVersionName())
+
 
 dependencies {
-    
+
     compile 'edu.wpi.first.ntcore:ntcore-java:' + getNtCoreVersion()
     compile 'edu.wpi.first.cscore:cscore-java:' + getCsCoreVersion()
     compile 'edu.wpi.first.cameraserver:cameraserver-java:' + allwpilibVersion()
     compile project(":snobot_sim_utilities")
-    
-    
+
+
     testCompile 'edu.wpi.first.wpilibj:wpilibj-java:' + allwpilibVersion()
     testCompile 'edu.wpi.first.hal:hal-java:' + allwpilibVersion()
     testCompile "com.ctre.phoenix:api-java:" + getCtreVersion()
@@ -68,62 +67,10 @@ nativeUtils.exportsConfigs {
     }
     snobotSimCppJNI {
         x86SymbolFilter = { symbols ->
-            println("86" + symbols)
             symbols.removeIf({ !it.startsWith('HAL_') && !it.startsWith('HALSIM_') })
         }
         x64SymbolFilter = { symbols ->
-            println("64" + symbols)
             symbols.removeIf({ !it.startsWith('HAL_') && !it.startsWith('HALSIM_') })
         }
     }
 }
-
-// model {
-//   components {
-//     snobotSimCpp(NativeLibrarySpec) {
-//       appendDebugPathToBinaries(binaries)
-//       apply from: "${rootDir}/common/create_version_file.gradle"
-//       createCppVersion("SnobotSim", "SnobotSim", "SnobotSimHalVersion", getVersionName())
-
-//       binaries.all {
-//         if (it.targetPlatform.name == nativeUtils.wpi.platforms.roborio || it.targetPlatform.name == nativeUtils.wpi.platforms.raspbian) {
-//             it.buildable = false
-//             return
-//         } else {
-//           it.sources {
-//             cpp(CppSourceSet) {
-              
-//                     source {
-//                         srcDirs = ['src/main/native/cpp', "$buildDir/generated/cpp"]
-//                         includes = ['**/*.cpp']
-//                     }
-//                     exportedHeaders {
-//                         srcDirs = ["src/main/native/include"]
-//                     }
-//             }
-//           }
-//         }
-//       }
-//       nativeUtils.useRequiredLibrary(it, "ntcore_shared", "hal_shared", "wpiutil_shared")
-//     }
-//   }
-// }
-// task packageNativeFilesInJar(type: Jar) {
-
-//     destinationDir = project.buildDir
-//     classifier = "snobotSim-native-" + org.gradle.internal.os.OperatingSystem.current().getFamilyName();
-
-//     project.model {
-//         binaries {
-//             withType(SharedLibraryBinarySpec) { binary ->
-//                 println ("Hello... " + binary.component.name)
-//                 if (binary.component.name == 'snobotSimCpp') {
-//                     println("  Good to go...")
-//                     dependsOn binary.buildTask
-//                         into "xx" // NativeUtils.getPlatformPath(binary)
-//                 }
-//             }
-//         }
-//     }
-// }
-// build.dependsOn packageNativeFilesInJar
