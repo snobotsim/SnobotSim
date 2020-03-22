@@ -12,6 +12,6 @@
 class AdxSpi345AccelWrapper : public ISpiWrapper, public BaseAdxAccelWrapper
 {
 public:
-    explicit AdxSpi345AccelWrapper(int aPort);
+    explicit AdxSpi345AccelWrapper(const std::string& aBaseName, const std::string& aDeviceName, int aPort);
     virtual ~AdxSpi345AccelWrapper();
 };

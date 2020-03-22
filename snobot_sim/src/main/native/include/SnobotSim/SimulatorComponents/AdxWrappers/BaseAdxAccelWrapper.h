@@ -10,32 +10,26 @@
 
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 #include "SnobotSim/ModuleWrapper/Interfaces/IAccelerometerWrapper.h"
-// #include "ThreeAxisAccelerometerData.h"
+#include "SnobotSim/SimulatorComponents/LazySimDoubleWrapper.h"
 
 class BaseAdxAccelWrapper
 {
 public:
-    BaseAdxAccelWrapper(int aBasePort);
+    BaseAdxAccelWrapper(const std::string& aBaseName, const std::string& aDeviceName, int aBasePort);
     virtual ~BaseAdxAccelWrapper();
 
 protected:
     class AccelerometerWrapper : public AModuleWrapper, public IAccelerometerWrapper
     {
     public:
-        enum AxisType
-        {
-            AXIS_X,
-            AXIS_Y,
-            AXIS_Z
-        };
 
-        AccelerometerWrapper(AxisType aAxisType);
+        AccelerometerWrapper(const LazySimDoubleWrapper& aSimWrapper);
 
         void SetAcceleration(double aAcceleration) override;
 
         double GetAcceleration() override;
 
-        AxisType mAxisType;
+        LazySimDoubleWrapper mSimWrapper;
         // std::shared_ptr<hal::ThreeAxisAccelerometerData> mAccel;
     };
 

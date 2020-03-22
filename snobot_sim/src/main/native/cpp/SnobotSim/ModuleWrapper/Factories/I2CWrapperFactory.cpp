@@ -61,6 +61,9 @@ std::shared_ptr<II2CWrapper> I2CWrapperFactory::GetI2CWrapper(int aPort)
 
 std::shared_ptr<II2CWrapper> I2CWrapperFactory::CreateWrapper(int aPort, const std::string& aType)
 {
+    
+    std::string fullType = "I2C " + aType;
+
     if (aType == NAVX)
     {
         return std::shared_ptr<II2CWrapper>(new I2CNavxWrapper(aPort));
@@ -68,7 +71,7 @@ std::shared_ptr<II2CWrapper> I2CWrapperFactory::CreateWrapper(int aPort, const s
 
     if (aType == I2C_ACCELEROMETER_NAME)
     {
-        return std::shared_ptr<II2CWrapper>(new AdxI2CAccelWrapper(aPort));
+        return std::shared_ptr<II2CWrapper>(new AdxI2CAccelWrapper(fullType, "ADXL345_I2C[" + std::to_string(aPort) + "," + std::to_string(0x1D) + "]", aPort));
     }
 
     SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Unknown simulator type '" << aType << "', defaulting to null");

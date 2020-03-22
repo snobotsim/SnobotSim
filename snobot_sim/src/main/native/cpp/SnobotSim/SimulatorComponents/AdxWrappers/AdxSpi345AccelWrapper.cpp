@@ -7,8 +7,8 @@
 
 #include "SnobotSim/SimulatorComponents/AdxWrappers/AdxSpi345AccelWrapper.h"
 
-AdxSpi345AccelWrapper::AdxSpi345AccelWrapper(int aPort) :
-        BaseAdxAccelWrapper(100 + aPort * 3)
+AdxSpi345AccelWrapper::AdxSpi345AccelWrapper(const std::string& aBaseName, const std::string& aDeviceName, int aPort) :
+        BaseAdxAccelWrapper(aBaseName, aDeviceName, 100 + aPort * 3)
 {
 }
 

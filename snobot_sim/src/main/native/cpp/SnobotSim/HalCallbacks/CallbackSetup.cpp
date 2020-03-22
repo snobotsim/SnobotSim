@@ -11,6 +11,7 @@
 #include "SnobotSim/HalCallbacks/SolenoidCallbacks.h"
 #include "SnobotSim/HalCallbacks/SpiCallbacks.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
+#include "simulation/SimDeviceSim.h"
 
 void SnobotSim::InitializeSnobotCallbacks()
 {
@@ -27,6 +28,7 @@ void SnobotSim::InitializeSnobotCallbacks()
 
 void SnobotSim::ResetSnobotCallbacks()
 {
+    frc::sim::SimDeviceSim::ResetData();
     ResetAnalogGyroCallbacks();
     ResetAnalogIOCallbacks();
     ResetDigitalIOCallbacks();
