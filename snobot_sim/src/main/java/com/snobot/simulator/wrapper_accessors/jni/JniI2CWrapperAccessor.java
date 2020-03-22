@@ -19,7 +19,8 @@ public class JniI2CWrapperAccessor implements I2CWrapperAccessor
     @Override
     public boolean createI2CSimulator(int aPort, String aType)
     {
-        SimulationConnectorJni.setI2CDefault(aPort, aType);
+        System.out.println("CREATING I@C JAVA");
+        SimulationConnectorJni.createI2CSimulator(aPort, aType);
         return true;
     }
 

@@ -7,8 +7,8 @@
 
 #include "SnobotSim/SimulatorComponents/NavxWrappers/I2CNavxWrapper.h"
 
-I2CNavxWrapper::I2CNavxWrapper(int aPort) :
-        BaseNavxWrapper(250 + aPort * 3)
+I2CNavxWrapper::I2CNavxWrapper(const std::string& aBaseName, const std::string& aDeviceName, int aPort) :
+        BaseNavxWrapper(aBaseName, aDeviceName, 250 + aPort * 3)
 {
 }
 

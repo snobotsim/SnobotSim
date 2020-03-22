@@ -105,25 +105,25 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_SnobotSimulatorJni_initiali
 
 /*
  * Class:     com_snobot_simulator_jni_SimulationConnectorJni
- * Method:    setI2CDefault
+ * Method:    createI2CSimulator
  * Signature: (ILjava/lang/String;)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setI2CDefault
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_createI2CSimulator
   (JNIEnv * env, jclass, jint aPort, jstring aType)
 {
-	FactoryContainer::Get().GetI2CWrapperFactory()->RegisterDefaultWrapperType(aPort, env->GetStringUTFChars(aType, NULL));
+	FactoryContainer::Get().GetI2CWrapperFactory()->CreateWrapper(aPort, env->GetStringUTFChars(aType, NULL));
     return true;
 }
 
 /*
  * Class:     com_snobot_simulator_jni_SimulationConnectorJni
- * Method:    setSpiDefault
+ * Method:    createSpiSimulator
  * Signature: (ILjava/lang/String;)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_setSpiDefault
+JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_SimulationConnectorJni_createSpiSimulator
   (JNIEnv * env, jclass, jint aPort, jstring aType)
 {
-	FactoryContainer::Get().GetSpiWrapperFactory()->RegisterDefaultWrapperType(aPort, env->GetStringUTFChars(aType, NULL));
+	FactoryContainer::Get().GetSpiWrapperFactory()->CreateWrapper(aPort, env->GetStringUTFChars(aType, NULL));
     return true;
 }
 

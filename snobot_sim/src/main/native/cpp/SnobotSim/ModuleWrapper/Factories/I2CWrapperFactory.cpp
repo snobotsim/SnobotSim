@@ -11,6 +11,8 @@
 #include "SnobotSim/SimulatorComponents/AdxWrappers/AdxI2CAccelWrapper.h"
 #include "SnobotSim/SimulatorComponents/NavxWrappers/I2CNavxWrapper.h"
 
+#include <iostream>
+
 const std::string I2CWrapperFactory::I2C_ACCELEROMETER_NAME = "ADXL345";
 const std::string I2CWrapperFactory::NAVX = "NavX";
 
@@ -64,9 +66,10 @@ std::shared_ptr<II2CWrapper> I2CWrapperFactory::CreateWrapper(int aPort, const s
     
     std::string fullType = "I2C " + aType;
 
+    std::cout << "Creating i2c: " << fullType << std::endl;
     if (aType == NAVX)
     {
-        return std::shared_ptr<II2CWrapper>(new I2CNavxWrapper(aPort));
+        return std::shared_ptr<II2CWrapper>(new I2CNavxWrapper(fullType, "navX-Sensor[0]", aPort));
     }
 
     if (aType == I2C_ACCELEROMETER_NAME)

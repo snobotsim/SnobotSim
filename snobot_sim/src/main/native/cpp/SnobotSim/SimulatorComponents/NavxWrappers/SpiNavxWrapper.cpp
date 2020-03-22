@@ -7,8 +7,8 @@
 
 #include "SnobotSim/SimulatorComponents/NavxWrappers/SpiNavxWrapper.h"
 
-SpiNavxWrapper::SpiNavxWrapper(int aPort) :
-        BaseNavxWrapper(200 + aPort * 3)
+SpiNavxWrapper::SpiNavxWrapper(const std::string& aBaseName, const std::string& aDeviceName, int aPort) :
+        BaseNavxWrapper(aBaseName, aDeviceName, 200 + aPort * 3)
 {
 }
 

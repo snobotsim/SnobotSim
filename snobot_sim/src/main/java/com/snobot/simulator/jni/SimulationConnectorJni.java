@@ -39,7 +39,7 @@ public final class SimulationConnectorJni extends BaseSimulatorJni
             int aGyroHandle,
             double aTurnKp);
 
-    public static native boolean setI2CDefault(int aPort, String aDefaultType);
+    public static native boolean createI2CSimulator(int aPort, String aDefaultType);
 
-    public static native boolean setSpiDefault(int aPort, String aDefaultType);
+    public static native boolean createSpiSimulator(int aPort, String aDefaultType);
 }

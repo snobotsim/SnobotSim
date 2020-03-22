@@ -30,7 +30,6 @@ protected:
         double GetAcceleration() override;
 
         LazySimDoubleWrapper mSimWrapper;
-        // std::shared_ptr<hal::ThreeAxisAccelerometerData> mAccel;
     };
 
     std::shared_ptr<AccelerometerWrapper> mXWrapper;

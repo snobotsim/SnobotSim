@@ -19,7 +19,7 @@ public class JniSpiWrapperAccessor implements SpiWrapperAccessor
     @Override
     public boolean createSpiSimulator(int aPort, String aType)
     {
-        SimulationConnectorJni.setSpiDefault(aPort, aType);
+        SimulationConnectorJni.createSpiSimulator(aPort, aType);
         return true;
     }
 

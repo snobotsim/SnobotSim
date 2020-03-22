@@ -13,6 +13,8 @@
 #include "SnobotSim/SimulatorComponents/AdxWrappers/AdxSpi362AccelWrapper.h"
 #include "SnobotSim/SimulatorComponents/NavxWrappers/SpiNavxWrapper.h"
 
+#include <iostream>
+
 const std::string SpiWrapperFactory::ADXRS450_GYRO_NAME = "ADXRS450";
 const std::string SpiWrapperFactory::ADXL345_ACCELEROMETER_NAME = "ADXL345";
 const std::string SpiWrapperFactory::ADXL362_ACCELEROMETER_NAME = "ADXL362";
@@ -43,6 +45,7 @@ std::shared_ptr<ISpiWrapper> SpiWrapperFactory::GetSpiWrapper(int aPort)
     if (spiWrapper)
     {
         // Already exists, and there is no auto-discovery so just return that, even if it is null
+            SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Hit auto discover...");
     }
     // This must be an "initialize" call, it will be registered outside of this
     else
@@ -50,7 +53,7 @@ std::shared_ptr<ISpiWrapper> SpiWrapperFactory::GetSpiWrapper(int aPort)
         std::map<int, std::string>::iterator iter = mDefaultsMap.find(aPort);
         if (iter != mDefaultsMap.end())
         {
-            SNOBOT_LOG(SnobotLogging::LOG_LEVEL_DEBUG, "Using specified default '" << iter->second << "' on port " << aPort);
+            SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Using specified default '" << iter->second << "' on port " << aPort);
             spiWrapper = CreateWrapper(aPort, iter->second);
         }
         else
@@ -67,10 +70,11 @@ std::shared_ptr<ISpiWrapper> SpiWrapperFactory::CreateWrapper(int aPort, const s
 {
     
     std::string fullType = "SPI " + aType;
+    std::cout << "Creating spi wrapper..." << std::endl;
 
     if (aType == NAVX)
     {
-        return std::shared_ptr<ISpiWrapper>(new SpiNavxWrapper(aPort));
+        return std::shared_ptr<ISpiWrapper>(new SpiNavxWrapper(fullType, "navX-Sensor[0]", aPort));
     }
 
     if (aType == ADXRS450_GYRO_NAME)
