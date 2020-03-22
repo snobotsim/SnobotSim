@@ -15,61 +15,115 @@ if (project.hasProperty('releaseMode')) {
     wpilibRepositories.addAllDevelopmentRepositories(project)
 }
 
-apply from: "${rootDir}/common/config.gradle"
-
-nativeUtils {
-  exportsConfigs {
-      snobotSimCpp {
-      }
-  }
+ext {
+    nativeName = "snobotSimCpp"
+    generatedSources = "$buildDir/generated/cpp"
 }
 
-model {
-  components {
-    snobotSimCpp(NativeLibrarySpec) {
-      appendDebugPathToBinaries(binaries)
-      apply from: "${rootDir}/common/create_version_file.gradle"
-      createCppVersion("SnobotSim", "SnobotSim", "SnobotSimHalVersion", getVersionName())
-      
-      binaries.all {
-        if (it.targetPlatform.name == nativeUtils.wpi.platforms.roborio || it.targetPlatform.name == nativeUtils.wpi.platforms.raspbian) {
-            it.buildable = false
-            return
-        } else {
-          it.sources {
-            cpp(CppSourceSet) {
+apply from: "${rootDir}/common/base_jni_script.gradle"
+
+
+dependencies {
+    
+    compile 'edu.wpi.first.ntcore:ntcore-java:' + getNtCoreVersion()
+    compile 'edu.wpi.first.cscore:cscore-java:' + getCsCoreVersion()
+    compile 'edu.wpi.first.cameraserver:cameraserver-java:' + allwpilibVersion()
+    compile project(":snobot_sim_utilities")
+    
+    
+    testCompile 'edu.wpi.first.wpilibj:wpilibj-java:' + allwpilibVersion()
+    testCompile 'edu.wpi.first.hal:hal-java:' + allwpilibVersion()
+    testCompile "com.ctre.phoenix:api-java:" + getCtreVersion()
+    testCompile "com.ctre.phoenix:wpiapi-java:" + getCtreVersion()
+    testCompile "com.kauailabs.navx.frc:navx-java:" + getNavxVersion()
+
+    testCompile 'org.junit.jupiter:junit-jupiter-api:5.5.2'
+    testCompile 'org.junit.jupiter:junit-jupiter-params:5.5.1'
+
+    testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
+    testRuntime 'org.junit.platform:junit-platform-launcher:1.5.1'
+    testCompile 'org.junit.jupiter:junit-jupiter-api:5.5.2'
+    testCompile 'org.junit.jupiter:junit-jupiter-params:5.5.1'
+    testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
+
+    testRuntime 'edu.wpi.first.hal:hal-jni:' + allwpilibVersion() + ':' + getCurrentOsArch()
+    testRuntime 'edu.wpi.first.wpiutil:wpiutil-java:' + getWpiUtilVersion()
+    testRuntime 'edu.wpi.first.ntcore:ntcore-jni:' + getNtCoreVersion() + ':' + getCurrentOsArch()
+    testRuntime 'edu.wpi.first.cscore:cscore-jni:' + getCsCoreVersion() + ':' + getCurrentOsArch()
+    testRuntime 'edu.wpi.first.thirdparty.frc2020.opencv:opencv-java:' + getWpilibOpencvVersion()
+    testRuntime 'edu.wpi.first.thirdparty.frc2020.opencv:opencv-jni:' + getWpilibOpencvVersion() + ':' + getCurrentOsArch()
+}
+
+
+nativeUtils.exportsConfigs {
+    snobotSimCpp {
+        x86ExcludeSymbols = ['_CT??_R0?AV_System_error', '_CT??_R0?AVexception', '_CT??_R0?AVfailure',
+                            '_CT??_R0?AVruntime_error', '_CT??_R0?AVsystem_error', '_CTA5?AVfailure',
+                            '_TI5?AVfailure', '_CT??_R0?AVout_of_range', '_CTA3?AVout_of_range',
+                            '_TI3?AVout_of_range', '_CT??_R0?AVbad_cast']
+        x64ExcludeSymbols = ['_CT??_R0?AV_System_error', '_CT??_R0?AVexception', '_CT??_R0?AVfailure',
+                            '_CT??_R0?AVruntime_error', '_CT??_R0?AVsystem_error', '_CTA5?AVfailure',
+                            '_TI5?AVfailure', '_CT??_R0?AVout_of_range', '_CTA3?AVout_of_range',
+                            '_TI3?AVout_of_range', '_CT??_R0?AVbad_cast']
+    }
+    snobotSimCppJNI {
+        x86SymbolFilter = { symbols ->
+            println("86" + symbols)
+            symbols.removeIf({ !it.startsWith('HAL_') && !it.startsWith('HALSIM_') })
+        }
+        x64SymbolFilter = { symbols ->
+            println("64" + symbols)
+            symbols.removeIf({ !it.startsWith('HAL_') && !it.startsWith('HALSIM_') })
+        }
+    }
+}
+
+// model {
+//   components {
+//     snobotSimCpp(NativeLibrarySpec) {
+//       appendDebugPathToBinaries(binaries)
+//       apply from: "${rootDir}/common/create_version_file.gradle"
+//       createCppVersion("SnobotSim", "SnobotSim", "SnobotSimHalVersion", getVersionName())
+
+//       binaries.all {
+//         if (it.targetPlatform.name == nativeUtils.wpi.platforms.roborio || it.targetPlatform.name == nativeUtils.wpi.platforms.raspbian) {
+//             it.buildable = false
+//             return
+//         } else {
+//           it.sources {
+//             cpp(CppSourceSet) {
               
-                    source {
-                        srcDirs = ['src/main/native/cpp', "$buildDir/generated/cpp"]
-                        includes = ['**/*.cpp']
-                    }
-                    exportedHeaders {
-                        srcDirs = ["src/main/native/include"]
-                    }
-            }
-          }
-        }
-      }
-      nativeUtils.useRequiredLibrary(it, "ntcore_shared", "hal_shared", "wpiutil_shared")
-    }
-  }
-}
-task packageNativeFilesInJar(type: Jar) {
+//                     source {
+//                         srcDirs = ['src/main/native/cpp', "$buildDir/generated/cpp"]
+//                         includes = ['**/*.cpp']
+//                     }
+//                     exportedHeaders {
+//                         srcDirs = ["src/main/native/include"]
+//                     }
+//             }
+//           }
+//         }
+//       }
+//       nativeUtils.useRequiredLibrary(it, "ntcore_shared", "hal_shared", "wpiutil_shared")
+//     }
+//   }
+// }
+// task packageNativeFilesInJar(type: Jar) {
 
-    destinationDir = project.buildDir
-    classifier = "snobotSim-native-" + org.gradle.internal.os.OperatingSystem.current().getFamilyName();
+//     destinationDir = project.buildDir
+//     classifier = "snobotSim-native-" + org.gradle.internal.os.OperatingSystem.current().getFamilyName();
 
-    project.model {
-        binaries {
-            withType(SharedLibraryBinarySpec) { binary ->
-                println ("Hello... " + binary.component.name)
-                if (binary.component.name == 'snobotSimCpp') {
-                    println("  Good to go...")
-                    dependsOn binary.buildTask
-                        into "xx" // NativeUtils.getPlatformPath(binary)
-                }
-            }
-        }
-    }
-}
-build.dependsOn packageNativeFilesInJar
+//     project.model {
+//         binaries {
+//             withType(SharedLibraryBinarySpec) { binary ->
+//                 println ("Hello... " + binary.component.name)
+//                 if (binary.component.name == 'snobotSimCpp') {
+//                     println("  Good to go...")
+//                     dependsOn binary.buildTask
+//                         into "xx" // NativeUtils.getPlatformPath(binary)
+//                 }
+//             }
+//         }
+//     }
+// }
+// build.dependsOn packageNativeFilesInJar

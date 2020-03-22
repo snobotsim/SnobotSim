@@ -13,10 +13,7 @@ public abstract class BaseSimulatorJni // NOPMD
     {
         JniLibraryResourceLoader.loadLibrary("wpiutil");
         JniLibraryResourceLoader.loadLibrary("wpiHal");
-        JniLibraryResourceLoader.loadLibrary("halsim_adx_gyro_accelerometer");
-        JniLibraryResourceLoader.loadLibrary("navx_simulator");
-        JniLibraryResourceLoader.loadLibrary("snobot_sim");
-        JniLibraryResourceLoader.loadLibrary("snobotSimJni");
+        JniLibraryResourceLoader.loadLibrary("snobotSimCppJni");
         SnobotSimulatorJni.initializeSimulator();
     }
 }
