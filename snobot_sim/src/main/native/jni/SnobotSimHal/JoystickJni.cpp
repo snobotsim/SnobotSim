@@ -33,7 +33,7 @@ Java_com_snobot_simulator_jni_JoystickJni_setJoystickInformation
     }
     env->ReleaseFloatArrayElements(aAxes, axes, 0);
 
-    short* povs = env->GetShortArrayElements(aPovs, NULL);
+    jshort* povs = env->GetShortArrayElements(aPovs, NULL);
     newPov.count = env->GetArrayLength(aPovs);
     for (int i = 0; i < newPov.count; ++i)
     {
