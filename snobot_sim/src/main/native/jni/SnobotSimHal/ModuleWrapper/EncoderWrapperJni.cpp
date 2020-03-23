@@ -171,12 +171,13 @@ Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_isHookedUp
 }
 
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_EncoderWrapperJni
+ * Class:     com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni
  * Method:    setPosition
  * Signature: (ID)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_setPosition
-  (JNIEnv *, jclass, jint portHandle, jdouble aPosition)
+JNIEXPORT void JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_setPosition
+  (JNIEnv*, jclass, jint portHandle, jdouble aPosition)
 {
     std::shared_ptr<IEncoderWrapper> encoder = GetSensorActuatorHelper::GetIEncoderWrapper(portHandle);
     if (encoder)
@@ -186,12 +187,13 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrap
 }
 
 /*
- * Class:     com_snobot_simulator_jni_module_wrapper_EncoderWrapperJni
+ * Class:     com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni
  * Method:    setVelocity
  * Signature: (ID)V
  */
-JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_setVelocity
-  (JNIEnv *, jclass, jint portHandle, jdouble aVelocity)
+JNIEXPORT void JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_setVelocity
+  (JNIEnv*, jclass, jint portHandle, jdouble aVelocity)
 {
     std::shared_ptr<IEncoderWrapper> encoder = GetSensorActuatorHelper::GetIEncoderWrapper(portHandle);
     if (encoder)
@@ -199,7 +201,6 @@ JNIEXPORT void JNICALL Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrap
         encoder->SetVelocity(aVelocity);
     }
 }
-
 
 /*
  * Class:     com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni
@@ -235,6 +236,30 @@ Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_getDistance
   (JNIEnv*, jclass, jint portHandle)
 {
     return SensorActuatorRegistry::Get().GetIEncoderWrapper(portHandle)->GetDistance();
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni
+ * Method:    getVelocity
+ * Signature: (I)D
+ */
+JNIEXPORT jdouble JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_getVelocity
+  (JNIEnv*, jclass, jint portHandle)
+{
+    return SensorActuatorRegistry::Get().GetIEncoderWrapper(portHandle)->GetVelocity();
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni
+ * Method:    reset
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL
+Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_reset
+  (JNIEnv*, jclass, jint portHandle)
+{
+    return SensorActuatorRegistry::Get().GetIEncoderWrapper(portHandle)->Reset();
 }
 
 /*

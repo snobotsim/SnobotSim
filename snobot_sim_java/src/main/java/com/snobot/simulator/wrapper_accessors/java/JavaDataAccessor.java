@@ -154,11 +154,11 @@ public class JavaDataAccessor implements IDataAccessor
 
         for (int port : aAccessor.getPortList())
         {
-            // if (!aAccessor.isInitialized(port))
-            // {
-            //     aAccessor.removeSimulator(port);
-            //     errorMessage.append("  <li>").append(aName).append(port).append("</li>\n");
-            // }
+            if (!aAccessor.getWrapper(port).isInitialized())
+            {
+                // aAccessor.getWrapper(port).removeSimulator();
+                errorMessage.append("  <li>").append(aName).append(port).append("</li>\n");
+            }
         }
 
         return errorMessage.toString();
@@ -169,16 +169,16 @@ public class JavaDataAccessor implements IDataAccessor
     {
         StringBuilder errorMessage = new StringBuilder(256);
 
-        // errorMessage
-        //         .append(getInitializationError("Accelerometer ", DataAccessorFactory.getInstance().getAccelerometerAccessor()))
-        //         .append(getInitializationError("Gyro ", DataAccessorFactory.getInstance().getGyroAccessor()))
-        //         .append(getInitializationError("Analog In ", DataAccessorFactory.getInstance().getAnalogInAccessor()))
-        //         .append(getInitializationError("Analog Out ", DataAccessorFactory.getInstance().getAnalogOutAccessor()))
-        //         .append(getInitializationError("Digital IO ", DataAccessorFactory.getInstance().getDigitalAccessor()))
-        //         .append(getInitializationError("Encoder ", DataAccessorFactory.getInstance().getEncoderAccessor()))
-        //         .append(getInitializationError("Relay ", DataAccessorFactory.getInstance().getRelayAccessor()))
-        //         .append(getInitializationError("Solenoid ", DataAccessorFactory.getInstance().getSolenoidAccessor()))
-        //         .append(getInitializationError("Speed Controller ", DataAccessorFactory.getInstance().getSpeedControllerAccessor()));
+        errorMessage
+                .append(getInitializationError("Accelerometer ", DataAccessorFactory.getInstance().getAccelerometerAccessor()))
+                .append(getInitializationError("Gyro ", DataAccessorFactory.getInstance().getGyroAccessor()))
+                .append(getInitializationError("Analog In ", DataAccessorFactory.getInstance().getAnalogInAccessor()))
+                .append(getInitializationError("Analog Out ", DataAccessorFactory.getInstance().getAnalogOutAccessor()))
+                .append(getInitializationError("Digital IO ", DataAccessorFactory.getInstance().getDigitalAccessor()))
+                .append(getInitializationError("Encoder ", DataAccessorFactory.getInstance().getEncoderAccessor()))
+                .append(getInitializationError("Relay ", DataAccessorFactory.getInstance().getRelayAccessor()))
+                .append(getInitializationError("Solenoid ", DataAccessorFactory.getInstance().getSolenoidAccessor()))
+                .append(getInitializationError("Speed Controller ", DataAccessorFactory.getInstance().getSpeedControllerAccessor()));
 
         return errorMessage.toString();
     }

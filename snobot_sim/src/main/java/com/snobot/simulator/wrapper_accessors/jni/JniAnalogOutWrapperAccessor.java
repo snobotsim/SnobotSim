@@ -13,7 +13,6 @@ import com.snobot.simulator.wrapper_accessors.AnalogOutWrapperAccessor;
 
 public class JniAnalogOutWrapperAccessor implements AnalogOutWrapperAccessor
 {
-    
     private static class AnalogOutWrapper implements IAnalogOutWrapper
     {
         private final int mHandle;
@@ -24,104 +23,63 @@ public class JniAnalogOutWrapperAccessor implements AnalogOutWrapperAccessor
         }
 
         @Override
-        public boolean isInitialized() {
+        public boolean isInitialized()
+        {
             return AnalogOutWrapperJni.isInitialized(mHandle);
         }
 
         @Override
-        public void setInitialized(boolean aInitialized) {
+        public void setInitialized(boolean aInitialized)
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public String getName() {
+        public String getName()
+        {
             return AnalogOutWrapperJni.getName(mHandle);
         }
 
         @Override
-        public void setName(String aName) {
+        public void setName(String aName)
+        {
             AnalogOutWrapperJni.setName(mHandle, aName);
         }
 
         @Override
-        public boolean getWantsHidden() {
+        public boolean getWantsHidden()
+        {
             return AnalogOutWrapperJni.getWantsHidden(mHandle);
         }
 
         @Override
-        public void setWantsHidden(boolean aVisible) {
+        public void setWantsHidden(boolean aVisible)
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public void close() throws Exception {
+        public void close() throws Exception
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public void setVoltage(double aVoltage) {
+        public void setVoltage(double aVoltage)
+        {
         }
 
         @Override
-        public double getVoltage() {
+        public double getVoltage()
+        {
             return AnalogOutWrapperJni.getVoltage(mHandle);
         }
     }
 
-
-
-    // @Override
-    // public boolean isInitialized(int aPort)
-    // {
-    //     return AnalogOutWrapperJni.isInitialized(aPort);
-    // }
-
-    // @Override
-    // public boolean createSimulator(int aPort, String aType)
-    // {
-    //     return AnalogOutWrapperJni.createSimulator(aPort, aType);
-    // }
-
-    // @Override
-    // public void removeSimulator(int aPort)
-    // {
-    //     AnalogOutWrapperJni.removeSimluator(aPort);
-    // }
-
-    // @Override
-    // public void setName(int aPort, String aName)
-    // {
-    //     AnalogOutWrapperJni.setName(aPort, aName);
-    // }
-
-    // @Override
-    // public String getName(int aPort)
-    // {
-    //     return AnalogOutWrapperJni.getName(aPort);
-    // }
-
-    // @Override
-    // public boolean getWantsHidden(int aPort)
-    // {
-    //     return AnalogOutWrapperJni.getWantsHidden(aPort);
-    // }
-
-    // @Override
-    // public double getVoltage(int aPort)
-    // {
-    //     return AnalogOutWrapperJni.getVoltage(aPort);
-    // }
-
-    // @Override
-    // public void setVoltage(int aPort, double aVoltage)
-    // {
-    //     // nothing to do
-    // }
-    
-    private Map<Integer, AnalogOutWrapper> mWrappers = new HashMap<>();
+    private final Map<Integer, AnalogOutWrapper> mWrappers = new HashMap<>();
 
     @Override
     public List<Integer> getPortList()
@@ -136,14 +94,16 @@ public class JniAnalogOutWrapperAccessor implements AnalogOutWrapperAccessor
     }
 
     @Override
-    public IAnalogOutWrapper createSimulator(int aPort, String aType) {
+    public IAnalogOutWrapper createSimulator(int aPort, String aType)
+    {
         AnalogOutWrapperJni.createSimulator(aPort, aType);
         mWrappers.put(aPort, new AnalogOutWrapper(aPort));
         return mWrappers.get(aPort);
     }
 
     @Override
-    public IAnalogOutWrapper getWrapper(int aHandle) {
+    public IAnalogOutWrapper getWrapper(int aHandle)
+    {
         if (!mWrappers.containsKey(aHandle))
         {
             mWrappers.put(aHandle, new AnalogOutWrapper(aHandle));

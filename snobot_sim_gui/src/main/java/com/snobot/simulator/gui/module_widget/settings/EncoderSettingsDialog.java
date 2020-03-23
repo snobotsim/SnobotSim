@@ -24,7 +24,7 @@ public class EncoderSettingsDialog extends SimpleSettingsDialog
         for (int handle : speedControllers)
         {
             SensorHandleOption option = new SensorHandleOption(handle,
-                    DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(handle));
+                    DataAccessorFactory.getInstance().getSpeedControllerAccessor().getWrapper(handle).getName());
             mSpeedControllerSelection.addItem(option);
         }
 
@@ -46,9 +46,9 @@ public class EncoderSettingsDialog extends SimpleSettingsDialog
     private void selectAttachedControllerAndRefreshNames()
     {
         int connectedSc = -1;
-        if (DataAccessorFactory.getInstance().getEncoderAccessor().isHookedUp(mHandle))
+        if (DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(mHandle).isHookedUp())
         {
-            connectedSc = DataAccessorFactory.getInstance().getEncoderAccessor().getHookedUpId(mHandle);
+            connectedSc = DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(mHandle).getHookedUpId();
         }
 
         for (int i = 0; i < mSpeedControllerSelection.getItemCount(); ++i)
@@ -61,7 +61,7 @@ public class EncoderSettingsDialog extends SimpleSettingsDialog
             }
             if (option.mHandle != -1)
             {
-                option.mName = DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(option.mHandle);
+                option.mName = DataAccessorFactory.getInstance().getSpeedControllerAccessor().getWrapper(option.mHandle).getName();
             }
         }
     }
@@ -72,7 +72,7 @@ public class EncoderSettingsDialog extends SimpleSettingsDialog
         SensorHandleOption option = (SensorHandleOption) mSpeedControllerSelection.getSelectedItem();
         int scId = option == null ? -1 : option.mHandle;
 
-        DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(mHandle, scId);
+        DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(mHandle).connectSpeedController(scId);
     }
 
 }

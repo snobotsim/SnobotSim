@@ -19,125 +19,149 @@ import com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig;
 import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
 import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor;
 
-public class JniSpeedControllerWrapperAccessor implements SpeedControllerWrapperAccessor {
-    private static class SpeedControllerWrapper implements IPwmWrapper {
+public class JniSpeedControllerWrapperAccessor implements SpeedControllerWrapperAccessor
+{
+    private static class SpeedControllerWrapper implements IPwmWrapper
+    {
         private final int mHandle;
 
-        private SpeedControllerWrapper(int aHandle) {
+        private SpeedControllerWrapper(int aHandle)
+        {
             mHandle = aHandle;
         }
 
         @Override
-        public boolean isInitialized() {
+        public boolean isInitialized()
+        {
             return SpeedControllerWrapperJni.isInitialized(mHandle);
         }
 
         @Override
-        public void setInitialized(boolean aInitialized) {
+        public void setInitialized(boolean aInitialized)
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public String getName() {
+        public String getName()
+        {
             return SpeedControllerWrapperJni.getName(mHandle);
         }
 
         @Override
-        public void setName(String aName) {
+        public void setName(String aName)
+        {
             SpeedControllerWrapperJni.setName(mHandle, aName);
         }
 
         @Override
-        public boolean getWantsHidden() {
+        public boolean getWantsHidden()
+        {
             return SpeedControllerWrapperJni.getWantsHidden(mHandle);
         }
 
         @Override
-        public void setWantsHidden(boolean aVisible) {
+        public void setWantsHidden(boolean aVisible)
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public void close() throws Exception {
+        public void close() throws Exception
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public IMotorSimulator getMotorSimulator() {
+        public IMotorSimulator getMotorSimulator()
+        {
             // TODO Auto-generated method stub
             return null;
         }
 
         @Override
-        public void setMotorSimulator(IMotorSimulator aSimulator) {
+        public void setMotorSimulator(IMotorSimulator aSimulator)
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public void reset(double aPosition, double aVelocity, double aCurrent) {
+        public void reset(double aPosition, double aVelocity, double aCurrent)
+        {
             SpeedControllerWrapperJni.reset(mHandle, aPosition, aVelocity, aCurrent);
         }
 
         @Override
-        public void reset() {
+        public void reset()
+        {
             reset(0, 0, 0);
         }
 
         @Override
-        public double getPosition() {
+        public double getPosition()
+        {
             return SpeedControllerWrapperJni.getPosition(mHandle);
         }
 
         @Override
-        public double getVelocity() {
+        public double getVelocity()
+        {
             return SpeedControllerWrapperJni.getVelocity(mHandle);
         }
 
         @Override
-        public double getAcceleration() {
+        public double getAcceleration()
+        {
             return SpeedControllerWrapperJni.getAcceleration(mHandle);
         }
 
         @Override
-        public double getCurrent() {
+        public double getCurrent()
+        {
             return SpeedControllerWrapperJni.getCurrent(mHandle);
         }
 
         @Override
-        public void set(double aSpeed) {
+        public void set(double aSpeed)
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public double get() {
+        public double get()
+        {
             return SpeedControllerWrapperJni.getVoltagePercentage(mHandle);
         }
 
         @Override
-        public void update(double aWaitTime) {
+        public void update(double aWaitTime)
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public void setFeedbackSensor(IMotorFeedbackSensor aFeedbackSensor) {
+        public void setFeedbackSensor(IMotorFeedbackSensor aFeedbackSensor)
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public IMotorFeedbackSensor getFeedbackSensor() {
+        public IMotorFeedbackSensor getFeedbackSensor()
+        {
             // TODO Auto-generated method stub
             return null;
         }
 
         @Override
-        public int getHandle() {
+        public int getHandle()
+        {
             // TODO Auto-generated method stub
             return 0;
         }
@@ -234,18 +258,20 @@ public class JniSpeedControllerWrapperAccessor implements SpeedControllerWrapper
     {
         return null;
     }
-    
-    private Map<Integer, SpeedControllerWrapper> mWrappers = new HashMap<>();
+
+    private final Map<Integer, SpeedControllerWrapper> mWrappers = new HashMap<>();
 
     @Override
-    public IPwmWrapper createSimulator(int aPort, String aType) {
+    public IPwmWrapper createSimulator(int aPort, String aType)
+    {
         SpeedControllerWrapperJni.createSimulator(aPort, aType);
         mWrappers.put(aPort, new SpeedControllerWrapper(aPort));
         return mWrappers.get(aPort);
     }
 
     @Override
-    public IPwmWrapper getWrapper(int aHandle) {
+    public IPwmWrapper getWrapper(int aHandle)
+    {
         if (!mWrappers.containsKey(aHandle))
         {
             mWrappers.put(aHandle, new SpeedControllerWrapper(aHandle));

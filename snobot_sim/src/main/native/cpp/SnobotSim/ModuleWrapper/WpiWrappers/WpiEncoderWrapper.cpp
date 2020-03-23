@@ -34,7 +34,6 @@ void WpiEncoderWrapper::Reset()
     HALSIM_SetEncoderReset(mHandle, false);
 }
 
-
 void WpiEncoderWrapper::SetPosition(double aPosition)
 {
     BaseEncoderWrapper::SetPosition(aPosition);
@@ -46,8 +45,6 @@ void WpiEncoderWrapper::SetVelocity(double aVelocity)
     BaseEncoderWrapper::SetVelocity(aVelocity);
     HALSIM_SetEncoderPeriod(mHandle, 1.0 / aVelocity);
 }
-
-
 
 void WpiEncoderWrapper::SetDistancePerTick(double aDPT)
 {

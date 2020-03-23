@@ -23,56 +23,65 @@ public class JniSolenoidWrapperAccessor implements SolenoidWrapperAccessor
         }
 
         @Override
-        public boolean isInitialized() {
+        public boolean isInitialized()
+        {
             return SolenoidWrapperJni.isInitialized(mHandle);
         }
 
         @Override
-        public void setInitialized(boolean aInitialized) {
+        public void setInitialized(boolean aInitialized)
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public String getName() {
+        public String getName()
+        {
             return SolenoidWrapperJni.getName(mHandle);
         }
 
         @Override
-        public void setName(String aName) {
+        public void setName(String aName)
+        {
             SolenoidWrapperJni.setName(mHandle, aName);
         }
 
         @Override
-        public boolean getWantsHidden() {
+        public boolean getWantsHidden()
+        {
             return SolenoidWrapperJni.getWantsHidden(mHandle);
         }
 
         @Override
-        public void setWantsHidden(boolean aVisible) {
+        public void setWantsHidden(boolean aVisible)
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public void close() throws Exception {
+        public void close() throws Exception
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public void set(boolean aState) {
+        public void set(boolean aState)
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public boolean get() {
+        public boolean get()
+        {
             return SolenoidWrapperJni.get(mHandle);
         }
     }
-    
-    private Map<Integer, SolenoidWrapper> mWrappers = new HashMap<>();
+
+    private final Map<Integer, SolenoidWrapper> mWrappers = new HashMap<>();
 
     @Override
     public List<Integer> getPortList()
@@ -87,14 +96,16 @@ public class JniSolenoidWrapperAccessor implements SolenoidWrapperAccessor
     }
 
     @Override
-    public ISolenoidWrapper createSimulator(int aPort, String aType) {
+    public ISolenoidWrapper createSimulator(int aPort, String aType)
+    {
         SolenoidWrapperJni.createSimulator(aPort, aType);
         mWrappers.put(aPort, new SolenoidWrapper(aPort));
         return mWrappers.get(aPort);
     }
 
     @Override
-    public ISolenoidWrapper getWrapper(int aHandle) {
+    public ISolenoidWrapper getWrapper(int aHandle)
+    {
         if (!mWrappers.containsKey(aHandle))
         {
             mWrappers.put(aHandle, new SolenoidWrapper(aHandle));

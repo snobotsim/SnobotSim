@@ -24,14 +24,14 @@ void EncoderCallback(const char* name, void* param, const struct HAL_Value* valu
     }
     else if (nameStr == "Reset")
     {
-        if(value->data.v_boolean)
+        if (value->data.v_boolean)
         {
             SensorActuatorRegistry::Get().GetIEncoderWrapper(port)->Reset();
         }
     }
     else if (nameStr == "Count")
     {
-       SNOBOT_LOG(SnobotLogging::LOG_LEVEL_DEBUG, "Ignoring count feedback");
+        SNOBOT_LOG(SnobotLogging::LOG_LEVEL_DEBUG, "Ignoring count feedback");
     }
     else if (nameStr == "Period")
     {

@@ -5,5 +5,5 @@ import com.snobot.simulator.module_wrapper.interfaces.IGyroWrapper;
 
 public interface GyroWrapperAccessor extends IBasicSensorActuatorWrapperAccessor<IGyroWrapper>
 {
-    
+
 }

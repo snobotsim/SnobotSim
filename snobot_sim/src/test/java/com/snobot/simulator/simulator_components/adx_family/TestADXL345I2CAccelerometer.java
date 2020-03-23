@@ -46,7 +46,7 @@ public class TestADXL345I2CAccelerometer extends BaseSimulatorJniTest
         int xHandle = 50 + aPort.value * 3;
         int yHandle = 51 + aPort.value * 3;
         int zHandle = 52 + aPort.value * 3;
-        
+
         IAccelerometerWrapper xWrapper = DataAccessorFactory.getInstance().getAccelerometerAccessor().getWrapper(xHandle);
         IAccelerometerWrapper yWrapper = DataAccessorFactory.getInstance().getAccelerometerAccessor().getWrapper(yHandle);
         IAccelerometerWrapper zWrapper = DataAccessorFactory.getInstance().getAccelerometerAccessor().getWrapper(zHandle);

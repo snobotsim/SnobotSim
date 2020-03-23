@@ -2,9 +2,6 @@ package com.snobot.simulator.wrapper_accessors.java;
 
 import java.util.Map;
 
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.factories.DefaultRelayWrapperFactory;
 import com.snobot.simulator.module_wrapper.interfaces.IRelayWrapper;
@@ -27,7 +24,8 @@ public class JavaRelayWrapperAccessor extends BaseWrapperAccessor<IRelayWrapper>
     }
 
     @Override
-    public IRelayWrapper getWrapper(int aHandle) {
+    public IRelayWrapper getWrapper(int aHandle) 
+    {
         return getValue(aHandle);
     }
 

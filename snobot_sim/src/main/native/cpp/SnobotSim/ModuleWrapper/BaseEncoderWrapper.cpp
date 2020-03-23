@@ -3,14 +3,13 @@
 
 #include <iostream>
 
-BaseEncoderWrapper::BaseEncoderWrapper(const std::string& aName) : AModuleWrapper(aName)
+BaseEncoderWrapper::BaseEncoderWrapper(const std::string& aName) :
+        AModuleWrapper(aName)
 {
-
 }
 
 BaseEncoderWrapper::~BaseEncoderWrapper()
 {
-
 }
 
 void BaseEncoderWrapper::Reset()

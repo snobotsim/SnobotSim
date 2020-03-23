@@ -23,65 +23,76 @@ public class JniRelayWrapperAccessor implements RelayWrapperAccessor
         }
 
         @Override
-        public boolean isInitialized() {
+        public boolean isInitialized()
+        {
             return RelayWrapperJni.isInitialized(mHandle);
         }
 
         @Override
-        public void setInitialized(boolean aInitialized) {
+        public void setInitialized(boolean aInitialized)
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public String getName() {
+        public String getName()
+        {
             return RelayWrapperJni.getName(mHandle);
         }
 
         @Override
-        public void setName(String aName) {
+        public void setName(String aName)
+        {
             RelayWrapperJni.setName(mHandle, aName);
         }
 
         @Override
-        public boolean getWantsHidden() {
+        public boolean getWantsHidden()
+        {
             return RelayWrapperJni.getWantsHidden(mHandle);
         }
 
         @Override
-        public void setWantsHidden(boolean aVisible) {
+        public void setWantsHidden(boolean aVisible)
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public void close() throws Exception {
+        public void close() throws Exception
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public boolean getRelayReverse() {
+        public boolean getRelayReverse()
+        {
             return RelayWrapperJni.getReverseValue(mHandle);
         }
 
         @Override
-        public boolean getRelayForwards() {
+        public boolean getRelayForwards()
+        {
             return RelayWrapperJni.getFowardValue(mHandle);
         }
 
         @Override
-        public void setRelayReverse(boolean aReverse) {
-            
+        public void setRelayReverse(boolean aReverse)
+        {
+
         }
 
         @Override
-        public void setRelayForwards(boolean aForwards) {
-            
+        public void setRelayForwards(boolean aForwards)
+        {
+
         }
     }
 
-    private Map<Integer, RelayWrapper> mWrappers = new HashMap<>();
+    private final Map<Integer, RelayWrapper> mWrappers = new HashMap<>();
 
     @Override
     public List<Integer> getPortList()
@@ -96,14 +107,16 @@ public class JniRelayWrapperAccessor implements RelayWrapperAccessor
     }
 
     @Override
-    public IRelayWrapper createSimulator(int aPort, String aType) {
+    public IRelayWrapper createSimulator(int aPort, String aType)
+    {
         RelayWrapperJni.createSimulator(aPort, aType);
         mWrappers.put(aPort, new RelayWrapper(aPort));
         return mWrappers.get(aPort);
     }
 
     @Override
-    public IRelayWrapper getWrapper(int aHandle) {
+    public IRelayWrapper getWrapper(int aHandle)
+    {
         if (!mWrappers.containsKey(aHandle))
         {
             mWrappers.put(aHandle, new RelayWrapper(aHandle));

@@ -2,9 +2,6 @@ package com.snobot.simulator.wrapper_accessors.java;
 
 import java.util.Map;
 
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.factories.DefaultGyroWrapperFactory;
 import com.snobot.simulator.module_wrapper.interfaces.IGyroWrapper;
@@ -27,7 +24,8 @@ public class JavaGyroWrapperAccessor extends BaseWrapperAccessor<IGyroWrapper> i
     }
 
     @Override
-    public IGyroWrapper getWrapper(int aHandle) {
+    public IGyroWrapper getWrapper(int aHandle) 
+    {
         return getValue(aHandle);
     }
 

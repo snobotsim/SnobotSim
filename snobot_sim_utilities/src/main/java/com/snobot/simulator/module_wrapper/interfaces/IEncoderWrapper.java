@@ -5,10 +5,10 @@ public interface IEncoderWrapper extends ISensorWrapper, IMotorFeedbackSensor
 
     void reset();
 
-	boolean isHookedUp();
+    boolean isHookedUp();
 
-	int getHookedUpId();
+    int getHookedUpId();
 
-	boolean connectSpeedController(int aSpeedControllerHandle);
+    boolean connectSpeedController(int aSpeedControllerHandle);
 
 }

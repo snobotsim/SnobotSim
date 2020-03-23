@@ -23,55 +23,64 @@ public class JniGyroWrapperAccessor implements GyroWrapperAccessor
         }
 
         @Override
-        public boolean isInitialized() {
+        public boolean isInitialized()
+        {
             return GyroWrapperJni.isInitialized(mHandle);
         }
 
         @Override
-        public void setInitialized(boolean aInitialized) {
+        public void setInitialized(boolean aInitialized)
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public String getName() {
+        public String getName()
+        {
             return GyroWrapperJni.getName(mHandle);
         }
 
         @Override
-        public void setName(String aName) {
+        public void setName(String aName)
+        {
             GyroWrapperJni.setName(mHandle, aName);
         }
 
         @Override
-        public boolean getWantsHidden() {
+        public boolean getWantsHidden()
+        {
             return GyroWrapperJni.getWantsHidden(mHandle);
         }
 
         @Override
-        public void setWantsHidden(boolean aVisible) {
+        public void setWantsHidden(boolean aVisible)
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public void close() throws Exception {
+        public void close() throws Exception
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public double getAngle() {
+        public double getAngle()
+        {
             return GyroWrapperJni.getAngle(mHandle);
         }
 
         @Override
-        public void setAngle(double aAngle) {
+        public void setAngle(double aAngle)
+        {
             GyroWrapperJni.setAngle(mHandle, aAngle);
         }
     }
-    
-    private Map<Integer, GyroWrapper> mWrappers = new HashMap<>();
+
+    private final Map<Integer, GyroWrapper> mWrappers = new HashMap<>();
 
     @Override
     public List<Integer> getPortList()
@@ -86,14 +95,16 @@ public class JniGyroWrapperAccessor implements GyroWrapperAccessor
     }
 
     @Override
-    public IGyroWrapper createSimulator(int aPort, String aType) {
+    public IGyroWrapper createSimulator(int aPort, String aType)
+    {
         GyroWrapperJni.createSimulator(aPort, aType);
         mWrappers.put(aPort, new GyroWrapper(aPort));
         return mWrappers.get(aPort);
     }
 
     @Override
-    public IGyroWrapper getWrapper(int aHandle) {
+    public IGyroWrapper getWrapper(int aHandle)
+    {
         if (!mWrappers.containsKey(aHandle))
         {
             mWrappers.put(aHandle, new GyroWrapper(aHandle));

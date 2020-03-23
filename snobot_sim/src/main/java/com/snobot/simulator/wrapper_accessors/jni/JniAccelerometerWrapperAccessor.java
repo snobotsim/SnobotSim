@@ -13,7 +13,6 @@ import com.snobot.simulator.wrapper_accessors.AccelerometerWrapperAccessor;
 
 public class JniAccelerometerWrapperAccessor implements AccelerometerWrapperAccessor
 {
-
     private static class AcelerometerWrapper implements IAccelerometerWrapper
     {
         private final int mHandle;
@@ -24,56 +23,65 @@ public class JniAccelerometerWrapperAccessor implements AccelerometerWrapperAcce
         }
 
         @Override
-        public boolean isInitialized() {
+        public boolean isInitialized()
+        {
             return AccelerometerWrapperJni.isInitialized(mHandle);
         }
 
         @Override
-        public void setInitialized(boolean aInitialized) {
+        public void setInitialized(boolean aInitialized)
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public String getName() {
+        public String getName()
+        {
             return AccelerometerWrapperJni.getName(mHandle);
         }
 
         @Override
-        public void setName(String aName) {
+        public void setName(String aName)
+        {
             AccelerometerWrapperJni.setName(mHandle, aName);
         }
 
         @Override
-        public boolean getWantsHidden() {
+        public boolean getWantsHidden()
+        {
             return AccelerometerWrapperJni.getWantsHidden(mHandle);
         }
 
         @Override
-        public void setWantsHidden(boolean aVisible) {
+        public void setWantsHidden(boolean aVisible)
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public void close() throws Exception {
+        public void close() throws Exception
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public void setAcceleration(double aAcceleration) {
+        public void setAcceleration(double aAcceleration)
+        {
             AccelerometerWrapperJni.setAcceleration(mHandle, aAcceleration);
         }
 
         @Override
-        public double getAcceleration() {
+        public double getAcceleration()
+        {
             return AccelerometerWrapperJni.getAcceleration(mHandle);
         }
-        
+
     }
 
-    private Map<Integer, AcelerometerWrapper> mWrappers = new HashMap<>();
+    private final Map<Integer, AcelerometerWrapper> mWrappers = new HashMap<>();
 
     @Override
     public List<Integer> getPortList()
@@ -88,12 +96,14 @@ public class JniAccelerometerWrapperAccessor implements AccelerometerWrapperAcce
     }
 
     @Override
-    public IAccelerometerWrapper createSimulator(int aPort, String aType) {
+    public IAccelerometerWrapper createSimulator(int aPort, String aType)
+    {
         return mWrappers.put(aPort, new AcelerometerWrapper(aPort));
     }
 
     @Override
-    public IAccelerometerWrapper getWrapper(int aHandle) {
+    public IAccelerometerWrapper getWrapper(int aHandle)
+    {
         if (!mWrappers.containsKey(aHandle))
         {
             mWrappers.put(aHandle, new AcelerometerWrapper(aHandle));

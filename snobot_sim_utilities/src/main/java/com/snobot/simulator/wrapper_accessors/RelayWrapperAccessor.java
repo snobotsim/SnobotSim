@@ -5,5 +5,5 @@ import com.snobot.simulator.module_wrapper.interfaces.IRelayWrapper;
 
 public interface RelayWrapperAccessor extends IBasicSensorActuatorWrapperAccessor<IRelayWrapper>
 {
-    
+
 }

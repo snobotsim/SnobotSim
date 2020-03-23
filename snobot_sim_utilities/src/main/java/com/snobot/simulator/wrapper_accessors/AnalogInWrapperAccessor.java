@@ -5,5 +5,5 @@ import com.snobot.simulator.module_wrapper.interfaces.IAnalogInWrapper;
 
 public interface AnalogInWrapperAccessor extends IBasicSensorActuatorWrapperAccessor<IAnalogInWrapper>
 {
-    
+
 }

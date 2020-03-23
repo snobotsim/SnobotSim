@@ -23,86 +23,101 @@ public class JniEncoderWrapperAccessor implements EncoderWrapperAccessor
         }
 
         @Override
-        public boolean isInitialized() {
+        public boolean isInitialized()
+        {
             return EncoderWrapperJni.isInitialized(mHandle);
         }
 
         @Override
-        public void setInitialized(boolean aInitialized) {
+        public void setInitialized(boolean aInitialized)
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public String getName() {
+        public String getName()
+        {
             return EncoderWrapperJni.getName(mHandle);
         }
 
         @Override
-        public void setName(String aName) {
+        public void setName(String aName)
+        {
             EncoderWrapperJni.setName(mHandle, aName);
         }
 
         @Override
-        public boolean getWantsHidden() {
+        public boolean getWantsHidden()
+        {
             return EncoderWrapperJni.getWantsHidden(mHandle);
         }
 
         @Override
-        public void setWantsHidden(boolean aVisible) {
+        public void setWantsHidden(boolean aVisible)
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public void close() throws Exception {
+        public void close() throws Exception
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public void setPosition(double aPosition) {
+        public void setPosition(double aPosition)
+        {
             EncoderWrapperJni.setPosition(mHandle, aPosition);
         }
 
         @Override
-        public void setVelocity(double aVelocity) {
+        public void setVelocity(double aVelocity)
+        {
             EncoderWrapperJni.setVelocity(mHandle, aVelocity);
         }
 
         @Override
-        public double getPosition() {
+        public double getPosition()
+        {
             return EncoderWrapperJni.getDistance(mHandle);
         }
 
         @Override
-        public double getVelocity() {
+        public double getVelocity()
+        {
             return EncoderWrapperJni.getVelocity(mHandle);
         }
 
         @Override
-        public void reset() {
-            EncoderWrapperJni.reset();
+        public void reset()
+        {
+            EncoderWrapperJni.reset(mHandle);
         }
 
         @Override
-        public boolean isHookedUp() {
+        public boolean isHookedUp()
+        {
             return EncoderWrapperJni.isHookedUp(mHandle);
         }
 
         @Override
-        public int getHookedUpId() {
+        public int getHookedUpId()
+        {
             return EncoderWrapperJni.getHookedUpId(mHandle);
         }
 
         @Override
-        public boolean connectSpeedController(int aSpeedControllerHandle) {
+        public boolean connectSpeedController(int aSpeedControllerHandle)
+        {
             return EncoderWrapperJni.connectSpeedController(mHandle, aSpeedControllerHandle);
         }
     }
 
 
-    private Map<Integer, EncoderWrapper> mWrappers = new HashMap<>();
+    private final Map<Integer, EncoderWrapper> mWrappers = new HashMap<>();
 
     @Override
     public List<Integer> getPortList()
@@ -117,14 +132,16 @@ public class JniEncoderWrapperAccessor implements EncoderWrapperAccessor
     }
 
     @Override
-    public IEncoderWrapper createSimulator(int aPort, String aType) {
+    public IEncoderWrapper createSimulator(int aPort, String aType)
+    {
         EncoderWrapperJni.createSimulator(aPort, aType);
         mWrappers.put(aPort, new EncoderWrapper(aPort));
         return mWrappers.get(aPort);
     }
 
     @Override
-    public IEncoderWrapper getWrapper(int aHandle) {
+    public IEncoderWrapper getWrapper(int aHandle)
+    {
         if (!mWrappers.containsKey(aHandle))
         {
             mWrappers.put(aHandle, new EncoderWrapper(aHandle));

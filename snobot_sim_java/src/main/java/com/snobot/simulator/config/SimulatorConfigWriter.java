@@ -15,7 +15,6 @@ import org.yaml.snakeyaml.Yaml;
 import com.snobot.simulator.config.v1.SimulatorConfigV1;
 import com.snobot.simulator.module_wrapper.interfaces.IEncoderWrapper;
 import com.snobot.simulator.module_wrapper.interfaces.IPwmWrapper;
-import com.snobot.simulator.module_wrapper.interfaces.ISensorWrapper;
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.IMotorSimulatorConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;

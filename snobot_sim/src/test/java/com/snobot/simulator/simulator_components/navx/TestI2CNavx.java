@@ -8,7 +8,6 @@ import com.kauailabs.navx.frc.AHRS;
 import com.snobot.simulator.module_wrapper.interfaces.IGyroWrapper;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorJniTest;
-import com.snobot.test.utilities.SimDeviceDumpHelper;
 
 import edu.wpi.first.wpilibj.I2C;
 

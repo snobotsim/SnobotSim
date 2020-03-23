@@ -34,11 +34,11 @@ public final class EncoderWrapperJni extends BaseSimulatorJni
 
     public static native int[] getPortList();
 
-	public static native void setPosition(int aPort, double aPosition);
+    public static native void setPosition(int aPort, double aPosition);
 
-	public static native void setVelocity(int aPort, double aVelocity);
+    public static native void setVelocity(int aPort, double aVelocity);
 
-	public static native double getVelocity(int aPort);
+    public static native double getVelocity(int aPort);
 
-	public static native void reset();
+    public static native void reset(int aPort);
 }

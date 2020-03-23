@@ -1,6 +1,9 @@
 
 #pragma once
 
+#include <memory>
+#include <string>
+
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 #include "SnobotSim/ModuleWrapper/Interfaces/IEncoderWrapper.h"
 #include "SnobotSim/ModuleWrapper/Interfaces/ISpeedControllerWrapper.h"
@@ -10,7 +13,7 @@ class BaseEncoderWrapper : public AModuleWrapper,
                            public IEncoderWrapper
 {
 public:
-    BaseEncoderWrapper(const std::string& aName);
+    explicit BaseEncoderWrapper(const std::string& aName);
     virtual ~BaseEncoderWrapper();
 
     void Reset() override;

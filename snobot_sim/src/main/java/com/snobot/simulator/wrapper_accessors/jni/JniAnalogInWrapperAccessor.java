@@ -13,7 +13,6 @@ import com.snobot.simulator.wrapper_accessors.AnalogInWrapperAccessor;
 
 public class JniAnalogInWrapperAccessor implements AnalogInWrapperAccessor
 {
-    
     private static class AnalogInWrapper implements IAnalogInWrapper
     {
         private final int mHandle;
@@ -24,104 +23,65 @@ public class JniAnalogInWrapperAccessor implements AnalogInWrapperAccessor
         }
 
         @Override
-        public boolean isInitialized() {
+        public boolean isInitialized()
+        {
             return AnalogInWrapperJni.isInitialized(mHandle);
         }
 
         @Override
-        public void setInitialized(boolean aInitialized) {
+        public void setInitialized(boolean aInitialized)
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public String getName() {
+        public String getName()
+        {
             return AnalogInWrapperJni.getName(mHandle);
         }
 
         @Override
-        public void setName(String aName) {
+        public void setName(String aName)
+        {
             AnalogInWrapperJni.setName(mHandle, aName);
         }
 
         @Override
-        public boolean getWantsHidden() {
+        public boolean getWantsHidden()
+        {
             return AnalogInWrapperJni.getWantsHidden(mHandle);
         }
 
         @Override
-        public void setWantsHidden(boolean aVisible) {
+        public void setWantsHidden(boolean aVisible)
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public void close() throws Exception {
+        public void close() throws Exception
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public void setVoltage(double aVoltage) {
+        public void setVoltage(double aVoltage)
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public double getVoltage() {
+        public double getVoltage()
+        {
             return AnalogInWrapperJni.getVoltage(mHandle);
         }
     }
 
-    // @Override
-    // public boolean isInitialized(int aPort)
-    // {
-    //     return AnalogInWrapperJni.isInitialized(aPort);
-    // }
-
-    // @Override
-    // public boolean createSimulator(int aPort, String aType)
-    // {
-    //     return AnalogInWrapperJni.createSimulator(aPort, aType);
-    // }
-
-    // @Override
-    // public void removeSimulator(int aPort)
-    // {
-    //     AnalogInWrapperJni.removeSimluator(aPort);
-    // }
-
-    // @Override
-    // public void setName(int aPort, String aName)
-    // {
-    //     AnalogInWrapperJni.setName(aPort, aName);
-    // }
-
-    // @Override
-    // public String getName(int aPort)
-    // {
-    //     return AnalogInWrapperJni.getName(aPort);
-    // }
-
-    // @Override
-    // public boolean getWantsHidden(int aPort)
-    // {
-    //     return AnalogInWrapperJni.getWantsHidden(aPort);
-    // }
-
-    // @Override
-    // public double getVoltage(int aPort)
-    // {
-    //     return AnalogInWrapperJni.getVoltage(aPort);
-    // }
-
-    // @Override
-    // public void setVoltage(int aPort, double aVoltage)
-    // {
-    //     // nothing to do
-    // }
-
-    private Map<Integer, AnalogInWrapper> mWrappers = new HashMap<>();
+    private final Map<Integer, AnalogInWrapper> mWrappers = new HashMap<>();
 
     @Override
     public List<Integer> getPortList()
@@ -136,7 +96,8 @@ public class JniAnalogInWrapperAccessor implements AnalogInWrapperAccessor
     }
 
     @Override
-    public IAnalogInWrapper createSimulator(int aPort, String aType) {
+    public IAnalogInWrapper createSimulator(int aPort, String aType)
+    {
         AnalogInWrapperJni.createSimulator(aPort, aType);
         System.out.println("Creating..." + aPort + " " + aType);
         System.out.println(mWrappers.containsKey(aPort));
@@ -145,7 +106,8 @@ public class JniAnalogInWrapperAccessor implements AnalogInWrapperAccessor
     }
 
     @Override
-    public IAnalogInWrapper getWrapper(int aHandle) {
+    public IAnalogInWrapper getWrapper(int aHandle)
+    {
         if (!mWrappers.containsKey(aHandle))
         {
             mWrappers.put(aHandle, new AnalogInWrapper(aHandle));

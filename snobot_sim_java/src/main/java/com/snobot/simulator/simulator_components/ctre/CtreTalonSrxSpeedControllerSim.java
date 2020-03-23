@@ -179,7 +179,7 @@ public class CtreTalonSrxSpeedControllerSim extends BaseCanSmartSpeedController
             if (!DataAccessorFactory.getInstance().getEncoderAccessor().getPortList().contains(mHandle))
             {
                 IEncoderWrapper wrapper = DataAccessorFactory.getInstance().getEncoderAccessor().createSimulator(mHandle, SmartScEncoder.class.getName());
-                // wrapper.connectSpeedController(getHandle());
+                wrapper.connectSpeedController(getHandle());
                 sLOGGER.log(Level.WARN, "CTRE Encoder on port " + mCanHandle + " was not registerd before starting the robot");
             }
             SensorActuatorRegistry.get().getEncoders().get(getHandle()).setInitialized(true);

@@ -35,7 +35,7 @@ public class TestAnalogGyroJni extends BaseSimulatorJniTest
 
         DataAccessorFactory.getInstance().getGyroAccessor().createSimulator(gyroHandle, "com.snobot.simulator.module_wrapper.wpi.WpiAnalogGyroWrapper");
         IGyroWrapper simWrapper = DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(gyroHandle);
-        
+
         Assertions.assertFalse(simWrapper.isInitialized());
 
         new AnalogGyro(gyroHandle);

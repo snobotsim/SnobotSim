@@ -13,7 +13,6 @@ import com.snobot.simulator.wrapper_accessors.DigitalSourceWrapperAccessor;
 
 public class JniDigitalSourceWrapperAccessor implements DigitalSourceWrapperAccessor
 {
-    
     private static class DigitalSourceWrapper implements IDigitalIoWrapper
     {
         private final int mHandle;
@@ -24,55 +23,64 @@ public class JniDigitalSourceWrapperAccessor implements DigitalSourceWrapperAcce
         }
 
         @Override
-        public boolean isInitialized() {
+        public boolean isInitialized()
+        {
             return DigitalSourceWrapperJni.isInitialized(mHandle);
         }
 
         @Override
-        public void setInitialized(boolean aInitialized) {
+        public void setInitialized(boolean aInitialized)
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public String getName() {
+        public String getName()
+        {
             return DigitalSourceWrapperJni.getName(mHandle);
         }
 
         @Override
-        public void setName(String aName) {
+        public void setName(String aName)
+        {
             DigitalSourceWrapperJni.setName(mHandle, aName);
         }
 
         @Override
-        public boolean getWantsHidden() {
+        public boolean getWantsHidden()
+        {
             return DigitalSourceWrapperJni.getWantsHidden(mHandle);
         }
 
         @Override
-        public void setWantsHidden(boolean aVisible) {
+        public void setWantsHidden(boolean aVisible)
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public void close() throws Exception {
+        public void close() throws Exception
+        {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public boolean get() {
+        public boolean get()
+        {
             return DigitalSourceWrapperJni.getState(mHandle);
         }
 
         @Override
-        public void set(boolean aState) {
+        public void set(boolean aState)
+        {
             DigitalSourceWrapperJni.setState(mHandle, aState);
         }
     }
 
-    private Map<Integer, DigitalSourceWrapper> mWrappers = new HashMap<>();
+    private final Map<Integer, DigitalSourceWrapper> mWrappers = new HashMap<>();
 
     @Override
     public List<Integer> getPortList()
@@ -87,14 +95,16 @@ public class JniDigitalSourceWrapperAccessor implements DigitalSourceWrapperAcce
     }
 
     @Override
-    public IDigitalIoWrapper createSimulator(int aPort, String aType) {
+    public IDigitalIoWrapper createSimulator(int aPort, String aType)
+    {
         DigitalSourceWrapperJni.createSimulator(aPort, aType);
         mWrappers.put(aPort, new DigitalSourceWrapper(aPort));
         return mWrappers.get(aPort);
     }
 
     @Override
-    public IDigitalIoWrapper getWrapper(int aHandle) {
+    public IDigitalIoWrapper getWrapper(int aHandle)
+    {
         if (!mWrappers.containsKey(aHandle))
         {
             mWrappers.put(aHandle, new DigitalSourceWrapper(aHandle));

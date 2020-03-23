@@ -17,8 +17,6 @@ import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
 
 public class TestADXL345SPIAccelerometer extends BaseSimulatorJniTest
 {
-    private static final double sDOUBLE_EPSILON = 1 / 256.0; // Resoultion isn't as good as normal sensors
-
     public static Collection<Object[]> getData()
     {
         Collection<Object[]> output = new ArrayList<>();
@@ -47,7 +45,7 @@ public class TestADXL345SPIAccelerometer extends BaseSimulatorJniTest
         int xHandle = 100 + aPort.value * 3;
         int yHandle = 101 + aPort.value * 3;
         int zHandle = 102 + aPort.value * 3;
-        
+
         IAccelerometerWrapper xWrapper = DataAccessorFactory.getInstance().getAccelerometerAccessor().getWrapper(xHandle);
         IAccelerometerWrapper yWrapper = DataAccessorFactory.getInstance().getAccelerometerAccessor().getWrapper(yHandle);
         IAccelerometerWrapper zWrapper = DataAccessorFactory.getInstance().getAccelerometerAccessor().getWrapper(zHandle);

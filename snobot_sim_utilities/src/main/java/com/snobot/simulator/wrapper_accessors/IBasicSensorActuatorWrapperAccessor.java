@@ -11,6 +11,6 @@ public interface IBasicSensorActuatorWrapperAccessor<WrapperType extends ISensor
     List<Integer> getPortList();
 
     WrapperType getWrapper(int aHandle);
-    
-	String getType(int portHandle);
+
+    String getType(int aHandle);
 }

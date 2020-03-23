@@ -43,7 +43,8 @@ public class JavaSpeedControllerWrapperAccessor extends BaseWrapperAccessor<IPwm
     }
 
     @Override
-    public IPwmWrapper getWrapper(int aHandle) {
+    public IPwmWrapper getWrapper(int aHandle) 
+    {
         return getValue(aHandle);
     }
 
