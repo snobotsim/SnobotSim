@@ -27,49 +27,4 @@ public class JavaAccelerometerWrapperAccessor extends BaseWrapperAccessor<IAccel
         return getValue(aHandle);
     }
 
-    // @Override
-    // public boolean isInitialized(int aPort)
-    // {
-    //     return getValue(aPort).isInitialized();
-    // }
-
-    // @Override
-    // public double getAcceleration(int aPort)
-    // {
-    //     return getValue(aPort).getAcceleration();
-    // }
-
-    // @Override
-    // public void setAcceleration(int aPort, double aAcceleration)
-    // {
-    //     getValue(aPort).setAcceleration(aAcceleration);
-    // }
-
-    // @Override
-    // protected Map<Integer, IAccelerometerWrapper> getMap()
-    // {
-    //     return SensorActuatorRegistry.get().getAccelerometers();
-    // }
-
-    // @Override
-    // public boolean createSimulator(int aPort, String aType)
-    // {
-    //     return false;
-    // }
-
-    // @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    // @Override
-    // public void removeSimulator(int aPort)
-    // {
-    //     try
-    //     {
-    //         getValue(aPort).close();
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         LogManager.getLogger().log(Level.WARN, "Could not close simulator", ex);
-    //     }
-    //     SensorActuatorRegistry.get().getAccelerometers().remove(aPort);
-    // }
-
 }

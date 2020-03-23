@@ -2,61 +2,86 @@
 package com.snobot.simulator.wrapper_accessors.jni;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.snobot.simulator.jni.module_wrapper.RelayWrapperJni;
+import com.snobot.simulator.module_wrapper.interfaces.IRelayWrapper;
 import com.snobot.simulator.wrapper_accessors.RelayWrapperAccessor;
 
 public class JniRelayWrapperAccessor implements RelayWrapperAccessor
 {
-    @Override
-    public boolean isInitialized(int aPort)
+    private static class RelayWrapper implements IRelayWrapper
     {
-        return RelayWrapperJni.isInitialized(aPort);
+        private final int mHandle;
+
+        private RelayWrapper(int aHandle, String aType)
+        {
+            RelayWrapperJni.createSimulator(aHandle, aType);
+            mHandle = aHandle;
+        }
+
+        @Override
+        public boolean isInitialized() {
+            return RelayWrapperJni.isInitialized(mHandle);
+        }
+
+        @Override
+        public void setInitialized(boolean aInitialized) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public String getName() {
+            return RelayWrapperJni.getName(mHandle);
+        }
+
+        @Override
+        public void setName(String aName) {
+            RelayWrapperJni.setName(mHandle, aName);
+        }
+
+        @Override
+        public boolean getWantsHidden() {
+            return RelayWrapperJni.getWantsHidden(mHandle);
+        }
+
+        @Override
+        public void setWantsHidden(boolean aVisible) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void close() throws Exception {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public boolean getRelayReverse() {
+            return RelayWrapperJni.getReverseValue(mHandle);
+        }
+
+        @Override
+        public boolean getRelayForwards() {
+            return RelayWrapperJni.getFowardValue(mHandle);
+        }
+
+        @Override
+        public void setRelayReverse(boolean aReverse) {
+            
+        }
+
+        @Override
+        public void setRelayForwards(boolean aForwards) {
+            
+        }
     }
 
-    @Override
-    public boolean createSimulator(int aPort, String aType)
-    {
-        return RelayWrapperJni.createSimulator(aPort, aType);
-    }
-
-    @Override
-    public void removeSimulator(int aPort)
-    {
-        RelayWrapperJni.removeSimluator(aPort);
-    }
-
-    @Override
-    public void setName(int aPort, String aName)
-    {
-        RelayWrapperJni.setName(aPort, aName);
-    }
-
-    @Override
-    public String getName(int aPort)
-    {
-        return RelayWrapperJni.getName(aPort);
-    }
-
-    @Override
-    public boolean getWantsHidden(int aPort)
-    {
-        return RelayWrapperJni.getWantsHidden(aPort);
-    }
-
-    @Override
-    public boolean getFowardValue(int aPort)
-    {
-        return RelayWrapperJni.getFowardValue(aPort);
-    }
-
-    @Override
-    public boolean getReverseValue(int aPort)
-    {
-        return RelayWrapperJni.getReverseValue(aPort);
-    }
+    private Map<Integer, RelayWrapper> mWrappers;
 
     @Override
     public List<Integer> getPortList()
@@ -68,5 +93,15 @@ public class JniRelayWrapperAccessor implements RelayWrapperAccessor
     public String getType(int aPort)
     {
         return null;
+    }
+
+    @Override
+    public IRelayWrapper createSimulator(int aPort, String aType) {
+        return mWrappers.put(aPort, new RelayWrapper(aPort, aType));
+    }
+
+    @Override
+    public IRelayWrapper getWrapper(int aHandle) {
+        return mWrappers.get(aHandle);
     }
 }

@@ -3,6 +3,7 @@ package com.snobot.simulator.module_wrapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import com.snobot.simulator.module_wrapper.interfaces.IDigitalIoWrapper;
 import com.snobot.simulator.module_wrapper.wpi.WpiDigitalIoWrapper;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorJavaTest;
@@ -19,26 +20,30 @@ public class TestDigitalIOJni extends BaseSimulatorJavaTest
 
         new DigitalInput(0);
         Assertions.assertEquals(1, DataAccessorFactory.getInstance().getDigitalAccessor().getPortList().size());
-        Assertions.assertEquals("Digital IO 0", DataAccessorFactory.getInstance().getDigitalAccessor().getWrapper(0).getName());
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getDigitalAccessor().getWrapper(0).getWantsHidden());
+        IDigitalIoWrapper wrapper0 = DataAccessorFactory.getInstance().getDigitalAccessor().getWrapper(0);
+
+        Assertions.assertEquals("Digital IO 0", wrapper0.getName());
+        Assertions.assertFalse(wrapper0.getWantsHidden());
 
         new DigitalInput(3);
         Assertions.assertEquals(2, DataAccessorFactory.getInstance().getDigitalAccessor().getPortList().size());
-        Assertions.assertEquals("Digital IO 3", DataAccessorFactory.getInstance().getDigitalAccessor().getWrapper(3).getName());
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getDigitalAccessor().getWrapper(3).getWantsHidden());
+        IDigitalIoWrapper wrapper3 = DataAccessorFactory.getInstance().getDigitalAccessor().getWrapper(3);
 
-        DataAccessorFactory.getInstance().getDigitalAccessor().getWrapper(3).setName("NewNameFor3");
-        Assertions.assertEquals("NewNameFor3", DataAccessorFactory.getInstance().getDigitalAccessor().getWrapper(3).getName());
+        Assertions.assertEquals("Digital IO 3", wrapper3.getName());
+        Assertions.assertFalse(wrapper3.getWantsHidden());
+
+        wrapper3.setName("NewNameFor3");
+        Assertions.assertEquals("NewNameFor3", wrapper3.getName());
     }
 
     @Test
     public void testCreateDigitalInWithSetup()
     {
-        DataAccessorFactory.getInstance().getDigitalAccessor().createSimulator(3, WpiDigitalIoWrapper.class.getName());
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getDigitalAccessor().getWrapper(3).isInitialized());
+        IDigitalIoWrapper wrapper = DataAccessorFactory.getInstance().getDigitalAccessor().createSimulator(3, WpiDigitalIoWrapper.class.getName());
+        Assertions.assertFalse(wrapper.isInitialized());
 
         new DigitalInput(3);
-        Assertions.assertTrue(DataAccessorFactory.getInstance().getDigitalAccessor().getWrapper(3).isInitialized());
+        Assertions.assertTrue(wrapper.isInitialized());
     }
 
     @Test

@@ -2,7 +2,6 @@ package com.snobot.simulator.wrapper_accessors.jni;
 
 import com.snobot.simulator.LogConfigurator;
 import com.snobot.simulator.wrapper_accessors.AccelerometerWrapperAccessor;
-import com.snobot.simulator.wrapper_accessors.AnalogSourceWrapperAccessor;
 import com.snobot.simulator.wrapper_accessors.DigitalSourceWrapperAccessor;
 import com.snobot.simulator.wrapper_accessors.DriverStationDataAccessor;
 import com.snobot.simulator.wrapper_accessors.EncoderWrapperAccessor;
@@ -15,13 +14,15 @@ import com.snobot.simulator.wrapper_accessors.SolenoidWrapperAccessor;
 import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor;
 import com.snobot.simulator.wrapper_accessors.SpiWrapperAccessor;
 import com.snobot.simulator.wrapper_accessors.AddressableLedWrapperAccessor;
+import com.snobot.simulator.wrapper_accessors.AnalogInWrapperAccessor;
+import com.snobot.simulator.wrapper_accessors.AnalogOutWrapperAccessor;
 
 public class JniDataAccessor implements IDataAccessor
 {
     private final AccelerometerWrapperAccessor mAccelerometer;
     private final GyroWrapperAccessor mGyro;
-    private final AnalogSourceWrapperAccessor mAnalogIn;
-    private final AnalogSourceWrapperAccessor mAnalogOut;
+    private final AnalogInWrapperAccessor mAnalogIn;
+    private final JniAnalogOutWrapperAccessor mAnalogOut;
     private final DigitalSourceWrapperAccessor mDigital;
     private final EncoderWrapperAccessor mEncoder;
     private final RelayWrapperAccessor mRelay;
@@ -70,13 +71,13 @@ public class JniDataAccessor implements IDataAccessor
     }
 
     @Override
-    public AnalogSourceWrapperAccessor getAnalogInAccessor()
+    public AnalogInWrapperAccessor getAnalogInAccessor()
     {
         return mAnalogIn;
     }
 
     @Override
-    public AnalogSourceWrapperAccessor getAnalogOutAccessor()
+    public AnalogOutWrapperAccessor getAnalogOutAccessor()
     {
         return mAnalogOut;
     }

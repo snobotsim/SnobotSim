@@ -3,6 +3,7 @@ package com.snobot.simulator.module_wrapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import com.snobot.simulator.module_wrapper.interfaces.IRelayWrapper;
 import com.snobot.simulator.module_wrapper.wpi.WpiRelayWrapper;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorJavaTest;
@@ -19,26 +20,29 @@ public class TestRelayJni extends BaseSimulatorJavaTest
 
         new Relay(0);
         Assertions.assertEquals(1, DataAccessorFactory.getInstance().getRelayAccessor().getPortList().size());
-        Assertions.assertEquals("Relay 0", DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(0).getName());
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(0).getWantsHidden());
+        IRelayWrapper wrapper0 = DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(0);
+
+        Assertions.assertEquals("Relay 0", wrapper0.getName());
+        Assertions.assertFalse(wrapper0.getWantsHidden());
 
         new Relay(1);
         Assertions.assertEquals(2, DataAccessorFactory.getInstance().getRelayAccessor().getPortList().size());
-        Assertions.assertEquals("Relay 1", DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1).getName());
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1).getWantsHidden());
+        IRelayWrapper wrapper1 = DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1);
+        Assertions.assertEquals("Relay 1", wrapper1.getName());
+        Assertions.assertFalse(wrapper1.getWantsHidden());
 
-        DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(0).setName("NewNameFor0");
-        Assertions.assertEquals("NewNameFor0", DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(0).getName());
+        wrapper0.setName("NewNameFor0");
+        Assertions.assertEquals("NewNameFor0", wrapper0.getName());
     }
 
     @Test
     public void testCreateRelaysWithSetup()
     {
-        DataAccessorFactory.getInstance().getRelayAccessor().createSimulator(3, WpiRelayWrapper.class.getName());
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(3).isInitialized());
+        IRelayWrapper wrapper = DataAccessorFactory.getInstance().getRelayAccessor().createSimulator(3, WpiRelayWrapper.class.getName());
+        Assertions.assertFalse(wrapper.isInitialized());
 
         new Relay(3);
-        Assertions.assertTrue(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(3).isInitialized());
+        Assertions.assertTrue(wrapper.isInitialized());
     }
 
     @Test
@@ -61,23 +65,25 @@ public class TestRelayJni extends BaseSimulatorJavaTest
         Assertions.assertEquals(0, DataAccessorFactory.getInstance().getRelayAccessor().getPortList().size());
 
         Relay relay = new Relay(1);
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1).getRelayForwards());
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1).getRelayReverse());
+        IRelayWrapper wrapper = DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1);
+
+        Assertions.assertFalse(wrapper.getRelayForwards());
+        Assertions.assertFalse(wrapper.getRelayReverse());
 
         relay.set(Value.kOn);
-        Assertions.assertTrue(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1).getRelayForwards());
-        Assertions.assertTrue(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1).getRelayReverse());
+        Assertions.assertTrue(wrapper.getRelayForwards());
+        Assertions.assertTrue(wrapper.getRelayReverse());
 
         relay.set(Value.kForward);
-        Assertions.assertTrue(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1).getRelayForwards());
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1).getRelayReverse());
+        Assertions.assertTrue(wrapper.getRelayForwards());
+        Assertions.assertFalse(wrapper.getRelayReverse());
 
         relay.set(Value.kReverse);
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1).getRelayForwards());
-        Assertions.assertTrue(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1).getRelayReverse());
+        Assertions.assertFalse(wrapper.getRelayForwards());
+        Assertions.assertTrue(wrapper.getRelayReverse());
 
         relay.set(Value.kOff);
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1).getRelayForwards());
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1).getRelayReverse());
+        Assertions.assertFalse(wrapper.getRelayForwards());
+        Assertions.assertFalse(wrapper.getRelayReverse());
     }
 }

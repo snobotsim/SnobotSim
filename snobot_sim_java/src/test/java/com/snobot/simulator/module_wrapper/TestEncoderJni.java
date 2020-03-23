@@ -26,26 +26,30 @@ public class TestEncoderJni extends BaseSimulatorJavaTest
 
         new Encoder(0, 1);
         Assertions.assertEquals(1, DataAccessorFactory.getInstance().getEncoderAccessor().getPortList().size());
-        Assertions.assertEquals("Encoder 0", DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).getName());
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).getWantsHidden());
+        IEncoderWrapper wrapper0 = DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0);
+
+        Assertions.assertEquals("Encoder 0", wrapper0.getName());
+        Assertions.assertFalse(wrapper0.getWantsHidden());
 
         new Encoder(2, 3);
         Assertions.assertEquals(2, DataAccessorFactory.getInstance().getEncoderAccessor().getPortList().size());
-        Assertions.assertEquals("Encoder 1", DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(1).getName());
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).getWantsHidden());
+        IEncoderWrapper wrapper1 = DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(1);
 
-        DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(1).setName("NewNameFor1");
-        Assertions.assertEquals("NewNameFor1", DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(1).getName());
+        Assertions.assertEquals("Encoder 1", wrapper1.getName());
+        Assertions.assertFalse(wrapper0.getWantsHidden());
+
+        wrapper1.setName("NewNameFor1");
+        Assertions.assertEquals("NewNameFor1", wrapper1.getName());
     }
 
     @Test
     public void testCreateEncoderWithSetup()
     {
-        DataAccessorFactory.getInstance().getEncoderAccessor().createSimulator(0, WpiEncoderWrapper.class.getName());
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).isInitialized());
+        IEncoderWrapper wrapper = DataAccessorFactory.getInstance().getEncoderAccessor().createSimulator(0, WpiEncoderWrapper.class.getName());
+        Assertions.assertFalse(wrapper.isInitialized());
 
         new Encoder(1, 2);
-        Assertions.assertTrue(DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).isInitialized());
+        Assertions.assertTrue(wrapper.isInitialized());
     }
 
     @Test
@@ -67,17 +71,19 @@ public class TestEncoderJni extends BaseSimulatorJavaTest
     {
         SpeedController sc = new Talon(0);
         final Encoder encoder = new Encoder(1, 2);
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).isHookedUp());
-        Assertions.assertEquals(-1, DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).getHookedUpId());
+        IEncoderWrapper wrapper = DataAccessorFactory.getInstance().getEncoderAccessor().createSimulator(0, WpiEncoderWrapper.class.getName());
 
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).isHookedUp());
-        Assertions.assertEquals(-1, DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).getHookedUpId());
+        Assertions.assertFalse(wrapper.isHookedUp());
+        Assertions.assertEquals(-1, wrapper.getHookedUpId());
 
-        Assertions.assertTrue(DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).connectSpeedController(0));
+        Assertions.assertFalse(wrapper.isHookedUp());
+        Assertions.assertEquals(-1, wrapper.getHookedUpId());
+
+        Assertions.assertTrue(wrapper.connectSpeedController(0));
         Assertions.assertTrue(
                 DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(0, new SimpleMotorSimulationConfig(12)));
-        Assertions.assertTrue(DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).isHookedUp());
-        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).getHookedUpId());
+        Assertions.assertTrue(wrapper.isHookedUp());
+        Assertions.assertEquals(0, wrapper.getHookedUpId());
 
         simulateForTime(1, () ->
         {
@@ -86,12 +92,12 @@ public class TestEncoderJni extends BaseSimulatorJavaTest
 
         Assertions.assertEquals(12.0, encoder.getDistance(), DOUBLE_EPSILON);
         Assertions.assertEquals(12.0, encoder.getRate(), DOUBLE_EPSILON);
-        Assertions.assertEquals(12.0, DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).getPosition(), DOUBLE_EPSILON);
+        Assertions.assertEquals(12.0, wrapper.getPosition(), DOUBLE_EPSILON);
 
         encoder.reset();
         Assertions.assertEquals(0.0, encoder.getDistance(), DOUBLE_EPSILON);
         Assertions.assertEquals(0.0, encoder.getRate(), DOUBLE_EPSILON);
-        Assertions.assertEquals(0.0, DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).getPosition(), DOUBLE_EPSILON);
+        Assertions.assertEquals(0.0, wrapper.getPosition(), DOUBLE_EPSILON);
     }
 
     @Disabled
@@ -99,19 +105,20 @@ public class TestEncoderJni extends BaseSimulatorJavaTest
     public void testSpeedControllerFeedbackWithDistancePerTick()
     {
         SpeedController sc = new Talon(0);
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).isHookedUp());
-        Assertions.assertEquals(-1, DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).getHookedUpId());
+        IEncoderWrapper wrapper = DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0);
+        Assertions.assertFalse(wrapper.isHookedUp());
+        Assertions.assertEquals(-1, wrapper.getHookedUpId());
 
         Encoder encoder = new Encoder(1, 2);
         encoder.setDistancePerPulse(.0002);
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).isHookedUp());
-        Assertions.assertEquals(-1, DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).getHookedUpId());
+        Assertions.assertFalse(wrapper.isHookedUp());
+        Assertions.assertEquals(-1, wrapper.getHookedUpId());
 
-        Assertions.assertTrue(DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).connectSpeedController(0));
+        Assertions.assertTrue(wrapper.connectSpeedController(0));
         Assertions.assertTrue(
                 DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(0, new SimpleMotorSimulationConfig(12)));
-        Assertions.assertTrue(DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).isHookedUp());
-        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).getHookedUpId());
+        Assertions.assertTrue(wrapper.isHookedUp());
+        Assertions.assertEquals(0, wrapper.getHookedUpId());
 
         simulateForTime(1, () ->
         {
@@ -120,12 +127,12 @@ public class TestEncoderJni extends BaseSimulatorJavaTest
 
         Assertions.assertEquals(12.0, encoder.getDistance(), DOUBLE_EPSILON);
         Assertions.assertEquals(12.0, encoder.getRate(), DOUBLE_EPSILON);
-        Assertions.assertEquals(12.0, DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).getPosition(), DOUBLE_EPSILON);
+        Assertions.assertEquals(12.0, wrapper.getPosition(), DOUBLE_EPSILON);
 
         encoder.reset();
         Assertions.assertEquals(0.0, encoder.getDistance(), DOUBLE_EPSILON);
         Assertions.assertEquals(0.0, encoder.getRate(), DOUBLE_EPSILON);
-        Assertions.assertEquals(0.0, DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).getPosition(), DOUBLE_EPSILON);
+        Assertions.assertEquals(0.0, wrapper.getPosition(), DOUBLE_EPSILON);
 
         simulateForTime(1, () ->
         {
@@ -136,7 +143,7 @@ public class TestEncoderJni extends BaseSimulatorJavaTest
         // Try another reset
         encoder.reset();
         Assertions.assertEquals(0.0, encoder.getDistance(), DOUBLE_EPSILON);
-        Assertions.assertEquals(0.0, DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).getPosition(), DOUBLE_EPSILON);
+        Assertions.assertEquals(0.0, wrapper.getPosition(), DOUBLE_EPSILON);
 
     }
 
@@ -149,7 +156,7 @@ public class TestEncoderJni extends BaseSimulatorJavaTest
         wrapper.setPosition(5);
 
         Assertions.assertEquals(5.0, encoder.getDistance(), DOUBLE_EPSILON);
-        Assertions.assertEquals(5.0, DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(0).getPosition(), DOUBLE_EPSILON);
+        Assertions.assertEquals(5.0, wrapper.getPosition(), DOUBLE_EPSILON);
     }
 
     @Test

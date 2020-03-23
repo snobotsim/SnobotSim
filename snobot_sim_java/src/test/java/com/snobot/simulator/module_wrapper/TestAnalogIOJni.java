@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.interfaces.IAnalogInWrapper;
+import com.snobot.simulator.module_wrapper.interfaces.IAnalogOutWrapper;
 import com.snobot.simulator.module_wrapper.wpi.WpiAnalogInWrapper;
 import com.snobot.simulator.module_wrapper.wpi.WpiAnalogOutWrapper;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
@@ -22,16 +23,20 @@ public class TestAnalogIOJni extends BaseSimulatorJavaTest
 
         new AnalogInput(0);
         Assertions.assertEquals(1, DataAccessorFactory.getInstance().getAnalogInAccessor().getPortList().size());
-        Assertions.assertEquals("Analog In 0", DataAccessorFactory.getInstance().getAnalogInAccessor().getWrapper(0).getName());
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getAnalogInAccessor().getWrapper(0).getWantsHidden());
+
+        IAnalogInWrapper wrapper0 = DataAccessorFactory.getInstance().getAnalogInAccessor().getWrapper(0);
+        Assertions.assertEquals("Analog In 0", wrapper0.getName());
+        Assertions.assertFalse(wrapper0.getWantsHidden());
 
         new AnalogInput(3);
         Assertions.assertEquals(2, DataAccessorFactory.getInstance().getAnalogInAccessor().getPortList().size());
-        Assertions.assertEquals("Analog In 3", DataAccessorFactory.getInstance().getAnalogInAccessor().getWrapper(3).getName());
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getAnalogInAccessor().getWrapper(3).getWantsHidden());
+        IAnalogInWrapper wrapper3 = DataAccessorFactory.getInstance().getAnalogInAccessor().getWrapper(3);
 
-        DataAccessorFactory.getInstance().getAnalogInAccessor().getWrapper(3).setName("NewNameFor3");
-        Assertions.assertEquals("NewNameFor3", DataAccessorFactory.getInstance().getAnalogInAccessor().getWrapper(3).getName());
+        Assertions.assertEquals("Analog In 3", wrapper3.getName());
+        Assertions.assertFalse(wrapper3.getWantsHidden());
+
+        wrapper3.setName("NewNameFor3");
+        Assertions.assertEquals("NewNameFor3", wrapper3.getName());
 
         // Set name for non-existing sensor
         Assertions.assertNull(DataAccessorFactory.getInstance().getAnalogInAccessor().getWrapper(4));
@@ -40,11 +45,11 @@ public class TestAnalogIOJni extends BaseSimulatorJavaTest
     @Test
     public void testCreateAnalogInWithSetup()
     {
-        DataAccessorFactory.getInstance().getAnalogInAccessor().createSimulator(3, WpiAnalogInWrapper.class.getName());
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getAnalogInAccessor().getWrapper(3).isInitialized());
+        IAnalogInWrapper wrapper = DataAccessorFactory.getInstance().getAnalogInAccessor().createSimulator(3, WpiAnalogInWrapper.class.getName());
+        Assertions.assertFalse(wrapper.isInitialized());
 
         new AnalogInput(3);
-        Assertions.assertTrue(DataAccessorFactory.getInstance().getAnalogInAccessor().getWrapper(3).isInitialized());
+        Assertions.assertTrue(wrapper.isInitialized());
     }
 
     @Test
@@ -63,10 +68,12 @@ public class TestAnalogIOJni extends BaseSimulatorJavaTest
     public void testCreateAnalogOutWithSetup()
     {
         DataAccessorFactory.getInstance().getAnalogOutAccessor().createSimulator(1, WpiAnalogOutWrapper.class.getName());
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getAnalogOutAccessor().getWrapper(1).isInitialized());
+        IAnalogOutWrapper wrapper = DataAccessorFactory.getInstance().getAnalogOutAccessor().createSimulator(1, WpiAnalogInWrapper.class.getName());
+
+        Assertions.assertFalse(wrapper.isInitialized());
 
         new AnalogOutput(1);
-        Assertions.assertTrue(DataAccessorFactory.getInstance().getAnalogOutAccessor().getWrapper(1).isInitialized());
+        Assertions.assertTrue(wrapper.isInitialized());
     }
 
     @Test

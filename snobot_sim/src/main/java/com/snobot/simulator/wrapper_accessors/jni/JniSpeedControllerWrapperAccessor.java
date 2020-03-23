@@ -7,6 +7,9 @@ import java.util.stream.IntStream;
 
 import com.snobot.simulator.jni.LocalDcMotorModelConfig;
 import com.snobot.simulator.jni.module_wrapper.SpeedControllerWrapperJni;
+import com.snobot.simulator.module_wrapper.interfaces.IMotorFeedbackSensor;
+import com.snobot.simulator.module_wrapper.interfaces.IMotorSimulator;
+import com.snobot.simulator.module_wrapper.interfaces.IPwmWrapper;
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.GravityLoadMotorSimulationConfig;
 import com.snobot.simulator.motor_sim.RotationalLoadMotorSimulationConfig;
@@ -14,42 +17,129 @@ import com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig;
 import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
 import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor;
 
-public class JniSpeedControllerWrapperAccessor implements SpeedControllerWrapperAccessor
-{
-    @Override
-    public boolean isInitialized(int aPort)
-    {
-        return SpeedControllerWrapperJni.isInitialized(aPort);
-    }
+public class JniSpeedControllerWrapperAccessor implements SpeedControllerWrapperAccessor {
+    private static class SpeedControllerWrapper implements IPwmWrapper {
+        private final int mHandle;
 
-    @Override
-    public boolean createSimulator(int aPort, String aType)
-    {
-        return SpeedControllerWrapperJni.createSimulator(aPort, aType);
-    }
+        private SpeedControllerWrapper(int aHandle, String aType) {
+            SpeedControllerWrapperJni.createSimulator(aHandle, aType);
+            mHandle = aHandle;
+        }
 
-    @Override
-    public void removeSimulator(int aPort)
-    {
-        SpeedControllerWrapperJni.removeSimluator(aPort);
-    }
+        @Override
+        public boolean isInitialized() {
+            return SpeedControllerWrapperJni.isInitialized(mHandle);
+        }
 
-    @Override
-    public void setName(int aPort, String aName)
-    {
-        SpeedControllerWrapperJni.setName(aPort, aName);
-    }
+        @Override
+        public void setInitialized(boolean aInitialized) {
+            // TODO Auto-generated method stub
 
-    @Override
-    public String getName(int aPort)
-    {
-        return SpeedControllerWrapperJni.getName(aPort);
-    }
+        }
 
-    @Override
-    public boolean getWantsHidden(int aPort)
-    {
-        return SpeedControllerWrapperJni.getWantsHidden(aPort);
+        @Override
+        public String getName() {
+            return SpeedControllerWrapperJni.getName(mHandle);
+        }
+
+        @Override
+        public void setName(String aName) {
+            SpeedControllerWrapperJni.setName(mHandle, aName);
+        }
+
+        @Override
+        public boolean getWantsHidden() {
+            return SpeedControllerWrapperJni.getWantsHidden(mHandle);
+        }
+
+        @Override
+        public void setWantsHidden(boolean aVisible) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void close() throws Exception {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public IMotorSimulator getMotorSimulator() {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public void setMotorSimulator(IMotorSimulator aSimulator) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void reset(double aPosition, double aVelocity, double aCurrent) {
+            SpeedControllerWrapperJni.reset(mHandle, aPosition, aVelocity, aCurrent);
+        }
+
+        @Override
+        public void reset() {
+            reset(0, 0, 0);
+        }
+
+        @Override
+        public double getPosition() {
+            return SpeedControllerWrapperJni.getPosition(mHandle);
+        }
+
+        @Override
+        public double getVelocity() {
+            return SpeedControllerWrapperJni.getVelocity(mHandle);
+        }
+
+        @Override
+        public double getAcceleration() {
+            return SpeedControllerWrapperJni.getAcceleration(mHandle);
+        }
+
+        @Override
+        public double getCurrent() {
+            return SpeedControllerWrapperJni.getCurrent(mHandle);
+        }
+
+        @Override
+        public void set(double aSpeed) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public double get() {
+            return SpeedControllerWrapperJni.getVoltagePercentage(mHandle);
+        }
+
+        @Override
+        public void update(double aWaitTime) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void setFeedbackSensor(IMotorFeedbackSensor aFeedbackSensor) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public IMotorFeedbackSensor getFeedbackSensor() {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public int getHandle() {
+            // TODO Auto-generated method stub
+            return 0;
+        }
     }
 
     @Override
@@ -141,6 +231,18 @@ public class JniSpeedControllerWrapperAccessor implements SpeedControllerWrapper
     @Override
     public String getType(int aPort)
     {
+        return null;
+    }
+
+    @Override
+    public IPwmWrapper createSimulator(int aPort, String aType) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public IPwmWrapper getWrapper(int aHandle) {
+        // TODO Auto-generated method stub
         return null;
     }
 }

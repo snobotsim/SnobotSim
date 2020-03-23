@@ -2,67 +2,76 @@
 package com.snobot.simulator.wrapper_accessors.jni;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.snobot.simulator.jni.module_wrapper.GyroWrapperJni;
+import com.snobot.simulator.module_wrapper.interfaces.IGyroWrapper;
 import com.snobot.simulator.wrapper_accessors.GyroWrapperAccessor;
 
 public class JniGyroWrapperAccessor implements GyroWrapperAccessor
 {
-    @Override
-    public boolean isInitialized(int aPort)
+    private static class GyroWrapper implements IGyroWrapper
     {
-        return GyroWrapperJni.isInitialized(aPort);
-    }
+        private final int mHandle;
 
-    @Override
-    public boolean createSimulator(int aPort, String aType)
-    {
-        return GyroWrapperJni.createSimulator(aPort, aType);
-    }
+        private GyroWrapper(int aHandle, String aType)
+        {
+            GyroWrapperJni.createSimulator(aHandle, aType);
+            mHandle = aHandle;
+        }
 
-    @Override
-    public void removeSimulator(int aPort)
-    {
-        GyroWrapperJni.removeSimluator(aPort);
-    }
+        @Override
+        public boolean isInitialized() {
+            return GyroWrapperJni.isInitialized(mHandle);
+        }
 
-    @Override
-    public void setName(int aPort, String aName)
-    {
-        GyroWrapperJni.setName(aPort, aName);
-    }
+        @Override
+        public void setInitialized(boolean aInitialized) {
+            // TODO Auto-generated method stub
 
-    @Override
-    public String getName(int aPort)
-    {
-        return GyroWrapperJni.getName(aPort);
-    }
+        }
 
-    @Override
-    public boolean getWantsHidden(int aPort)
-    {
-        return GyroWrapperJni.getWantsHidden(aPort);
-    }
+        @Override
+        public String getName() {
+            return GyroWrapperJni.getName(mHandle);
+        }
 
-    @Override
-    public double getAngle(int aPort)
-    {
-        return GyroWrapperJni.getAngle(aPort);
-    }
+        @Override
+        public void setName(String aName) {
+            GyroWrapperJni.setName(mHandle, aName);
+        }
 
-    @Override
-    public void setAngle(int aPort, double aAngle)
-    {
-        GyroWrapperJni.setAngle(aPort, aAngle);
-    }
+        @Override
+        public boolean getWantsHidden() {
+            return GyroWrapperJni.getWantsHidden(mHandle);
+        }
 
-    @Override
-    public void reset(int aPort)
-    {
-        GyroWrapperJni.reset(aPort);
+        @Override
+        public void setWantsHidden(boolean aVisible) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void close() throws Exception {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public double getAngle() {
+            return GyroWrapperJni.getAngle(mHandle);
+        }
+
+        @Override
+        public void setAngle(double aAngle) {
+            GyroWrapperJni.setAngle(mHandle, aAngle);
+        }
     }
+    
+    private Map<Integer, GyroWrapper> mWrappers;
 
     @Override
     public List<Integer> getPortList()
@@ -74,5 +83,15 @@ public class JniGyroWrapperAccessor implements GyroWrapperAccessor
     public String getType(int aPort)
     {
         return null;
+    }
+
+    @Override
+    public IGyroWrapper createSimulator(int aPort, String aType) {
+        return mWrappers.put(aPort, new GyroWrapper(aPort, aType));
+    }
+
+    @Override
+    public IGyroWrapper getWrapper(int aHandle) {
+        return mWrappers.get(aHandle);
     }
 }

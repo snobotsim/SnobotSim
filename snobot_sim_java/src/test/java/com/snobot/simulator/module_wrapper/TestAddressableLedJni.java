@@ -25,9 +25,8 @@ public class TestAddressableLedJni extends BaseSimulatorJavaTest
         leds.setData(buffer);
         leds.start();
 
-        IAddressableLedWrapper simWrapper = DataAccessorFactory.getInstance().getAddressableLedAccessor().getWrapper(0);
-
         Assertions.assertEquals(1, DataAccessorFactory.getInstance().getAddressableLedAccessor().getPortList().size());
+        IAddressableLedWrapper simWrapper = DataAccessorFactory.getInstance().getAddressableLedAccessor().getWrapper(0);
         Assertions.assertEquals("Addressable LED 0", simWrapper.getName());
 
 

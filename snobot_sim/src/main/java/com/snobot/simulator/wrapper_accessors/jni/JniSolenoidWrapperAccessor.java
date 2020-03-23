@@ -2,55 +2,77 @@
 package com.snobot.simulator.wrapper_accessors.jni;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.snobot.simulator.jni.module_wrapper.SolenoidWrapperJni;
+import com.snobot.simulator.module_wrapper.interfaces.ISolenoidWrapper;
 import com.snobot.simulator.wrapper_accessors.SolenoidWrapperAccessor;
 
 public class JniSolenoidWrapperAccessor implements SolenoidWrapperAccessor
 {
-    @Override
-    public boolean isInitialized(int aPort)
+    private static class SolenoidWrapper implements ISolenoidWrapper
     {
-        return SolenoidWrapperJni.isInitialized(aPort);
-    }
+        private final int mHandle;
 
-    @Override
-    public boolean createSimulator(int aPort, String aType)
-    {
-        return SolenoidWrapperJni.createSimulator(aPort, aType);
-    }
+        private SolenoidWrapper(int aHandle, String aType)
+        {
+            SolenoidWrapperJni.createSimulator(aHandle, aType);
+            mHandle = aHandle;
+        }
 
-    @Override
-    public void removeSimulator(int aPort)
-    {
-        SolenoidWrapperJni.removeSimluator(aPort);
-    }
+        @Override
+        public boolean isInitialized() {
+            return SolenoidWrapperJni.isInitialized(mHandle);
+        }
 
-    @Override
-    public void setName(int aPort, String aName)
-    {
-        SolenoidWrapperJni.setName(aPort, aName);
-    }
+        @Override
+        public void setInitialized(boolean aInitialized) {
+            // TODO Auto-generated method stub
 
-    @Override
-    public String getName(int aPort)
-    {
-        return SolenoidWrapperJni.getName(aPort);
-    }
+        }
 
-    @Override
-    public boolean getWantsHidden(int aPort)
-    {
-        return SolenoidWrapperJni.getWantsHidden(aPort);
-    }
+        @Override
+        public String getName() {
+            return SolenoidWrapperJni.getName(mHandle);
+        }
 
-    @Override
-    public boolean get(int aPort)
-    {
-        return SolenoidWrapperJni.get(aPort);
+        @Override
+        public void setName(String aName) {
+            SolenoidWrapperJni.setName(mHandle, aName);
+        }
+
+        @Override
+        public boolean getWantsHidden() {
+            return SolenoidWrapperJni.getWantsHidden(mHandle);
+        }
+
+        @Override
+        public void setWantsHidden(boolean aVisible) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void close() throws Exception {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void set(boolean aState) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public boolean get() {
+            return SolenoidWrapperJni.get(mHandle);
+        }
     }
+    
+    private Map<Integer, SolenoidWrapper> mWrappers;
 
     @Override
     public List<Integer> getPortList()
@@ -62,5 +84,15 @@ public class JniSolenoidWrapperAccessor implements SolenoidWrapperAccessor
     public String getType(int aPort)
     {
         return null;
+    }
+
+    @Override
+    public ISolenoidWrapper createSimulator(int aPort, String aType) {
+        return mWrappers.put(aPort, new SolenoidWrapper(aPort, aType));
+    }
+
+    @Override
+    public ISolenoidWrapper getWrapper(int aHandle) {
+        return mWrappers.get(aHandle);
     }
 }
