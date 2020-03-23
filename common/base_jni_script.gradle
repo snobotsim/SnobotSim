@@ -95,10 +95,6 @@ model {
                     it.buildable = false
                     return
                 }
-                // if (it.targetPlatform.name == nativeUtils.wpi.platforms.roborio || it.targetPlatform.name == nativeUtils.wpi.platforms.raspbian) {
-                //     it.buildable = false
-                //     return
-                // }
                 lib library: "${nativeName}Base", linkage: 'shared'
                 if (project.hasProperty('jniSplitSetup')) {
                     jniSplitSetup(it)
@@ -128,10 +124,6 @@ model {
             binaries.all {
                 lib library: "${nativeName}Base", linkage: 'shared'
                 lib library: "${nativeName}JNIShared", linkage: 'shared'
-                // if (it.targetPlatform.name == nativeUtils.wpi.platforms.roborio || it.targetPlatform.name == nativeUtils.wpi.platforms.raspbian) {
-                //     it.buildable = false
-                //     return
-                // }
             }
             nativeUtils.useRequiredLibrary(it, "hal_shared", "wpiutil_shared")
         }

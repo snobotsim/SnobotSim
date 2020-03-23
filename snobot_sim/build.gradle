@@ -5,11 +5,6 @@ apply plugin: 'edu.wpi.first.NativeUtils'
 repositories {
     mavenCentral()
 }
-if (project.hasProperty('releaseMode')) {
-    wpilibRepositories.addAllReleaseRepositories(project)
-} else {
-    wpilibRepositories.addAllDevelopmentRepositories(project)
-}
 
 ext {
     nativeName = "snobotSimCpp"
