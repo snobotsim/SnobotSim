@@ -1,5 +1,6 @@
 package com.snobot.simulator.module_wrapper;
 
+import com.snobot.simulator.module_wrapper.interfaces.IAddressableLedWrapper;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorJavaTest;
 import edu.wpi.first.wpilibj.AddressableLED;
@@ -24,14 +25,16 @@ public class TestAddressableLedJni extends BaseSimulatorJavaTest
         leds.setData(buffer);
         leds.start();
 
+        IAddressableLedWrapper simWrapper = DataAccessorFactory.getInstance().getAddressableLedAccessor().getWrapper(0);
+
         Assertions.assertEquals(1, DataAccessorFactory.getInstance().getAddressableLedAccessor().getPortList().size());
-        Assertions.assertEquals("Addressable LED 0", DataAccessorFactory.getInstance().getAddressableLedAccessor().getName(0));
+        Assertions.assertEquals("Addressable LED 0", simWrapper.getName());
 
 
         byte[] data;
 
         // Initial state
-        data = DataAccessorFactory.getInstance().getAddressableLedAccessor().getData(0);
+        data = simWrapper.getData();
         Assertions.assertEquals(240, data.length);
         System.out.println(Arrays.toString(data));
 
@@ -42,7 +45,7 @@ public class TestAddressableLedJni extends BaseSimulatorJavaTest
         }
         leds.setData(buffer);
 
-        data = DataAccessorFactory.getInstance().getAddressableLedAccessor().getData(0);
+        data = simWrapper.getData();
         Assertions.assertEquals(240, data.length);
         for (int i = 0; i < buffer.getLength(); i += 4)
         {

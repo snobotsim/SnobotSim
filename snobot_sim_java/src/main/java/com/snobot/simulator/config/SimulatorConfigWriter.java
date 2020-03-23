@@ -13,6 +13,9 @@ import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
 import com.snobot.simulator.config.v1.SimulatorConfigV1;
+import com.snobot.simulator.module_wrapper.interfaces.IEncoderWrapper;
+import com.snobot.simulator.module_wrapper.interfaces.IPwmWrapper;
+import com.snobot.simulator.module_wrapper.interfaces.ISensorWrapper;
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.IMotorSimulatorConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
@@ -96,11 +99,11 @@ public class SimulatorConfigWriter
     }
 
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-    protected void dumpBasicConfig(IBasicSensorActuatorWrapperAccessor aAccessor, List<BasicModuleConfig> aOutputList)
+    protected void dumpBasicConfig(IBasicSensorActuatorWrapperAccessor<?> aAccessor, List<BasicModuleConfig> aOutputList)
     {
         for (int portHandle : aAccessor.getPortList())
         {
-            BasicModuleConfig config = new BasicModuleConfig(portHandle, aAccessor.getName(portHandle), aAccessor.getType(portHandle));
+            BasicModuleConfig config = new BasicModuleConfig(portHandle, aAccessor.getWrapper(portHandle).getName(), aAccessor.getType(portHandle));
             aOutputList.add(config);
         }
     }
@@ -110,8 +113,9 @@ public class SimulatorConfigWriter
     {
         for (int portHandle : aAccessor.getPortList())
         {
-            EncoderConfig config = new EncoderConfig(portHandle, aAccessor.getName(portHandle), aAccessor.getType(portHandle),
-                    aAccessor.getHookedUpId(portHandle));
+            IEncoderWrapper wrapper = aAccessor.getWrapper(portHandle);
+            EncoderConfig config = new EncoderConfig(portHandle, wrapper.getName(), aAccessor.getType(portHandle),
+                wrapper.getHookedUpId());
             aOutputList.add(config);
         }
     }
@@ -121,7 +125,8 @@ public class SimulatorConfigWriter
     {
         for (int portHandle : aAccessor.getPortList())
         {
-            PwmConfig config = new PwmConfig(portHandle, aAccessor.getName(portHandle), aAccessor.getType(portHandle),
+            IPwmWrapper wrapper = aAccessor.getWrapper(portHandle);
+            PwmConfig config = new PwmConfig(portHandle, wrapper.getName(), aAccessor.getType(portHandle),
                     getMotorSimConfig(aAccessor, portHandle),
                     getMotorModel(aAccessor, portHandle));
             aOutputList.add(config);

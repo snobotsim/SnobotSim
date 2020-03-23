@@ -1,10 +1,8 @@
 
 package com.snobot.simulator.wrapper_accessors;
 
-public interface AccelerometerWrapperAccessor extends IBasicSensorActuatorWrapperAccessor
+import com.snobot.simulator.module_wrapper.interfaces.IAccelerometerWrapper;
+
+public interface AccelerometerWrapperAccessor extends IBasicSensorActuatorWrapperAccessor<IAccelerometerWrapper>
 {
-    public double getAcceleration(int aPort);
-
-    public void setAcceleration(int aPort, double aAcceleration);
-
 }

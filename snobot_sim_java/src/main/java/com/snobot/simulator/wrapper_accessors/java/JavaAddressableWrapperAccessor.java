@@ -20,35 +20,15 @@ public class JavaAddressableWrapperAccessor extends BaseWrapperAccessor<IAddress
     }
 
     @Override
-    public boolean isInitialized(int aPort)
+    public IAddressableLedWrapper createSimulator(int aPort, String aType)
     {
-        return getValue(aPort).isInitialized();
+        mFactory.create(aPort, aType);
+        return getWrapper(aPort);
     }
 
     @Override
-    public boolean createSimulator(int aPort, String aType)
-    {
-        return mFactory.create(aPort, aType);
-    }
-
-    @Override
-    public byte[] getData(int aPort)
-    {
-        return getValue(aPort).getData();
-    }
-
-    @Override
-    public void removeSimulator(int aPort)
-    {
-        try
-        {
-            getValue(aPort).close();
-        }
-        catch (Exception ex)
-        {
-            LogManager.getLogger().log(Level.WARN, "Could not close simulator", ex);
-        }
-        SensorActuatorRegistry.get().getLeds().remove(aPort);
+    public IAddressableLedWrapper getWrapper(int aHandle) {
+        return getValue(aHandle);
     }
 
     @Override

@@ -11,49 +11,65 @@ import com.snobot.simulator.wrapper_accessors.AccelerometerWrapperAccessor;
 
 public class JavaAccelerometerWrapperAccessor extends BaseWrapperAccessor<IAccelerometerWrapper> implements AccelerometerWrapperAccessor
 {
+
     @Override
-    public boolean isInitialized(int aPort)
-    {
-        return getValue(aPort).isInitialized();
+    public IAccelerometerWrapper createSimulator(int aPort, String aType) {
+        return null;
     }
 
     @Override
-    public double getAcceleration(int aPort)
-    {
-        return getValue(aPort).getAcceleration();
-    }
-
-    @Override
-    public void setAcceleration(int aPort, double aAcceleration)
-    {
-        getValue(aPort).setAcceleration(aAcceleration);
-    }
-
-    @Override
-    protected Map<Integer, IAccelerometerWrapper> getMap()
-    {
+    protected Map<Integer, IAccelerometerWrapper> getMap() {
         return SensorActuatorRegistry.get().getAccelerometers();
     }
 
     @Override
-    public boolean createSimulator(int aPort, String aType)
-    {
-        return false;
+    public IAccelerometerWrapper getWrapper(int aHandle) {
+        return getValue(aHandle);
     }
 
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    @Override
-    public void removeSimulator(int aPort)
-    {
-        try
-        {
-            getValue(aPort).close();
-        }
-        catch (Exception ex)
-        {
-            LogManager.getLogger().log(Level.WARN, "Could not close simulator", ex);
-        }
-        SensorActuatorRegistry.get().getAccelerometers().remove(aPort);
-    }
+    // @Override
+    // public boolean isInitialized(int aPort)
+    // {
+    //     return getValue(aPort).isInitialized();
+    // }
+
+    // @Override
+    // public double getAcceleration(int aPort)
+    // {
+    //     return getValue(aPort).getAcceleration();
+    // }
+
+    // @Override
+    // public void setAcceleration(int aPort, double aAcceleration)
+    // {
+    //     getValue(aPort).setAcceleration(aAcceleration);
+    // }
+
+    // @Override
+    // protected Map<Integer, IAccelerometerWrapper> getMap()
+    // {
+    //     return SensorActuatorRegistry.get().getAccelerometers();
+    // }
+
+    // @Override
+    // public boolean createSimulator(int aPort, String aType)
+    // {
+    //     return false;
+    // }
+
+    // @SuppressWarnings("PMD.AvoidCatchingGenericException")
+    // @Override
+    // public void removeSimulator(int aPort)
+    // {
+    //     try
+    //     {
+    //         getValue(aPort).close();
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         LogManager.getLogger().log(Level.WARN, "Could not close simulator", ex);
+    //     }
+    //     SensorActuatorRegistry.get().getAccelerometers().remove(aPort);
+    // }
 
 }

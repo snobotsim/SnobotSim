@@ -20,47 +20,20 @@ public class JavaRelayWrapperAccessor extends BaseWrapperAccessor<IRelayWrapper>
     }
 
     @Override
-    public boolean isInitialized(int aPort)
+    public IRelayWrapper createSimulator(int aPort, String aType)
     {
-        return getValue(aPort).isInitialized();
+        mFactory.create(aPort, aType);
+        return getWrapper(aPort);
     }
 
     @Override
-    public boolean createSimulator(int aPort, String aType)
-    {
-        return mFactory.create(aPort, aType);
-    }
-
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    @Override
-    public void removeSimulator(int aPort)
-    {
-        try
-        {
-            getValue(aPort).close();
-        }
-        catch (Exception ex)
-        {
-            LogManager.getLogger().log(Level.WARN, "Could not close simulator", ex);
-        }
-        SensorActuatorRegistry.get().getRelays().remove(aPort);
+    public IRelayWrapper getWrapper(int aHandle) {
+        return getValue(aHandle);
     }
 
     @Override
     protected Map<Integer, IRelayWrapper> getMap()
     {
         return SensorActuatorRegistry.get().getRelays();
-    }
-
-    @Override
-    public boolean getFowardValue(int aPort)
-    {
-        return getValue(aPort).getRelayForwards();
-    }
-
-    @Override
-    public boolean getReverseValue(int aPort)
-    {
-        return getValue(aPort).getRelayReverse();
     }
 }

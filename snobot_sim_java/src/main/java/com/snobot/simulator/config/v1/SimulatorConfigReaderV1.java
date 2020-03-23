@@ -136,7 +136,7 @@ public class SimulatorConfigReaderV1
         }
     }
 
-    protected void createBasicSimulatorComponents(IBasicSensorActuatorWrapperAccessor aAccessor, List<? extends BasicModuleConfig> aInputList)
+    protected void createBasicSimulatorComponents(IBasicSensorActuatorWrapperAccessor<?> aAccessor, List<? extends BasicModuleConfig> aInputList)
     {
         for (BasicModuleConfig config : aInputList)
         {
@@ -144,13 +144,13 @@ public class SimulatorConfigReaderV1
         }
     }
 
-    protected int createBasicSimulatorComponent(IBasicSensorActuatorWrapperAccessor aAccessor, BasicModuleConfig aConfig)
+    protected int createBasicSimulatorComponent(IBasicSensorActuatorWrapperAccessor<?> aAccessor, BasicModuleConfig aConfig)
     {
         int handle = aConfig.getmHandle();
         aAccessor.createSimulator(handle, aConfig.getmType());
         if (handle != -1 && aConfig.getmName() != null)
         {
-            aAccessor.setName(handle, aConfig.getmName());
+            aAccessor.getWrapper(handle).setName(aConfig.getmName());
         }
 
         return handle;
@@ -163,7 +163,7 @@ public class SimulatorConfigReaderV1
             int handle = createBasicSimulatorComponent(aAccessor, config);
             if (handle != -1 && config.getmConnectedSpeedControllerHandle() != -1)
             {
-                aAccessor.connectSpeedController(handle, config.getmConnectedSpeedControllerHandle());
+                aAccessor.getWrapper(handle).connectSpeedController(config.getmConnectedSpeedControllerHandle());
             }
         }
     }

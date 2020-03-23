@@ -23,31 +23,17 @@ public class JavaEncoderWrapperAccessor extends BaseWrapperAccessor<IEncoderWrap
         mFactory = new DefaultEncoderWrapperFactory();
     }
 
+
     @Override
-    public boolean isInitialized(int aPort)
+    public IEncoderWrapper createSimulator(int aPort, String aType)
     {
-        return getValue(aPort).isInitialized();
+        mFactory.create(aPort, aType);
+        return getWrapper(aPort);
     }
 
     @Override
-    public boolean createSimulator(int aPort, String aType)
-    {
-        return mFactory.create(aPort, aType);
-    }
-
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    @Override
-    public void removeSimulator(int aPort)
-    {
-        try
-        {
-            getValue(aPort).close();
-        }
-        catch (Exception ex)
-        {
-            LogManager.getLogger().log(Level.WARN, "Could not close simulator", ex);
-        }
-        SensorActuatorRegistry.get().getEncoders().remove(aPort);
+    public IEncoderWrapper getWrapper(int aHandle) {
+        return getValue(aHandle);
     }
 
     @Override
@@ -56,59 +42,23 @@ public class JavaEncoderWrapperAccessor extends BaseWrapperAccessor<IEncoderWrap
         return SensorActuatorRegistry.get().getEncoders();
     }
 
-    @Override
-    public boolean connectSpeedController(int aEncoderHandle, int aSpeedControllerHandle)
-    {
-        boolean success = false;
+    // @Override
+    // public boolean connectSpeedController(int aEncoderHandle, int aSpeedControllerHandle)
+    // {
+    //     boolean success = false;
 
-        IEncoderWrapper encoder = SensorActuatorRegistry.get().getEncoders().get(aEncoderHandle);
-        IPwmWrapper speedController = SensorActuatorRegistry.get().getSpeedControllers().get(aSpeedControllerHandle);
-        if (encoder == null || speedController == null)
-        {
-            sLOGGER.log(Level.ERROR, "Could not conenct SC to ENC... " + aEncoderHandle + ", " + aSpeedControllerHandle);
-        }
-        else
-        {
-            speedController.setFeedbackSensor(encoder);
-            success = true;
-        }
+    //     IEncoderWrapper encoder = SensorActuatorRegistry.get().getEncoders().get(aEncoderHandle);
+    //     IPwmWrapper speedController = SensorActuatorRegistry.get().getSpeedControllers().get(aSpeedControllerHandle);
+    //     if (encoder == null || speedController == null)
+    //     {
+    //         sLOGGER.log(Level.ERROR, "Could not conenct SC to ENC... " + aEncoderHandle + ", " + aSpeedControllerHandle);
+    //     }
+    //     else
+    //     {
+    //         speedController.setFeedbackSensor(encoder);
+    //         success = true;
+    //     }
 
-        return success;
-    }
-
-    private IPwmWrapper getConnectedPwm(int aPort)
-    {
-        IEncoderWrapper encWrapper = getValue(aPort);
-        for (IPwmWrapper pwmWrapper : SensorActuatorRegistry.get().getSpeedControllers().values())
-        {
-            if (pwmWrapper.getFeedbackSensor().equals(encWrapper))
-            {
-                return pwmWrapper;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public boolean isHookedUp(int aPort)
-    {
-        return getConnectedPwm(aPort) != null;
-    }
-
-    @Override
-    public int getHookedUpId(int aPort)
-    {
-        IPwmWrapper wrapper = getConnectedPwm(aPort);
-        if (wrapper != null)
-        {
-            return wrapper.getHandle();
-        }
-        return -1;
-    }
-
-    @Override
-    public double getDistance(int aPort)
-    {
-        return getValue(aPort).getPosition();
-    }
+    //     return success;
+    // }
 }

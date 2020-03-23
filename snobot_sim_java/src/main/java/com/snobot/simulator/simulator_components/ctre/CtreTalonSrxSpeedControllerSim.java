@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.snobot.simulator.SensorActuatorRegistry;
+import com.snobot.simulator.module_wrapper.interfaces.IEncoderWrapper;
 import com.snobot.simulator.simulator_components.smart_sc.BaseCanSmartSpeedController;
 import com.snobot.simulator.simulator_components.smart_sc.SmartScEncoder;
 import com.snobot.simulator.simulator_components.smart_sc.SmartScAnalogIn;
@@ -177,8 +178,8 @@ public class CtreTalonSrxSpeedControllerSim extends BaseCanSmartSpeedController
         case Encoder:
             if (!DataAccessorFactory.getInstance().getEncoderAccessor().getPortList().contains(mHandle))
             {
-                DataAccessorFactory.getInstance().getEncoderAccessor().createSimulator(mHandle, SmartScEncoder.class.getName());
-                DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(getHandle(), getHandle());
+                IEncoderWrapper wrapper = DataAccessorFactory.getInstance().getEncoderAccessor().createSimulator(mHandle, SmartScEncoder.class.getName());
+                // wrapper.connectSpeedController(getHandle());
                 sLOGGER.log(Level.WARN, "CTRE Encoder on port " + mCanHandle + " was not registerd before starting the robot");
             }
             SensorActuatorRegistry.get().getEncoders().get(getHandle()).setInitialized(true);

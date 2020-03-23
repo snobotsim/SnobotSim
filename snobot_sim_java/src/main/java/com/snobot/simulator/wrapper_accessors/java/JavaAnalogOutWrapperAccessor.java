@@ -8,9 +8,9 @@ import org.apache.logging.log4j.LogManager;
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.factories.DefaultAnalogOutWrapperFactory;
 import com.snobot.simulator.module_wrapper.interfaces.IAnalogOutWrapper;
-import com.snobot.simulator.wrapper_accessors.AnalogSourceWrapperAccessor;
+import com.snobot.simulator.wrapper_accessors.AnalogOutWrapperAccessor;
 
-public class JavaAnalogOutWrapperAccessor extends BaseWrapperAccessor<IAnalogOutWrapper> implements AnalogSourceWrapperAccessor
+public class JavaAnalogOutWrapperAccessor extends BaseWrapperAccessor<IAnalogOutWrapper> implements AnalogOutWrapperAccessor
 {
     private final DefaultAnalogOutWrapperFactory mFactory;
 
@@ -20,47 +20,19 @@ public class JavaAnalogOutWrapperAccessor extends BaseWrapperAccessor<IAnalogOut
     }
 
     @Override
-    public boolean isInitialized(int aPort)
+    public IAnalogOutWrapper createSimulator(int aPort, String aType)
     {
-        return getValue(aPort).isInitialized();
+        mFactory.create(aPort, aType);
+        return getWrapper(aPort);
     }
 
     @Override
-    public boolean createSimulator(int aPort, String aType)
-    {
-        return mFactory.create(aPort, aType);
+    public IAnalogOutWrapper getWrapper(int aHandle) {
+        return getValue(aHandle);
     }
-
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    @Override
-    public void removeSimulator(int aPort)
-    {
-        try
-        {
-            getValue(aPort).close();
-        }
-        catch (Exception ex)
-        {
-            LogManager.getLogger().log(Level.WARN, "Could not close simulator", ex);
-        }
-        SensorActuatorRegistry.get().getAnalogOut().remove(aPort);
-    }
-
     @Override
     protected Map<Integer, IAnalogOutWrapper> getMap()
     {
         return SensorActuatorRegistry.get().getAnalogOut();
-    }
-
-    @Override
-    public double getVoltage(int aPort)
-    {
-        return getValue(aPort).getVoltage();
-    }
-
-    @Override
-    public void setVoltage(int aPort, double aVoltage)
-    {
-        getValue(aPort).setVoltage(aVoltage);
     }
 }

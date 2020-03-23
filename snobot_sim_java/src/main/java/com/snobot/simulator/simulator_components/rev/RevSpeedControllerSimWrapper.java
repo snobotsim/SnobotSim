@@ -28,7 +28,7 @@ public class RevSpeedControllerSimWrapper extends BaseCanSmartSpeedController
             if (!DataAccessorFactory.getInstance().getEncoderAccessor().getPortList().contains(mHandle))
             {
                 DataAccessorFactory.getInstance().getEncoderAccessor().createSimulator(mHandle, SmartScEncoder.class.getName());
-                DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(getHandle(), getHandle());
+                // DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(getHandle(), getHandle());
                 sLOGGER.log(Level.WARN, "REV Encoder on port " + mCanHandle + " was not registerd before starting the robot");
             }
             SensorActuatorRegistry.get().getEncoders().get(getHandle()).setInitialized(true);

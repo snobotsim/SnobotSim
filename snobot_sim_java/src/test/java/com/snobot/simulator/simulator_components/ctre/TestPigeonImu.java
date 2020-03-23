@@ -82,13 +82,13 @@ public class TestPigeonImu extends BaseSimulatorJavaTest
         Assertions.assertEquals(0, yawPitchRollAngles[0], ANGLE_EPSILON);
         Assertions.assertEquals(0, yawPitchRollAngles[1], ANGLE_EPSILON);
         Assertions.assertEquals(0, yawPitchRollAngles[2], ANGLE_EPSILON);
-        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(yawPort), ANGLE_EPSILON);
-        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(pitchPort), ANGLE_EPSILON);
-        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(rollPort), ANGLE_EPSILON);
+        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(yawPort).getAngle(), ANGLE_EPSILON);
+        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(pitchPort).getAngle(), ANGLE_EPSILON);
+        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(rollPort).getAngle(), ANGLE_EPSILON);
 
-        DataAccessorFactory.getInstance().getGyroAccessor().setAngle(yawPort, 47);
-        DataAccessorFactory.getInstance().getGyroAccessor().setAngle(pitchPort, -98);
-        DataAccessorFactory.getInstance().getGyroAccessor().setAngle(rollPort, 24);
+        DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(yawPort).setAngle(47);
+        DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(pitchPort).setAngle(-98);
+        DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(rollPort).setAngle(24);
 
         aImu.getRawGyro(rawAngles);
         aImu.getFusedHeading(fusionStatus);
@@ -100,8 +100,8 @@ public class TestPigeonImu extends BaseSimulatorJavaTest
         Assertions.assertEquals(47, yawPitchRollAngles[0], ANGLE_EPSILON);
         Assertions.assertEquals(-98, yawPitchRollAngles[1], ANGLE_EPSILON);
         Assertions.assertEquals(24, yawPitchRollAngles[2], ANGLE_EPSILON);
-        Assertions.assertEquals(47, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(yawPort), ANGLE_EPSILON);
-        Assertions.assertEquals(-98, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(pitchPort), ANGLE_EPSILON);
-        Assertions.assertEquals(24, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(rollPort), ANGLE_EPSILON);
+        Assertions.assertEquals(47, DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(yawPort).getAngle(), ANGLE_EPSILON);
+        Assertions.assertEquals(-98, DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(pitchPort).getAngle(), ANGLE_EPSILON);
+        Assertions.assertEquals(24, DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(rollPort).getAngle(), ANGLE_EPSILON);
     }
 }

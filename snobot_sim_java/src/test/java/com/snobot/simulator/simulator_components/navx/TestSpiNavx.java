@@ -108,32 +108,32 @@ public class TestSpiNavx extends BaseSimulatorJavaTest
         // Thread.sleep(100000);
 
         Thread.sleep(500);
-        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(yawHandle), DOUBLE_EPSILON);
-        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(pitchHandle), DOUBLE_EPSILON);
-        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(rollHandle), DOUBLE_EPSILON);
+        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(yawHandle).getAngle(), DOUBLE_EPSILON);
+        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(pitchHandle).getAngle(), DOUBLE_EPSILON);
+        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(rollHandle).getAngle(), DOUBLE_EPSILON);
         Assertions.assertEquals(0, navx.getYaw(), DOUBLE_EPSILON);
         Assertions.assertEquals(0, navx.getPitch(), DOUBLE_EPSILON);
         Assertions.assertEquals(0, navx.getRoll(), DOUBLE_EPSILON);
 
-        DataAccessorFactory.getInstance().getGyroAccessor().setAngle(yawHandle, 180);
-        DataAccessorFactory.getInstance().getGyroAccessor().setAngle(pitchHandle, -180);
-        DataAccessorFactory.getInstance().getGyroAccessor().setAngle(rollHandle, 30);
+        DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(yawHandle).setAngle(180);
+        DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(pitchHandle).setAngle(-180);
+        DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(rollHandle).setAngle(30);
         Thread.sleep(sleepTime);
-        Assertions.assertEquals(180, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(yawHandle), DOUBLE_EPSILON);
-        Assertions.assertEquals(-180, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(pitchHandle), DOUBLE_EPSILON);
-        Assertions.assertEquals(30, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(rollHandle), DOUBLE_EPSILON);
+        Assertions.assertEquals(180, DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(yawHandle).getAngle(), DOUBLE_EPSILON);
+        Assertions.assertEquals(-180, DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(pitchHandle).getAngle(), DOUBLE_EPSILON);
+        Assertions.assertEquals(30, DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(rollHandle).getAngle(), DOUBLE_EPSILON);
         Assertions.assertEquals(180, navx.getYaw(), DOUBLE_EPSILON);
         Assertions.assertEquals(-180, navx.getPitch(), DOUBLE_EPSILON);
         Assertions.assertEquals(30, navx.getRoll(), DOUBLE_EPSILON);
 
         // Test wrap around
-        DataAccessorFactory.getInstance().getGyroAccessor().setAngle(yawHandle, -181);
-        DataAccessorFactory.getInstance().getGyroAccessor().setAngle(pitchHandle, 700);
-        DataAccessorFactory.getInstance().getGyroAccessor().setAngle(rollHandle, -470);
+        DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(yawHandle).setAngle(-181);
+        DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(pitchHandle).setAngle(700);
+        DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(rollHandle).setAngle(-470);
         Thread.sleep(sleepTime);
-        Assertions.assertEquals(-181, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(yawHandle), DOUBLE_EPSILON);
-        Assertions.assertEquals(700, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(pitchHandle), DOUBLE_EPSILON);
-        Assertions.assertEquals(-470, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(rollHandle), DOUBLE_EPSILON);
+        Assertions.assertEquals(-181, DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(yawHandle).getAngle(), DOUBLE_EPSILON);
+        Assertions.assertEquals(700, DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(pitchHandle).getAngle(), DOUBLE_EPSILON);
+        Assertions.assertEquals(-470, DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(rollHandle).getAngle(), DOUBLE_EPSILON);
 //        Assertions.assertEquals(179, navx.getYaw(), DOUBLE_EPSILON);
         Assertions.assertEquals(700, navx.getPitch(), DOUBLE_EPSILON);
         Assertions.assertEquals(-470, navx.getRoll(), DOUBLE_EPSILON);

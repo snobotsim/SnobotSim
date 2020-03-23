@@ -20,47 +20,20 @@ public class JavaDigitalSourceWrapperAccessor extends BaseWrapperAccessor<IDigit
     }
 
     @Override
-    public boolean isInitialized(int aPort)
+    public IDigitalIoWrapper createSimulator(int aPort, String aType)
     {
-        return getValue(aPort).isInitialized();
+        mFactory.create(aPort, aType);
+        return getWrapper(aPort);
     }
 
     @Override
-    public boolean createSimulator(int aPort, String aType)
-    {
-        return mFactory.create(aPort, aType);
-    }
-
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    @Override
-    public void removeSimulator(int aPort)
-    {
-        try
-        {
-            getValue(aPort).close();
-        }
-        catch (Exception ex)
-        {
-            LogManager.getLogger().log(Level.WARN, "Could not close simulator", ex);
-        }
-        SensorActuatorRegistry.get().getDigitalSources().remove(aPort);
+    public IDigitalIoWrapper getWrapper(int aHandle) {
+        return getValue(aHandle);
     }
 
     @Override
     protected Map<Integer, IDigitalIoWrapper> getMap()
     {
         return SensorActuatorRegistry.get().getDigitalSources();
-    }
-
-    @Override
-    public boolean getState(int aPort)
-    {
-        return getValue(aPort).get();
-    }
-
-    @Override
-    public void setState(int aPort, boolean aValue)
-    {
-        getValue(aPort).set(aValue);
     }
 }

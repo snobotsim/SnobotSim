@@ -20,48 +20,15 @@ public class JavaGyroWrapperAccessor extends BaseWrapperAccessor<IGyroWrapper> i
     }
 
     @Override
-    public boolean isInitialized(int aPort)
+    public IGyroWrapper createSimulator(int aPort, String aType)
     {
-        return getValue(aPort).isInitialized();
+        mFactory.create(aPort, aType);
+        return getWrapper(aPort);
     }
 
     @Override
-    public boolean createSimulator(int aPort, String aType)
-    {
-        return mFactory.create(aPort, aType);
-    }
-
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    @Override
-    public void removeSimulator(int aPort)
-    {
-        try
-        {
-            getValue(aPort).close();
-        }
-        catch (Exception ex)
-        {
-            LogManager.getLogger().log(Level.WARN, "Could not close simulator", ex);
-        }
-        SensorActuatorRegistry.get().getGyros().remove(aPort);
-    }
-
-    @Override
-    public double getAngle(int aPort)
-    {
-        return getValue(aPort).getAngle();
-    }
-
-    @Override
-    public void setAngle(int aPort, double aValue)
-    {
-        getValue(aPort).setAngle(aValue);
-    }
-
-    @Override
-    public void reset(int aPort)
-    {
-        // Nothing to do
+    public IGyroWrapper getWrapper(int aHandle) {
+        return getValue(aHandle);
     }
 
     @Override

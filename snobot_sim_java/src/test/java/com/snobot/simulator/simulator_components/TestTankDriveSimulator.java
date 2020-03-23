@@ -35,7 +35,7 @@ public class TestTankDriveSimulator extends BaseSimulatorJavaTest
             leftSC.set(-1);
         });
         Assertions.assertEquals(-180, gyro.getAngle(), DOUBLE_EPSILON);
-        Assertions.assertEquals(-180, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(0), DOUBLE_EPSILON);
+        Assertions.assertEquals(-180, DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(0).getAngle(), DOUBLE_EPSILON);
 
         // Turn right
         simulateForTime(45, () ->
@@ -44,7 +44,7 @@ public class TestTankDriveSimulator extends BaseSimulatorJavaTest
             leftSC.set(1);
         });
         Assertions.assertEquals(-90, gyro.getAngle(), DOUBLE_EPSILON);
-        Assertions.assertEquals(-90, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(0), DOUBLE_EPSILON);
+        Assertions.assertEquals(-90, DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(0).getAngle(), DOUBLE_EPSILON);
     }
 
     @Test

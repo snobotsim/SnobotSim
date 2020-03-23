@@ -19,26 +19,26 @@ public class TestRelayJni extends BaseSimulatorJavaTest
 
         new Relay(0);
         Assertions.assertEquals(1, DataAccessorFactory.getInstance().getRelayAccessor().getPortList().size());
-        Assertions.assertEquals("Relay 0", DataAccessorFactory.getInstance().getRelayAccessor().getName(0));
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getWantsHidden(0));
+        Assertions.assertEquals("Relay 0", DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(0).getName());
+        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(0).getWantsHidden());
 
         new Relay(1);
         Assertions.assertEquals(2, DataAccessorFactory.getInstance().getRelayAccessor().getPortList().size());
-        Assertions.assertEquals("Relay 1", DataAccessorFactory.getInstance().getRelayAccessor().getName(1));
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getWantsHidden(1));
+        Assertions.assertEquals("Relay 1", DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1).getName());
+        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1).getWantsHidden());
 
-        DataAccessorFactory.getInstance().getRelayAccessor().setName(0, "NewNameFor0");
-        Assertions.assertEquals("NewNameFor0", DataAccessorFactory.getInstance().getRelayAccessor().getName(0));
+        DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(0).setName("NewNameFor0");
+        Assertions.assertEquals("NewNameFor0", DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(0).getName());
     }
 
     @Test
     public void testCreateRelaysWithSetup()
     {
         DataAccessorFactory.getInstance().getRelayAccessor().createSimulator(3, WpiRelayWrapper.class.getName());
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().isInitialized(3));
+        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(3).isInitialized());
 
         new Relay(3);
-        Assertions.assertTrue(DataAccessorFactory.getInstance().getRelayAccessor().isInitialized(3));
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(3).isInitialized());
     }
 
     @Test
@@ -61,23 +61,23 @@ public class TestRelayJni extends BaseSimulatorJavaTest
         Assertions.assertEquals(0, DataAccessorFactory.getInstance().getRelayAccessor().getPortList().size());
 
         Relay relay = new Relay(1);
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getFowardValue(1));
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getReverseValue(1));
+        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1).getRelayForwards());
+        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1).getRelayReverse());
 
         relay.set(Value.kOn);
-        Assertions.assertTrue(DataAccessorFactory.getInstance().getRelayAccessor().getFowardValue(1));
-        Assertions.assertTrue(DataAccessorFactory.getInstance().getRelayAccessor().getReverseValue(1));
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1).getRelayForwards());
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1).getRelayReverse());
 
         relay.set(Value.kForward);
-        Assertions.assertTrue(DataAccessorFactory.getInstance().getRelayAccessor().getFowardValue(1));
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getReverseValue(1));
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1).getRelayForwards());
+        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1).getRelayReverse());
 
         relay.set(Value.kReverse);
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getFowardValue(1));
-        Assertions.assertTrue(DataAccessorFactory.getInstance().getRelayAccessor().getReverseValue(1));
+        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1).getRelayForwards());
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1).getRelayReverse());
 
         relay.set(Value.kOff);
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getFowardValue(1));
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getReverseValue(1));
+        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1).getRelayForwards());
+        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(1).getRelayReverse());
     }
 }

@@ -19,42 +19,22 @@ public class JavaSolenoidWrapperAccessor extends BaseWrapperAccessor<ISolenoidWr
         mFactory = new DefaultSolenoidWrapperFactory();
     }
 
+
     @Override
-    public boolean isInitialized(int aPort)
+    public ISolenoidWrapper createSimulator(int aPort, String aType)
     {
-        return getValue(aPort).isInitialized();
+        mFactory.create(aPort, aType);
+        return getWrapper(aPort);
     }
 
     @Override
-    public boolean createSimulator(int aPort, String aType)
-    {
-        return mFactory.create(aPort, aType);
-    }
-
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    @Override
-    public void removeSimulator(int aPort)
-    {
-        try
-        {
-            getValue(aPort).close();
-        }
-        catch (Exception ex)
-        {
-            LogManager.getLogger().log(Level.WARN, "Could not close simulator", ex);
-        }
-        SensorActuatorRegistry.get().getSolenoids().remove(aPort);
+    public ISolenoidWrapper getWrapper(int aHandle) {
+        return getValue(aHandle);
     }
 
     @Override
     protected Map<Integer, ISolenoidWrapper> getMap()
     {
         return SensorActuatorRegistry.get().getSolenoids();
-    }
-
-    @Override
-    public boolean get(int aPort)
-    {
-        return getValue(aPort).get();
     }
 }

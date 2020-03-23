@@ -3,7 +3,8 @@ package com.snobot.simulator.wrapper_accessors.java;
 import com.snobot.simulator.LogConfigurator;
 import com.snobot.simulator.jni.RegisterCallbacksJni;
 import com.snobot.simulator.wrapper_accessors.AccelerometerWrapperAccessor;
-import com.snobot.simulator.wrapper_accessors.AnalogSourceWrapperAccessor;
+import com.snobot.simulator.wrapper_accessors.AnalogInWrapperAccessor;
+import com.snobot.simulator.wrapper_accessors.AnalogOutWrapperAccessor;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.simulator.wrapper_accessors.DigitalSourceWrapperAccessor;
 import com.snobot.simulator.wrapper_accessors.DriverStationDataAccessor;
@@ -23,8 +24,8 @@ public class JavaDataAccessor implements IDataAccessor
 {
     private final AccelerometerWrapperAccessor mAccelerometer;
     private final GyroWrapperAccessor mGyro;
-    private final AnalogSourceWrapperAccessor mAnalogIn;
-    private final AnalogSourceWrapperAccessor mAnalogOut;
+    private final AnalogInWrapperAccessor mAnalogIn;
+    private final AnalogOutWrapperAccessor mAnalogOut;
     private final DigitalSourceWrapperAccessor mDigital;
     private final EncoderWrapperAccessor mEncoder;
     private final RelayWrapperAccessor mRelay;
@@ -76,13 +77,13 @@ public class JavaDataAccessor implements IDataAccessor
     }
 
     @Override
-    public AnalogSourceWrapperAccessor getAnalogInAccessor()
+    public AnalogInWrapperAccessor getAnalogInAccessor()
     {
         return mAnalogIn;
     }
 
     @Override
-    public AnalogSourceWrapperAccessor getAnalogOutAccessor()
+    public AnalogOutWrapperAccessor getAnalogOutAccessor()
     {
         return mAnalogOut;
     }
@@ -147,17 +148,17 @@ public class JavaDataAccessor implements IDataAccessor
         return mSimulator;
     }
 
-    private String getInitializationError(String aName, IBasicSensorActuatorWrapperAccessor aAccessor)
+    private String getInitializationError(String aName, IBasicSensorActuatorWrapperAccessor<?> aAccessor)
     {
         StringBuilder errorMessage = new StringBuilder(64);
 
         for (int port : aAccessor.getPortList())
         {
-            if (!aAccessor.isInitialized(port))
-            {
-                aAccessor.removeSimulator(port);
-                errorMessage.append("  <li>").append(aName).append(port).append("</li>\n");
-            }
+            // if (!aAccessor.isInitialized(port))
+            // {
+            //     aAccessor.removeSimulator(port);
+            //     errorMessage.append("  <li>").append(aName).append(port).append("</li>\n");
+            // }
         }
 
         return errorMessage.toString();
@@ -168,16 +169,16 @@ public class JavaDataAccessor implements IDataAccessor
     {
         StringBuilder errorMessage = new StringBuilder(256);
 
-        errorMessage
-                .append(getInitializationError("Accelerometer ", DataAccessorFactory.getInstance().getAccelerometerAccessor()))
-                .append(getInitializationError("Gyro ", DataAccessorFactory.getInstance().getGyroAccessor()))
-                .append(getInitializationError("Analog In ", DataAccessorFactory.getInstance().getAnalogInAccessor()))
-                .append(getInitializationError("Analog Out ", DataAccessorFactory.getInstance().getAnalogOutAccessor()))
-                .append(getInitializationError("Digital IO ", DataAccessorFactory.getInstance().getDigitalAccessor()))
-                .append(getInitializationError("Encoder ", DataAccessorFactory.getInstance().getEncoderAccessor()))
-                .append(getInitializationError("Relay ", DataAccessorFactory.getInstance().getRelayAccessor()))
-                .append(getInitializationError("Solenoid ", DataAccessorFactory.getInstance().getSolenoidAccessor()))
-                .append(getInitializationError("Speed Controller ", DataAccessorFactory.getInstance().getSpeedControllerAccessor()));
+        // errorMessage
+        //         .append(getInitializationError("Accelerometer ", DataAccessorFactory.getInstance().getAccelerometerAccessor()))
+        //         .append(getInitializationError("Gyro ", DataAccessorFactory.getInstance().getGyroAccessor()))
+        //         .append(getInitializationError("Analog In ", DataAccessorFactory.getInstance().getAnalogInAccessor()))
+        //         .append(getInitializationError("Analog Out ", DataAccessorFactory.getInstance().getAnalogOutAccessor()))
+        //         .append(getInitializationError("Digital IO ", DataAccessorFactory.getInstance().getDigitalAccessor()))
+        //         .append(getInitializationError("Encoder ", DataAccessorFactory.getInstance().getEncoderAccessor()))
+        //         .append(getInitializationError("Relay ", DataAccessorFactory.getInstance().getRelayAccessor()))
+        //         .append(getInitializationError("Solenoid ", DataAccessorFactory.getInstance().getSolenoidAccessor()))
+        //         .append(getInitializationError("Speed Controller ", DataAccessorFactory.getInstance().getSpeedControllerAccessor()));
 
         return errorMessage.toString();
     }

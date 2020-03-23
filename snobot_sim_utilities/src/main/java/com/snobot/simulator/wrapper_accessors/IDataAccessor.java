@@ -8,9 +8,9 @@ public interface IDataAccessor
 
     GyroWrapperAccessor getGyroAccessor();
 
-    AnalogSourceWrapperAccessor getAnalogInAccessor();
+    AnalogInWrapperAccessor getAnalogInAccessor();
 
-    AnalogSourceWrapperAccessor getAnalogOutAccessor();
+    AnalogOutWrapperAccessor getAnalogOutAccessor();
 
     DigitalSourceWrapperAccessor getDigitalAccessor();
 

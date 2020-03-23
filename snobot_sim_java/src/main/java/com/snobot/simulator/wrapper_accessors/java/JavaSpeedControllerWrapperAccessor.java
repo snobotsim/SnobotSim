@@ -8,12 +8,12 @@ import org.apache.logging.log4j.Logger;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.factories.DefaultPwmWrapperFactory;
+import com.snobot.simulator.module_wrapper.interfaces.IMotorSimulator;
 import com.snobot.simulator.module_wrapper.interfaces.IPwmWrapper;
 import com.snobot.simulator.motor_sim.BaseDcMotorSimulator;
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.GravityLoadDcMotorSim;
 import com.snobot.simulator.motor_sim.GravityLoadMotorSimulationConfig;
-import com.snobot.simulator.motor_sim.IMotorSimulator;
 import com.snobot.simulator.motor_sim.RotationalLoadDcMotorSim;
 import com.snobot.simulator.motor_sim.RotationalLoadMotorSimulationConfig;
 import com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig;
@@ -36,30 +36,15 @@ public class JavaSpeedControllerWrapperAccessor extends BaseWrapperAccessor<IPwm
     }
 
     @Override
-    public boolean isInitialized(int aPort)
+    public IPwmWrapper createSimulator(int aPort, String aType)
     {
-        return getValue(aPort).isInitialized();
+        mFactory.create(aPort, aType);
+        return getWrapper(aPort);
     }
 
     @Override
-    public boolean createSimulator(int aPort, String aType)
-    {
-        return mFactory.create(aPort, aType);
-    }
-
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    @Override
-    public void removeSimulator(int aPort)
-    {
-        try
-        {
-            getValue(aPort).close();
-        }
-        catch (Exception ex)
-        {
-            LogManager.getLogger().log(Level.WARN, "Could not close simulator", ex);
-        }
-        SensorActuatorRegistry.get().getSpeedControllers().remove(aPort);
+    public IPwmWrapper getWrapper(int aHandle) {
+        return getValue(aHandle);
     }
 
     @Override

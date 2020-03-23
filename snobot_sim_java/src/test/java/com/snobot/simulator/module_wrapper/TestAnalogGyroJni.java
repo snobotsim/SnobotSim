@@ -3,6 +3,7 @@ package com.snobot.simulator.module_wrapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import com.snobot.simulator.module_wrapper.interfaces.IGyroWrapper;
 import com.snobot.simulator.module_wrapper.wpi.WpiAnalogGyroWrapper;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorJavaTest;
@@ -18,12 +19,13 @@ public class TestAnalogGyroJni extends BaseSimulatorJavaTest
 
         int gyroHandle = 0;
         Assertions.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(gyroHandle));
+        IGyroWrapper simWrapper = DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(gyroHandle);
 
-        Assertions.assertEquals(0, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(gyroHandle), DOUBLE_EPSILON);
+        Assertions.assertEquals(0, simWrapper.getAngle(), DOUBLE_EPSILON);
         Assertions.assertEquals(0, gyro.getAngle(), DOUBLE_EPSILON);
 
-        DataAccessorFactory.getInstance().getGyroAccessor().setAngle(gyroHandle, 90);
-        Assertions.assertEquals(90, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(gyroHandle), DOUBLE_EPSILON);
+        simWrapper.setAngle(90);
+        Assertions.assertEquals(90, simWrapper.getAngle(), DOUBLE_EPSILON);
         Assertions.assertEquals(90, gyro.getAngle(), DOUBLE_EPSILON);
     }
 
@@ -33,10 +35,12 @@ public class TestAnalogGyroJni extends BaseSimulatorJavaTest
         int gyroHandle = 1;
 
         DataAccessorFactory.getInstance().getGyroAccessor().createSimulator(gyroHandle, WpiAnalogGyroWrapper.class.getName());
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getGyroAccessor().isInitialized(gyroHandle));
+        IGyroWrapper simWrapper = DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(gyroHandle);
+        
+        Assertions.assertFalse(simWrapper.isInitialized());
 
         new AnalogGyro(gyroHandle);
-        Assertions.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().isInitialized(gyroHandle));
+        Assertions.assertTrue(simWrapper.isInitialized());
 
     }
 
