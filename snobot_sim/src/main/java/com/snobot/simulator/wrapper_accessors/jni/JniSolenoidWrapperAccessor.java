@@ -1,6 +1,7 @@
 
 package com.snobot.simulator.wrapper_accessors.jni;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -16,9 +17,8 @@ public class JniSolenoidWrapperAccessor implements SolenoidWrapperAccessor
     {
         private final int mHandle;
 
-        private SolenoidWrapper(int aHandle, String aType)
+        private SolenoidWrapper(int aHandle)
         {
-            SolenoidWrapperJni.createSimulator(aHandle, aType);
             mHandle = aHandle;
         }
 
@@ -72,7 +72,7 @@ public class JniSolenoidWrapperAccessor implements SolenoidWrapperAccessor
         }
     }
     
-    private Map<Integer, SolenoidWrapper> mWrappers;
+    private Map<Integer, SolenoidWrapper> mWrappers = new HashMap<>();
 
     @Override
     public List<Integer> getPortList()
@@ -88,11 +88,17 @@ public class JniSolenoidWrapperAccessor implements SolenoidWrapperAccessor
 
     @Override
     public ISolenoidWrapper createSimulator(int aPort, String aType) {
-        return mWrappers.put(aPort, new SolenoidWrapper(aPort, aType));
+        SolenoidWrapperJni.createSimulator(aPort, aType);
+        mWrappers.put(aPort, new SolenoidWrapper(aPort));
+        return mWrappers.get(aPort);
     }
 
     @Override
     public ISolenoidWrapper getWrapper(int aHandle) {
+        if (!mWrappers.containsKey(aHandle))
+        {
+            mWrappers.put(aHandle, new SolenoidWrapper(aHandle));
+        }
         return mWrappers.get(aHandle);
     }
 }

@@ -16,7 +16,7 @@ WpiEncoderWrapper::WpiEncoderWrapper(int aPortA, int aPortB) :
 }
 
 WpiEncoderWrapper::WpiEncoderWrapper(int aHandle, const std::string& aName) :
-        AModuleWrapper(aName),
+        BaseEncoderWrapper(aName),
         mEncodingFactor(4),
         mDistancePerTick(1),
         mHandle(aHandle)
@@ -29,70 +29,25 @@ WpiEncoderWrapper::~WpiEncoderWrapper()
 
 void WpiEncoderWrapper::Reset()
 {
-    if (mMotorWrapper)
-    {
-        mMotorWrapper->Reset();
-    }
+    BaseEncoderWrapper::Reset();
+    HALSIM_SetEncoderReset(mHandle, true);
+    HALSIM_SetEncoderReset(mHandle, false);
 }
 
-double WpiEncoderWrapper::GetDistance()
-{
-    if (mMotorWrapper)
-    {
-        return mMotorWrapper->GetPosition();
-    }
-    else
-    {
-        return 0;
-    }
-}
-
-double WpiEncoderWrapper::GetPosition()
-{
-    return GetDistance();
-}
 
 void WpiEncoderWrapper::SetPosition(double aPosition)
 {
+    BaseEncoderWrapper::SetPosition(aPosition);
     HALSIM_SetEncoderCount(mHandle, static_cast<int>(aPosition));
 }
 
 void WpiEncoderWrapper::SetVelocity(double aVelocity)
 {
+    BaseEncoderWrapper::SetVelocity(aVelocity);
     HALSIM_SetEncoderPeriod(mHandle, 1.0 / aVelocity);
 }
 
-double WpiEncoderWrapper::GetVelocity()
-{
-    if (mMotorWrapper)
-    {
-        return mMotorWrapper->GetVelocity();
-    }
-    else
-    {
-        return 0;
-    }
-}
 
-bool WpiEncoderWrapper::IsHookedUp()
-{
-    if (mMotorWrapper)
-    {
-        return true;
-    }
-    return false;
-}
-
-void WpiEncoderWrapper::SetSpeedController(const std::shared_ptr<ISpeedControllerWrapper>& aMotorWrapper)
-{
-    mMotorWrapper = aMotorWrapper;
-    mMotorWrapper->SetFeedbackSensor(shared_from_this());
-}
-
-const std::shared_ptr<ISpeedControllerWrapper>& WpiEncoderWrapper::GetSpeedController()
-{
-    return mMotorWrapper;
-}
 
 void WpiEncoderWrapper::SetDistancePerTick(double aDPT)
 {

@@ -1,6 +1,7 @@
 
 package com.snobot.simulator.wrapper_accessors.jni;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -16,9 +17,8 @@ public class JniRelayWrapperAccessor implements RelayWrapperAccessor
     {
         private final int mHandle;
 
-        private RelayWrapper(int aHandle, String aType)
+        private RelayWrapper(int aHandle)
         {
-            RelayWrapperJni.createSimulator(aHandle, aType);
             mHandle = aHandle;
         }
 
@@ -81,7 +81,7 @@ public class JniRelayWrapperAccessor implements RelayWrapperAccessor
         }
     }
 
-    private Map<Integer, RelayWrapper> mWrappers;
+    private Map<Integer, RelayWrapper> mWrappers = new HashMap<>();
 
     @Override
     public List<Integer> getPortList()
@@ -97,11 +97,17 @@ public class JniRelayWrapperAccessor implements RelayWrapperAccessor
 
     @Override
     public IRelayWrapper createSimulator(int aPort, String aType) {
-        return mWrappers.put(aPort, new RelayWrapper(aPort, aType));
+        RelayWrapperJni.createSimulator(aPort, aType);
+        mWrappers.put(aPort, new RelayWrapper(aPort));
+        return mWrappers.get(aPort);
     }
 
     @Override
     public IRelayWrapper getWrapper(int aHandle) {
+        if (!mWrappers.containsKey(aHandle))
+        {
+            mWrappers.put(aHandle, new RelayWrapper(aHandle));
+        }
         return mWrappers.get(aHandle);
     }
 }

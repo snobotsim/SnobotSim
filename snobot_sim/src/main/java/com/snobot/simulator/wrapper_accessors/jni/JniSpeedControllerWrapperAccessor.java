@@ -1,7 +1,9 @@
 
 package com.snobot.simulator.wrapper_accessors.jni;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -21,8 +23,7 @@ public class JniSpeedControllerWrapperAccessor implements SpeedControllerWrapper
     private static class SpeedControllerWrapper implements IPwmWrapper {
         private final int mHandle;
 
-        private SpeedControllerWrapper(int aHandle, String aType) {
-            SpeedControllerWrapperJni.createSimulator(aHandle, aType);
+        private SpeedControllerWrapper(int aHandle) {
             mHandle = aHandle;
         }
 
@@ -233,16 +234,22 @@ public class JniSpeedControllerWrapperAccessor implements SpeedControllerWrapper
     {
         return null;
     }
+    
+    private Map<Integer, SpeedControllerWrapper> mWrappers = new HashMap<>();
 
     @Override
     public IPwmWrapper createSimulator(int aPort, String aType) {
-        // TODO Auto-generated method stub
-        return null;
+        SpeedControllerWrapperJni.createSimulator(aPort, aType);
+        mWrappers.put(aPort, new SpeedControllerWrapper(aPort));
+        return mWrappers.get(aPort);
     }
 
     @Override
     public IPwmWrapper getWrapper(int aHandle) {
-        // TODO Auto-generated method stub
-        return null;
+        if (!mWrappers.containsKey(aHandle))
+        {
+            mWrappers.put(aHandle, new SpeedControllerWrapper(aHandle));
+        }
+        return mWrappers.get(aHandle);
     }
 }

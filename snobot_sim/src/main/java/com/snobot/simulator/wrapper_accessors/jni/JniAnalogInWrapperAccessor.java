@@ -1,6 +1,7 @@
 
 package com.snobot.simulator.wrapper_accessors.jni;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,9 +18,8 @@ public class JniAnalogInWrapperAccessor implements AnalogInWrapperAccessor
     {
         private final int mHandle;
 
-        private AnalogInWrapper(int aHandle, String aType)
+        private AnalogInWrapper(int aHandle)
         {
-            AnalogInWrapperJni.createSimulator(aHandle, aType);
             mHandle = aHandle;
         }
 
@@ -121,7 +121,7 @@ public class JniAnalogInWrapperAccessor implements AnalogInWrapperAccessor
     //     // nothing to do
     // }
 
-    private Map<Integer, AnalogInWrapper> mWrappers;
+    private Map<Integer, AnalogInWrapper> mWrappers = new HashMap<>();
 
     @Override
     public List<Integer> getPortList()
@@ -137,11 +137,19 @@ public class JniAnalogInWrapperAccessor implements AnalogInWrapperAccessor
 
     @Override
     public IAnalogInWrapper createSimulator(int aPort, String aType) {
-        return mWrappers.put(aPort, new AnalogInWrapper(aPort, aType));
+        AnalogInWrapperJni.createSimulator(aPort, aType);
+        System.out.println("Creating..." + aPort + " " + aType);
+        System.out.println(mWrappers.containsKey(aPort));
+        mWrappers.put(aPort, new AnalogInWrapper(aPort));
+        return mWrappers.get(aPort);
     }
 
     @Override
     public IAnalogInWrapper getWrapper(int aHandle) {
+        if (!mWrappers.containsKey(aHandle))
+        {
+            mWrappers.put(aHandle, new AnalogInWrapper(aHandle));
+        }
         return mWrappers.get(aHandle);
     }
 }

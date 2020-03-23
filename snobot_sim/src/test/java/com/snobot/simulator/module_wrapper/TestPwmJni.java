@@ -3,6 +3,8 @@ package com.snobot.simulator.module_wrapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import com.snobot.simulator.module_wrapper.interfaces.IMotorFeedbackSensor;
+import com.snobot.simulator.module_wrapper.interfaces.IPwmWrapper;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorJniTest;
 
@@ -18,26 +20,30 @@ public class TestPwmJni extends BaseSimulatorJniTest
 
         new Jaguar(0);
         Assertions.assertEquals(1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
-        Assertions.assertEquals("Speed Controller 0", DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(0));
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getWantsHidden(0));
+        IPwmWrapper wrapper0 = DataAccessorFactory.getInstance().getSpeedControllerAccessor().getWrapper(0);
+
+        Assertions.assertEquals("Speed Controller 0", wrapper0.getName());
+        Assertions.assertFalse(wrapper0.getWantsHidden());
 
         new Talon(3);
         Assertions.assertEquals(2, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
-        Assertions.assertEquals("Speed Controller 3", DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(3));
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getWantsHidden(3));
+        IPwmWrapper wrapper3 = DataAccessorFactory.getInstance().getSpeedControllerAccessor().getWrapper(3);
 
-        DataAccessorFactory.getInstance().getSpeedControllerAccessor().setName(0, "NewNameFor0");
-        Assertions.assertEquals("NewNameFor0", DataAccessorFactory.getInstance().getSpeedControllerAccessor().getName(0));
+        Assertions.assertEquals("Speed Controller 3", wrapper3.getName());
+        Assertions.assertFalse(wrapper3.getWantsHidden());
+
+        wrapper0.setName("NewNameFor0");
+        Assertions.assertEquals("NewNameFor0", wrapper0.getName());
     }
 
     @Test
     public void testCreatePwmWithSetup()
     {
-        DataAccessorFactory.getInstance().getSpeedControllerAccessor().createSimulator(3, "com.snobot.simulator.module_wrapper.wpi.WpiPwmWrapper");
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getSpeedControllerAccessor().isInitialized(3));
+        IPwmWrapper wrapper = DataAccessorFactory.getInstance().getSpeedControllerAccessor().createSimulator(3, "com.snobot.simulator.module_wrapper.wpi.WpiPwmWrapper");
+        Assertions.assertFalse(wrapper.isInitialized());
 
         new Talon(3);
-        Assertions.assertTrue(DataAccessorFactory.getInstance().getSpeedControllerAccessor().isInitialized(3));
+        Assertions.assertTrue(wrapper.isInitialized());
     }
 
     @Test
@@ -78,5 +84,14 @@ public class TestPwmJni extends BaseSimulatorJniTest
         talon.set(-2.1);
         Assertions.assertEquals(-1.0, talon.get(), DOUBLE_EPSILON);
         Assertions.assertEquals(-1.0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(1), DOUBLE_EPSILON);
+    }
+
+    @Test
+    public void testNullFeedbackDevice()
+    {
+        IMotorFeedbackSensor feedbackSensor = new IMotorFeedbackSensor.NullFeedbackSensor();
+
+        feedbackSensor.setPosition(10);
+        Assertions.assertEquals(0, feedbackSensor.getPosition(), DOUBLE_EPSILON);
     }
 }

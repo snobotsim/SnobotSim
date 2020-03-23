@@ -1,6 +1,7 @@
 
 package com.snobot.simulator.wrapper_accessors.jni;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -16,9 +17,8 @@ public class JniGyroWrapperAccessor implements GyroWrapperAccessor
     {
         private final int mHandle;
 
-        private GyroWrapper(int aHandle, String aType)
+        private GyroWrapper(int aHandle)
         {
-            GyroWrapperJni.createSimulator(aHandle, aType);
             mHandle = aHandle;
         }
 
@@ -71,7 +71,7 @@ public class JniGyroWrapperAccessor implements GyroWrapperAccessor
         }
     }
     
-    private Map<Integer, GyroWrapper> mWrappers;
+    private Map<Integer, GyroWrapper> mWrappers = new HashMap<>();
 
     @Override
     public List<Integer> getPortList()
@@ -87,11 +87,17 @@ public class JniGyroWrapperAccessor implements GyroWrapperAccessor
 
     @Override
     public IGyroWrapper createSimulator(int aPort, String aType) {
-        return mWrappers.put(aPort, new GyroWrapper(aPort, aType));
+        GyroWrapperJni.createSimulator(aPort, aType);
+        mWrappers.put(aPort, new GyroWrapper(aPort));
+        return mWrappers.get(aPort);
     }
 
     @Override
     public IGyroWrapper getWrapper(int aHandle) {
+        if (!mWrappers.containsKey(aHandle))
+        {
+            mWrappers.put(aHandle, new GyroWrapper(aHandle));
+        }
         return mWrappers.get(aHandle);
     }
 }

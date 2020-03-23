@@ -1,6 +1,7 @@
 
 package com.snobot.simulator.wrapper_accessors.jni;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -72,7 +73,7 @@ public class JniAccelerometerWrapperAccessor implements AccelerometerWrapperAcce
         
     }
 
-    private Map<Integer, AcelerometerWrapper> mWrappers;
+    private Map<Integer, AcelerometerWrapper> mWrappers = new HashMap<>();
 
     @Override
     public List<Integer> getPortList()
@@ -93,6 +94,10 @@ public class JniAccelerometerWrapperAccessor implements AccelerometerWrapperAcce
 
     @Override
     public IAccelerometerWrapper getWrapper(int aHandle) {
+        if (!mWrappers.containsKey(aHandle))
+        {
+            mWrappers.put(aHandle, new AcelerometerWrapper(aHandle));
+        }
         return mWrappers.get(aHandle);
     }
 }

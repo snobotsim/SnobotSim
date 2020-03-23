@@ -1,6 +1,7 @@
 
 package com.snobot.simulator.wrapper_accessors.jni;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,9 +18,8 @@ public class JniAnalogOutWrapperAccessor implements AnalogOutWrapperAccessor
     {
         private final int mHandle;
 
-        private AnalogOutWrapper(int aHandle, String aType)
+        private AnalogOutWrapper(int aHandle)
         {
-            AnalogOutWrapperJni.createSimulator(aHandle, aType);
             mHandle = aHandle;
         }
 
@@ -121,7 +121,7 @@ public class JniAnalogOutWrapperAccessor implements AnalogOutWrapperAccessor
     //     // nothing to do
     // }
     
-    private Map<Integer, AnalogOutWrapper> mWrappers;
+    private Map<Integer, AnalogOutWrapper> mWrappers = new HashMap<>();
 
     @Override
     public List<Integer> getPortList()
@@ -137,11 +137,17 @@ public class JniAnalogOutWrapperAccessor implements AnalogOutWrapperAccessor
 
     @Override
     public IAnalogOutWrapper createSimulator(int aPort, String aType) {
-        return mWrappers.put(aPort, new AnalogOutWrapper(aPort, aType));
+        AnalogOutWrapperJni.createSimulator(aPort, aType);
+        mWrappers.put(aPort, new AnalogOutWrapper(aPort));
+        return mWrappers.get(aPort);
     }
 
     @Override
     public IAnalogOutWrapper getWrapper(int aHandle) {
+        if (!mWrappers.containsKey(aHandle))
+        {
+            mWrappers.put(aHandle, new AnalogOutWrapper(aHandle));
+        }
         return mWrappers.get(aHandle);
     }
 }

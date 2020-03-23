@@ -1,6 +1,7 @@
 
 package com.snobot.simulator.wrapper_accessors.jni;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -16,9 +17,8 @@ public class JniEncoderWrapperAccessor implements EncoderWrapperAccessor
     {
         private final int mHandle;
 
-        private EncoderWrapper(int aHandle, String aType)
+        private EncoderWrapper(int aHandle)
         {
-            EncoderWrapperJni.createSimulator(aHandle, aType);
             mHandle = aHandle;
         }
 
@@ -62,14 +62,12 @@ public class JniEncoderWrapperAccessor implements EncoderWrapperAccessor
 
         @Override
         public void setPosition(double aPosition) {
-            // TODO Auto-generated method stub
-
+            EncoderWrapperJni.setPosition(mHandle, aPosition);
         }
 
         @Override
         public void setVelocity(double aVelocity) {
-            // TODO Auto-generated method stub
-
+            EncoderWrapperJni.setVelocity(mHandle, aVelocity);
         }
 
         @Override
@@ -79,14 +77,12 @@ public class JniEncoderWrapperAccessor implements EncoderWrapperAccessor
 
         @Override
         public double getVelocity() {
-            // TODO Auto-generated method stub
-            return 0;
+            return EncoderWrapperJni.getVelocity(mHandle);
         }
 
         @Override
         public void reset() {
-            // TODO Auto-generated method stub
-
+            EncoderWrapperJni.reset();
         }
 
         @Override
@@ -106,7 +102,7 @@ public class JniEncoderWrapperAccessor implements EncoderWrapperAccessor
     }
 
 
-    private Map<Integer, EncoderWrapper> mWrappers;
+    private Map<Integer, EncoderWrapper> mWrappers = new HashMap<>();
 
     @Override
     public List<Integer> getPortList()
@@ -122,11 +118,17 @@ public class JniEncoderWrapperAccessor implements EncoderWrapperAccessor
 
     @Override
     public IEncoderWrapper createSimulator(int aPort, String aType) {
-        return mWrappers.put(aPort, new EncoderWrapper(aPort, aType));
+        EncoderWrapperJni.createSimulator(aPort, aType);
+        mWrappers.put(aPort, new EncoderWrapper(aPort));
+        return mWrappers.get(aPort);
     }
 
     @Override
     public IEncoderWrapper getWrapper(int aHandle) {
+        if (!mWrappers.containsKey(aHandle))
+        {
+            mWrappers.put(aHandle, new EncoderWrapper(aHandle));
+        }
         return mWrappers.get(aHandle);
     }
 }

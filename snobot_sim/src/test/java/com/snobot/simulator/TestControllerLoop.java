@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import com.snobot.simulator.module_wrapper.interfaces.IRelayWrapper;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorJniTest;
 
@@ -104,6 +105,8 @@ public class TestControllerLoop extends BaseSimulatorJniTest
 
         Assertions.assertEquals(0, DataAccessorFactory.getInstance().getDriverStationAccessor().getMatchTime(), DOUBLE_EPSILON);
 
+        IRelayWrapper relayWrapper = DataAccessorFactory.getInstance().getRelayAccessor().getWrapper(0);
+
         // Startup in disabled
         simulateForTime(.5, () ->
         {
@@ -117,8 +120,8 @@ public class TestControllerLoop extends BaseSimulatorJniTest
         Assertions.assertEquals(0, robot.mSpeedController0.get(), DOUBLE_EPSILON);
         Assertions.assertEquals(0, robot.mSpeedController1.get(), DOUBLE_EPSILON);
         Assertions.assertFalse(robot.mSolenoid.get());
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getFowardValue(0));
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getReverseValue(0));
+        Assertions.assertFalse(relayWrapper.getRelayForwards());
+        Assertions.assertFalse(relayWrapper.getRelayReverse());
         Assertions.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(0), DOUBLE_EPSILON);
 
         // Move to enabled+teleop
@@ -135,8 +138,8 @@ public class TestControllerLoop extends BaseSimulatorJniTest
         Assertions.assertEquals(0, robot.mSpeedController0.get(), DOUBLE_EPSILON);
         Assertions.assertEquals(0, robot.mSpeedController1.get(), DOUBLE_EPSILON);
         Assertions.assertFalse(robot.mSolenoid.get());
-        Assertions.assertTrue(DataAccessorFactory.getInstance().getRelayAccessor().getFowardValue(0));
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getReverseValue(0));
+        Assertions.assertTrue(relayWrapper.getRelayForwards());
+        Assertions.assertFalse(relayWrapper.getRelayReverse());
         Assertions.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(0), DOUBLE_EPSILON);
 
         // Move to enabled+auton
@@ -153,8 +156,8 @@ public class TestControllerLoop extends BaseSimulatorJniTest
         Assertions.assertEquals(1, robot.mSpeedController0.get(), DOUBLE_EPSILON);
         Assertions.assertEquals(0, robot.mSpeedController1.get(), DOUBLE_EPSILON);
         Assertions.assertFalse(robot.mSolenoid.get());
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getFowardValue(0));
-        Assertions.assertFalse(DataAccessorFactory.getInstance().getRelayAccessor().getReverseValue(0));
+        Assertions.assertFalse(relayWrapper.getRelayForwards());
+        Assertions.assertFalse(relayWrapper.getRelayReverse());
         Assertions.assertEquals(1, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(0), DOUBLE_EPSILON);
 
         // Back to teleop for joystick testing

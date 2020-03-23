@@ -3,7 +3,10 @@ package com.snobot.simulator.simulator_components;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
+
 import com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig;
+import com.snobot.simulator.simulator_components.config.TankDriveConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorJniTest;
 
@@ -20,12 +23,8 @@ public class TestTankDriveSimulator extends BaseSimulatorJniTest
     {
         final SpeedController rightSC = new Talon(0);
         final SpeedController leftSC = new Talon(1);
-        final Encoder rightEnc = new Encoder(0, 1);
-        final Encoder leftEnc = new Encoder(2, 3);
         final Gyro gyro = new AnalogGyro(0);
 
-        Assertions.assertTrue(DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(0, 0));
-        Assertions.assertTrue(DataAccessorFactory.getInstance().getEncoderAccessor().connectSpeedController(1, 1));
         Assertions.assertTrue(DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(0, new SimpleMotorSimulationConfig(1)));
         Assertions.assertTrue(DataAccessorFactory.getInstance().getSimulatorDataAccessor().setSpeedControllerModel_Simple(1, new SimpleMotorSimulationConfig(1)));
         Assertions.assertTrue(DataAccessorFactory.getInstance().getSimulatorDataAccessor().connectTankDriveSimulator(1, 0, 0, 180 / Math.PI));
@@ -37,11 +36,7 @@ public class TestTankDriveSimulator extends BaseSimulatorJniTest
             leftSC.set(-1);
         });
         Assertions.assertEquals(-180, gyro.getAngle(), DOUBLE_EPSILON);
-        Assertions.assertEquals(89, rightEnc.getDistance(), DOUBLE_EPSILON);
-        Assertions.assertEquals(-89, leftEnc.getDistance(), DOUBLE_EPSILON);
-        Assertions.assertEquals(-180, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(0), DOUBLE_EPSILON);
-        Assertions.assertEquals(90, DataAccessorFactory.getInstance().getEncoderAccessor().getDistance(0), DOUBLE_EPSILON);
-        Assertions.assertEquals(-90, DataAccessorFactory.getInstance().getEncoderAccessor().getDistance(1), DOUBLE_EPSILON);
+        Assertions.assertEquals(-180, DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(0).getAngle(), DOUBLE_EPSILON);
 
         // Turn right
         simulateForTime(45, () ->
@@ -50,11 +45,7 @@ public class TestTankDriveSimulator extends BaseSimulatorJniTest
             leftSC.set(1);
         });
         Assertions.assertEquals(-90, gyro.getAngle(), DOUBLE_EPSILON);
-        Assertions.assertEquals(45, rightEnc.getDistance(), DOUBLE_EPSILON);
-        Assertions.assertEquals(-45, leftEnc.getDistance(), DOUBLE_EPSILON);
-        Assertions.assertEquals(-90, DataAccessorFactory.getInstance().getGyroAccessor().getAngle(0), DOUBLE_EPSILON);
-        Assertions.assertEquals(45, DataAccessorFactory.getInstance().getEncoderAccessor().getDistance(0), DOUBLE_EPSILON);
-        Assertions.assertEquals(-45, DataAccessorFactory.getInstance().getEncoderAccessor().getDistance(1), DOUBLE_EPSILON);
+        Assertions.assertEquals(-90, DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(0).getAngle(), DOUBLE_EPSILON);
     }
 
     @Test
@@ -67,13 +58,13 @@ public class TestTankDriveSimulator extends BaseSimulatorJniTest
 
         // First thing not null
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
-        new Encoder(0, 1);
+        new Talon(6);
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().connectTankDriveSimulator(0, 1, 0, 180 / Math.PI);
 
         // First two things not null
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().reset();
-        new Encoder(0, 1);
-        new Encoder(2, 3);
+        new Talon(3);
+        new Talon(1);
         DataAccessorFactory.getInstance().getSimulatorDataAccessor().connectTankDriveSimulator(0, 1, 0, 180 / Math.PI);
 
         // Third thing not null
