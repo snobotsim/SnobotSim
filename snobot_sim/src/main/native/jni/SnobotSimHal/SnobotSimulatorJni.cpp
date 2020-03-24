@@ -19,6 +19,7 @@ using namespace wpi::java;
 static SnobotLogging::ISnobotLogger* sSnobotLogger = NULL;
 
 extern "C" {
+
 /*
  * Class:     com_snobot_simulator_jni_SnobotSimulatorJni
  * Method:    initializeSimulator
@@ -131,4 +132,5 @@ Java_com_snobot_simulator_jni_SimulationConnectorJni_createSpiSimulator
     FactoryContainer::Get().GetSpiWrapperFactory()->CreateWrapper(aPort, env->GetStringUTFChars(aType, NULL));
     return true;
 }
+
 } // extern "C"

@@ -14,6 +14,7 @@
 using namespace wpi::java;
 
 extern "C" {
+
 /*
  * Class:     com_snobot_simulator_jni_module_1wrapper_DigitalSourceWrapperJni
  * Method:    isInitialized
@@ -141,4 +142,5 @@ Java_com_snobot_simulator_jni_module_1wrapper_DigitalSourceWrapperJni_getPortLis
 
     return output;
 }
+
 } // extern "C"

@@ -140,4 +140,5 @@ Java_com_snobot_simulator_jni_SimulationConnectorJni_connectTankDriveSimulator
 
     return leftEncoder && rightEncoder && gyro;
 }
+
 } // extern "C"

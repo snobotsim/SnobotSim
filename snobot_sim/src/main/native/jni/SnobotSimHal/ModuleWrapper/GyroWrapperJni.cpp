@@ -165,4 +165,5 @@ Java_com_snobot_simulator_jni_module_1wrapper_GyroWrapperJni_getPortList
 
     return output;
 }
+
 } // extern "C"

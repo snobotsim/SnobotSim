@@ -9,6 +9,7 @@
 #include "mockdata/MockHooks.h"
 
 extern "C" {
+
 /*
  * Class:     com_snobot_simulator_jni_RobotStateSingletonJni
  * Method:    setDisabled
@@ -93,4 +94,5 @@ Java_com_snobot_simulator_jni_RobotStateSingletonJni_getCycleTime
 {
     return .02;
 }
+
 } // extern "C"

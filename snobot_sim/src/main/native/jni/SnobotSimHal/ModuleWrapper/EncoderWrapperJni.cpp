@@ -233,4 +233,5 @@ Java_com_snobot_simulator_jni_module_1wrapper_EncoderWrapperJni_getPortList
 
     return output;
 }
+
 } // extern "C"

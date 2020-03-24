@@ -19,6 +19,7 @@
 using namespace wpi::java;
 
 extern "C" {
+
 /*
  * Class:     com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni
  * Method:    isInitialized
@@ -424,4 +425,5 @@ Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_reset
     SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN, "Resetting... " << aPosition << ", " << aVelocity << ", " << aCurrent)
     return SensorActuatorRegistry::Get().GetISpeedControllerWrapper(portHandle)->Reset(aPosition, aVelocity, aCurrent);
 }
+
 } // extern "C"
