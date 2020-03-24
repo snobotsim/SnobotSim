@@ -71,9 +71,9 @@ public final class JniLibraryResourceLoader
 
     public static boolean loadLibrary(String aLibraryname)
     {
+        sLOGGER.log(Level.INFO, "Loading native library ''" + aLibraryname + "''");
         try
         {
-            sLOGGER.log(Level.DEBUG, "Loading native library" + aLibraryname);
             System.loadLibrary(aLibraryname);
             return true;
         }
@@ -81,6 +81,7 @@ public final class JniLibraryResourceLoader
         {
             sLOGGER.log(Level.ERROR, ex);
         }
+
         return false;
     }
 }
