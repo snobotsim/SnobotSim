@@ -140,5 +140,4 @@ Java_com_snobot_simulator_jni_module_1wrapper_RelayWrapperJni_getPortList
 
     return output;
 }
-
 } // extern "C"

@@ -134,5 +134,4 @@ Java_com_snobot_simulator_jni_module_1wrapper_AccelerometerWrapperJni_getPortLis
 
     return output;
 }
-
 } // extern "C"

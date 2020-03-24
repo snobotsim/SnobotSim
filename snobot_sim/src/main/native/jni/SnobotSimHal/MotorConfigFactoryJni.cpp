@@ -9,7 +9,6 @@
 #include "wpi/jni_util.h"
 
 extern "C" {
-
 /*
  * Class:     com_snobot_simulator_jni_MotorConfigFactoryJni
  * Method:    createMotor
@@ -26,5 +25,4 @@ Java_com_snobot_simulator_jni_MotorConfigFactoryJni_createMotor
 
     return ConversionUtils::ConvertDcMotorModelConfig(env, config);
 }
-
 } // extern "C"

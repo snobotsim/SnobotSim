@@ -13,7 +13,6 @@
 using namespace wpi::java;
 
 extern "C" {
-
 /*
  * Class:     com_snobot_simulator_jni_module_1wrapper_AnalogInWrapperJni
  * Method:    isInitialized
@@ -129,5 +128,4 @@ Java_com_snobot_simulator_jni_module_1wrapper_AnalogInWrapperJni_getPortList
 
     return output;
 }
-
 } // extern "C"
