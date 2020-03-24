@@ -36,14 +36,18 @@ plugins {
 apply plugin: 'nebula-aggregate-javadocs'
 
 
-ext.use_simulator_cpp = false
-ext.use_simulator_java = true
+ext.use_simulator_cpp = true
+ext.use_simulator_java = false
 
 /////////////////////////////////////////
 // Specify WPI Versions
 
 ext.allwpilibVersion = {
     return '2020.1.2'
+}
+
+ext.getWpilibImguiVersion = {
+    return "1.72b-3"
 }
 
 ext.getWpiUtilVersion = {

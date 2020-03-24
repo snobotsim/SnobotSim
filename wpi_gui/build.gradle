@@ -1,0 +1,186 @@
+
+
+apply plugin: 'cpp'
+apply plugin: 'edu.wpi.first.NativeUtils'
+
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+
+    maven { url getWpiRepo() }
+    maven { url getNavxRepo() }
+    maven { url getCtreRepo() }
+    maven { url getRevRepo() }
+    maven { url getSnobotSimRepo() }
+}
+
+apply from: "${rootDir}/common/config.gradle"
+ext {
+    nativeName = "snobotSimCpp"
+    baseId = nativeName
+    groupId = "com.snobot.${nativeName}"
+}
+model {
+    components {
+        "${nativeName}"(NativeLibrarySpec) {
+            sources {
+                cpp {
+                    source {
+                        srcDirs = ['src/main/native/cpp']
+                        if (project.hasProperty('generatedSources')) {
+                            srcDirs += generatedSources
+                        }
+                        include '**/*.cpp'
+                    }
+                    exportedHeaders {
+                        srcDir 'src/main/native/include'
+                        include '**/*.h'
+                    }
+                }
+            }
+            binaries.all {
+                if (it instanceof StaticLibraryBinarySpec) {
+                    it.buildable = false
+                    return
+                }
+            }
+            nativeUtils.useRequiredLibrary(it, "imgui_static", "hal_shared", "wpiutil_shared")
+        }
+        "${nativeName}Dev"(NativeExecutableSpec) {
+            targetBuildTypes 'release'
+            sources {
+                cpp {
+
+                    source {
+                        srcDirs 'src/dev/native/cpp'
+                        include '**/*.cpp'
+                    }
+                    exportedHeaders {
+                        srcDir 'src/main/native/include'
+                    }
+                }
+            }
+            binaries.all {
+                lib library: nativeName
+            }
+            nativeUtils.useRequiredLibrary(it, "imgui_static", "hal_shared", "wpiutil_shared")
+        }
+    }
+    binaries {
+        all {
+            
+                if (it.targetPlatform.operatingSystem.isWindows()) {
+                    it.linker.args << 'Gdi32.lib' << 'Shell32.lib'
+                } else if (it.targetPlatform.operatingSystem.isMacOsX()) {
+                    it.linker.args << '-framework' << 'Cocoa' << '-framework' << 'IOKit' << '-framework' << 'CoreFoundation' << '-framework' << 'CoreVideo'
+                } else {
+                    it.linker.args << '-lX11' << '-lvulkan'
+                }
+        }
+    }
+    
+    tasks {
+        def c = $.components
+        if (!project.hasProperty('onlylinuxathena') && !project.hasProperty('onlylinuxraspbian') && !project.hasProperty('onlylinuxaarch64bionic')) {
+            project.tasks.create('runCpp', Exec) {
+                group = 'WPILib'
+                description = "Run the ${nativeName}Dev executable"
+                def found = false
+                def systemArch = getCurrentArch()
+                c.each {
+                    if (it in NativeExecutableSpec && it.name == "${nativeName}Dev") {
+                        it.binaries.each {
+                            if (!found) {
+                                def arch = it.targetPlatform.name
+                                if (arch == systemArch) {
+                                    dependsOn it.tasks.install
+                                    commandLine it.tasks.install.runScriptFile.get().asFile.toString()
+                                    // it.tasks.install.libs.each { lib ->
+                                    //     if (lib.name.contains(pluginName)) {
+                                    //         def filePath = it.tasks.install.installDirectory.get().toString() + File.separatorChar + 'lib' + File.separatorChar + lib.name
+                                    //         environment('HALSIM_EXTENSIONS', filePath)
+                                    //     }
+                                    // }
+                                    found = true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+///////////////////////////////////////////////////////////////////////////
+
+// apply plugin: 'edu.wpi.first.NativeUtils'
+// apply from: "${rootDir}/common/config.gradle"
+
+// ext {
+//     pluginName = "halGui"
+// }
+
+//     model {
+//         components {
+//             "${pluginName}"(NativeLibrarySpec) {
+//                 sources {
+//                     cpp {
+//                         source {
+//                             srcDirs = ['src/main/native/cpp']
+//                             includes = ["**/*.cpp"]
+//                         }
+//                         exportedHeaders {
+//                             srcDirs = ["src/main/native/include"]
+//                         }
+//                     }
+//                 }
+//                 binaries.all {
+//                     if (it instanceof StaticLibraryBinarySpec) {
+//                         it.buildable = false
+//                         return
+//                     }
+//                     // project(':hal').addHalDependency(it, 'shared')
+//                     // if (project.hasProperty('includeNtCore')) {
+//                     //     lib project: ':ntcore', library: 'ntcore', linkage: 'shared'
+//                     // }
+//                     // if (project.hasProperty('includeWpiutil')) {
+//                     //     lib project: ':wpiutil', library: 'wpiutil', linkage: 'shared'
+//                     // }
+//                 }
+//                 appendDebugPathToBinaries(binaries)
+//             }
+//             "${pluginName}Dev"(NativeExecutableSpec) {
+//                 targetBuildTypes 'debug'
+//                 sources {
+//                     cpp {
+//                         source {
+//                             srcDirs = ['src/dev/native/cpp']
+//                             includes = ["**/*.cpp"]
+//                         }
+//                         exportedHeaders {
+//                             srcDirs = ["src/dev/native/include"]
+//                         }
+//                     }
+//                 }
+//                 // binaries.all {
+//                 //     if (!project.hasProperty('onlylinuxathena') && !project.hasProperty('onlylinuxraspbian')  && !project.hasProperty('onlylinuxaarch64bionic')) {
+//                 //         project(':hal').addHalDependency(it, 'shared')
+//                 //         lib library: pluginName
+//                 //         if (project.hasProperty('includeNtCore')) {
+//                 //             lib project: ':ntcore', library: 'ntcore', linkage: 'shared'
+//                 //         }
+//                 //         lib project: ':wpiutil', library: 'wpiutil', linkage: 'shared'
+//                 //         if (it.targetPlatform.name == nativeUtils.wpi.platforms.roborio) {
+//                 //             nativeUtils.useRequiredLibrary(it, 'netcomm_shared', 'chipobject_shared', 'visa_shared', 'ni_runtime_shared')
+//                 //         }
+//                 //     } else {
+//                 //         it.buildable = false
+//                 //     }
+//                 // }
+//             }
+//         }
+//     }
+
