@@ -32,6 +32,8 @@ stages:
             git checkout -b master
           displayName: 'Install Dependencies'
         - script: |
+            #!/bin/sh -x
+            set -x #echo on
             wpiformat -clang 6.0
           displayName: 'Run wpiformat'
         - script: |
