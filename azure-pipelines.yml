@@ -130,7 +130,7 @@ stages:
 
    - job: Mac
      pool:
-       vmImage: 'xcode9-macos10.13'
+       vmImage: 'xcode9-macos10.14'
      steps:
       - script: |
           mkdir build
