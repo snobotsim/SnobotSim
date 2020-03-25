@@ -1,0 +1,51 @@
+
+apply plugin: 'maven-publish'
+
+def zipBaseName = '_GROUP_com_snobot_simulator_snobot_sim_ID_snobot_sim_CLS'
+
+task cppSourcesZip(type: Zip) {
+    destinationDir = project.buildDir
+    classifier = "sources"
+
+    from('src/main/native') {
+        into 'SnobotSim'
+    }
+}
+
+task cppHeadersZip(type: Zip) {
+    destinationDir = project.buildDir
+    classifier = "headers"
+
+    from('src/main/native/include') {
+        into '/'
+    }
+}
+
+model {
+    publishing {
+
+        def snobotSimTaskList = createComponentZipTasks($.components, 'snobotSimCpp', zipBaseName, Zip, project, includeStandardZipFormat)
+
+         repositories {
+           maven {
+               url maven_publishing_path
+           }
+        }
+
+        publications {
+            snobot_sim(MavenPublication) {
+                groupId 'com.snobot.simulator'
+                artifactId 'snobot_sim'
+                version maven_version
+
+                snobotSimTaskList.each {
+                    artifact it
+                }
+
+                artifact cppHeadersZip
+                artifact cppSourcesZip
+            }
+        }
+
+    }
+}

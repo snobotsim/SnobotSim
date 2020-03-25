@@ -1,0 +1,103 @@
+
+apply plugin: 'cpp'
+apply plugin: 'edu.wpi.first.NativeUtils'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    nativeName = "snobotSimCppGui"
+    wpi_deps = ["hal_shared", "wpiutil_shared", "imgui_static"]
+    include_snobot_sim_cpp = []
+    include_snobot_sim_cpp += [[':snobot_sim', 'snobotSimCppBase', 'shared']]
+}
+
+apply from: "${rootDir}/common/base_jni_script.gradle"
+
+
+dependencies {
+
+    compile 'edu.wpi.first.ntcore:ntcore-java:' + getNtCoreVersion()
+    compile 'edu.wpi.first.cscore:cscore-java:' + getCsCoreVersion()
+    compile 'edu.wpi.first.cameraserver:cameraserver-java:' + allwpilibVersion()
+    compile project(":snobot_sim_utilities")
+
+
+    testCompile 'edu.wpi.first.wpilibj:wpilibj-java:' + allwpilibVersion()
+    testCompile 'edu.wpi.first.hal:hal-java:' + allwpilibVersion()
+    testCompile "com.ctre.phoenix:api-java:" + getCtreVersion()
+    testCompile "com.ctre.phoenix:wpiapi-java:" + getCtreVersion()
+    testCompile "com.kauailabs.navx.frc:navx-java:" + getNavxVersion()
+
+    testCompile 'org.junit.jupiter:junit-jupiter-api:5.5.2'
+    testCompile 'org.junit.jupiter:junit-jupiter-params:5.5.1'
+
+    testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
+    testRuntime 'org.junit.platform:junit-platform-launcher:1.5.1'
+    testCompile 'org.junit.jupiter:junit-jupiter-api:5.5.2'
+    testCompile 'org.junit.jupiter:junit-jupiter-params:5.5.1'
+    testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
+
+    testRuntime 'edu.wpi.first.hal:hal-jni:' + allwpilibVersion() + ':' + getCurrentOsArch()
+    testRuntime 'edu.wpi.first.wpiutil:wpiutil-java:' + getWpiUtilVersion()
+    testRuntime 'edu.wpi.first.ntcore:ntcore-jni:' + getNtCoreVersion() + ':' + getCurrentOsArch()
+    testRuntime 'edu.wpi.first.cscore:cscore-jni:' + getCsCoreVersion() + ':' + getCurrentOsArch()
+    testRuntime 'edu.wpi.first.thirdparty.frc2020.opencv:opencv-java:' + getWpilibOpencvVersion()
+    testRuntime 'edu.wpi.first.thirdparty.frc2020.opencv:opencv-jni:' + getWpilibOpencvVersion() + ':' + getCurrentOsArch()
+}
+
+
+nativeUtils.exportsConfigs {
+    snobotSimCppGui {
+        x86ExcludeSymbols = ['_CT??_R0?AV_System_error', '_CT??_R0?AVexception', '_CT??_R0?AVfailure',
+                            '_CT??_R0?AVruntime_error', '_CT??_R0?AVsystem_error', '_CTA5?AVfailure',
+                            '_TI5?AVfailure', '_CT??_R0?AVout_of_range', '_CTA3?AVout_of_range',
+                            '_TI3?AVout_of_range', '_CT??_R0?AVbad_cast']
+        x64ExcludeSymbols = ['_CT??_R0?AV_System_error', '_CT??_R0?AVexception', '_CT??_R0?AVfailure',
+                            '_CT??_R0?AVruntime_error', '_CT??_R0?AVsystem_error', '_CTA5?AVfailure',
+                            '_TI5?AVfailure', '_CT??_R0?AVout_of_range', '_CTA3?AVout_of_range',
+                            '_TI3?AVout_of_range', '_CT??_R0?AVbad_cast']
+    }
+    snobotSimCppGuiJNI {
+        x86SymbolFilter = { symbols ->
+            symbols.removeIf({ !it.startsWith('HAL_') && !it.startsWith('HALSIM_') })
+        }
+        x64SymbolFilter = { symbols ->
+            symbols.removeIf({ !it.startsWith('HAL_') && !it.startsWith('HALSIM_') })
+        }
+    }
+}
+
+    model {
+        binaries {
+            withType(SharedLibraryBinarySpec) {
+                nativeUtils.useRequiredLibrary(it, 'imgui_static')
+                if (it.targetPlatform.name == nativeUtils.wpi.platforms.roborio || it.targetPlatform.name == nativeUtils.wpi.platforms.raspbian || it.targetPlatform.name == nativeUtils.wpi.platforms.aarch64bionic) {
+                    it.buildable = false
+                    return
+                }
+                if (it.targetPlatform.operatingSystem.isWindows()) {
+                    it.linker.args << 'Gdi32.lib' << 'Shell32.lib'
+                } else if (it.targetPlatform.operatingSystem.isMacOsX()) {
+                    it.linker.args << '-framework' << 'Cocoa' << '-framework' << 'IOKit' << '-framework' << 'CoreFoundation' << '-framework' << 'CoreVideo'
+                } else {
+                    it.linker.args << '-lX11' << '-lvulkan'
+                }
+            }
+            withType(StaticLibraryBinarySpec) {
+                nativeUtils.useRequiredLibrary(it, 'imgui_static')
+                if (it.targetPlatform.name == nativeUtils.wpi.platforms.roborio || it.targetPlatform.name == nativeUtils.wpi.platforms.raspbian || it.targetPlatform.name == nativeUtils.wpi.platforms.aarch64bionic) {
+                    it.buildable = false
+                    return
+                }
+                if (it.targetPlatform.operatingSystem.isWindows()) {
+                    it.linker.args << 'Gdi32.lib' << 'Shell32.lib'
+                } else if (it.targetPlatform.operatingSystem.isMacOsX()) {
+                    it.linker.args << '-framework' << 'Cocoa' << '-framework' << 'IOKit' << '-framework' << 'CoreFoundation' << '-framework' << 'CoreVideo'
+                } else {
+                    it.linker.args << '-lX11' << '-lvulkan'
+                }
+            }
+        }
+    }
