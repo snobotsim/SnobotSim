@@ -16,9 +16,6 @@ apply from: "${rootDir}/common/base_java_script.gradle"
 model {
     components {
         "${nativeName}Base"(NativeLibrarySpec) {
-            if (project.hasProperty('setBaseName')) {
-                baseName = setBaseName
-            }
             sources {
                 cpp {
                     source {
@@ -40,14 +37,51 @@ model {
                     return
                 }
             }
-            nativeUtils.useRequiredLibrary(it, "hal_shared", "wpiutil_shared")
+            if(project.hasProperty("include_snobot_sim_cpp"))
+            {
+                binaries.all {
+                    for (List lib_tuple : include_snobot_sim_cpp)
+                    {
+                        println("XXXXXXXXXXXXXX: " + lib_tuple)
+                        lib project: lib_tuple[0],  library: lib_tuple[1], linkage: lib_tuple[2]
+                    }
+                }
+            }
+
+            nativeUtils.useRequiredLibrary(it, *wpi_deps)
+        }
+        "${nativeName}"(NativeLibrarySpec) {
+            if (project.hasProperty('setBaseName')) {
+                baseName = setBaseName
+            }
+            sources {
+                cpp {
+                    source {
+                        srcDirs "${rootDir}/shared/singlelib"
+                        include '**/*.cpp'
+                    }
+                    exportedHeaders {
+                        srcDir 'src/main/native/include'
+                        if (project.hasProperty('generatedHeaders')) {
+                            srcDir generatedHeaders
+                        }
+                    }
+                }
+            }
+            if(project.hasProperty("include_snobot_sim_cpp"))
+            {
+                binaries.all {
+                    for (List lib_tuple : include_snobot_sim_cpp)
+                    {
+                        println("XXXXXXXXXXXXXX: " + lib_tuple)
+                        lib project: lib_tuple[0],  library: lib_tuple[1], linkage: lib_tuple[2]
+                    }
+                }
+            }
+            appendDebugPathToBinaries(binaries)
         }
         "${nativeName}JNIShared"(JniNativeLibrarySpec) {
-            if (project.hasProperty('setBaseName')) {
-                baseName = setBaseName + 'jni'
-            } else {
-                baseName = nativeName + 'jni'
-            }
+            baseName = nativeName + 'jni'
 
             enableCheckTask true
             javaCompileTasks << compileJava
@@ -75,12 +109,65 @@ model {
                     it.buildable = false
                     return
                 }
-                lib library: "${nativeName}Base", linkage: 'shared'
+                lib library: "${nativeName}", linkage: 'shared'
                 if (project.hasProperty('jniSplitSetup')) {
                     jniSplitSetup(it)
                 }
             }
-            nativeUtils.useRequiredLibrary(it, "hal_shared", "wpiutil_shared")
+            nativeUtils.useRequiredLibrary(it, *wpi_deps)
+        }
+        "${nativeName}JNI"(JniNativeLibrarySpec) {
+            if (project.hasProperty('setBaseName')) {
+                baseName = setBaseName + 'jni'
+            } else {
+                baseName = nativeName + 'jni'
+            }
+
+            enableCheckTask true
+            javaCompileTasks << compileJava
+            jniCrossCompileOptions << JniCrossCompileOptions(nativeUtils.wpi.platforms.roborio)
+            jniCrossCompileOptions << JniCrossCompileOptions(nativeUtils.wpi.platforms.raspbian)
+            jniCrossCompileOptions << JniCrossCompileOptions(nativeUtils.wpi.platforms.aarch64bionic)
+            sources {
+                cpp {
+                    source {
+                        srcDirs 'src/main/native/jni'
+                        include '**/*.cpp'
+                    }
+                    exportedHeaders {
+                        srcDir 'src/main/native/include'
+                        if (project.hasProperty('generatedHeaders')) {
+                            srcDir generatedHeaders
+                        }
+                        include '**/*.h'
+                    }
+                }
+            }
+            binaries.all {
+                if (it instanceof StaticLibraryBinarySpec) {
+                    it.buildable = false
+                    return
+                }
+                lib library: "${nativeName}Base", linkage: 'static'
+                // if (!project.hasProperty('noWpiutil')) {
+                //     lib project: ':wpiutil', library: 'wpiutil', linkage: 'static'
+                // }
+                // if (project.hasProperty('jniSplitSetup')) {
+                //     jniSplitSetup(it)
+                // }
+            }
+            if(project.hasProperty("include_snobot_sim_cpp"))
+            {
+                binaries.all {
+                    for (List lib_tuple : include_snobot_sim_cpp)
+                    {
+                        println("XXXXXXXXXXXXXX: " + lib_tuple)
+                        lib project: lib_tuple[0],  library: lib_tuple[1], linkage: lib_tuple[2]
+                    }
+                }
+            }
+
+            nativeUtils.useRequiredLibrary(it, *wpi_deps)
         }
         // By default, a development executable will be generated. This is to help the case of
         // testing specific functionality of the library.
@@ -104,8 +191,10 @@ model {
             binaries.all {
                 lib library: "${nativeName}Base", linkage: 'shared'
                 lib library: "${nativeName}JNIShared", linkage: 'shared'
+                lib project: ':snobot_sim_cpp_gui',  library: "snobotSimCppGuiBase", linkage: 'shared'
+                lib project: ':snobot_sim_cpp_gui',  library: "snobotSimCppGuiJNIShared", linkage: 'shared'
             }
-            nativeUtils.useRequiredLibrary(it, "hal_shared", "wpiutil_shared")
+            nativeUtils.useRequiredLibrary(it, *wpi_deps)
         }
     }
     binaries {
@@ -152,3 +241,6 @@ tasks.withType(RunTestExecutable) {
     args "--gtest_output=xml:test_detail.xml"
     outputs.dir outputDir
 }
+
+
+apply from: "${rootDir}/common/base_jni_publish.gradle"

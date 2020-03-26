@@ -42,8 +42,11 @@ model {
             if(project.hasProperty("include_snobot_sim_cpp"))
             {
                 binaries.all {
-                    lib project: ':snobot_sim', library: 'snobotSimCppBase', linkage: 'shared'
-                    lib project: ':snobot_sim', library: 'snobotSimCppJNIShared', linkage: 'shared'
+                    for (List lib_tuple : include_snobot_sim_cpp)
+                    {
+                        println("XXXXXXXXXXXXXX: " + lib_tuple)
+                        lib project: lib_tuple[0],  library: lib_tuple[1], linkage: lib_tuple[2]
+                    }
                 }
             }
             
@@ -75,10 +78,12 @@ model {
                                 test.systemProperty 'java.library.path', filePath
                                 test.environment 'LD_LIBRARY_PATH', filePath
                                 test.workingDir filePath
-                                // run.dependsOn it.tasks.install
-                                // run.systemProperty 'java.library.path', filePath
-                                // run.environment 'LD_LIBRARY_PATH', filePath
-                                // run.workingDir filePath
+                                run.dependsOn it.tasks.install
+                                run.systemProperty 'java.library.path', filePath
+                                run.environment 'LD_LIBRARY_PATH', filePath
+                                // run.environment 'HALSIM_EXTENSIONS', filePath + File.separatorChar + "wpi_gui"
+                                
+                                run.workingDir filePath
 
                                 found = true
                             }

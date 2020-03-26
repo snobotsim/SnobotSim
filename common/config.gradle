@@ -67,6 +67,7 @@ ext.appendDebugPathToBinaries = { binaries->
 ext.createComponentZipTasks = { components, names, base, type, project, func ->
     def stringNames = names.collect {it.toString()}
     def configMap = [:]
+    println(components + ", " + names)
     components.each {
         if (it in NativeLibrarySpec && stringNames.contains(it.name)) {
             it.binaries.each {
@@ -91,10 +92,6 @@ ext.createComponentZipTasks = { components, names, base, type, project, func ->
             archiveBaseName = '_M_' + base
             duplicatesStrategy = 'exclude'
 
-            from(licenseFile) {
-                into '/'
-            }
-
             func(it, value)
         }
         taskList.add(task)
@@ -104,7 +101,7 @@ ext.createComponentZipTasks = { components, names, base, type, project, func ->
         project.artifacts {
             task
         }
-        addTaskToCopyAllOutputs(task)
+        //addTaskToCopyAllOutputs(task)
     }
     return taskList
 }
@@ -140,6 +137,7 @@ ext.includeStandardZipFormat = { task, value ->
     value.each { binary ->
         if (binary.buildable) {
             if (binary instanceof SharedLibraryBinarySpec) {
+                println("Hello " + binary.name)
                 task.dependsOn binary.tasks.link
                 task.from(new File(binary.sharedLibraryFile.absolutePath + ".debug")) {
                     into nativeUtils.getPlatformPath(binary) + '/shared'
@@ -157,6 +155,7 @@ ext.includeStandardZipFormat = { task, value ->
                     into nativeUtils.getPlatformPath(binary) + '/shared'
                 }
             } else  if (binary instanceof StaticLibraryBinarySpec) {
+                println("SGH " + binary.name)
                 task.dependsOn binary.tasks.createStaticLib
                 task.from(binary.staticLibraryFile) {
                     into nativeUtils.getPlatformPath(binary) + '/static'
