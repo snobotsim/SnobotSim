@@ -1,6 +1,7 @@
 import org.gradle.internal.os.OperatingSystem
 
 nativeUtils.addWpiNativeUtils()
+// nativeUtils.withRoboRIO()
 
 nativeUtils {
   wpi {
@@ -67,12 +68,14 @@ ext.appendDebugPathToBinaries = { binaries->
 ext.createComponentZipTasks = { components, names, base, type, project, func ->
     def stringNames = names.collect {it.toString()}
     def configMap = [:]
-    println(components + ", " + names)
+    println("CREATE COMPONENT ZIP: " + components + ", " + names)
     components.each {
+        println("-" + it.name)
         if (it in NativeLibrarySpec && stringNames.contains(it.name)) {
             it.binaries.each {
                 if (!it.buildable) return
                 def target = nativeUtils.getPublishClassifier(it)
+                println("--" + target)
                 if (configMap.containsKey(target)) {
                     configMap.get(target).add(it)
                 } else {
@@ -103,6 +106,7 @@ ext.createComponentZipTasks = { components, names, base, type, project, func ->
         }
         //addTaskToCopyAllOutputs(task)
     }
+    // throw new Exception()
     return taskList
 }
 
@@ -137,7 +141,7 @@ ext.includeStandardZipFormat = { task, value ->
     value.each { binary ->
         if (binary.buildable) {
             if (binary instanceof SharedLibraryBinarySpec) {
-                println("Hello " + binary.name)
+                println("  Zip Shared " + binary.name)
                 task.dependsOn binary.tasks.link
                 task.from(new File(binary.sharedLibraryFile.absolutePath + ".debug")) {
                     into nativeUtils.getPlatformPath(binary) + '/shared'
@@ -155,7 +159,7 @@ ext.includeStandardZipFormat = { task, value ->
                     into nativeUtils.getPlatformPath(binary) + '/shared'
                 }
             } else  if (binary instanceof StaticLibraryBinarySpec) {
-                println("SGH " + binary.name)
+                println("  Zipped Static " + binary.name)
                 task.dependsOn binary.tasks.createStaticLib
                 task.from(binary.staticLibraryFile) {
                     into nativeUtils.getPlatformPath(binary) + '/static'

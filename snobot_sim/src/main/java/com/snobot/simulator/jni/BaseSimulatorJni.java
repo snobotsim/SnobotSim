@@ -13,7 +13,10 @@ public abstract class BaseSimulatorJni // NOPMD
     {
         JniLibraryResourceLoader.loadLibrary("wpiutil");
         JniLibraryResourceLoader.loadLibrary("wpiHal");
+        JniLibraryResourceLoader.loadLibrary("snobotSimCppBase");
         JniLibraryResourceLoader.loadLibrary("snobotSimCppjni");
+        JniLibraryResourceLoader.loadLibrary("snobotSimCppGuiBase");
+        JniLibraryResourceLoader.loadLibrary("snobotSimCppGuijni");
         SnobotSimulatorJni.initializeSimulator();
     }
 }

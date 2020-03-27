@@ -8,6 +8,9 @@ repositories {
 
 ext {
     nativeName = "snobotSimCpp"
+    baseArtifactId = "XXX"
+    artifactGroupId = "YYY"
+    wpi_deps = ["hal_shared", "wpiutil_shared"]
     generatedSources = "$buildDir/generated/cpp"
 }
 
@@ -23,6 +26,7 @@ dependencies {
     compile 'edu.wpi.first.cscore:cscore-java:' + getCsCoreVersion()
     compile 'edu.wpi.first.cameraserver:cameraserver-java:' + allwpilibVersion()
     compile project(":snobot_sim_utilities")
+    compile project(":snobot_sim_cpp_gui")
 
 
     testCompile 'edu.wpi.first.wpilibj:wpilibj-java:' + allwpilibVersion()
@@ -60,12 +64,24 @@ nativeUtils.exportsConfigs {
                             '_TI5?AVfailure', '_CT??_R0?AVout_of_range', '_CTA3?AVout_of_range',
                             '_TI3?AVout_of_range', '_CT??_R0?AVbad_cast']
     }
+    snobotSimCppBase {
+        x86ExcludeSymbols = ['_CT??_R0?AV_System_error', '_CT??_R0?AVexception', '_CT??_R0?AVfailure',
+                            '_CT??_R0?AVruntime_error', '_CT??_R0?AVsystem_error', '_CTA5?AVfailure',
+                            '_TI5?AVfailure', '_CT??_R0?AVout_of_range', '_CTA3?AVout_of_range',
+                            '_TI3?AVout_of_range', '_CT??_R0?AVbad_cast']
+        x64ExcludeSymbols = ['_CT??_R0?AV_System_error', '_CT??_R0?AVexception', '_CT??_R0?AVfailure',
+                            '_CT??_R0?AVruntime_error', '_CT??_R0?AVsystem_error', '_CTA5?AVfailure',
+                            '_TI5?AVfailure', '_CT??_R0?AVout_of_range', '_CTA3?AVout_of_range',
+                            '_TI3?AVout_of_range', '_CT??_R0?AVbad_cast']
+    }
     snobotSimCppJNI {
         x86SymbolFilter = { symbols ->
-            symbols.removeIf({ !it.startsWith('HAL_') && !it.startsWith('HALSIM_') })
+            println("8686868 " + symbols)
+            // symbols.removeIf({ !it.startsWith('HAL_') && !it.startsWith('HALSIM_') })
         }
         x64SymbolFilter = { symbols ->
-            symbols.removeIf({ !it.startsWith('HAL_') && !it.startsWith('HALSIM_') })
+            println("646464 " + symbols)
+            // symbols.removeIf({ !it.startsWith('HAL_') && !it.startsWith('HALSIM_') })
         }
     }
 }

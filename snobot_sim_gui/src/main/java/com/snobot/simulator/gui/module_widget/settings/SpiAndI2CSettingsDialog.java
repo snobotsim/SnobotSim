@@ -49,6 +49,11 @@ public class SpiAndI2CSettingsDialog extends JDialog
         Collection<String> availableSpiOptions = new ArrayList<>();
         Collection<String> availableI2COptions = new ArrayList<>();
 
+        if (defaultSpiMapping == null || defaultI2CMapping == null)
+        {
+            return;
+        }
+
         availableSpiOptions.add(sDEFAULT_ITEM);
         availableSpiOptions.addAll(DataAccessorFactory.getInstance().getSpiAccessor().getAvailableSpiSimulators());
 

@@ -10,10 +10,13 @@
 #include "SnobotSim/SimulatorComponents/CompressorWrapper.h"
 #include "hal/handles/HandlesInternal.h"
 
+#include <iostream>
+
 SensorActuatorRegistry* SensorActuatorRegistry::sInstance = new SensorActuatorRegistry();
 
 SensorActuatorRegistry& SensorActuatorRegistry::Get()
 {
+    // std::cout << "SAR: " << sInstance << std::endl;
     return *sInstance;
 }
 

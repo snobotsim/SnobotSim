@@ -31,18 +31,18 @@ model {
                     }
                 }
             }
-            binaries.all {
-                if (it instanceof SharedLibraryBinarySpec) {
-                    it.buildable = false
-                    return
-                }
-            }
+            // binaries.all {
+            //     if (it instanceof SharedLibraryBinarySpec) {
+            //         // it.buildable = false
+            //         return
+            //     }
+            // }
             if(project.hasProperty("include_snobot_sim_cpp"))
             {
                 binaries.all {
                     for (List lib_tuple : include_snobot_sim_cpp)
                     {
-                        println("XXXXXXXXXXXXXX: " + lib_tuple)
+                        println("${nativeName} XXXXXXXXXXXXXX: " + lib_tuple)
                         lib project: lib_tuple[0],  library: lib_tuple[1], linkage: lib_tuple[2]
                     }
                 }
@@ -57,7 +57,7 @@ model {
             sources {
                 cpp {
                     source {
-                        srcDirs "${rootDir}/shared/singlelib"
+                        srcDirs "${rootDir}/common/dummy_cpp"
                         include '**/*.cpp'
                     }
                     exportedHeaders {
@@ -73,7 +73,7 @@ model {
                 binaries.all {
                     for (List lib_tuple : include_snobot_sim_cpp)
                     {
-                        println("XXXXXXXXXXXXXX: " + lib_tuple)
+                        println("${nativeName} YYYYYY: " + lib_tuple)
                         lib project: lib_tuple[0],  library: lib_tuple[1], linkage: lib_tuple[2]
                     }
                 }
@@ -109,7 +109,7 @@ model {
                     it.buildable = false
                     return
                 }
-                lib library: "${nativeName}", linkage: 'shared'
+                lib library: "${nativeName}Base", linkage: 'shared'
                 if (project.hasProperty('jniSplitSetup')) {
                     jniSplitSetup(it)
                 }
@@ -161,7 +161,7 @@ model {
                 binaries.all {
                     for (List lib_tuple : include_snobot_sim_cpp)
                     {
-                        println("XXXXXXXXXXXXXX: " + lib_tuple)
+                        println("${nativeName} AAAAAAA: " + lib_tuple)
                         lib project: lib_tuple[0],  library: lib_tuple[1], linkage: lib_tuple[2]
                     }
                 }

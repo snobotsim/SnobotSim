@@ -3,19 +3,38 @@
 #include "SnobotSimGui/ModuleWrapperDisplay/AnalogInWidget.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 
+#include <hal/Ports.h>
+#include <mockdata/AnalogGyroData.h>
+#include <mockdata/AnalogInData.h>
+
 #include <imgui.h>
+
+#include <iostream>
 
 void AnalogInWidget::updateDisplay()
 {
+    static int numAccum = HAL_GetNumAccumulators();
+
     ImGui::Begin("Analog In");
 
     ImGui::PushItemWidth(ImGui::GetFontSize() * 8);
     for(const auto& pair : SensorActuatorRegistry::Get().GetIAnalogInWrapperMap())
     {
         auto wrapper = pair.second;
-        bool open = ImGui::CollapsingHeader(
-            wrapper->GetName().c_str(), true ? ImGuiTreeNodeFlags_DefaultOpen : 0);
-        // std::cout << "  SC: " << pair.first << ", " << pair.second << std::endl;
+        const char* name = wrapper->GetName().c_str();
+        
+        if (pair.first < numAccum && HALSIM_GetAnalogGyroInitialized(pair.first)) {
+            ImGui::LabelText(name, "AnalogGyro[%d]", pair.first);
+        }
+        else 
+        {
+            float voltage = static_cast<float>(wrapper->GetVoltage());
+            if (ImGui::SliderFloat(name, &voltage, 0.0, 5.0))
+            {
+                std::cout << "Voltage changed from " << wrapper->GetVoltage() << " to " << voltage << std::endl;
+                wrapper->SetVoltage(voltage);
+            }
+        }
     }
     ImGui::PopItemWidth();
 

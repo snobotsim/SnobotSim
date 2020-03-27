@@ -139,6 +139,7 @@ public class JniDataAccessor implements IDataAccessor
     @Override
     public String getInitializationErrors()
     {
+        com.snobot.simulator.jni.SnobotSimGuiJni.initializeGui();
         return null;
     }
 

@@ -5,7 +5,11 @@ ext
 {
     baseId = "snobot_sim_gui"
     extra_native_libraries = ["hal_shared", "wpiutil_shared", "snobot_sim_ctre_shared", "snobot_sim_rev_shared"]
-    include_snobot_sim_cpp = use_simulator_cpp
+    include_snobot_sim_cpp = []
+    include_snobot_sim_cpp += [[':snobot_sim', 'snobotSimCppBase', 'shared']]
+    include_snobot_sim_cpp += [[':snobot_sim', 'snobotSimCppJNIShared', 'shared']]
+    include_snobot_sim_cpp += [[':snobot_sim_cpp_gui', 'snobotSimCppGuiBase', 'shared']]
+    include_snobot_sim_cpp += [[':snobot_sim_cpp_gui', 'snobotSimCppGuiJNIShared', 'shared']]
 }
 
 apply from: "${rootDir}/common/base_java_script.gradle"

@@ -53,10 +53,20 @@ SnobotSimGui::SnobotSimGui() :
 
 void SnobotSimGui::RenderLoop()
 {
+    static bool firstTime = true;
+
+    float windowX = 0;
+
     for(auto widget : mWidgets)
     {
+        if(firstTime)
+        {
+          ImGui::SetNextWindowPos(ImVec2{windowX, 0.0f}, ImGuiCond_FirstUseEver);
+          windowX += 30;
+        }
         widget->updateDisplay();
     }
+    firstTime = false;
 }
 
 void SnobotSimGui::StartThread()
@@ -121,7 +131,6 @@ void SnobotSimGui::StartThread()
 
     while (!glfwWindowShouldClose(window) && mRunning)
     {
-        std::cout << "Running gui loop" << std::endl;
         glfwPollEvents();
         glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
         glClear(GL_COLOR_BUFFER_BIT);

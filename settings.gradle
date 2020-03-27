@@ -5,6 +5,7 @@ ext.build_simulator_java = true
 if(build_simulator_cpp)
 {
     include 'snobot_sim'
+    include 'snobot_sim_cpp_gui'
     include 'wpi_gui' // TODO delete
 }
 

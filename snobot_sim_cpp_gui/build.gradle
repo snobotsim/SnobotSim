@@ -8,6 +8,8 @@ repositories {
 
 ext {
     nativeName = "snobotSimCppGui"
+    baseArtifactId = "AAA"
+    artifactGroupId = "BBB"
     wpi_deps = ["hal_shared", "wpiutil_shared", "imgui_static"]
     include_snobot_sim_cpp = []
     include_snobot_sim_cpp += [[':snobot_sim', 'snobotSimCppBase', 'shared']]

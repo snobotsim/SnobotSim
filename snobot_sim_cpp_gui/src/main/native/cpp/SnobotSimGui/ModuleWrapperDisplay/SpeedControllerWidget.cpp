@@ -2,8 +2,12 @@
 
 #include "SnobotSimGui/ModuleWrapperDisplay/SpeedControllerWidget.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSimGui/Utilities/IndicatorDrawer.h"
+#include "SnobotSimGui/Utilities/ColorFormatters.h"
 
 #include <imgui.h>
+
+
 
 void SpeedControllerWidget::updateDisplay()
 {
@@ -15,6 +19,8 @@ void SpeedControllerWidget::updateDisplay()
         auto wrapper = pair.second;
         bool open = ImGui::CollapsingHeader(
             wrapper->GetName().c_str(), true ? ImGuiTreeNodeFlags_DefaultOpen : 0);
+            
+        AddIndicator(GetClampedColor(wrapper->GetVoltagePercentage(), -1, 1));
             
         if(open)
         {
