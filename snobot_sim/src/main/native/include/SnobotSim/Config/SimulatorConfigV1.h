@@ -50,18 +50,7 @@ struct DcMotorModelConfigConfig
         bool mHasBrake;
     };
 
-    struct MotorParams
-    {
-        double mNominalVoltage;
-        double mFreeSpeedRpm;
-        double mFreeCurrent;
-        double mStallTorque;
-        double mStallCurrent;
-        double mMotorInertia;
-    };
-
     FactoryParams mFactoryParams;
-    MotorParams mMotorParams;
 };
 
 struct RotationalLoadMotorSimulationConfig
@@ -72,7 +61,8 @@ struct RotationalLoadMotorSimulationConfig
     double mOverCenterAssistTorque;
 };
 
-struct PwmConfig : public BasicModuleConfig
+
+struct FullMotorSimConfig
 {
     union MotorSimConfig {
         SimpleMotorSimulationConfig mSimple;
@@ -93,7 +83,11 @@ struct PwmConfig : public BasicModuleConfig
     MotorSimConfig mMotorSimConfig;
     MotorSimConfigType mMotorSimConfigType = None;
     DcMotorModelConfigConfig mMotorModelConfig;
+};
 
+struct PwmConfig : public BasicModuleConfig
+{
+    FullMotorSimConfig mMotorSim;
     void Print(std::ostream& aStream, const std::string& aIndent = "") override;
 };
 

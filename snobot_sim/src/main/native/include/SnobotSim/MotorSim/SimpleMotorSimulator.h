@@ -13,6 +13,10 @@
 class EXPORT_ SimpleMotorSimulator : public IMotorSimulator
 {
 public:
+
+    static std::string GetType() { return "com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig"; }
+    std::string GetDisplaySimulatorType() override { return "Simple"; }
+
     explicit SimpleMotorSimulator(double aMaxSpeed);
     virtual ~SimpleMotorSimulator();
 
@@ -44,6 +48,4 @@ protected:
     double mVoltagePercent;
     double mVelocity;
     double mPosition;
-
-    static const std::string SIMULATOR_TYPE;
 };

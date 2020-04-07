@@ -14,6 +14,10 @@
 class EXPORT_ RotationalLoadDcMotorSim : public BaseDcMotorSimulator
 {
 public:
+
+    static std::string GetType() { return "com.snobot.simulator.motor_sim.RotationalLoadMotorSimulationConfig"; }
+    std::string GetDisplaySimulatorType() override { return "Rotational Load"; }
+    
     RotationalLoadDcMotorSim(const DcMotorModel& aMotorModel, const std::shared_ptr<ISpeedControllerWrapper>& aSpeedController, double aArmCenterOfMass,
             double aArmMass,
             double aConstantAssistTorque, double aOverCenterAssistTorque);

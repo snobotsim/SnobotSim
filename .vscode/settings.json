@@ -63,6 +63,16 @@
         "xstring": "cpp",
         "xtr1common": "cpp",
         "xtree": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "array": "cpp",
+        "deque": "cpp",
+        "filesystem": "cpp",
+        "forward_list": "cpp",
+        "hash_map": "cpp",
+        "hash_set": "cpp",
+        "iomanip": "cpp",
+        "queue": "cpp",
+        "set": "cpp",
+        "stack": "cpp"
     }
 }

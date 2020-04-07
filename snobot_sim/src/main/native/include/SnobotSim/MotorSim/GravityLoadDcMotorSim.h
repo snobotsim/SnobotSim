@@ -11,6 +11,10 @@
 class EXPORT_ GravityLoadDcMotorSim : public BaseDcMotorSimulator
 {
 public:
+
+    static std::string GetType() { return "com.snobot.simulator.motor_sim.GravityLoadMotorSimulationConfig"; }
+    std::string GetDisplaySimulatorType() override { return "Gravitational Load"; }
+    
     GravityLoadDcMotorSim(const DcMotorModel& aMotorModel, double aLoad);
     virtual ~GravityLoadDcMotorSim();
 

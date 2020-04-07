@@ -17,6 +17,8 @@
 class WpiSpeedControllerWrapper : public AModuleWrapper, public ISpeedControllerWrapper
 {
 public:
+    static const std::string TYPE;
+
     explicit WpiSpeedControllerWrapper(int aPort);
     virtual ~WpiSpeedControllerWrapper();
 
@@ -47,6 +49,11 @@ public:
     void Reset() override;
 
     void Reset(double aPosition, double aVelocity, double aCurrent) override;
+
+    const std::string& GetType() override
+    { 
+        return TYPE; 
+    }
 
 protected:
     int mId;

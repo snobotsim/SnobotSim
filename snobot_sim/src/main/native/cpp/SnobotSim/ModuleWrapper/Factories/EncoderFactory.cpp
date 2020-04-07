@@ -23,7 +23,7 @@ bool EncoderFactory::Create(int aHandle, const std::string& aType)
 {
     bool success = true;
 
-    if (aType == "com.snobot.simulator.module_wrapper.wpi.WpiEncoderWrapper")
+    if (aType == WpiEncoderWrapper::TYPE)
     {
         SensorActuatorRegistry::Get().Register(aHandle,
                 std::shared_ptr<IEncoderWrapper>(new WpiEncoderWrapper(aHandle, aHandle)));

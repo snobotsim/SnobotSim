@@ -6,5 +6,10 @@ class AccelerometerWidget : public IWidgetDisplay
 {
 public:
 
+    AccelerometerWidget(SaveCallback callback) : mSaveCallback(callback) {}
+
     void updateDisplay() override;
+
+protected:
+    SaveCallback mSaveCallback;
 };

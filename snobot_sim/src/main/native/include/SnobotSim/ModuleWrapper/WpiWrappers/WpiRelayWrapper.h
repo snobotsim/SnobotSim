@@ -13,11 +13,18 @@
 class WpiRelayWrapper : public AModuleWrapper, public IRelayWrapper
 {
 public:
+    static const std::string TYPE;
+
     explicit WpiRelayWrapper(int aPort);
     virtual ~WpiRelayWrapper();
 
     bool GetRelayForwards() override;
     bool GetRelayReverse() override;
+
+    const std::string& GetType() override
+    { 
+        return TYPE; 
+    }
 
 protected:
     const int mHandle;

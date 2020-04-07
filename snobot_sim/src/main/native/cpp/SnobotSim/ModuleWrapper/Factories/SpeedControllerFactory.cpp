@@ -23,7 +23,7 @@ bool SpeedControllerFactory::Create(int aHandle, const std::string& aType)
 {
     bool success = true;
 
-    if (aType == "com.snobot.simulator.module_wrapper.wpi.WpiPwmWrapper")
+    if (aType == WpiSpeedControllerWrapper::TYPE)
     {
         SensorActuatorRegistry::Get().Register(aHandle,
                 std::shared_ptr<ISpeedControllerWrapper>(new WpiSpeedControllerWrapper(aHandle)));

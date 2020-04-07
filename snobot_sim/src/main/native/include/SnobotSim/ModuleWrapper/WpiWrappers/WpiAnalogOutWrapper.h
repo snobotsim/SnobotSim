@@ -13,11 +13,18 @@
 class WpiAnalogOutWrapper : public AModuleWrapper, public IAnalogOutWrapper
 {
 public:
+    static const std::string TYPE;
+
     explicit WpiAnalogOutWrapper(int aPort);
     virtual ~WpiAnalogOutWrapper();
 
     void SetVoltage(double aVoltage) override;
     double GetVoltage() override;
+
+    const std::string& GetType() override
+    { 
+        return TYPE; 
+    }
 
 protected:
     const int mHandle;

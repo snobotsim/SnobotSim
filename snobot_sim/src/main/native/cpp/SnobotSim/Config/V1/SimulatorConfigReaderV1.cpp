@@ -13,8 +13,19 @@
 #include "SnobotSim/MotorSim/RotationalLoadDcMotorSim.h"
 #include "SnobotSim/MotorSim/SimpleMotorSimulator.h"
 #include "SnobotSim/MotorSim/StaticLoadDcMotorSim.h"
+#include "SnobotSim/MotorFactory/VexMotorFactory.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "yaml-cpp/yaml.h"
+
+namespace
+{
+
+std::ostream& operator<<(std::ostream& stream, const DcMotorModelConfig::FactoryParams& factoryParams)
+{
+    stream << factoryParams.mMotorName << ", " << factoryParams.mNumMotors << std::endl;
+
+    return stream;
+}
 
 void ParseMap(const YAML::Node& aNode, std::map<int, std::string>& aMap)
 {
@@ -45,7 +56,10 @@ void LoadBasicConfig(const YAML::Node& aNode, BasicModuleConfig& aOutput)
 const YAML::Node& operator>>(const YAML::Node& aNode, EncoderConfig& aOutput)
 {
     LoadBasicConfig(aNode, aOutput);
-    aOutput.mConnectedSpeedControllerHandle = aNode["mConnectedSpeedControllerHandle"].as<int>();
+    if(aNode["mConnectedSpeedControllerHandle"])
+    {
+        aOutput.mConnectedSpeedControllerHandle = aNode["mConnectedSpeedControllerHandle"].as<int>();
+    }
     return aNode;
 }
 
@@ -56,36 +70,60 @@ const YAML::Node& operator>>(const YAML::Node& aNode, PwmConfig& aOutput)
     if (aNode["mMotorSimConfig"])
     {
         const YAML::Node& motorSimConfig = aNode["mMotorSimConfig"];
-        const std::string& motorSimConfigTag = motorSimConfig.Tag();
+        std::string motorSimConfigTag = motorSimConfig.Tag();
 
-        if (motorSimConfigTag == "tag:yaml.org,2002:com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig")
+        motorSimConfigTag = motorSimConfigTag.substr(std::string("tag:yaml.org,2002:").size());
+
+        std::cout << "Loading tag '" << motorSimConfigTag << "'" << std::endl;
+
+        if (motorSimConfigTag == SimpleMotorSimulator::GetType())
         {
-            aOutput.mMotorSimConfigType = PwmConfig::Simple;
-            aOutput.mMotorSimConfig.mSimple.mMaxSpeed = motorSimConfig["mMaxSpeed"].as<double>();
+            aOutput.mMotorSim.mMotorSimConfigType = FullMotorSimConfig::Simple;
+            aOutput.mMotorSim.mMotorSimConfig.mSimple.mMaxSpeed = motorSimConfig["mMaxSpeed"].as<double>();
         }
-        else if (motorSimConfigTag == "tag:yaml.org,2002:com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig")
+        else if (motorSimConfigTag == StaticLoadDcMotorSim::GetType())
         {
-            aOutput.mMotorSimConfigType = PwmConfig::Static;
-            aOutput.mMotorSimConfig.mStatic.mLoad = motorSimConfig["mLoad"].as<double>();
-            aOutput.mMotorSimConfig.mStatic.mConversionFactor = motorSimConfig["mConversionFactor"].as<double>();
+            aOutput.mMotorSim.mMotorSimConfigType = FullMotorSimConfig::Static;
+            aOutput.mMotorSim.mMotorSimConfig.mStatic.mLoad = motorSimConfig["mLoad"].as<double>();
+            aOutput.mMotorSim.mMotorSimConfig.mStatic.mConversionFactor = motorSimConfig["mConversionFactor"].as<double>();
         }
-        else if (motorSimConfigTag == "tag:yaml.org,2002:com.snobot.simulator.motor_sim.GravityLoadMotorSimulationConfig")
+        else if (motorSimConfigTag == GravityLoadDcMotorSim::GetType())
         {
-            aOutput.mMotorSimConfigType = PwmConfig::Gravity;
-            aOutput.mMotorSimConfig.mGravity.mLoad = motorSimConfig["mLoad"].as<double>();
+            aOutput.mMotorSim.mMotorSimConfigType = FullMotorSimConfig::Gravity;
+            aOutput.mMotorSim.mMotorSimConfig.mGravity.mLoad = motorSimConfig["mLoad"].as<double>();
         }
-        else if (motorSimConfigTag == "tag:yaml.org,2002:com.snobot.simulator.motor_sim.RotationalLoadMotorSimulationConfig")
+        else if (motorSimConfigTag == RotationalLoadDcMotorSim::GetType())
         {
-            aOutput.mMotorSimConfigType = PwmConfig::Rotational;
-            aOutput.mMotorSimConfig.mRotational.mArmCenterOfMass = motorSimConfig["mArmCenterOfMass"].as<double>();
-            aOutput.mMotorSimConfig.mRotational.mArmMass = motorSimConfig["mArmMass"].as<double>();
-            aOutput.mMotorSimConfig.mRotational.mConstantAssistTorque = motorSimConfig["mConstantAssistTorque"].as<double>();
-            aOutput.mMotorSimConfig.mRotational.mOverCenterAssistTorque = motorSimConfig["mOverCenterAssistTorque"].as<double>();
+            aOutput.mMotorSim.mMotorSimConfigType = FullMotorSimConfig::Rotational;
+            aOutput.mMotorSim.mMotorSimConfig.mRotational.mArmCenterOfMass = motorSimConfig["mArmCenterOfMass"].as<double>();
+            aOutput.mMotorSim.mMotorSimConfig.mRotational.mArmMass = motorSimConfig["mArmMass"].as<double>();
+            aOutput.mMotorSim.mMotorSimConfig.mRotational.mConstantAssistTorque = motorSimConfig["mConstantAssistTorque"].as<double>();
+            aOutput.mMotorSim.mMotorSimConfig.mRotational.mOverCenterAssistTorque = motorSimConfig["mOverCenterAssistTorque"].as<double>();
+        }
+        else
+        {
+        SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Unknown sim type " << motorSimConfigTag << "(" << aOutput.mHandle << ")");
+        }
+
+        if(aNode["mMotorModelConfig"])
+        {
+            const YAML::Node& motorModelConfig = aNode["mMotorModelConfig"];
+            aOutput.mMotorSim.mMotorModelConfig.mFactoryParams.mMotorType = motorModelConfig["mMotorType"].as<std::string>();
+            aOutput.mMotorSim.mMotorModelConfig.mFactoryParams.mNumMotors = motorModelConfig["mNumMotors"].as<int>();
+            aOutput.mMotorSim.mMotorModelConfig.mFactoryParams.mGearReduction = motorModelConfig["mGearReduction"].as<double>();
+            aOutput.mMotorSim.mMotorModelConfig.mFactoryParams.mGearboxEfficiency = motorModelConfig["mGearboxEfficiency"].as<double>();
+            aOutput.mMotorSim.mMotorModelConfig.mFactoryParams.mHasBrake = motorModelConfig["mHasBrake"].as<bool>();
+            aOutput.mMotorSim.mMotorModelConfig.mFactoryParams.mInverted = motorModelConfig["mInverted"].as<bool>();
+
+            std::cout << "Getting motor model " << aOutput.mMotorSim.mMotorModelConfig.mFactoryParams.mMotorType << std::endl;
+        }
+        else{
+            std::cout << "No motor model" << std::endl;
         }
     }
     else
     {
-        SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Thing is null");
+        SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "mMotorSimConfig is not set for " << aOutput.mName << "(" << aOutput.mHandle << ")");
     }
 
     return aNode;
@@ -112,6 +150,7 @@ const YAML::Node& operator>>(const YAML::Node& configNode, SimulatorConfigV1& co
     ParseVector(configNode["mPwm"], config.mPwm);
 
     return configNode;
+}
 }
 
 SimulatorConfigReaderV1::SimulatorConfigReaderV1()
@@ -146,6 +185,23 @@ void CreateBasicComponents(std::shared_ptr<FactoryType> aFactory, const std::map
     }
 }
 
+DcMotorModel GetMotorModle(const DcMotorModelConfigConfig::FactoryParams& factoryParams)
+{
+    
+        DcMotorModelConfig motorModelConfig = VexMotorFactory::MakeTransmission(
+                VexMotorFactory::CreateMotor(factoryParams.mMotorType),
+                factoryParams.mNumMotors, factoryParams.mGearReduction, factoryParams.mGearboxEfficiency);
+                
+        motorModelConfig.mHasBrake = factoryParams.mHasBrake;
+        motorModelConfig.mInverted = factoryParams.mInverted;
+
+        DcMotorModel motorModel(motorModelConfig);
+
+        std::cout << "Making motor model " << factoryParams.mMotorType << "'" << factoryParams.mNumMotors << std::endl;
+
+        return motorModel;
+}
+
 void CreatePwmComponents(std::shared_ptr<SpeedControllerFactory> aFactory, const std::map<int, std::shared_ptr<ISpeedControllerWrapper>>& wrapperMap, const std::vector<PwmConfig>& aConfigs)
 {
     for (auto it : aConfigs)
@@ -158,61 +214,42 @@ void CreatePwmComponents(std::shared_ptr<SpeedControllerFactory> aFactory, const
             SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Invalid Speed Controller " << it.mHandle);
             continue;
         }
-
-        DcMotorModelConfig::FactoryParams factoryParams(
-                it.mMotorModelConfig.mFactoryParams.mMotorType,
-                it.mMotorModelConfig.mFactoryParams.mNumMotors,
-                it.mMotorModelConfig.mFactoryParams.mGearReduction,
-                it.mMotorModelConfig.mFactoryParams.mGearboxEfficiency);
-
-        DcMotorModelConfig motorModelConfig(
-                factoryParams,
-                it.mMotorModelConfig.mMotorParams.mNominalVoltage,
-                it.mMotorModelConfig.mMotorParams.mFreeSpeedRpm,
-                it.mMotorModelConfig.mMotorParams.mFreeCurrent,
-                it.mMotorModelConfig.mMotorParams.mStallTorque,
-                it.mMotorModelConfig.mMotorParams.mStallCurrent,
-                it.mMotorModelConfig.mMotorParams.mMotorInertia,
-                it.mMotorModelConfig.mFactoryParams.mHasBrake,
-                it.mMotorModelConfig.mFactoryParams.mInverted);
-
-        DcMotorModel motorModel(motorModelConfig);
-
-        switch (it.mMotorSimConfigType)
+        const FullMotorSimConfig& motorConfig = it.mMotorSim;
+        switch (motorConfig.mMotorSimConfigType)
         {
-        case PwmConfig::Simple:
+        case FullMotorSimConfig::Simple:
         {
             speedController->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new SimpleMotorSimulator(
-                    it.mMotorSimConfig.mSimple.mMaxSpeed)));
+                    motorConfig.mMotorSimConfig.mSimple.mMaxSpeed)));
             break;
         }
-        case PwmConfig::Static:
+        case FullMotorSimConfig::Static:
         {
             speedController->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new StaticLoadDcMotorSim(
-                    motorModel,
-                    it.mMotorSimConfig.mStatic.mLoad,
-                    it.mMotorSimConfig.mStatic.mConversionFactor)));
+                    GetMotorModle(motorConfig.mMotorModelConfig.mFactoryParams),
+                    motorConfig.mMotorSimConfig.mStatic.mLoad,
+                    motorConfig.mMotorSimConfig.mStatic.mConversionFactor)));
             break;
         }
-        case PwmConfig::Gravity:
+        case FullMotorSimConfig::Gravity:
         {
             speedController->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new GravityLoadDcMotorSim(
-                    motorModel,
-                    it.mMotorSimConfig.mGravity.mLoad)));
+                    GetMotorModle(motorConfig.mMotorModelConfig.mFactoryParams),
+                    motorConfig.mMotorSimConfig.mGravity.mLoad)));
             break;
         }
-        case PwmConfig::Rotational:
+        case FullMotorSimConfig::Rotational:
         {
             speedController->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new RotationalLoadDcMotorSim(
-                    motorModel,
+                    GetMotorModle(motorConfig.mMotorModelConfig.mFactoryParams),
                     speedController,
-                    it.mMotorSimConfig.mRotational.mArmCenterOfMass,
-                    it.mMotorSimConfig.mRotational.mArmMass,
-                    it.mMotorSimConfig.mRotational.mConstantAssistTorque,
-                    it.mMotorSimConfig.mRotational.mOverCenterAssistTorque)));
+                    motorConfig.mMotorSimConfig.mRotational.mArmCenterOfMass,
+                    motorConfig.mMotorSimConfig.mRotational.mArmMass,
+                    motorConfig.mMotorSimConfig.mRotational.mConstantAssistTorque,
+                    motorConfig.mMotorSimConfig.mRotational.mOverCenterAssistTorque)));
             break;
         }
-        case PwmConfig::None:
+        case FullMotorSimConfig::None:
         default:
             break;
         }
@@ -267,11 +304,12 @@ void SetupSimulator(const SimulatorConfigV1& aConfig)
 
 bool SimulatorConfigReaderV1::LoadConfig(const std::string& aConfigFile)
 {
-    namespace fs = std::experimental::filesystem;
+    std::cout << "Skipping it" << std::endl;
+    namespace fs = std::filesystem;
     fs::path configFile = aConfigFile;
 
     bool success = true;
-    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Loading config file '" << fs::canonical(configFile) << "'");
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Loading config file '" << configFile << "'");
 
     try
     {
@@ -285,6 +323,16 @@ bool SimulatorConfigReaderV1::LoadConfig(const std::string& aConfigFile)
     catch (std::exception& ex)
     {
         SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Could not parse config file... " << ex.what());
+        success = false;
+    }
+    catch (std::runtime_error& ex)
+    {
+        SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Could not parse config file... " << ex.what());
+        success = false;
+    }
+    catch (...)
+    {
+        SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Caught random exception... ");
         success = false;
     }
 

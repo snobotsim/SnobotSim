@@ -159,6 +159,7 @@ public class SimulatorFrame extends JFrame
                 mSimulatorConfigFile = dumpFile;
             }
 
+            System.out.println("Abot to save");
             DataAccessorFactory.getInstance().getSimulatorDataAccessor().saveConfigFile(dumpFile);
         }
 

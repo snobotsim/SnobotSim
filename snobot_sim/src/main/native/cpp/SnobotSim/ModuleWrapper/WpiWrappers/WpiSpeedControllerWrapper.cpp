@@ -9,6 +9,8 @@
 
 #include "SnobotSim/PortUnwrapper.h"
 
+const std::string WpiSpeedControllerWrapper::TYPE = "com.snobot.simulator.module_wrapper.wpi.WpiPwmWrapper";
+    
 WpiSpeedControllerWrapper::WpiSpeedControllerWrapper(int aPort) :
         AModuleWrapper("Speed Controller " + std::to_string(UnwrapPort(aPort))),
         mId(aPort),

@@ -19,6 +19,8 @@
 class WpiEncoderWrapper : public BaseEncoderWrapper
 {
 public:
+    static const std::string TYPE;
+
     WpiEncoderWrapper(int aPortA, int aPortB);
     WpiEncoderWrapper(int aHandle, const std::string& aName);
     virtual ~WpiEncoderWrapper();
@@ -32,6 +34,11 @@ public:
     void SetPosition(double aPosition) override;
 
     void SetVelocity(double aVelocity) override;
+
+    const std::string& GetType() override
+    { 
+        return TYPE; 
+    }
 
 protected:
     double mEncodingFactor;

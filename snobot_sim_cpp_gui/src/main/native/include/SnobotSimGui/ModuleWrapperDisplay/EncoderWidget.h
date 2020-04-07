@@ -5,6 +5,10 @@
 class EncoderWidget : public IWidgetDisplay
 {
 public:
+    EncoderWidget(SaveCallback callback) : mSaveCallback(callback) {}
 
     void updateDisplay() override;
+
+protected:
+    SaveCallback mSaveCallback;
 };

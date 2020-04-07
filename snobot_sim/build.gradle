@@ -11,6 +11,8 @@ ext {
     baseArtifactId = "XXX"
     artifactGroupId = "YYY"
     wpi_deps = ["hal_shared", "wpiutil_shared"]
+    include_snobot_sim_cpp = []
+    include_snobot_sim_cpp += [[':3rdParty', 'yamlcpp', 'static']]
     generatedSources = "$buildDir/generated/cpp"
 }
 
@@ -76,11 +78,11 @@ nativeUtils.exportsConfigs {
     }
     snobotSimCppJNI {
         x86SymbolFilter = { symbols ->
-            println("8686868 " + symbols)
+            // println("8686868 " + symbols)
             // symbols.removeIf({ !it.startsWith('HAL_') && !it.startsWith('HALSIM_') })
         }
         x64SymbolFilter = { symbols ->
-            println("646464 " + symbols)
+            // println("646464 " + symbols)
             // symbols.removeIf({ !it.startsWith('HAL_') && !it.startsWith('HALSIM_') })
         }
     }

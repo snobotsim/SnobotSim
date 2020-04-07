@@ -18,6 +18,7 @@ public:
     }
 
     virtual const std::string& GetSimulatorType() = 0;
+    virtual std::string GetDisplaySimulatorType() = 0;
 
     virtual void SetVoltagePercentage(double aSpeed) = 0;
 
@@ -55,6 +56,7 @@ public:
         static std::string sName = "Null";
         return sName;
     }
+    std::string GetDisplaySimulatorType() override { return "Null"; }
 
     void SetVoltagePercentage(double aSpeed) override
     {

@@ -3,7 +3,6 @@ package com.snobot.simulator.config;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.snobot.simulator.config.v1.SimulatorConfigReaderV1;
 import com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig;
 import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
@@ -18,36 +17,28 @@ public class TestReadConfig extends BaseSimulatorJavaTest
     public void testReadEmptyFile()
     {
         String file = "test_files/ConfigTest/ReadConfig/emptyFile.yml";
-        SimulatorConfigReaderV1 reader = new SimulatorConfigReaderV1();
-        Assertions.assertTrue(reader.loadConfig(file));
-        Assertions.assertNotNull(reader.getConfig());
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getSimulatorDataAccessor().loadConfigFile(file));
     }
 
     @Test
     public void testReadNullFile()
     {
         String file = null;
-        SimulatorConfigReaderV1 reader = new SimulatorConfigReaderV1();
-        Assertions.assertTrue(reader.loadConfig(file));
-        Assertions.assertNull(reader.getConfig());
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getSimulatorDataAccessor().loadConfigFile(file));
     }
 
     @Test
     public void testReadNonExistingFile()
     {
         String file = "does_not_exist.yml";
-        SimulatorConfigReaderV1 reader = new SimulatorConfigReaderV1();
-        Assertions.assertFalse(reader.loadConfig(file));
-        Assertions.assertNull(reader.getConfig());
+        Assertions.assertFalse(DataAccessorFactory.getInstance().getSimulatorDataAccessor().loadConfigFile(file));
     }
 
     @Test
     public void testReadConfig()
     {
         String file = "test_files/ConfigTest/ReadConfig/testReadFile.yml";
-        SimulatorConfigReaderV1 reader = new SimulatorConfigReaderV1();
-        Assertions.assertTrue(reader.loadConfig(file));
-        Assertions.assertNotNull(reader.getConfig());
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getSimulatorDataAccessor().loadConfigFile(file));
 
         Assertions.assertEquals("I2C ADXL345 X Accel", DataAccessorFactory.getInstance().getAccelerometerAccessor().getWrapper(50).getName());
         Assertions.assertEquals("I2C ADXL345 Y Accel", DataAccessorFactory.getInstance().getAccelerometerAccessor().getWrapper(51).getName());
@@ -118,9 +109,7 @@ public class TestReadConfig extends BaseSimulatorJavaTest
     public void testReadLegacyConfigWithoutCan()
     {
         String file = "test_files/ConfigTest/ReadConfig/testLegacyConfigFileWithoutCan.yml";
-        SimulatorConfigReaderV1 reader = new SimulatorConfigReaderV1();
-        Assertions.assertTrue(reader.loadConfig(file));
-        Assertions.assertNotNull(reader.getConfig());
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getSimulatorDataAccessor().loadConfigFile(file));
 
         Assertions.assertEquals("Digital Source6", DataAccessorFactory.getInstance().getDigitalAccessor().getWrapper(6).getName());
         Assertions.assertEquals("Digital Source7", DataAccessorFactory.getInstance().getDigitalAccessor().getWrapper(7).getName());
@@ -145,9 +134,7 @@ public class TestReadConfig extends BaseSimulatorJavaTest
     public void testReadLegacyConfigWithCan()
     {
         String file = "test_files/ConfigTest/ReadConfig/testLegacyConfigFileWithCan.yml";
-        SimulatorConfigReaderV1 reader = new SimulatorConfigReaderV1();
-        Assertions.assertTrue(reader.loadConfig(file));
-        Assertions.assertNotNull(reader.getConfig());
+        Assertions.assertTrue(DataAccessorFactory.getInstance().getSimulatorDataAccessor().loadConfigFile(file));
 
         Assertions.assertEquals("Winch", DataAccessorFactory.getInstance().getSpeedControllerAccessor().getWrapper(3).getName());
         Assertions.assertEquals("Drive Right (A)", DataAccessorFactory.getInstance().getSpeedControllerAccessor().getWrapper(103).getName());

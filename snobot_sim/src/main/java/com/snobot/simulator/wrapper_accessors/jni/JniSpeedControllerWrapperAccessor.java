@@ -78,13 +78,14 @@ public class JniSpeedControllerWrapperAccessor implements SpeedControllerWrapper
         @Override
         public IMotorSimulator getMotorSimulator()
         {
-            // TODO Auto-generated method stub
+            System.out.println("Getting simulator");
             return null;
         }
 
         @Override
         public void setMotorSimulator(IMotorSimulator aSimulator)
         {
+            System.out.println("Setting");
             // TODO Auto-generated method stub
 
         }

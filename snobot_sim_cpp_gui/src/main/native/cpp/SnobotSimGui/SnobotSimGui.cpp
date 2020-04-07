@@ -35,20 +35,28 @@ void glfw_error_callback(int error, const char *description)
 	fprintf(stderr, "Glfw Error %d: %s\n", error, description);
 }
 
+void saveConfig()
+{
+    std::cout << "Saving config" << std::endl;
+}
+
 }
 
 SnobotSimGui::SnobotSimGui() : 
     mRunning(false)
 {
-    mWidgets.push_back(std::shared_ptr<IWidgetDisplay>(new AccelerometerWidget));
-    mWidgets.push_back(std::shared_ptr<IWidgetDisplay>(new AnalogInWidget));
-    mWidgets.push_back(std::shared_ptr<IWidgetDisplay>(new AnalogOutWidget));
-    mWidgets.push_back(std::shared_ptr<IWidgetDisplay>(new DigitalIoWidget));
-    mWidgets.push_back(std::shared_ptr<IWidgetDisplay>(new EncoderWidget));
-    mWidgets.push_back(std::shared_ptr<IWidgetDisplay>(new GyroWidget));
-    mWidgets.push_back(std::shared_ptr<IWidgetDisplay>(new RelayWidget));
-    mWidgets.push_back(std::shared_ptr<IWidgetDisplay>(new SolenoidWidget));
-    mWidgets.push_back(std::shared_ptr<IWidgetDisplay>(new SpeedControllerWidget));
+
+    IWidgetDisplay::SaveCallback saveCallback(saveConfig);
+
+    mWidgets.push_back(std::shared_ptr<IWidgetDisplay>(new AccelerometerWidget(saveCallback)));
+    mWidgets.push_back(std::shared_ptr<IWidgetDisplay>(new AnalogInWidget(saveCallback)));
+    mWidgets.push_back(std::shared_ptr<IWidgetDisplay>(new AnalogOutWidget(saveCallback)));
+    mWidgets.push_back(std::shared_ptr<IWidgetDisplay>(new DigitalIoWidget(saveCallback)));
+    mWidgets.push_back(std::shared_ptr<IWidgetDisplay>(new EncoderWidget(saveCallback)));
+    mWidgets.push_back(std::shared_ptr<IWidgetDisplay>(new GyroWidget(saveCallback)));
+    mWidgets.push_back(std::shared_ptr<IWidgetDisplay>(new RelayWidget(saveCallback)));
+    mWidgets.push_back(std::shared_ptr<IWidgetDisplay>(new SolenoidWidget(saveCallback)));
+    mWidgets.push_back(std::shared_ptr<IWidgetDisplay>(new SpeedControllerWidget(saveCallback)));
 }
 
 void SnobotSimGui::RenderLoop()

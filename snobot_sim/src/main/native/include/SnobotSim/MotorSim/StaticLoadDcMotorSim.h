@@ -11,6 +11,10 @@
 class EXPORT_ StaticLoadDcMotorSim : public BaseDcMotorSimulator
 {
 public:
+
+    static std::string GetType() { return "com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig"; }
+    std::string GetDisplaySimulatorType() override { return "Static Load"; }
+    
     StaticLoadDcMotorSim(const DcMotorModel& aMotorModel, double aLoad, double aConversionFactor = 1);
     virtual ~StaticLoadDcMotorSim();
 

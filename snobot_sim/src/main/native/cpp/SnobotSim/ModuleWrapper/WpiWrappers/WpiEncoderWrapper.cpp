@@ -10,6 +10,8 @@
 #include "SnobotSim/PortUnwrapper.h"
 #include "mockdata/EncoderData.h"
 
+const std::string WpiEncoderWrapper::TYPE = "com.snobot.simulator.module_wrapper.wpi.WpiEncoderWrapper";
+
 WpiEncoderWrapper::WpiEncoderWrapper(int aPortA, int aPortB) :
         WpiEncoderWrapper(aPortA, "Encoder " + std::to_string(UnwrapPort(aPortA)))
 {
