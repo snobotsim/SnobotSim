@@ -36,6 +36,7 @@ dependencies {
     testCompile "com.ctre.phoenix:api-java:" + getCtreVersion()
     testCompile "com.ctre.phoenix:wpiapi-java:" + getCtreVersion()
     testCompile "com.kauailabs.navx.frc:navx-java:" + getNavxVersion()
+    testCompile "com.revrobotics.frc:SparkMax-java:" + getRevRoboticsVersion()
 
     testCompile 'org.junit.jupiter:junit-jupiter-api:5.5.2'
     testCompile 'org.junit.jupiter:junit-jupiter-params:5.5.1'

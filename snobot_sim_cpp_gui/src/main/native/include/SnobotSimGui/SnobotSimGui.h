@@ -15,6 +15,8 @@
 
 
 #include "SnobotSimGui/ModuleWrapperDisplay/IWidgetDisplay.h"
+#include "SnobotSimGui/Joysticks/JoystickManager.h"
+#include "SnobotSimGui/DriverStationWidget.h"
 #include <vector>
 #include <memory>
 
@@ -36,6 +38,8 @@ protected:
 
     
     std::vector<std::shared_ptr<IWidgetDisplay>> mWidgets;
+    JoystickManager mJoystickManager;
+    DriverStationWidget mDriverStationWidget;
 };
 
 } // namespace SnobotSim

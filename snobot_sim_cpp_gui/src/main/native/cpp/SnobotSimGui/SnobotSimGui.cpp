@@ -65,6 +65,9 @@ void SnobotSimGui::RenderLoop()
 
     float windowX = 0;
 
+    mJoystickManager.Update();
+    mDriverStationWidget.updateDisplay();
+
     for(auto widget : mWidgets)
     {
         if(firstTime)

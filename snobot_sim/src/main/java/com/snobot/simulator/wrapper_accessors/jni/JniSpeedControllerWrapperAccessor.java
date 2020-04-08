@@ -21,6 +21,8 @@ import com.snobot.simulator.wrapper_accessors.SpeedControllerWrapperAccessor;
 
 public class JniSpeedControllerWrapperAccessor implements SpeedControllerWrapperAccessor
 {
+    public static final int sCAN_SC_OFFSET = 100;
+
     private static class SpeedControllerWrapper implements IPwmWrapper
     {
         private final int mHandle;
