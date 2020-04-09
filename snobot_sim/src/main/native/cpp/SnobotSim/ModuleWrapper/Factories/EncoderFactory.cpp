@@ -9,6 +9,7 @@
 
 #include "SnobotSim/Logging/SnobotLogger.h"
 #include "SnobotSim/ModuleWrapper/WpiWrappers/WpiEncoderWrapper.h"
+#include "SnobotSim/SimulatorComponents/SmartSC/SmartSCEncoder.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 
 EncoderFactory::EncoderFactory()
@@ -27,6 +28,11 @@ bool EncoderFactory::Create(int aHandle, const std::string& aType)
     {
         SensorActuatorRegistry::Get().Register(aHandle,
                 std::shared_ptr<IEncoderWrapper>(new WpiEncoderWrapper(aHandle, aHandle)));
+    }
+    else if (aType == SmartSCEncoder::TYPE)
+    {
+        SensorActuatorRegistry::Get().Register(aHandle,
+                std::shared_ptr<IEncoderWrapper>(new SmartSCEncoder(aHandle)));
     }
     else
     {

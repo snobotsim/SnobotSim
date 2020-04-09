@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.ctre.phoenix.ErrorCode;
@@ -22,20 +23,8 @@ import com.snobot.test.utilities.BaseSimulatorJniTest;
 @Tag("CTRE")
 public class TestCtreCanTalonControlMotionProfile extends BaseSimulatorJniTest
 {
-    public static Collection<Integer> getData()
-    {
-        Collection<Integer> output = new ArrayList<>();
-
-        for (int i = 0; i < 64; ++i)
-        {
-            output.add(i);
-        }
-
-        return output;
-    }
-
     @ParameterizedTest
-    @MethodSource("getData")
+	@ArgumentsSource(GetCtreTestIds.class)
     public void testSetWithMotionProfile(int aCanHandle)
     {
         final int rawHandle = aCanHandle + 100;

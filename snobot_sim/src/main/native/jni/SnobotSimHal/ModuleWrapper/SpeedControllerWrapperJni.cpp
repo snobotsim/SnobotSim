@@ -171,7 +171,14 @@ Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_updateAl
 
     for (iter = speedControllers.begin(); iter != speedControllers.end(); ++iter)
     {
-        iter->second->Update(aUpdatePeriod);
+        if(iter->second)
+        {
+            iter->second->Update(aUpdatePeriod);
+        }
+        else
+        {
+            SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "SC is null? " << iter->first);
+        }
     }
 }
 

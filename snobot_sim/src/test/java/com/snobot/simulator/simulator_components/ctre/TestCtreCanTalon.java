@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -21,17 +22,6 @@ import com.snobot.test.utilities.BaseSimulatorJniTest;
 @Tag("CTRE")
 public class TestCtreCanTalon extends BaseSimulatorJniTest
 {
-    public static Collection<Integer> getData()
-    {
-        Collection<Integer> output = new ArrayList<>();
-
-        for (int i = 0; i < 64; ++i)
-        {
-            output.add(i);
-        }
-
-        return output;
-    }
 
     @Test
     public void testSetup()
@@ -46,7 +36,7 @@ public class TestCtreCanTalon extends BaseSimulatorJniTest
         Assertions.assertTrue(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getWrapper(101).isInitialized());
         Assertions.assertTrue(DataAccessorFactory.getInstance().getEncoderAccessor().getWrapper(101).isInitialized());
 
-        DataAccessorFactory.getInstance().getSpeedControllerAccessor().createSimulator(102, JniSpeedControllerWrapperAccessor.class.getName());
+        DataAccessorFactory.getInstance().getSpeedControllerAccessor().createSimulator(102, "com.snobot.simulator.simulator_components.ctre.CtreTalonSrxSpeedControllerSim");
         DataAccessorFactory.getInstance().getEncoderAccessor().createSimulator(102, "com.snobot.simulator.simulator_components.smart_sc.SmartScEncoder");
         Assertions.assertFalse(DataAccessorFactory.getInstance().getSpeedControllerAccessor().getWrapper(102).isInitialized());
         TalonSRX talon2 = new TalonSRX(2);
@@ -56,7 +46,7 @@ public class TestCtreCanTalon extends BaseSimulatorJniTest
     }
 
     @ParameterizedTest
-    @MethodSource("getData")
+	@ArgumentsSource(GetCtreTestIds.class)
     public void testSimpleSetters(int aCanHandle)
     {
         Assertions.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
@@ -172,6 +162,5 @@ public class TestCtreCanTalon extends BaseSimulatorJniTest
         });
         Assertions.assertEquals(.5, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getVoltagePercentage(simId), .0001);
         Assertions.assertEquals(.5, talon.getMotorOutputPercent(), .0001);
-
     }
 }

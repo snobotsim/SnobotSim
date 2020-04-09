@@ -17,6 +17,8 @@ public abstract class BaseSimulatorJni // NOPMD
         JniLibraryResourceLoader.loadLibrary("snobotSimCppjni");
         JniLibraryResourceLoader.loadLibrary("snobotSimCppGuiBase");
         JniLibraryResourceLoader.loadLibrary("snobotSimCppGuijni");
+        JniLibraryResourceLoader.loadLibrary("CTRE_PhoenixCCI");
+        JniLibraryResourceLoader.loadLibrary("SparkMaxDriver");
         SnobotSimulatorJni.initializeSimulator();
     }
 }

@@ -9,6 +9,8 @@
 
 #include "SnobotSim/Logging/SnobotLogger.h"
 #include "SnobotSim/ModuleWrapper/WpiWrappers/WpiSpeedControllerWrapper.h"
+#include "SnobotSim/SimulatorComponents/CtreWrappers/CtreTalonSRXSpeedControllerSim.h"
+#include "SnobotSim/SimulatorComponents/RevWrappers/RevSpeedControllerSimWrapper.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 
 SpeedControllerFactory::SpeedControllerFactory()
@@ -27,6 +29,16 @@ bool SpeedControllerFactory::Create(int aHandle, const std::string& aType)
     {
         SensorActuatorRegistry::Get().Register(aHandle,
                 std::shared_ptr<ISpeedControllerWrapper>(new WpiSpeedControllerWrapper(aHandle)));
+    }
+    else if (aType == CtreTalonSRXSpeedControllerSim::TYPE)
+    {
+        SensorActuatorRegistry::Get().Register(aHandle,
+                std::shared_ptr<ISpeedControllerWrapper>(new CtreTalonSRXSpeedControllerSim(aHandle)));
+    }
+    else if (aType == RevpeedControllerSim::TYPE)
+    {
+        SensorActuatorRegistry::Get().Register(aHandle,
+                std::shared_ptr<ISpeedControllerWrapper>(new RevpeedControllerSim(aHandle)));
     }
     else
     {

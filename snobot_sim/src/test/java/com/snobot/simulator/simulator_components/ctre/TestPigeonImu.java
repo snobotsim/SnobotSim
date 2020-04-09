@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -17,20 +18,8 @@ import com.snobot.test.utilities.BaseSimulatorJniTest;
 @Tag("CTRE")
 public class TestPigeonImu extends BaseSimulatorJniTest
 {
-    public static Collection<Integer> getData()
-    {
-        Collection<Integer> output = new ArrayList<>();
-
-        for (int i = 0; i < 48; ++i)
-        {
-            output.add(i);
-        }
-
-        return output;
-    }
-
     @ParameterizedTest
-    @MethodSource("getData")
+	@ArgumentsSource(GetCtreTestIds.class)
     public void testPigeonInSeries(int aDeviceId)
     {
         PigeonIMU imu = new PigeonIMU(aDeviceId);
@@ -38,7 +27,7 @@ public class TestPigeonImu extends BaseSimulatorJniTest
     }
 
     @ParameterizedTest
-    @MethodSource("getData")
+	@ArgumentsSource(GetCtreTestIds.class)
     public void testPigeonInTalon(int aDeviceId)
     {
         TalonSRX talon = new TalonSRX(aDeviceId);

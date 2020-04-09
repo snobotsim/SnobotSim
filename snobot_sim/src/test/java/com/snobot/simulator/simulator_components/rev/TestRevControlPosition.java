@@ -12,6 +12,7 @@ import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorJniTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
@@ -20,17 +21,8 @@ import java.util.Collection;
 public class TestRevControlPosition extends BaseSimulatorJniTest
 {
 
-    public static Collection<Integer> getData()
-    {
-        Collection<Integer> output = new ArrayList<>();
-
-        output.add(7);
-
-        return output;
-    }
-
     @ParameterizedTest
-    @MethodSource("getData")
+	@ArgumentsSource(GetRevTestIds.class)
     public void testPositionControl(int aCanHandle)
     {
         int rawHandle = aCanHandle + JniSpeedControllerWrapperAccessor.sCAN_SC_OFFSET;

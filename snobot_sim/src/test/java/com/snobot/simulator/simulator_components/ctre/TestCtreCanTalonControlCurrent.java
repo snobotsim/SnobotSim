@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -16,20 +17,8 @@ import com.snobot.test.utilities.BaseSimulatorJniTest;
 @Tag("CTRE")
 public class TestCtreCanTalonControlCurrent extends BaseSimulatorJniTest
 {
-    public static Collection<Integer> getData()
-    {
-        Collection<Integer> output = new ArrayList<>();
-
-        for (int i = 0; i < 64; ++i)
-        {
-            output.add(i);
-        }
-
-        return output;
-    }
-
     @ParameterizedTest
-    @MethodSource("getData")
+	@ArgumentsSource(GetCtreTestIds.class)
     public void testSetWithCurrent(int aCanHandle)
     {
         Assertions.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());

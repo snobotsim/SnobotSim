@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -19,22 +20,8 @@ import com.snobot.test.utilities.BaseSimulatorJniTest;
 @Tag("CTRE")
 public class TestCtreCanTalonControlMotionMagic extends BaseSimulatorJniTest
 {
-    public static Collection<Object[]> getData()
-    {
-        Collection<Object[]> output = new ArrayList<>();
-
-        for (int i = 0; i < 64; ++i)
-        {
-
-            output.add(new Object[]{ i, FeedbackDevice.Analog });
-            output.add(new Object[]{ i, FeedbackDevice.QuadEncoder });
-        }
-
-        return output;
-    }
-
     @ParameterizedTest
-    @MethodSource("getData")
+	@ArgumentsSource(GetCtreTestIds.GetCtreTestIdsWithFeedbackDevice.class)
     public void testSetWithMotionMagic(int aCanHandle, FeedbackDevice aFeedbackDevice)
     {
         int rawHandle = aCanHandle + 100;

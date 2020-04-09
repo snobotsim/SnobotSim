@@ -21,11 +21,11 @@ namespace
 {
 
 std::map<LogLevel, std::string> gLOG_LEVEL_LOOKUP = {
-    {LOG_LEVEL_DEBUG, "Debug"},
-    {LOG_LEVEL_INFO, "Info"},
-    {LOG_LEVEL_WARN, "Warn"},
+    {LOG_LEVEL_DEBUG,    "Debug   "},
+    {LOG_LEVEL_INFO,     "Info    "},
+    {LOG_LEVEL_WARN,     "Warn    "},
     {LOG_LEVEL_CRITICAL, "Critical"},
-    {LOG_LEVEL_NONE, ""},
+    {LOG_LEVEL_NONE,     ""},
 };
 
 #ifdef _WIN32
@@ -48,7 +48,7 @@ void StartColor(std::ostream& stream, LogLevel aLogLevel)
     {
         gCurrentConsoleAttr = buffer_info.wAttributes;
     }
-    std::cout << "Updating color " << gColorLookup[aLogLevel] << std::endl;
+    
     SetConsoleTextAttribute(stdout_handle, gColorLookup[aLogLevel]);
 }
 
