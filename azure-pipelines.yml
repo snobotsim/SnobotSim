@@ -14,30 +14,32 @@ resources:
 stages:
 - stage: Build
   jobs:
-   - job: Styleguide
-     pool:
-      vmImage: 'Ubuntu 16.04'
+  #  - job: Styleguide
+  #    pool:
+  #     vmImage: 'Ubuntu 16.04'
 
-     container: ubuntu18
+  #    container: ubuntu18
 
-     steps:
-        - script: |
-            /tmp/docker exec -t -u 0 ci-container \
-            sh -c "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confold" -y install sudo"
-          displayName: Set up sudo
-        - script: |
-            sudo apt-get update -y
-            sudo apt-get install clang-format-6.0 python3-setuptools python3-pip git -y
-            sudo pip3 install wpiformat
-            git checkout -b master
-          displayName: 'Install Dependencies'
-        - script: |
-            wpiformat -clang 6.0
-          displayName: 'Run wpiformat'
-        - script: |
-            # Ensure formatter made no changes
-            git --no-pager diff --exit-code HEAD
-          displayName: 'Check wpiformat Output'
+  #    steps:
+  #       - script: |
+  #           /tmp/docker exec -t -u 0 ci-container \
+  #           sh -c "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confold" -y install sudo"
+  #         displayName: Set up sudo
+  #       - script: |
+  #           sudo apt-get update -y
+  #           sudo apt-get install clang-format-6.0 python3-setuptools python3-pip git -y
+  #           sudo pip3 install wpiformat
+  #           git checkout -b master
+  #         displayName: 'Install Dependencies'
+  #       - script: |
+  #           #!/bin/sh -x
+  #           set -x #echo on
+  #           wpiformat -clang 6.0
+  #         displayName: 'Run wpiformat'
+  #       - script: |
+  #           # Ensure formatter made no changes
+  #           git --no-pager diff --exit-code HEAD
+  #         displayName: 'Check wpiformat Output'
 
 
    - job: Linux
@@ -130,7 +132,7 @@ stages:
 
    - job: Mac
      pool:
-       vmImage: 'xcode9-macos10.13'
+       vmImage: 'macOS-10.14'
      steps:
       - script: |
           mkdir build

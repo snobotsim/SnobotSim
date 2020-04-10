@@ -43,6 +43,7 @@ std::shared_ptr<ISpiWrapper> SpiWrapperFactory::GetSpiWrapper(int aPort)
     if (spiWrapper)
     {
         // Already exists, and there is no auto-discovery so just return that, even if it is null
+        SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Hit auto discover...");
     }
     // This must be an "initialize" call, it will be registered outside of this
     else
@@ -50,7 +51,7 @@ std::shared_ptr<ISpiWrapper> SpiWrapperFactory::GetSpiWrapper(int aPort)
         std::map<int, std::string>::iterator iter = mDefaultsMap.find(aPort);
         if (iter != mDefaultsMap.end())
         {
-            SNOBOT_LOG(SnobotLogging::LOG_LEVEL_DEBUG, "Using specified default '" << iter->second << "' on port " << aPort);
+            SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Using specified default '" << iter->second << "' on port " << aPort);
             spiWrapper = CreateWrapper(aPort, iter->second);
         }
         else
@@ -65,25 +66,27 @@ std::shared_ptr<ISpiWrapper> SpiWrapperFactory::GetSpiWrapper(int aPort)
 
 std::shared_ptr<ISpiWrapper> SpiWrapperFactory::CreateWrapper(int aPort, const std::string& aType)
 {
+    std::string fullType = "SPI " + aType;
+
     if (aType == NAVX)
     {
-        return std::shared_ptr<ISpiWrapper>(new SpiNavxWrapper(aPort));
+        return std::shared_ptr<ISpiWrapper>(new SpiNavxWrapper(fullType, "navX-Sensor[0]", aPort));
     }
 
     if (aType == ADXRS450_GYRO_NAME)
     {
-        std::shared_ptr<AdxGyroWrapper> spiGyro(new AdxGyroWrapper(aPort));
+        std::shared_ptr<AdxGyroWrapper> spiGyro(new AdxGyroWrapper("ADXRS450_Gyro[" + std::to_string(aPort) + "]", aPort));
         SensorActuatorRegistry::Get().Register(aPort + 100, std::shared_ptr<IGyroWrapper>(spiGyro));
 
         return spiGyro;
     }
     else if (aType == ADXL345_ACCELEROMETER_NAME)
     {
-        return std::shared_ptr<ISpiWrapper>(new AdxSpi345AccelWrapper(aPort));
+        return std::shared_ptr<ISpiWrapper>(new AdxSpi345AccelWrapper(fullType, "ADXL345_SPI[" + std::to_string(aPort) + "]", aPort));
     }
     else if (aType == ADXL362_ACCELEROMETER_NAME)
     {
-        return std::shared_ptr<ISpiWrapper>(new AdxSpi362AccelWrapper(aPort));
+        return std::shared_ptr<ISpiWrapper>(new AdxSpi362AccelWrapper(fullType, "ADXL362[" + std::to_string(aPort) + "]", aPort));
     }
 
     SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Unknown simulator type '" << aType << "', defaulting to null");

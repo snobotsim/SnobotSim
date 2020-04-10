@@ -7,16 +7,17 @@
 
 #pragma once
 #include <memory>
+#include <string>
 
-#include "ADXRS450_SpiGyroWrapperData.h"
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 #include "SnobotSim/ModuleWrapper/Interfaces/IGyroWrapper.h"
 #include "SnobotSim/ModuleWrapper/Interfaces/ISpiWrapper.h"
+#include "SnobotSim/SimulatorComponents/LazySimDoubleWrapper.h"
 
 class AdxGyroWrapper : public AModuleWrapper, public ISpiWrapper, public IGyroWrapper
 {
 public:
-    explicit AdxGyroWrapper(int aPort);
+    explicit AdxGyroWrapper(const std::string& aBaseName, int aPort);
     virtual ~AdxGyroWrapper();
 
     void SetAngle(double aAngle) override;
@@ -24,5 +25,5 @@ public:
     double GetAngle() override;
 
 protected:
-    std::shared_ptr<hal::ADXRS450_SpiGyroWrapper> mGyro;
+    LazySimDoubleWrapper mSimWrapper;
 };

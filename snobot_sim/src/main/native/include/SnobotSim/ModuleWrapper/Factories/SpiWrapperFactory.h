@@ -30,8 +30,8 @@ public:
     void RegisterDefaultWrapperType(int aPort, const std::string& aWrapperType);
     void ResetDefaults();
 
-protected:
     std::shared_ptr<ISpiWrapper> CreateWrapper(int aPort, const std::string& aType);
 
+protected:
     std::map<int, std::string> mDefaultsMap;
 };
