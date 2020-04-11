@@ -78,6 +78,11 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     }
 
     @Override
+    public int getSimulatorComponentConfigsCount() {
+        return SensorActuatorRegistry.get().getSimulatorComponents().size();
+    }
+
+    @Override
     public DcMotorModelConfig createMotor(String aMotorType)
     {
         if ("rs775".equals(aMotorType))

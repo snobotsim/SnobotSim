@@ -28,11 +28,15 @@ void DumpConfig(YAML::Emitter& out, int handle, const std::shared_ptr<ItemType>&
 
 void DumpConfig(YAML::Emitter& out, int handle, const std::shared_ptr<IEncoderWrapper>& wrapper)
 {
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Dumping encoder");
     out << YAML::BeginMap;
     out << YAML::Key << "mHandle" << YAML::Value << handle;
     out << YAML::Key << "mName" << YAML::Value << wrapper->GetName();
     out << YAML::Key << "mType" << YAML::Value << wrapper->GetType();
-    out << YAML::Key << "mConnectedSpeedControllerHandle" << YAML::Value << wrapper->GetSpeedController()->GetId();
+    if (wrapper->GetSpeedController())
+    {
+        out << YAML::Key << "mConnectedSpeedControllerHandle" << YAML::Value << wrapper->GetSpeedController()->GetId();
+    }
     out << YAML::EndMap;
 }
 
@@ -66,16 +70,9 @@ void DumpConfig(YAML::Emitter& out, int handle, const std::shared_ptr<ISpeedCont
         auto tag = YAML::SecondaryTag(simType);
         out << tag;
         out << YAML::Key << "mMotorSimConfig" << YAML::BeginMap;
-        if (!out.good())
-        {
-            std::cout << "!!!!!!!!!A " << out.GetLastError() << std::endl;
-            ;
-        }
 
-        std::cout << "Dumping " << simType << std::endl;
         if (simType == SimpleMotorSimulator::GetType())
         {
-            //<< YAML::TagByKind  << SimpleMotorSimulator::SIMULATOR_TYPE;
             out << YAML::Key << "mMaxSpeed" << YAML::Value << std::static_pointer_cast<SimpleMotorSimulator>(motorSimulator)->GetMaxSpeed();
         }
         else if (simType == StaticLoadDcMotorSim::GetType())
@@ -204,12 +201,8 @@ SimulatorConfigWriterV1::~SimulatorConfigWriterV1()
 
 bool SimulatorConfigWriterV1::DumpConfig(const std::string& aConfigFile)
 {
-    std::cout << "Writing" << std::endl;
-    std::cout << aConfigFile << std::endl;
     namespace fs = std::filesystem;
     fs::path configFile = aConfigFile;
-    std::cout << configFile << std::endl;
-    // std::cout << fs::canonical(configFile) << std::endl;
 
     bool success = true;
     SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Dumping config file '" << configFile << "'");
@@ -217,14 +210,23 @@ bool SimulatorConfigWriterV1::DumpConfig(const std::string& aConfigFile)
     YAML::Emitter out;
     out << YAML::BeginMap;
     DumpBasicConfig(out, "mAccelerometers", SensorActuatorRegistry::Get().GetIAccelerometerWrapperMap());
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Dumping config file '" << configFile << "'");
     DumpBasicConfig(out, "mAnalogIn", SensorActuatorRegistry::Get().GetIAnalogInWrapperMap());
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Dumping config file '" << configFile << "'");
     DumpBasicConfig(out, "mAnalogOut", SensorActuatorRegistry::Get().GetIAnalogOutWrapperMap());
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Dumping config file '" << configFile << "'");
     DumpBasicConfig(out, "mDigitalIO", SensorActuatorRegistry::Get().GetIDigitalIoWrapperMap());
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Dumping config file '" << configFile << "'");
     DumpBasicConfig(out, "mGyros", SensorActuatorRegistry::Get().GetIGyroWrapperMap());
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Dumping config file '" << configFile << "'");
     DumpBasicConfig(out, "mRelays", SensorActuatorRegistry::Get().GetIRelayWrapperMap());
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Dumping config file '" << configFile << "'");
     DumpBasicConfig(out, "mSolenoids", SensorActuatorRegistry::Get().GetISolenoidWrapperMap());
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Dumping config file '" << configFile << "'");
     DumpBasicConfig(out, "mEncoders", SensorActuatorRegistry::Get().GetIEncoderWrapperMap());
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Dumping config file '" << configFile << "'");
     DumpBasicConfig(out, "mPwm", SensorActuatorRegistry::Get().GetISpeedControllerWrapperMap());
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Dumping config file '" << configFile << "'");
 
     // std::ofstream fileStream(aConfigFile.c_str());
     // fileStream << out.c_str() << std::endl;
