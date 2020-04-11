@@ -5,7 +5,7 @@
 
 ImColor GetClampedColor(double aValue, double aMin, double aMax)
 {
-    if (std::isnan(aValue))
+    if (isnan(aValue))
     {
         aValue = 0;
     }

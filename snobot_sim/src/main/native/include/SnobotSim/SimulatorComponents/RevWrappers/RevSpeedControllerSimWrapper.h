@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <string>
 #include <vector>
 
 #include "SnobotSim/SimulatorComponents/SmartSC/BaseCanSmartSpeedController.h"
@@ -9,12 +10,12 @@ class RevpeedControllerSim : public BaseCanSmartSpeedController
 {
 public:
     static const std::string TYPE;
-    const std::string& GetType() override
+    std::string GetType() override
     {
         return TYPE;
     }
 
-    RevpeedControllerSim(int aCanHandle);
+    explicit RevpeedControllerSim(int aCanHandle);
 
     void setCanFeedbackDevice(int aFeedbackDevice);
 

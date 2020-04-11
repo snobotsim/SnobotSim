@@ -4,8 +4,10 @@
 #include "SnobotSim/GetSensorActuatorHelper.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
 #include "SnobotSim/ModuleWrapper/Factories/FactoryContainer.h"
-#include "SnobotSim/SimulatorComponents/RevWrappers/RevSpeedControllerSimwrapper.h"
+#include "SnobotSim/SimulatorComponents/RevWrappers/RevSpeedControllerSimWrapper.h"
 #include "SnobotSim/SimulatorComponents/SmartSC/CanIdOffset.h"
+
+#include <cstring>
 
 namespace
 {
@@ -14,7 +16,7 @@ template <typename Type>
 Type Extract(uint8_t* buffer, size_t& aBufferPos)
 {
     Type output;
-    std::memcpy(&output, &buffer[aBufferPos], sizeof(Type));
+    memcpy(&output, &buffer[aBufferPos], sizeof(Type));
     aBufferPos += sizeof(Type);
 
     return output;
@@ -23,7 +25,7 @@ Type Extract(uint8_t* buffer, size_t& aBufferPos)
 template <typename Type>
 void Write(uint8_t* buffer, size_t& aBufferPos, const Type& value)
 {
-    std::memcpy(&buffer[aBufferPos], &value, sizeof(Type));
+    memcpy(&buffer[aBufferPos], &value, sizeof(Type));
     aBufferPos += sizeof(Type);
 }
 
@@ -290,7 +292,7 @@ void RevManager::handleMessage(const std::string& aCallback, int aCanPort, uint8
     {
         auto wrapper = getMotorControllerWrapper(aCanPort);
         auto [slot, value] = ExtractData<int, float>(aBuffer, aLength);
-        wrapper->setMotionMagicMaxAcceleration((int)value);
+        wrapper->setMotionMagicMaxAcceleration(static_cast<int>(value));
     }
     else if ("SetEncoderPosition" == aCallback)
     {
@@ -306,21 +308,21 @@ void RevManager::handleMessage(const std::string& aCallback, int aCanPort, uint8
     {
         auto wrapper = getMotorControllerWrapper(aCanPort);
 
-        float speed = (float)wrapper->GetVoltagePercentage();
+        float speed = static_cast<float>(wrapper->GetVoltagePercentage());
         WriteData(aCallback, aBuffer, aLength, speed);
     }
     else if ("GetEncoderPosition" == aCallback)
     {
         auto wrapper = getMotorControllerWrapper(aCanPort);
 
-        float position = (float)wrapper->GetPosition();
+        float position = static_cast<float>(wrapper->GetPosition());
         WriteData(aCallback, aBuffer, aLength, position);
     }
     else if ("GetEncoderVelocity" == aCallback)
     {
         auto wrapper = getMotorControllerWrapper(aCanPort);
 
-        float velocity = (float)wrapper->GetVelocity();
+        float velocity = static_cast<float>(wrapper->GetVelocity());
         WriteData(aCallback, aBuffer, aLength, velocity);
     }
     else

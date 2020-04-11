@@ -7,6 +7,8 @@
 #include "SnobotSim/SimulatorComponents/CtreWrappers/CtreTalonSRXSpeedControllerSim.h"
 #include "SnobotSim/SimulatorComponents/SmartSC/CanIdOffset.h"
 
+#include <cstring>
+
 namespace
 {
 std::shared_ptr<CtreTalonSRXSpeedControllerSim> getMotorControllerWrapper(int aCanPort)
@@ -34,7 +36,7 @@ Type Extract(uint8_t* buffer, size_t& aBufferPos)
 template <typename Type>
 void Write(uint8_t* buffer, size_t& aBufferPos, const Type& value)
 {
-    std::memcpy(&buffer[aBufferPos], &value, sizeof(Type));
+    memcpy(&buffer[aBufferPos], &value, sizeof(Type));
     aBufferPos += sizeof(Type);
 }
 
@@ -156,7 +158,7 @@ void CtreManager::Reset()
 
 void CtreManager::handleMotorControllerMessage(const std::string& aCallback, int aCanPort, uint8_t* aBuffer, int aLength)
 {
-    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Getting Motor Controller Message " << aCallback << " on port " << aCanPort << "(" << aLength << " bytes)");
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_DEBUG, "Getting Motor Controller Message " << aCallback << " on port " << aCanPort << "(" << aLength << " bytes)");
 
     if ("Create" == aCallback)
     {
@@ -221,7 +223,7 @@ void CtreManager::handleMotorControllerMessage(const std::string& aCallback, int
             break;
         case 5:
         {
-            int followerPort = ((int)demand0) & 0xFF;
+            int followerPort = (static_cast<int>(demand0)) & 0xFF;
             auto leadTalon = getMotorControllerWrapper(followerPort);
             leadTalon->addFollower(wrapper);
             break;
@@ -245,7 +247,7 @@ void CtreManager::handleMotorControllerMessage(const std::string& aCallback, int
         auto wrapper = getMotorControllerWrapper(aCanPort);
 
         auto [feedbackDevice, _] = ExtractData<int, int>(aBuffer, aLength);
-        wrapper->setCanFeedbackDevice((char)feedbackDevice);
+        wrapper->setCanFeedbackDevice(static_cast<char>(feedbackDevice));
     }
     else if ("Config_kP" == aCallback)
     {
@@ -477,7 +479,7 @@ void CtreManager::handlePigeonMessage(const std::string& aCallback, int aCanPort
                 wrapper->getPitchWrapper()->GetAngle(),
                 wrapper->getRollWrapper()->GetAngle());
     }
-    else if ("GetYawPitchRoll" == aCallback) //NOPMD.AvoidLiteralsInIfCondition
+    else if ("GetYawPitchRoll" == aCallback)
     {
         auto wrapper = getPigeonWrapper(aCanPort);
 
@@ -486,7 +488,7 @@ void CtreManager::handlePigeonMessage(const std::string& aCallback, int aCanPort
                 wrapper->getPitchWrapper()->GetAngle(),
                 wrapper->getRollWrapper()->GetAngle());
     }
-    else if ("GetFusedHeading" == aCallback || "GetFusedHeading1" == aCallback) //NOPMD.AvoidLiteralsInIfCondition
+    else if ("GetFusedHeading" == aCallback || "GetFusedHeading1" == aCallback)
     {
         auto wrapper = getPigeonWrapper(aCanPort);
 

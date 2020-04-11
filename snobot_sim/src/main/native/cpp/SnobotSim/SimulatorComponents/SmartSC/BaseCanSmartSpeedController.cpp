@@ -150,7 +150,7 @@ void BaseCanSmartSpeedController::Update(double aWaitTime)
     }
     case ControlType::MotionProfile:
     {
-        double output = calculateMotionProfileOutput(GetPosition(), GetVelocity(), (int)mControlGoal);
+        double output = calculateMotionProfileOutput(GetPosition(), GetVelocity(), static_cast<int>(mControlGoal));
         BaseSpeedControllerWrapper::SetVoltagePercentage(output);
         break;
     }
@@ -275,14 +275,12 @@ void BaseCanSmartSpeedController::setCanFeedbackDevice(FeedbackDevice aNewDevice
         }
         else
         {
-            SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "The simulator does not like you changing the feedback device attached to talon " << mCanHandle << " from " << static_cast<int>(mFeedbackDevice) + " to " << static_cast<int>(aNewDevice));
+            SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "The simulator does not like you changing the feedback device attached to talon " << mCanHandle << " from " << static_cast<int>(mFeedbackDevice) << " to " << static_cast<int>(aNewDevice));
         }
     }
 }
 void BaseCanSmartSpeedController::registerFeedbackSensor()
 {
-
-    // FactoryContainer::Get().GetEncoderFactory()->Create(port, "com.snobot.simulator.module_wrapper.wpi.WpiEncoderWrapper");
     switch (mFeedbackDevice)
     {
     case FeedbackDevice::Encoder:
@@ -292,12 +290,6 @@ void BaseCanSmartSpeedController::registerFeedbackSensor()
             SensorActuatorRegistry::Get().GetIEncoderWrapper(mId, true)->SetSpeedController(SensorActuatorRegistry::Get().GetISpeedControllerWrapper(mId));
             SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN, "Simulator on port " << mCanHandle << "(" << mId << ") was not registered before starting the robot");
         }
-        // if (!DataAccessorFactory.getInstance().getEncoderAccessor().getPortList().contains(mHandle))
-        // {
-        //     IEncoderWrapper wrapper = DataAccessorFactory.getInstance().getEncoderAccessor().createSimulator(mHandle, SmartScEncoder.class.getName());
-        //     wrapper.connectSpeedController(getHandle());
-        //     sLOGGER.log(Level.WARN, "CTRE Encoder on port " + mCanHandle + " was not registerd before starting the robot");
-        // }
         SensorActuatorRegistry::Get().GetIEncoderWrapper(mId, true)->SetInitialized(true);
         break;
     case FeedbackDevice::Analog:
@@ -307,12 +299,6 @@ void BaseCanSmartSpeedController::registerFeedbackSensor()
             SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN, "Simulator on port " << mCanHandle << "(" << mId << ") was not registered before starting the robot");
         }
         SensorActuatorRegistry::Get().GetIAnalogInWrapper(mId, true)->SetInitialized(true);
-        // if (!DataAccessorFactory.getInstance().getAnalogInAccessor().getPortList().contains(mHandle))
-        // {
-        //     DataAccessorFactory.getInstance().getAnalogInAccessor().createSimulator(mHandle, SmartScAnalogIn.class.getName());
-        //     sLOGGER.log(Level.WARN, "CTRE Analog on port " + mCanHandle + " was not registerd before starting the robot");
-        // }
-        // SensorActuatorRegistry.get().getAnalogIn().get(getHandle()).setInitialized(true);
         break;
     default:
         SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Unsupported feedback device " << static_cast<int>(mFeedbackDevice));

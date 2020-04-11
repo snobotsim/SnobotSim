@@ -15,10 +15,10 @@ class SmartSCEncoder : public BaseEncoderWrapper
 public:
     static const std::string TYPE;
 
-    SmartSCEncoder(int aPort);
+    explicit SmartSCEncoder(int aPort);
     virtual ~SmartSCEncoder();
 
-    const std::string& GetType() override
+    std::string GetType() override
     {
         return TYPE;
     }

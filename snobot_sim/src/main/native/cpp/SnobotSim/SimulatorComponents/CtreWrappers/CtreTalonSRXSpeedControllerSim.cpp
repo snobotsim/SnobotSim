@@ -88,11 +88,11 @@ void CtreTalonSRXSpeedControllerSim::setCurrentProfile(char aProfileSelect)
 
 int CtreTalonSRXSpeedControllerSim::getBinnedPosition()
 {
-    return (int)(GetPosition() * getPositionUnitConversion());
+    return static_cast<int>(GetPosition() * getPositionUnitConversion());
 }
 int CtreTalonSRXSpeedControllerSim::getBinnedVelocity()
 {
-    return (int)(GetVelocity() * getVelocityUnitConversion());
+    return static_cast<int>(GetVelocity() * getVelocityUnitConversion());
 }
 void CtreTalonSRXSpeedControllerSim::setCanFeedbackDevice(char aFeedbackDevice)
 {

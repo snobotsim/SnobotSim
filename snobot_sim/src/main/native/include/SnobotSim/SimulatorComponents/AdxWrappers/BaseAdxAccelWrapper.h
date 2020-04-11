@@ -31,9 +31,10 @@ protected:
 
         LazySimDoubleWrapper mSimWrapper;
 
-        const std::string& GetType() override
+        static const std::string TYPE;
+        std::string GetType() override
         {
-            return "baseAdxAccel";
+            return TYPE;
         }
     };
 

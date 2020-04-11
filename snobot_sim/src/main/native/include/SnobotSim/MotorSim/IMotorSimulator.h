@@ -17,7 +17,7 @@ public:
     {
     }
 
-    virtual const std::string& GetSimulatorType() = 0;
+    virtual std::string GetSimulatorType() = 0;
     virtual std::string GetDisplaySimulatorType() = 0;
 
     virtual void SetVoltagePercentage(double aSpeed) = 0;

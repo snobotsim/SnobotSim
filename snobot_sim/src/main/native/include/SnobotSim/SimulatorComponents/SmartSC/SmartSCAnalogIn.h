@@ -12,13 +12,13 @@ class SmartSCAnalogIn : public AModuleWrapper, public IAnalogInWrapper
 public:
     static const std::string TYPE;
 
-    SmartSCAnalogIn(int aPort);
+    explicit SmartSCAnalogIn(int aPort);
     virtual ~SmartSCAnalogIn();
 
     void SetVoltage(double aVoltage) override;
     double GetVoltage() override;
 
-    const std::string& GetType() override
+    std::string GetType() override
     {
         return TYPE;
     }

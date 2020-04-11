@@ -12,13 +12,13 @@ class SmartSCLimitSwitch : public AModuleWrapper, public IDigitalIoWrapper
 public:
     static const std::string TYPE;
 
-    SmartSCLimitSwitch(int aPort);
+    explicit SmartSCLimitSwitch(int aPort);
     virtual ~SmartSCLimitSwitch();
 
     bool Get() override;
     void Set(bool aState) override;
 
-    const std::string& GetType() override
+    std::string GetType() override
     {
         return TYPE;
     }
