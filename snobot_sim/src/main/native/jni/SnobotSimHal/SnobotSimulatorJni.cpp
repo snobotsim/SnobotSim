@@ -2,7 +2,6 @@
 #include <jni.h>
 
 #include <cassert>
-#include <iostream>
 
 #include "SnobotSim/Config/SimulatorConfigReaderV1.h"
 #include "SnobotSim/Config/SimulatorConfigWriterV1.h"
@@ -145,15 +144,16 @@ JNIEXPORT jboolean JNICALL
 Java_com_snobot_simulator_jni_SnobotSimulatorJni_loadConfigFile
   (JNIEnv* env, jclass, jstring aFilename)
 {
-    std::cout << "Loading oonfig in jni " << aFilename << std::endl;
     if (aFilename == NULL)
     {
         SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Simulator file was null! Won't hook anything up");
         return true;
     }
+    std::string filename = env->GetStringUTFChars(aFilename, NULL);
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Loading config file '" << filename << "'");
 
     SimulatorConfigReaderV1 configReader;
-    return configReader.LoadConfig(env->GetStringUTFChars(aFilename, NULL));
+    return configReader.LoadConfig(filename);
 }
 
 /*
@@ -165,15 +165,27 @@ JNIEXPORT jboolean JNICALL
 Java_com_snobot_simulator_jni_SnobotSimulatorJni_saveConfigFile
   (JNIEnv* env, jclass, jstring aFilename)
 {
-    std::cout << "Saving oonfig in jni " << aFilename << std::endl;
     if (aFilename == NULL)
     {
         SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Simulator file was null!");
         return false;
     }
+    std::string filename = env->GetStringUTFChars(aFilename, NULL);
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Saving config file '" << filename << "'");
 
     SimulatorConfigWriterV1 configWriter;
-    return configWriter.DumpConfig(env->GetStringUTFChars(aFilename, NULL));
+    return configWriter.DumpConfig(filename);
+}
+
+/*
+ * Class:     com_snobot_simulator_jni_SnobotSimulatorJni
+ * Method:    getSimulatorComponentConfigsCount
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_snobot_simulator_jni_SnobotSimulatorJni_getSimulatorComponentConfigsCount
+  (JNIEnv *, jclass)
+{
+    return SensorActuatorRegistry::Get().GetSimulatorComponents().size();
 }
 
 } // extern "C"

@@ -26,6 +26,11 @@ public:
 
     void Update();
 
+    static std::string GetType()
+    {
+        return "com.snobot.simulator.simulator_components.config.TankDriveConfig";
+    }
+
 protected:
     std::shared_ptr<ISpeedControllerWrapper> mLeftMotor;
     std::shared_ptr<ISpeedControllerWrapper> mRightMotor;

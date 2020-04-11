@@ -14,6 +14,8 @@
 #include "SnobotSim/MotorSim/SimpleMotorSimulator.h"
 #include "SnobotSim/MotorSim/StaticLoadDcMotorSim.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/SimulatorComponents/TankDriveSimulator.h"
+#include "SnobotSim/GetSensorActuatorHelper.h"
 #include "yaml-cpp/yaml.h"
 
 namespace
@@ -66,14 +68,14 @@ const YAML::Node& operator>>(const YAML::Node& aNode, PwmConfig& aOutput)
 {
     LoadBasicConfig(aNode, aOutput);
 
-    if (aNode["mMotorSimConfig"])
+    if (aNode["mMotorSimConfig"] && aNode["mMotorSimConfig"].Type() != YAML::NodeType::Null)
     {
         const YAML::Node& motorSimConfig = aNode["mMotorSimConfig"];
         std::string motorSimConfigTag = motorSimConfig.Tag();
 
         motorSimConfigTag = motorSimConfigTag.substr(std::string("tag:yaml.org,2002:").size());
 
-        std::cout << "Loading tag '" << motorSimConfigTag << "'" << std::endl;
+        SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Loading tag '" << motorSimConfigTag << "'");
 
         if (motorSimConfigTag == SimpleMotorSimulator::GetType())
         {
@@ -104,7 +106,7 @@ const YAML::Node& operator>>(const YAML::Node& aNode, PwmConfig& aOutput)
             SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Unknown sim type " << motorSimConfigTag << "(" << aOutput.mHandle << ")");
         }
 
-        if (aNode["mMotorModelConfig"])
+        if (aNode["mMotorModelConfig"] && aNode["mMotorModelConfig"].Type() != YAML::NodeType::Null)
         {
             const YAML::Node& motorModelConfig = aNode["mMotorModelConfig"];
             aOutput.mMotorSim.mMotorModelConfig.mFactoryParams.mMotorType = motorModelConfig["mMotorType"].as<std::string>();
@@ -114,11 +116,11 @@ const YAML::Node& operator>>(const YAML::Node& aNode, PwmConfig& aOutput)
             aOutput.mMotorSim.mMotorModelConfig.mFactoryParams.mHasBrake = motorModelConfig["mHasBrake"].as<bool>();
             aOutput.mMotorSim.mMotorModelConfig.mFactoryParams.mInverted = motorModelConfig["mInverted"].as<bool>();
 
-            std::cout << "Getting motor model " << aOutput.mMotorSim.mMotorModelConfig.mFactoryParams.mMotorType << std::endl;
+            SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Getting motor model " << aOutput.mMotorSim.mMotorModelConfig.mFactoryParams.mMotorType);
         }
         else
         {
-            std::cout << "No motor model" << std::endl;
+            SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "No motor model");
         }
     }
     else
@@ -196,8 +198,6 @@ DcMotorModel GetMotorModle(const DcMotorModelConfigConfig::FactoryParams& factor
     motorModelConfig.mInverted = factoryParams.mInverted;
 
     DcMotorModel motorModel(motorModelConfig);
-
-    std::cout << "Making motor model " << factoryParams.mMotorType << "'" << factoryParams.mNumMotors << std::endl;
 
     return motorModel;
 }
@@ -302,9 +302,36 @@ void SetupSimulator(const SimulatorConfigV1& aConfig)
     CreateEncoderComponents(FactoryContainer::Get().GetEncoderFactory(), SensorActuatorRegistry::Get().GetIEncoderWrapperMap(), aConfig.mEncoders);
 }
 
+void SetupSimulatorComponents(const YAML::Node& aNode)
+{
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Setting up simulator components... ");
+
+    for(const auto& it : aNode)
+    {
+        std::string tag = it.Tag();
+
+        tag = tag.substr(std::string("tag:yaml.org,2002:").size());
+
+        if(tag == TankDriveSimulator::GetType())
+        {
+            using namespace GetSensorActuatorHelper;
+            std::shared_ptr<ISpeedControllerWrapper> leftEncoder = GetISpeedControllerWrapper(it["mLeftMotorHandle"].as<int>());
+            std::shared_ptr<ISpeedControllerWrapper> rightEncoder = GetISpeedControllerWrapper(it["mRightMotorHandle"].as<int>());
+            std::shared_ptr<IGyroWrapper> gyro = GetIGyroWrapper(it["mGyroHandle"].as<int>());
+
+            std::shared_ptr<TankDriveSimulator> simulator(new TankDriveSimulator(leftEncoder, rightEncoder, gyro, -it["mTurnKp"].as<double>()));
+            SensorActuatorRegistry::Get().AddSimulatorComponent(simulator);
+        }
+        else
+        {
+            SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Unknown custom type " << tag);
+        }
+
+    }
+}
+
 bool SimulatorConfigReaderV1::LoadConfig(const std::string& aConfigFile)
 {
-    std::cout << "Skipping it" << std::endl;
     namespace fs = std::filesystem;
     fs::path configFile = aConfigFile;
 
@@ -319,6 +346,10 @@ bool SimulatorConfigReaderV1::LoadConfig(const std::string& aConfigFile)
         configNode >> config;
 
         SetupSimulator(config);
+        if(configNode["mSimulatorComponents"])
+        {
+            SetupSimulatorComponents(configNode["mSimulatorComponents"]);
+        }
     }
     catch (std::exception& ex)
     {

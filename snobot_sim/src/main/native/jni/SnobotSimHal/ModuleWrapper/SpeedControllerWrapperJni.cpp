@@ -206,11 +206,11 @@ Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_getMotor
     {
         return 2;
     }
-    else if (type == GravityLoadDcMotorSim::GetType())
+    else if (type == RotationalLoadDcMotorSim::GetType())
     {
         return 3;
     }
-    else if (type == RotationalLoadDcMotorSim::GetType())
+    else if (type == GravityLoadDcMotorSim::GetType())
     {
         return 4;
     }
@@ -264,12 +264,12 @@ Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_getMotor
 
     jobject output = NULL;
 
-    if (type == "Static Load")
+    if (type == StaticLoadDcMotorSim::GetType())
     {
         const std::shared_ptr<StaticLoadDcMotorSim>& castMotorSim = std::dynamic_pointer_cast<StaticLoadDcMotorSim>(motorSim);
         output = ConversionUtils::ConvertDcMotorModelConfig(env, castMotorSim->GetMotorModel().GetModelConfig());
     }
-    else if (type == "Null" || type == "Simple")
+    else if (type == "Null" || type == SimpleMotorSimulator::GetType())
     {
         SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN, "The type " << type << " does not have a DC Motor config...");
     }

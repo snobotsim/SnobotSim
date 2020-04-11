@@ -21,4 +21,6 @@ public final class SnobotSimulatorJni extends BaseSimulatorJni
     public static native boolean loadConfigFile(String aConfigFile);
 
     public static native boolean saveConfigFile(String aConfigFile);
+
+	public static native int getSimulatorComponentConfigsCount();
 }

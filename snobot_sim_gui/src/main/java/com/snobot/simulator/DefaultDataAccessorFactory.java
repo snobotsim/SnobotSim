@@ -1,8 +1,8 @@
 package com.snobot.simulator;
 
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
-// import com.snobot.simulator.wrapper_accessors.java.JavaDataAccessor;
-import com.snobot.simulator.wrapper_accessors.jni.JniDataAccessor;
+import com.snobot.simulator.wrapper_accessors.java.JavaDataAccessor;
+// import com.snobot.simulator.wrapper_accessors.jni.JniDataAccessor;
 
 /**
  * Helper class that sets up the data accessor abstraction layer
@@ -23,8 +23,8 @@ public final class DefaultDataAccessorFactory
     {
         if (!sINITIALIZED)
         {
-            // DataAccessorFactory.setAccessor(new JavaDataAccessor());
-            DataAccessorFactory.setAccessor(new JniDataAccessor());
+            DataAccessorFactory.setAccessor(new JavaDataAccessor());
+            // DataAccessorFactory.setAccessor(new JniDataAccessor());
         }
     }
 }

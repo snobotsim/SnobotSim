@@ -286,7 +286,7 @@ void RevManager::handleMessage(const std::string& aCallback, int aCanPort, uint8
     {
         auto wrapper = getMotorControllerWrapper(aCanPort);
         auto [slot, value] = ExtractData<int, float>(aBuffer, aLength);
-        wrapper->setMotionMagicMaxVelocity((int)value);
+        wrapper->setMotionMagicMaxVelocity(static_cast<int>(value));
     }
     else if ("SetSmartMotionMaxAccel" == aCallback)
     {

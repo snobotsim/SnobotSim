@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <string>
 #include <vector>
 
 #include "SnobotSim/SimulatorComponents/SmartSC/BaseCanSmartSpeedController.h"
@@ -28,7 +29,7 @@ public:
         }
     };
 
-    CtreTalonSRXSpeedControllerSim(int aCanHandle);
+    explicit CtreTalonSRXSpeedControllerSim(int aCanHandle);
 
     void setMotionProfilingCommand(double aDemand);
     double getLastClosedLoopError();

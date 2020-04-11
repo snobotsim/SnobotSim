@@ -121,4 +121,9 @@ public class JniSimulatorDataAccessor implements SimulatorDataAccessor
         return SnobotSimulatorJni.saveConfigFile(aConfigFile);
     }
 
+    @Override
+    public int getSimulatorComponentConfigsCount() {
+        return SnobotSimulatorJni.getSimulatorComponentConfigsCount();
+    }
+
 }

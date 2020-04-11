@@ -8,11 +8,7 @@ ext
 }
 
 apply from: "${rootDir}/common/base_java_script.gradle"
-
-// configurations {
-//     native3rdPartyDeps
-//     compile.extendsFrom(native3rdPartyDeps)
-// }
+apply from: "${rootDir}/common/base_java_native_script.gradle"
 
 configurations.maybeCreate("wpilibNativeDeps")
 dependencies {
@@ -35,27 +31,6 @@ dependencies {
     testRuntime 'edu.wpi.first.ntcore:ntcore-jni:' + getNtCoreVersion() + ':' + getCurrentOsArch()
 }
 
-// apply from: "${rootDir}/common/extract_native_libraries.gradle"
-// test.dependsOn extract_wpilib
-
-
-// task unzipNativeLibraries(type: Copy) {
-
-//     configurations.native3rdPartyDeps.each {
-//         from zipTree(it)
-//         into "build/native_libs"
-//         include "**/*.dll"
-//         include "**/*.lib"
-//         include "**/*.pdb"
-//         include "**/*.so*"
-//         include "**/*.a"
-//         include "**/*.dylib*"
-//     }
-
-//     includeEmptyDirs = false
-
-// }
-
 eclipse.classpath.file {
     withXml {
         provider ->
@@ -65,8 +40,6 @@ eclipse.classpath.file {
         }
     }
 }
-
-// build.dependsOn unzipNativeLibraries
 
 spotbugs {
     ignoreFailures = true

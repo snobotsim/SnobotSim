@@ -27,7 +27,7 @@ template <typename Type>
 Type Extract(uint8_t* buffer, size_t& aBufferPos)
 {
     Type output;
-    std::memcpy(&output, &buffer[aBufferPos], sizeof(Type));
+    memcpy(&output, &buffer[aBufferPos], sizeof(Type));
     aBufferPos += sizeof(Type);
 
     return output;

@@ -36,8 +36,9 @@ plugins {
 apply plugin: 'nebula-aggregate-javadocs'
 
 
-ext.use_simulator_cpp = true
-ext.use_simulator_java = false
+ext.use_cpp = false
+ext.use_simulator_cpp = use_cpp
+ext.use_simulator_java = !use_cpp
 
 /////////////////////////////////////////
 // Specify WPI Versions

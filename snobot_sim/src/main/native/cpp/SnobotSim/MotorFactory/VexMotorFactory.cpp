@@ -18,7 +18,7 @@ const std::string VexMotorFactory::MOTOR_NAME_BB_RS_775 = "Banebots RS 775";
 const std::string VexMotorFactory::MOTOR_NAME_AM_9015 = "Andymark 9015";
 const std::string VexMotorFactory::MOTOR_NAME_BB_RS_550 = "Banebots RS 550";
 
-const std::string VexMotorFactory::MOTOR_NAME_RS775 = "rs775";
+const std::string VexMotorFactory::MOTOR_NAME_RS775 = "RS775";
 
 #define OZIN_TO_NM 0.00706155183333
 
