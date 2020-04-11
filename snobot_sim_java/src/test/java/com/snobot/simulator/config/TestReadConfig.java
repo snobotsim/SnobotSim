@@ -13,6 +13,32 @@ public class TestReadConfig extends BaseSimulatorJavaTest
 {
     public static final int sTEST_PARAMETER = 5;
 
+    public String extractFiles(String aFilename)
+    {       
+        Path filepath = Path.of("read_test", aFilename);
+        try (InputStream fileStream = getClass().getResource(aFilename).openStream()) 
+        {
+            if (fileStream == null || filepath.getParent() == null)
+            {
+                Assertions.fail();
+                return null;
+            }
+            if (!filepath.getParent().toFile().exists() && !filepath.getParent().toFile().mkdir())
+            {
+                Assertions.fail();
+                return null;
+            }
+
+            Files.copy(fileStream, filepath, StandardCopyOption.REPLACE_EXISTING);
+        } 
+        catch (IOException ex) 
+        {
+            Assertions.fail(ex);
+        }
+
+        return filepath.toAbsolutePath().toString();
+    }
+
     @Test
     public void testReadEmptyFile()
     {

@@ -6,6 +6,9 @@
  */
 
 #pragma once
+
+#include <string>
+
 #include "SnobotSim/MotorSim/BaseDcMotorSimulator.h"
 
 class EXPORT_ StaticLoadDcMotorSim : public BaseDcMotorSimulator

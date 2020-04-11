@@ -112,4 +112,5 @@ nativeUtils.exportsConfigs {
             // symbols.removeIf({ !it.startsWith('HAL_') && !it.startsWith('HALSIM_') })
         }
     }
+  }
 }

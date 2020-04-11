@@ -89,6 +89,13 @@ public class TestSpiNavx extends BaseSimulatorJniTest
     @Test
     public void testSpiNavx() throws InterruptedException
     {
+        String osName = System.getProperty("os.name").toLowerCase(); // NOPMD
+        boolean isMacOs = osName.startsWith("mac os x");
+        if (isMacOs)
+        {
+            return;
+        }
+
         DataAccessorFactory.getInstance().getSpiAccessor().createSpiSimulator(1, sNAVX_TYPE);
 
         final int sleepTime = 100;
@@ -103,6 +110,8 @@ public class TestSpiNavx extends BaseSimulatorJniTest
         IGyroWrapper rollWrapper = DataAccessorFactory.getInstance().getGyroAccessor().getWrapper(rollHandle);
 
         SimDeviceDumpHelper.dumpSimDevices();
+
+        // SimDeviceDumpHelper.dumpSimDevices();
 
         Assertions.assertEquals(3, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
         Assertions.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(yawHandle));

@@ -11,6 +11,7 @@
 #include "SnobotSim/ModuleWrapper/WpiWrappers/WpiEncoderWrapper.h"
 #include "SnobotSim/SimulatorComponents/SmartSC/SmartSCEncoder.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/SimulatorComponents/SmartSC/SmartSCEncoder.h"
 
 EncoderFactory::EncoderFactory()
 {

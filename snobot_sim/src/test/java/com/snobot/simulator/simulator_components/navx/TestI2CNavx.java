@@ -8,6 +8,7 @@ import com.kauailabs.navx.frc.AHRS;
 import com.snobot.simulator.module_wrapper.interfaces.IGyroWrapper;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorJniTest;
+import com.snobot.test.utilities.SimDeviceDumpHelper;
 
 import edu.wpi.first.wpilibj.I2C;
 
@@ -26,6 +27,7 @@ public class TestI2CNavx extends BaseSimulatorJniTest
         DataAccessorFactory.getInstance().getI2CAccessor().createI2CSimulator(0, sNAVX_TYPE);
 
         final AHRS navxOnboard = new AHRS(I2C.Port.kOnboard);
+        SimDeviceDumpHelper.dumpSimDevices();
         Assertions.assertEquals(3, DataAccessorFactory.getInstance().getGyroAccessor().getPortList().size());
         Assertions.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(250));
         Assertions.assertTrue(DataAccessorFactory.getInstance().getGyroAccessor().getPortList().contains(251));

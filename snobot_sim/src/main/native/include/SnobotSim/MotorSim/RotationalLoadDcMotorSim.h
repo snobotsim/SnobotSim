@@ -7,6 +7,7 @@
 
 #pragma once
 #include <memory>
+#include <string>
 
 #include "SnobotSim/ModuleWrapper/Interfaces/ISpeedControllerWrapper.h"
 #include "SnobotSim/MotorSim/BaseDcMotorSimulator.h"

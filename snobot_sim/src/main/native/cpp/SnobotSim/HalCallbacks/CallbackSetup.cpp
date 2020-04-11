@@ -11,6 +11,7 @@
 #include "SnobotSim/HalCallbacks/RelayCallbacks.h"
 #include "SnobotSim/HalCallbacks/SolenoidCallbacks.h"
 #include "SnobotSim/HalCallbacks/SpiCallbacks.h"
+#include "SnobotSim/HalCallbacks/ThirdPartyCanCallbacks.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
 #include "simulation/SimDeviceSim.h"
 

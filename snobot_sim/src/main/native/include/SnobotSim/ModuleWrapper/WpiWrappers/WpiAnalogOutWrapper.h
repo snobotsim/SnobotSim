@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <string>
+
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 #include "SnobotSim/ModuleWrapper/Interfaces/IAnalogOutWrapper.h"
 

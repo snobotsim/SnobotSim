@@ -51,7 +51,7 @@ public:
     {
     }
 
-    const std::string& GetSimulatorType() override
+    std::string GetSimulatorType() override
     {
         static std::string sName = "Null";
         return sName;
