@@ -8,10 +8,6 @@ import com.snobot.test.utilities.BaseSimulatorJniTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
-import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 public class TestRevControlFollower extends BaseSimulatorJniTest
 {
@@ -19,7 +15,7 @@ public class TestRevControlFollower extends BaseSimulatorJniTest
     private static final int sFOLLOWER_ID = 11;
 
     @ParameterizedTest
-	@ArgumentsSource(GetRevTestIds.class)
+    @ArgumentsSource(GetRevTestIds.class)
     public void testFollower(int aCanHandle)
     {
         if (aCanHandle == sFOLLOWER_ID)

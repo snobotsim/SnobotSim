@@ -13,15 +13,11 @@ import com.snobot.test.utilities.BaseSimulatorJniTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
-import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 public class TestRevControlVelocity extends BaseSimulatorJniTest
 {
     @ParameterizedTest
-	@ArgumentsSource(GetRevTestIds.class)
+    @ArgumentsSource(GetRevTestIds.class)
     public void testVelocityControl(int aCanHandle)
     {
         int rawHandle = aCanHandle + JniSpeedControllerWrapperAccessor.sCAN_SC_OFFSET;

@@ -10,7 +10,8 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 
-class GetRevTestIds implements ArgumentsProvider {
+class GetRevTestIds implements ArgumentsProvider
+{
     public static Collection<Integer> getData()
     {
         List<Integer> output = new ArrayList<>();
@@ -21,7 +22,8 @@ class GetRevTestIds implements ArgumentsProvider {
     }
 
     @Override
-    public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
+    public Stream<? extends Arguments> provideArguments(ExtensionContext aContext) throws Exception
+    {
         return getData().stream().map(Arguments::of);
     }
 }

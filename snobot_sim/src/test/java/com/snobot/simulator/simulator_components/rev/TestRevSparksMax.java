@@ -1,8 +1,5 @@
 package com.snobot.simulator.simulator_components.rev;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMaxLowLevel;
@@ -14,7 +11,6 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -29,7 +25,7 @@ public class TestRevSparksMax extends BaseSimulatorJniTest
     private static final int sFOLLOWER_ID = 11;
 
     @ParameterizedTest
-	@ArgumentsSource(GetRevTestIds.class)
+    @ArgumentsSource(GetRevTestIds.class)
     public void testAppliedThrottle(int aCanHandle)
     {
         int rawHandle = aCanHandle + JniSpeedControllerWrapperAccessor.sCAN_SC_OFFSET;
@@ -55,7 +51,7 @@ public class TestRevSparksMax extends BaseSimulatorJniTest
     }
 
     @ParameterizedTest
-	@ArgumentsSource(GetRevTestIds.class)
+    @ArgumentsSource(GetRevTestIds.class)
     public void testFollower(int aCanHandle)
     {
         if (aCanHandle == sFOLLOWER_ID)

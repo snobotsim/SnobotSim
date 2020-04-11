@@ -1,13 +1,9 @@
 package com.snobot.simulator.simulator_components.ctre;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -20,7 +16,7 @@ public class TestCtreCanTalonControlFollower extends BaseSimulatorJniTest
     private static final double sDOUBLE_EPSILON = 1.0 / 1023;
 
     @ParameterizedTest
-	@ArgumentsSource(GetCtreTestIds.class)
+    @ArgumentsSource(GetCtreTestIds.GetCtreTestIdsFeedbackDevice.class)
     public void testSetWithFollower(int aCanHandle)
     {
         int leadTalonId = 5;

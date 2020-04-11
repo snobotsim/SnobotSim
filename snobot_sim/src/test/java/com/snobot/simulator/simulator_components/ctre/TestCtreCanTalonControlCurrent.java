@@ -1,13 +1,9 @@
 package com.snobot.simulator.simulator_components.ctre;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -18,7 +14,7 @@ import com.snobot.test.utilities.BaseSimulatorJniTest;
 public class TestCtreCanTalonControlCurrent extends BaseSimulatorJniTest
 {
     @ParameterizedTest
-	@ArgumentsSource(GetCtreTestIds.class)
+    @ArgumentsSource(GetCtreTestIds.GetCtreTestIdsFeedbackDevice.class)
     public void testSetWithCurrent(int aCanHandle)
     {
         Assertions.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());

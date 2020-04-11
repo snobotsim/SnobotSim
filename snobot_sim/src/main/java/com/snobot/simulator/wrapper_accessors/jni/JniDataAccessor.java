@@ -149,10 +149,4 @@ public class JniDataAccessor implements IDataAccessor
         return null;
     }
 
-    @Override
-    public AddressableLedWrapperAccessor getAddressableLedAccessor()
-    {
-        return null;
-    }
-
 }

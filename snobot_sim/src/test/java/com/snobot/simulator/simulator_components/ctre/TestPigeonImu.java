@@ -1,13 +1,9 @@
 package com.snobot.simulator.simulator_components.ctre;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
@@ -19,7 +15,7 @@ import com.snobot.test.utilities.BaseSimulatorJniTest;
 public class TestPigeonImu extends BaseSimulatorJniTest
 {
     @ParameterizedTest
-	@ArgumentsSource(GetCtreTestIds.class)
+    @ArgumentsSource(GetCtreTestIds.GetCtreTestIdsFeedbackDevice.class)
     public void testPigeonInSeries(int aDeviceId)
     {
         PigeonIMU imu = new PigeonIMU(aDeviceId);
@@ -27,7 +23,7 @@ public class TestPigeonImu extends BaseSimulatorJniTest
     }
 
     @ParameterizedTest
-	@ArgumentsSource(GetCtreTestIds.class)
+    @ArgumentsSource(GetCtreTestIds.GetCtreTestIdsFeedbackDevice.class)
     public void testPigeonInTalon(int aDeviceId)
     {
         TalonSRX talon = new TalonSRX(aDeviceId);

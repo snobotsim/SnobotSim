@@ -1,13 +1,9 @@
 package com.snobot.simulator.simulator_components.ctre;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -21,7 +17,7 @@ import com.snobot.test.utilities.BaseSimulatorJniTest;
 public class TestCtreCanTalonControlSpeed extends BaseSimulatorJniTest
 {
     @ParameterizedTest
-	@ArgumentsSource(GetCtreTestIds.GetCtreTestIdsWithFeedbackDevice.class)
+    @ArgumentsSource(GetCtreTestIds.GetCtreTestIdsWithFeedbackDevice.class)
     public void testSetWithSpeedEncoder(int aCanHandle, FeedbackDevice aFeedbackDevice)
     {
         final int rawHandle = aCanHandle + 100;

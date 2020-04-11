@@ -194,9 +194,6 @@ Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_getMotor
     const std::shared_ptr<IMotorSimulator>& motorSim = SensorActuatorRegistry::Get().GetISpeedControllerWrapper(aPortHandle)->GetMotorSimulator();
     std::string type = motorSim->GetSimulatorType();
 
-    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "getMotorSimTypeNative " << aPortHandle << " '" << type << "'");
-    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "XXtMotorSimTypeNative " << aPortHandle);
-    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "XXtMotorSimTypeNative " << aPortHandle << " '" << std::string(SimpleMotorSimulator::GetType()) << "'");
     if (type == "Null")
     {
         return 0;

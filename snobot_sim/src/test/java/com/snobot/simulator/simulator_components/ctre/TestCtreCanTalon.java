@@ -1,8 +1,5 @@
 package com.snobot.simulator.simulator_components.ctre;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.snobot.simulator.motor_sim.DcMotorModelConfig;
 import com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig;
@@ -11,7 +8,6 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -45,7 +41,7 @@ public class TestCtreCanTalon extends BaseSimulatorJniTest
     }
 
     @ParameterizedTest
-	@ArgumentsSource(GetCtreTestIds.class)
+    @ArgumentsSource(GetCtreTestIds.GetCtreTestIdsFeedbackDevice.class)
     public void testSimpleSetters(int aCanHandle)
     {
         Assertions.assertEquals(0, DataAccessorFactory.getInstance().getSpeedControllerAccessor().getPortList().size());
