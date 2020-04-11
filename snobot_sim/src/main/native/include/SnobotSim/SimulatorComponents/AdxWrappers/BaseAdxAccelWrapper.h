@@ -20,6 +20,7 @@ public:
     virtual ~BaseAdxAccelWrapper();
 
 protected:
+
     class AccelerometerWrapper : public AModuleWrapper, public IAccelerometerWrapper
     {
     public:
@@ -30,6 +31,12 @@ protected:
         double GetAcceleration() override;
 
         LazySimDoubleWrapper mSimWrapper;
+
+        static const std::string TYPE;
+        std::string GetType() override
+        {
+            return TYPE;
+        }
     };
 
     std::shared_ptr<AccelerometerWrapper> mXWrapper;

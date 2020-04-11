@@ -7,8 +7,6 @@
 
 #include "SnobotSim/MotorSim/SimpleMotorSimulator.h"
 
-const std::string SimpleMotorSimulator::SIMULATOR_TYPE = "Simple";
-
 SimpleMotorSimulator::SimpleMotorSimulator(double aMaxSpeed) :
         mMaxSpeed(aMaxSpeed),
         mVoltagePercent(0),
@@ -21,9 +19,9 @@ SimpleMotorSimulator::~SimpleMotorSimulator()
 {
 }
 
-const std::string& SimpleMotorSimulator::GetSimulatorType()
+std::string SimpleMotorSimulator::GetSimulatorType()
 {
-    return SIMULATOR_TYPE;
+    return GetType();
 }
 
 double SimpleMotorSimulator::GetMaxSpeed()

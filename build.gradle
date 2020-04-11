@@ -36,8 +36,8 @@ plugins {
 apply plugin: 'nebula-aggregate-javadocs'
 
 
-ext.build_simulator_cpp = false
-ext.build_simulator_java = true
+ext.use_simulator_cpp = false
+ext.use_simulator_java = true
 
 /////////////////////////////////////////
 // Specify WPI Versions
@@ -69,7 +69,7 @@ ext.getRevRoboticsVersion = {
     return '1.5.0'
 }
 ext.getRevRoboticsSimVersion = {
-    return getRevRoboticsVersion() + "_V0"
+    return getRevRoboticsVersion() + "_V1"
 }
 ext.getNavxVersion = {
     return '3.1.403'

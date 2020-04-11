@@ -13,10 +13,19 @@
 class EXPORT_ SimpleMotorSimulator : public IMotorSimulator
 {
 public:
+    static std::string GetType()
+    {
+        return "Simple";
+    }
+    std::string GetDisplaySimulatorType() override
+    {
+        return "Simple";
+    }
+
     explicit SimpleMotorSimulator(double aMaxSpeed);
     virtual ~SimpleMotorSimulator();
 
-    const std::string& GetSimulatorType() override;
+    std::string GetSimulatorType() override;
 
     void SetVoltagePercentage(double aSpeed) override;
 
@@ -44,6 +53,4 @@ protected:
     double mVoltagePercent;
     double mVelocity;
     double mPosition;
-
-    static const std::string SIMULATOR_TYPE;
 };
