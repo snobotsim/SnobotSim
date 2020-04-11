@@ -14,15 +14,15 @@ public:
 
     SmartSCLimitSwitch(int aPort);
     virtual ~SmartSCLimitSwitch();
-    
+
     bool Get() override;
     void Set(bool aState) override;
 
     const std::string& GetType() override
-    { 
-        return TYPE; 
+    {
+        return TYPE;
     }
 
 protected:
-    bool mState{false};
+    bool mState{ false };
 };

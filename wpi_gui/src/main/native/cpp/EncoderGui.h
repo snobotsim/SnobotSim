@@ -7,11 +7,13 @@
 
 #pragma once
 
-namespace halsimgui {
+namespace halsimgui
+{
 
-class EncoderGui {
- public:
-  static void Initialize();
+class EncoderGui
+{
+public:
+    static void Initialize();
 };
 
-}  // namespace halsimgui
+} // namespace halsimgui

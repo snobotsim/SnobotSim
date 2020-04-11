@@ -7,7 +7,6 @@
 
 #include "SnobotSim/SimulatorComponents/AdxWrappers/AdxGyroWrapper.h"
 
-
 const std::string AdxGyroWrapper::TYPE = "com.snobot.simulator.module_wrapper.wpi.WpiAnalogGyroWrapper";
 
 AdxGyroWrapper::AdxGyroWrapper(const std::string& aBaseName, int aPort) :

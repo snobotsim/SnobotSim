@@ -1,15 +1,15 @@
 
 #include "SnobotSim/SimulatorComponents/CtreWrappers/CtreTalonSRXSpeedControllerSim.h"
+
 #include "SnobotSim/Logging/SnobotLogger.h"
-#include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/ModuleWrapper/Factories/FactoryContainer.h"
+#include "SnobotSim/SensorActuatorRegistry.h"
 
 const std::string CtreTalonSRXSpeedControllerSim::TYPE = "com.snobot.simulator.simulator_components.ctre.CtreTalonSrxSpeedControllerSim";
 
-CtreTalonSRXSpeedControllerSim::CtreTalonSRXSpeedControllerSim(int aCanHandle) : 
-    BaseCanSmartSpeedController(aCanHandle, "CTRE", 2)
+CtreTalonSRXSpeedControllerSim::CtreTalonSRXSpeedControllerSim(int aCanHandle) :
+        BaseCanSmartSpeedController(aCanHandle, "CTRE", 2)
 {
-    
 }
 
 void CtreTalonSRXSpeedControllerSim::setMotionProfilingCommand(double aDemand)
@@ -34,7 +34,6 @@ double CtreTalonSRXSpeedControllerSim::getLastClosedLoopError()
     default:
         // sLOGGER.log(Level.WARN, "I don't think get closed loop error should be called with " + mControlType);
         break;
-
     }
     return mLastError * multiplier;
 }
@@ -89,11 +88,11 @@ void CtreTalonSRXSpeedControllerSim::setCurrentProfile(char aProfileSelect)
 
 int CtreTalonSRXSpeedControllerSim::getBinnedPosition()
 {
-    return (int) (GetPosition() * getPositionUnitConversion());
+    return (int)(GetPosition() * getPositionUnitConversion());
 }
 int CtreTalonSRXSpeedControllerSim::getBinnedVelocity()
 {
-    return (int) (GetVelocity() * getVelocityUnitConversion());
+    return (int)(GetVelocity() * getVelocityUnitConversion());
 }
 void CtreTalonSRXSpeedControllerSim::setCanFeedbackDevice(char aFeedbackDevice)
 {
@@ -121,5 +120,5 @@ void CtreTalonSRXSpeedControllerSim::setCanFeedbackDevice(char aFeedbackDevice)
 
 double CtreTalonSRXSpeedControllerSim::calculateMotionProfileOutput(double aCurrentPosition, double aCurrentVelocity, int aModeType)
 {
-    return 0;   
+    return 0;
 }

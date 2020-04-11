@@ -10,9 +10,8 @@
 #include <iostream>
 #include <map>
 
-
 #ifdef _WIN32
-#include <Windows.h> 
+#include <Windows.h>
 #endif
 
 using namespace SnobotLogging;
@@ -21,34 +20,34 @@ namespace
 {
 
 std::map<LogLevel, std::string> gLOG_LEVEL_LOOKUP = {
-    {LOG_LEVEL_DEBUG,    "Debug   "},
-    {LOG_LEVEL_INFO,     "Info    "},
-    {LOG_LEVEL_WARN,     "Warn    "},
-    {LOG_LEVEL_CRITICAL, "Critical"},
-    {LOG_LEVEL_NONE,     ""},
+    { LOG_LEVEL_DEBUG, "Debug   " },
+    { LOG_LEVEL_INFO, "Info    " },
+    { LOG_LEVEL_WARN, "Warn    " },
+    { LOG_LEVEL_CRITICAL, "Critical" },
+    { LOG_LEVEL_NONE, "" },
 };
 
 #ifdef _WIN32
 
-WORD                        gCurrentConsoleAttr;
+WORD gCurrentConsoleAttr;
 
 std::map<LogLevel, WORD> gColorLookup = {
-    {LOG_LEVEL_DEBUG, FOREGROUND_BLUE},
-    {LOG_LEVEL_INFO, FOREGROUND_GREEN},
-    {LOG_LEVEL_WARN, FOREGROUND_BLUE | FOREGROUND_GREEN},
-    {LOG_LEVEL_CRITICAL, FOREGROUND_RED},
-    {LOG_LEVEL_NONE, 0},
+    { LOG_LEVEL_DEBUG, FOREGROUND_BLUE },
+    { LOG_LEVEL_INFO, FOREGROUND_GREEN },
+    { LOG_LEVEL_WARN, FOREGROUND_BLUE | FOREGROUND_GREEN },
+    { LOG_LEVEL_CRITICAL, FOREGROUND_RED },
+    { LOG_LEVEL_NONE, 0 },
 };
 
 void StartColor(std::ostream& stream, LogLevel aLogLevel)
 {
-     const HANDLE stdout_handle = GetStdHandle(STD_OUTPUT_HANDLE);
+    const HANDLE stdout_handle = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_SCREEN_BUFFER_INFO buffer_info;
-    if(GetConsoleScreenBufferInfo(stdout_handle, &buffer_info))
+    if (GetConsoleScreenBufferInfo(stdout_handle, &buffer_info))
     {
         gCurrentConsoleAttr = buffer_info.wAttributes;
     }
-    
+
     SetConsoleTextAttribute(stdout_handle, gColorLookup[aLogLevel]);
 }
 
@@ -59,13 +58,30 @@ void EndColor(std::ostream& stream, LogLevel aLogLevel)
 
 #else
 
+std::map<LogLevel, std::string> gColorLookup = {
+    { LOG_LEVEL_DEBUG, "\033[1;36m" },
+    { LOG_LEVEL_INFO, "\033[1;32m" },
+    { LOG_LEVEL_WARN, "\033[1;33m" },
+    { LOG_LEVEL_CRITICAL, "\033[1;31m" },
+    { LOG_LEVEL_NONE, "\033[1;31m" },
+};
+
+void StartColor(std::ostream& stream, LogLevel aLogLevel)
+{
+    stream << gColorLookup[aLogLevel];
+}
+
+void EndColor(std::ostream& stream, LogLevel aLogLevel)
+{
+    stream << "\033[0m";
+}
+
 #endif
 
-}
+} // namespace
 
 SnobotCoutLogger::SnobotCoutLogger()
 {
-
     mDirectorySubstring = "";
 
     std::string thisFile = FixWindowsSlashes(__FILE__);

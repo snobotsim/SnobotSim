@@ -171,7 +171,7 @@ Java_com_snobot_simulator_jni_module_1wrapper_SpeedControllerWrapperJni_updateAl
 
     for (iter = speedControllers.begin(); iter != speedControllers.end(); ++iter)
     {
-        if(iter->second)
+        if (iter->second)
         {
             iter->second->Update(aUpdatePeriod);
         }

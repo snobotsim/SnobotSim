@@ -19,54 +19,67 @@
 
 using namespace halsimgui;
 
-static IniSaver<NameInfo> gAnalogInputs{"AnalogInput"};  // indexed by channel
+static IniSaver<NameInfo> gAnalogInputs{ "AnalogInput" }; // indexed by channel
 
-static void DisplayAnalogInputs() {
-  ImGui::Text("(Use Ctrl+Click to edit value)");
-  bool hasInputs = false;
-  static int numAnalog = HAL_GetNumAnalogInputs();
-  static int numAccum = HAL_GetNumAccumulators();
-  bool first = true;
-  for (int i = 0; i < numAnalog; ++i) {
-    if (HALSIM_GetAnalogInInitialized(i)) {
-      hasInputs = true;
+static void DisplayAnalogInputs()
+{
+    ImGui::Text("(Use Ctrl+Click to edit value)");
+    bool hasInputs = false;
+    static int numAnalog = HAL_GetNumAnalogInputs();
+    static int numAccum = HAL_GetNumAccumulators();
+    bool first = true;
+    for (int i = 0; i < numAnalog; ++i)
+    {
+        if (HALSIM_GetAnalogInInitialized(i))
+        {
+            hasInputs = true;
 
-      if (!first) {
-        ImGui::Spacing();
-        ImGui::Spacing();
-      } else {
-        first = false;
-      }
+            if (!first)
+            {
+                ImGui::Spacing();
+                ImGui::Spacing();
+            }
+            else
+            {
+                first = false;
+            }
 
-      auto& info = gAnalogInputs[i];
-      // build name
-      char name[128];
-      info.GetName(name, sizeof(name), "In", i);
+            auto& info = gAnalogInputs[i];
+            // build name
+            char name[128];
+            info.GetName(name, sizeof(name), "In", i);
 
-      if (i < numAccum && HALSIM_GetAnalogGyroInitialized(i)) {
-        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(96, 96, 96, 255));
-        ImGui::LabelText(name, "AnalogGyro[%d]", i);
-        ImGui::PopStyleColor();
-      } else if (auto simDevice = HALSIM_GetAnalogInSimDevice(i)) {
-        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(96, 96, 96, 255));
-        ImGui::LabelText(name, "%s", HALSIM_GetSimDeviceName(simDevice));
-        ImGui::PopStyleColor();
-      } else {
-        float val = HALSIM_GetAnalogInVoltage(i);
-        if (ImGui::SliderFloat(name, &val, 0.0, 5.0))
-          HALSIM_SetAnalogInVoltage(i, val);
-      }
+            if (i < numAccum && HALSIM_GetAnalogGyroInitialized(i))
+            {
+                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(96, 96, 96, 255));
+                ImGui::LabelText(name, "AnalogGyro[%d]", i);
+                ImGui::PopStyleColor();
+            }
+            else if (auto simDevice = HALSIM_GetAnalogInSimDevice(i))
+            {
+                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(96, 96, 96, 255));
+                ImGui::LabelText(name, "%s", HALSIM_GetSimDeviceName(simDevice));
+                ImGui::PopStyleColor();
+            }
+            else
+            {
+                float val = HALSIM_GetAnalogInVoltage(i);
+                if (ImGui::SliderFloat(name, &val, 0.0, 5.0))
+                    HALSIM_SetAnalogInVoltage(i, val);
+            }
 
-      // context menu to change name
-      info.PopupEditName(i);
+            // context menu to change name
+            info.PopupEditName(i);
+        }
     }
-  }
-  if (!hasInputs) ImGui::Text("No analog inputs");
+    if (!hasInputs)
+        ImGui::Text("No analog inputs");
 }
 
-void AnalogInputGui::Initialize() {
-  gAnalogInputs.Initialize();
-  HALSimGui::AddWindow("Analog Inputs", DisplayAnalogInputs,
-                       ImGuiWindowFlags_AlwaysAutoResize);
-  HALSimGui::SetDefaultWindowPos("Analog Inputs", 640, 20);
+void AnalogInputGui::Initialize()
+{
+    gAnalogInputs.Initialize();
+    HALSimGui::AddWindow("Analog Inputs", DisplayAnalogInputs,
+            ImGuiWindowFlags_AlwaysAutoResize);
+    HALSimGui::SetDefaultWindowPos("Analog Inputs", 640, 20);
 }

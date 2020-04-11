@@ -7,11 +7,13 @@
 
 #pragma once
 
-namespace halsimgui {
+namespace halsimgui
+{
 
-class TimingGui {
- public:
-  static void Initialize();
+class TimingGui
+{
+public:
+    static void Initialize();
 };
 
-}  // namespace halsimgui
+} // namespace halsimgui

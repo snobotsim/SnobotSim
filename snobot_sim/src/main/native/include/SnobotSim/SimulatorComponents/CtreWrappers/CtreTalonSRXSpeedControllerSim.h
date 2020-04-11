@@ -1,14 +1,17 @@
 
-#include "SnobotSim/SimulatorComponents/SmartSC/BaseCanSmartSpeedController.h"
+#pragma once
+
 #include <vector>
+
+#include "SnobotSim/SimulatorComponents/SmartSC/BaseCanSmartSpeedController.h"
 
 class CtreTalonSRXSpeedControllerSim : public BaseCanSmartSpeedController
 {
 public:
     static const std::string TYPE;
     const std::string& GetType() override
-    { 
-        return TYPE; 
+    {
+        return TYPE;
     }
 
     struct MotionProfilePoint
@@ -18,11 +21,10 @@ public:
         const double mVelocity;
 
         MotionProfilePoint(int aIndex, double aPosition, double aVelocity) :
-            mIndex(aIndex),
-            mPosition(aPosition),
-            mVelocity(aVelocity)
+                mIndex(aIndex),
+                mPosition(aPosition),
+                mVelocity(aVelocity)
         {
-
         }
     };
 
@@ -31,19 +33,18 @@ public:
     void setMotionProfilingCommand(double aDemand);
     double getLastClosedLoopError();
     void addMotionProfilePoint(MotionProfilePoint aPoint);
-    
+
     int getMotionProfileSize();
     MotionProfilePoint getMotionProfilePoint();
     void setLimitSwitchOverride(bool aOverrideFwdLimitSwitch, bool aOverrideRevLimitSwitch);
-    
+
     void setCurrentProfile(char aProfileSelect);
-    
+
     int getBinnedPosition();
     int getBinnedVelocity();
     void setCanFeedbackDevice(char aFeedbackDevice);
 
 protected:
-    
     double calculateMotionProfileOutput(double aCurrentPosition, double aCurrentVelocity, int aModeType) override;
     double calculateMotionProfileOutput(double aCurrentPosition, double aCurrentVelocity, double aGoalPosition, double aGoalVelocity);
 
@@ -67,8 +68,7 @@ protected:
         return 600;
     }
 
-    
     std::vector<MotionProfilePoint> mMotionProfilePoints;
-    int mMotionProfileProcessedCounter{0};
-    int mMotionProfileCurrentPointIndex{0};
+    int mMotionProfileProcessedCounter{ 0 };
+    int mMotionProfileCurrentPointIndex{ 0 };
 };

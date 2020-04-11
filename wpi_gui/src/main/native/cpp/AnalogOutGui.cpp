@@ -17,37 +17,45 @@
 
 using namespace halsimgui;
 
-static IniSaver<NameInfo> gAnalogOuts{"AnalogOut"};  // indexed by channel
+static IniSaver<NameInfo> gAnalogOuts{ "AnalogOut" }; // indexed by channel
 
-static void DisplayAnalogOutputs() {
-  static const int numAnalog = HAL_GetNumAnalogOutputs();
-  static auto init = std::make_unique<bool[]>(numAnalog);
+static void DisplayAnalogOutputs()
+{
+    static const int numAnalog = HAL_GetNumAnalogOutputs();
+    static auto init = std::make_unique<bool[]>(numAnalog);
 
-  int count = 0;
-  for (int i = 0; i < numAnalog; ++i) {
-    init[i] = HALSIM_GetAnalogOutInitialized(i);
-    if (init[i]) ++count;
-  }
-
-  if (count == 0) return;
-
-  if (SimDeviceGui::StartDevice("Analog Outputs")) {
-    for (int i = 0; i < numAnalog; ++i) {
-      if (!init[i]) continue;
-
-      auto& info = gAnalogOuts[i];
-      char name[128];
-      info.GetName(name, sizeof(name), "Out", i);
-      HAL_Value value = HAL_MakeDouble(HALSIM_GetAnalogOutVoltage(i));
-      SimDeviceGui::DisplayValue(name, true, &value);
-      info.PopupEditName(i);
+    int count = 0;
+    for (int i = 0; i < numAnalog; ++i)
+    {
+        init[i] = HALSIM_GetAnalogOutInitialized(i);
+        if (init[i])
+            ++count;
     }
 
-    SimDeviceGui::FinishDevice();
-  }
+    if (count == 0)
+        return;
+
+    if (SimDeviceGui::StartDevice("Analog Outputs"))
+    {
+        for (int i = 0; i < numAnalog; ++i)
+        {
+            if (!init[i])
+                continue;
+
+            auto& info = gAnalogOuts[i];
+            char name[128];
+            info.GetName(name, sizeof(name), "Out", i);
+            HAL_Value value = HAL_MakeDouble(HALSIM_GetAnalogOutVoltage(i));
+            SimDeviceGui::DisplayValue(name, true, &value);
+            info.PopupEditName(i);
+        }
+
+        SimDeviceGui::FinishDevice();
+    }
 }
 
-void AnalogOutGui::Initialize() {
-  gAnalogOuts.Initialize();
-  SimDeviceGui::Add(DisplayAnalogOutputs);
+void AnalogOutGui::Initialize()
+{
+    gAnalogOuts.Initialize();
+    SimDeviceGui::Add(DisplayAnalogOutputs);
 }

@@ -1,39 +1,42 @@
 
 #include "SnobotSimGui/Joysticks/WpiJoystick.h"
 
-#include <GLFW/glfw3.h>
 #include <imgui.h>
 #include <imgui_internal.h>
 
 #include <algorithm>
 
+#include <GLFW/glfw3.h>
+
 namespace
 {
-    
-int HatToAngle(unsigned char hat) {
-  switch (hat) {
+
+int HatToAngle(unsigned char hat)
+{
+    switch (hat)
+    {
     case GLFW_HAT_UP:
-      return 0;
+        return 0;
     case GLFW_HAT_RIGHT:
-      return 90;
+        return 90;
     case GLFW_HAT_DOWN:
-      return 180;
+        return 180;
     case GLFW_HAT_LEFT:
-      return 270;
+        return 270;
     case GLFW_HAT_RIGHT_UP:
-      return 45;
+        return 45;
     case GLFW_HAT_RIGHT_DOWN:
-      return 135;
+        return 135;
     case GLFW_HAT_LEFT_UP:
-      return 315;
+        return 315;
     case GLFW_HAT_LEFT_DOWN:
-      return 225;
+        return 225;
     default:
-      return -1;
-  }
+        return -1;
+    }
 }
 
-}
+} // namespace
 void WpiJoystick::Update()
 {
     std::memset(&desc, 0, sizeof(desc));
@@ -42,20 +45,24 @@ void WpiJoystick::Update()
     std::memset(&buttons, 0, sizeof(buttons));
     std::memset(&povs, 0, sizeof(povs));
 
-    if (!sys || !sys->present) return;
+    if (!sys || !sys->present)
+        return;
 
     // use gamepad mappings if present and enabled
     const float* sysAxes;
     const unsigned char* sysButtons;
-    if (sys->isGamepad && useGamepad) {
+    if (sys->isGamepad && useGamepad)
+    {
         // sysAxes = sys->gamepadState.axes;
         // don't remap on windows
-    #ifdef _WIN32
+#ifdef _WIN32
         sysButtons = sys->buttons;
-    #else
+#else
         sysButtons = sys->gamepadState.buttons;
-    #endif
-    } else {
+#endif
+    }
+    else
+    {
         sysAxes = sys->axes;
         sysButtons = sys->buttons;
     }
@@ -76,7 +83,7 @@ void WpiJoystick::Update()
     }
 
     axes.count = desc.axisCount;
-    if (sys->isGamepad && useGamepad) 
+    if (sys->isGamepad && useGamepad)
     {
         // the FRC DriverStation maps gamepad (XInput) trigger values to 0-1 range
         // on axis 2 and 3.
@@ -95,12 +102,14 @@ void WpiJoystick::Update()
             --buttons.count;
             buttons.buttons = (buttons.buttons & 0xff) | ((buttons.buttons >> 1) & 0x300);
         }
-    } else {
+    }
+    else
+    {
         std::memcpy(axes.axes, sysAxes, axes.count * sizeof(&axes.axes[0]));
     }
 
     povs.count = desc.povCount;
-    for (int j = 0; j < povs.count; ++j) 
+    for (int j = 0; j < povs.count; ++j)
     {
         povs.povs[j] = HatToAngle(sys->hats[j]);
     }
@@ -108,8 +117,8 @@ void WpiJoystick::Update()
 
 void WpiJoystick::SetHAL(int i)
 {
-  HALSIM_SetJoystickDescriptor(i, &desc);
-  HALSIM_SetJoystickAxes(i, &axes);
-  HALSIM_SetJoystickButtons(i, &buttons);
-  HALSIM_SetJoystickPOVs(i, &povs);
+    HALSIM_SetJoystickDescriptor(i, &desc);
+    HALSIM_SetJoystickAxes(i, &axes);
+    HALSIM_SetJoystickButtons(i, &buttons);
+    HALSIM_SetJoystickPOVs(i, &povs);
 }

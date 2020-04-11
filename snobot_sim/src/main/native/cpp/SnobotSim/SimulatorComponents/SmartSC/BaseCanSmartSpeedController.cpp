@@ -1,22 +1,22 @@
 #include "SnobotSim/SimulatorComponents/SmartSC/BaseCanSmartSpeedController.h"
-#include "SnobotSim/SimulatorComponents/SmartSC/CanIdOffset.h"
-#include "SnobotSim/Logging/SnobotLogger.h"
-#include <math.h>   
+
 #include <algorithm>
+#include <cmath>
+
 #include "SnobotSim/Logging/SnobotLogger.h"
-#include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/ModuleWrapper/Factories/FactoryContainer.h"
+#include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/SimulatorComponents/SmartSC/CanIdOffset.h"
 #include "SnobotSim/SimulatorComponents/SmartSC/SmartSCAnalogIn.h"
 #include "SnobotSim/SimulatorComponents/SmartSC/SmartSCEncoder.h"
 
-BaseCanSmartSpeedController::BaseCanSmartSpeedController(int aSimHandle, const std::string& aBaseName, int aPidSlots) : 
-    BaseSpeedControllerWrapper(aBaseName + " SC " + std::to_string(aSimHandle - CAN_SC_OFFSET), aSimHandle),
-    mCanHandle(aSimHandle - CAN_SC_OFFSET),
-    mPidConstants(aPidSlots),
-    mFeedbackDevice(FeedbackDevice::None),
-    mControlType(ControlType::Raw)
+BaseCanSmartSpeedController::BaseCanSmartSpeedController(int aSimHandle, const std::string& aBaseName, int aPidSlots) :
+        BaseSpeedControllerWrapper(aBaseName + " SC " + std::to_string(aSimHandle - CAN_SC_OFFSET), aSimHandle),
+        mCanHandle(aSimHandle - CAN_SC_OFFSET),
+        mPidConstants(aPidSlots),
+        mFeedbackDevice(FeedbackDevice::None),
+        mControlType(ControlType::Raw)
 {
-     
 }
 
 void BaseCanSmartSpeedController::setInverted(bool aInverted)
@@ -26,7 +26,7 @@ void BaseCanSmartSpeedController::setInverted(bool aInverted)
 
 void BaseCanSmartSpeedController::setPGain(int aSlot, double aP)
 {
-    if(aSlot >= mPidConstants.size())
+    if (aSlot >= mPidConstants.size())
     {
         SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN, "PID slot too big");
         return;
@@ -36,7 +36,7 @@ void BaseCanSmartSpeedController::setPGain(int aSlot, double aP)
 
 void BaseCanSmartSpeedController::setIGain(int aSlot, double aI)
 {
-    if(aSlot >= mPidConstants.size())
+    if (aSlot >= mPidConstants.size())
     {
         SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN, "PID slot too big");
         return;
@@ -46,7 +46,7 @@ void BaseCanSmartSpeedController::setIGain(int aSlot, double aI)
 
 void BaseCanSmartSpeedController::setDGain(int aSlot, double aD)
 {
-    if(aSlot >= mPidConstants.size())
+    if (aSlot >= mPidConstants.size())
     {
         SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN, "PID slot too big");
         return;
@@ -56,7 +56,7 @@ void BaseCanSmartSpeedController::setDGain(int aSlot, double aD)
 
 void BaseCanSmartSpeedController::setFGain(int aSlot, double aF)
 {
-    if(aSlot >= mPidConstants.size())
+    if (aSlot >= mPidConstants.size())
     {
         SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN, "PID slot too big");
         return;
@@ -66,7 +66,7 @@ void BaseCanSmartSpeedController::setFGain(int aSlot, double aF)
 
 void BaseCanSmartSpeedController::setIZone(int aSlot, double aIzone)
 {
-    if(aSlot >= mPidConstants.size())
+    if (aSlot >= mPidConstants.size())
     {
         SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN, "PID slot too big");
         return;
@@ -76,7 +76,7 @@ void BaseCanSmartSpeedController::setIZone(int aSlot, double aIzone)
 
 BaseCanSmartSpeedController::PIDFConstants BaseCanSmartSpeedController::getPidConstants(int aSlot)
 {
-    if(aSlot >= mPidConstants.size())
+    if (aSlot >= mPidConstants.size())
     {
         SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN, "PID slot too big");
     }
@@ -150,7 +150,7 @@ void BaseCanSmartSpeedController::Update(double aWaitTime)
     }
     case ControlType::MotionProfile:
     {
-        double output = calculateMotionProfileOutput(GetPosition(), GetVelocity(), (int) mControlGoal);
+        double output = calculateMotionProfileOutput(GetPosition(), GetVelocity(), (int)mControlGoal);
         BaseSpeedControllerWrapper::SetVoltagePercentage(output);
         break;
     }
@@ -179,7 +179,7 @@ double BaseCanSmartSpeedController::calculateMotionMagicOutput(double aCurrentPo
     double error = aControlGoal - aCurrentPosition;
     double dErr = error - mLastError;
 
-    double velocity = copysign(mMotionMagicMaxVelocity, error);
+    double velocity = std::copysign(mMotionMagicMaxVelocity, error);
     if (std::abs(error) < std::abs(velocity))
     {
         velocity = error;
@@ -233,7 +233,7 @@ double BaseCanSmartSpeedController::calculateFeedbackOutput(double aCurrent, dou
     double dErr = error - mLastError;
 
     mSumError += error;
-    
+
     PIDFConstants& constants = mPidConstants[mCurrentPidProfile];
     if (error > constants.mIZone)
     {
@@ -256,7 +256,6 @@ double BaseCanSmartSpeedController::calculateFeedbackOutput(double aCurrent, dou
     //         + " (P: " + pComp + ", I: " + iComp + ", D: " + dComp + ", F: " + fComp + ")");
 
     return output;
-
 }
 
 void BaseCanSmartSpeedController::addFollower(std::shared_ptr<BaseCanSmartSpeedController> aWrapper)
@@ -276,15 +275,14 @@ void BaseCanSmartSpeedController::setCanFeedbackDevice(FeedbackDevice aNewDevice
         }
         else
         {
-            SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "The simulator does not like you changing the feedback device attached to talon " << mCanHandle << " from "
-                    << static_cast<int>(mFeedbackDevice) + " to " <<  static_cast<int>(aNewDevice));
+            SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "The simulator does not like you changing the feedback device attached to talon " << mCanHandle << " from " << static_cast<int>(mFeedbackDevice) + " to " << static_cast<int>(aNewDevice));
         }
     }
 }
 void BaseCanSmartSpeedController::registerFeedbackSensor()
 {
-    
-            // FactoryContainer::Get().GetEncoderFactory()->Create(port, "com.snobot.simulator.module_wrapper.wpi.WpiEncoderWrapper");
+
+    // FactoryContainer::Get().GetEncoderFactory()->Create(port, "com.snobot.simulator.module_wrapper.wpi.WpiEncoderWrapper");
     switch (mFeedbackDevice)
     {
     case FeedbackDevice::Encoder:
@@ -300,7 +298,7 @@ void BaseCanSmartSpeedController::registerFeedbackSensor()
         //     wrapper.connectSpeedController(getHandle());
         //     sLOGGER.log(Level.WARN, "CTRE Encoder on port " + mCanHandle + " was not registerd before starting the robot");
         // }
-       SensorActuatorRegistry::Get().GetIEncoderWrapper(mId, true)->SetInitialized(true);
+        SensorActuatorRegistry::Get().GetIEncoderWrapper(mId, true)->SetInitialized(true);
         break;
     case FeedbackDevice::Analog:
         if (!SensorActuatorRegistry::Get().GetIAnalogInWrapper(mId, false))

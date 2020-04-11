@@ -9,7 +9,7 @@ nativeUtils {
   dependencyConfigs {
     snobot_sim_ctre {
       groupId = "com.snobot.simulator"
-      artifactId = "ctre_sim_override"	
+      artifactId = "ctre_sim_override"
       headerClassifier = 'headers'
       ext = "zip"
       version = getCtreSimVersion()
@@ -17,7 +17,7 @@ nativeUtils {
     }
     snobot_sim_rev {
       groupId = "com.snobot.simulator"
-      artifactId = "rev_simulator"	
+      artifactId = "rev_simulator"
       headerClassifier = 'headers'
       ext = "zip"
       version = getRevRoboticsSimVersion()
@@ -38,7 +38,7 @@ model {
                     }
                 }
             }
-            
+
             if(project.hasProperty("include_snobot_sim_cpp"))
             {
                 binaries.all {
@@ -49,7 +49,7 @@ model {
                     }
                 }
             }
-            
+
             if(project.hasProperty("extra_native_libraries"))
             {
                 println("Adding extra natives " + extra_native_libraries)
@@ -82,7 +82,7 @@ model {
                                 run.systemProperty 'java.library.path', filePath
                                 run.environment 'LD_LIBRARY_PATH', filePath
                                 // run.environment 'HALSIM_EXTENSIONS', filePath + File.separatorChar + "wpi_gui"
-                                
+
                                 run.workingDir filePath
 
                                 found = true

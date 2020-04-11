@@ -13,12 +13,12 @@
 #define EXPORT_
 #endif
 
-
-#include "SnobotSimGui/ModuleWrapperDisplay/IWidgetDisplay.h"
-#include "SnobotSimGui/Joysticks/JoystickManager.h"
-#include "SnobotSimGui/DriverStationWidget.h"
-#include <vector>
 #include <memory>
+#include <vector>
+
+#include "SnobotSimGui/DriverStationWidget.h"
+#include "SnobotSimGui/Joysticks/JoystickManager.h"
+#include "SnobotSimGui/ModuleWrapperDisplay/IWidgetDisplay.h"
 
 namespace SnobotSim
 {
@@ -31,12 +31,10 @@ public:
     void Stop();
 
 protected:
-
     void RenderLoop();
 
     bool mRunning;
 
-    
     std::vector<std::shared_ptr<IWidgetDisplay>> mWidgets;
     JoystickManager mJoystickManager;
     DriverStationWidget mDriverStationWidget;

@@ -1,15 +1,14 @@
 
 
 #include "SnobotSim/SimulatorComponents/RevWrappers/RevSpeedControllerSimWrapper.h"
+
 #include "SnobotSim/Logging/SnobotLogger.h"
 
 const std::string RevpeedControllerSim::TYPE = "com.snobot.simulator.simulator_components.ctre.RevpeedControllerSim";
 
-
-RevpeedControllerSim::RevpeedControllerSim(int aCanHandle) : 
-    BaseCanSmartSpeedController(aCanHandle, "Rev", 2)
+RevpeedControllerSim::RevpeedControllerSim(int aCanHandle) :
+        BaseCanSmartSpeedController(aCanHandle, "Rev", 2)
 {
-
 }
 
 double RevpeedControllerSim::calculateMotionProfileOutput(double aCurrentPosition, double aCurrentVelocity, int aModeType)

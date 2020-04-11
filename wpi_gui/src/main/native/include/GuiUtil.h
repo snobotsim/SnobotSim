@@ -7,23 +7,26 @@
 
 #pragma once
 
-#include <GL/gl3w.h>
 #include <imgui.h>
 #include <wpi/Twine.h>
 
-namespace halsimgui {
+#include <GL/gl3w.h>
+
+namespace halsimgui
+{
 
 bool LoadTextureFromFile(const wpi::Twine& filename, GLuint* out_texture,
-                         int* out_width, int* out_height);
+        int* out_width, int* out_height);
 
 // get distance^2 between two ImVec's
-inline float GetDistSquared(const ImVec2& a, const ImVec2& b) {
-  float deltaX = b.x - a.x;
-  float deltaY = b.y - a.y;
-  return deltaX * deltaX + deltaY * deltaY;
+inline float GetDistSquared(const ImVec2& a, const ImVec2& b)
+{
+    float deltaX = b.x - a.x;
+    float deltaY = b.y - a.y;
+    return deltaX * deltaX + deltaY * deltaY;
 }
 
 // maximize fit while preserving aspect ratio
 void MaxFit(ImVec2* min, ImVec2* max, float width, float height);
 
-}  // namespace halsimgui
+} // namespace halsimgui

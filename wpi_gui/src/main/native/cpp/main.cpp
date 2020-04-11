@@ -33,30 +33,32 @@ extern "C" {
 #if defined(WIN32) || defined(_WIN32)
 __declspec(dllexport)
 #endif
-    int HALSIM_InitExtension(void) {
-  HALSimGui::Add(AccelerometerGui::Initialize);
-  HALSimGui::Add(AddressableLEDGui::Initialize);
-  HALSimGui::Add(AnalogGyroGui::Initialize);
-  HALSimGui::Add(AnalogInputGui::Initialize);
-  HALSimGui::Add(AnalogOutGui::Initialize);
-  HALSimGui::Add(CompressorGui::Initialize);
-  HALSimGui::Add(DriverStationGui::Initialize);
-  HALSimGui::Add(DIOGui::Initialize);
-  HALSimGui::Add(EncoderGui::Initialize);
-  HALSimGui::Add(Field2D::Initialize);
-  HALSimGui::Add(PDPGui::Initialize);
-  HALSimGui::Add(PWMGui::Initialize);
-  HALSimGui::Add(RelayGui::Initialize);
-  HALSimGui::Add(RoboRioGui::Initialize);
-  HALSimGui::Add(SimDeviceGui::Initialize);
-  HALSimGui::Add(SolenoidGui::Initialize);
-  HALSimGui::Add(TimingGui::Initialize);
+        int HALSIM_InitExtension(void)
+{
+    HALSimGui::Add(AccelerometerGui::Initialize);
+    HALSimGui::Add(AddressableLEDGui::Initialize);
+    HALSimGui::Add(AnalogGyroGui::Initialize);
+    HALSimGui::Add(AnalogInputGui::Initialize);
+    HALSimGui::Add(AnalogOutGui::Initialize);
+    HALSimGui::Add(CompressorGui::Initialize);
+    HALSimGui::Add(DriverStationGui::Initialize);
+    HALSimGui::Add(DIOGui::Initialize);
+    HALSimGui::Add(EncoderGui::Initialize);
+    HALSimGui::Add(Field2D::Initialize);
+    HALSimGui::Add(PDPGui::Initialize);
+    HALSimGui::Add(PWMGui::Initialize);
+    HALSimGui::Add(RelayGui::Initialize);
+    HALSimGui::Add(RoboRioGui::Initialize);
+    HALSimGui::Add(SimDeviceGui::Initialize);
+    HALSimGui::Add(SolenoidGui::Initialize);
+    HALSimGui::Add(TimingGui::Initialize);
 
-  wpi::outs() << "Simulator GUI Initializing.\n";
-  if (!HALSimGui::Initialize()) return 0;
-  HAL_SetMain(nullptr, HALSimGui::Main, HALSimGui::Exit);
-  wpi::outs() << "Simulator GUI Initialized!\n";
+    wpi::outs() << "Simulator GUI Initializing.\n";
+    if (!HALSimGui::Initialize())
+        return 0;
+    HAL_SetMain(nullptr, HALSimGui::Main, HALSimGui::Exit);
+    wpi::outs() << "Simulator GUI Initialized!\n";
 
-  return 0;
+    return 0;
 }
-}  // extern "C"
+} // extern "C"

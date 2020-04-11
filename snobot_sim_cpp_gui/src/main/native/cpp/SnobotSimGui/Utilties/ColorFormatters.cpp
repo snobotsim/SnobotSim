@@ -5,13 +5,13 @@
 
 ImColor GetClampedColor(double aValue, double aMin, double aMax)
 {
-    if (isnan(aValue))
+    if (std::isnan(aValue))
     {
         aValue = 0;
     }
 
     aValue = std::clamp(aValue, aMin, aMax);
-    
+
     double percent = ((aValue - aMin) / (aMax - aMin));
     double hue = percent * .33;
 

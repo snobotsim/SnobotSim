@@ -2,6 +2,7 @@
 #include <jni.h>
 
 #include <cassert>
+#include <iostream>
 
 #include "SnobotSim/Config/SimulatorConfigReaderV1.h"
 #include "SnobotSim/Config/SimulatorConfigWriterV1.h"
@@ -13,7 +14,6 @@
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/SnobotSimHalVersion.h"
 #include "com_snobot_simulator_jni_SnobotSimulatorJni.h"
-#include <iostream>
 #include "hal/HAL.h"
 #include "wpi/jni_util.h"
 
@@ -136,17 +136,17 @@ Java_com_snobot_simulator_jni_SimulationConnectorJni_createSpiSimulator
     return true;
 }
 
-
 /*
  * Class:     com_snobot_simulator_jni_SnobotSimulatorJni
  * Method:    loadConfigFile
  * Signature: (Ljava/lang/String;)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_SnobotSimulatorJni_loadConfigFile
-  (JNIEnv * env, jclass, jstring aFilename)
+JNIEXPORT jboolean JNICALL
+Java_com_snobot_simulator_jni_SnobotSimulatorJni_loadConfigFile
+  (JNIEnv* env, jclass, jstring aFilename)
 {
-  std::cout << "Loading oonfig in jni " << aFilename << std::endl;
-    if(aFilename == NULL)
+    std::cout << "Loading oonfig in jni " << aFilename << std::endl;
+    if (aFilename == NULL)
     {
         SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Simulator file was null! Won't hook anything up");
         return true;
@@ -161,11 +161,12 @@ JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_SnobotSimulatorJni_load
  * Method:    saveConfigFile
  * Signature: (Ljava/lang/String;)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_SnobotSimulatorJni_saveConfigFile
-  (JNIEnv * env, jclass, jstring aFilename)
+JNIEXPORT jboolean JNICALL
+Java_com_snobot_simulator_jni_SnobotSimulatorJni_saveConfigFile
+  (JNIEnv* env, jclass, jstring aFilename)
 {
-  std::cout << "Saving oonfig in jni " << aFilename << std::endl;
-    if(aFilename == NULL)
+    std::cout << "Saving oonfig in jni " << aFilename << std::endl;
+    if (aFilename == NULL)
     {
         SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Simulator file was null!");
         return false;
@@ -175,4 +176,4 @@ JNIEXPORT jboolean JNICALL Java_com_snobot_simulator_jni_SnobotSimulatorJni_save
     return configWriter.DumpConfig(env->GetStringUTFChars(aFilename, NULL));
 }
 
-}  // extern "C"
+} // extern "C"

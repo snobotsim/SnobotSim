@@ -1,7 +1,6 @@
 
 #include "SnobotSim/HalCallbacks/CallbackSetup.h"
 
-#include "SnobotSim/HalCallbacks/ThirdPartyCanCallbacks.h"
 #include "SnobotSim/HalCallbacks/AnalogGyroCallbacks.h"
 #include "SnobotSim/HalCallbacks/AnalogIOCallbacks.h"
 #include "SnobotSim/HalCallbacks/DigitalIOCallbacks.h"
@@ -28,7 +27,6 @@ void SnobotSim::InitializeSnobotCallbacks()
     InitializeSpiCallbacks();
 
     InitializeThirdPartyCanCallbacks();
-    
 }
 
 void SnobotSim::ResetSnobotCallbacks()

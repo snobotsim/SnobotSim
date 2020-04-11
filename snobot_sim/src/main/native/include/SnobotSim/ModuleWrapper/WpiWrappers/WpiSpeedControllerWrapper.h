@@ -19,9 +19,9 @@ public:
 
     explicit WpiSpeedControllerWrapper(int aPort);
     virtual ~WpiSpeedControllerWrapper();
-    
+
     const std::string& GetType() override
-    { 
-        return TYPE; 
+    {
+        return TYPE;
     }
 };

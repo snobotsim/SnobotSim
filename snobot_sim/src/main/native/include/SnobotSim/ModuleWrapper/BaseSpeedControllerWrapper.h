@@ -1,9 +1,9 @@
 
 
-
 #pragma once
 
 #include <memory>
+#include <string>
 
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 #include "SnobotSim/ModuleWrapper/Interfaces/ISpeedControllerWrapper.h"
@@ -13,7 +13,6 @@
 class BaseSpeedControllerWrapper : public AModuleWrapper, public ISpeedControllerWrapper
 {
 public:
-
     explicit BaseSpeedControllerWrapper(const std::string& aName, int aPort);
     virtual ~BaseSpeedControllerWrapper();
 

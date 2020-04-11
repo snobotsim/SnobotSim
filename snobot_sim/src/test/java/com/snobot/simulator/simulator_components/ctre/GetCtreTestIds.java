@@ -13,7 +13,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 
 class GetCtreTestIds implements ArgumentsProvider {
-
     private static final int SC_COUNT = 1;
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {

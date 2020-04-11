@@ -25,8 +25,8 @@ public:
     bool GetState() override;
 
     const std::string& GetType() override
-    { 
-        return TYPE; 
+    {
+        return TYPE;
     }
 
 protected:

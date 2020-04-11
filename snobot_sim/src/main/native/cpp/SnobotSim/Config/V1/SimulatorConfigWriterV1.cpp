@@ -1,25 +1,22 @@
 
 #include "SnobotSim/Config/SimulatorConfigWriterV1.h"
 
+#include <filesystem>
+#include <fstream>
 #include <iostream>
 
-#include <filesystem>
-
 #include "SnobotSim/Config/SimulatorConfigV1.h"
-#include "SnobotSim/SensorActuatorRegistry.h"
-#include "yaml-cpp/yaml.h"
-
-#include <fstream>
 #include "SnobotSim/MotorSim/GravityLoadDcMotorSim.h"
 #include "SnobotSim/MotorSim/RotationalLoadDcMotorSim.h"
 #include "SnobotSim/MotorSim/SimpleMotorSimulator.h"
 #include "SnobotSim/MotorSim/StaticLoadDcMotorSim.h"
-
+#include "SnobotSim/SensorActuatorRegistry.h"
+#include "yaml-cpp/yaml.h"
 
 namespace
 {
 
-template<typename ItemType>
+template <typename ItemType>
 void DumpConfig(YAML::Emitter& out, int handle, const std::shared_ptr<ItemType>& wrapper)
 {
     out << YAML::BeginMap;
@@ -43,7 +40,6 @@ void DumpMotorModelConfig(YAML::Emitter& out, const DcMotorModel& config)
 {
     out << YAML::Key << "mMotorModelConfig" << YAML::BeginMap;
 
-    
     out << YAML::Key << "mGearReduction" << YAML::Value << config.GetModelConfig().mFactoryParams.mGearReduction;
     out << YAML::Key << "mGearboxEfficiency" << YAML::Value << config.GetModelConfig().mFactoryParams.mTransmissionEfficiency;
     out << YAML::Key << "mHasBrake" << YAML::Value << config.GetModelConfig().mHasBrake;
@@ -52,7 +48,6 @@ void DumpMotorModelConfig(YAML::Emitter& out, const DcMotorModel& config)
     out << YAML::Key << "mNumMotors" << YAML::Value << config.GetModelConfig().mFactoryParams.mNumMotors;
 
     out << YAML::EndMap;
-
 }
 
 void DumpConfig(YAML::Emitter& out, int handle, const std::shared_ptr<ISpeedControllerWrapper>& wrapper)
@@ -65,25 +60,25 @@ void DumpConfig(YAML::Emitter& out, int handle, const std::shared_ptr<ISpeedCont
     auto motorSimulator = wrapper->GetMotorSimulator();
     bool dumpMotorModel = false;
 
-    if(motorSimulator)
+    if (motorSimulator)
     {
         std::string simType = motorSimulator->GetSimulatorType();
         auto tag = YAML::SecondaryTag(simType);
         out << tag;
         out << YAML::Key << "mMotorSimConfig" << YAML::BeginMap;
-        if(!out.good())
+        if (!out.good())
         {
-            std::cout << "!!!!!!!!!A " << out.GetLastError() << std::endl;;
+            std::cout << "!!!!!!!!!A " << out.GetLastError() << std::endl;
+            ;
         }
 
         std::cout << "Dumping " << simType << std::endl;
-        if(simType == SimpleMotorSimulator::GetType())
+        if (simType == SimpleMotorSimulator::GetType())
         {
-             //<< YAML::TagByKind  << SimpleMotorSimulator::SIMULATOR_TYPE;
+            //<< YAML::TagByKind  << SimpleMotorSimulator::SIMULATOR_TYPE;
             out << YAML::Key << "mMaxSpeed" << YAML::Value << std::static_pointer_cast<SimpleMotorSimulator>(motorSimulator)->GetMaxSpeed();
-
         }
-        else if(simType == StaticLoadDcMotorSim::GetType())
+        else if (simType == StaticLoadDcMotorSim::GetType())
         {
             dumpMotorModel = true;
             auto castSim = std::static_pointer_cast<StaticLoadDcMotorSim>(motorSimulator);
@@ -91,14 +86,14 @@ void DumpConfig(YAML::Emitter& out, int handle, const std::shared_ptr<ISpeedCont
             out << YAML::Key << "mLoad" << YAML::Value << castSim->GetLoad();
             out << YAML::Key << "mConversionFactor" << YAML::Value << castSim->GetConversionFactor();
         }
-        else if(simType == GravityLoadDcMotorSim::GetType())
+        else if (simType == GravityLoadDcMotorSim::GetType())
         {
             dumpMotorModel = true;
             auto castSim = std::static_pointer_cast<GravityLoadDcMotorSim>(motorSimulator);
 
             out << YAML::Key << "mLoad" << YAML::Value << castSim->GetLoad();
         }
-        else if(simType == RotationalLoadDcMotorSim::GetType())
+        else if (simType == RotationalLoadDcMotorSim::GetType())
         {
             dumpMotorModel = true;
             auto castSim = std::static_pointer_cast<RotationalLoadDcMotorSim>(motorSimulator);
@@ -108,18 +103,17 @@ void DumpConfig(YAML::Emitter& out, int handle, const std::shared_ptr<ISpeedCont
             out << YAML::Key << "mConstantAssistTorque" << YAML::Value << 0;
             out << YAML::Key << "mOverCenterAssistTorque" << YAML::Value << 0;
         }
-        else if(simType == "Null")
+        else if (simType == "Null")
         {
-            
         }
         else
         {
             SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Unknown type " << simType);
         }
-        
+
         out << YAML::EndMap;
 
-        if(dumpMotorModel)
+        if (dumpMotorModel)
         {
             DumpMotorModelConfig(out, std::static_pointer_cast<BaseDcMotorSimulator>(motorSimulator)->GetMotorModel());
         }
@@ -128,13 +122,12 @@ void DumpConfig(YAML::Emitter& out, int handle, const std::shared_ptr<ISpeedCont
     out << YAML::EndMap;
 }
 
-
-template<typename ItemType>
+template <typename ItemType>
 void DumpBasicConfig(YAML::Emitter& out, const std::string& name, const std::map<int, std::shared_ptr<ItemType>>& map)
 {
     out << YAML::Key << name;
     out << YAML::BeginSeq;
-    for(const auto& pair : map)
+    for (const auto& pair : map)
     {
         DumpConfig(out, pair.first, pair.second);
     }
@@ -166,9 +159,6 @@ void DumpBasicConfig(YAML::Emitter& out, const std::string& name, const std::map
 //     outConfig.mName = data->GetName();
 //     outConfig.mType = data->GetType();
 // }
-
-
-
 
 // SimulatorConfigV1 CreateSimulatorConfig()
 // {
@@ -203,11 +193,14 @@ void DumpBasicConfig(YAML::Emitter& out, const std::string& name, const std::map
 
 //     return configNode;
 // }
+} // namespace
+
+SimulatorConfigWriterV1::SimulatorConfigWriterV1()
+{
 }
-
-SimulatorConfigWriterV1::SimulatorConfigWriterV1() {}
-SimulatorConfigWriterV1::~SimulatorConfigWriterV1() {}
-
+SimulatorConfigWriterV1::~SimulatorConfigWriterV1()
+{
+}
 
 bool SimulatorConfigWriterV1::DumpConfig(const std::string& aConfigFile)
 {

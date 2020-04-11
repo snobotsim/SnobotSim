@@ -1,17 +1,18 @@
 
-#include "SnobotSimGui/Joysticks/WpiJoystick.h"
+#pragma once
+
 #include <vector>
+
+#include "SnobotSimGui/Joysticks/WpiJoystick.h"
 
 class JoystickManager
 {
 public:
-
     JoystickManager();
 
     void Update();
 
 protected:
-
     void UpdateJoysticks();
     void RenderSystemJoysticks();
     void RenderWpiJoysticks();

@@ -1,11 +1,15 @@
 
+#pragma once
 
 #include "SnobotSimGui/ModuleWrapperDisplay/IWidgetDisplay.h"
 
 class AnalogInWidget : public IWidgetDisplay
 {
 public:
-    AnalogInWidget(SaveCallback callback) : mSaveCallback(callback) {}
+    AnalogInWidget(SaveCallback callback) :
+            mSaveCallback(callback)
+    {
+    }
 
     void updateDisplay() override;
 

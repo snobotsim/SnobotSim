@@ -1,19 +1,18 @@
 
 #include "SnobotSim/Config/SimulatorConfigReaderV1.h"
 
-#include <iostream>
-
 #include <filesystem>
+#include <iostream>
 
 #include "SnobotSim/Config/SimulatorConfigV1.h"
 #include "SnobotSim/GetSensorActuatorHelper.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
 #include "SnobotSim/ModuleWrapper/Factories/FactoryContainer.h"
+#include "SnobotSim/MotorFactory/VexMotorFactory.h"
 #include "SnobotSim/MotorSim/GravityLoadDcMotorSim.h"
 #include "SnobotSim/MotorSim/RotationalLoadDcMotorSim.h"
 #include "SnobotSim/MotorSim/SimpleMotorSimulator.h"
 #include "SnobotSim/MotorSim/StaticLoadDcMotorSim.h"
-#include "SnobotSim/MotorFactory/VexMotorFactory.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "yaml-cpp/yaml.h"
 
@@ -56,7 +55,7 @@ void LoadBasicConfig(const YAML::Node& aNode, BasicModuleConfig& aOutput)
 const YAML::Node& operator>>(const YAML::Node& aNode, EncoderConfig& aOutput)
 {
     LoadBasicConfig(aNode, aOutput);
-    if(aNode["mConnectedSpeedControllerHandle"])
+    if (aNode["mConnectedSpeedControllerHandle"])
     {
         aOutput.mConnectedSpeedControllerHandle = aNode["mConnectedSpeedControllerHandle"].as<int>();
     }
@@ -102,10 +101,10 @@ const YAML::Node& operator>>(const YAML::Node& aNode, PwmConfig& aOutput)
         }
         else
         {
-        SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Unknown sim type " << motorSimConfigTag << "(" << aOutput.mHandle << ")");
+            SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Unknown sim type " << motorSimConfigTag << "(" << aOutput.mHandle << ")");
         }
 
-        if(aNode["mMotorModelConfig"])
+        if (aNode["mMotorModelConfig"])
         {
             const YAML::Node& motorModelConfig = aNode["mMotorModelConfig"];
             aOutput.mMotorSim.mMotorModelConfig.mFactoryParams.mMotorType = motorModelConfig["mMotorType"].as<std::string>();
@@ -117,7 +116,8 @@ const YAML::Node& operator>>(const YAML::Node& aNode, PwmConfig& aOutput)
 
             std::cout << "Getting motor model " << aOutput.mMotorSim.mMotorModelConfig.mFactoryParams.mMotorType << std::endl;
         }
-        else{
+        else
+        {
             std::cout << "No motor model" << std::endl;
         }
     }
@@ -151,7 +151,7 @@ const YAML::Node& operator>>(const YAML::Node& configNode, SimulatorConfigV1& co
 
     return configNode;
 }
-}
+} // namespace
 
 SimulatorConfigReaderV1::SimulatorConfigReaderV1()
 {
@@ -187,19 +187,19 @@ void CreateBasicComponents(std::shared_ptr<FactoryType> aFactory, const std::map
 
 DcMotorModel GetMotorModle(const DcMotorModelConfigConfig::FactoryParams& factoryParams)
 {
-    
-        DcMotorModelConfig motorModelConfig = VexMotorFactory::MakeTransmission(
-                VexMotorFactory::CreateMotor(factoryParams.mMotorType),
-                factoryParams.mNumMotors, factoryParams.mGearReduction, factoryParams.mGearboxEfficiency);
-                
-        motorModelConfig.mHasBrake = factoryParams.mHasBrake;
-        motorModelConfig.mInverted = factoryParams.mInverted;
 
-        DcMotorModel motorModel(motorModelConfig);
+    DcMotorModelConfig motorModelConfig = VexMotorFactory::MakeTransmission(
+            VexMotorFactory::CreateMotor(factoryParams.mMotorType),
+            factoryParams.mNumMotors, factoryParams.mGearReduction, factoryParams.mGearboxEfficiency);
 
-        std::cout << "Making motor model " << factoryParams.mMotorType << "'" << factoryParams.mNumMotors << std::endl;
+    motorModelConfig.mHasBrake = factoryParams.mHasBrake;
+    motorModelConfig.mInverted = factoryParams.mInverted;
 
-        return motorModel;
+    DcMotorModel motorModel(motorModelConfig);
+
+    std::cout << "Making motor model " << factoryParams.mMotorType << "'" << factoryParams.mNumMotors << std::endl;
+
+    return motorModel;
 }
 
 void CreatePwmComponents(std::shared_ptr<SpeedControllerFactory> aFactory, const std::map<int, std::shared_ptr<ISpeedControllerWrapper>>& wrapperMap, const std::vector<PwmConfig>& aConfigs)

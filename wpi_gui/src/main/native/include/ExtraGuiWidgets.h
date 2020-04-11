@@ -9,33 +9,40 @@
 
 #include <imgui.h>
 
-namespace halsimgui {
+namespace halsimgui
+{
 
 /**
  * DrawLEDs() configuration for 2D arrays.
  */
-struct LEDConfig {
-  /**
+struct LEDConfig
+{
+    /**
    * Whether the major order is serpentined (e.g. the first row goes left to
    * right, the second row right to left, the third row left to right, and so
    * on).
    */
-  bool serpentine = false;
+    bool serpentine = false;
 
-  /**
+    /**
    * The input array order (row-major or column-major).
    */
-  enum Order { RowMajor = 0, ColumnMajor } order = RowMajor;
+    enum Order
+    {
+        RowMajor = 0,
+        ColumnMajor
+    } order = RowMajor;
 
-  /**
+    /**
    * The starting location of the array (0 location).
    */
-  enum Start {
-    UpperLeft = 0,
-    LowerLeft,
-    UpperRight,
-    LowerRight
-  } start = UpperLeft;
+    enum Start
+    {
+        UpperLeft = 0,
+        LowerLeft,
+        UpperRight,
+        LowerRight
+    } start = UpperLeft;
 };
 
 /**
@@ -57,7 +64,7 @@ struct LEDConfig {
  * @param config 2D array configuration
  */
 void DrawLEDs(const int* values, int numValues, int cols, const ImU32* colors,
-              float size = 0.0f, float spacing = 0.0f,
-              const LEDConfig& config = LEDConfig{});
+        float size = 0.0f, float spacing = 0.0f,
+        const LEDConfig& config = LEDConfig{});
 
-}  // namespace halsimgui
+} // namespace halsimgui

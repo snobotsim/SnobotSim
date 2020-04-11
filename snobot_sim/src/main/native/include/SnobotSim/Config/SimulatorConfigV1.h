@@ -61,7 +61,6 @@ struct RotationalLoadMotorSimulationConfig
     double mOverCenterAssistTorque;
 };
 
-
 struct FullMotorSimConfig
 {
     union MotorSimConfig {

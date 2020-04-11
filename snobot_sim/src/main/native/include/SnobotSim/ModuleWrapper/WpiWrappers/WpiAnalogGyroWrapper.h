@@ -17,7 +17,6 @@
 class WpiAnalogGyroWrapper : public AModuleWrapper, public IGyroWrapper
 {
 public:
-
     static const std::string TYPE;
 
     using AModuleWrapper::GetName;
@@ -30,9 +29,10 @@ public:
     double GetAngle() override;
 
     const std::string& GetType() override
-    { 
-        return TYPE; 
+    {
+        return TYPE;
     }
+
 protected:
     const int mHandle;
 };

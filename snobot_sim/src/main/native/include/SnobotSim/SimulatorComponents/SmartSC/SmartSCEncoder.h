@@ -19,7 +19,7 @@ public:
     virtual ~SmartSCEncoder();
 
     const std::string& GetType() override
-    { 
-        return TYPE; 
+    {
+        return TYPE;
     }
 };

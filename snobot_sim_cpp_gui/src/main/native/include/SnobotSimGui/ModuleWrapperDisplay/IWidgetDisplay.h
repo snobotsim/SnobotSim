@@ -4,10 +4,9 @@
 
 #include <functional>
 
-class IWidgetDisplay 
+class IWidgetDisplay
 {
 public:
-
     using SaveCallback = std::function<void()>;
 
     virtual void updateDisplay() = 0;

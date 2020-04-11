@@ -21,7 +21,7 @@ public class TestCANSparkMaxFunctions extends BaseSimulatorJniTest
     {
         CANSparkMax spark = new CANSparkMax(10, MotorType.kBrushless);
         CANSparkMax follower = new CANSparkMax(11, MotorType.kBrushed);
-       
+
         spark.set(0);
         spark.get();
         spark.setInverted(false);
@@ -109,7 +109,7 @@ public class TestCANSparkMaxFunctions extends BaseSimulatorJniTest
             spark.isSoftLimitEnabled(softLimitDirection);
         }
         spark.getLastError();
-        
+
 
         spark.close();
     }

@@ -1,24 +1,24 @@
 
 #pragma once
 
-#include "SnobotSim/SimulatorComponents/SmartSC/BaseCanSmartSpeedController.h"
 #include <vector>
+
+#include "SnobotSim/SimulatorComponents/SmartSC/BaseCanSmartSpeedController.h"
 
 class RevpeedControllerSim : public BaseCanSmartSpeedController
 {
 public:
     static const std::string TYPE;
     const std::string& GetType() override
-    { 
-        return TYPE; 
+    {
+        return TYPE;
     }
 
     RevpeedControllerSim(int aCanHandle);
-    
+
     void setCanFeedbackDevice(int aFeedbackDevice);
 
 protected:
-
     double calculateMotionProfileOutput(double aCurrentPosition, double aCurrentVelocity, int aModeType) override;
 
     double getPositionUnitConversion() override

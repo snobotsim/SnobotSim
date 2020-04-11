@@ -69,7 +69,7 @@ model {
     }
     binaries {
         all {
-            
+
                 if (it.targetPlatform.operatingSystem.isWindows()) {
                     it.linker.args << 'Gdi32.lib' << 'Shell32.lib'
                 } else if (it.targetPlatform.operatingSystem.isMacOsX()) {
@@ -79,7 +79,7 @@ model {
                 }
         }
     }
-    
+
     tasks {
         def c = $.components
         if (!project.hasProperty('onlylinuxathena') && !project.hasProperty('onlylinuxraspbian') && !project.hasProperty('onlylinuxaarch64bionic')) {
@@ -183,4 +183,3 @@ model {
 //             }
 //         }
 //     }
-

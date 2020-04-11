@@ -64,7 +64,7 @@ nativeUtils {
   dependencyConfigs {
     snobot_sim_ctre {
       groupId = "com.snobot.simulator"
-      artifactId = "ctre_sim_override"	
+      artifactId = "ctre_sim_override"
       headerClassifier = 'headers'
       ext = "zip"
       version = getCtreSimVersion()
@@ -72,7 +72,7 @@ nativeUtils {
     }
     snobot_sim_rev {
       groupId = "com.snobot.simulator"
-      artifactId = "rev_simulator"	
+      artifactId = "rev_simulator"
       headerClassifier = 'headers'
       ext = "zip"
       version = getRevRoboticsSimVersion()
@@ -112,5 +112,4 @@ nativeUtils.exportsConfigs {
             // symbols.removeIf({ !it.startsWith('HAL_') && !it.startsWith('HALSIM_') })
         }
     }
-  }
 }

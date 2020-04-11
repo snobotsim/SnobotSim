@@ -30,7 +30,7 @@ task cppSourcesZip(type: Zip) {
 
 model {
     publishing {
-        
+
         def taskList = createComponentZipTasks($.components, ["${nativeName}Base", "${nativeName}JNIShared"], zipBaseName, Zip, project, includeStandardZipFormat)
 
 

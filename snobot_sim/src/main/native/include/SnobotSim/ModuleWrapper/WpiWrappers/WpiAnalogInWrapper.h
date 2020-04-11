@@ -24,9 +24,10 @@ public:
     double GetVoltage() override;
 
     const std::string& GetType() override
-    { 
-        return TYPE; 
+    {
+        return TYPE;
     }
+
 protected:
     const int mHandle;
 };

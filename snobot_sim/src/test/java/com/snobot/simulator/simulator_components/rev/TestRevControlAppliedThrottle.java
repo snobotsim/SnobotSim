@@ -15,7 +15,6 @@ import java.util.Collection;
 
 public class TestRevControlAppliedThrottle extends BaseSimulatorJniTest
 {
-
     private static final double sDOUBLE_EPSILON = 1.0 / 1023;
 
     @ParameterizedTest

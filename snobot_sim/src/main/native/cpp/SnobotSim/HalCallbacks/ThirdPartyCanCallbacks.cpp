@@ -15,9 +15,9 @@ namespace SnobotSim
 
 namespace
 {
-    CtreManager gCtreManager;
-    RevManager gReveManager;
-}
+CtreManager gCtreManager;
+RevManager gReveManager;
+} // namespace
 
 void InitializeThirdPartyCanCallbacks()
 {
@@ -25,37 +25,37 @@ void InitializeThirdPartyCanCallbacks()
     // CTRE
     //////////////////////////////
     SnobotSim::SetMotControllerCallback([](const char* name,
-                                uint32_t messageId,
-                                uint8_t* buffer,
-                                int length) {
+                                                uint32_t messageId,
+                                                uint8_t* buffer,
+                                                int length) {
         gCtreManager.handleMotorControllerMessage(name, messageId, buffer, length);
-    });    
+    });
     SnobotSim::SetPigeonCallback([](const char* name,
-                                uint32_t messageId,
-                                uint8_t* buffer,
-                                int length) {
+                                         uint32_t messageId,
+                                         uint8_t* buffer,
+                                         int length) {
         gCtreManager.handlePigeonMessage(name, messageId, buffer, length);
     });
     SnobotSim::SetCanifierCallback([](const char* name,
-                                uint32_t messageId,
-                                uint8_t* buffer,
-                                int length) {
+                                           uint32_t messageId,
+                                           uint8_t* buffer,
+                                           int length) {
         gCtreManager.handleCanifierMessage(name, messageId, buffer, length);
     });
     SnobotSim::SetBuffTrajPiontStreamCallback([](const char* name,
-                                uint32_t messageId,
-                                uint8_t* buffer,
-                                int length) {
+                                                      uint32_t messageId,
+                                                      uint8_t* buffer,
+                                                      int length) {
         gCtreManager.handleBuffTrajPointStreamMessage(name, messageId, buffer, length);
     });
-    
+
     //////////////////////////////
     // REV
     //////////////////////////////
     SnobotSim::SetSparkMaxDriverCallback([](const char* name,
-                                uint32_t messageId,
-                                uint8_t* buffer,
-                                int length) {
+                                                 uint32_t messageId,
+                                                 uint8_t* buffer,
+                                                 int length) {
         gReveManager.handleMessage(name, messageId, buffer, length);
     });
 }

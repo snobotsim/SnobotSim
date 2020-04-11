@@ -22,7 +22,6 @@ import com.snobot.test.utilities.BaseSimulatorJniTest;
 @Tag("CTRE")
 public class TestCtreCanTalon extends BaseSimulatorJniTest
 {
-
     @Test
     public void testSetup()
     {

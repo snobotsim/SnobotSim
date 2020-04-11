@@ -1,22 +1,24 @@
 
+#pragma once
 
-struct SystemJoystick {
-  bool present = false;
+struct SystemJoystick
+{
+    bool present = false;
 
-  int axisCount = 0;
-  const float* axes = nullptr;
+    int axisCount = 0;
+    const float* axes = nullptr;
 
-  int buttonCount = 0;
-  const unsigned char* buttons = nullptr;
+    int buttonCount = 0;
+    const unsigned char* buttons = nullptr;
 
-  int hatCount = 0;
-  const unsigned char* hats = nullptr;
+    int hatCount = 0;
+    const unsigned char* hats = nullptr;
 
-  const char* name = nullptr;
-  bool isGamepad = false;
-//   GLFWgamepadstate gamepadState;
+    const char* name = nullptr;
+    bool isGamepad = false;
+    //   GLFWgamepadstate gamepadState;
 
-  bool anyButtonPressed = false;
+    bool anyButtonPressed = false;
 
-  void Update(int i);
+    void Update(int i);
 };

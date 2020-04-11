@@ -20,7 +20,6 @@ public class ASimulator implements ISimulatorUpdater
     public boolean loadConfig(String aConfigFile)
     {
         mConfigFile = aConfigFile;
-        System.out.println("11111 loading " + aConfigFile);
         return DataAccessorFactory.getInstance().getSimulatorDataAccessor().loadConfigFile(mConfigFile);
     }
 

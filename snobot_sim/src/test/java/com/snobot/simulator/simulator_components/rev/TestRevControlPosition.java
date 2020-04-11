@@ -20,7 +20,6 @@ import java.util.Collection;
 
 public class TestRevControlPosition extends BaseSimulatorJniTest
 {
-
     @ParameterizedTest
 	@ArgumentsSource(GetRevTestIds.class)
     public void testPositionControl(int aCanHandle)

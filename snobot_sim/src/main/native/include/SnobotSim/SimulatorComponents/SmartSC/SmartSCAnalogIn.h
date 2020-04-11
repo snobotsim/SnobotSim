@@ -14,15 +14,15 @@ public:
 
     SmartSCAnalogIn(int aPort);
     virtual ~SmartSCAnalogIn();
-    
+
     void SetVoltage(double aVoltage) override;
     double GetVoltage() override;
 
     const std::string& GetType() override
-    { 
-        return TYPE; 
+    {
+        return TYPE;
     }
 
 protected:
-    double mVoltage{0};
+    double mVoltage{ 0 };
 };

@@ -1,11 +1,15 @@
 
-#include "SnobotSimGui/ModuleWrapperDisplay/IWidgetDisplay.h"
+#pragma once
 
+#include "SnobotSimGui/ModuleWrapperDisplay/IWidgetDisplay.h"
 
 class SolenoidWidget : public IWidgetDisplay
 {
 public:
-    SolenoidWidget(SaveCallback callback) : mSaveCallback(callback) {}
+    SolenoidWidget(SaveCallback callback) :
+            mSaveCallback(callback)
+    {
+    }
 
     void updateDisplay() override;
 

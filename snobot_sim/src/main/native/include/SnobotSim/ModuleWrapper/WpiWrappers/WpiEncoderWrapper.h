@@ -36,8 +36,8 @@ public:
     void SetVelocity(double aVelocity) override;
 
     const std::string& GetType() override
-    { 
-        return TYPE; 
+    {
+        return TYPE;
     }
 
 protected:

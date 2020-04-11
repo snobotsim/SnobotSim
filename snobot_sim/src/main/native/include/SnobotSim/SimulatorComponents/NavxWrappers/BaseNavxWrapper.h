@@ -30,10 +30,10 @@ public:
         double GetAcceleration() override;
 
         LazySimDoubleWrapper mSimWrapper;
-        
+
         const std::string& GetType() override
-        { 
-            return "baseNavxAccel"; 
+        {
+            return "baseNavxAccel";
         }
     };
     class GyroWrapper : public AModuleWrapper, public IGyroWrapper
@@ -46,10 +46,10 @@ public:
         double GetAngle() override;
 
         LazySimDoubleWrapper mSimWrapper;
-        
+
         const std::string& GetType() override
-        { 
-            return "baseNavxGyro"; 
+        {
+            return "baseNavxGyro";
         }
     };
 

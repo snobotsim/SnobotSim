@@ -1,28 +1,34 @@
 
 #pragma once
 
-#include <vector>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "SnobotSim/ModuleWrapper/BaseSpeedControllerWrapper.h"
 
 class BaseCanSmartSpeedController : public BaseSpeedControllerWrapper
 {
 public:
-
     enum class ControlType
     {
-        Raw, Position, Speed, MotionMagic, MotionProfile
+        Raw,
+        Position,
+        Speed,
+        MotionMagic,
+        MotionProfile
     };
 
     enum class FeedbackDevice
     {
-        None, QuadEncoder, Encoder, Analog
+        None,
+        QuadEncoder,
+        Encoder,
+        Analog
     };
 
     BaseCanSmartSpeedController(int aCanHandel, const std::string& aBaseName, int aPidSlots);
-    
+
     void Update(double aWaitTime) override;
     void SetVoltagePercentage(double aVoltagePercentage) override;
 
@@ -41,16 +47,15 @@ public:
     void addFollower(std::shared_ptr<BaseCanSmartSpeedController> aWrapper);
 
 protected:
-
     struct PIDFConstants
     {
-        double mP{0};
-        double mI{0};
-        double mD{0};
-        double mF{0};
-        double mIZone{0};    
+        double mP{ 0 };
+        double mI{ 0 };
+        double mD{ 0 };
+        double mF{ 0 };
+        double mIZone{ 0 };
     };
-    
+
     PIDFConstants getPidConstants(int aSlot);
     double calculateMotionMagicOutput(double aCurrentPosition, double aCurrentVelocity, double aControlGoal);
     double calculateFeedbackOutput(double aCurrent, double aGoal);
@@ -62,22 +67,21 @@ protected:
     virtual double getMotionMagicVelocityUnitConversion() = 0;
     virtual double calculateMotionProfileOutput(double aCurrentPosition, double aCurrentVelocity, int aModeType) = 0;
 
-
     const int mCanHandle;
-    ControlType mControlType{ControlType::Raw};
-    bool mInverted{false};
+    ControlType mControlType{ ControlType::Raw };
+    bool mInverted{ false };
 
     // Feedback control
     std::vector<PIDFConstants> mPidConstants;
-    int mCurrentPidProfile{0};
-    FeedbackDevice mFeedbackDevice{FeedbackDevice::None};
-    double mControlGoal{0};
-    double mSumError{0};
-    double mLastError{0};
+    int mCurrentPidProfile{ 0 };
+    FeedbackDevice mFeedbackDevice{ FeedbackDevice::None };
+    double mControlGoal{ 0 };
+    double mSumError{ 0 };
+    double mLastError{ 0 };
 
     // Motion Magic
-    double mMotionMagicMaxAcceleration{0};
-    double mMotionMagicMaxVelocity{0};
+    double mMotionMagicMaxAcceleration{ 0 };
+    double mMotionMagicMaxVelocity{ 0 };
 
     std::vector<std::shared_ptr<BaseCanSmartSpeedController>> mFollowers;
 };

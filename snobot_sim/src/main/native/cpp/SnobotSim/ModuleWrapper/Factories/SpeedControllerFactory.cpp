@@ -9,8 +9,6 @@
 
 #include "SnobotSim/Logging/SnobotLogger.h"
 #include "SnobotSim/ModuleWrapper/WpiWrappers/WpiSpeedControllerWrapper.h"
-#include "SnobotSim/SimulatorComponents/CtreWrappers/CtreTalonSRXSpeedControllerSim.h"
-#include "SnobotSim/SimulatorComponents/RevWrappers/RevSpeedControllerSimWrapper.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/SimulatorComponents/CtreWrappers/CtreTalonSRXSpeedControllerSim.h"
 #include "SnobotSim/SimulatorComponents/RevWrappers/RevSpeedControllerSimWrapper.h"
