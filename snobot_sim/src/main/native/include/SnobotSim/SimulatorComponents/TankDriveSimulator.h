@@ -31,6 +31,17 @@ public:
         return "com.snobot.simulator.simulator_components.config.TankDriveConfig";
     }
 
+    std::string GetSimulatorType() override
+    {
+        return GetType();
+    }
+
+    bool IsSetup() const;
+    const std::shared_ptr<ISpeedControllerWrapper>& GetLeftMotor() const;
+    const std::shared_ptr<ISpeedControllerWrapper>& GetRightMotor() const;
+    const std::shared_ptr<IGyroWrapper>& GetGyro() const;
+    double GetTurnKp() const;
+
 protected:
     std::shared_ptr<ISpeedControllerWrapper> mLeftMotor;
     std::shared_ptr<ISpeedControllerWrapper> mRightMotor;

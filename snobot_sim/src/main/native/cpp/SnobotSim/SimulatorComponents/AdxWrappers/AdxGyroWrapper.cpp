@@ -11,7 +11,8 @@ const std::string AdxGyroWrapper::TYPE = "com.snobot.simulator.module_wrapper.wp
 
 AdxGyroWrapper::AdxGyroWrapper(const std::string& aBaseName, int aPort) :
         AModuleWrapper("Gyro"),
-        mSimWrapper(aBaseName, "Angle")
+        mSimWrapper(aBaseName, "Angle"),
+        mHandle(aPort)
 {
 }
 

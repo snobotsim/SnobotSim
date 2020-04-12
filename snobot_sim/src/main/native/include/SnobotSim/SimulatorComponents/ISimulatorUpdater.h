@@ -6,8 +6,12 @@
  */
 
 #pragma once
+
+#include <string>
+
 class ISimulatorUpdater
 {
 public:
     virtual void Update() = 0;
+    virtual std::string GetSimulatorType() = 0;
 };

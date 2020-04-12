@@ -50,15 +50,18 @@ public:
     virtual ~NullMotorSimulator()
     {
     }
+    static std::string GetType()
+    {
+        return "Null";
+    }
 
     std::string GetSimulatorType() override
     {
-        static std::string sName = "Null";
-        return sName;
+        return GetType();
     }
     std::string GetDisplaySimulatorType() override
     {
-        return "Null";
+        return GetType();
     }
 
     void SetVoltagePercentage(double aSpeed) override

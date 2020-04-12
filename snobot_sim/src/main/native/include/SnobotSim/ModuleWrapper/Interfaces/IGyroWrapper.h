@@ -11,6 +11,9 @@
 class IGyroWrapper : public virtual ISensorWrapper
 {
 public:
+
+    virtual int GetId() = 0;
+
     virtual void SetAngle(double aAngle) = 0;
 
     virtual double GetAngle() = 0;

@@ -28,6 +28,11 @@ public:
 
     double GetAngle() override;
 
+    int GetId() override
+    {
+        return mHandle;
+    }
+
     std::string GetType() override
     {
         return TYPE;

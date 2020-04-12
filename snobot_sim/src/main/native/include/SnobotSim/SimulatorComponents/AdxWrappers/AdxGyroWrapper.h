@@ -31,6 +31,12 @@ public:
         return TYPE;
     }
 
+    int GetId() override
+    {
+        return mHandle;
+    }
+
 protected:
     LazySimDoubleWrapper mSimWrapper;
+    const int mHandle;
 };

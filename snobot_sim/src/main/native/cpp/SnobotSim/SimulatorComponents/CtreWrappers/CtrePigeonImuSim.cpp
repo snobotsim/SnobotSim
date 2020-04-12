@@ -11,15 +11,21 @@ class PigeonGyroWrapper : public AModuleWrapper, public IGyroWrapper
 public:
     double mAngle{ 0 };
     double mAngleOffset{ 0 };
+    const int mHandle;
 
     static const std::string TYPE;
     std::string GetType() override
     {
         return TYPE;
     }
+    int GetId() override
+    {
+        return mHandle;
+    }
 
-    explicit PigeonGyroWrapper(const std::string& aName) :
-            AModuleWrapper(aName)
+    explicit PigeonGyroWrapper(int aHandle, const std::string& aName) :
+            AModuleWrapper(aName),
+            mHandle(aHandle)
     {
     }
 
@@ -75,9 +81,9 @@ const std::string CtrePigeonImuSim::TYPE = "Pigeon";
 CtrePigeonImuSim::CtrePigeonImuSim(int aBasePort) :
         AModuleWrapper("Pigeon IMU"),
 
-        mYaw(new PigeonGyroWrapper("Pigeon Yaw")),
-        mPitch(new PigeonGyroWrapper("Pigeon Pitch")),
-        mRoll(new PigeonGyroWrapper("Pigeon Roll")),
+        mYaw(new PigeonGyroWrapper(aBasePort + 0, "Pigeon Yaw")),
+        mPitch(new PigeonGyroWrapper(aBasePort + 1, "Pigeon Pitch")),
+        mRoll(new PigeonGyroWrapper(aBasePort + 2, "Pigeon Roll")),
         mX(new PigeonAccelWrapper("Pigeon X")),
         mY(new PigeonAccelWrapper("Pigeon Y")),
         mZ(new PigeonAccelWrapper("Pigeon Z"))

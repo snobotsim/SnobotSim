@@ -14,9 +14,9 @@ BaseNavxWrapper::BaseNavxWrapper(const std::string& aBaseName, const std::string
         mYWrapper(new AccelerometerWrapper(LazySimDoubleWrapper{ aDeviceName, "Y Accel" })),
         mZWrapper(new AccelerometerWrapper(LazySimDoubleWrapper{ aDeviceName, "Z Accel" })),
 
-        mYawWrapper(new GyroWrapper(LazySimDoubleWrapper{ aDeviceName, "Yaw" })),
-        mPitchWrapper(new GyroWrapper(LazySimDoubleWrapper{ aDeviceName, "Pitch" })),
-        mRollWrapper(new GyroWrapper(LazySimDoubleWrapper{ aDeviceName, "Roll" }))
+        mYawWrapper(new GyroWrapper(aBasePort + 0, LazySimDoubleWrapper{ aDeviceName, "Yaw" })),
+        mPitchWrapper(new GyroWrapper(aBasePort + 1, LazySimDoubleWrapper{ aDeviceName, "Pitch" })),
+        mRollWrapper(new GyroWrapper(aBasePort + 2, LazySimDoubleWrapper{ aDeviceName, "Roll" }))
 {
     SensorActuatorRegistry::Get().Register(aBasePort + 0, mXWrapper);
     SensorActuatorRegistry::Get().Register(aBasePort + 1, mYWrapper);
@@ -47,9 +47,10 @@ double BaseNavxWrapper::AccelerometerWrapper::GetAcceleration()
     return mSimWrapper.get();
 }
 
-BaseNavxWrapper::GyroWrapper::GyroWrapper(const LazySimDoubleWrapper& aSimWrapper) :
+BaseNavxWrapper::GyroWrapper::GyroWrapper(int aHandle, const LazySimDoubleWrapper& aSimWrapper) :
         AModuleWrapper("Hello"),
-        mSimWrapper(aSimWrapper)
+        mSimWrapper(aSimWrapper),
+        mHandle(aHandle)
 {
 }
 

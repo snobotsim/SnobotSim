@@ -22,6 +22,7 @@
 #include "SnobotSimGui/ModuleWrapperDisplay/RelayWidget.h"
 #include "SnobotSimGui/ModuleWrapperDisplay/SolenoidWidget.h"
 #include "SnobotSimGui/ModuleWrapperDisplay/SpeedControllerWidget.h"
+#include "SnobotSim/Config/SimulatorConfigWriterV1.h"
 
 namespace SnobotSim
 {
@@ -37,6 +38,7 @@ void glfw_error_callback(int error, const char* description)
 void saveConfig()
 {
     std::cout << "Saving config" << std::endl;
+    SimulatorConfigWriterV1().DumpConfig("simulator_config/simulator_config2.yml");
 }
 
 } // namespace
@@ -162,6 +164,7 @@ void SnobotSimGui::StartThread()
         glViewport(0, 0, display_w, display_h);
         glfwSwapBuffers(window);
     }
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Shutting down gui");
 
     // Cleanup
     ImGui_ImplOpenGL3_Shutdown();

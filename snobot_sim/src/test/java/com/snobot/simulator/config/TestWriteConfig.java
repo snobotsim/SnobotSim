@@ -53,6 +53,7 @@ public class TestWriteConfig extends BaseSimulatorJniTest
         Assertions.assertTrue(DataAccessorFactory.getInstance().getSimulatorDataAccessor().saveConfigFile(dumpFile));
 
         robot.close();
+        Assertions.assertTrue(false);
     }
 
     @Test

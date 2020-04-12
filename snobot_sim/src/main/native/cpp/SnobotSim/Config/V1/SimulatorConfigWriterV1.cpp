@@ -10,6 +10,7 @@
 #include "SnobotSim/MotorSim/RotationalLoadDcMotorSim.h"
 #include "SnobotSim/MotorSim/SimpleMotorSimulator.h"
 #include "SnobotSim/MotorSim/StaticLoadDcMotorSim.h"
+#include "SnobotSim/SimulatorComponents/TankDriveSimulator.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "yaml-cpp/yaml.h"
 
@@ -64,12 +65,12 @@ void DumpConfig(YAML::Emitter& out, int handle, const std::shared_ptr<ISpeedCont
     auto motorSimulator = wrapper->GetMotorSimulator();
     bool dumpMotorModel = false;
 
-    if (motorSimulator)
+    if (motorSimulator && motorSimulator->GetSimulatorType() != NullMotorSimulator::GetType())
     {
         std::string simType = motorSimulator->GetSimulatorType();
-        auto tag = YAML::SecondaryTag(simType);
-        out << tag;
         out << YAML::Key << "mMotorSimConfig" << YAML::BeginMap;
+        auto tag = YAML::SecondaryTag(simType);
+        out << tag << YAML::Newline;
 
         if (simType == SimpleMotorSimulator::GetType())
         {
@@ -100,9 +101,6 @@ void DumpConfig(YAML::Emitter& out, int handle, const std::shared_ptr<ISpeedCont
             out << YAML::Key << "mConstantAssistTorque" << YAML::Value << 0;
             out << YAML::Key << "mOverCenterAssistTorque" << YAML::Value << 0;
         }
-        else if (simType == "Null")
-        {
-        }
         else
         {
             SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Unknown type " << simType);
@@ -131,65 +129,35 @@ void DumpBasicConfig(YAML::Emitter& out, const std::string& name, const std::map
     out << YAML::EndSeq;
 }
 
-// template<typename T>
-// YAML::Emitter& operator << (YAML::Emitter& out, const std::shared_ptr<T>& v) {
-//     out << Yaml::BeginMap;
-//     out << YAML::Key << "name" << Yaml::Value << "Hello";
-//     out << YAML::EndMap;
-// 	return out;
-// }
+void DumpSimulatorComponents(YAML::Emitter& out, const std::vector<std::shared_ptr<ISimulatorUpdater>>& simulatorComponents)
+{
+    std::cout << "XXXXXXXXXXXXXXXX" << simulatorComponents.size() << std::endl;
+    out << YAML::Key << "mSimulatorComponents";
+    out << YAML::BeginSeq;
+    for (const auto& sim : simulatorComponents)
+    {
+        if(sim->GetSimulatorType() == TankDriveSimulator::GetType())
+        {
+    // bool IsSetup() const;
+    // const std::shared_ptr<ISpeedControllerWrapper>& GetLeftMotor() const;
+    // const std::shared_ptr<ISpeedControllerWrapper>& GetRightMotor() const;
+    // const std::shared_ptr<IGyroWrapper>& GetGyro() const;
 
-// template<typename T>
-// YAML::Emitter& operator << (YAML::Emitter& out, const std::vector<std::shared_ptr<T>>& v) {
-//     out << Yaml::BeginSeq;
-//     for(auto x : v)
-//     {
-//         out << x;
-//     }
-//     out << YAML::EndSeqdMap;
-// 	return out;
-// }
-// template<typename T>
-// void PopulateBaseicConfig(BasicModuleConfig& outConfig, const std::shared_ptr<T>& data)
-// {
-//     outConfig.mHandle = data->GetHandle();
-//     outConfig.mName = data->GetName();
-//     outConfig.mType = data->GetType();
-// }
+            auto castSim = std::static_pointer_cast<TankDriveSimulator>(sim);
+            if(castSim->IsSetup())
+            {
+                out << YAML::BeginMap;
+                out << YAML::Key << "mGyroHandle" << YAML::Value << castSim->GetGyro()->GetId();
+                out << YAML::Key << "mLeftMotorHandle" << YAML::Value << castSim->GetLeftMotor()->GetId();
+                out << YAML::Key << "mRightMotorHandle" << YAML::Value << castSim->GetRightMotor()->GetId();
+                out << YAML::Key << "mTurnKp" << YAML::Value << castSim->GetTurnKp();
+                out << YAML::EndMap;
+            }
+        }
+    }
+    out << YAML::EndSeq;
+}
 
-// SimulatorConfigV1 CreateSimulatorConfig()
-// {
-//     SimulatorConfigV1 output;
-//     // CreateBasicComponents(FactoryContainer::Get().GetAccelerometerFactory(), SensorActuatorRegistry::Get().GetIAccelerometerWrapperMap(), aConfig.mAccelerometers);
-//     // CreateBasicComponents(FactoryContainer::Get().GetAnalogInFactory(), SensorActuatorRegistry::Get().GetIAnalogInWrapperMap(), aConfig.mAnalogIn);
-//     // CreateBasicComponents(FactoryContainer::Get().GetAnalogOutFactory(), SensorActuatorRegistry::Get().GetIAnalogOutWrapperMap(), aConfig.mAnalogOut);
-//     // CreateBasicComponents(FactoryContainer::Get().GetDigitalIoFactory(), SensorActuatorRegistry::Get().GetIDigitalIoWrapperMap(), aConfig.mDigitalIO);
-//     // CreateBasicComponents(FactoryContainer::Get().GetGyroFactory(), SensorActuatorRegistry::Get().GetIGyroWrapperMap(), aConfig.mGyros);
-//     // CreateBasicComponents(FactoryContainer::Get().GetRelayFactory(), SensorActuatorRegistry::Get().GetIRelayWrapperMap(), aConfig.mRelays);
-//     // CreateBasicComponents(FactoryContainer::Get().GetSolenoidFactory(), SensorActuatorRegistry::Get().GetISolenoidWrapperMap(), aConfig.mSolenoids);
-
-//     // CreatePwmComponents(FactoryContainer::Get().GetSpeedControllerFactory(), SensorActuatorRegistry::Get().GetISpeedControllerWrapperMap(), aConfig.mPwm);
-//     // CreateEncoderComponents(FactoryContainer::Get().GetEncoderFactory(), SensorActuatorRegistry::Get().GetIEncoderWrapperMap(), aConfig.mEncoders);
-
-//     return output;
-// }
-
-// const YAML::Node& operator>>(const YAML::Node& configNode, SimulatorConfigV1& config)
-// {
-//     DumpMap(configNode["mDefaultI2CWrappers"], config.mDefaultI2CWrappers);
-//     DumpMap(configNode["mDefaultSpiWrappers"], config.mDefaultSpiWrappers);
-//     DumpVector(configNode["mAccelerometers"], config.mAccelerometers);
-//     DumpVector(configNode["mAnalogIn"], config.mAnalogIn);
-//     DumpVector(configNode["mAnalogOut"], config.mAnalogOut);
-//     DumpVector(configNode["mDigitalIO"], config.mDigitalIO);
-//     DumpVector(configNode["mGyros"], config.mGyros);
-//     DumpVector(configNode["mRelays"], config.mRelays);
-//     DumpVector(configNode["mSolenoids"], config.mSolenoids);
-//     DumpVector(configNode["mEncoders"], config.mEncoders);
-//     DumpVector(configNode["mPwm"], config.mPwm);
-
-//     return configNode;
-// }
 } // namespace
 
 SimulatorConfigWriterV1::SimulatorConfigWriterV1()
@@ -210,27 +178,19 @@ bool SimulatorConfigWriterV1::DumpConfig(const std::string& aConfigFile)
     YAML::Emitter out;
     out << YAML::BeginMap;
     DumpBasicConfig(out, "mAccelerometers", SensorActuatorRegistry::Get().GetIAccelerometerWrapperMap());
-    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Dumping config file '" << configFile << "'");
     DumpBasicConfig(out, "mAnalogIn", SensorActuatorRegistry::Get().GetIAnalogInWrapperMap());
-    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Dumping config file '" << configFile << "'");
     DumpBasicConfig(out, "mAnalogOut", SensorActuatorRegistry::Get().GetIAnalogOutWrapperMap());
-    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Dumping config file '" << configFile << "'");
     DumpBasicConfig(out, "mDigitalIO", SensorActuatorRegistry::Get().GetIDigitalIoWrapperMap());
-    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Dumping config file '" << configFile << "'");
     DumpBasicConfig(out, "mGyros", SensorActuatorRegistry::Get().GetIGyroWrapperMap());
-    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Dumping config file '" << configFile << "'");
     DumpBasicConfig(out, "mRelays", SensorActuatorRegistry::Get().GetIRelayWrapperMap());
-    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Dumping config file '" << configFile << "'");
     DumpBasicConfig(out, "mSolenoids", SensorActuatorRegistry::Get().GetISolenoidWrapperMap());
-    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Dumping config file '" << configFile << "'");
     DumpBasicConfig(out, "mEncoders", SensorActuatorRegistry::Get().GetIEncoderWrapperMap());
-    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Dumping config file '" << configFile << "'");
     DumpBasicConfig(out, "mPwm", SensorActuatorRegistry::Get().GetISpeedControllerWrapperMap());
-    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Dumping config file '" << configFile << "'");
 
-    // std::ofstream fileStream(aConfigFile.c_str());
-    // fileStream << out.c_str() << std::endl;
-    // out << YAML::EndMap;
+    DumpSimulatorComponents(out, SensorActuatorRegistry::Get().GetSimulatorComponents());
+
+    std::ofstream fileStream(aConfigFile.c_str());
+    fileStream << out.c_str() << std::endl;
     std::cout << out.c_str() << std::endl;
 
     // try

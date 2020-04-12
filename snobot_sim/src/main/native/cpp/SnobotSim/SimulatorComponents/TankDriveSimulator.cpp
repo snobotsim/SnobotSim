@@ -44,3 +44,28 @@ void TankDriveSimulator::Update()
         mGyroWrapper->SetAngle(angle);
     }
 }
+
+
+bool TankDriveSimulator::IsSetup() const
+{
+    return mIsSetup;
+}
+
+const std::shared_ptr<ISpeedControllerWrapper>& TankDriveSimulator::GetLeftMotor() const
+{
+    return mLeftMotor;
+}
+
+const std::shared_ptr<ISpeedControllerWrapper>& TankDriveSimulator::GetRightMotor() const
+{
+    return mRightMotor;
+}
+const std::shared_ptr<IGyroWrapper>& TankDriveSimulator::GetGyro() const
+{
+    return mGyroWrapper;
+}
+
+double TankDriveSimulator::GetTurnKp() const
+{
+    return mTurnKp;
+}

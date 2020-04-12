@@ -39,18 +39,26 @@ public:
     class GyroWrapper : public AModuleWrapper, public IGyroWrapper
     {
     public:
-        explicit GyroWrapper(const LazySimDoubleWrapper& aSimWrapper);
+        explicit GyroWrapper(int aHandle, const LazySimDoubleWrapper& aSimWrapper);
+        
+        int GetId() override
+        {
+            return mHandle;
+        }
 
         void SetAngle(double aAngle) override;
 
         double GetAngle() override;
 
-        LazySimDoubleWrapper mSimWrapper;
-
         std::string GetType() override
         {
             return "baseNavxGyro";
         }
+
+    private:
+        const int mHandle;
+
+        LazySimDoubleWrapper mSimWrapper;
     };
 
     std::shared_ptr<AccelerometerWrapper> mXWrapper;
