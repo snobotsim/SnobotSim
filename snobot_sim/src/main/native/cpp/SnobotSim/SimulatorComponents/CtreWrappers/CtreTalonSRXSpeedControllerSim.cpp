@@ -8,7 +8,7 @@
 const std::string CtreTalonSRXSpeedControllerSim::TYPE = "com.snobot.simulator.simulator_components.ctre.CtreTalonSrxSpeedControllerSim";
 
 CtreTalonSRXSpeedControllerSim::CtreTalonSRXSpeedControllerSim(int aCanHandle) :
-        BaseCanSmartSpeedController(aCanHandle, "CTRE", 2)
+        BaseCanSmartSpeedController(Type::CTRE, aCanHandle, "CTRE", 2)
 {
 }
 

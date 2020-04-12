@@ -14,6 +14,13 @@
 class EXPORT_ StaticLoadDcMotorSim : public BaseDcMotorSimulator
 {
 public:
+
+struct StaticLoadMotorSimulationConfig
+{
+    double mLoad{1.0};
+    double mConversionFactor{1.0};
+};
+
     static std::string GetType()
     {
         return "com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig";
@@ -23,7 +30,8 @@ public:
         return "Static Load";
     }
 
-    StaticLoadDcMotorSim(const DcMotorModel& aMotorModel, double aLoad, double aConversionFactor = 1);
+    StaticLoadDcMotorSim(const DcMotorModel& aMotorModel, const StaticLoadMotorSimulationConfig& config);
+    StaticLoadDcMotorSim(const DcMotorModel& aMotorModel, double aLoad, double aConversionFactor);
     virtual ~StaticLoadDcMotorSim();
 
     void Update(double aCycleTime) override;

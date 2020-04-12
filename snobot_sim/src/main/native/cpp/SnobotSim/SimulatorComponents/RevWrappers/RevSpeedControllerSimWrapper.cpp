@@ -7,7 +7,7 @@
 const std::string RevpeedControllerSim::TYPE = "com.snobot.simulator.simulator_components.ctre.RevpeedControllerSim";
 
 RevpeedControllerSim::RevpeedControllerSim(int aCanHandle) :
-        BaseCanSmartSpeedController(aCanHandle, "Rev", 2)
+        BaseCanSmartSpeedController(Type::REV, aCanHandle, "Rev", 2)
 {
 }
 

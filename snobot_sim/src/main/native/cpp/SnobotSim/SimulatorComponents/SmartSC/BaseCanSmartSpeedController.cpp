@@ -10,8 +10,8 @@
 #include "SnobotSim/SimulatorComponents/SmartSC/SmartSCAnalogIn.h"
 #include "SnobotSim/SimulatorComponents/SmartSC/SmartSCEncoder.h"
 
-BaseCanSmartSpeedController::BaseCanSmartSpeedController(int aSimHandle, const std::string& aBaseName, int aPidSlots) :
-        BaseSpeedControllerWrapper(aBaseName + " SC " + std::to_string(aSimHandle - CAN_SC_OFFSET), aSimHandle),
+BaseCanSmartSpeedController::BaseCanSmartSpeedController(Type aType, int aSimHandle, const std::string& aBaseName, int aPidSlots) :
+        BaseSpeedControllerWrapper(aType, aBaseName + " SC " + std::to_string(aSimHandle - CAN_SC_OFFSET), aSimHandle),
         mCanHandle(aSimHandle - CAN_SC_OFFSET),
         mPidConstants(aPidSlots),
         mFeedbackDevice(FeedbackDevice::None),

@@ -5,6 +5,11 @@
 #include <string>
 #include <vector>
 
+#include "SnobotSim/MotorSim/GravityLoadDcMotorSim.h"
+#include "SnobotSim/MotorSim/RotationalLoadDcMotorSim.h"
+#include "SnobotSim/MotorSim/SimpleMotorSimulator.h"
+#include "SnobotSim/MotorSim/StaticLoadDcMotorSim.h"
+
 struct BasicModuleConfig
 {
     int mHandle = 0;
@@ -21,54 +26,19 @@ struct EncoderConfig : public BasicModuleConfig
     void Print(std::ostream& aStream, const std::string& aIndent = "") override;
 };
 
-struct SimpleMotorSimulationConfig
-{
-    double mMaxSpeed;
-};
 
-struct StaticLoadMotorSimulationConfig
-{
-    double mLoad;
-    double mConversionFactor;
-};
 
-struct GravityLoadMotorSimulationConfig
-{
-    double mLoad;
-};
 
 struct DcMotorModelConfigConfig
 {
-    struct FactoryParams
-    {
-        std::string mMotorType;
-        int mNumMotors;
-        double mGearReduction;
-        double mGearboxEfficiency;
-
-        bool mInverted;
-        bool mHasBrake;
-    };
-
-    FactoryParams mFactoryParams;
+    DcMotorModelConfig::FactoryParams mFactoryParams;
+    bool mInverted{false};
+    bool mHasBrake{false};
 };
 
-struct RotationalLoadMotorSimulationConfig
-{
-    double mArmCenterOfMass;
-    double mArmMass;
-    double mConstantAssistTorque;
-    double mOverCenterAssistTorque;
-};
 
 struct FullMotorSimConfig
 {
-    union MotorSimConfig {
-        SimpleMotorSimulationConfig mSimple;
-        StaticLoadMotorSimulationConfig mStatic;
-        GravityLoadMotorSimulationConfig mGravity;
-        RotationalLoadMotorSimulationConfig mRotational;
-    };
 
     enum MotorSimConfigType
     {
@@ -79,7 +49,10 @@ struct FullMotorSimConfig
         Rotational,
     };
 
-    MotorSimConfig mMotorSimConfig;
+    SimpleMotorSimulator::SimpleMotorSimulationConfig mSimple;
+    StaticLoadDcMotorSim::StaticLoadMotorSimulationConfig mStatic;
+    GravityLoadDcMotorSim::GravityLoadMotorSimulationConfig mGravity;
+    RotationalLoadDcMotorSim::RotationalLoadMotorSimulationConfig mRotational;
     MotorSimConfigType mMotorSimConfigType = None;
     DcMotorModelConfigConfig mMotorModelConfig;
 };

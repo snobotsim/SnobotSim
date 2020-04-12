@@ -1,9 +1,10 @@
 
 #include "SnobotSim/ModuleWrapper/BaseSpeedControllerWrapper.h"
 
-BaseSpeedControllerWrapper::BaseSpeedControllerWrapper(const std::string& aName, int aPort) :
+BaseSpeedControllerWrapper::BaseSpeedControllerWrapper(Type aType, const std::string& aName, int aPort) :
         AModuleWrapper(aName),
         mId(aPort),
+        mType(aType),
         mMotorSimulator(new NullMotorSimulator),
         mFeedbackSensor(new NullFeedbackSensor)
 {
@@ -11,6 +12,11 @@ BaseSpeedControllerWrapper::BaseSpeedControllerWrapper(const std::string& aName,
 
 BaseSpeedControllerWrapper::~BaseSpeedControllerWrapper()
 {
+}
+
+ISpeedControllerWrapper::Type BaseSpeedControllerWrapper::GetSpeedControllerType() 
+{
+    return mType;
 }
 
 int BaseSpeedControllerWrapper::GetId()

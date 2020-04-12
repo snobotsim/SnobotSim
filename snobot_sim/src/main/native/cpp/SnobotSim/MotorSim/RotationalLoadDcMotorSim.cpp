@@ -11,6 +11,13 @@
 
 const double RotationalLoadDcMotorSim::sGRAVITY = 9.8;
 
+RotationalLoadDcMotorSim::RotationalLoadDcMotorSim(const DcMotorModel& aMotorModel, const std::shared_ptr<ISpeedControllerWrapper>& aSpeedController, 
+        const RotationalLoadMotorSimulationConfig& config) :
+        RotationalLoadDcMotorSim(aMotorModel, aSpeedController, config.mArmCenterOfMass, config.mArmMass, config.mConstantAssistTorque, config.mOverCenterAssistTorque)
+{
+    
+}
+
 RotationalLoadDcMotorSim::RotationalLoadDcMotorSim(const DcMotorModel& aMotorModel, const std::shared_ptr<ISpeedControllerWrapper>& aSpeedController,
         double aArmCenterOfMass, double aArmMass, double aConstantAssistTorque, double aOverCenterAssistTorque) :
         BaseDcMotorSimulator(GetType(), aMotorModel),

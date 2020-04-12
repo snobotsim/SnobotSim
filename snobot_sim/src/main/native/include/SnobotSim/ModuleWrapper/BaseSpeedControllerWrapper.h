@@ -13,8 +13,10 @@
 class BaseSpeedControllerWrapper : public AModuleWrapper, public ISpeedControllerWrapper
 {
 public:
-    explicit BaseSpeedControllerWrapper(const std::string& aName, int aPort);
+    explicit BaseSpeedControllerWrapper(Type aType, const std::string& aName, int aPort);
     virtual ~BaseSpeedControllerWrapper();
+
+    Type GetSpeedControllerType() override;
 
     int GetId() override;
 
@@ -46,6 +48,7 @@ public:
 
 protected:
     int mId;
+    Type mType;
     std::shared_ptr<IMotorSimulator> mMotorSimulator;
     std::shared_ptr<IFeedbackSensor> mFeedbackSensor;
 };

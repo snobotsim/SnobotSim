@@ -14,6 +14,11 @@
 class EXPORT_ GravityLoadDcMotorSim : public BaseDcMotorSimulator
 {
 public:
+struct GravityLoadMotorSimulationConfig
+{
+    double mLoad{1.0};
+};
+
     static std::string GetType()
     {
         return "com.snobot.simulator.motor_sim.GravityLoadMotorSimulationConfig";
@@ -23,6 +28,7 @@ public:
         return "Gravitational Load";
     }
 
+    GravityLoadDcMotorSim(const DcMotorModel& aMotorModel, const GravityLoadMotorSimulationConfig& config);
     GravityLoadDcMotorSim(const DcMotorModel& aMotorModel, double aLoad);
     virtual ~GravityLoadDcMotorSim();
 

@@ -11,11 +11,33 @@
 #include "SnobotSim/MotorSim/SimpleMotorSimulator.h"
 #include "SnobotSim/MotorSim/StaticLoadDcMotorSim.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/SimulatorComponents/SmartSC/BaseCanSmartSpeedController.h"
+#include "SnobotSim/MotorFactory/VexMotorFactory.h"
 #include "SnobotSimGui/Utilities/ColorFormatters.h"
 #include "SnobotSimGui/Utilities/IndicatorDrawer.h"
 
 namespace
 {
+
+std::map<ISpeedControllerWrapper::Type, std::string> gSCTypeNameLookup = {
+    {ISpeedControllerWrapper::Type::WPI, "WPI"},
+    {ISpeedControllerWrapper::Type::CTRE, "CTRE"},
+    {ISpeedControllerWrapper::Type::REV, "REV"},
+    {ISpeedControllerWrapper::Type::UNKNOWN, "Unknown"},
+};
+std::map<BaseCanSmartSpeedController::ControlType, std::string> sCanScControlTypeLookup = {
+    {BaseCanSmartSpeedController::ControlType::Raw, "Raw"},
+    {BaseCanSmartSpeedController::ControlType::Position, "Position"},
+    {BaseCanSmartSpeedController::ControlType::Speed, "Speed"},
+    {BaseCanSmartSpeedController::ControlType::MotionMagic, "MotionMagic"},
+    {BaseCanSmartSpeedController::ControlType::MotionProfile, "MotionProfile"},
+};
+std::map<BaseCanSmartSpeedController::FeedbackDevice, std::string> sCanScFeedbackDeviceLookup = {
+    {BaseCanSmartSpeedController::FeedbackDevice::None, "None"},
+    {BaseCanSmartSpeedController::FeedbackDevice::QuadEncoder, "QuadEncoder"},
+    {BaseCanSmartSpeedController::FeedbackDevice::Encoder, "Encoder"},
+    {BaseCanSmartSpeedController::FeedbackDevice::Analog, "Analog"},
+};
 
 std::map<int, FullMotorSimConfig> gMotorConfig;
 std::map<FullMotorSimConfig::MotorSimConfigType, std::string> gMotorSimToString;
@@ -31,7 +53,7 @@ FullMotorSimConfig CreateMotorSimConfig(const std::shared_ptr<ISpeedControllerWr
         if (simType == SimpleMotorSimulator::GetType())
         {
             output.mMotorSimConfigType = FullMotorSimConfig::Simple;
-            output.mMotorSimConfig.mSimple.mMaxSpeed = std::static_pointer_cast<SimpleMotorSimulator>(motorSimulator)->GetMaxSpeed();
+            output.mSimple.mMaxSpeed = std::static_pointer_cast<SimpleMotorSimulator>(motorSimulator)->GetMaxSpeed();
         }
         else if (simType == StaticLoadDcMotorSim::GetType())
         {
@@ -39,8 +61,8 @@ FullMotorSimConfig CreateMotorSimConfig(const std::shared_ptr<ISpeedControllerWr
             auto castSim = std::static_pointer_cast<StaticLoadDcMotorSim>(motorSimulator);
 
             output.mMotorSimConfigType = FullMotorSimConfig::Static;
-            output.mMotorSimConfig.mStatic.mLoad = castSim->GetLoad();
-            output.mMotorSimConfig.mStatic.mConversionFactor = castSim->GetConversionFactor();
+            output.mStatic.mLoad = castSim->GetLoad();
+            output.mStatic.mConversionFactor = castSim->GetConversionFactor();
         }
         else if (simType == GravityLoadDcMotorSim::GetType())
         {
@@ -48,7 +70,7 @@ FullMotorSimConfig CreateMotorSimConfig(const std::shared_ptr<ISpeedControllerWr
             auto castSim = std::static_pointer_cast<GravityLoadDcMotorSim>(motorSimulator);
 
             output.mMotorSimConfigType = FullMotorSimConfig::Gravity;
-            output.mMotorSimConfig.mGravity.mLoad = castSim->GetLoad();
+            output.mGravity.mLoad = castSim->GetLoad();
         }
         else if (simType == RotationalLoadDcMotorSim::GetType())
         {
@@ -56,10 +78,10 @@ FullMotorSimConfig CreateMotorSimConfig(const std::shared_ptr<ISpeedControllerWr
             auto castSim = std::static_pointer_cast<RotationalLoadDcMotorSim>(motorSimulator);
 
             output.mMotorSimConfigType = FullMotorSimConfig::Rotational;
-            output.mMotorSimConfig.mRotational.mArmCenterOfMass = castSim->GetArmCenterOfMass();
-            output.mMotorSimConfig.mRotational.mArmMass = castSim->GetArmMass();
-            output.mMotorSimConfig.mRotational.mConstantAssistTorque = 0;
-            output.mMotorSimConfig.mRotational.mOverCenterAssistTorque = 0;
+            output.mRotational.mArmCenterOfMass = castSim->GetArmCenterOfMass();
+            output.mRotational.mArmMass = castSim->GetArmMass();
+            output.mRotational.mConstantAssistTorque = 0;
+            output.mRotational.mOverCenterAssistTorque = 0;
         }
         else if (simType == "Null")
         {
@@ -76,14 +98,30 @@ FullMotorSimConfig CreateMotorSimConfig(const std::shared_ptr<ISpeedControllerWr
         auto castSim = std::static_pointer_cast<BaseDcMotorSimulator>(motorSimulator);
         const DcMotorModel& config = castSim->GetMotorModel();
         output.mMotorModelConfig.mFactoryParams.mGearReduction = config.GetModelConfig().mFactoryParams.mGearReduction;
-        output.mMotorModelConfig.mFactoryParams.mGearboxEfficiency = config.GetModelConfig().mFactoryParams.mTransmissionEfficiency;
-        output.mMotorModelConfig.mFactoryParams.mHasBrake = config.GetModelConfig().mHasBrake;
-        output.mMotorModelConfig.mFactoryParams.mInverted = config.GetModelConfig().mInverted;
-        output.mMotorModelConfig.mFactoryParams.mMotorType = config.GetModelConfig().mFactoryParams.mMotorName;
+        output.mMotorModelConfig.mFactoryParams.mTransmissionEfficiency = config.GetModelConfig().mFactoryParams.mTransmissionEfficiency;
+        output.mMotorModelConfig.mHasBrake = config.GetModelConfig().mHasBrake;
+        output.mMotorModelConfig.mInverted = config.GetModelConfig().mInverted;
+        output.mMotorModelConfig.mFactoryParams.mMotorName = config.GetModelConfig().mFactoryParams.mMotorName;
         output.mMotorModelConfig.mFactoryParams.mNumMotors = config.GetModelConfig().mFactoryParams.mNumMotors;
     }
 
     return output;
+}
+
+
+DcMotorModel GetMotorModel(const DcMotorModelConfig::FactoryParams& factoryParams, bool ahasBrake, bool aInverted)
+{
+
+    DcMotorModelConfig motorModelConfig = VexMotorFactory::MakeTransmission(
+            VexMotorFactory::CreateMotor(factoryParams.mMotorName),
+            factoryParams.mNumMotors, factoryParams.mGearReduction, factoryParams.mTransmissionEfficiency);
+
+    motorModelConfig.mHasBrake = ahasBrake;
+    motorModelConfig.mInverted = aInverted;
+
+    DcMotorModel motorModel(motorModelConfig);
+
+    return motorModel;
 }
 
 } // namespace
@@ -123,6 +161,7 @@ void SpeedControllerWidget::updateDisplay()
         {
             ImGui::PushID(pair.first);
 
+            ImGui::LabelText("Type", gSCTypeNameLookup[wrapper->GetSpeedControllerType()].c_str());
             ImGui::LabelText("Voltage Percentage", "%0.3f", wrapper->GetVoltagePercentage());
             ImGui::Separator();
 
@@ -148,6 +187,16 @@ void SpeedControllerWidget::updateDisplay()
                 // ImGui::Text("MY CUSTOM COLOR PICKER WITH AN AMAZING PALETTE!");
                 // ImGui::Text("MY CUSTOM COLOR PICKER WITH AN AMAZING PALETTE!");
                 ImGui::EndPopup();
+            }
+
+            if(wrapper->GetSpeedControllerType() == ISpeedControllerWrapper::Type::CTRE || wrapper->GetSpeedControllerType() == ISpeedControllerWrapper::Type::REV)
+            {
+                
+                ImGui::Separator();
+                auto castSim = std::static_pointer_cast<BaseCanSmartSpeedController>(wrapper);
+                ImGui::LabelText("Control Type", sCanScControlTypeLookup[castSim->GetControlType()].c_str());
+                ImGui::LabelText("Feedback Device", sCanScFeedbackDeviceLookup[castSim->GetFeedbackDevice()].c_str());
+                ImGui::LabelText("Control Goal", "%0.3f", castSim->GetControlGoal());
             }
 
             ImGui::PopID();
@@ -181,49 +230,46 @@ void SpeedControllerWidget::RenderMotorConfigPopup(std::shared_ptr<ISpeedControl
     //        changed |= ImGui::InputString("Motor Type", &motorConfig.mMotorModelConfig.mFactoryParams.mMotorType);
     changed |= ImGui::InputInt("Num Motors", &motorConfig.mMotorModelConfig.mFactoryParams.mNumMotors);
     changed |= ImGui::InputDouble("Gear Reduction", &motorConfig.mMotorModelConfig.mFactoryParams.mGearReduction);
-    changed |= ImGui::InputDouble("Efficiency", &motorConfig.mMotorModelConfig.mFactoryParams.mGearboxEfficiency);
+    changed |= ImGui::InputDouble("Efficiency", &motorConfig.mMotorModelConfig.mFactoryParams.mTransmissionEfficiency);
 
     if (changed)
     {
         std::cout << "Motor controller change" << std::endl;
+        switch (motorConfig.mMotorSimConfigType)
+        {
+        case FullMotorSimConfig::Simple:
+        {
+            wrapper->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new SimpleMotorSimulator(
+                    motorConfig.mSimple)));
+            break;
+        }
+        case FullMotorSimConfig::Static:
+        {
+            wrapper->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new StaticLoadDcMotorSim(
+                    GetMotorModel(motorConfig.mMotorModelConfig.mFactoryParams, motorConfig.mMotorModelConfig.mHasBrake, motorConfig.mMotorModelConfig.mInverted),
+                    motorConfig.mStatic)));
+            break;
+        }
+        case FullMotorSimConfig::Gravity:
+        {
+            wrapper->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new GravityLoadDcMotorSim(
+                    GetMotorModel(motorConfig.mMotorModelConfig.mFactoryParams, motorConfig.mMotorModelConfig.mHasBrake, motorConfig.mMotorModelConfig.mInverted),
+                    motorConfig.mGravity)));
+            break;
+        }
+        case FullMotorSimConfig::Rotational:
+        {
+            wrapper->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new RotationalLoadDcMotorSim(
+                    GetMotorModel(motorConfig.mMotorModelConfig.mFactoryParams, motorConfig.mMotorModelConfig.mHasBrake, motorConfig.mMotorModelConfig.mInverted),
+                    wrapper,
+                    motorConfig.mRotational)));
+            break;
+        }
+        case FullMotorSimConfig::None:
+            wrapper->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new NullMotorSimulator));
+        default:
+            break;
+        }
         mSaveCallback();
-        // switch (motorConfig.mMotorSimConfigType)
-        // {
-        // case FullMotorSimConfig::Simple:
-        // {
-        //     speedController->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new SimpleMotorSimulator(
-        //             motorConfig.mMotorSimConfig.mSimple.mMaxSpeed)));
-        //     break;
-        // }
-        // case FullMotorSimConfig::Static:
-        // {
-        //     speedController->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new StaticLoadDcMotorSim(
-        //             GetMotorModle(motorConfig.mMotorModelConfig.mFactoryParams),
-        //             motorConfig.mMotorSimConfig.mStatic.mLoad,
-        //             motorConfig.mMotorSimConfig.mStatic.mConversionFactor)));
-        //     break;
-        // }
-        // case FullMotorSimConfig::Gravity:
-        // {
-        //     speedController->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new GravityLoadDcMotorSim(
-        //             GetMotorModle(motorConfig.mMotorModelConfig.mFactoryParams),
-        //             motorConfig.mMotorSimConfig.mGravity.mLoad)));
-        //     break;
-        // }
-        // case FullMotorSimConfig::Rotational:
-        // {
-        //     speedController->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new RotationalLoadDcMotorSim(
-        //             GetMotorModle(motorConfig.mMotorModelConfig.mFactoryParams),
-        //             speedController,
-        //             motorConfig.mMotorSimConfig.mRotational.mArmCenterOfMass,
-        //             motorConfig.mMotorSimConfig.mRotational.mArmMass,
-        //             motorConfig.mMotorSimConfig.mRotational.mConstantAssistTorque,
-        //             motorConfig.mMotorSimConfig.mRotational.mOverCenterAssistTorque)));
-        //     break;
-        // }
-        // case FullMotorSimConfig::None:
-        // default:
-        //     break;
-        // }
     }
 }

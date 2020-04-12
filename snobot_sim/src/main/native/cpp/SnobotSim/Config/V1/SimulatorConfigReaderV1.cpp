@@ -80,26 +80,26 @@ const YAML::Node& operator>>(const YAML::Node& aNode, PwmConfig& aOutput)
         if (motorSimConfigTag == SimpleMotorSimulator::GetType())
         {
             aOutput.mMotorSim.mMotorSimConfigType = FullMotorSimConfig::Simple;
-            aOutput.mMotorSim.mMotorSimConfig.mSimple.mMaxSpeed = motorSimConfig["mMaxSpeed"].as<double>();
+            aOutput.mMotorSim.mSimple.mMaxSpeed = motorSimConfig["mMaxSpeed"].as<double>();
         }
         else if (motorSimConfigTag == StaticLoadDcMotorSim::GetType())
         {
             aOutput.mMotorSim.mMotorSimConfigType = FullMotorSimConfig::Static;
-            aOutput.mMotorSim.mMotorSimConfig.mStatic.mLoad = motorSimConfig["mLoad"].as<double>();
-            aOutput.mMotorSim.mMotorSimConfig.mStatic.mConversionFactor = motorSimConfig["mConversionFactor"].as<double>();
+            aOutput.mMotorSim.mStatic.mLoad = motorSimConfig["mLoad"].as<double>();
+            aOutput.mMotorSim.mStatic.mConversionFactor = motorSimConfig["mConversionFactor"].as<double>();
         }
         else if (motorSimConfigTag == GravityLoadDcMotorSim::GetType())
         {
             aOutput.mMotorSim.mMotorSimConfigType = FullMotorSimConfig::Gravity;
-            aOutput.mMotorSim.mMotorSimConfig.mGravity.mLoad = motorSimConfig["mLoad"].as<double>();
+            aOutput.mMotorSim.mGravity.mLoad = motorSimConfig["mLoad"].as<double>();
         }
         else if (motorSimConfigTag == RotationalLoadDcMotorSim::GetType())
         {
             aOutput.mMotorSim.mMotorSimConfigType = FullMotorSimConfig::Rotational;
-            aOutput.mMotorSim.mMotorSimConfig.mRotational.mArmCenterOfMass = motorSimConfig["mArmCenterOfMass"].as<double>();
-            aOutput.mMotorSim.mMotorSimConfig.mRotational.mArmMass = motorSimConfig["mArmMass"].as<double>();
-            aOutput.mMotorSim.mMotorSimConfig.mRotational.mConstantAssistTorque = motorSimConfig["mConstantAssistTorque"].as<double>();
-            aOutput.mMotorSim.mMotorSimConfig.mRotational.mOverCenterAssistTorque = motorSimConfig["mOverCenterAssistTorque"].as<double>();
+            aOutput.mMotorSim.mRotational.mArmCenterOfMass = motorSimConfig["mArmCenterOfMass"].as<double>();
+            aOutput.mMotorSim.mRotational.mArmMass = motorSimConfig["mArmMass"].as<double>();
+            aOutput.mMotorSim.mRotational.mConstantAssistTorque = motorSimConfig["mConstantAssistTorque"].as<double>();
+            aOutput.mMotorSim.mRotational.mOverCenterAssistTorque = motorSimConfig["mOverCenterAssistTorque"].as<double>();
         }
         else
         {
@@ -109,14 +109,14 @@ const YAML::Node& operator>>(const YAML::Node& aNode, PwmConfig& aOutput)
         if (aNode["mMotorModelConfig"] && aNode["mMotorModelConfig"].Type() != YAML::NodeType::Null)
         {
             const YAML::Node& motorModelConfig = aNode["mMotorModelConfig"];
-            aOutput.mMotorSim.mMotorModelConfig.mFactoryParams.mMotorType = motorModelConfig["mMotorType"].as<std::string>();
+            aOutput.mMotorSim.mMotorModelConfig.mFactoryParams.mMotorName = motorModelConfig["mMotorType"].as<std::string>();
             aOutput.mMotorSim.mMotorModelConfig.mFactoryParams.mNumMotors = motorModelConfig["mNumMotors"].as<int>();
             aOutput.mMotorSim.mMotorModelConfig.mFactoryParams.mGearReduction = motorModelConfig["mGearReduction"].as<double>();
-            aOutput.mMotorSim.mMotorModelConfig.mFactoryParams.mGearboxEfficiency = motorModelConfig["mGearboxEfficiency"].as<double>();
-            aOutput.mMotorSim.mMotorModelConfig.mFactoryParams.mHasBrake = motorModelConfig["mHasBrake"].as<bool>();
-            aOutput.mMotorSim.mMotorModelConfig.mFactoryParams.mInverted = motorModelConfig["mInverted"].as<bool>();
+            aOutput.mMotorSim.mMotorModelConfig.mFactoryParams.mTransmissionEfficiency = motorModelConfig["mGearboxEfficiency"].as<double>();
+            aOutput.mMotorSim.mMotorModelConfig.mHasBrake = motorModelConfig["mHasBrake"].as<bool>();
+            aOutput.mMotorSim.mMotorModelConfig.mInverted = motorModelConfig["mInverted"].as<bool>();
 
-            SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Getting motor model " << aOutput.mMotorSim.mMotorModelConfig.mFactoryParams.mMotorType);
+            SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Getting motor model " << aOutput.mMotorSim.mMotorModelConfig.mFactoryParams.mMotorName);
         }
         else
         {
@@ -187,15 +187,15 @@ void CreateBasicComponents(std::shared_ptr<FactoryType> aFactory, const std::map
     }
 }
 
-DcMotorModel GetMotorModle(const DcMotorModelConfigConfig::FactoryParams& factoryParams)
+DcMotorModel GetMotorModle(const DcMotorModelConfig::FactoryParams& factoryParams, bool ahasBrake, bool aInverted)
 {
 
     DcMotorModelConfig motorModelConfig = VexMotorFactory::MakeTransmission(
-            VexMotorFactory::CreateMotor(factoryParams.mMotorType),
-            factoryParams.mNumMotors, factoryParams.mGearReduction, factoryParams.mGearboxEfficiency);
+            VexMotorFactory::CreateMotor(factoryParams.mMotorName),
+            factoryParams.mNumMotors, factoryParams.mGearReduction, factoryParams.mTransmissionEfficiency);
 
-    motorModelConfig.mHasBrake = factoryParams.mHasBrake;
-    motorModelConfig.mInverted = factoryParams.mInverted;
+    motorModelConfig.mHasBrake = ahasBrake;
+    motorModelConfig.mInverted = aInverted;
 
     DcMotorModel motorModel(motorModelConfig);
 
@@ -220,33 +220,33 @@ void CreatePwmComponents(std::shared_ptr<SpeedControllerFactory> aFactory, const
         case FullMotorSimConfig::Simple:
         {
             speedController->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new SimpleMotorSimulator(
-                    motorConfig.mMotorSimConfig.mSimple.mMaxSpeed)));
+                    motorConfig.mSimple.mMaxSpeed)));
             break;
         }
         case FullMotorSimConfig::Static:
         {
             speedController->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new StaticLoadDcMotorSim(
-                    GetMotorModle(motorConfig.mMotorModelConfig.mFactoryParams),
-                    motorConfig.mMotorSimConfig.mStatic.mLoad,
-                    motorConfig.mMotorSimConfig.mStatic.mConversionFactor)));
+                    GetMotorModle(motorConfig.mMotorModelConfig.mFactoryParams, motorConfig.mMotorModelConfig.mHasBrake, motorConfig.mMotorModelConfig.mInverted),
+                    motorConfig.mStatic.mLoad,
+                    motorConfig.mStatic.mConversionFactor)));
             break;
         }
         case FullMotorSimConfig::Gravity:
         {
             speedController->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new GravityLoadDcMotorSim(
-                    GetMotorModle(motorConfig.mMotorModelConfig.mFactoryParams),
-                    motorConfig.mMotorSimConfig.mGravity.mLoad)));
+                    GetMotorModle(motorConfig.mMotorModelConfig.mFactoryParams, motorConfig.mMotorModelConfig.mHasBrake, motorConfig.mMotorModelConfig.mInverted),
+                    motorConfig.mGravity.mLoad)));
             break;
         }
         case FullMotorSimConfig::Rotational:
         {
             speedController->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new RotationalLoadDcMotorSim(
-                    GetMotorModle(motorConfig.mMotorModelConfig.mFactoryParams),
+                    GetMotorModle(motorConfig.mMotorModelConfig.mFactoryParams, motorConfig.mMotorModelConfig.mHasBrake, motorConfig.mMotorModelConfig.mInverted),
                     speedController,
-                    motorConfig.mMotorSimConfig.mRotational.mArmCenterOfMass,
-                    motorConfig.mMotorSimConfig.mRotational.mArmMass,
-                    motorConfig.mMotorSimConfig.mRotational.mConstantAssistTorque,
-                    motorConfig.mMotorSimConfig.mRotational.mOverCenterAssistTorque)));
+                    motorConfig.mRotational.mArmCenterOfMass,
+                    motorConfig.mRotational.mArmMass,
+                    motorConfig.mRotational.mConstantAssistTorque,
+                    motorConfig.mRotational.mOverCenterAssistTorque)));
             break;
         }
         case FullMotorSimConfig::None:

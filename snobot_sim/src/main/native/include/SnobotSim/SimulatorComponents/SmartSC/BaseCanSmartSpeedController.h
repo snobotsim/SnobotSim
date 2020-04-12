@@ -27,7 +27,7 @@ public:
         Analog
     };
 
-    BaseCanSmartSpeedController(int aCanHandel, const std::string& aBaseName, int aPidSlots);
+    BaseCanSmartSpeedController(Type aType, int aCanHandle, const std::string& aBaseName, int aPidSlots);
 
     void Update(double aWaitTime) override;
     void SetVoltagePercentage(double aVoltagePercentage) override;
@@ -45,6 +45,10 @@ public:
     void setMotionMagicMaxAcceleration(int aAccel);
     void setMotionMagicMaxVelocity(int aVel);
     void addFollower(std::shared_ptr<BaseCanSmartSpeedController> aWrapper);
+
+    ControlType GetControlType() { return mControlType; }
+    FeedbackDevice GetFeedbackDevice() { return mFeedbackDevice; }
+    double GetControlGoal() { return mControlGoal; }
 
 protected:
     struct PIDFConstants

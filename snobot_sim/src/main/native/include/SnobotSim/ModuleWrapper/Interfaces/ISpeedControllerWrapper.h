@@ -16,6 +16,14 @@
 class ISpeedControllerWrapper : public virtual ISensorWrapper
 {
 public:
+
+    enum class Type
+    {
+        WPI, CTRE, REV, UNKNOWN
+    };
+
+    virtual Type GetSpeedControllerType() = 0;
+
     virtual int GetId() = 0;
 
     virtual void SetMotorSimulator(const std::shared_ptr<IMotorSimulator>& aSimulator) = 0;

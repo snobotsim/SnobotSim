@@ -12,7 +12,7 @@
 const std::string WpiSpeedControllerWrapper::TYPE = "com.snobot.simulator.module_wrapper.wpi.WpiPwmWrapper";
 
 WpiSpeedControllerWrapper::WpiSpeedControllerWrapper(int aPort) :
-        BaseSpeedControllerWrapper("Speed Controller " + std::to_string(UnwrapPort(aPort)), aPort)
+        BaseSpeedControllerWrapper(Type::WPI, "Speed Controller " + std::to_string(UnwrapPort(aPort)), aPort)
 {
 }
 
