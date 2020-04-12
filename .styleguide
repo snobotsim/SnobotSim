@@ -24,6 +24,7 @@ modifiableFileExclude {
   ctre_override/temp/.*$
   temp_hal_sim/.*$
   snobot_sim_java/java/unit_tests/com/kauailabs/navx/frc
+  wpi_gui
   \SnobotSimHalVersion.h$
   \StackWalker.h$
   \StackWalker.cpp$

@@ -10,7 +10,6 @@
 StaticLoadDcMotorSim::StaticLoadDcMotorSim(const DcMotorModel& aMotorModel, const StaticLoadMotorSimulationConfig& config) :
         StaticLoadDcMotorSim(aMotorModel, config.mLoad, config.mConversionFactor)
 {
-    
 }
 
 StaticLoadDcMotorSim::StaticLoadDcMotorSim(const DcMotorModel& aMotorModel, double aLoad, double aConversionFactor) :

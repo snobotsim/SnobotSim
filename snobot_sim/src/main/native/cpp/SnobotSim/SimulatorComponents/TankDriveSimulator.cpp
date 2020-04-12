@@ -45,7 +45,6 @@ void TankDriveSimulator::Update()
     }
 }
 
-
 bool TankDriveSimulator::IsSetup() const
 {
     return mIsSetup;

@@ -26,20 +26,15 @@ struct EncoderConfig : public BasicModuleConfig
     void Print(std::ostream& aStream, const std::string& aIndent = "") override;
 };
 
-
-
-
 struct DcMotorModelConfigConfig
 {
     DcMotorModelConfig::FactoryParams mFactoryParams;
-    bool mInverted{false};
-    bool mHasBrake{false};
+    bool mInverted{ false };
+    bool mHasBrake{ false };
 };
-
 
 struct FullMotorSimConfig
 {
-
     enum MotorSimConfigType
     {
         None,

@@ -3,7 +3,6 @@
 
 void AddIndicator(ImColor color)
 {
-
     ImGui::SameLine();
     ImDrawList* drawList = ImGui::GetWindowDrawList();
     const ImVec2 p = ImGui::GetCursorScreenPos();

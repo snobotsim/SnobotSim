@@ -20,9 +20,9 @@ public class TestReadConfig extends BaseSimulatorJniTest
     public static final int sTEST_PARAMETER = 5;
 
     public String extractFiles(String aFilename)
-    {       
+    {
         Path filepath = Path.of("read_test", aFilename);
-        try (InputStream fileStream = getClass().getResource(aFilename).openStream()) 
+        try (InputStream fileStream = getClass().getResource(aFilename).openStream())
         {
             if (fileStream == null || filepath.getParent() == null)
             {
@@ -36,8 +36,8 @@ public class TestReadConfig extends BaseSimulatorJniTest
             }
 
             Files.copy(fileStream, filepath, StandardCopyOption.REPLACE_EXISTING);
-        } 
-        catch (IOException ex) 
+        }
+        catch (IOException ex)
         {
             Assertions.fail(ex);
         }

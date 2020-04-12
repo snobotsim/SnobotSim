@@ -15,13 +15,13 @@
 class EXPORT_ RotationalLoadDcMotorSim : public BaseDcMotorSimulator
 {
 public:
-struct RotationalLoadMotorSimulationConfig
-{
-    double mArmCenterOfMass{1.0};
-    double mArmMass{1.0};
-    double mConstantAssistTorque{1.0};
-    double mOverCenterAssistTorque{1.0};
-};
+    struct RotationalLoadMotorSimulationConfig
+    {
+        double mArmCenterOfMass{ 1.0 };
+        double mArmMass{ 1.0 };
+        double mConstantAssistTorque{ 1.0 };
+        double mOverCenterAssistTorque{ 1.0 };
+    };
     static std::string GetType()
     {
         return "com.snobot.simulator.motor_sim.RotationalLoadMotorSimulationConfig";
@@ -31,8 +31,8 @@ struct RotationalLoadMotorSimulationConfig
         return "Rotational Load";
     }
 
-    RotationalLoadDcMotorSim(const DcMotorModel& aMotorModel, const std::shared_ptr<ISpeedControllerWrapper>& aSpeedController, 
-        const RotationalLoadMotorSimulationConfig& config);
+    RotationalLoadDcMotorSim(const DcMotorModel& aMotorModel, const std::shared_ptr<ISpeedControllerWrapper>& aSpeedController,
+            const RotationalLoadMotorSimulationConfig& config);
     RotationalLoadDcMotorSim(const DcMotorModel& aMotorModel, const std::shared_ptr<ISpeedControllerWrapper>& aSpeedController, double aArmCenterOfMass,
             double aArmMass,
             double aConstantAssistTorque, double aOverCenterAssistTorque);

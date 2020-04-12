@@ -6,7 +6,7 @@
 class RelayWidget : public IWidgetDisplay
 {
 public:
-    RelayWidget(SaveCallback callback) :
+    explicit RelayWidget(SaveCallback callback) :
             mSaveCallback(callback)
     {
     }

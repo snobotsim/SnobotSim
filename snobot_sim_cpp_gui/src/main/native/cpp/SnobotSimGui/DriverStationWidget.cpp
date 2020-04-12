@@ -164,7 +164,6 @@ void DriverStationWidget::RenderDSState()
 
 void DriverStationWidget::updateDisplay()
 {
-
     ImGui::Begin("Robot State", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
 
     RenderRobotState();

@@ -6,7 +6,7 @@
 class AnalogOutWidget : public IWidgetDisplay
 {
 public:
-    AnalogOutWidget(SaveCallback callback) :
+    explicit AnalogOutWidget(SaveCallback callback) :
             mSaveCallback(callback)
     {
     }

@@ -16,10 +16,12 @@
 class ISpeedControllerWrapper : public virtual ISensorWrapper
 {
 public:
-
     enum class Type
     {
-        WPI, CTRE, REV, UNKNOWN
+        WPI,
+        CTRE,
+        REV,
+        UNKNOWN
     };
 
     virtual Type GetSpeedControllerType() = 0;

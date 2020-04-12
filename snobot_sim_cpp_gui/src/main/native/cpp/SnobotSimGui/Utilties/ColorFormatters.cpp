@@ -2,6 +2,7 @@
 #include "SnobotSimGui/Utilities/ColorFormatters.h"
 
 #include <algorithm>
+#include <math.h>
 
 ImColor GetClampedColor(double aValue, double aMin, double aMax)
 {

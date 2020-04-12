@@ -228,7 +228,6 @@ void BaseCanSmartSpeedController::SetVoltagePercentage(double aVoltagePercentage
 
 double BaseCanSmartSpeedController::calculateFeedbackOutput(double aCurrent, double aGoal)
 {
-
     double error = aGoal - aCurrent;
     double dErr = error - mLastError;
 

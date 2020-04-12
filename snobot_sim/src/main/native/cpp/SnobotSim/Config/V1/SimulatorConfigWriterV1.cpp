@@ -10,8 +10,8 @@
 #include "SnobotSim/MotorSim/RotationalLoadDcMotorSim.h"
 #include "SnobotSim/MotorSim/SimpleMotorSimulator.h"
 #include "SnobotSim/MotorSim/StaticLoadDcMotorSim.h"
-#include "SnobotSim/SimulatorComponents/TankDriveSimulator.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/SimulatorComponents/TankDriveSimulator.h"
 #include "yaml-cpp/yaml.h"
 
 namespace
@@ -136,15 +136,15 @@ void DumpSimulatorComponents(YAML::Emitter& out, const std::vector<std::shared_p
     out << YAML::BeginSeq;
     for (const auto& sim : simulatorComponents)
     {
-        if(sim->GetSimulatorType() == TankDriveSimulator::GetType())
+        if (sim->GetSimulatorType() == TankDriveSimulator::GetType())
         {
-    // bool IsSetup() const;
-    // const std::shared_ptr<ISpeedControllerWrapper>& GetLeftMotor() const;
-    // const std::shared_ptr<ISpeedControllerWrapper>& GetRightMotor() const;
-    // const std::shared_ptr<IGyroWrapper>& GetGyro() const;
+            // bool IsSetup() const;
+            // const std::shared_ptr<ISpeedControllerWrapper>& GetLeftMotor() const;
+            // const std::shared_ptr<ISpeedControllerWrapper>& GetRightMotor() const;
+            // const std::shared_ptr<IGyroWrapper>& GetGyro() const;
 
             auto castSim = std::static_pointer_cast<TankDriveSimulator>(sim);
-            if(castSim->IsSetup())
+            if (castSim->IsSetup())
             {
                 out << YAML::BeginMap;
                 out << YAML::Key << "mGyroHandle" << YAML::Value << castSim->GetGyro()->GetId();

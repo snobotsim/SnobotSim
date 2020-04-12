@@ -14,10 +14,10 @@
 class EXPORT_ GravityLoadDcMotorSim : public BaseDcMotorSimulator
 {
 public:
-struct GravityLoadMotorSimulationConfig
-{
-    double mLoad{1.0};
-};
+    struct GravityLoadMotorSimulationConfig
+    {
+        double mLoad{ 1.0 };
+    };
 
     static std::string GetType()
     {

@@ -40,7 +40,7 @@ public:
     {
     public:
         explicit GyroWrapper(int aHandle, const LazySimDoubleWrapper& aSimWrapper);
-        
+
         int GetId() override
         {
             return mHandle;

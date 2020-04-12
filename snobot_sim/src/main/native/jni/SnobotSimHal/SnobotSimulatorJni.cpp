@@ -182,8 +182,9 @@ Java_com_snobot_simulator_jni_SnobotSimulatorJni_saveConfigFile
  * Method:    getSimulatorComponentConfigsCount
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_com_snobot_simulator_jni_SnobotSimulatorJni_getSimulatorComponentConfigsCount
-  (JNIEnv *, jclass)
+JNIEXPORT jint JNICALL
+Java_com_snobot_simulator_jni_SnobotSimulatorJni_getSimulatorComponentConfigsCount
+  (JNIEnv*, jclass)
 {
     return SensorActuatorRegistry::Get().GetSimulatorComponents().size();
 }

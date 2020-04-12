@@ -6,7 +6,7 @@
 class GyroWidget : public IWidgetDisplay
 {
 public:
-    GyroWidget(SaveCallback callback) :
+    explicit GyroWidget(SaveCallback callback) :
             mSaveCallback(callback)
     {
     }

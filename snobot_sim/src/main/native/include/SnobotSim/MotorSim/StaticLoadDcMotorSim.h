@@ -14,12 +14,11 @@
 class EXPORT_ StaticLoadDcMotorSim : public BaseDcMotorSimulator
 {
 public:
-
-struct StaticLoadMotorSimulationConfig
-{
-    double mLoad{1.0};
-    double mConversionFactor{1.0};
-};
+    struct StaticLoadMotorSimulationConfig
+    {
+        double mLoad{ 1.0 };
+        double mConversionFactor{ 1.0 };
+    };
 
     static std::string GetType()
     {

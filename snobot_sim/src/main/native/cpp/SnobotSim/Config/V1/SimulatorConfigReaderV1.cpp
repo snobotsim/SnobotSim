@@ -15,7 +15,6 @@
 #include "SnobotSim/MotorSim/StaticLoadDcMotorSim.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/SimulatorComponents/TankDriveSimulator.h"
-#include "SnobotSim/GetSensorActuatorHelper.h"
 #include "yaml-cpp/yaml.h"
 
 namespace
@@ -189,7 +188,6 @@ void CreateBasicComponents(std::shared_ptr<FactoryType> aFactory, const std::map
 
 DcMotorModel GetMotorModle(const DcMotorModelConfig::FactoryParams& factoryParams, bool ahasBrake, bool aInverted)
 {
-
     DcMotorModelConfig motorModelConfig = VexMotorFactory::MakeTransmission(
             VexMotorFactory::CreateMotor(factoryParams.mMotorName),
             factoryParams.mNumMotors, factoryParams.mGearReduction, factoryParams.mTransmissionEfficiency);
@@ -306,13 +304,13 @@ void SetupSimulatorComponents(const YAML::Node& aNode)
 {
     SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Setting up simulator components... ");
 
-    for(const auto& it : aNode)
+    for (const auto& it : aNode)
     {
         std::string tag = it.Tag();
 
         tag = tag.substr(std::string("tag:yaml.org,2002:").size());
 
-        if(tag == TankDriveSimulator::GetType())
+        if (tag == TankDriveSimulator::GetType())
         {
             using namespace GetSensorActuatorHelper;
             std::shared_ptr<ISpeedControllerWrapper> leftEncoder = GetISpeedControllerWrapper(it["mLeftMotorHandle"].as<int>());
@@ -326,7 +324,6 @@ void SetupSimulatorComponents(const YAML::Node& aNode)
         {
             SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Unknown custom type " << tag);
         }
-
     }
 }
 
@@ -346,7 +343,7 @@ bool SimulatorConfigReaderV1::LoadConfig(const std::string& aConfigFile)
         configNode >> config;
 
         SetupSimulator(config);
-        if(configNode["mSimulatorComponents"])
+        if (configNode["mSimulatorComponents"])
         {
             SetupSimulatorComponents(configNode["mSimulatorComponents"]);
         }

@@ -52,7 +52,6 @@ void JoystickManager::RenderSystemJoysticks()
 }
 void JoystickManager::RenderWpiJoysticks()
 {
-
     // imgui doesn't size columns properly with autoresize, so force it
     ImGui::Dummy(ImVec2(ImGui::GetFontSize() * 10 * HAL_kMaxJoysticks, 0));
 

@@ -5,7 +5,6 @@
 
 class RevManager
 {
-
 public:
     void Reset();
 

@@ -46,9 +46,18 @@ public:
     void setMotionMagicMaxVelocity(int aVel);
     void addFollower(std::shared_ptr<BaseCanSmartSpeedController> aWrapper);
 
-    ControlType GetControlType() { return mControlType; }
-    FeedbackDevice GetFeedbackDevice() { return mFeedbackDevice; }
-    double GetControlGoal() { return mControlGoal; }
+    ControlType GetControlType()
+    {
+        return mControlType;
+    }
+    FeedbackDevice GetFeedbackDevice()
+    {
+        return mFeedbackDevice;
+    }
+    double GetControlGoal()
+    {
+        return mControlGoal;
+    }
 
 protected:
     struct PIDFConstants

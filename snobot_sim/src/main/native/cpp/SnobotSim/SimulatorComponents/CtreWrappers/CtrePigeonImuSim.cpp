@@ -89,7 +89,6 @@ CtrePigeonImuSim::CtrePigeonImuSim(int aBasePort) :
         mZ(new PigeonAccelWrapper("Pigeon Z"))
 
 {
-
     SensorActuatorRegistry::Get().Register(aBasePort + 0, mX);
     SensorActuatorRegistry::Get().Register(aBasePort + 1, mY);
     SensorActuatorRegistry::Get().Register(aBasePort + 2, mZ);

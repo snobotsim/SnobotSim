@@ -12,6 +12,7 @@
 #include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
 
+#include "SnobotSim/Config/SimulatorConfigWriterV1.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSimGui/ModuleWrapperDisplay/AccelerometerWidget.h"
 #include "SnobotSimGui/ModuleWrapperDisplay/AnalogInWidget.h"
@@ -22,7 +23,6 @@
 #include "SnobotSimGui/ModuleWrapperDisplay/RelayWidget.h"
 #include "SnobotSimGui/ModuleWrapperDisplay/SolenoidWidget.h"
 #include "SnobotSimGui/ModuleWrapperDisplay/SpeedControllerWidget.h"
-#include "SnobotSim/Config/SimulatorConfigWriterV1.h"
 
 namespace SnobotSim
 {
@@ -46,7 +46,6 @@ void saveConfig()
 SnobotSimGui::SnobotSimGui() :
         mRunning(false)
 {
-
     IWidgetDisplay::SaveCallback saveCallback(saveConfig);
 
     mWidgets.push_back(std::shared_ptr<IWidgetDisplay>(new AccelerometerWidget(saveCallback)));

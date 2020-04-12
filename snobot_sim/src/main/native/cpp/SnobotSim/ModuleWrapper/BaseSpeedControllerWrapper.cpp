@@ -14,7 +14,7 @@ BaseSpeedControllerWrapper::~BaseSpeedControllerWrapper()
 {
 }
 
-ISpeedControllerWrapper::Type BaseSpeedControllerWrapper::GetSpeedControllerType() 
+ISpeedControllerWrapper::Type BaseSpeedControllerWrapper::GetSpeedControllerType()
 {
     return mType;
 }

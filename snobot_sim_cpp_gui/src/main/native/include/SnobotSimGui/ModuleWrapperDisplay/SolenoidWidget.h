@@ -6,7 +6,7 @@
 class SolenoidWidget : public IWidgetDisplay
 {
 public:
-    SolenoidWidget(SaveCallback callback) :
+    explicit SolenoidWidget(SaveCallback callback) :
             mSaveCallback(callback)
     {
     }

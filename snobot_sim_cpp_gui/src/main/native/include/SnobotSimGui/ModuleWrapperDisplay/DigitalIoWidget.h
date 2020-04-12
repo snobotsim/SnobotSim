@@ -6,7 +6,7 @@
 class DigitalIoWidget : public IWidgetDisplay
 {
 public:
-    DigitalIoWidget(SaveCallback callback) :
+    explicit DigitalIoWidget(SaveCallback callback) :
             mSaveCallback(callback)
     {
     }

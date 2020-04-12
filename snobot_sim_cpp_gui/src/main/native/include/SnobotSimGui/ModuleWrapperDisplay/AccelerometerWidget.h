@@ -6,7 +6,7 @@
 class AccelerometerWidget : public IWidgetDisplay
 {
 public:
-    AccelerometerWidget(SaveCallback callback) :
+    explicit AccelerometerWidget(SaveCallback callback) :
             mSaveCallback(callback)
     {
     }

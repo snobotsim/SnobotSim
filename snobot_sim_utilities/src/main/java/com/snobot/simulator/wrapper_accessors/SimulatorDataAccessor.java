@@ -26,7 +26,7 @@ public interface SimulatorDataAccessor
     boolean connectTankDriveSimulator(int aLeftEncHandle, int aRightEncHandle, int aGyroHandle, double aTurnKp);
 
     Collection<Object> getSimulatorComponentConfigs();
-    
+
     int getSimulatorComponentConfigsCount();
 
     default DcMotorModelConfig createMotor(String aSelectedMotor, int aNumMotors, double aGearReduction, double aEfficiency)

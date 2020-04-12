@@ -6,7 +6,7 @@
 class EncoderWidget : public IWidgetDisplay
 {
 public:
-    EncoderWidget(SaveCallback callback) :
+    explicit EncoderWidget(SaveCallback callback) :
             mSaveCallback(callback)
     {
     }

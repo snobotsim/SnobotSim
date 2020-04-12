@@ -13,10 +13,10 @@
 class EXPORT_ SimpleMotorSimulator : public IMotorSimulator
 {
 public:
-struct SimpleMotorSimulationConfig
-{
-    double mMaxSpeed{12};
-};
+    struct SimpleMotorSimulationConfig
+    {
+        double mMaxSpeed{ 12 };
+    };
 
     static std::string GetType()
     {

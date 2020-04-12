@@ -10,7 +10,6 @@
 SimpleMotorSimulator::SimpleMotorSimulator(const SimpleMotorSimulationConfig& config) :
         SimpleMotorSimulator(config.mMaxSpeed)
 {
-    
 }
 
 SimpleMotorSimulator::SimpleMotorSimulator(double aMaxSpeed) :

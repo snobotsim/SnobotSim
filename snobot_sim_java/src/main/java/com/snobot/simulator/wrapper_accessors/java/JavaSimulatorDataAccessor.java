@@ -78,7 +78,8 @@ public class JavaSimulatorDataAccessor implements SimulatorDataAccessor
     }
 
     @Override
-    public int getSimulatorComponentConfigsCount() {
+    public int getSimulatorComponentConfigsCount() 
+    {
         return SensorActuatorRegistry.get().getSimulatorComponents().size();
     }
 

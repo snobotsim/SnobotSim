@@ -6,13 +6,13 @@
 
 #include <iostream>
 
+#include "SnobotSim/MotorFactory/VexMotorFactory.h"
 #include "SnobotSim/MotorSim/GravityLoadDcMotorSim.h"
 #include "SnobotSim/MotorSim/RotationalLoadDcMotorSim.h"
 #include "SnobotSim/MotorSim/SimpleMotorSimulator.h"
 #include "SnobotSim/MotorSim/StaticLoadDcMotorSim.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/SimulatorComponents/SmartSC/BaseCanSmartSpeedController.h"
-#include "SnobotSim/MotorFactory/VexMotorFactory.h"
 #include "SnobotSimGui/Utilities/ColorFormatters.h"
 #include "SnobotSimGui/Utilities/IndicatorDrawer.h"
 
@@ -20,23 +20,23 @@ namespace
 {
 
 std::map<ISpeedControllerWrapper::Type, std::string> gSCTypeNameLookup = {
-    {ISpeedControllerWrapper::Type::WPI, "WPI"},
-    {ISpeedControllerWrapper::Type::CTRE, "CTRE"},
-    {ISpeedControllerWrapper::Type::REV, "REV"},
-    {ISpeedControllerWrapper::Type::UNKNOWN, "Unknown"},
+    { ISpeedControllerWrapper::Type::WPI, "WPI" },
+    { ISpeedControllerWrapper::Type::CTRE, "CTRE" },
+    { ISpeedControllerWrapper::Type::REV, "REV" },
+    { ISpeedControllerWrapper::Type::UNKNOWN, "Unknown" },
 };
 std::map<BaseCanSmartSpeedController::ControlType, std::string> sCanScControlTypeLookup = {
-    {BaseCanSmartSpeedController::ControlType::Raw, "Raw"},
-    {BaseCanSmartSpeedController::ControlType::Position, "Position"},
-    {BaseCanSmartSpeedController::ControlType::Speed, "Speed"},
-    {BaseCanSmartSpeedController::ControlType::MotionMagic, "MotionMagic"},
-    {BaseCanSmartSpeedController::ControlType::MotionProfile, "MotionProfile"},
+    { BaseCanSmartSpeedController::ControlType::Raw, "Raw" },
+    { BaseCanSmartSpeedController::ControlType::Position, "Position" },
+    { BaseCanSmartSpeedController::ControlType::Speed, "Speed" },
+    { BaseCanSmartSpeedController::ControlType::MotionMagic, "MotionMagic" },
+    { BaseCanSmartSpeedController::ControlType::MotionProfile, "MotionProfile" },
 };
 std::map<BaseCanSmartSpeedController::FeedbackDevice, std::string> sCanScFeedbackDeviceLookup = {
-    {BaseCanSmartSpeedController::FeedbackDevice::None, "None"},
-    {BaseCanSmartSpeedController::FeedbackDevice::QuadEncoder, "QuadEncoder"},
-    {BaseCanSmartSpeedController::FeedbackDevice::Encoder, "Encoder"},
-    {BaseCanSmartSpeedController::FeedbackDevice::Analog, "Analog"},
+    { BaseCanSmartSpeedController::FeedbackDevice::None, "None" },
+    { BaseCanSmartSpeedController::FeedbackDevice::QuadEncoder, "QuadEncoder" },
+    { BaseCanSmartSpeedController::FeedbackDevice::Encoder, "Encoder" },
+    { BaseCanSmartSpeedController::FeedbackDevice::Analog, "Analog" },
 };
 
 std::map<int, FullMotorSimConfig> gMotorConfig;
@@ -108,10 +108,8 @@ FullMotorSimConfig CreateMotorSimConfig(const std::shared_ptr<ISpeedControllerWr
     return output;
 }
 
-
 DcMotorModel GetMotorModel(const DcMotorModelConfig::FactoryParams& factoryParams, bool ahasBrake, bool aInverted)
 {
-
     DcMotorModelConfig motorModelConfig = VexMotorFactory::MakeTransmission(
             VexMotorFactory::CreateMotor(factoryParams.mMotorName),
             factoryParams.mNumMotors, factoryParams.mGearReduction, factoryParams.mTransmissionEfficiency);
@@ -189,9 +187,8 @@ void SpeedControllerWidget::updateDisplay()
                 ImGui::EndPopup();
             }
 
-            if(wrapper->GetSpeedControllerType() == ISpeedControllerWrapper::Type::CTRE || wrapper->GetSpeedControllerType() == ISpeedControllerWrapper::Type::REV)
+            if (wrapper->GetSpeedControllerType() == ISpeedControllerWrapper::Type::CTRE || wrapper->GetSpeedControllerType() == ISpeedControllerWrapper::Type::REV)
             {
-                
                 ImGui::Separator();
                 auto castSim = std::static_pointer_cast<BaseCanSmartSpeedController>(wrapper);
                 ImGui::LabelText("Control Type", sCanScControlTypeLookup[castSim->GetControlType()].c_str());
