@@ -39,6 +39,18 @@ std::map<BaseCanSmartSpeedController::FeedbackDevice, std::string> sCanScFeedbac
     { BaseCanSmartSpeedController::FeedbackDevice::Analog, "Analog" },
 };
 
+std::vector<std::string> gMotorTypes = {
+    "CIM",
+    "Mini CIM",
+    "Bag",
+    "775 Pro",
+    "Andymark RS 775-125",
+    "Banebots RS 775",
+    "Andymark 9015",
+    "Banebots RS 550",
+    "RS775",
+};
+
 std::map<int, FullMotorSimConfig> gMotorConfig;
 std::map<FullMotorSimConfig::MotorSimConfigType, std::string> gMotorSimToString;
 
@@ -205,6 +217,61 @@ void SpeedControllerWidget::updateDisplay()
     ImGui::End();
 }
 
+bool RenderMotorModelConfig(std::shared_ptr<ISpeedControllerWrapper>& wrapper, DcMotorModelConfigConfig& motorConfig)
+{
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "XXXX ");
+    bool changed = false;
+
+    ImGui::Separator();
+
+    auto motorSim = std::dynamic_pointer_cast<BaseDcMotorSimulator>(wrapper->GetMotorSimulator());
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "XXXX ");
+    if(!motorSim)
+    {
+        return false;
+    }
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "XXXX ");
+
+    const DcMotorModel& motorModel = motorSim->GetMotorModel();
+    const DcMotorModelConfig& motorModelConfig = motorModel.GetModelConfig();
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "XXXX ");
+
+    const char* currentMotorName = motorModelConfig.mFactoryParams.mMotorName.c_str();
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "XXXX ");
+
+    ImGui::PushID(wrapper->GetId());
+    if (ImGui::BeginCombo("Motor Name", currentMotorName))
+    {
+        for (auto name : gMotorTypes)
+        {
+            bool is_selected = name == currentMotorName;
+            if (ImGui::Selectable(name.c_str(), is_selected))
+            {
+                motorConfig.mFactoryParams.mMotorName = name;
+                changed = true;
+                // wrapper->SetSpeedController(scPair.second);
+                // mSaveCallback();
+                std::cout << "Selected motor name " << name << std::endl;
+            }
+        }
+        ImGui::EndCombo();
+    }
+    ImGui::PopID();
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "XXXX ");
+
+    changed |= ImGui::InputInt("Num Motors", &motorConfig.mFactoryParams.mNumMotors);
+    changed |= ImGui::InputDouble("Gear Reduction", &motorConfig.mFactoryParams.mGearReduction);
+    changed |= ImGui::InputDouble("Efficiency", &motorConfig.mFactoryParams.mTransmissionEfficiency);
+
+    ImGui::Separator();
+    ImGui::LabelText("Free Speed RPM", "%0.3f", motorModelConfig.FREE_SPEED_RPM);
+    ImGui::LabelText("Free Current", "%0.3f", motorModelConfig.FREE_CURRENT);
+    ImGui::LabelText("Stall Torque", "%0.3f", motorModelConfig.STALL_TORQUE);
+    ImGui::LabelText("Stall Current", "%0.3f", motorModelConfig.STALL_CURRENT);
+
+    return changed;
+}
+
 void SpeedControllerWidget::RenderMotorConfigPopup(std::shared_ptr<ISpeedControllerWrapper>& wrapper, FullMotorSimConfig& motorConfig)
 {
     bool changed = false;
@@ -218,55 +285,54 @@ void SpeedControllerWidget::RenderMotorConfigPopup(std::shared_ptr<ISpeedControl
             if (ImGui::Selectable(scPair.second.c_str(), is_selected))
             {
                 motorConfig.mMotorSimConfigType = scPair.first;
-                std::cout << "Changed motor type to " << motorConfig.mMotorSimConfigType << std::endl;
+                changed = true;
             }
         }
         ImGui::EndCombo();
     }
     ImGui::Text("MY CUSTOM COLOR PICKER WITH AN AMAZING PALETTE!");
-    //        changed |= ImGui::InputString("Motor Type", &motorConfig.mMotorModelConfig.mFactoryParams.mMotorType);
-    changed |= ImGui::InputInt("Num Motors", &motorConfig.mMotorModelConfig.mFactoryParams.mNumMotors);
-    changed |= ImGui::InputDouble("Gear Reduction", &motorConfig.mMotorModelConfig.mFactoryParams.mGearReduction);
-    changed |= ImGui::InputDouble("Efficiency", &motorConfig.mMotorModelConfig.mFactoryParams.mTransmissionEfficiency);
 
-    if (changed)
+    switch(motorConfig.mMotorSimConfigType)
     {
-        std::cout << "Motor controller change" << std::endl;
-        switch (motorConfig.mMotorSimConfigType)
-        {
         case FullMotorSimConfig::Simple:
         {
-            wrapper->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new SimpleMotorSimulator(
-                    motorConfig.mSimple)));
+            changed |= ImGui::InputDouble("Max Speed", &motorConfig.mSimple.mMaxSpeed);
             break;
         }
         case FullMotorSimConfig::Static:
         {
-            wrapper->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new StaticLoadDcMotorSim(
-                    GetMotorModel(motorConfig.mMotorModelConfig.mFactoryParams, motorConfig.mMotorModelConfig.mHasBrake, motorConfig.mMotorModelConfig.mInverted),
-                    motorConfig.mStatic)));
+            changed |= ImGui::InputDouble("Load", &motorConfig.mStatic.mLoad);
+            changed |= ImGui::InputDouble("Conversion Factor", &motorConfig.mStatic.mConversionFactor);
+            changed |= RenderMotorModelConfig(wrapper, motorConfig.mMotorModelConfig);
             break;
         }
         case FullMotorSimConfig::Gravity:
         {
-            wrapper->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new GravityLoadDcMotorSim(
-                    GetMotorModel(motorConfig.mMotorModelConfig.mFactoryParams, motorConfig.mMotorModelConfig.mHasBrake, motorConfig.mMotorModelConfig.mInverted),
-                    motorConfig.mGravity)));
+            changed |= ImGui::InputDouble("Load", &motorConfig.mGravity.mLoad);
+            changed |= RenderMotorModelConfig(wrapper, motorConfig.mMotorModelConfig);
             break;
         }
         case FullMotorSimConfig::Rotational:
         {
-            wrapper->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new RotationalLoadDcMotorSim(
-                    GetMotorModel(motorConfig.mMotorModelConfig.mFactoryParams, motorConfig.mMotorModelConfig.mHasBrake, motorConfig.mMotorModelConfig.mInverted),
-                    wrapper,
-                    motorConfig.mRotational)));
+            changed |= ImGui::InputDouble("Arm Centor of Mass", &motorConfig.mRotational.mArmCenterOfMass);
+            changed |= ImGui::InputDouble("Arm Mass", &motorConfig.mRotational.mArmMass);
+            changed |= ImGui::InputDouble("Constant Assist Torque", &motorConfig.mRotational.mConstantAssistTorque);
+            changed |= ImGui::InputDouble("Over Center Assist Torque", &motorConfig.mRotational.mOverCenterAssistTorque);
+            changed |= RenderMotorModelConfig(wrapper, motorConfig.mMotorModelConfig);
             break;
         }
         case FullMotorSimConfig::None:
-            wrapper->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new NullMotorSimulator));
-        default:
+        {
             break;
         }
+    }
+
+    //        changed |= ImGui::InputString("Motor Type", &motorConfig.mMotorModelConfig.mFactoryParams.mMotorType);
+
+    if (changed)
+    {
+        std::cout << "Motor controller change" << std::endl;
+        motorConfig.CreateSimulator(wrapper);
         mSaveCallback();
     }
 }

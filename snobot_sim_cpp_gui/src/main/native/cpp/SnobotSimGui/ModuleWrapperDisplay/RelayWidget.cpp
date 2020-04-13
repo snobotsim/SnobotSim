@@ -1,6 +1,7 @@
 
 
 #include "SnobotSimGui/ModuleWrapperDisplay/RelayWidget.h"
+#include "SnobotSimGui/Utilities/ColorFormatters.h"
 
 #include <imgui.h>
 
@@ -10,9 +11,9 @@
 namespace
 {
 
-constexpr ImU32 REVERSE_COLOR = IM_COL32(255, 0, 0, 255);
-constexpr ImU32 FORWARD_COLOR = IM_COL32(0, 255, 0, 255);
-constexpr ImU32 OFF_COLOR = IM_COL32(0, 0, 0, 255);
+constexpr ImU32 REVERSE_COLOR = RED_COLOR;
+constexpr ImU32 FORWARD_COLOR = GREEN_COLOR;
+constexpr ImU32 OFF_COLOR = BLACK_COLOR;
 } // namespace
 
 void RelayWidget::updateDisplay()
@@ -65,7 +66,6 @@ void RelayWidget::updateDisplay()
             drawList->AddRectFilled(ImVec2(forwardX, forwardY), ImVec2(forwardX + size, forwardY + size), forwardsColor);
             drawList->AddRectFilled(ImVec2(reverseX, reverseY), ImVec2(reverseX + size, reverseY + size), reverseColor);
         }
-        // std::cout << "  SC: " << pair.first << ", " << pair.second << std::endl;
     }
     ImGui::PopItemWidth();
 

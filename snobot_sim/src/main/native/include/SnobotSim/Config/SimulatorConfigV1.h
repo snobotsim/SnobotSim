@@ -50,6 +50,8 @@ struct FullMotorSimConfig
     RotationalLoadDcMotorSim::RotationalLoadMotorSimulationConfig mRotational;
     MotorSimConfigType mMotorSimConfigType = None;
     DcMotorModelConfigConfig mMotorModelConfig;
+
+    void CreateSimulator(std::shared_ptr<ISpeedControllerWrapper> aSpeedController) const;
 };
 
 struct PwmConfig : public BasicModuleConfig

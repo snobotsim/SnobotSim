@@ -1,6 +1,7 @@
 
 
 #include "SnobotSimGui/ModuleWrapperDisplay/AnalogInWidget.h"
+#include "SnobotSimGui/Utilities/ColorFormatters.h"
 
 #include <hal/Ports.h>
 #include <imgui.h>
@@ -25,7 +26,9 @@ void AnalogInWidget::updateDisplay()
 
         if (pair.first < numAccum && HALSIM_GetAnalogGyroInitialized(pair.first))
         {
+            ImGui::PushStyleColor(ImGuiCol_Text, DISABLED_TEXT_COLOR);
             ImGui::LabelText(name, "AnalogGyro[%d]", pair.first);
+            ImGui::PopStyleColor();
         }
         else
         {

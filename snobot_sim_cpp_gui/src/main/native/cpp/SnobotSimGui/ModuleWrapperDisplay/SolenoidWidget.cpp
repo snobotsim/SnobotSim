@@ -1,6 +1,7 @@
 
 
 #include "SnobotSimGui/ModuleWrapperDisplay/SolenoidWidget.h"
+#include "SnobotSimGui/Utilities/ColorFormatters.h"
 
 #include <imgui.h>
 
@@ -18,7 +19,7 @@ void SolenoidWidget::updateDisplay()
         bool open = ImGui::CollapsingHeader(
                 wrapper->GetName().c_str(), true ? ImGuiTreeNodeFlags_DefaultOpen : 0);
 
-        ImU32 color = wrapper->GetState() ? IM_COL32(0, 255, 0, 255) : IM_COL32(0, 0, 0, 255);
+        ImU32 color = wrapper->GetState() ? GREEN_COLOR : BLACK_COLOR;
         AddIndicator(color);
     }
     ImGui::PopItemWidth();

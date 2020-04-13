@@ -12,7 +12,7 @@ void EncoderWidget::updateDisplay()
 {
     ImGui::Begin("Encoders");
 
-    ImGui::PushItemWidth(ImGui::GetFontSize() * 8);
+    ImGui::PushItemWidth(ImGui::GetFontSize() * 16);
     for (const auto& pair : SensorActuatorRegistry::Get().GetIEncoderWrapperMap())
     {
         auto wrapper = pair.second;

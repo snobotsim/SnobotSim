@@ -1,6 +1,7 @@
 
 
 #include "SnobotSimGui/ModuleWrapperDisplay/DigitalIoWidget.h"
+#include "SnobotSimGui/Utilities/ColorFormatters.h"
 
 #include <hal/Ports.h>
 #include <imgui.h>
@@ -74,17 +75,19 @@ void DigitalIoWidget::updateDisplay()
         WpiEncoderMap::iterator wpiIter = wpiEncoders.find(pair.first);
         if (wpiIter != wpiEncoders.end())
         {
+            ImGui::PushStyleColor(ImGuiCol_Text, DISABLED_TEXT_COLOR);
             ImGui::LabelText(name, "Encoder[%d,%d]", wpiIter->second.first, wpiIter->second.second);
+                    ImGui::PopStyleColor();
         }
         else if (pair.first < numDIO && !HALSIM_GetDIOIsInput(pair.first))
         {
             ImGui::LabelText(name, "");
-            AddIndicator(wrapper->Get() ? IM_COL32(0, 255, 0, 255) : IM_COL32(255, 0, 0, 255));
+            AddIndicator(wrapper->Get() ? GREEN_COLOR : RED_COLOR);
         }
         else
         {
             bool isSet = wrapper->Get();
-            ImGui::PushStyleColor(ImGuiCol_Text, isSet ? IM_COL32(0, 255, 0, 255) : IM_COL32(255, 0, 0, 255));
+            ImGui::PushStyleColor(ImGuiCol_Text, isSet ? GREEN_COLOR : RED_COLOR);
             if (ImGui::Button(name))
             {
                 std::cout << "Button flipped" << std::endl;

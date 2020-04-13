@@ -152,7 +152,61 @@ const YAML::Node& operator>>(const YAML::Node& configNode, SimulatorConfigV1& co
 
     return configNode;
 }
+
+DcMotorModel GetMotorModel(const DcMotorModelConfig::FactoryParams& factoryParams, bool ahasBrake, bool aInverted)
+{
+    DcMotorModelConfig motorModelConfig = VexMotorFactory::MakeTransmission(
+            VexMotorFactory::CreateMotor(factoryParams.mMotorName),
+            factoryParams.mNumMotors, factoryParams.mGearReduction, factoryParams.mTransmissionEfficiency);
+
+    motorModelConfig.mHasBrake = ahasBrake;
+    motorModelConfig.mInverted = aInverted;
+
+    DcMotorModel motorModel(motorModelConfig);
+
+    return motorModel;
+}
+
 } // namespace
+
+
+void FullMotorSimConfig::CreateSimulator(std::shared_ptr<ISpeedControllerWrapper> aSpeedController) const
+{
+        switch (mMotorSimConfigType)
+        {
+        case FullMotorSimConfig::Simple:
+        {
+            aSpeedController->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new SimpleMotorSimulator(
+                    mSimple)));
+            break;
+        }
+        case FullMotorSimConfig::Static:
+        {
+            aSpeedController->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new StaticLoadDcMotorSim(
+                    GetMotorModel(mMotorModelConfig.mFactoryParams, mMotorModelConfig.mHasBrake, mMotorModelConfig.mInverted),
+                    mStatic)));
+            break;
+        }
+        case FullMotorSimConfig::Gravity:
+        {
+            aSpeedController->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new GravityLoadDcMotorSim(
+                    GetMotorModel(mMotorModelConfig.mFactoryParams, mMotorModelConfig.mHasBrake, mMotorModelConfig.mInverted),
+                    mGravity)));
+            break;
+        }
+        case FullMotorSimConfig::Rotational:
+        {
+            aSpeedController->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new RotationalLoadDcMotorSim(
+                    GetMotorModel(mMotorModelConfig.mFactoryParams, mMotorModelConfig.mHasBrake, mMotorModelConfig.mInverted),
+                    aSpeedController,
+                    mRotational)));
+            break;
+        }
+        case FullMotorSimConfig::None:
+        default:
+            break;
+        }
+}
 
 SimulatorConfigReaderV1::SimulatorConfigReaderV1()
 {
@@ -186,19 +240,6 @@ void CreateBasicComponents(std::shared_ptr<FactoryType> aFactory, const std::map
     }
 }
 
-DcMotorModel GetMotorModle(const DcMotorModelConfig::FactoryParams& factoryParams, bool ahasBrake, bool aInverted)
-{
-    DcMotorModelConfig motorModelConfig = VexMotorFactory::MakeTransmission(
-            VexMotorFactory::CreateMotor(factoryParams.mMotorName),
-            factoryParams.mNumMotors, factoryParams.mGearReduction, factoryParams.mTransmissionEfficiency);
-
-    motorModelConfig.mHasBrake = ahasBrake;
-    motorModelConfig.mInverted = aInverted;
-
-    DcMotorModel motorModel(motorModelConfig);
-
-    return motorModel;
-}
 
 void CreatePwmComponents(std::shared_ptr<SpeedControllerFactory> aFactory, const std::map<int, std::shared_ptr<ISpeedControllerWrapper>>& wrapperMap, const std::vector<PwmConfig>& aConfigs)
 {
@@ -213,44 +254,7 @@ void CreatePwmComponents(std::shared_ptr<SpeedControllerFactory> aFactory, const
             continue;
         }
         const FullMotorSimConfig& motorConfig = it.mMotorSim;
-        switch (motorConfig.mMotorSimConfigType)
-        {
-        case FullMotorSimConfig::Simple:
-        {
-            speedController->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new SimpleMotorSimulator(
-                    motorConfig.mSimple.mMaxSpeed)));
-            break;
-        }
-        case FullMotorSimConfig::Static:
-        {
-            speedController->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new StaticLoadDcMotorSim(
-                    GetMotorModle(motorConfig.mMotorModelConfig.mFactoryParams, motorConfig.mMotorModelConfig.mHasBrake, motorConfig.mMotorModelConfig.mInverted),
-                    motorConfig.mStatic.mLoad,
-                    motorConfig.mStatic.mConversionFactor)));
-            break;
-        }
-        case FullMotorSimConfig::Gravity:
-        {
-            speedController->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new GravityLoadDcMotorSim(
-                    GetMotorModle(motorConfig.mMotorModelConfig.mFactoryParams, motorConfig.mMotorModelConfig.mHasBrake, motorConfig.mMotorModelConfig.mInverted),
-                    motorConfig.mGravity.mLoad)));
-            break;
-        }
-        case FullMotorSimConfig::Rotational:
-        {
-            speedController->SetMotorSimulator(std::shared_ptr<IMotorSimulator>(new RotationalLoadDcMotorSim(
-                    GetMotorModle(motorConfig.mMotorModelConfig.mFactoryParams, motorConfig.mMotorModelConfig.mHasBrake, motorConfig.mMotorModelConfig.mInverted),
-                    speedController,
-                    motorConfig.mRotational.mArmCenterOfMass,
-                    motorConfig.mRotational.mArmMass,
-                    motorConfig.mRotational.mConstantAssistTorque,
-                    motorConfig.mRotational.mOverCenterAssistTorque)));
-            break;
-        }
-        case FullMotorSimConfig::None:
-        default:
-            break;
-        }
+        motorConfig.CreateSimulator(speedController);
     }
 }
 
