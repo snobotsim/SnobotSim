@@ -294,23 +294,21 @@ void CtreManager::handleMotorControllerMessage(const std::string& aCallback, int
         }
         wrapper->Reset();
     }
-    /*
         else if ("ConfigMotionCruiseVelocity" == aCallback)
         {
             auto wrapper = getMotorControllerWrapper(aCanPort);
 
-            int sensorUnitsPer100ms = aData.getInt();
-
+            auto [sensorUnitsPer100ms] = ExtractData<int>(aBuffer, aLength);
             wrapper->setMotionMagicMaxVelocity(sensorUnitsPer100ms);
         }
         else if ("ConfigMotionAcceleration" == aCallback)
         {
             auto wrapper = getMotorControllerWrapper(aCanPort);
 
-            int sensorUnitsPer100msPerSec = aData.getInt();
-
+            auto [sensorUnitsPer100msPerSec] = ExtractData<int>(aBuffer, aLength);
             wrapper->setMotionMagicMaxAcceleration(sensorUnitsPer100msPerSec);
         }
+    /*
         else if ("PushMotionProfileTrajectory" == aCallback)
         {
             double position = aData.getDouble();

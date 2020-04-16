@@ -38,7 +38,7 @@ void glfw_error_callback(int error, const char* description)
 void saveConfig()
 {
     std::cout << "Saving config" << std::endl;
-    SimulatorConfigWriterV1().DumpConfig("simulator_config/simulator_config2.yml");
+    SimulatorConfigWriterV1().DumpConfig("simulator_config/simulator_config.yml");
 }
 
 } // namespace

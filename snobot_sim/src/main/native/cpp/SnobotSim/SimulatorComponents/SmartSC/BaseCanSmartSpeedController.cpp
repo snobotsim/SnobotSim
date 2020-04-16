@@ -198,15 +198,12 @@ double BaseCanSmartSpeedController::calculateMotionMagicOutput(double aCurrentPo
 
     mLastError = error;
 
-    // if (sLOGGER.isDebugEnabled())
-    // {
-    //     DecimalFormat df = new DecimalFormat("#.##");
-    //     sLOGGER.log(Level.DEBUG,
-    //             "Motion Magic... " + "Goal: " + aControlGoal + ", " + "CurPos: " + df.format(aCurrentPosition) + ", " + "CurVel: "
-    //                     + df.format(aCurrentVelocity) + ", " + "err: " + df.format(error) + ", " + "maxa: "
-    //                     + df.format(mMotionMagicMaxAcceleration) + ", " + "maxv: " + df.format(mMotionMagicMaxVelocity) + " -- Output: "
-    //                     + output);
-    // }
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN,
+            "Motion Magic... " << "Goal: " << aControlGoal << ", " << "CurPos: " << aCurrentPosition << ", " << "CurVel: "
+                    << aCurrentVelocity << ", " << "err: " << error << ", " << "maxa: "
+                    << mMotionMagicMaxAcceleration << ", " << "maxv: " << mMotionMagicMaxVelocity 
+                    << " (P: " << pComp << ", I: " << iComp << ", D: " << dComp << ", F: " << fComp << ")"
+                    << " -- Output: " << output);
 
     return output;
 }
@@ -251,8 +248,9 @@ double BaseCanSmartSpeedController::calculateFeedbackOutput(double aCurrent, dou
 
     mLastError = error;
 
-    // sLOGGER.log(Level.DEBUG, "Updating CAN PID: Error: " + error + ", Output: " + output + " (Cur: " + aCurrent + ", Goal: " + aGoal + ") "
-    //         + " (P: " + pComp + ", I: " + iComp + ", D: " + dComp + ", F: " + fComp + ")");
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN,
+            "Updating CAN PID: Error: " << error << ", Output: " << output << " (Cur: " << aCurrent << ", Goal: " << aGoal << ") "
+            << " (P: " << pComp << ", I: " << iComp << ", D: " << dComp << ", F: " << fComp << ")");
 
     return output;
 }

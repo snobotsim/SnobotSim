@@ -2,6 +2,8 @@
 
 #include "SnobotSimGui/ModuleWrapperDisplay/SolenoidWidget.h"
 #include "SnobotSimGui/Utilities/ColorFormatters.h"
+#include "SnobotSimGui/EditNamePopup.h"
+#include "SnobotSimGui/EditNamePopup.h"
 
 #include <imgui.h>
 
@@ -18,6 +20,10 @@ void SolenoidWidget::updateDisplay()
         auto wrapper = pair.second;
         bool open = ImGui::CollapsingHeader(
                 wrapper->GetName().c_str(), true ? ImGuiTreeNodeFlags_DefaultOpen : 0);
+        if(PopupEditName(pair.first, wrapper))
+        {
+            mSaveCallback();
+        }
 
         ImU32 color = wrapper->GetState() ? GREEN_COLOR : BLACK_COLOR;
         AddIndicator(color);

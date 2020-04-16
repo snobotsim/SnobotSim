@@ -1,12 +1,14 @@
 
 
 #include "SnobotSimGui/ModuleWrapperDisplay/EncoderWidget.h"
+#include "SnobotSimGui/EditNamePopup.h"
 
 #include <imgui.h>
 
 #include <iostream>
 
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSimGui/EditNamePopup.h"
 
 void EncoderWidget::updateDisplay()
 {
@@ -17,6 +19,10 @@ void EncoderWidget::updateDisplay()
     {
         auto wrapper = pair.second;
         bool open = ImGui::CollapsingHeader(wrapper->GetName().c_str(), true ? ImGuiTreeNodeFlags_DefaultOpen : 0);
+        if(PopupEditName(pair.first, wrapper))
+        {
+            mSaveCallback();
+        }
 
         if (open)
         {

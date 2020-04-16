@@ -1,6 +1,7 @@
 
 
 #include "SnobotSimGui/ModuleWrapperDisplay/SpeedControllerWidget.h"
+#include "SnobotSimGui/EditNamePopup.h"
 
 #include <imgui.h>
 
@@ -163,7 +164,12 @@ void SpeedControllerWidget::updateDisplay()
     {
         auto wrapper = pair.second;
         bool open = ImGui::CollapsingHeader(
-                wrapper->GetName().c_str(), true ? ImGuiTreeNodeFlags_DefaultOpen : 0);
+                // wrapper->GetName().c_str(), true ? ImGuiTreeNodeFlags_DefaultOpen : 0);
+                wrapper->GetName().c_str());
+        if(PopupEditName(pair.first, wrapper))
+        {
+            mSaveCallback();
+        }
 
         AddIndicator(GetClampedColor(wrapper->GetVoltagePercentage(), -1, 1));
 
@@ -219,25 +225,20 @@ void SpeedControllerWidget::updateDisplay()
 
 bool RenderMotorModelConfig(std::shared_ptr<ISpeedControllerWrapper>& wrapper, DcMotorModelConfigConfig& motorConfig)
 {
-    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "XXXX ");
     bool changed = false;
 
     ImGui::Separator();
 
     auto motorSim = std::dynamic_pointer_cast<BaseDcMotorSimulator>(wrapper->GetMotorSimulator());
-    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "XXXX ");
     if(!motorSim)
     {
         return false;
     }
-    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "XXXX ");
 
     const DcMotorModel& motorModel = motorSim->GetMotorModel();
     const DcMotorModelConfig& motorModelConfig = motorModel.GetModelConfig();
-    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "XXXX ");
 
     const char* currentMotorName = motorModelConfig.mFactoryParams.mMotorName.c_str();
-    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "XXXX ");
 
     ImGui::PushID(wrapper->GetId());
     if (ImGui::BeginCombo("Motor Name", currentMotorName))

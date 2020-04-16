@@ -1,6 +1,7 @@
 
 
 #include "SnobotSimGui/ModuleWrapperDisplay/AnalogOutWidget.h"
+#include "SnobotSimGui/EditNamePopup.h"
 
 #include <imgui.h>
 
@@ -16,6 +17,10 @@ void AnalogOutWidget::updateDisplay()
         auto wrapper = pair.second;
         bool open = ImGui::CollapsingHeader(
                 wrapper->GetName().c_str(), true ? ImGuiTreeNodeFlags_DefaultOpen : 0);
+        if(PopupEditName(pair.first, wrapper))
+        {
+            mSaveCallback();
+        }
         // std::cout << "  SC: " << pair.first << ", " << pair.second << std::endl;
     }
     ImGui::PopItemWidth();

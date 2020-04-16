@@ -2,6 +2,7 @@
 
 #include "SnobotSimGui/ModuleWrapperDisplay/AnalogInWidget.h"
 #include "SnobotSimGui/Utilities/ColorFormatters.h"
+#include "SnobotSimGui/EditNamePopup.h"
 
 #include <hal/Ports.h>
 #include <imgui.h>
@@ -38,6 +39,10 @@ void AnalogInWidget::updateDisplay()
                 std::cout << "Voltage changed from " << wrapper->GetVoltage() << " to " << voltage << std::endl;
                 wrapper->SetVoltage(voltage);
             }
+        }
+        if(PopupEditName(pair.first, wrapper))
+        {
+            mSaveCallback();
         }
     }
     ImGui::PopItemWidth();

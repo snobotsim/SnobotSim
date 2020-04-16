@@ -2,6 +2,7 @@
 
 #include "SnobotSimGui/ModuleWrapperDisplay/DigitalIoWidget.h"
 #include "SnobotSimGui/Utilities/ColorFormatters.h"
+#include "SnobotSimGui/EditNamePopup.h"
 
 #include <hal/Ports.h>
 #include <imgui.h>
@@ -98,6 +99,10 @@ void DigitalIoWidget::updateDisplay()
             // ImGui::LabelText(name, "Input[%d]", wrapper->Get());
         }
 
+        if(PopupEditName(pair.first, wrapper))
+        {
+            mSaveCallback();
+        }
         // std::cout << "  SC: " << pair.first << ", " << pair.second << std::endl;
     }
     ImGui::PopItemWidth();

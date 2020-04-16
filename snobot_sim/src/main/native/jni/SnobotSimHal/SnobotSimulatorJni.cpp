@@ -16,6 +16,8 @@
 #include "hal/HAL.h"
 #include "wpi/jni_util.h"
 
+#include <iostream>
+
 using namespace wpi::java;
 
 static SnobotLogging::ISnobotLogger* sSnobotLogger = NULL;
@@ -104,6 +106,7 @@ Java_com_snobot_simulator_jni_SnobotSimulatorJni_initializeLogging
     }
 
     SnobotLogging::LogLevel logLevel = (SnobotLogging::LogLevel)aLogLevel;
+    std::cout << "Setting log level... " << static_cast<int>(logLevel) << std::endl;;
     sSnobotLogger->SetLogLevel(logLevel);
 
     SnobotLogging::SetLogger(sSnobotLogger);

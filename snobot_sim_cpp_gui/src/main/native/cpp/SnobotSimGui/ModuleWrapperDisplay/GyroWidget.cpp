@@ -1,6 +1,7 @@
 
 
 #include "SnobotSimGui/ModuleWrapperDisplay/GyroWidget.h"
+#include "SnobotSimGui/EditNamePopup.h"
 
 #include <imgui.h>
 
@@ -17,6 +18,10 @@ void GyroWidget::updateDisplay()
         bool open = ImGui::CollapsingHeader(
                 wrapper->GetName().c_str(), true ? ImGuiTreeNodeFlags_DefaultOpen : 0);
 
+        if(PopupEditName(pair.first, wrapper))
+        {
+            mSaveCallback();
+        }
         if (open)
         {
             ImGui::PushID(pair.first);

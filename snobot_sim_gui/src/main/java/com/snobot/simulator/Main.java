@@ -69,7 +69,7 @@ public final class Main
 
     private static SnobotLogLevel parseLogLevel(Collection<String> aArgList)
     {
-        int logLevel = 0;
+        int logLevel = 1;
 
         for (String arg : aArgList)
         {
