@@ -128,6 +128,8 @@ void BaseCanSmartSpeedController::setMotionMagicGoal(double aDemand)
 
 void BaseCanSmartSpeedController::Update(double aWaitTime)
 {
+    RefreshSettings();
+
     switch (mControlType)
     {
     case ControlType::Position:
@@ -162,6 +164,8 @@ void BaseCanSmartSpeedController::Update(double aWaitTime)
         break;
     }
     BaseSpeedControllerWrapper::Update(aWaitTime);
+    
+    RefreshOutputs();
 }
 
 void BaseCanSmartSpeedController::setMotionMagicMaxAcceleration(int aAccel)

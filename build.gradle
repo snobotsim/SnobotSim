@@ -44,7 +44,7 @@ ext.use_simulator_java = !use_cpp
 // Specify WPI Versions
 
 ext.allwpilibVersion = {
-    return '2020.1.2'
+    return '2020.2.2'
 }
 
 ext.getWpilibImguiVersion = {
@@ -65,7 +65,7 @@ ext.getWpilibOpencvVersion = {
     return '3.4.7-2'
 }
 ext.getCtreVersion = {
-    return '5.17.2'
+    return '5.17.3'
 }
 ext.getCtreSimVersion = {
     return getCtreVersion() + "_V0_RC"

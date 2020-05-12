@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "SnobotSim/SimulatorComponents/SmartSC/BaseCanSmartSpeedController.h"
+#include "simulation/SimDeviceSim.h"
 
 class CtreTalonSRXSpeedControllerSim : public BaseCanSmartSpeedController
 {
@@ -45,9 +46,13 @@ public:
     int getBinnedVelocity();
     void setCanFeedbackDevice(char aFeedbackDevice);
 
+    void RefreshSettings() override;
+    void RefreshOutputs() override;
+
 protected:
     double calculateMotionProfileOutput(double aCurrentPosition, double aCurrentVelocity, int aModeType) override;
     double calculateMotionProfileOutput(double aCurrentPosition, double aCurrentVelocity, double aGoalPosition, double aGoalVelocity);
+    
 
     double getPositionUnitConversion() override
     {
@@ -72,4 +77,22 @@ protected:
     std::vector<MotionProfilePoint> mMotionProfilePoints;
     int mMotionProfileProcessedCounter{ 0 };
     int mMotionProfileCurrentPointIndex{ 0 };
+
+    hal::SimDouble     mDemand_mode;
+    hal::SimDouble     mDemand_demand0;
+    hal::SimDouble     mDemand_demand1;
+
+    hal::SimDouble     m_Set4_mode;
+    hal::SimDouble     m_Set4_demand0;
+    hal::SimDouble     m_Set4_demand1;
+    hal::SimDouble     m_Set4_demand1Type;
+
+    hal::SimBoolean    mInverted_invert;
+
+    hal::SimDouble     m_kP_value;
+    hal::SimDouble     m_kI_value;
+    hal::SimDouble     m_kD_value;
+    hal::SimDouble     m_kF_value;
+    
+    hal::SimDouble     m_motor_percentage;
 };

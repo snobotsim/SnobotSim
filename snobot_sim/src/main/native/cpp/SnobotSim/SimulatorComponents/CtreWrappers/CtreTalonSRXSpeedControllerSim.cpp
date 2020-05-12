@@ -4,12 +4,44 @@
 #include "SnobotSim/Logging/SnobotLogger.h"
 #include "SnobotSim/ModuleWrapper/Factories/FactoryContainer.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
+#include "SnobotSim/SimulatorComponents/SmartSC/CanIdOffset.h"
+
+#include <iostream>
 
 const std::string CtreTalonSRXSpeedControllerSim::TYPE = "com.snobot.simulator.simulator_components.ctre.CtreTalonSrxSpeedControllerSim";
 
 CtreTalonSRXSpeedControllerSim::CtreTalonSRXSpeedControllerSim(int aCanHandle) :
         BaseCanSmartSpeedController(Type::CTRE, aCanHandle, "CTRE", 2)
 {
+    std::string deviceNum = std::to_string(aCanHandle - CAN_SC_OFFSET);
+    std::string deviceName = "CTRE Motor Controller " + deviceNum + "[" + deviceNum + "]";
+    HAL_SimDeviceHandle mDeviceSimHandle{ 0 };
+    frc::sim::SimDeviceSim::EnumerateDevices(
+            deviceName.c_str(), [&](const char* name, HAL_SimDeviceHandle handle) {
+                if (wpi::StringRef(name) == deviceName)
+                {
+                    mDeviceSimHandle = handle;
+                }
+            });
+
+    if(mDeviceSimHandle)
+    {
+        mDemand_mode       = HALSIM_GetSimValueHandle(mDeviceSimHandle, "mDemand_mode");
+        mDemand_demand0    = HALSIM_GetSimValueHandle(mDeviceSimHandle, "mDemand_demand0");
+        mDemand_demand1    = HALSIM_GetSimValueHandle(mDeviceSimHandle, "mDemand_demand1");
+        m_Set4_mode        = HALSIM_GetSimValueHandle(mDeviceSimHandle, "m_Set4_mode");
+        m_Set4_demand0     = HALSIM_GetSimValueHandle(mDeviceSimHandle, "m_Set4_demand0");
+        m_Set4_demand1     = HALSIM_GetSimValueHandle(mDeviceSimHandle, "m_Set4_demand1");
+        m_Set4_demand1Type = HALSIM_GetSimValueHandle(mDeviceSimHandle, "m_Set4_demand1Type");
+        mInverted_invert   = HALSIM_GetSimValueHandle(mDeviceSimHandle, "mInverted_invert");
+        m_kP_value         = HALSIM_GetSimValueHandle(mDeviceSimHandle, "m_kP_value");
+        m_kI_value         = HALSIM_GetSimValueHandle(mDeviceSimHandle, "m_kI_value");
+        m_kD_value         = HALSIM_GetSimValueHandle(mDeviceSimHandle, "m_kD_value");
+        m_kF_value         = HALSIM_GetSimValueHandle(mDeviceSimHandle, "m_kF_value");
+        m_motor_percentage = HALSIM_GetSimValueHandle(mDeviceSimHandle, "m_motor_precentage");
+    }
+
+    std::cout << "GETTING HANDLE " << mDeviceSimHandle << "(" << deviceName << ")" << m_Set4_demand0 << " --- xxffjd " << HALSIM_GetSimValueHandle(mDeviceSimHandle, "m_Set4_demanfd0") << std::endl;
 }
 
 void CtreTalonSRXSpeedControllerSim::setMotionProfilingCommand(double aDemand)
@@ -121,4 +153,56 @@ void CtreTalonSRXSpeedControllerSim::setCanFeedbackDevice(char aFeedbackDevice)
 double CtreTalonSRXSpeedControllerSim::calculateMotionProfileOutput(double aCurrentPosition, double aCurrentVelocity, int aModeType)
 {
     return 0;
+}
+
+void CtreTalonSRXSpeedControllerSim::RefreshSettings()
+{
+    std::cout << "Refreshing settings...." << std::endl;
+
+    // Control mode
+    {
+        int mode = static_cast<int>(m_Set4_mode.Get());
+        double demand0 = m_Set4_demand0.Get();
+
+        std::cout << "  " << mode << ", " << demand0 << std::endl;
+    
+        switch (mode)
+        {
+        case 0:
+            setRawGoal(demand0);
+            break;
+        case 1:
+            setPositionGoal(demand0);
+            break;
+        case 2:
+            setSpeedGoal(demand0);
+            break;
+        case 5:
+        {
+            // int followerPort = (static_cast<int>(demand0)) & 0xFF;
+            // auto leadTalon = getMotorControllerWrapper(followerPort);
+            // leadTalon->addFollower(wrapper);
+            break;
+        }
+        case 6:
+            setMotionProfilingCommand(demand0);
+            break;
+        case 7:
+            setMotionMagicGoal(demand0);
+            break;
+        case 15:
+            SetVoltagePercentage(0);
+            break;
+        default:
+            SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Unknown demand mode " << mode);
+            break;
+        }
+    }
+}
+
+void CtreTalonSRXSpeedControllerSim::RefreshOutputs()
+{
+    std::cout << "Writing settings...." << std::endl;
+    std::cout << GetVoltagePercentage() << std::endl;
+    m_motor_percentage.Set(GetVoltagePercentage());
 }

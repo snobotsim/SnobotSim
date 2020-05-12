@@ -2,7 +2,7 @@
 #include "SnobotSim/HalCallbacks/ThirdPartyCanCallbacks.h"
 
 #undef EXPORT_
-#include "CtreSimMocks/MockHooks.h"
+#include "CtreSimUtils/MockHooks.h"
 
 #undef EXPORT_
 #include "RevSimMocks/MockHooks.h"
@@ -30,19 +30,19 @@ void InitializeThirdPartyCanCallbacks()
                                                 int length) {
         gCtreManager.handleMotorControllerMessage(name, messageId, buffer, length);
     });
-    SnobotSim::SetPigeonCallback([](const char* name,
+    SnobotSim::SetPigeonIMUCallback([](const char* name,
                                          uint32_t messageId,
                                          uint8_t* buffer,
                                          int length) {
         gCtreManager.handlePigeonMessage(name, messageId, buffer, length);
     });
-    SnobotSim::SetCanifierCallback([](const char* name,
+    SnobotSim::SetCANifierCallback([](const char* name,
                                            uint32_t messageId,
                                            uint8_t* buffer,
                                            int length) {
         gCtreManager.handleCanifierMessage(name, messageId, buffer, length);
     });
-    SnobotSim::SetBuffTrajPiontStreamCallback([](const char* name,
+    SnobotSim::SetBuffTrajPointStreamCallback([](const char* name,
                                                       uint32_t messageId,
                                                       uint8_t* buffer,
                                                       int length) {

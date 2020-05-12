@@ -19,7 +19,11 @@ public:
 
     void setCanFeedbackDevice(int aFeedbackDevice);
 
+    void RefreshSettings() override;
+    void RefreshOutputs() override;
 protected:
+    
+    
     double calculateMotionProfileOutput(double aCurrentPosition, double aCurrentVelocity, int aModeType) override;
 
     double getPositionUnitConversion() override

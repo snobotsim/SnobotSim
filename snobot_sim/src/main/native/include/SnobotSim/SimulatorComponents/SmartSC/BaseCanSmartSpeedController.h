@@ -59,6 +59,8 @@ public:
         return mControlGoal;
     }
 
+    virtual void RefreshSettings() = 0;
+    virtual void RefreshOutputs() = 0;
 protected:
     struct PIDFConstants
     {
@@ -68,6 +70,7 @@ protected:
         double mF{ 0 };
         double mIZone{ 0 };
     };
+
 
     PIDFConstants getPidConstants(int aSlot);
     double calculateMotionMagicOutput(double aCurrentPosition, double aCurrentVelocity, double aControlGoal);

@@ -30,3 +30,12 @@ void RevpeedControllerSim::setCanFeedbackDevice(int aFeedbackDevice)
 
     BaseCanSmartSpeedController::setCanFeedbackDevice(newDevice);
 }
+
+
+void RevpeedControllerSim::RefreshSettings()
+{
+    
+}
+void RevpeedControllerSim::RefreshOutputs()
+{
+}
