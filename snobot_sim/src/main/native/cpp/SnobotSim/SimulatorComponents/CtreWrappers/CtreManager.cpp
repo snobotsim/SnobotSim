@@ -505,6 +505,11 @@ void CtreManager::handleCanifierMessage(const std::string& aCallback, int aCanPo
     SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Getting Canifier Message " << aCallback << " on port " << aCanPort << "(" << aLength << " bytes)");
 }
 
+void CtreManager::handleCanCoderMessage(const std::string& aCallback, int aCanPort, uint8_t* aBuffer, int aLength)
+{
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Getting CanCoder Message " << aCallback << " on port " << aCanPort << "(" << aLength << " bytes)");
+}
+
 void CtreManager::handleBuffTrajPointStreamMessage(const std::string& aCallback, int aCanPort, uint8_t* aBuffer, int aLength)
 {
     SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Getting Trajectory Point Message " << aCallback << " on port " << aCanPort << "(" << aLength << " bytes)");
