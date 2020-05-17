@@ -31,9 +31,9 @@ void InitializeThirdPartyCanCallbacks()
         gCtreManager.handleMotorControllerMessage(name, messageId, buffer, length);
     });
     SnobotSim::SetPigeonIMUCallback([](const char* name,
-                                         uint32_t messageId,
-                                         uint8_t* buffer,
-                                         int length) {
+                                            uint32_t messageId,
+                                            uint8_t* buffer,
+                                            int length) {
         gCtreManager.handlePigeonMessage(name, messageId, buffer, length);
     });
     SnobotSim::SetCANifierCallback([](const char* name,
@@ -43,9 +43,9 @@ void InitializeThirdPartyCanCallbacks()
         gCtreManager.handleCanifierMessage(name, messageId, buffer, length);
     });
     SnobotSim::SetCANCoderCallback([](const char* name,
-                                                      uint32_t messageId,
-                                                      uint8_t* buffer,
-                                                      int length) {
+                                           uint32_t messageId,
+                                           uint8_t* buffer,
+                                           int length) {
         gCtreManager.handleCanCoderMessage(name, messageId, buffer, length);
     });
     SnobotSim::SetBuffTrajPointStreamCallback([](const char* name,
@@ -59,9 +59,9 @@ void InitializeThirdPartyCanCallbacks()
     // REV
     //////////////////////////////
     SnobotSim::SetCANSparkMaxDriverCallback([](const char* name,
-                                                 uint32_t messageId,
-                                                 uint8_t* buffer,
-                                                 int length) {
+                                                    uint32_t messageId,
+                                                    uint8_t* buffer,
+                                                    int length) {
         gReveManager.handleMessage(name, messageId, buffer, length);
     });
 }
