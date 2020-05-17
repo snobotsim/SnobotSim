@@ -12,8 +12,6 @@ const std::string RevpeedControllerSim::TYPE = "com.snobot.simulator.simulator_c
 RevpeedControllerSim::RevpeedControllerSim(int aCanHandle) :
         BaseCanSmartSpeedController(aCanHandle, "Rev", 2)
 {
-    //        dumpSimDevices();
-
     std::string deviceNum = std::to_string(aCanHandle - CAN_SC_OFFSET);
     std::string deviceName = "RevCANSparkMaxDriverWrapper " + deviceNum + "[" + deviceNum + "]";
     HAL_SimDeviceHandle mDeviceSimHandle{ 0 };

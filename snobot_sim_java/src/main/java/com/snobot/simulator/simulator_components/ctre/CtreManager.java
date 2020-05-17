@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import com.snobot.simulator.simulator_components.smart_sc.BaseCanSmartSpeedController;
 import org.apache.logging.log4j.Level;
@@ -22,10 +23,15 @@ public class CtreManager
     private static final Logger sLOGGER = LogManager.getLogger(CtreManager.class);
 
     private final Map<Integer, CtrePigeonImuSim> mPigeonMap;
+    
+    private final Map<String, Consumer<CtreTalonSrxSpeedControllerSim>> mNormalMoterControllerCallbacks;
 
     public CtreManager()
     {
         mPigeonMap = new HashMap<>();
+        
+        mNormalMoterControllerCallbacks = new HashMap<>();
+        mNormalMoterControllerCallbacks.put("", (wrapper) -> wrapper.handleSetDemand());
     }
 
     public void reset()
@@ -35,7 +41,7 @@ public class CtreManager
 
     private CtreTalonSrxSpeedControllerSim getMotorControllerWrapper(int aCanPort)
     {
-        return (CtreTalonSrxSpeedControllerSim) SensorActuatorRegistry.get().getSpeedControllers().get(aCanPort + CtreTalonSrxSpeedControllerSim.sCAN_SC_OFFSET);
+        return CtreTalonSrxSpeedControllerSim.getMotorControllerWrapper(aCanPort);
     }
 
     private CtrePigeonImuSim getPigeonWrapper(int aCanPort)
@@ -48,7 +54,7 @@ public class CtreManager
     {
         aData.order(ByteOrder.LITTLE_ENDIAN);
 
-        sLOGGER.log(Level.TRACE, "Handling motor controller message " + aCallback + ", " + aCanPort);
+        sLOGGER.log(Level.INFO, "Handling motor controller message " + aCallback + ", " + aCanPort);
 
 
         Set<String> unsupportedFunctions = new HashSet<>();
@@ -57,175 +63,86 @@ public class CtreManager
         {
             createMotorController(aCanPort);
         }
+        
         else if ("SetDemand".equals(aCallback))
         {
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
-
-            int mode = aData.getInt();
-            int param0 = aData.getInt();
-            int param1 = aData.getInt();
-            sLOGGER.log(Level.DEBUG, "Setting demand " + mode + ", " + param0 + ", " + param1);
-
-            switch (mode)
-            {
-            case 0:
-                wrapper.set(param0 / 1023.0);
-                break;
-            case 1:
-                wrapper.setPositionGoal(param0);
-                break;
-            case 2:
-                wrapper.setSpeedGoal(param0);
-                break;
-            case 5:
-                int followerPort = param0 & 0xFF;
-                CtreTalonSrxSpeedControllerSim leadTalon = getMotorControllerWrapper(followerPort);
-                leadTalon.addFollower(wrapper);
-                break;
-            case 6:
-                wrapper.setMotionProfilingCommand(param0);
-                break;
-            case 7:
-                wrapper.setMotionMagicGoal(param0);
-                break;
-            case 15:
-                wrapper.set(0);
-                break;
-            default:
-                sLOGGER.log(Level.ERROR, String.format("Unknown demand mode %d", mode));
-                break;
-            }
+            wrapper.handleSetDemand();
         }
         else if ("Set_4".equals(aCallback))
         {
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
-
-            int mode = aData.getInt();
-            double demand0 = aData.getDouble();
-            double demand1 = aData.getDouble();
-            int demand1Type = aData.getInt();
-            sLOGGER.log(Level.DEBUG, "Setting_4 " + mode + ", " + demand0 + ", " + demand1 + ", " + demand1Type);
-
-            switch (mode)
-            {
-            case 0:
-                wrapper.setRawGoal(demand0);
-                break;
-            case 1:
-                wrapper.setPositionGoal(demand0);
-                break;
-            case 2:
-                wrapper.setSpeedGoal(demand0);
-                break;
-            case 5:
-                int followerPort = ((int) demand0) & 0xFF;
-                CtreTalonSrxSpeedControllerSim leadTalon = getMotorControllerWrapper(followerPort);
-                leadTalon.addFollower(wrapper);
-                break;
-            case 6:
-                wrapper.setMotionProfilingCommand(demand0);
-                break;
-            case 7:
-                wrapper.setMotionMagicGoal(demand0);
-                break;
-            case 15:
-                wrapper.set(0);
-                break;
-            default:
-                sLOGGER.log(Level.ERROR, String.format("Unknown demand mode %d", mode));
-                break;
-            }
-        }
-        else if ("GetBaseID".equals(aCallback))
-        {
-            aData.putInt(aCanPort);
+            wrapper.handleSet4();
         }
         else if ("ConfigSelectedFeedbackSensor".equals(aCallback))
         {
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
-
-            int feedbackDevice = aData.getInt();
-            wrapper.setCanFeedbackDevice((byte) feedbackDevice);
-
+            wrapper.handleConfigSelectedFeedbackSensor();
         }
         else if ("Config_kP".equals(aCallback))
         {
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
 
             int slot = aData.getInt();
-            double value = aData.getDouble();
-
-            wrapper.setPGain(slot, value);
+            wrapper.handleSetKP(slot);
         }
         else if ("Config_kI".equals(aCallback))
         {
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
 
             int slot = aData.getInt();
-            double value = aData.getDouble();
-
-            wrapper.setIGain(slot, value);
+            wrapper.handleSetKI(slot);
         }
         else if ("Config_kD".equals(aCallback))
         {
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
 
             int slot = aData.getInt();
-            double value = aData.getDouble();
-
-            wrapper.setDGain(slot, value);
+            wrapper.handleSetKD(slot);
         }
         else if ("Config_kF".equals(aCallback))
         {
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
 
             int slot = aData.getInt();
-            double value = aData.getDouble();
-
-            wrapper.setFGain(slot, value);
+            wrapper.handleSetKF(slot);
         }
         else if ("Config_IntegralZone".equals(aCallback))
         {
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
 
             int slot = aData.getInt();
-            double value = aData.getDouble();
-
-            wrapper.setIZone(slot, value);
+            wrapper.handleSetIntegralZone(slot);
         }
         else if ("ConfigMotionCruiseVelocity".equals(aCallback))
         {
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
-
-            int sensorUnitsPer100ms = aData.getInt();
-
-            wrapper.setMotionMagicMaxVelocity(sensorUnitsPer100ms);
+            wrapper.handleSetMotionCruiseVelocity();
         }
         else if ("ConfigMotionAcceleration".equals(aCallback))
         {
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
-
-            int sensorUnitsPer100msPerSec = aData.getInt();
-
-            wrapper.setMotionMagicMaxAcceleration(sensorUnitsPer100msPerSec);
+            wrapper.handleSetMotionAcceleration();
         }
         else if ("PushMotionProfileTrajectory".equals(aCallback))
         {
-            double position = aData.getDouble();
-            double velocity = aData.getDouble();
-
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
-            MotionProfilePoint point = new MotionProfilePoint(wrapper.getMotionProfileSize() + 1, position, velocity);
-            wrapper.addMotionProfilePoint(point);
+            wrapper.handlePushMotionProfileTrajectory();
         }
         else if ("PushMotionProfileTrajectory_2".equals(aCallback))
         {
-            double position = aData.getDouble();
-            double velocity = aData.getDouble();
-
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
-            MotionProfilePoint point = new MotionProfilePoint(wrapper.getMotionProfileSize() + 1, position, velocity);
-            wrapper.addMotionProfilePoint(point);
+            wrapper.handlePushMotionProfileTrajectory_2();
+        }
+        else if ("SetSelectedSensorPosition".equals(aCallback))
+        {
+            CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
+            wrapper.handleSetSelectedSensorPosition();
+        }
+        else if ("SetInverted_2".equals(aCallback))
+        {
+            CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
+            wrapper.handleSetInverted_2();
         }
         else if ("ProcessMotionProfileBuffer".equals(aCallback))
         { // NOPMD
@@ -238,87 +155,51 @@ public class CtreManager
         else if ("GetMotorOutputPercent".equals(aCallback))
         {
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
-
-            float speed = (float) wrapper.get();
-            aData.putDouble(0, speed);
+            wrapper.handleGetMotorOutputPercent();
 
         }
         else if ("GetSelectedSensorPosition".equals(aCallback))
         {
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
-
-            int speed = wrapper.getBinnedPosition();
-            aData.putInt(0, speed);
+            wrapper.handleGetSelectedSensorPosition();
 
         }
         else if ("GetSelectedSensorVelocity".equals(aCallback))
         {
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
+            wrapper.handleGetSelectedSensorVelocity();
 
-            int speed = wrapper.getBinnedVelocity();
-            aData.putInt(0, speed);
-
-        }
-        else if ("SetSelectedSensorPosition".equals(aCallback))
-        {
-            CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
-            wrapper.reset();
         }
         else if ("GetClosedLoopError".equals(aCallback))
         {
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
-
-            int speed = (int) Math.ceil(wrapper.getLastClosedLoopError());
-            aData.putInt(0, speed);
+            wrapper.handleGetClosedLoopError();
 
         }
         else if ("GetMotionProfileStatus".equals(aCallback))
         {
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
-
-            aData.putInt(4550);
-            aData.putInt(wrapper.getMotionProfileSize());
-            aData.putInt(0);
-            aData.put((byte) 3);
-            aData.put((byte) 4);
-            aData.put((byte) 5);
-            aData.put((byte) 0);
-            aData.putInt(4444);
-            aData.putInt(3333);
+            wrapper.handleGetMotionProfileStatus();
         }
         else if ("GetActiveTrajectoryPosition".equals(aCallback))
         {
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
-            MotionProfilePoint point = wrapper.getMotionProfilePoint();
-            aData.putInt(point == null ? 0 : (int) point.mPosition);
+            wrapper.handleGetActiveTrajectoryPosition();
         }
         else if ("GetActiveTrajectoryVelocity".equals(aCallback))
         {
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
-            MotionProfilePoint point = wrapper.getMotionProfilePoint();
-            aData.putInt(point == null ? 0 : (int) point.mVelocity);
+            wrapper.handleGetActiveTrajectoryVelocity();
         }
         else if ("GetQuadraturePosition".equals(aCallback))
         {
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
-
-            int speed = wrapper.getBinnedPosition();
-            aData.putInt(0, speed);
+            wrapper.handleGetQuadraturePosition();
         }
         else if ("GetQuadratureVelocity".equals(aCallback))
         {
             CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
-
-            int speed = wrapper.getBinnedVelocity();
-            aData.putInt(0, speed);
-        }
-        else if ("SetInverted_2".equals(aCallback))
-        {
-            CtreTalonSrxSpeedControllerSim wrapper = getMotorControllerWrapper(aCanPort);
-
-            int inverted = aData.getInt();
-            sLOGGER.log(Level.DEBUG, "SetInverted_2 " + inverted);
-            wrapper.setInverted(inverted != 0);
+            wrapper.handleGetQuadratureVelocity();
         }
 
         ///////////////////////////////////
@@ -343,7 +224,7 @@ public class CtreManager
         }
         else
         {
-            CtrePigeonImuSim sim = new CtrePigeonImuSim(CtrePigeonImuSim.sCTRE_OFFSET + aPort * 3);
+            CtrePigeonImuSim sim = new CtrePigeonImuSim(aPort, CtrePigeonImuSim.sCTRE_OFFSET + aPort * 3);
             mPigeonMap.put(aPort, sim);
             return sim;
         }
@@ -389,9 +270,8 @@ public class CtreManager
         }
         else if ("SetYaw".equals(aName))
         {
-            double desiredYaw = aData.getDouble();
             CtrePigeonImuSim wrapper = getPigeonWrapper(aPort);
-            ((CtrePigeonImuSim.PigeonGyroWrapper) wrapper.getYawWrapper()).setDesiredYaw(desiredYaw);
+            wrapper.handleSetYaw();
         }
 
         //////////////////////////
@@ -400,24 +280,17 @@ public class CtreManager
         else if ("GetRawGyro".equals(aName))
         {
             CtrePigeonImuSim wrapper = getPigeonWrapper(aPort);
-
-            aData.putDouble(wrapper.getYawWrapper().getAngle());
-            aData.putDouble(wrapper.getPitchWrapper().getAngle());
-            aData.putDouble(wrapper.getRollWrapper().getAngle());
+            wrapper.handleGetRawGyro();
         }
         else if ("GetYawPitchRoll".equals(aName)) //NOPMD.AvoidLiteralsInIfCondition
         {
             CtrePigeonImuSim wrapper = getPigeonWrapper(aPort);
-
-            aData.putDouble(wrapper.getYawWrapper().getAngle());
-            aData.putDouble(wrapper.getPitchWrapper().getAngle());
-            aData.putDouble(wrapper.getRollWrapper().getAngle());
+            wrapper.handleGetYawPitchRoll();
         }
         else if ("GetFusedHeading".equals(aName) || "GetFusedHeading1".equals(aName)) //NOPMD.AvoidLiteralsInIfCondition
         {
             CtrePigeonImuSim wrapper = getPigeonWrapper(aPort);
-
-            aData.putDouble(wrapper.getYawWrapper().getAngle());
+            wrapper.handleGetFusedHeading();
         }
         else
         {

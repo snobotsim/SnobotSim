@@ -1,9 +1,12 @@
 package com.snobot.simulator.simulator_components.ctre;
 
 import com.snobot.simulator.SensorActuatorRegistry;
+import com.snobot.simulator.SimDeviceDumpHelper;
 import com.snobot.simulator.module_wrapper.ASensorWrapper;
 import com.snobot.simulator.module_wrapper.interfaces.IAccelerometerWrapper;
 import com.snobot.simulator.module_wrapper.interfaces.IGyroWrapper;
+import edu.wpi.first.hal.SimDouble;
+import edu.wpi.first.hal.sim.SimDeviceSim;
 
 public class CtrePigeonImuSim extends ASensorWrapper
 {
@@ -17,9 +20,27 @@ public class CtrePigeonImuSim extends ASensorWrapper
     private final PigeonGyroWrapper mPitchGyro;
     private final PigeonGyroWrapper mRollGyro;
 
-    public CtrePigeonImuSim(int aBasePort)
+    private final int mCanHandle;
+
+    ///////////////////////////////////////////////
+    SimDeviceSim  mSimDevice;
+    SimDouble m_Yaw_angleDeg;
+    SimDouble m_RawGyro_xyz_dps_0;
+    SimDouble m_RawGyro_xyz_dps_1;
+    SimDouble m_RawGyro_xyz_dps_2;
+    SimDouble m_YawPitchRoll_ypr_0;
+    SimDouble m_YawPitchRoll_ypr_1;
+    SimDouble m_YawPitchRoll_ypr_2;
+    SimDouble m_FusedHeading2_value;
+    ///////////////////////////////////////////////
+
+    public CtrePigeonImuSim(int canHandle, int aBasePort)
     {
         super("Pigeon IMU");
+
+        mCanHandle = canHandle;
+
+
 
         mXAccel = new PigeonAccelWrapper("Pigeon X");
         mYAccel = new PigeonAccelWrapper("Pigeon Y");
@@ -38,6 +59,17 @@ public class CtrePigeonImuSim extends ASensorWrapper
         SensorActuatorRegistry.get().register(mRollGyro, aBasePort + 2);
     }
 
+    private SimDouble getSimDouble(String name)
+    {
+        SimDouble output = mSimDevice.getDouble(name);
+        if(output == null)
+        {
+            throw new IllegalArgumentException("Sim device '" + name + "' is not set");
+        }
+
+        return output;
+    }
+
     @Override
     public void setInitialized(boolean aInitialized)
     {
@@ -50,6 +82,22 @@ public class CtrePigeonImuSim extends ASensorWrapper
         mYawGyro.setInitialized(aInitialized);
         mPitchGyro.setInitialized(aInitialized);
         mRollGyro.setInitialized(aInitialized);
+
+        int deviceId = mCanHandle;
+        String deviceName = "CtrePigeonIMUWrapper " + deviceId + "[" + deviceId + "]";
+        System.out.println("----------------- Initializing " + deviceName);
+        mSimDevice = new SimDeviceSim(deviceName);
+
+        SimDeviceDumpHelper.dumpSimDevices();
+
+        m_Yaw_angleDeg = getSimDouble("Yaw_angleDeg");
+        m_RawGyro_xyz_dps_0 = getSimDouble("RawGyro_xyz_dps_0");
+        m_RawGyro_xyz_dps_1 = getSimDouble("RawGyro_xyz_dps_1");
+        m_RawGyro_xyz_dps_2 = getSimDouble("RawGyro_xyz_dps_2");
+        m_YawPitchRoll_ypr_0 = getSimDouble("YawPitchRoll_ypr_0");
+        m_YawPitchRoll_ypr_1 = getSimDouble("YawPitchRoll_ypr_1");
+        m_YawPitchRoll_ypr_2 = getSimDouble("YawPitchRoll_ypr_2");
+        m_FusedHeading2_value = getSimDouble("FusedHeading1_value");
     }
 
     public IGyroWrapper getYawWrapper()
@@ -131,5 +179,33 @@ public class CtrePigeonImuSim extends ASensorWrapper
             mAccel = aAccel;
         }
     }
+
+    ///////////////////////////////////////////////
+    public void handleSetYaw()
+    {
+            ((CtrePigeonImuSim.PigeonGyroWrapper) getYawWrapper()).setDesiredYaw(m_Yaw_angleDeg.get());
+    }
+
+
+    public void handleGetRawGyro()
+    {
+        m_RawGyro_xyz_dps_0.set(getYawWrapper().getAngle());
+        m_RawGyro_xyz_dps_1.set(getPitchWrapper().getAngle());
+        m_RawGyro_xyz_dps_2.set(getRollWrapper().getAngle());
+//            aData.putDouble(wrapper.getYawWrapper().getAngle());
+//            aData.putDouble(wrapper.getPitchWrapper().getAngle());
+//            aData.putDouble(wrapper.getRollWrapper().getAngle());
+    }
+    public void handleGetYawPitchRoll()
+    {
+        m_YawPitchRoll_ypr_0.set(getYawWrapper().getAngle());
+        m_YawPitchRoll_ypr_1.set(getPitchWrapper().getAngle());
+        m_YawPitchRoll_ypr_2.set(getRollWrapper().getAngle());
+    }
+    public void handleGetFusedHeading()
+    {
+        m_FusedHeading2_value.set(getYawWrapper().getAngle());
+    }
+    ///////////////////////////////////////////////
 
 }

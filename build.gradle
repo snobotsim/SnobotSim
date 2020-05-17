@@ -63,7 +63,7 @@ ext.getCtreVersion = {
     return '5.17.2'
 }
 ext.getCtreSimVersion = {
-    return getCtreVersion() + "_V1"
+    return getCtreVersion() + "_V2"
 }
 ext.getRevRoboticsVersion = {
     return '1.5.0'

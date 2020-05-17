@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import com.kauailabs.navx.frc.AHRS;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import com.snobot.test.utilities.BaseSimulatorJniTest;
-import com.snobot.test.utilities.SimDeviceDumpHelper;
+import com.snobot.simulator.SimDeviceDumpHelper;
 
 import edu.wpi.first.wpilibj.I2C;
 
