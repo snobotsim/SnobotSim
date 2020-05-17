@@ -180,7 +180,7 @@ stages:
         Copy-Item $(System.DefaultWorkingDirectory)/win64/Win64Maven/*   $(System.DefaultWorkingDirectory)/output     -recurse -force -verbose
         Copy-Item $(System.DefaultWorkingDirectory)/mac/OSXMaven/*       $(System.DefaultWorkingDirectory)/output     -recurse -force -verbose
         Copy-Item $(System.DefaultWorkingDirectory)/linux/LinuxMaven/*   $(System.DefaultWorkingDirectory)/output     -recurse -force -verbose
- 
+
     #- task: PythonScript@0
     #  displayName: 'Create Combined Native Jar'
     #  inputs:

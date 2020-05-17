@@ -113,10 +113,10 @@ public class RevManager
 //            wrapper.reset(position, wrapper.getVelocity(), wrapper.getCurrent());
 //            break;
 //        }
-//
-//        ////////////////////////
-//        // Getters
-//        ////////////////////////
+
+        ////////////////////////
+        // Getters
+        ////////////////////////
         case "GetAppliedOutput":
         {
             RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
@@ -138,7 +138,7 @@ public class RevManager
         default:
             if (unsupportedFunctions.contains(aCallback))
             {
-                sLOGGER.log(Level.WARN, "Unsupported option " + aCallback + "(" + aData.limit() + " bytes)");
+                sLOGGER.log(Level.DEBUG, "Unsupported option " + aCallback + "(" + aData.limit() + " bytes)");
             }
             else
             {

@@ -250,24 +250,24 @@ void RevManager::handleMessage(const std::string& aCallback, int aCanPort, uint8
         auto [slot, value] = ExtractData<int, float>(aBuffer, aLength);
         wrapper->handleSetFFGain(slot);
     }
-//    else if ("SetSmartMotionMaxVelocity" == aCallback)
-//    {
-//        auto wrapper = getMotorControllerWrapper(aCanPort);
-//        auto [slot, value] = ExtractData<int, float>(aBuffer, aLength);
-//        wrapper->setMotionMagicMaxVelocity(static_cast<int>(value));
-//    }
-//    else if ("SetSmartMotionMaxAccel" == aCallback)
-//    {
-//        auto wrapper = getMotorControllerWrapper(aCanPort);
-//        auto [slot, value] = ExtractData<int, float>(aBuffer, aLength);
-//        wrapper->setMotionMagicMaxAcceleration(static_cast<int>(value));
-//    }
-//    else if ("SetEncoderPosition" == aCallback)
-//    {
-//        auto [position] = ExtractData<int>(aBuffer, aLength);
-//        auto wrapper = getMotorControllerWrapper(aCanPort);
-//        wrapper->Reset(position, wrapper->GetVelocity(), wrapper->GetCurrent());
-//    }
+    //    else if ("SetSmartMotionMaxVelocity" == aCallback)
+    //    {
+    //        auto wrapper = getMotorControllerWrapper(aCanPort);
+    //        auto [slot, value] = ExtractData<int, float>(aBuffer, aLength);
+    //        wrapper->setMotionMagicMaxVelocity(static_cast<int>(value));
+    //    }
+    //    else if ("SetSmartMotionMaxAccel" == aCallback)
+    //    {
+    //        auto wrapper = getMotorControllerWrapper(aCanPort);
+    //        auto [slot, value] = ExtractData<int, float>(aBuffer, aLength);
+    //        wrapper->setMotionMagicMaxAcceleration(static_cast<int>(value));
+    //    }
+    //    else if ("SetEncoderPosition" == aCallback)
+    //    {
+    //        auto [position] = ExtractData<int>(aBuffer, aLength);
+    //        auto wrapper = getMotorControllerWrapper(aCanPort);
+    //        wrapper->Reset(position, wrapper->GetVelocity(), wrapper->GetCurrent());
+    //    }
 
     ////////////////////////
     // Getters
@@ -276,25 +276,25 @@ void RevManager::handleMessage(const std::string& aCallback, int aCanPort, uint8
     {
         auto wrapper = getMotorControllerWrapper(aCanPort);
         wrapper->handleGetAppliedOutput();
-//
-//        float speed = static_cast<float>(wrapper->GetVoltagePercentage());
-//        WriteData(aCallback, aBuffer, aLength, speed);
+        //
+        //        float speed = static_cast<float>(wrapper->GetVoltagePercentage());
+        //        WriteData(aCallback, aBuffer, aLength, speed);
     }
     else if ("GetEncoderPosition" == aCallback)
     {
         auto wrapper = getMotorControllerWrapper(aCanPort);
         wrapper->handleGetEncoderPosition();
-//
-//        float position = static_cast<float>(wrapper->GetPosition());
-//        WriteData(aCallback, aBuffer, aLength, position);
+        //
+        //        float position = static_cast<float>(wrapper->GetPosition());
+        //        WriteData(aCallback, aBuffer, aLength, position);
     }
     else if ("GetEncoderVelocity" == aCallback)
     {
         auto wrapper = getMotorControllerWrapper(aCanPort);
         wrapper->handleGetEncoderVelocity();
-//
-//        float velocity = static_cast<float>(wrapper->GetVelocity());
-//        WriteData(aCallback, aBuffer, aLength, velocity);
+        //
+        //        float velocity = static_cast<float>(wrapper->GetVelocity());
+        //        WriteData(aCallback, aBuffer, aLength, velocity);
     }
     else
     {

@@ -6,7 +6,6 @@ import com.snobot.simulator.simulator_components.smart_sc.SmartScEncoder;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 import edu.wpi.first.hal.HALValue;
-import edu.wpi.first.hal.SimDevice;
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.sim.SimDeviceSim;
 import edu.wpi.first.hal.sim.mockdata.SimDeviceDataJNI.SimDeviceInfo;
@@ -145,12 +144,12 @@ public class RevSpeedControllerSimWrapper extends BaseCanSmartSpeedController
 
 
 
-    public static class SlottedVariables
+    private static final class SlottedVariables
     {
-        SimDouble  m_P_gain;
-        SimDouble  m_I_gain;
-        SimDouble  m_D_gain;
-        SimDouble  m_FF_gain;
+        SimDouble mPGain;
+        SimDouble mIGain;
+        SimDouble mDGain;
+        SimDouble mFFGain;
     
 //        SimDouble  m_DFilter_gain;
 //        SimDouble  m_IMaxAccum_iMaxAccum;
@@ -164,10 +163,10 @@ public class RevSpeedControllerSimWrapper extends BaseCanSmartSpeedController
 //        SimDouble  m_SmartMotionMaxAccel_maxAccel;
 //        SimDouble  m_SmartMotionMaxVelocity_maxVel;
 //        SimDouble  m_SmartMotionMinOutputVelocity_minVel;
-    };
+    }
     
     private static final int NUM_SLOTS = 6;
-    private SlottedVariables[] mSlottedVariables = new SlottedVariables[NUM_SLOTS];
+    private final SlottedVariables[] mSlottedVariables = new SlottedVariables[NUM_SLOTS];
     
     public RevSpeedControllerSimWrapper(int aCanHandle)
     {
@@ -187,13 +186,13 @@ public class RevSpeedControllerSimWrapper extends BaseCanSmartSpeedController
         mEncoderVelocity = mSimDevice.getDouble("EncoderVelocity_velocity");
         System.out.println(deviceName  + ", " + mSimDevice + ", " +  mSetpointCommandCtrl + ", " + mSetpointCommandValue);
         
-        for(int i = 0; i < NUM_SLOTS; ++i)
+        for (int i = 0; i < NUM_SLOTS; ++i)
         {
             mSlottedVariables[i] = new SlottedVariables();
-            mSlottedVariables[i].m_P_gain = mSimDevice.getDouble("P_gain[" + i + "]");
-            mSlottedVariables[i].m_I_gain = mSimDevice.getDouble("I_gain[" + i + "]");
-            mSlottedVariables[i].m_D_gain = mSimDevice.getDouble("D_gain[" + i + "]");
-            mSlottedVariables[i].m_FF_gain = mSimDevice.getDouble("FF_gain[" + i + "]");
+            mSlottedVariables[i].mPGain = mSimDevice.getDouble("P_gain[" + i + "]");
+            mSlottedVariables[i].mIGain = mSimDevice.getDouble("I_gain[" + i + "]");
+            mSlottedVariables[i].mDGain = mSimDevice.getDouble("D_gain[" + i + "]");
+            mSlottedVariables[i].mFFGain = mSimDevice.getDouble("FF_gain[" + i + "]");
         }
     }
 
@@ -267,68 +266,68 @@ public class RevSpeedControllerSimWrapper extends BaseCanSmartSpeedController
     
     public void handleSetSetpointCommand()
     {
-            float value = (float) mSetpointCommandValue.get();
-            int ctrl = (int) mSetpointCommandCtrl.get();
-            sLOGGER.log(Level.DEBUG, "SetpointCommand " + value + ", " + ctrl);
+        float value = (float) mSetpointCommandValue.get();
+        int ctrl = (int) mSetpointCommandCtrl.get();
+        sLOGGER.log(Level.DEBUG, "SetpointCommand " + value + ", " + ctrl);
 
-            switch (ctrl)
-            {
-            // Throttle
-            case 0:
-               setRawGoal(value);
-                break;
-            // Velocity
-            case 1:
-               setSpeedGoal(value);
-                break;
-            // Position
-            case 3:
-               setPositionGoal(value);
-                break;
-            // SmartMotion
-            case 4:
-               setMotionMagicGoal(value);
-                break;
-            default:
-               sLOGGER.log(Level.ERROR, String.format("Unknown demand mode %d", ctrl));
-                break;
-            }
+        switch (ctrl)
+        {
+        // Throttle
+        case 0:
+            setRawGoal(value);
+            break;
+        // Velocity
+        case 1:
+            setSpeedGoal(value);
+            break;
+        // Position
+        case 3:
+            setPositionGoal(value);
+            break;
+        // SmartMotion
+        case 4:
+            setMotionMagicGoal(value);
+            break;
+        default:
+            sLOGGER.log(Level.ERROR, String.format("Unknown demand mode %d", ctrl));
+            break;
+        }
     }
     
     public void handleSetSensorType()
     {
-      int type = (int) mSensorTypeSensorType.get();
-      setCanFeedbackDevice(type);
+        int type = (int) mSensorTypeSensorType.get();
+        setCanFeedbackDevice(type);
     }
     
     public void handleSetFeedbackDevice()
     {
-       int type = (int) mFeedbackDeviceSensorID.get();
-       setCanFeedbackDevice(type);
+        int type = (int) mFeedbackDeviceSensorID.get();
+        setCanFeedbackDevice(type);
     }
     
-    public void handleSetPGain(int slot)
+    public void handleSetPGain(int aSlot)
     {
-        double value = mSlottedVariables[slot].m_P_gain.get();
-        setPGain(slot, value);
+        double value = mSlottedVariables[aSlot].mPGain.get();
+        setPGain(aSlot, value);
     }
     
-    public void handleSetIGain(int slot)
+    public void handleSetIGain(int aSlot)
     {
-        double value = mSlottedVariables[slot].m_I_gain.get();
-        setIGain(slot, value);
+        double value = mSlottedVariables[aSlot].mIGain.get();
+        setIGain(aSlot, value);
     }
     
-    public void handleSetDGain(int slot)
+    public void handleSetDGain(int aSlot)
     {
-        double value = mSlottedVariables[slot].m_D_gain.get();
-        setDGain(slot, value);
+        double value = mSlottedVariables[aSlot].mDGain.get();
+        setDGain(aSlot, value);
     }
     
-    public void handleSetFFGain(int slot)
+    public void handleSetFFGain(int aSlot)
     {
-        double value = mSlottedVariables[slot].m_FF_gain.get();
-        setFGain(slot, value);
+        double value = mSlottedVariables[aSlot].mFFGain.get();
+        setFGain(aSlot, value);
     }
 
     

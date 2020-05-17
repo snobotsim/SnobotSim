@@ -49,20 +49,20 @@ protected:
         return 1;
     }
 
-    hal::SimDouble  mSetpointCommandCtrl;
-    hal::SimDouble  mSetpointCommandValue;
-    hal::SimDouble  mAppliedOutputAppliedOutput;
-    hal::SimDouble  mSensorTypeSensorType;
-    hal::SimDouble  mFeedbackDeviceSensorID;
-    hal::SimDouble  mEncoderPosition;
-    hal::SimDouble  mEncoderVelocity;
+    hal::SimDouble mSetpointCommandCtrl;
+    hal::SimDouble mSetpointCommandValue;
+    hal::SimDouble mAppliedOutputAppliedOutput;
+    hal::SimDouble mSensorTypeSensorType;
+    hal::SimDouble mFeedbackDeviceSensorID;
+    hal::SimDouble mEncoderPosition;
+    hal::SimDouble mEncoderVelocity;
 
     struct SlottedVariables
     {
-        hal::SimDouble  m_P_gain;
-        hal::SimDouble  m_I_gain;
-        hal::SimDouble  m_D_gain;
-        hal::SimDouble  m_FF_gain;
+        hal::SimDouble m_P_gain;
+        hal::SimDouble m_I_gain;
+        hal::SimDouble m_D_gain;
+        hal::SimDouble m_FF_gain;
     };
 
     static constexpr int NUM_SLOTS = 6;

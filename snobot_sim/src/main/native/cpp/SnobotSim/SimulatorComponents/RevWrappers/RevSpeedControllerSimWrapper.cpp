@@ -2,9 +2,10 @@
 
 #include "SnobotSim/SimulatorComponents/RevWrappers/RevSpeedControllerSimWrapper.h"
 
+#include <iostream>
+
 #include "SnobotSim/Logging/SnobotLogger.h"
 #include "SnobotSim/SimulatorComponents/SmartSC/CanIdOffset.h"
-#include <iostream>
 
 const std::string RevpeedControllerSim::TYPE = "com.snobot.simulator.simulator_components.ctre.RevpeedControllerSim";
 
@@ -24,7 +25,7 @@ RevpeedControllerSim::RevpeedControllerSim(int aCanHandle) :
                 }
             });
 
-    if(mDeviceSimHandle)
+    if (mDeviceSimHandle)
     {
         mSetpointCommandCtrl = HALSIM_GetSimValueHandle(mDeviceSimHandle, "pointCommand_ctrl");
         mSetpointCommandValue = HALSIM_GetSimValueHandle(mDeviceSimHandle, "pointCommand_value");
@@ -34,7 +35,7 @@ RevpeedControllerSim::RevpeedControllerSim(int aCanHandle) :
         mEncoderPosition = HALSIM_GetSimValueHandle(mDeviceSimHandle, "EncoderPosition_position");
         mEncoderVelocity = HALSIM_GetSimValueHandle(mDeviceSimHandle, "EncoderVelocity_velocity");
 
-        for(int i = 0; i < NUM_SLOTS; ++i)
+        for (int i = 0; i < NUM_SLOTS; ++i)
         {
             mSlottedVariables[i].m_P_gain = HALSIM_GetSimValueHandle(mDeviceSimHandle, std::string("P_gain[" + std::to_string(i) + "]").c_str());
             mSlottedVariables[i].m_I_gain = HALSIM_GetSimValueHandle(mDeviceSimHandle, std::string("I_gain[" + std::to_string(i) + "]").c_str());
@@ -46,7 +47,6 @@ RevpeedControllerSim::RevpeedControllerSim(int aCanHandle) :
     {
         SNOBOT_LOG(SnobotLogging::LOG_LEVEL_WARN, "This isn't going to work ");
     }
-
 }
 
 double RevpeedControllerSim::calculateMotionProfileOutput(double aCurrentPosition, double aCurrentVelocity, int aModeType)
@@ -71,8 +71,8 @@ void RevpeedControllerSim::setCanFeedbackDevice(int aFeedbackDevice)
 
 void RevpeedControllerSim::handleSetSetpointCommand()
 {
-    float value = (float) mSetpointCommandValue.Get();
-    int ctrl = (int) mSetpointCommandCtrl.Get();
+    float value = static_cast<float>(mSetpointCommandValue.Get());
+    int ctrl = static_cast<int>(mSetpointCommandCtrl.Get());
 
     switch (ctrl)
     {
@@ -93,22 +93,21 @@ void RevpeedControllerSim::handleSetSetpointCommand()
         setMotionMagicGoal(value);
         break;
     default:
-//        SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Unknown demand mode " << ctrl);
+        //        SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Unknown demand mode " << ctrl);
         break;
     }
 }
 
-
 void RevpeedControllerSim::handleSetSensorType()
 {
-  int type = (int) mSensorTypeSensorType.Get();
-  setCanFeedbackDevice(type);
+    int type = static_cast<int>(mSensorTypeSensorType.Get());
+    setCanFeedbackDevice(type);
 }
 
 void RevpeedControllerSim::handleSetFeedbackDevice()
 {
-   int type = (int) mFeedbackDeviceSensorID.Get();
-   setCanFeedbackDevice(type);
+    int type = static_cast<int>(mFeedbackDeviceSensorID.Get());
+    setCanFeedbackDevice(type);
 }
 
 void RevpeedControllerSim::handleSetPGain(int slot)
@@ -134,7 +133,6 @@ void RevpeedControllerSim::handleSetFFGain(int slot)
     double value = mSlottedVariables[slot].m_FF_gain.Get();
     setFGain(slot, value);
 }
-
 
 void RevpeedControllerSim::handleGetAppliedOutput()
 {
