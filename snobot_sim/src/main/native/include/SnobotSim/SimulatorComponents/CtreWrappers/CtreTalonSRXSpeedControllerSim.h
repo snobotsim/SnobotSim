@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "SnobotSim/SimulatorComponents/SmartSC/BaseCanSmartSpeedController.h"
+#include "simulation/SimDeviceSim.h"
 
 class CtreTalonSRXSpeedControllerSim : public BaseCanSmartSpeedController
 {

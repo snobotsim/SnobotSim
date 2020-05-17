@@ -199,7 +199,7 @@ void RevManager::Reset()
 
 void RevManager::handleMessage(const std::string& aCallback, int aCanPort, uint8_t* aBuffer, int aLength)
 {
-    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_DEBUG, "Getting Motor Controller Message " << aCallback << " on port " << aCanPort << "(" << aLength << " bytes)");
+    SNOBOT_LOG(SnobotLogging::LOG_LEVEL_INFO, "Getting Motor Controller Message " << aCallback << " on port " << aCanPort << "(" << aLength << " bytes)");
 
     if ("Create" == aCallback)
     {
@@ -208,37 +208,7 @@ void RevManager::handleMessage(const std::string& aCallback, int aCanPort, uint8
     else if ("SetpointCommand" == aCallback)
     {
         auto wrapper = getMotorControllerWrapper(aCanPort);
-
-        auto [value, ctrl, pidSlot, arbFeedForward, arbFFUnits] = ExtractData<float, int, int, float, int>(aBuffer, aLength);
-        SNOBOT_LOG(SnobotLogging::LOG_LEVEL_DEBUG, "SetpointCommand " << value << ", " << ctrl);
-
-        /*
-            int pidSlot = aData.getInt();
-            float arbFeedforward = aData.getFloat();
-            int arbFFUnits = aData.getInt();
-            */
-        switch (ctrl)
-        {
-        // Throttle
-        case 0:
-            wrapper->setRawGoal(value);
-            break;
-        // Velocity
-        case 1:
-            wrapper->setSpeedGoal(value);
-            break;
-        // Position
-        case 3:
-            wrapper->setPositionGoal(value);
-            break;
-        // SmartMotion
-        case 4:
-            wrapper->setMotionMagicGoal(value);
-            break;
-        default:
-            SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Unknown demand mode " << ctrl);
-            break;
-        }
+        wrapper->handleSetSetpointCommand();
     }
     else if ("SetFollow" == aCallback)
     {
@@ -255,51 +225,49 @@ void RevManager::handleMessage(const std::string& aCallback, int aCanPort, uint8
     else if ("SetSensorType" == aCallback)
     {
         auto wrapper = getMotorControllerWrapper(aCanPort);
-        auto [type] = ExtractData<int>(aBuffer, aLength);
-        wrapper->setCanFeedbackDevice(type);
+        wrapper->handleSetSensorType();
     }
     else if ("SetFeedbackDevice" == aCallback)
     {
         auto wrapper = getMotorControllerWrapper(aCanPort);
-        auto [type] = ExtractData<int>(aBuffer, aLength);
-        wrapper->setCanFeedbackDevice(type);
+        wrapper->handleSetFeedbackDevice();
     }
     else if ("SetP" == aCallback)
     {
         auto wrapper = getMotorControllerWrapper(aCanPort);
         auto [slot, value] = ExtractData<int, float>(aBuffer, aLength);
-        wrapper->setPGain(slot, value);
+        wrapper->handleSetPGain(slot);
     }
     else if ("SetI" == aCallback)
     {
         auto wrapper = getMotorControllerWrapper(aCanPort);
         auto [slot, value] = ExtractData<int, float>(aBuffer, aLength);
-        wrapper->setIGain(slot, value);
+        wrapper->handleSetIGain(slot);
     }
     else if ("SetFF" == aCallback)
     {
         auto wrapper = getMotorControllerWrapper(aCanPort);
         auto [slot, value] = ExtractData<int, float>(aBuffer, aLength);
-        wrapper->setFGain(slot, value);
+        wrapper->handleSetFFGain(slot);
     }
-    else if ("SetSmartMotionMaxVelocity" == aCallback)
-    {
-        auto wrapper = getMotorControllerWrapper(aCanPort);
-        auto [slot, value] = ExtractData<int, float>(aBuffer, aLength);
-        wrapper->setMotionMagicMaxVelocity(static_cast<int>(value));
-    }
-    else if ("SetSmartMotionMaxAccel" == aCallback)
-    {
-        auto wrapper = getMotorControllerWrapper(aCanPort);
-        auto [slot, value] = ExtractData<int, float>(aBuffer, aLength);
-        wrapper->setMotionMagicMaxAcceleration(static_cast<int>(value));
-    }
-    else if ("SetEncoderPosition" == aCallback)
-    {
-        auto [position] = ExtractData<int>(aBuffer, aLength);
-        auto wrapper = getMotorControllerWrapper(aCanPort);
-        wrapper->Reset(position, wrapper->GetVelocity(), wrapper->GetCurrent());
-    }
+//    else if ("SetSmartMotionMaxVelocity" == aCallback)
+//    {
+//        auto wrapper = getMotorControllerWrapper(aCanPort);
+//        auto [slot, value] = ExtractData<int, float>(aBuffer, aLength);
+//        wrapper->setMotionMagicMaxVelocity(static_cast<int>(value));
+//    }
+//    else if ("SetSmartMotionMaxAccel" == aCallback)
+//    {
+//        auto wrapper = getMotorControllerWrapper(aCanPort);
+//        auto [slot, value] = ExtractData<int, float>(aBuffer, aLength);
+//        wrapper->setMotionMagicMaxAcceleration(static_cast<int>(value));
+//    }
+//    else if ("SetEncoderPosition" == aCallback)
+//    {
+//        auto [position] = ExtractData<int>(aBuffer, aLength);
+//        auto wrapper = getMotorControllerWrapper(aCanPort);
+//        wrapper->Reset(position, wrapper->GetVelocity(), wrapper->GetCurrent());
+//    }
 
     ////////////////////////
     // Getters
@@ -307,23 +275,26 @@ void RevManager::handleMessage(const std::string& aCallback, int aCanPort, uint8
     else if ("GetAppliedOutput" == aCallback)
     {
         auto wrapper = getMotorControllerWrapper(aCanPort);
-
-        float speed = static_cast<float>(wrapper->GetVoltagePercentage());
-        WriteData(aCallback, aBuffer, aLength, speed);
+        wrapper->handleGetAppliedOutput();
+//
+//        float speed = static_cast<float>(wrapper->GetVoltagePercentage());
+//        WriteData(aCallback, aBuffer, aLength, speed);
     }
     else if ("GetEncoderPosition" == aCallback)
     {
         auto wrapper = getMotorControllerWrapper(aCanPort);
-
-        float position = static_cast<float>(wrapper->GetPosition());
-        WriteData(aCallback, aBuffer, aLength, position);
+        wrapper->handleGetEncoderPosition();
+//
+//        float position = static_cast<float>(wrapper->GetPosition());
+//        WriteData(aCallback, aBuffer, aLength, position);
     }
     else if ("GetEncoderVelocity" == aCallback)
     {
         auto wrapper = getMotorControllerWrapper(aCanPort);
-
-        float velocity = static_cast<float>(wrapper->GetVelocity());
-        WriteData(aCallback, aBuffer, aLength, velocity);
+        wrapper->handleGetEncoderVelocity();
+//
+//        float velocity = static_cast<float>(wrapper->GetVelocity());
+//        WriteData(aCallback, aBuffer, aLength, velocity);
     }
     else
     {

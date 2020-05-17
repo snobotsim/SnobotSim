@@ -33,38 +33,7 @@ public class RevManager
         case "SetpointCommand":
         {
             RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
-
-            float value = aData.getFloat();
-            int ctrl = aData.getInt();
-            sLOGGER.log(Level.DEBUG, "SetpointCommand " + value + ", " + ctrl);
-
-            /*
-            int pidSlot = aData.getInt();
-            float arbFeedforward = aData.getFloat();
-            int arbFFUnits = aData.getInt();
-            */
-            switch (ctrl)
-            {
-            // Throttle
-            case 0:
-                wrapper.setRawGoal(value);
-                break;
-            // Velocity
-            case 1:
-                wrapper.setSpeedGoal(value);
-                break;
-            // Position
-            case 3:
-                wrapper.setPositionGoal(value);
-                break;
-            // SmartMotion
-            case 4:
-                wrapper.setMotionMagicGoal(value);
-                break;
-            default:
-                sLOGGER.log(Level.ERROR, String.format("Unknown demand mode %d", ctrl));
-                break;
-            }
+            wrapper.handleSetSetpointCommand();
             break;
         }
         case "SetFollow":
@@ -84,97 +53,92 @@ public class RevManager
         case "SetSensorType":
         {
             RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
-            int type = aData.getInt();
-            wrapper.setCanFeedbackDevice(type);
+            wrapper.handleSetSensorType();
             break;
         }
         case "SetFeedbackDevice":
         {
             RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
-            int type = aData.getInt();
-            wrapper.setCanFeedbackDevice(type);
+            wrapper.handleSetFeedbackDevice();
             break;
         }
         case "SetP":
         {
             RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
             int slot = aData.getInt();
-            double value = aData.getFloat();
-            wrapper.setPGain(slot, value);
+            wrapper.handleSetPGain(slot);
             break;
         }
         case "SetI":
         {
             RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
             int slot = aData.getInt();
-            double value = aData.getFloat();
-            wrapper.setIGain(slot, value);
+            wrapper.handleSetIGain(slot);
+            break;
+        }
+        case "SetD":
+        {
+            RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
+            int slot = aData.getInt();
+            wrapper.handleSetDGain(slot);
             break;
         }
         case "SetFF":
         {
             RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
             int slot = aData.getInt();
-            double value = aData.getFloat();
-            wrapper.setFGain(slot, value);
+            wrapper.handleSetFFGain(slot);
             break;
         }
-        case "SetSmartMotionMaxVelocity":
-        {
-            RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
-            aData.getInt();
-            double value = aData.getFloat();
-            wrapper.setMotionMagicMaxVelocity((int) value);
-            break;
-        }
-        case "SetSmartMotionMaxAccel":
-        {
-            RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
-            aData.getInt();
-            double value = aData.getFloat();
-            wrapper.setMotionMagicMaxAcceleration((int) value);
-            break;
-        }
-        case "SetEncoderPosition":
-        {
-            int position = aData.getInt();
-            RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
-            wrapper.reset(position, wrapper.getVelocity(), wrapper.getCurrent());
-            break;
-        }
-
-        ////////////////////////
-        // Getters
-        ////////////////////////
+//        case "SetSmartMotionMaxVelocity":
+//        {
+//            RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
+//            aData.getInt();
+//            double value = aData.getFloat();
+//            wrapper.setMotionMagicMaxVelocity((int) value);
+//            break;
+//        }
+//        case "SetSmartMotionMaxAccel":
+//        {
+//            RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
+//            aData.getInt();
+//            double value = aData.getFloat();
+//            wrapper.setMotionMagicMaxAcceleration((int) value);
+//            break;
+//        }
+//        case "SetEncoderPosition":
+//        {
+//            int position = aData.getInt();
+//            RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
+//            wrapper.reset(position, wrapper.getVelocity(), wrapper.getCurrent());
+//            break;
+//        }
+//
+//        ////////////////////////
+//        // Getters
+//        ////////////////////////
         case "GetAppliedOutput":
         {
             RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
-
-            float speed = (float) wrapper.get();
-            aData.putFloat(0, speed);
+            wrapper.handleGetAppliedOutput();
             break;
-
         }
         case "GetEncoderPosition":
         {
             RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
-
-            float position = (float) wrapper.getPosition();
-            aData.putFloat(0, position);
+            wrapper.handleGetEncoderPosition();
             break;
         }
         case "GetEncoderVelocity":
         {
             RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
-
-            float velocity = (float) wrapper.getVelocity();
-            aData.putFloat(0, velocity);
+            wrapper.handleGetEncoderVelocity();
             break;
         }
         default:
             if (unsupportedFunctions.contains(aCallback))
             {
-                sLOGGER.log(Level.DEBUG, "Unsupported option " + aCallback + "(" + aData.limit() + " bytes)");
+                sLOGGER.log(Level.WARN, "Unsupported option " + aCallback + "(" + aData.limit() + " bytes)");
             }
             else
             {
