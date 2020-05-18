@@ -2,8 +2,12 @@ package com.snobot.simulator.simulator_components.rev;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -18,6 +22,27 @@ public class RevManager
 {
     private static final Logger sLOGGER = LogManager.getLogger(RevManager.class);
 
+    private final Map<String, Consumer<RevSpeedControllerSimWrapper>> mMotorControllerNormalCallbacks;
+    private final Map<String, BiConsumer<RevSpeedControllerSimWrapper, Integer>> mMotorControllerSlottedCallbacks;
+
+
+    public RevManager()
+    {
+        mMotorControllerNormalCallbacks = new HashMap<>();
+        mMotorControllerNormalCallbacks.put("SetpointCommand", RevSpeedControllerSimWrapper::handleSetSetpointCommand);
+        mMotorControllerNormalCallbacks.put("SetSensorType", RevSpeedControllerSimWrapper::handleSetSensorType);
+        mMotorControllerNormalCallbacks.put("SetFeedbackDevice", RevSpeedControllerSimWrapper::handleSetFeedbackDevice);
+        mMotorControllerNormalCallbacks.put("GetAppliedOutput", RevSpeedControllerSimWrapper::handleGetAppliedOutput);
+        mMotorControllerNormalCallbacks.put("GetEncoderPosition", RevSpeedControllerSimWrapper::handleGetEncoderPosition);
+        mMotorControllerNormalCallbacks.put("GetEncoderVelocity", RevSpeedControllerSimWrapper::handleGetEncoderVelocity);
+
+        mMotorControllerSlottedCallbacks = new HashMap<>();
+        mMotorControllerSlottedCallbacks.put("SetP", RevSpeedControllerSimWrapper::handleSetPGain);
+        mMotorControllerSlottedCallbacks.put("SetI", RevSpeedControllerSimWrapper::handleSetIGain);
+        mMotorControllerSlottedCallbacks.put("SetD", RevSpeedControllerSimWrapper::handleSetDGain);
+        mMotorControllerSlottedCallbacks.put("SetFF", RevSpeedControllerSimWrapper::handleSetFFGain);
+    }
+
     public void handleMessage(String aCallback, int aCanPort, ByteBuffer aData)
     {
         aData.order(ByteOrder.LITTLE_ENDIAN);
@@ -30,12 +55,6 @@ public class RevManager
         case "Create":
             createSim(aCanPort);
             break;
-        case "SetpointCommand":
-        {
-            RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
-            wrapper.handleSetSetpointCommand();
-            break;
-        }
         case "SetFollow":
         {
             int followerID = aData.getInt();
@@ -50,93 +69,20 @@ public class RevManager
 
             break;
         }
-        case "SetSensorType":
-        {
-            RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
-            wrapper.handleSetSensorType();
-            break;
-        }
-        case "SetFeedbackDevice":
-        {
-            RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
-            wrapper.handleSetFeedbackDevice();
-            break;
-        }
-        case "SetP":
-        {
-            RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
-            int slot = aData.getInt();
-            wrapper.handleSetPGain(slot);
-            break;
-        }
-        case "SetI":
-        {
-            RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
-            int slot = aData.getInt();
-            wrapper.handleSetIGain(slot);
-            break;
-        }
-        case "SetD":
-        {
-            RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
-            int slot = aData.getInt();
-            wrapper.handleSetDGain(slot);
-            break;
-        }
-        case "SetFF":
-        {
-            RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
-            int slot = aData.getInt();
-            wrapper.handleSetFFGain(slot);
-            break;
-        }
-//        case "SetSmartMotionMaxVelocity":
-//        {
-//            RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
-//            aData.getInt();
-//            double value = aData.getFloat();
-//            wrapper.setMotionMagicMaxVelocity((int) value);
-//            break;
-//        }
-//        case "SetSmartMotionMaxAccel":
-//        {
-//            RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
-//            aData.getInt();
-//            double value = aData.getFloat();
-//            wrapper.setMotionMagicMaxAcceleration((int) value);
-//            break;
-//        }
-//        case "SetEncoderPosition":
-//        {
-//            int position = aData.getInt();
-//            RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
-//            wrapper.reset(position, wrapper.getVelocity(), wrapper.getCurrent());
-//            break;
-//        }
-
-        ////////////////////////
-        // Getters
-        ////////////////////////
-        case "GetAppliedOutput":
-        {
-            RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
-            wrapper.handleGetAppliedOutput();
-            break;
-        }
-        case "GetEncoderPosition":
-        {
-            RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
-            wrapper.handleGetEncoderPosition();
-            break;
-        }
-        case "GetEncoderVelocity":
-        {
-            RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
-            wrapper.handleGetEncoderVelocity();
-            break;
-        }
         default:
-            if (unsupportedFunctions.contains(aCallback))
+            if (mMotorControllerNormalCallbacks.containsKey(aCallback))
+            {
+                RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
+                mMotorControllerNormalCallbacks.get(aCallback).accept(wrapper);
+            }
+            else if (mMotorControllerSlottedCallbacks.containsKey(aCallback))
+            {
+                RevSpeedControllerSimWrapper wrapper = getMotorControllerWrapper(aCanPort);
+
+                int slot = aData.getInt();
+                mMotorControllerSlottedCallbacks.get(aCallback).accept(wrapper, slot);
+            }
+            else if (unsupportedFunctions.contains(aCallback))
             {
                 sLOGGER.log(Level.DEBUG, "Unsupported option " + aCallback + "(" + aData.limit() + " bytes)");
             }

@@ -132,4 +132,23 @@ std::tuple<T0, T1, T2, T3> ExtractData(uint8_t* buffer, int aLength)
     return std::make_tuple(t0, t1, t2, t3);
 }
 
+template <typename T0, typename T1, typename T2, typename T3, typename T4>
+std::tuple<T0, T1, T2, T3, T4> ExtractData(uint8_t* buffer, int aLength)
+{
+    constexpr int expected_size = sizeof(T0) + sizeof(T1) + sizeof(T2) + sizeof(T3) + sizeof(T4);
+    if (expected_size != aLength)
+    {
+        SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Incorrect size, expected " << expected_size << ", got " << aLength);
+    }
+
+    size_t bufferPos = 0;
+    T0 t0 = Extract<T0>(buffer, bufferPos);
+    T1 t1 = Extract<T1>(buffer, bufferPos);
+    T2 t2 = Extract<T2>(buffer, bufferPos);
+    T3 t3 = Extract<T3>(buffer, bufferPos);
+    T4 t4 = Extract<T4>(buffer, bufferPos);
+
+    return std::make_tuple(t0, t1, t2, t3, t4);
+}
+
 }
