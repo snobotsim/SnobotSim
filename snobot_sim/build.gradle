@@ -25,6 +25,7 @@ dependencies {
 
     compile 'edu.wpi.first.ntcore:ntcore-java:' + getNtCoreVersion()
     compile 'edu.wpi.first.cscore:cscore-java:' + getCsCoreVersion()
+    compile 'edu.wpi.first.hal:hal-java:' + allwpilibVersion()
     compile 'edu.wpi.first.cameraserver:cameraserver-java:' + allwpilibVersion()
     compile project(":snobot_sim_utilities")
     compile 'com.snobot.simulator:ctre_sim_override:' + getCtreSimVersion()
@@ -32,7 +33,6 @@ dependencies {
 
 
     testCompile 'edu.wpi.first.wpilibj:wpilibj-java:' + allwpilibVersion()
-    testCompile 'edu.wpi.first.hal:hal-java:' + allwpilibVersion()
     testCompile "com.ctre.phoenix:api-java:" + getCtreVersion()
     testCompile "com.ctre.phoenix:wpiapi-java:" + getCtreVersion()
     testCompile "com.kauailabs.navx.frc:navx-java:" + getNavxVersion()

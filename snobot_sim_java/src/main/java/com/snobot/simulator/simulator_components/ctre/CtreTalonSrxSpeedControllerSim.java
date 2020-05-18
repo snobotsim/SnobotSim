@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.snobot.simulator.SimDeviceDumpHelper;
+import com.snobot.simulator.SimDeviceHelper;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -58,41 +59,39 @@ public class CtreTalonSrxSpeedControllerSim extends BaseCanSmartSpeedController
     protected int mMotionProfileCurrentPointIndex;
     
     ///////////////////////////////////////////////
-    SimDeviceSim  mSimDevice;
+    private SimDouble mDemandDemand0;
+    private SimDouble mDemandDemand1;
+    private SimDouble mDemandMode;
+    private SimDouble mSet4Demand0;
+    private SimDouble mSet4Demand1;
+    private SimDouble mSet4Demand1Type;
+    private SimDouble mSet4Mode;
+    private SimDouble mMotorOutputPercent;
+    private SimDouble mConfigMotionAccelerationSensorUnitsPer100msPerSec;
+    private SimDouble mConfigMotionCruiseVelocitySensorUnitsPer100ms;
 
-    SimDouble m_Demand_demand0;
-    SimDouble m_Demand_demand1;
-    SimDouble m_Demand_mode;
-    SimDouble mSet4Demand0;
-    SimDouble mSet4Demand1;
-    SimDouble mSet4Demand1Type;
-    SimDouble mSet4Mode;
-    SimDouble mMotorOutputPercent;
-    SimDouble mConfigMotionAccelerationSensorUnitsPer100msPerSec;
-    SimDouble mConfigMotionCruiseVelocitySensorUnitsPer100ms;
-
-    SimDouble m_MotionProfileStatus_topBufferCnt;
-    SimDouble mPushMotionProfileTrajectoryPosition;
-    SimDouble mPushMotionProfileTrajectoryVelocity;
-    SimDouble mPushMotionProfileTrajectory2Position;
-    SimDouble mPushMotionProfileTrajectory2Velocity;
-    SimDouble mInverted_2;
-    SimDouble mQuadratureVelocity;
-    SimDouble mQuadraturePosition;
-    SimDouble mActiveTrajectoryPosition;
-    SimDouble mActiveTrajectoryVelocity;
+    private SimDouble mMotionProfileStatusTopBufferCnt;
+    private SimDouble mPushMotionProfileTrajectoryPosition;
+    private SimDouble mPushMotionProfileTrajectoryVelocity;
+    private SimDouble mPushMotionProfileTrajectory2Position;
+    private SimDouble mPushMotionProfileTrajectory2Velocity;
+    private SimDouble mInverted2;
+    private SimDouble mQuadratureVelocity;
+    private SimDouble mQuadraturePosition;
+    private SimDouble mActiveTrajectoryPosition;
+    private SimDouble mActiveTrajectoryVelocity;
 
     private static final class SlottedVariables
     {
-        SimDouble mPGain;
-        SimDouble mIGain;
-        SimDouble mDGain;
-        SimDouble mFFGain;
-        SimDouble mIZone;
-        SimDouble mSelectedSensorPosition;
-        SimDouble mSelectedSensorVelocity;
-        SimDouble mClosedLoopError;
-        SimDouble mConfigSelectedFeedbackSensor;
+        private SimDouble mPGain;
+        private SimDouble mIGain;
+        private SimDouble mDGain;
+        private SimDouble mFFGain;
+        private SimDouble mIZone;
+        private SimDouble mSelectedSensorPosition;
+        private SimDouble mSelectedSensorVelocity;
+        private SimDouble mClosedLoopError;
+        private SimDouble mConfigSelectedFeedbackSensor;
     }
 
     private final SlottedVariables[] mSlottedVariables = new SlottedVariables[NUM_SLOTS];
@@ -107,17 +106,6 @@ public class CtreTalonSrxSpeedControllerSim extends BaseCanSmartSpeedController
 
     }
 
-    private SimDouble getSimDouble(String name)
-    {
-        SimDouble output = mSimDevice.getDouble(name);
-        if(output == null)
-        {
-            throw new IllegalArgumentException("Sim device '" + name + "' is not set");
-        }
-
-        return output;
-    }
-
     @Override
     public void setInitialized(boolean aInitialized)
     {
@@ -127,43 +115,43 @@ public class CtreTalonSrxSpeedControllerSim extends BaseCanSmartSpeedController
         int deviceId = mCanHandle;
         String deviceName = "CtreMotControllerWrapper " + deviceId + "[" + deviceId + "]";
         System.out.println("----------------- Initializing" + deviceName);
-        mSimDevice = new SimDeviceSim(deviceName);
+        SimDeviceSim simDevice = new SimDeviceSim(deviceName);
 
-        m_Demand_demand0 = getSimDouble("Demand_demand0");
-        m_Demand_demand1 = getSimDouble("Demand_demand1");
-        m_Demand_mode = getSimDouble("Demand_mode");
-        mSet4Demand0 = getSimDouble("_4_demand0");
-        mSet4Demand1 = getSimDouble("_4_demand1");
-        mSet4Demand1Type = getSimDouble("_4_demand1Type");
-        mSet4Mode = getSimDouble("_4_mode");
-        mMotorOutputPercent = getSimDouble("MotorOutputPercent_percentOutput");
-        mConfigMotionAccelerationSensorUnitsPer100msPerSec = getSimDouble("ConfigMotionAcceleration_sensorUnitsPer100msPerSec");
-        mConfigMotionCruiseVelocitySensorUnitsPer100ms = getSimDouble("ConfigMotionCruiseVelocity_sensorUnitsPer100ms");
+        mDemandDemand0 = SimDeviceHelper.getSimDouble(simDevice, "Demand_demand0");
+        mDemandDemand1 = SimDeviceHelper.getSimDouble(simDevice, "Demand_demand1");
+        mDemandMode = SimDeviceHelper.getSimDouble(simDevice, "Demand_mode");
+        mSet4Demand0 = SimDeviceHelper.getSimDouble(simDevice, "_4_demand0");
+        mSet4Demand1 = SimDeviceHelper.getSimDouble(simDevice, "_4_demand1");
+        mSet4Demand1Type = SimDeviceHelper.getSimDouble(simDevice, "_4_demand1Type");
+        mSet4Mode = SimDeviceHelper.getSimDouble(simDevice, "_4_mode");
+        mMotorOutputPercent = SimDeviceHelper.getSimDouble(simDevice, "MotorOutputPercent_percentOutput");
+        mConfigMotionAccelerationSensorUnitsPer100msPerSec = SimDeviceHelper.getSimDouble(simDevice, "ConfigMotionAcceleration_sensorUnitsPer100msPerSec");
+        mConfigMotionCruiseVelocitySensorUnitsPer100ms = SimDeviceHelper.getSimDouble(simDevice, "ConfigMotionCruiseVelocity_sensorUnitsPer100ms");
 
 
-        m_MotionProfileStatus_topBufferCnt = getSimDouble("MotionProfileStatus_topBufferCnt");
-        mPushMotionProfileTrajectoryPosition = getSimDouble("PushMotionProfileTrajectory_position");
-        mPushMotionProfileTrajectoryVelocity = getSimDouble("PushMotionProfileTrajectory_velocity");
-        mPushMotionProfileTrajectory2Position = getSimDouble("PushMotionProfileTrajectory_2_position");
-        mPushMotionProfileTrajectory2Velocity = getSimDouble("PushMotionProfileTrajectory_2_velocity");
-        mInverted_2 = getSimDouble("Inverted_2_invertType");
-        mQuadratureVelocity = getSimDouble("QuadratureVelocity_param");
-        mQuadraturePosition = getSimDouble("QuadraturePosition_param");
-        mActiveTrajectoryPosition = getSimDouble("ActiveTrajectoryPosition_param");
-        mActiveTrajectoryVelocity = getSimDouble("ActiveTrajectoryVelocity_param");
+        mMotionProfileStatusTopBufferCnt = SimDeviceHelper.getSimDouble(simDevice, "MotionProfileStatus_topBufferCnt");
+        mPushMotionProfileTrajectoryPosition = SimDeviceHelper.getSimDouble(simDevice, "PushMotionProfileTrajectory_position");
+        mPushMotionProfileTrajectoryVelocity = SimDeviceHelper.getSimDouble(simDevice, "PushMotionProfileTrajectory_velocity");
+        mPushMotionProfileTrajectory2Position = SimDeviceHelper.getSimDouble(simDevice, "PushMotionProfileTrajectory_2_position");
+        mPushMotionProfileTrajectory2Velocity = SimDeviceHelper.getSimDouble(simDevice, "PushMotionProfileTrajectory_2_velocity");
+        mInverted2 = SimDeviceHelper.getSimDouble(simDevice, "Inverted_2_invertType");
+        mQuadratureVelocity = SimDeviceHelper.getSimDouble(simDevice, "QuadratureVelocity_param");
+        mQuadraturePosition = SimDeviceHelper.getSimDouble(simDevice, "QuadraturePosition_param");
+        mActiveTrajectoryPosition = SimDeviceHelper.getSimDouble(simDevice, "ActiveTrajectoryPosition_param");
+        mActiveTrajectoryVelocity = SimDeviceHelper.getSimDouble(simDevice, "ActiveTrajectoryVelocity_param");
 
         for (int i = 0; i < NUM_SLOTS; ++i)
         {
             mSlottedVariables[i] = new SlottedVariables();
-            mSlottedVariables[i].mPGain = getSimDouble("Config_kP_value[" + i + "]");
-            mSlottedVariables[i].mIGain = getSimDouble("Config_kI_value[" + i + "]");
-            mSlottedVariables[i].mDGain = getSimDouble("Config_kD_value[" + i + "]");
-            mSlottedVariables[i].mFFGain = getSimDouble("Config_kF_value[" + i + "]");
-            mSlottedVariables[i].mIZone = getSimDouble("Config_IntegralZone_izone[" + i + "]");
-            mSlottedVariables[i].mSelectedSensorPosition = getSimDouble("SelectedSensorPosition_param[" + i + "]");
-            mSlottedVariables[i].mSelectedSensorVelocity = getSimDouble("SelectedSensorVelocity_param[" + i + "]");
-            mSlottedVariables[i].mClosedLoopError = getSimDouble("ClosedLoopError_closedLoopError[" + i + "]");
-            mSlottedVariables[i].mConfigSelectedFeedbackSensor = getSimDouble("ConfigSelectedFeedbackSensor_feedbackDevice[" + i + "]");
+            mSlottedVariables[i].mPGain = SimDeviceHelper.getSimDouble(simDevice, "Config_kP_value[" + i + "]");
+            mSlottedVariables[i].mIGain = SimDeviceHelper.getSimDouble(simDevice, "Config_kI_value[" + i + "]");
+            mSlottedVariables[i].mDGain = SimDeviceHelper.getSimDouble(simDevice, "Config_kD_value[" + i + "]");
+            mSlottedVariables[i].mFFGain = SimDeviceHelper.getSimDouble(simDevice, "Config_kF_value[" + i + "]");
+            mSlottedVariables[i].mIZone = SimDeviceHelper.getSimDouble(simDevice, "Config_IntegralZone_izone[" + i + "]");
+            mSlottedVariables[i].mSelectedSensorPosition = SimDeviceHelper.getSimDouble(simDevice, "SelectedSensorPosition_param[" + i + "]");
+            mSlottedVariables[i].mSelectedSensorVelocity = SimDeviceHelper.getSimDouble(simDevice, "SelectedSensorVelocity_param[" + i + "]");
+            mSlottedVariables[i].mClosedLoopError = SimDeviceHelper.getSimDouble(simDevice, "ClosedLoopError_closedLoopError[" + i + "]");
+            mSlottedVariables[i].mConfigSelectedFeedbackSensor = SimDeviceHelper.getSimDouble(simDevice, "ConfigSelectedFeedbackSensor_feedbackDevice[" + i + "]");
             System.out.println("XXXX" + mSlottedVariables[i].mConfigSelectedFeedbackSensor + " -- " + mSlottedVariables[i].mPGain);
         }
     }
@@ -371,9 +359,9 @@ public class CtreTalonSrxSpeedControllerSim extends BaseCanSmartSpeedController
     ////////////////////////////////////////////////////////////////
     public void handleSetDemand()
     {
-        int mode = (int) m_Demand_mode.get();
-        int param0 = (int) m_Demand_demand0.get();
-        int param1 = (int) m_Demand_demand1.get();
+        int mode = (int) mDemandMode.get();
+        int param0 = (int) mDemandDemand0.get();
+        int param1 = (int) mDemandDemand1.get();
         sLOGGER.log(Level.INFO, "Setting demand " + mode + ", " + param0 + ", " + param1);
 
         switch (mode)
@@ -522,7 +510,7 @@ public class CtreTalonSrxSpeedControllerSim extends BaseCanSmartSpeedController
     
     public void handleSetInverted_2()
     {
-        int inverted = (int) mInverted_2.get();
+        int inverted = (int) mInverted2.get();
         sLOGGER.log(Level.DEBUG, "SetInverted_2 " + inverted);
         setInverted(inverted != 0);
     }
@@ -556,7 +544,7 @@ public class CtreTalonSrxSpeedControllerSim extends BaseCanSmartSpeedController
 
     public void handleGetMotionProfileStatus()
     {
-        m_MotionProfileStatus_topBufferCnt.set(getMotionProfileSize());
+        mMotionProfileStatusTopBufferCnt.set(getMotionProfileSize());
     }
 
     public void handleGetActiveTrajectoryPosition()

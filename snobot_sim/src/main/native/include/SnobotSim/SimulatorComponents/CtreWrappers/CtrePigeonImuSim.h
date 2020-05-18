@@ -7,6 +7,7 @@
 #include "SnobotSim/ModuleWrapper/AModuleWrapper.h"
 #include "SnobotSim/ModuleWrapper/Interfaces/IAccelerometerWrapper.h"
 #include "SnobotSim/ModuleWrapper/Interfaces/IGyroWrapper.h"
+#include "simulation/SimDeviceSim.h"
 
 class CtrePigeonImuSim : public AModuleWrapper
 {
@@ -18,7 +19,7 @@ public:
         return TYPE;
     }
 
-    explicit CtrePigeonImuSim(int abasePort);
+    CtrePigeonImuSim(int canHandle, int abasePort);
 
     void SetInitialized(bool aIsInitialized) override;
 
@@ -30,6 +31,12 @@ public:
     std::shared_ptr<IAccelerometerWrapper> getYWrapper();
     std::shared_ptr<IAccelerometerWrapper> getZWrapper();
 
+    ///////////////////////////////////////////////
+    void handleSetYaw();
+    void handleGetRawGyro();
+    void handleGetYawPitchRoll();
+    void handleGetFusedHeading();
+    ///////////////////////////////////////////////
 protected:
     std::shared_ptr<IGyroWrapper> mYaw;
     std::shared_ptr<IGyroWrapper> mPitch;
@@ -38,4 +45,16 @@ protected:
     std::shared_ptr<IAccelerometerWrapper> mX;
     std::shared_ptr<IAccelerometerWrapper> mY;
     std::shared_ptr<IAccelerometerWrapper> mZ;
+
+    int mCanHandle;
+
+
+    hal::SimDouble mYawAngleDeg;
+    hal::SimDouble mRawGyroXyzDps0;
+    hal::SimDouble mRawGyroXyzDps1;
+    hal::SimDouble mRawGyroXyzDps2;
+    hal::SimDouble mYawPitchRollYpr0;
+    hal::SimDouble mYawPitchRollYpr1;
+    hal::SimDouble mYawPitchRollYpr2;
+    hal::SimDouble mFusedHeading2Value;
 };

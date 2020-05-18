@@ -22,7 +22,7 @@ public final class SimDeviceDumpHelper
     public static void dumpSimDevices()
     {
         StringBuilder builder = new StringBuilder(200);
-        builder.append("***************************************************\nDumping devices:\n");
+        builder.append("\n***************************************************\nDumping devices:\n");
         for (SimDeviceInfo x : SimDeviceSim.enumerateDevices(""))
         {
             builder.append("Got a device: \n");
