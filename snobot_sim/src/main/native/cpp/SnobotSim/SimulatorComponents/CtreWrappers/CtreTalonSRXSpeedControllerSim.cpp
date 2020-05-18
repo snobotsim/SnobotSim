@@ -1,11 +1,12 @@
 
 #include "SnobotSim/SimulatorComponents/CtreWrappers/CtreTalonSRXSpeedControllerSim.h"
 
+#include <iostream>
+
 #include "SnobotSim/Logging/SnobotLogger.h"
 #include "SnobotSim/ModuleWrapper/Factories/FactoryContainer.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "SnobotSim/SimulatorComponents/SmartSC/CanIdOffset.h"
-#include <iostream>
 
 const std::string CtreTalonSRXSpeedControllerSim::TYPE = "com.snobot.simulator.simulator_components.ctre.CtreTalonSrxSpeedControllerSim";
 
@@ -16,13 +17,12 @@ hal::SimDouble getSimDouble(HAL_SimDeviceHandle aDeviceHandle, std::string aName
     hal::SimDouble output = HALSIM_GetSimValueHandle(aDeviceHandle, aName.c_str());
     if (!output)
     {
-//        throw new IllegalArgumentException("Sim device '" + aName + "' does not exist");
         SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Sim device '" << aName << "' does not exist");
     }
 
     return output;
 }
-}
+} // namespace
 
 std::shared_ptr<CtreTalonSRXSpeedControllerSim> CtreTalonSRXSpeedControllerSim::getMotorControllerWrapper(int aCanPort)
 {
@@ -40,7 +40,6 @@ CtreTalonSRXSpeedControllerSim::CtreTalonSRXSpeedControllerSim(int aCanHandle) :
         BaseCanSmartSpeedController(aCanHandle, "CTRE", 2)
 {
 }
-
 
 void CtreTalonSRXSpeedControllerSim::SetInitialized(bool aIsInitialized)
 {
@@ -70,7 +69,6 @@ void CtreTalonSRXSpeedControllerSim::SetInitialized(bool aIsInitialized)
         mMotorOutputPercent = getSimDouble(deviceSimHandle, "MotorOutputPercent_percentOutput");
         mConfigMotionAccelerationSensorUnitsPer100msPerSec = getSimDouble(deviceSimHandle, "ConfigMotionAcceleration_sensorUnitsPer100msPerSec");
         mConfigMotionCruiseVelocitySensorUnitsPer100ms = getSimDouble(deviceSimHandle, "ConfigMotionCruiseVelocity_sensorUnitsPer100ms");
-
 
         mMotionProfileStatusTopBufferCnt = getSimDouble(deviceSimHandle, "MotionProfileStatus_topBufferCnt");
         mPushMotionProfileTrajectoryPosition = getSimDouble(deviceSimHandle, "PushMotionProfileTrajectory_position");
@@ -213,13 +211,12 @@ double CtreTalonSRXSpeedControllerSim::calculateMotionProfileOutput(double aCurr
     return 0;
 }
 
-
 ////////////////////////////////////////////////////////////////
 void CtreTalonSRXSpeedControllerSim::handleSetDemand()
 {
-    int mode = (int) mDemandMode.Get();
-    int param0 = (int) mDemandDemand0.Get();
-    int param1 = (int) mDemandDemand1.Get();
+    int mode = static_cast<int>(mDemandMode.Get());
+    int param0 = static_cast<int>(mDemandDemand0.Get());
+    int param1 = static_cast<int>(mDemandDemand1.Get());
     SNOBOT_LOG(SnobotLogging::LOG_LEVEL_DEBUG, "SetDemand " << mode << ", " << param0 << ", " << param1);
 
     switch (mode)
@@ -233,11 +230,11 @@ void CtreTalonSRXSpeedControllerSim::handleSetDemand()
     case 2:
         setSpeedGoal(param0);
         break;
-//    case 5:
-//        int followerPort = param0 & 0xFF;
-//        CtreTalonSrxSpeedControllerSim leadTalon = getMotorControllerWrapper(followerPort);
-//        leadTalon.addFollower(this);
-//        break;
+        //    case 5:
+        //        int followerPort = param0 & 0xFF;
+        //        CtreTalonSrxSpeedControllerSim leadTalon = getMotorControllerWrapper(followerPort);
+        //        leadTalon.addFollower(this);
+        //        break;
     case 6:
         setMotionProfilingCommand(param0);
         break;
@@ -255,10 +252,10 @@ void CtreTalonSRXSpeedControllerSim::handleSetDemand()
 
 void CtreTalonSRXSpeedControllerSim::handleSet4()
 {
-    int mode = (int) mSet4Mode.Get();
+    int mode = static_cast<int>(mSet4Mode.Get());
     double demand0 = mSet4Demand0.Get();
     double demand1 = mSet4Demand1.Get();
-    int demand1Type = (int) mSet4Demand1Type.Get();
+    int demand1Type = static_cast<int>(mSet4Demand1Type.Get());
     SNOBOT_LOG(SnobotLogging::LOG_LEVEL_DEBUG, "Setting_4 " << mode << ", " << demand0 << ", " << demand1 << ", " << demand1Type);
 
     switch (mode)
@@ -274,7 +271,7 @@ void CtreTalonSRXSpeedControllerSim::handleSet4()
         break;
     case 5:
     {
-        int followerPort = ((int) demand0) & 0xFF;
+        int followerPort = (static_cast<int>(demand0)) & 0xFF;
         auto leadTalon = getMotorControllerWrapper(followerPort);
         leadTalon->addFollower(shared_from_this());
         break;
@@ -297,7 +294,7 @@ void CtreTalonSRXSpeedControllerSim::handleSet4()
 void CtreTalonSRXSpeedControllerSim::handleConfigSelectedFeedbackSensor()
 {
     int slotId = 0;
-    int feedbackDevice = (int) mSlottedVariables[slotId].mConfigSelectedFeedbackSensor.Get();
+    int feedbackDevice = static_cast<int>(mSlottedVariables[slotId].mConfigSelectedFeedbackSensor.Get());
     setCanFeedbackDevice(feedbackDevice);
 }
 
@@ -333,12 +330,12 @@ void CtreTalonSRXSpeedControllerSim::handleSetIntegralZone(int aSlot)
 
 void CtreTalonSRXSpeedControllerSim::handleSetMotionCruiseVelocity()
 {
-    setMotionMagicMaxVelocity((int) mConfigMotionCruiseVelocitySensorUnitsPer100ms.Get());
+    setMotionMagicMaxVelocity(static_cast<int>(mConfigMotionCruiseVelocitySensorUnitsPer100ms.Get()));
 }
 
 void CtreTalonSRXSpeedControllerSim::handleSetMotionAcceleration()
 {
-    setMotionMagicMaxAcceleration((int) mConfigMotionAccelerationSensorUnitsPer100msPerSec.Get());
+    setMotionMagicMaxAcceleration(static_cast<int>(mConfigMotionAccelerationSensorUnitsPer100msPerSec.Get()));
 }
 
 void CtreTalonSRXSpeedControllerSim::handlePushMotionProfileTrajectory()
@@ -346,7 +343,7 @@ void CtreTalonSRXSpeedControllerSim::handlePushMotionProfileTrajectory()
     double position = mPushMotionProfileTrajectoryPosition.Get();
     double velocity = mPushMotionProfileTrajectoryVelocity.Get();
 
-    MotionProfilePoint point{getMotionProfileSize() + 1, position, velocity};
+    MotionProfilePoint point{ getMotionProfileSize() + 1, position, velocity };
     addMotionProfilePoint(point);
 }
 
@@ -355,7 +352,7 @@ void CtreTalonSRXSpeedControllerSim::handlePushMotionProfileTrajectory_2()
     double position = mPushMotionProfileTrajectory2Position.Get();
     double velocity = mPushMotionProfileTrajectory2Velocity.Get();
 
-    MotionProfilePoint point{getMotionProfileSize() + 1, position, velocity};
+    MotionProfilePoint point{ getMotionProfileSize() + 1, position, velocity };
     addMotionProfilePoint(point);
 }
 
@@ -366,12 +363,9 @@ void CtreTalonSRXSpeedControllerSim::handleSetSelectedSensorPosition()
 
 void CtreTalonSRXSpeedControllerSim::handleSetInverted_2()
 {
-    int inverted = (int) mInverted2.Get();
+    int inverted = static_cast<int>(mInverted2.Get());
     setInverted(inverted != 0);
 }
-
-
-
 
 //------------------------------------------------------------
 void CtreTalonSRXSpeedControllerSim::handleGetMotorOutputPercent()
@@ -405,15 +399,15 @@ void CtreTalonSRXSpeedControllerSim::handleGetMotionProfileStatus()
 void CtreTalonSRXSpeedControllerSim::handleGetActiveTrajectoryPosition()
 {
     SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Unsupported");
-//    MotionProfilePoint point = getMotionProfilePoint();
-//    mActiveTrajectoryPosition.Set(point == nullptr ? 0 : (int) point.mPosition);
+    //    MotionProfilePoint point = getMotionProfilePoint();
+    //    mActiveTrajectoryPosition.Set(point == nullptr ? 0 : (int) point.mPosition);
 }
 
 void CtreTalonSRXSpeedControllerSim::handleGetActiveTrajectoryVelocity()
 {
     SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Unsupported");
-//    MotionProfilePoint point = getMotionProfilePoint();
-//    mActiveTrajectoryVelocity.Set(point == nullptr ? 0 : (int) point.mVelocity);
+    //    MotionProfilePoint point = getMotionProfilePoint();
+    //    mActiveTrajectoryVelocity.Set(point == nullptr ? 0 : (int) point.mVelocity);
 }
 
 void CtreTalonSRXSpeedControllerSim::handleGetQuadraturePosition()

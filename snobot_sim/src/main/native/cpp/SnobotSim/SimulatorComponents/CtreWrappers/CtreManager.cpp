@@ -15,8 +15,6 @@ using namespace SnobotSim;
 
 CtreManager::CtreManager()
 {
-        
-//    mMotorControllerNormalCallbacks.put("SetDemand", CtreTalonSrxSpeedControllerSim::handleSetDemand);
     mMotorControllerNormalCallbacks["Set_4"] = [](std::shared_ptr<CtreTalonSRXSpeedControllerSim> wrapper) { wrapper->handleSet4(); };
     mMotorControllerNormalCallbacks["ConfigSelectedFeedbackSensor"] = [](std::shared_ptr<CtreTalonSRXSpeedControllerSim> wrapper) { wrapper->handleConfigSelectedFeedbackSensor(); };
     mMotorControllerNormalCallbacks["ConfigMotionCruiseVelocity"] = [](std::shared_ptr<CtreTalonSRXSpeedControllerSim> wrapper) { wrapper->handleSetMotionCruiseVelocity(); };

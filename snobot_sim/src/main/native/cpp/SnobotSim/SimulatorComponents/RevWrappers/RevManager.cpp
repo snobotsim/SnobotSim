@@ -50,7 +50,6 @@ void createSim(int aCanPort)
 
 } // namespace
 
-
 RevManager::RevManager()
 {
     mMotorControllerNormalCallbacks["SetpointCommand"] = [](std::shared_ptr<RevpeedControllerSim> wrapper) { wrapper->handleSetSetpointCommand(); };

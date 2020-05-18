@@ -12,7 +12,6 @@ class CtreTalonSRXSpeedControllerSim : public BaseCanSmartSpeedController,
                                        public std::enable_shared_from_this<CtreTalonSRXSpeedControllerSim>
 {
 public:
-
     static std::shared_ptr<CtreTalonSRXSpeedControllerSim> getMotorControllerWrapper(int aCanPort);
 
     static const std::string TYPE;
@@ -69,7 +68,6 @@ public:
     void handleSetSelectedSensorPosition();
     void handleSetInverted_2();
 
-
     void handleGetMotorOutputPercent();
     void handleGetSelectedSensorPosition();
     void handleGetSelectedSensorVelocity();
@@ -107,7 +105,6 @@ protected:
     std::vector<MotionProfilePoint> mMotionProfilePoints;
     int mMotionProfileProcessedCounter{ 0 };
     int mMotionProfileCurrentPointIndex{ 0 };
-
 
     hal::SimDouble mDemandDemand0;
     hal::SimDouble mDemandDemand1;

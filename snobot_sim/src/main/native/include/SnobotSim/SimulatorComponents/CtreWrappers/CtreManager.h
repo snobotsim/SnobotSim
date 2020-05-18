@@ -1,10 +1,10 @@
 
 #pragma once
 
+#include <functional>
 #include <map>
 #include <memory>
 #include <string>
-#include <functional>
 
 class CtreTalonSRXSpeedControllerSim;
 class CtrePigeonImuSim;
@@ -12,7 +12,6 @@ class CtrePigeonImuSim;
 class CtreManager
 {
 public:
-
     CtreManager();
     void Reset();
 

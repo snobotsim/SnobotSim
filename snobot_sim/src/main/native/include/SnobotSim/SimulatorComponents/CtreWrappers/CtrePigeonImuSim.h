@@ -48,7 +48,6 @@ protected:
 
     int mCanHandle;
 
-
     hal::SimDouble mYawAngleDeg;
     hal::SimDouble mRawGyroXyzDps0;
     hal::SimDouble mRawGyroXyzDps1;

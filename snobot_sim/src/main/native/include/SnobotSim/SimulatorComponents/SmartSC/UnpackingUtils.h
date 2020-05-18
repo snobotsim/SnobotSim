@@ -1,9 +1,13 @@
 
+#pragma once
+
+#include <string>
+#include <tuple>
+
 #include "SnobotSim/Logging/SnobotLogger.h"
 
 namespace SnobotSim
 {
-
 
 template <typename Type>
 Type Extract(uint8_t* buffer, size_t& aBufferPos)
@@ -151,4 +155,4 @@ std::tuple<T0, T1, T2, T3, T4> ExtractData(uint8_t* buffer, int aLength)
     return std::make_tuple(t0, t1, t2, t3, t4);
 }
 
-}
+} // namespace SnobotSim

@@ -1,8 +1,9 @@
 
 #include "SnobotSim/SimulatorComponents/CtreWrappers/CtrePigeonImuSim.h"
 
-#include "SnobotSim/SensorActuatorRegistry.h"
 #include <iostream>
+
+#include "SnobotSim/SensorActuatorRegistry.h"
 
 namespace
 {
@@ -11,7 +12,6 @@ hal::SimDouble getSimDouble(HAL_SimDeviceHandle aDeviceHandle, std::string aName
     hal::SimDouble output = HALSIM_GetSimValueHandle(aDeviceHandle, aName.c_str());
     if (!output)
     {
-//        throw new IllegalArgumentException("Sim device '" + aName + "' does not exist");
         SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Sim device '" << aName << "' does not exist");
     }
 
@@ -172,9 +172,8 @@ std::shared_ptr<IAccelerometerWrapper> CtrePigeonImuSim::getZWrapper()
 void CtrePigeonImuSim::handleSetYaw()
 {
     SNOBOT_LOG(SnobotLogging::LOG_LEVEL_CRITICAL, "Unsupported");
-//    ((CtrePigeonImuSim.PigeonGyroWrapper) getYawWrapper()).setDesiredYaw(mYawAngleDeg.Get());
+    //    ((CtrePigeonImuSim.PigeonGyroWrapper) getYawWrapper()).setDesiredYaw(mYawAngleDeg.Get());
 }
-
 
 void CtrePigeonImuSim::handleGetRawGyro()
 {
