@@ -33,8 +33,8 @@ dependencies {
     compile 'edu.wpi.first.ntcore:ntcore-java:' + getNtCoreVersion()
     runtime 'edu.wpi.first.ntcore:ntcore-jni:' + getNtCoreVersion() + ':' + getCurrentOsArch()
     runtime 'edu.wpi.first.hal:hal-jni:' + allwpilibVersion() + ':' + getCurrentOsArch()
-    compile 'edu.wpi.first.thirdparty.frc2020.opencv:opencv-java:' + getWpilibOpencvVersion()
-    runtime 'edu.wpi.first.thirdparty.frc2020.opencv:opencv-jni:' + getWpilibOpencvVersion() + ':' + getCurrentOsArch()
+    compile 'edu.wpi.first.thirdparty.frc2021.opencv:opencv-java:' + getWpilibOpencvVersion()
+    runtime 'edu.wpi.first.thirdparty.frc2021.opencv:opencv-jni:' + getWpilibOpencvVersion() + ':' + getCurrentOsArch()
 
 
     // 3rd Party

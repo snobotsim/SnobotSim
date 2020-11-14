@@ -10,7 +10,7 @@
 #include <string>
 
 #include "SnobotSim/ExportHelper.h"
-#include "simulation/SimDeviceSim.h"
+#include "frc/simulation/SimDeviceSim.h"
 
 class EXPORT_ LazySimDoubleWrapper
 {

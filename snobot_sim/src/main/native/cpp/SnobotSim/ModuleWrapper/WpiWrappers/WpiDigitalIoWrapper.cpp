@@ -8,7 +8,7 @@
 #include "SnobotSim/ModuleWrapper/WpiWrappers/WpiDigitalIoWrapper.h"
 
 #include "SnobotSim/PortUnwrapper.h"
-#include "mockdata/DIOData.h"
+#include "hal/simulation/DIOData.h"
 
 const std::string WpiDigitalIoWrapper::TYPE = "com.snobot.simulator.module_wrapper.wpi.WpiDigitalIoWrapper";
 

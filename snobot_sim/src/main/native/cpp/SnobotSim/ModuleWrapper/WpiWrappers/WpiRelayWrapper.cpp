@@ -8,7 +8,7 @@
 #include "SnobotSim/ModuleWrapper/WpiWrappers/WpiRelayWrapper.h"
 
 #include "SnobotSim/PortUnwrapper.h"
-#include "mockdata/RelayData.h"
+#include "hal/simulation/RelayData.h"
 
 const std::string WpiRelayWrapper::TYPE = "com.snobot.simulator.module_wrapper.wpi.WpiRelayWrapper";
 

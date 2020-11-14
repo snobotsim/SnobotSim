@@ -6,8 +6,8 @@ import org.apache.logging.log4j.LogManager;
 import com.snobot.simulator.module_wrapper.BaseEncoderWrapper;
 
 import edu.wpi.first.hal.HALValue;
-import edu.wpi.first.hal.sim.EncoderSim;
-import edu.wpi.first.hal.sim.NotifyCallback;
+import edu.wpi.first.wpilibj.simulation.EncoderSim;
+import edu.wpi.first.hal.simulation.NotifyCallback;
 
 public class WpiEncoderWrapper extends BaseEncoderWrapper implements NotifyCallback
 {
@@ -19,7 +19,7 @@ public class WpiEncoderWrapper extends BaseEncoderWrapper implements NotifyCallb
         super("Encoder " + aPort);
 
         mDistancePerPulse = 1;
-        mWpiSimulator = new EncoderSim(aPort);
+        mWpiSimulator = EncoderSim.createForIndex(aPort);
 
         // mWpiSimulator.registerCountCallback(this, false);
         // mWpiSimulator.registerPeriodCallback(this, false);

@@ -2,8 +2,8 @@
 package com.snobot.simulator.simulator_components;
 
 import edu.wpi.first.hal.SimDouble;
-import edu.wpi.first.hal.sim.SimDeviceSim;
-import edu.wpi.first.hal.sim.mockdata.SimDeviceDataJNI.SimDeviceInfo;
+import edu.wpi.first.wpilibj.simulation.SimDeviceSim;
+import edu.wpi.first.hal.simulation.SimDeviceDataJNI.SimDeviceInfo;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

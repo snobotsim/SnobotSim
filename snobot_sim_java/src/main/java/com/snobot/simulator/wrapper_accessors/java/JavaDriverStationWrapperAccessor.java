@@ -6,8 +6,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.snobot.simulator.wrapper_accessors.DriverStationDataAccessor;
 
-import edu.wpi.first.hal.sim.mockdata.DriverStationDataJNI;
-import edu.wpi.first.hal.sim.mockdata.SimulatorJNI;
+import edu.wpi.first.hal.simulation.DriverStationDataJNI;
+import edu.wpi.first.hal.simulation.SimulatorJNI;
 
 public class JavaDriverStationWrapperAccessor implements DriverStationDataAccessor
 {

@@ -12,7 +12,7 @@
 
 #include "SnobotSim/Logging/SnobotLogger.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
-#include "mockdata/DriverStationData.h"
+#include "hal/simulation/DriverStationData.h"
 
 RobotStateSingleton RobotStateSingleton::sINSTANCE;
 

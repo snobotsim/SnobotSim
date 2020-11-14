@@ -5,7 +5,7 @@
 
 #include "SnobotSim/Logging/SnobotLogger.h"
 #include "com_snobot_simulator_jni_JoystickJni.h"
-#include "mockdata/DriverStationData.h"
+#include "hal/simulation/DriverStationData.h"
 
 extern "C" {
 /*

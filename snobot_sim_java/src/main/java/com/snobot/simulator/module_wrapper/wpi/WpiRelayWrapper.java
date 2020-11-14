@@ -7,8 +7,8 @@ import com.snobot.simulator.module_wrapper.ASensorWrapper;
 import com.snobot.simulator.module_wrapper.interfaces.IRelayWrapper;
 
 import edu.wpi.first.hal.HALValue;
-import edu.wpi.first.hal.sim.NotifyCallback;
-import edu.wpi.first.hal.sim.RelaySim;
+import edu.wpi.first.hal.simulation.NotifyCallback;
+import edu.wpi.first.wpilibj.simulation.RelaySim;
 
 public class WpiRelayWrapper extends ASensorWrapper implements IRelayWrapper, NotifyCallback
 {

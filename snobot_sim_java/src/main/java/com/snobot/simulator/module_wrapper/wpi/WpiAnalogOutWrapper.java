@@ -7,17 +7,17 @@ import com.snobot.simulator.module_wrapper.ASensorWrapper;
 import com.snobot.simulator.module_wrapper.interfaces.IAnalogOutWrapper;
 
 import edu.wpi.first.hal.HALValue;
-import edu.wpi.first.hal.sim.AnalogOutSim;
-import edu.wpi.first.hal.sim.NotifyCallback;
+import edu.wpi.first.wpilibj.simulation.AnalogOutputSim;
+import edu.wpi.first.hal.simulation.NotifyCallback;
 
 public class WpiAnalogOutWrapper extends ASensorWrapper implements IAnalogOutWrapper, NotifyCallback
 {
-    private final AnalogOutSim mWpiSimulator;
+    private final AnalogOutputSim mWpiSimulator;
 
     public WpiAnalogOutWrapper(int aPort)
     {
         super("Analog Out " + aPort);
-        mWpiSimulator = new AnalogOutSim(aPort);
+        mWpiSimulator = new AnalogOutputSim(aPort);
 
         // mWpiSimulator.registerVoltageCallback(this, false);
     }

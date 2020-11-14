@@ -7,8 +7,8 @@ import com.snobot.simulator.module_wrapper.ASensorWrapper;
 import com.snobot.simulator.module_wrapper.interfaces.IGyroWrapper;
 
 import edu.wpi.first.hal.HALValue;
-import edu.wpi.first.hal.sim.AnalogGyroSim;
-import edu.wpi.first.hal.sim.NotifyCallback;
+import edu.wpi.first.wpilibj.simulation.AnalogGyroSim;
+import edu.wpi.first.hal.simulation.NotifyCallback;
 
 public class WpiAnalogGyroWrapper extends ASensorWrapper implements IGyroWrapper, NotifyCallback
 {

@@ -8,7 +8,7 @@
 #include "SnobotSim/ModuleWrapper/Interfaces/IDigitalIoWrapper.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "com_snobot_simulator_jni_module_wrapper_DigitalSourceWrapperJni.h"
-#include "mockdata/DIOData.h"
+#include "hal/simulation/DIOData.h"
 #include "wpi/jni_util.h"
 
 using namespace wpi::java;

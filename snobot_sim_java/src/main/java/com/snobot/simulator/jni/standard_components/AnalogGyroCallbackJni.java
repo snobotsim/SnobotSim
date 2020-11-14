@@ -9,7 +9,7 @@ import com.snobot.simulator.module_wrapper.wpi.WpiAnalogGyroWrapper;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 import edu.wpi.first.hal.HALValue;
-import edu.wpi.first.hal.sim.mockdata.AnalogGyroDataJNI;
+import edu.wpi.first.hal.simulation.AnalogGyroDataJNI;
 
 public final class AnalogGyroCallbackJni
 {

@@ -8,7 +8,7 @@
 #include "SnobotSim/ModuleWrapper/WpiWrappers/WpiSolenoidWrapper.h"
 
 #include "SnobotSim/PortUnwrapper.h"
-#include "mockdata/PCMData.h"
+#include "hal/simulation/PCMData.h"
 
 const std::string WpiSolenoidWrapper::TYPE = "com.snobot.simulator.module_wrapper.wpi.WpiSolenoidWrapper";
 

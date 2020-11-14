@@ -5,8 +5,8 @@
 
 #include "SnobotSim/RobotStateSingleton.h"
 #include "com_snobot_simulator_jni_RobotStateSingletonJni.h"
-#include "mockdata/DriverStationData.h"
-#include "mockdata/MockHooks.h"
+#include "hal/simulation/DriverStationData.h"
+#include "hal/simulation/MockHooks.h"
 
 extern "C" {
 

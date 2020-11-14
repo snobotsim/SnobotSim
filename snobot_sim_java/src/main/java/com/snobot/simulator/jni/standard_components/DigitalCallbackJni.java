@@ -9,7 +9,7 @@ import com.snobot.simulator.module_wrapper.wpi.WpiDigitalIoWrapper;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 import edu.wpi.first.hal.HALValue;
-import edu.wpi.first.hal.sim.mockdata.DIODataJNI;
+import edu.wpi.first.hal.simulation.DIODataJNI;
 import edu.wpi.first.wpilibj.SensorUtil;
 
 public final class DigitalCallbackJni

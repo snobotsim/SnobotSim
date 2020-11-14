@@ -2,7 +2,7 @@ package com.snobot.simulator.module_wrapper.wpi;
 
 import com.snobot.simulator.module_wrapper.ASensorWrapper;
 import com.snobot.simulator.module_wrapper.interfaces.IAddressableLedWrapper;
-import edu.wpi.first.hal.sim.AddressableLEDSim;
+import edu.wpi.first.wpilibj.simulation.AddressableLEDSim;
 
 public class WpiAddressableLedWrapper extends ASensorWrapper implements IAddressableLedWrapper
 {
@@ -12,7 +12,7 @@ public class WpiAddressableLedWrapper extends ASensorWrapper implements IAddress
     {
         super("Addressable LED " + aPort);
 
-        mWpiSimulator = new AddressableLEDSim(aPort);
+        mWpiSimulator = AddressableLEDSim.createForIndex(aPort);
     }
 
 
