@@ -9,7 +9,7 @@ import com.snobot.simulator.module_wrapper.wpi.WpiAnalogOutWrapper;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 import edu.wpi.first.hal.HALValue;
-import edu.wpi.first.hal.sim.mockdata.AnalogOutDataJNI;
+import edu.wpi.first.hal.simulation.AnalogOutDataJNI;
 import edu.wpi.first.wpilibj.SensorUtil;
 
 public final class AnalogOutCallbackJni

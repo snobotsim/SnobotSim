@@ -9,7 +9,7 @@ import com.snobot.simulator.module_wrapper.wpi.WpiAnalogInWrapper;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 import edu.wpi.first.hal.HALValue;
-import edu.wpi.first.hal.sim.mockdata.AnalogInDataJNI;
+import edu.wpi.first.hal.simulation.AnalogInDataJNI;
 import edu.wpi.first.wpilibj.SensorUtil;
 
 public final class AnalogInCallbackJni

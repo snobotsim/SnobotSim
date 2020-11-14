@@ -8,7 +8,7 @@
 #include "SnobotSim/ModuleWrapper/WpiWrappers/WpiEncoderWrapper.h"
 
 #include "SnobotSim/PortUnwrapper.h"
-#include "mockdata/EncoderData.h"
+#include "hal/simulation/EncoderData.h"
 
 const std::string WpiEncoderWrapper::TYPE = "com.snobot.simulator.module_wrapper.wpi.WpiEncoderWrapper";
 

@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import com.snobot.simulator.module_wrapper.BasePwmWrapper;
 
 import edu.wpi.first.hal.HALValue;
-import edu.wpi.first.hal.sim.NotifyCallback;
+import edu.wpi.first.hal.simulation.NotifyCallback;
 
 public class WpiPwmWrapper extends BasePwmWrapper implements NotifyCallback
 {

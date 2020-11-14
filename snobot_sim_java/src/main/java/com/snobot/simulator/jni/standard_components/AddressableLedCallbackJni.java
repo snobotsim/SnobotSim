@@ -4,7 +4,7 @@ import com.snobot.simulator.SensorActuatorRegistry;
 import com.snobot.simulator.module_wrapper.wpi.WpiAddressableLedWrapper;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 import edu.wpi.first.hal.HALValue;
-import edu.wpi.first.hal.sim.mockdata.AddressableLEDDataJNI;
+import edu.wpi.first.hal.simulation.AddressableLEDDataJNI;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

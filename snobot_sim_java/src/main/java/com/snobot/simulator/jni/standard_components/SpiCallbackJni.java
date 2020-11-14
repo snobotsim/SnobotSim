@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.snobot.simulator.SensorActuatorRegistry;
 
-import edu.wpi.first.hal.sim.mockdata.SPIDataJNI;
+import edu.wpi.first.hal.simulation.SPIDataJNI;
 import edu.wpi.first.hal.HALValue;
 
 public final class SpiCallbackJni

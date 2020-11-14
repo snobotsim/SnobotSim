@@ -43,10 +43,10 @@ void LazySimDoubleWrapper::setupDeviceSim()
     {
         frc::sim::SimDeviceSim::EnumerateDevices(
                 mDeviceName.c_str(), [&](const char* name, HAL_SimDeviceHandle handle) {
-                    if (wpi::StringRef(name) == mDeviceName)
-                    {
-                        mDeviceSimHandle = handle;
-                    }
+//                    if (wpi::StringRef(name) == mDeviceName)
+//                    {
+//                        mDeviceSimHandle = handle;
+//                    }
                 });
     }
 }

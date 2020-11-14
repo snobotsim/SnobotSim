@@ -6,7 +6,7 @@
 #include "SnobotSim/ModuleWrapper/WpiWrappers/WpiDigitalIoWrapper.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "hal/Ports.h"
-#include "mockdata/DIOData.h"
+#include "hal/simulation/DIOData.h"
 
 void DigitalIOCallback(const char* name, void* param, const struct HAL_Value* value)
 {

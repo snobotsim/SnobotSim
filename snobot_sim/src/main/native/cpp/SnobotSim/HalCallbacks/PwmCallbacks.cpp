@@ -7,7 +7,7 @@
 #include "SnobotSim/ModuleWrapper/WpiWrappers/WpiSpeedControllerWrapper.h"
 #include "SnobotSim/SensorActuatorRegistry.h"
 #include "hal/Ports.h"
-#include "mockdata/PWMData.h"
+#include "hal/simulation/PWMData.h"
 
 void PwmCallback(const char* name, void* param, const struct HAL_Value* value)
 {

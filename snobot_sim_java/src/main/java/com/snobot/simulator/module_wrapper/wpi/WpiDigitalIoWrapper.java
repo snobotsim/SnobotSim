@@ -7,8 +7,8 @@ import com.snobot.simulator.module_wrapper.ASensorWrapper;
 import com.snobot.simulator.module_wrapper.interfaces.IDigitalIoWrapper;
 
 import edu.wpi.first.hal.HALValue;
-import edu.wpi.first.hal.sim.DIOSim;
-import edu.wpi.first.hal.sim.NotifyCallback;
+import edu.wpi.first.wpilibj.simulation.DIOSim;
+import edu.wpi.first.hal.simulation.NotifyCallback;
 
 public class WpiDigitalIoWrapper extends ASensorWrapper implements IDigitalIoWrapper, NotifyCallback
 {

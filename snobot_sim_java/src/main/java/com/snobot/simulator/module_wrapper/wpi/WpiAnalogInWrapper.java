@@ -7,17 +7,17 @@ import com.snobot.simulator.module_wrapper.ASensorWrapper;
 import com.snobot.simulator.module_wrapper.interfaces.IAnalogInWrapper;
 
 import edu.wpi.first.hal.HALValue;
-import edu.wpi.first.hal.sim.AnalogInSim;
-import edu.wpi.first.hal.sim.NotifyCallback;
+import edu.wpi.first.wpilibj.simulation.AnalogInputSim;
+import edu.wpi.first.hal.simulation.NotifyCallback;
 
 public class WpiAnalogInWrapper extends ASensorWrapper implements IAnalogInWrapper, NotifyCallback
 {
-    private final AnalogInSim mWpiSimulator;
+    private final AnalogInputSim mWpiSimulator;
 
     public WpiAnalogInWrapper(int aPort)
     {
         super("Analog In " + aPort);
-        mWpiSimulator = new AnalogInSim(aPort);
+        mWpiSimulator = new AnalogInputSim(aPort);
 
         // mWpiSimulator.registerAverageBitsCallback(this, false);
         // mWpiSimulator.registerOversampleBitsCallback(this, false);

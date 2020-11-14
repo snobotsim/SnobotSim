@@ -8,7 +8,7 @@
 #include "SnobotSim/ModuleWrapper/WpiWrappers/WpiAnalogInWrapper.h"
 
 #include "SnobotSim/PortUnwrapper.h"
-#include "mockdata/AnalogInData.h"
+#include "hal/simulation/AnalogInData.h"
 
 const std::string WpiAnalogInWrapper::TYPE = "com.snobot.simulator.module_wrapper.wpi.WpiAnalogInWrapper";
 

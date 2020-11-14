@@ -7,7 +7,7 @@
 
 #include "SnobotSim/ModuleWrapper/WpiWrappers/WpiAnalogGyroWrapper.h"
 
-#include "mockdata/AnalogGyroData.h"
+#include "hal/simulation/AnalogGyroData.h"
 
 const std::string WpiAnalogGyroWrapper::TYPE = "com.snobot.simulator.module_wrapper.wpi.WpiAnalogGyroWrapper";
 

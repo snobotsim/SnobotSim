@@ -10,7 +10,7 @@ ext {
     nativeName = "snobotSimCpp"
     baseArtifactId = "XXX"
     artifactGroupId = "YYY"
-    wpi_deps = ["hal_shared", "wpiutil_shared", "snobot_sim_ctre_shared", "snobot_sim_rev_shared"]
+    wpi_deps = ["hal_shared", "wpilibc_shared", "wpiutil_shared", "snobot_sim_ctre_shared", "snobot_sim_rev_shared"]
     include_snobot_sim_cpp = []
     generatedSources = "$buildDir/generated/cpp"
 }
@@ -33,19 +33,20 @@ dependencies {
 
     testCompile 'edu.wpi.first.wpilibj:wpilibj-java:' + allwpilibVersion()
     testCompile 'edu.wpi.first.hal:hal-java:' + allwpilibVersion()
+    testCompile 'edu.wpi.first.wpimath:wpimath-java:' + allwpilibVersion()
     testCompile "com.ctre.phoenix:api-java:" + getCtreVersion()
     testCompile "com.ctre.phoenix:wpiapi-java:" + getCtreVersion()
     testCompile "com.kauailabs.navx.frc:navx-java:" + getNavxVersion()
     testCompile "com.revrobotics.frc:SparkMax-java:" + getRevRoboticsVersion()
 
-    testCompile 'org.junit.jupiter:junit-jupiter-api:5.6.2'
-    testCompile 'org.junit.jupiter:junit-jupiter-params:5.6.2'
+    testCompile 'org.junit.jupiter:junit-jupiter-api:' + getJunitJupiterVersion()
+    testCompile 'org.junit.jupiter:junit-jupiter-params:' + getJunitJupiterVersion()
 
-    testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
-    testRuntime 'org.junit.platform:junit-platform-launcher:1.6.2'
-    testCompile 'org.junit.jupiter:junit-jupiter-api:5.6.2'
-    testCompile 'org.junit.jupiter:junit-jupiter-params:5.6.2'
-    testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+    testRuntime 'org.junit.jupiter:junit-jupiter-engine:' + getJunitJupiterVersion()
+    testRuntime 'org.junit.platform:junit-platform-launcher:' + getJunitPlatformVersion()
+    testCompile 'org.junit.jupiter:junit-jupiter-api:' + getJunitJupiterVersion()
+    testCompile 'org.junit.jupiter:junit-jupiter-params:' + getJunitJupiterVersion()
+    testRuntime 'org.junit.jupiter:junit-jupiter-engine:' + getJunitJupiterVersion()
 
     testRuntime 'edu.wpi.first.hal:hal-jni:' + allwpilibVersion() + ':' + getCurrentOsArch()
     testRuntime 'edu.wpi.first.wpiutil:wpiutil-java:' + getWpiUtilVersion()

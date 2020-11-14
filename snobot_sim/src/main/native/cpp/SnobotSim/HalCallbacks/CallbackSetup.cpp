@@ -12,7 +12,7 @@
 #include "SnobotSim/HalCallbacks/SpiCallbacks.h"
 #include "SnobotSim/HalCallbacks/ThirdPartyCanCallbacks.h"
 #include "SnobotSim/Logging/SnobotLogger.h"
-#include "simulation/SimDeviceSim.h"
+#include "frc/simulation/SimDeviceSim.h"
 
 void SnobotSim::InitializeSnobotCallbacks()
 {

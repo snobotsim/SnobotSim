@@ -9,8 +9,8 @@ import com.snobot.simulator.module_wrapper.wpi.WpiSolenoidWrapper;
 import com.snobot.simulator.wrapper_accessors.DataAccessorFactory;
 
 import edu.wpi.first.hal.HALValue;
-import edu.wpi.first.hal.sim.NotifyCallback;
-import edu.wpi.first.hal.sim.mockdata.PCMDataJNI;
+import edu.wpi.first.hal.simulation.NotifyCallback;
+import edu.wpi.first.hal.simulation.PCMDataJNI;
 import edu.wpi.first.wpilibj.SensorUtil;
 
 public final class PcmCallbackJni
